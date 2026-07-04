@@ -96,6 +96,84 @@ export function chatOpenTabLabelKey(tab: ChatOpenTab): TranslationKey {
   return tab === WHISPER_TAB ? WHISPER_TAB_LABEL_KEY : CHANNEL_LABEL_KEYS[tab];
 }
 
+// One tint per openable tab, shared by the chat log lines (hud.ts chat event
+// switch) and the chat input (issue #1452: the input is tinted with the color
+// of the channel the typed plain text will reach). Single source: the log and
+// the input must never disagree on a channel's color.
+export const CHAT_CHANNEL_COLORS: Record<ChatOpenTab, string> = {
+  say: '#f0ead8',
+  yell: '#ff5040',
+  party: '#7fd4ff',
+  general: '#ffc864',
+  world: '#ff9d5c',
+  lfg: '#5cd6a0',
+  guild: '#40d264',
+  officer: '#4ce0c0',
+  whisper: '#ff80ff',
+};
+
+// The tab a plain typed line will actually reach: a channel tab binds itself,
+// the whisper collector replies to the last whisperer, and the All/Combat
+// views fall back to the sticky most-recently-used channel (null = say).
+export function effectiveSendTab(
+  activeTab: ChatTabId,
+  sticky: ChatTabChannel | null,
+): ChatOpenTab | null {
+  if (activeTab === 'all' || activeTab === 'combat') return sticky;
+  return activeTab;
+}
+
+// The chat input's tint for an effective send tab. null = leave the CSS
+// default color (say is the engine default and keeps the neutral input).
+export function chatInputColor(tab: ChatOpenTab | null): string | null {
+  if (tab === null || tab === 'say') return null;
+  return CHAT_CHANNEL_COLORS[tab];
+}
+
+// Send-channel slash aliases as BOTH hosts parse them (src/sim/social/chat.ts
+// offline, server/game.ts online), each requiring a message body so a bare
+// "/p" (an error, nothing sent) never re-sticks. Bare "/g" is deliberately
+// absent: the offline sim routes it to GENERAL but the server routes it to
+// GUILD, so it cannot stick to one channel without lying on the other host.
+// Whisper (/w, /r) is excluded on purpose: it targets a specific player, not
+// a standing channel (mirrors CHAT_TAB_CHANNELS above).
+const STICKY_COMMAND_ALIASES: readonly [RegExp, ChatTabChannel][] = [
+  [/^\/s(?:ay)?\s+\S/i, 'say'],
+  [/^\/y(?:ell)?\s+\S/i, 'yell'],
+  [/^\/p(?:arty)?\s+\S/i, 'party'],
+  [/^\/general\s+\S/i, 'general'],
+  [/^\/world\s+\S/i, 'world'],
+  [/^\/lfg\s+\S/i, 'lfg'],
+  [/^\/(?:gu|guild)\s+\S/i, 'guild'],
+  [/^\/o(?:fficer)?\s+\S/i, 'officer'],
+];
+
+// The send channel an explicit typed slash command targets, or null when the
+// line is not an unambiguous channel message (whisper, /join, emotes, /g, ...).
+export function channelForSlashCommand(typed: string): ChatTabChannel | null {
+  const text = typed.trim();
+  if (!text.startsWith('/')) return null;
+  for (const [re, channel] of STICKY_COMMAND_ALIASES) if (re.test(text)) return channel;
+  return null;
+}
+
+// The sticky most-recently-used channel after a line is sent. `plainTarget` is
+// where plain (unprefixed) text was routed: the bound tab channel, the sticky
+// channel on All/Combat (null = say), or the whisper collector. An explicit
+// channel command re-sticks; whispers and non-channel commands leave the
+// sticky channel alone; a plain whisper reply never sticks (no standing channel).
+export function stickyChannelAfterSend(
+  typed: string,
+  plainTarget: ChatOpenTab | null,
+  prev: ChatTabChannel | null,
+): ChatTabChannel | null {
+  const text = typed.trim();
+  if (!text) return prev;
+  if (text.startsWith('/')) return channelForSlashCommand(text) ?? prev;
+  if (plainTarget === WHISPER_TAB) return prev;
+  return plainTarget ?? 'say';
+}
+
 // Compose the text actually sent for a message typed while a channel tab is
 // active. An explicit slash command the player typed always wins (so "/w bob hi"
 // from the World tab still whispers); otherwise the channel prefix is prepended.

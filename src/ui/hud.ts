@@ -138,18 +138,22 @@ import {
 import { ChatAnnouncer } from './chat_announcer';
 import {
   CHANNEL_LABEL_KEYS,
+  CHAT_CHANNEL_COLORS,
   CHAT_TAB_CHANNELS,
   type ChatOpenTab,
   type ChatTabChannel,
   type ChatTabId,
   channelNeedsJoin,
+  chatInputColor,
   chatOpenTabLabelKey,
   composeChatLine,
   composeWhisperReply,
+  effectiveSendTab,
   isChatOpenTab,
   isChatTabChannel,
   parseChatTabs,
   serializeChatTabs,
+  stickyChannelAfterSend,
   WHISPER_TAB,
   WHISPER_TAB_LABEL_KEY,
 } from './chat_channels';
@@ -824,6 +828,10 @@ export class Hud {
   // shown, and drives both the log filter and the send channel.
   private chatTabs: ChatOpenTab[] = [];
   private activeChatTab: ChatTabId = 'all';
+  // The most recently used send channel (issue #1452): plain text typed on the
+  // All/Combat views goes here (classic sticky-channel behavior), and the chat
+  // input is tinted with its color. Session-only; null = say, the engine default.
+  private stickyChatChannel: ChatTabChannel | null = null;
   // Bind the tab-strip wheel-to-horizontal-scroll listener exactly once (renderChatTabs
   // rebuilds the strip's children but the bar element itself persists).
   private chatTabsWheelBound = false;
@@ -2511,11 +2519,13 @@ export class Hud {
       : this.activeChatTab;
   }
 
-  // The SEND channel a plain typed line targets: null on all/combat AND on the
-  // whisper tab (whisper has no generic send channel; the whisper tab replies via
-  // /r instead, handled in composeChatSend).
+  // The SEND channel a plain typed line targets: the bound channel tab, else
+  // (on the All/Combat views) the sticky most-recently-used channel (#1452).
+  // null on the whisper tab (whisper has no generic send channel; the whisper
+  // tab replies via /r instead, handled in composeChatSend) and when nothing
+  // is sticky yet (plain text is say, the engine default).
   private chatSendChannel(): ChatTabChannel | null {
-    const tab = this.chatFilterTab();
+    const tab = effectiveSendTab(this.activeChatTab, this.stickyChatChannel);
     return tab !== null && isChatTabChannel(tab) ? tab : null;
   }
 
@@ -2535,15 +2545,22 @@ export class Hud {
 
   private syncChatPlaceholder(): void {
     const input = document.getElementById('chat-input') as HTMLTextAreaElement | null;
-    if (input) input.placeholder = this.activeChatPlaceholder();
+    if (!input) return;
+    input.placeholder = this.activeChatPlaceholder();
+    input.style.color = this.activeChatInputColor();
   }
 
-  // The line actually sent for what the player typed, honoring the active tab.
-  // main.ts calls this on Enter so a channel tab works without retyping the slash
-  // command; an explicit "/..." the player typed still wins. On the whisper tab,
-  // plain text replies to the last whisperer (/r) instead of binding a channel.
+  // The line actually sent for what the player typed, honoring the active tab
+  // and the sticky most-recently-used channel (#1452). main.ts calls this on
+  // Enter so a channel tab works without retyping the slash command; an
+  // explicit "/..." the player typed still wins. On the whisper tab, plain
+  // text replies to the last whisperer (/r) instead of binding a channel.
+  // A sent line also re-sticks the channel it targeted, so the next input
+  // opened on the All view defaults (and tints) to where the player last spoke.
   composeChatSend(typed: string): string {
     const withLinks = this.applyPendingChatLinks(typed);
+    const plainTarget = effectiveSendTab(this.activeChatTab, this.stickyChatChannel);
+    this.stickyChatChannel = stickyChannelAfterSend(withLinks, plainTarget, this.stickyChatChannel);
     if (this.activeChatTab === WHISPER_TAB) return composeWhisperReply(withLinks);
     const ch = this.chatSendChannel();
     return ch ? composeChatLine(ch, withLinks) : withLinks.trim();
@@ -2569,6 +2586,7 @@ export class Hud {
     const input = $('#chat-input') as unknown as HTMLInputElement;
     this.pendingChatLinks.set(display, token);
     input.placeholder = this.activeChatPlaceholder();
+    input.style.color = this.activeChatInputColor();
     input.style.display = 'block';
     input.value =
       input.value && !input.value.endsWith(' ')
@@ -2614,6 +2632,13 @@ export class Hud {
     return ch
       ? t('hud.core.chatChannels.sendingTo', { channel: t(CHANNEL_LABEL_KEYS[ch]) })
       : t('hud.core.chatPlaceholder');
+  }
+
+  // Tint for the chat input, matching the channel a plain typed line will
+  // reach (#1452): the bound tab's channel, else the sticky most-recently-used
+  // one. '' restores the CSS default (say). Assignable directly to style.color.
+  activeChatInputColor(): string {
+    return chatInputColor(effectiveSendTab(this.activeChatTab, this.stickyChatChannel)) ?? '';
   }
 
   // -------------------------------------------------------------------------
@@ -7445,7 +7470,7 @@ export class Hud {
               this.chatLogFrom(
                 ev.from,
                 ev.text,
-                '#7fd4ff',
+                CHAT_CHANNEL_COLORS.party,
                 CHAT_TEMPLATE_KEYS.party,
                 'party',
                 ev.fromPid,
@@ -7455,7 +7480,7 @@ export class Hud {
               this.chatLogFrom(
                 ev.from,
                 ev.text,
-                '#ff5040',
+                CHAT_CHANNEL_COLORS.yell,
                 CHAT_TEMPLATE_KEYS.yell,
                 'yell',
                 ev.fromPid,
@@ -7466,7 +7491,7 @@ export class Hud {
                 this.chatLogFrom(
                   ev.to,
                   ev.text,
-                  '#ff80ff',
+                  CHAT_CHANNEL_COLORS.whisper,
                   CHAT_TEMPLATE_KEYS.toWhisper,
                   'whisper',
                   ev.fromPid,
@@ -7475,7 +7500,7 @@ export class Hud {
                 this.chatLogFrom(
                   ev.from,
                   ev.text,
-                  '#ff80ff',
+                  CHAT_CHANNEL_COLORS.whisper,
                   CHAT_TEMPLATE_KEYS.whisper,
                   'whisper',
                   ev.fromPid,
@@ -7487,7 +7512,7 @@ export class Hud {
               this.chatLogFrom(
                 ev.from,
                 ev.text,
-                '#ffc864',
+                CHAT_CHANNEL_COLORS.general,
                 CHAT_TEMPLATE_KEYS.general,
                 'general',
                 ev.fromPid,
@@ -7497,7 +7522,7 @@ export class Hud {
               this.chatLogFrom(
                 ev.from,
                 ev.text,
-                '#ff9d5c',
+                CHAT_CHANNEL_COLORS.world,
                 CHAT_TEMPLATE_KEYS.world,
                 'world',
                 ev.fromPid,
@@ -7507,7 +7532,7 @@ export class Hud {
               this.chatLogFrom(
                 ev.from,
                 ev.text,
-                '#5cd6a0',
+                CHAT_CHANNEL_COLORS.lfg,
                 CHAT_TEMPLATE_KEYS.lfg,
                 'lfg',
                 ev.fromPid,
@@ -7517,7 +7542,7 @@ export class Hud {
               this.chatLogFrom(
                 ev.from,
                 ev.text,
-                '#40d264',
+                CHAT_CHANNEL_COLORS.guild,
                 CHAT_TEMPLATE_KEYS.guild,
                 'guild',
                 ev.fromPid,
@@ -7527,7 +7552,7 @@ export class Hud {
               this.chatLogFrom(
                 ev.from,
                 ev.text,
-                '#4ce0c0',
+                CHAT_CHANNEL_COLORS.officer,
                 CHAT_TEMPLATE_KEYS.officer,
                 'officer',
                 ev.fromPid,
@@ -7557,7 +7582,7 @@ export class Hud {
               this.chatLogFrom(
                 ev.from,
                 ev.text,
-                '#f0ead8',
+                CHAT_CHANNEL_COLORS.say,
                 CHAT_TEMPLATE_KEYS.say,
                 'say',
                 ev.fromPid,

@@ -1055,7 +1055,9 @@ async function startGame(
   };
   function openChat(): void {
     // reflect the active chat-channel tab in the placeholder (e.g. "Message World")
+    // and tint the input with the channel the typed text will reach (#1452)
     chatInput.placeholder = hud.activeChatPlaceholder();
+    chatInput.style.color = hud.activeChatInputColor();
     chatInput.style.display = 'block';
     anchorChatInput();
     autosizeChatInput();

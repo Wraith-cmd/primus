@@ -127,7 +127,7 @@ import {
 } from './ui/auth_utils';
 import { assembleBugReportMeta } from './ui/bug_report';
 import { ChatCommandMenu } from './ui/chat_command_menu';
-import { chatInputSize } from './ui/chat_input_autosize';
+import { autosizeChatInput } from './ui/chat_input_autosize';
 import { CLASS_DETAILS, SIGNATURE_ABILITIES } from './ui/class_details_data';
 import { devTierByIndex, devTierDisplayName } from './ui/dev_tier';
 import {
@@ -997,27 +997,18 @@ async function startGame(
 
   const chatInput = $('#chat-input') as unknown as HTMLTextAreaElement;
   const clickMoveMarker = $('#click-move-marker') as HTMLDivElement;
-  // Grow the chat bar to fit what's typed (up to its CSS max-height) so a long
-  // message wraps instead of scrolling a single line. Anchored by its bottom
-  // edge, the extra height extends upward, away from the chat log beneath it.
+  // Grow the chat bar to fit what it is displaying (typed text, or the
+  // placeholder hint while empty) up to its CSS max-height, so a long message
+  // wraps instead of scrolling a single line and a wrapping placeholder is
+  // never clipped. Anchored by its bottom edge, the extra height extends
+  // upward, away from the chat log beneath it.
   const CHAT_INPUT_MIN_H = 36;
   const CHAT_INPUT_MAX_H = 110;
-  const autosizeChatInput = (): void => {
-    // Empty: pin to one line. (A long placeholder otherwise inflates a textarea's
-    // scrollHeight in Chromium, making the bar tall when empty and snapping to one
-    // line on the first keystroke.)
-    if (chatInput.value === '') {
-      chatInput.style.height = `${CHAT_INPUT_MIN_H}px`;
-      chatInput.style.overflowY = 'hidden';
-      return;
-    }
-    chatInput.style.height = 'auto';
-    const size = chatInputSize(chatInput.scrollHeight, {
+  const autosizeChat = (): void => {
+    autosizeChatInput(chatInput, {
       minHeight: CHAT_INPUT_MIN_H,
       maxHeight: CHAT_INPUT_MAX_H,
     });
-    chatInput.style.height = `${size.height}px`;
-    chatInput.style.overflowY = size.overflowY;
   };
   // Re-anchor the bar just above the (possibly moved / resized / tab-wrapped)
   // chat box so it never overlaps it. Mobile keeps its own CSS placement.
@@ -1058,29 +1049,29 @@ async function startGame(
     chatInput.placeholder = hud.activeChatPlaceholder();
     chatInput.style.display = 'block';
     anchorChatInput();
-    autosizeChatInput();
+    autosizeChat();
     chatInput.focus();
   }
   // Fired for every open path (keybind, whisper context menu, mobile toggle)
   // since they all call focus().
   // Autocomplete dropdown for the in-game "!" community commands (!lfg etc.).
   const chatCmdMenu = new ChatCommandMenu(chatInput, () => {
-    autosizeChatInput();
+    autosizeChat();
     anchorChatInput();
   });
   chatInput.addEventListener('focus', () => {
     anchorChatInput();
-    autosizeChatInput();
+    autosizeChat();
   });
   chatInput.addEventListener('input', () => {
-    autosizeChatInput();
+    autosizeChat();
     anchorChatInput();
     chatCmdMenu.update(chatInput.value);
   });
   window.addEventListener('resize', () => {
     if (chatInput.style.display === 'block') {
       anchorChatInput();
-      autosizeChatInput();
+      autosizeChat();
     }
   });
   chatInput.addEventListener('keydown', (e) => {

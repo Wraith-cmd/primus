@@ -1,10 +1,10 @@
-// Pure geometry for the auto-growing chat input. The chat bar is a textarea
+// Autosize logic for the auto-growing chat input. The chat bar is a textarea
 // anchored by its BOTTOM edge (see #chat-input in index.html), so growing its
-// height extends the box upward — away from the chat log beneath it. The DOM
-// consumer (src/main.ts) measures the textarea's natural content height
-// (scrollHeight) and feeds it here to get a clamped pixel height plus whether a
-// scrollbar is needed once the content exceeds the cap. Kept host-agnostic so a
-// Vitest unit test can pin the clamp behavior without a DOM.
+// height extends the box upward, away from the chat log beneath it.
+// `chatInputSize` is the pure clamp geometry; `autosizeChatInput` is the whole
+// measure-and-apply routine over a structural textarea slice, so the DOM
+// consumer (src/main.ts) stays a one-line call. Kept free of DOM imports so a
+// Vitest unit test can pin the behavior with a hand-rolled fake.
 
 export interface ChatInputSizeLimits {
   /** Minimum rendered height (a single line). */
@@ -33,4 +33,35 @@ export function chatInputSize(scrollHeight: number, limits: ChatInputSizeLimits)
   // Compare the rounded measurement so a fractional scrollHeight that rounds
   // down to exactly `max` does not spuriously surface a scrollbar.
   return { height, overflowY: natural > max ? 'auto' : 'hidden' };
+}
+
+// The structural slice of an HTMLTextAreaElement the autosize routine touches,
+// so a Vitest can drive it with a hand-rolled fake and the module stays
+// DOM-import-free.
+export interface AutosizeTextarea {
+  value: string;
+  placeholder: string;
+  readonly scrollHeight: number;
+  style: { height: string; overflowY: string };
+}
+
+// Size the chat textarea to whatever it is DISPLAYING: the typed value, or the
+// placeholder hint while empty. Engines disagree on whether a textarea's
+// scrollHeight accounts for the placeholder (Chromium inflates it, others
+// ignore it and would clip a wrapping hint), so while the box is empty we
+// briefly swap the placeholder in as the value, measure, and restore. The
+// swap fires no input events and an empty textarea has no caret state to lose.
+export function autosizeChatInput(
+  el: AutosizeTextarea,
+  limits: ChatInputSizeLimits,
+): ChatInputSize {
+  const measurePlaceholder = el.value === '';
+  if (measurePlaceholder) el.value = el.placeholder;
+  // Collapse first so a previously grown box does not floor the measurement.
+  el.style.height = 'auto';
+  const size = chatInputSize(el.scrollHeight, limits);
+  if (measurePlaceholder) el.value = '';
+  el.style.height = `${size.height}px`;
+  el.style.overflowY = size.overflowY;
+  return size;
 }

@@ -133,6 +133,7 @@ import { type CharSkinPainterHost, paintCharSkinPicker } from './char_skin_windo
 import { buildPaperdollView, type PaperdollSlot } from './char_view';
 import { CharWindow, craftNameText } from './char_window';
 import { activeCharacterAppearancePreview } from './character_appearance';
+import { chatBubbleStyle } from './chat_bubble_style';
 import {
   ignoreKey,
   type PlayerSocialFlags,
@@ -9046,13 +9047,19 @@ export class Hud {
               );
               break;
           }
-          if (
-            (ev.channel === 'say' || ev.channel === 'yell' || ev.channel === 'emote') &&
-            ev.entityId !== undefined
-          ) {
+          // Overhead speech bubbles. say/yell/emote carry the speaker's entity
+          // id; party also anchors on the speaker because its emit sets
+          // fromPid = the speaker entity (#1659), so it bubbles with no sim
+          // change. chatBubbleStyle returns null for every channel that does not
+          // bubble: general/world/lfg/whisper/roll (too noisy or private) and
+          // guild/officer (server social broadcasts that carry no speaker id, so
+          // the client has no entity to anchor to; a server/wire follow-up).
+          const bubbleStyle = ev.channel === undefined ? null : chatBubbleStyle(ev.channel);
+          const bubbleSpeakerId = ev.entityId ?? ev.fromPid;
+          if (bubbleStyle && typeof bubbleSpeakerId === 'number') {
             const masked = this.maskChat(this.chatLinkPlainText(ev.text));
             const bubble = ev.channel === 'emote' ? `${ev.from} ${masked}` : masked;
-            this.renderer.showChatBubble(ev.entityId, bubble, ev.channel === 'yell');
+            this.renderer.showChatBubble(bubbleSpeakerId, bubble, bubbleStyle);
           }
           // Voiced encounter dialogue (boss/NPC yells) — no-op unless a clip was
           // generated for this exact line (scripts/voices/extra_lines.mjs).

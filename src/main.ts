@@ -28,6 +28,7 @@ import { shouldClearAutorunOnDeath } from './game/death_input_reset';
 import { initDesktopDownload } from './game/desktop_download';
 import { initDesktopShellIntegration } from './game/desktop_shell_integration';
 import { takeEditorPlaytestRequest } from './game/editor_playtest';
+import { FRAME_PACER_CALIBRATION_CALLBACKS, FramePacer } from './game/frame_pacer';
 import { GamepadManager } from './game/gamepad';
 import { GamepadBindings } from './game/gamepad_bindings';
 import { handleGatherNodeInteract } from './game/gather_node_interact';
@@ -2505,6 +2506,11 @@ async function startGame(
 
   let last = performance.now();
   let acc = 0;
+  const framePacer = new FramePacer({
+    enabled: document.body.classList.contains('mobile-touch'),
+    maxFps: GFX.budget.targetFps,
+  });
+  let previousFrameWorkMs = 0;
   let onlineInputEchoMs = 0;
   let playerWasDead = world.player.dead;
   // Smoothed input-echo jitter (mean absolute deviation of RTT samples) for the
@@ -2761,6 +2767,10 @@ async function startGame(
 
   function frame(now: number): void {
     requestAnimationFrame(frame);
+    framePacer.setEnabled(document.body.classList.contains('mobile-touch'));
+    const pacing = framePacer.step(now);
+    if (!pacing.shouldRun) return;
+    const frameWorkStartMs = performance.now();
     let frameDt = (now - last) / 1000;
     last = now;
     if (frameDt > 0.25) frameDt = 0.25;
@@ -2871,17 +2881,31 @@ async function startGame(
         visualFacingFor(input.readMoveInput(), movementFacing ?? offlineSim.player.facing) ??
         movementFacing;
       perf.time('renderer', () =>
-        perf.trace('renderer.sync', () => renderer.sync(acc / DT, frameDt, offlineRenderFacing), {
-          mode: 'offline',
-          views: renderer.views.size,
-          alpha: acc / DT,
-        }),
+        perf.trace(
+          'renderer.sync',
+          () =>
+            renderer.sync(
+              acc / DT,
+              frameDt,
+              offlineRenderFacing,
+              0,
+              null,
+              pacing.intentionallyPaced,
+              previousFrameWorkMs,
+            ),
+          {
+            mode: 'offline',
+            views: renderer.views.size,
+            alpha: acc / DT,
+          },
+        ),
       );
       perf.trace('ui.clickMoveMarker', () => updateClickMoveMarker());
       perf.markInputVisible(performance.now());
       if (settings.get('walkByAutoloot')) autoLoot.run(world, now);
       perf.time('hud', () => perf.trace('hud.update', () => hud.update(), { mode: 'offline' }));
       perf.tick(now);
+      previousFrameWorkMs = performance.now() - frameWorkStartMs;
       return;
     }
 
@@ -3021,6 +3045,8 @@ async function startGame(
             net.spectating === null ? onlineRenderFacing : null,
             adaptiveSelfAlphaLead(onlineInputEchoMs, onlineJitterMs, net.snapInterval),
             selfMotion,
+            pacing.intentionallyPaced,
+            previousFrameWorkMs,
           ),
         {
           mode: 'online',
@@ -3036,6 +3062,7 @@ async function startGame(
     if (settings.get('walkByAutoloot')) autoLoot.run(world, now);
     perf.time('hud', () => perf.trace('hud.update', () => hud.update(), { mode: 'online' }));
     perf.tick(now);
+    previousFrameWorkMs = performance.now() - frameWorkStartMs;
   }
   const controller = {
     move(moveInput: unknown, facing?: unknown) {
@@ -3165,6 +3192,16 @@ async function startGame(
     console.warn('Renderer prewarm failed', err);
   }
   await nextPaint();
+  if (document.body.classList.contains('mobile-touch')) {
+    for (let i = 0; i < FRAME_PACER_CALIBRATION_CALLBACKS; i++) {
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame((timestamp) => {
+          framePacer.observe(timestamp);
+          resolve();
+        });
+      });
+    }
+  }
   last = performance.now();
   requestAnimationFrame(frame);
   // cut to the game only once the first frame is actually on screen

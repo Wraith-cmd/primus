@@ -2018,7 +2018,11 @@ export class Renderer {
     return this.renderDiagnosticsSnapshot;
   }
 
-  private updateAdaptiveResolution(dt: number): void {
+  private updateAdaptiveResolution(
+    dt: number,
+    intentionalFramePacing: boolean,
+    previousFrameWorkMs: number,
+  ): void {
     if (!Number.isFinite(dt) || dt <= 0) return;
     const frameMs = Math.min(250, dt * 1000);
     const previousSubmitMs = this.lastFrameStats.phaseMs.submit;
@@ -2043,6 +2047,8 @@ export class Renderer {
       createdViews: this.lastFrameStats.createdViews,
       minRenderScale: lockedRenderScale,
       maxRenderScale: lockedRenderScale,
+      intentionalFramePacing,
+      workMs: previousFrameWorkMs > 0 ? previousFrameWorkMs : previousTotalMs,
     });
     this.frameMsEma = state.frameMsEma;
     this.adaptiveCooldown = state.cooldownSeconds;
@@ -4214,6 +4220,8 @@ export class Renderer {
     renderFacingOverride: number | null,
     selfAlphaLead = 0,
     selfMotion: SelfMotionFrame | null = null,
+    intentionalFramePacing = false,
+    previousFrameWorkMs = 0,
   ): void {
     const totalStart = performance.now();
     let phaseStart = totalStart;
@@ -4235,7 +4243,7 @@ export class Renderer {
       return t;
     };
 
-    this.updateAdaptiveResolution(dt);
+    this.updateAdaptiveResolution(dt, intentionalFramePacing, previousFrameWorkMs);
     this.viewportPollTimer += dt;
     if (this.viewportPollTimer >= 0.25) {
       this.viewportPollTimer = 0;

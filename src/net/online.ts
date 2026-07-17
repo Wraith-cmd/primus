@@ -289,8 +289,8 @@ export class Api {
     }
   }
 
-  private async post(path: string, body: unknown): Promise<any> {
-    const res = await fetch(apiUrl(path, this.base), {
+  private async post(path: string, body: unknown, base = this.base): Promise<any> {
+    const res = await fetch(apiUrl(path, base), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -440,6 +440,71 @@ export class Api {
     const data = await this.post('/api/desktop-login/exchange', { code });
     this.token = data.token;
     this.username = data.username;
+  }
+
+  async createDesktopWalletHandoff(
+    action: { kind: 'link' } | { kind: 'transaction'; reference: string; expectedAddress: string },
+  ): Promise<{ code: string; expiresInMs: number }> {
+    const data = await this.post(
+      '/api/desktop-wallet/create',
+      action,
+      DESKTOP_API_ORIGIN || this.base,
+    );
+    return {
+      code: typeof data.code === 'string' ? data.code : '',
+      expiresInMs: typeof data.expiresInMs === 'number' ? data.expiresInMs : 0,
+    };
+  }
+
+  async desktopWalletHandoffResult(code: string): Promise<
+    | { status: 'missing' | 'pending' }
+    | {
+        status: 'complete';
+        result:
+          | { kind: 'link'; address: string; nonce: string; signature: string }
+          | { kind: 'transaction'; address: string; signature: string };
+      }
+  > {
+    const data = await this.post(
+      '/api/desktop-wallet/result',
+      { code },
+      DESKTOP_API_ORIGIN || this.base,
+    );
+    if (data.status !== 'complete' || !data.result || typeof data.result !== 'object') {
+      return { status: data.status === 'pending' ? 'pending' : 'missing' };
+    }
+    const result = data.result as Record<string, unknown>;
+    if (
+      result.kind === 'link' &&
+      typeof result.address === 'string' &&
+      typeof result.nonce === 'string' &&
+      typeof result.signature === 'string'
+    ) {
+      return {
+        status: 'complete',
+        result: {
+          kind: 'link',
+          address: result.address,
+          nonce: result.nonce,
+          signature: result.signature,
+        },
+      };
+    }
+    if (
+      result.kind === 'transaction' &&
+      typeof result.address === 'string' &&
+      typeof result.signature === 'string'
+    ) {
+      return {
+        status: 'complete',
+        result: {
+          kind: 'transaction',
+          address: result.address,
+          signature: result.signature,
+        },
+      };
+    }
+    return { status: 'missing' };
   }
 
   // ── Persistent session (home-page account portal) ──────────────────────────

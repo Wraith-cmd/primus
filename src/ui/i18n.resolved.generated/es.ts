@@ -416,6 +416,18 @@ export const es: EnTranslations = {
       "armoryEyebrow": "Temporada 1",
       "armoryTitle": "La Armería",
       "armoryBody": "Apariencias de armas de edición limitada de la Armería de la temporada 1. Válidas para toda la cuenta, puramente cosméticas y visibles para todos los que te rodean.",
+      "wallet": {
+        "title": "Solana wallet",
+        "unlinked": "Connect a wallet app, then sign once to link its public address to your WoC account. We never receive your recovery phrase or private key.",
+        "connectedUnlinked": "The wallet app is connected to this browser, but its public address is not linked to your WoC account yet.",
+        "linkedDisconnected": "Your public address is linked. Reconnect that wallet app when you want to pay with SOL or WOC.",
+        "linkedConnected": "Your linked wallet app is connected and ready for SOL or WOC purchases.",
+        "mismatched": "A different wallet is connected. Verify it to replace the linked address, or reconnect the linked wallet.",
+        "connect": "Connect wallet",
+        "verify": "Verify and link",
+        "reconnect": "Reconnect wallet",
+        "manage": "Manage wallet"
+      },
       "collectionLine": "Colección {collection}",
       "collections": {
         "guildmark": "Sello gremial",
@@ -2308,6 +2320,9 @@ export const es: EnTranslations = {
       "account_taken": "Esa cuenta de Steam ya está vinculada a otra cuenta.",
       "upstream": "Steam no respondió. Inténtalo de nuevo en un momento."
     },
+    "wallet": {
+      "handoff_invalid": "That wallet authorization expired or could not be verified. Try again."
+    },
     "welcome": {
       "invalid_input": "Entrada no válida."
     }
@@ -4027,6 +4042,9 @@ export const es: EnTranslations = {
     "balancePreviewTitle": "Vista previa del saldo de $WOC de la cartera conectada",
     "balancePreviewAria": "Vista previa del saldo de la cartera conectada: {balance}. Vincula la cartera para verificar el distintivo de titular.",
     "balanceAmount": "{amount} $WOC",
+    "bagConnect": "Link wallet",
+    "bagLink": "Verify wallet",
+    "bagReconnect": "Reconnect wallet",
     "connected": "Conectada: {address}",
     "connectedWithBalance": "Conectada: {balance} - {address}",
     "connectedLinked": "Verificada: {address}",
@@ -4041,12 +4059,37 @@ export const es: EnTranslations = {
     "helpLinkedDisconnected": "Las ventajas de titular están activas. Conecta la app cuando necesites firmar o gastar.",
     "helpLinkedDisconnectedWithBalance": "Las ventajas de titular están activas. Conecta la app cuando necesites firmar o gastar.",
     "extensionHelp": "Para ver una cartera aquí, mantén activa una extensión de cartera del navegador como Solflare Wallet.",
+    "mobileAppHelp": "Choose Phantom or Solflare. Your wallet app will ask for approval. Keep this game open and return to it when finished.",
+    "standaloneAppHelp": "Wallet connections are not available in the Home Screen app yet. Open World of ClaudeCraft in Safari or Chrome to use Phantom or Solflare.",
+    "openAppTitle": "Continue in {wallet}",
+    "openAppHelp": "Open {wallet} to review this request. Keep this game tab open while the wallet app is active.",
+    "openAppButton": "Open {wallet}",
+    "manualReturnBrowserHelp": "After approval, return to this game tab. If iOS opens another browser, close it and return to the original browser manually.",
+    "manualReturnStandaloneHelp": "After approval, return to World of ClaudeCraft from your Home Screen. If iOS opens a browser, close it and reopen the Home Screen app manually.",
+    "preparingAppButton": "Preparing {wallet}...",
+    "walletAppUnavailable": "{wallet} could not be prepared. Close this window and try again.",
     "flowConnect": "Elige una cartera. La verificación continúa automáticamente.",
     "flowSign": "Firma el mensaje de verificación en tu app de cartera. No requiere transacción ni SOL.",
     "flowVerify": "Verificando la propiedad de la cartera...",
     "linkFailed": "La verificación de cartera falló.",
     "verifyFailed": "La verificación de cartera falló.",
     "unlinkFailed": "No se pudo desvincular la cartera.",
+    "browser": {
+      "eyebrow": "Desktop wallet authorization",
+      "title": "Connect a Solana Wallet",
+      "linkBody": "Choose a wallet extension in this browser. You will sign a verification message, then return to the desktop app.",
+      "paymentBody": "Choose the wallet linked to your account and approve the transaction in this browser.",
+      "extensionHelp": "No compatible wallet extension was found. Install or unlock Phantom, Solflare, or another Solana browser wallet, then retry.",
+      "safety": "World of ClaudeCraft never asks for your recovery phrase or private key.",
+      "continueWith": "Continue with {wallet}",
+      "reviewTitle": "Review in your wallet",
+      "reviewBody": "Follow the prompt from {wallet}. Keep this browser page open.",
+      "completeTitle": "Wallet authorization complete",
+      "completeBody": "You can return to the World of ClaudeCraft desktop app.",
+      "returnButton": "Return to desktop app",
+      "failed": "Wallet authorization failed or expired. Return to the desktop app and try again.",
+      "retry": "Retry"
+    },
     "holder": "Titular de $WOC",
     "holderTierTitle": "Titular de $WOC de nivel {tier}",
     "holderTiers": {

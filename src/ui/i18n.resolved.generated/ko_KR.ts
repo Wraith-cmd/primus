@@ -416,6 +416,18 @@ export const ko_KR: EnTranslations = {
       "armoryEyebrow": "시즌 1",
       "armoryTitle": "무기고",
       "armoryBody": "시즌 1 무기고의 한정 무기 스킨입니다. 계정 전체에 적용되는 순수 장식이며 주변 모든 플레이어에게 보입니다.",
+      "wallet": {
+        "title": "Solana 지갑",
+        "unlinked": "지갑 앱을 연결한 뒤 한 번 서명하여 공개 주소를 WoC 계정에 연결하세요. 복구 문구나 개인 키는 절대로 전달되지 않습니다.",
+        "connectedUnlinked": "지갑 앱이 이 브라우저에 연결되었지만 공개 주소는 아직 WoC 계정에 연결되지 않았습니다.",
+        "linkedDisconnected": "공개 주소가 연결되어 있습니다. SOL 또는 WOC로 결제할 때 해당 지갑 앱을 다시 연결하세요.",
+        "linkedConnected": "연결된 지갑 앱이 접속되어 SOL 또는 WOC 구매에 사용할 수 있습니다.",
+        "mismatched": "다른 지갑이 접속되어 있습니다. 인증하여 연결된 주소를 바꾸거나 기존에 연결된 지갑을 다시 접속하세요.",
+        "connect": "지갑 연결",
+        "verify": "인증하고 연결",
+        "reconnect": "지갑 다시 연결",
+        "manage": "지갑 관리"
+      },
       "collectionLine": "{collection} 컬렉션",
       "collections": {
         "guildmark": "길드마크",
@@ -2308,6 +2320,9 @@ export const ko_KR: EnTranslations = {
       "account_taken": "해당 Steam 계정은 이미 다른 계정에 연결되어 있습니다.",
       "upstream": "Steam이 응답하지 않습니다. 잠시 후 다시 시도해 주세요."
     },
+    "wallet": {
+      "handoff_invalid": "지갑 인증이 만료되었거나 확인할 수 없습니다. 다시 시도해 주세요."
+    },
     "welcome": {
       "invalid_input": "입력이 올바르지 않습니다."
     }
@@ -4027,6 +4042,9 @@ export const ko_KR: EnTranslations = {
     "balancePreviewTitle": "연결된 지갑 $WOC 잔액 미리보기",
     "balancePreviewAria": "연결된 지갑 잔액 미리보기: {balance}. 지갑을 연결해 보유자 표시를 인증하세요.",
     "balanceAmount": "{amount} $WOC",
+    "bagConnect": "지갑 연결",
+    "bagLink": "지갑 인증",
+    "bagReconnect": "지갑 다시 연결",
     "connected": "연결됨: {address}",
     "connectedWithBalance": "연결됨: {balance} - {address}",
     "connectedLinked": "인증됨: {address}",
@@ -4041,12 +4059,37 @@ export const ko_KR: EnTranslations = {
     "helpLinkedDisconnected": "보유자 혜택이 활성화되었습니다. 서명이나 지출이 필요할 때 앱을 연결하세요.",
     "helpLinkedDisconnectedWithBalance": "보유자 혜택이 활성화되었습니다. 서명이나 지출이 필요할 때 앱을 연결하세요.",
     "extensionHelp": "여기에 지갑이 표시되려면 Solflare Wallet 같은 브라우저 지갑 확장 프로그램이 활성화되어 있어야 합니다.",
+    "mobileAppHelp": "Phantom 또는 Solflare를 선택하세요. 지갑 앱에서 승인을 요청합니다. 게임을 열어 둔 채 완료 후 돌아오세요.",
+    "standaloneAppHelp": "홈 화면 앱에서는 아직 지갑 연결을 사용할 수 없습니다. Phantom 또는 Solflare를 사용하려면 Safari나 Chrome에서 World of ClaudeCraft를 여세요.",
+    "openAppTitle": "{wallet}에서 계속",
+    "openAppHelp": "{wallet}을 열어 이 요청을 확인하세요. 지갑 앱을 사용하는 동안 이 게임 탭을 열어 두세요.",
+    "openAppButton": "{wallet} 열기",
+    "manualReturnBrowserHelp": "승인 후 이 게임 탭으로 돌아오세요. iOS에서 다른 브라우저가 열리면 닫고 원래 브라우저로 직접 돌아오세요.",
+    "manualReturnStandaloneHelp": "승인 후 홈 화면에서 World of ClaudeCraft로 돌아오세요. iOS에서 브라우저가 열리면 닫고 홈 화면 앱을 다시 여세요.",
+    "preparingAppButton": "{wallet} 준비 중...",
+    "walletAppUnavailable": "{wallet}을 준비하지 못했습니다. 이 창을 닫고 다시 시도하세요.",
     "flowConnect": "지갑을 선택하세요. 인증은 자동으로 계속됩니다.",
     "flowSign": "지갑 앱에서 인증 메시지에 서명하세요. 트랜잭션이나 SOL은 필요 없습니다.",
     "flowVerify": "지갑 소유권 인증 중...",
     "linkFailed": "지갑 인증에 실패했습니다.",
     "verifyFailed": "지갑 인증에 실패했습니다.",
     "unlinkFailed": "지갑 연결을 해제하지 못했습니다.",
+    "browser": {
+      "eyebrow": "데스크톱 지갑 인증",
+      "title": "Solana 지갑 연결",
+      "linkBody": "이 브라우저에서 지갑 확장 프로그램을 선택하세요. 인증 메시지에 서명한 뒤 데스크톱 앱으로 돌아갑니다.",
+      "paymentBody": "계정에 연결된 지갑을 선택하고 이 브라우저에서 거래를 승인하세요.",
+      "extensionHelp": "호환되는 지갑 확장 프로그램을 찾지 못했습니다. Phantom, Solflare 또는 다른 Solana 브라우저 지갑을 설치하거나 잠금 해제한 뒤 다시 시도하세요.",
+      "safety": "World of ClaudeCraft는 복구 문구나 개인 키를 요청하지 않습니다.",
+      "continueWith": "{wallet}(으)로 계속",
+      "reviewTitle": "지갑에서 검토",
+      "reviewBody": "{wallet}의 안내를 따르세요. 이 브라우저 페이지를 열어 두세요.",
+      "completeTitle": "지갑 인증 완료",
+      "completeBody": "World of ClaudeCraft 데스크톱 앱으로 돌아갈 수 있습니다.",
+      "returnButton": "데스크톱 앱으로 돌아가기",
+      "failed": "지갑 인증에 실패했거나 만료되었습니다. 데스크톱 앱으로 돌아가 다시 시도하세요.",
+      "retry": "다시 시도"
+    },
     "holder": "$WOC 보유자",
     "holderTierTitle": "{tier} $WOC 보유자",
     "holderTiers": {

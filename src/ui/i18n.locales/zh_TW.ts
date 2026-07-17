@@ -35,6 +35,24 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.wocStore.armoryTitle': '兵器庫',
   'hudChrome.wocStore.armoryBody':
     '第一賽季兵器庫限定武器外觀。全帳號通用，純裝飾性，周圍所有玩家都能看到。',
+  'hudChrome.wocStore.wallet.title': 'Solana 錢包',
+  'hudChrome.wocStore.wallet.unlinked':
+    '連接錢包應用程式，然後簽署一次，將其公開地址綁定到你的 WoC 帳號。我們絕不會取得你的復原短語或私鑰。',
+  'hudChrome.wocStore.wallet.connectedUnlinked':
+    '錢包應用程式已連接到此瀏覽器，但其公開地址尚未綁定到你的 WoC 帳號。',
+  'hudChrome.wocStore.wallet.linkedDisconnected':
+    '你的公開地址已綁定。需要使用 SOL 或 WOC 付款時，請重新連接該錢包應用程式。',
+  'hudChrome.wocStore.wallet.linkedConnected':
+    '已綁定的錢包應用程式已連接，可以使用 SOL 或 WOC 購買。',
+  'hudChrome.wocStore.wallet.mismatched':
+    '目前連接的是另一個錢包。驗證它即可取代已綁定的地址，或重新連接原先綁定的錢包。',
+  'hudChrome.wocStore.wallet.connect': '連接錢包',
+  'hudChrome.wocStore.wallet.verify': '驗證並綁定',
+  'hudChrome.wocStore.wallet.reconnect': '重新連接錢包',
+  'hudChrome.wocStore.wallet.manage': '管理錢包',
+  'wallet.bagConnect': '綁定錢包',
+  'wallet.bagLink': '驗證錢包',
+  'wallet.bagReconnect': '重新連接錢包',
   'hudChrome.wocStore.collectionLine': '{collection}系列',
   'hudChrome.wocStore.seasonOne': '第一賽季',
   'hudChrome.wocStore.rarity.uncommon': '優秀',
@@ -1015,11 +1033,39 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'wallet.helpLinkedDisconnectedWithBalance': '持有者特權已啟用。需要簽名或花費時請連接應用程式。',
   'wallet.extensionHelp':
     '若要在此處看到錢包，請保持 Solflare Wallet 等瀏覽器錢包擴充功能處於啟用狀態。',
+  'wallet.mobileAppHelp':
+    '選擇 Phantom 或 Solflare。錢包應用程式會要求核准。請保持遊戲開啟，完成後返回遊戲。',
+  'wallet.standaloneAppHelp':
+    '主畫面應用程式目前尚不支援連接錢包。若要使用 Phantom 或 Solflare，請在 Safari 或 Chrome 中開啟 World of ClaudeCraft。',
+  'wallet.openAppTitle': '在 {wallet} 中繼續',
+  'wallet.openAppHelp': '開啟 {wallet} 檢視此請求。錢包應用程式啟用時，請保持此遊戲分頁開啟。',
+  'wallet.openAppButton': '開啟 {wallet}',
+  'wallet.manualReturnBrowserHelp':
+    '核准後請返回此遊戲分頁。如果 iOS 開啟了其他瀏覽器，請將其關閉並手動返回原本的瀏覽器。',
+  'wallet.manualReturnStandaloneHelp':
+    '核准後請從主畫面返回 World of ClaudeCraft。如果 iOS 開啟了瀏覽器，請將其關閉並重新開啟主畫面 App。',
+  'wallet.preparingAppButton': '正在準備 {wallet}...',
+  'wallet.walletAppUnavailable': '無法準備 {wallet}。請關閉此視窗並重試。',
   'wallet.flowConnect': '選擇一個錢包。驗證會自動繼續。',
   'wallet.flowSign': '在錢包應用程式中簽署驗證訊息。無需交易或 SOL。',
   'wallet.flowVerify': '正在驗證錢包所有權...',
   'wallet.linkFailed': '錢包驗證失敗。',
   'wallet.verifyFailed': '錢包驗證失敗。',
+  'wallet.browser.eyebrow': '桌面錢包授權',
+  'wallet.browser.title': '連接 Solana 錢包',
+  'wallet.browser.linkBody': '在此瀏覽器中選擇錢包擴充功能。簽署驗證訊息後返回桌面應用程式。',
+  'wallet.browser.paymentBody': '選擇已連結至帳號的錢包，並在此瀏覽器中核准交易。',
+  'wallet.browser.extensionHelp':
+    '找不到相容的錢包擴充功能。請安裝或解鎖 Phantom、Solflare 或其他 Solana 瀏覽器錢包，然後再試一次。',
+  'wallet.browser.safety': 'World of ClaudeCraft 絕不會要求復原短語或私鑰。',
+  'wallet.browser.continueWith': '使用 {wallet} 繼續',
+  'wallet.browser.reviewTitle': '在錢包中檢視',
+  'wallet.browser.reviewBody': '按照 {wallet} 的提示操作。請保持此瀏覽器頁面開啟。',
+  'wallet.browser.completeTitle': '錢包授權完成',
+  'wallet.browser.completeBody': '現在可以返回 World of ClaudeCraft 桌面應用程式。',
+  'wallet.browser.returnButton': '返回桌面應用程式',
+  'wallet.browser.failed': '錢包授權失敗或已過期。請返回桌面應用程式並再試一次。',
+  'wallet.browser.retry': '再試一次',
   'wallet.unlinkFailed': '無法解除錢包綁定。',
   'wallet.holder': '$WOC 持有者',
   'wallet.holderTierTitle': '{tier} $WOC 持有者',
@@ -6331,6 +6377,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'apiError.body.unsupported_media_type': '不支援的請求格式。',
   'apiError.deeds.invalid_input': '輸入無效。',
   'apiError.steam.disabled': 'Steam 連結目前無法使用。',
+  'apiError.wallet.handoff_invalid': '錢包授權已過期或無法驗證。請再試一次。',
   'apiError.steam.invalid_ticket': 'Steam 無法驗證此連結請求。請在桌面應用程式中重試。',
   'apiError.steam.banned': '該 Steam 帳號無法連結。',
   'apiError.steam.already_linked': '你的帳號已連結一個 Steam 帳號。',

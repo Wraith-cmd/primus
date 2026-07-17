@@ -2897,6 +2897,43 @@
     font-size: 11px;
     line-height: 1.35;
   }
+  .cl-wallet-connect {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(160px, 220px);
+    grid-template-rows: auto auto;
+    gap: 5px 18px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px solid #6f592d;
+    background: rgb(3 9 14 / 92%);
+  }
+  .cl-wallet-connect > strong {
+    color: #f3dfaa;
+    font-family: var(--title-font);
+    font-size: 13px;
+  }
+  .cl-wallet-connect p {
+    margin: 0;
+    color: #b9c3c9;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .cl-wallet-connect button {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    width: 100%;
+    min-height: 34px;
+    border: 1px solid #4f91ba;
+    background: linear-gradient(#27556f, #163447);
+    color: #dff5ff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .cl-wallet-connect button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
   .cl-notice {
     margin: 10px 0 0;
     padding: 8px 10px;
@@ -4482,6 +4519,20 @@
     color: var(--gold-dim);
     font-weight: 600;
     white-space: nowrap;
+  }
+  button.woc-balance {
+    min-height: 28px;
+    padding: 3px 7px;
+    border: 1px solid #6f592d;
+    border-radius: 4px;
+    background: rgb(200 163 74 / 10%);
+    font: inherit;
+    cursor: var(--cursor-pointer);
+  }
+  button.woc-balance:hover,
+  button.woc-balance:focus-visible {
+    border-color: #c8a34a;
+    color: #f3dfaa;
   }
   .woc-balance.is-preview {
     color: #b8a66f;

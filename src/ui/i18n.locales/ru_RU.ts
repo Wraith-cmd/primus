@@ -37,6 +37,24 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.wocStore.armoryTitle': 'Арсенал',
   'hudChrome.wocStore.armoryBody':
     'Ограниченные облики оружия из Арсенала 1-го сезона. Общие для всей учётной записи, чисто косметические и видимые всем вокруг.',
+  'hudChrome.wocStore.wallet.title': 'Кошелёк Solana',
+  'hudChrome.wocStore.wallet.unlinked':
+    'Подключите приложение кошелька, затем один раз подпишите сообщение, чтобы привязать его публичный адрес к учётной записи WoC. Мы никогда не получаем вашу фразу восстановления или закрытый ключ.',
+  'hudChrome.wocStore.wallet.connectedUnlinked':
+    'Приложение кошелька подключено к этому браузеру, но его публичный адрес ещё не привязан к вашей учётной записи WoC.',
+  'hudChrome.wocStore.wallet.linkedDisconnected':
+    'Ваш публичный адрес привязан. Подключите этот кошелёк снова, когда захотите заплатить SOL или WOC.',
+  'hudChrome.wocStore.wallet.linkedConnected':
+    'Привязанный кошелёк подключён и готов к покупкам за SOL или WOC.',
+  'hudChrome.wocStore.wallet.mismatched':
+    'Подключён другой кошелёк. Подтвердите его, чтобы заменить привязанный адрес, или снова подключите привязанный кошелёк.',
+  'hudChrome.wocStore.wallet.connect': 'Подключить кошелёк',
+  'hudChrome.wocStore.wallet.verify': 'Подтвердить и привязать',
+  'hudChrome.wocStore.wallet.reconnect': 'Подключить кошелёк снова',
+  'hudChrome.wocStore.wallet.manage': 'Управление кошельком',
+  'wallet.bagConnect': 'Привязать кошелёк',
+  'wallet.bagLink': 'Подтвердить кошелёк',
+  'wallet.bagReconnect': 'Подключить кошелёк снова',
   'hudChrome.wocStore.collectionLine': 'Коллекция «{collection}»',
   'hudChrome.wocStore.collections.guildmark': 'Клеймо гильдии',
   'hudChrome.wocStore.collections.emberwrought': 'Закалённое углями',
@@ -1081,12 +1099,46 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Привилегии держателя активны. Подключайте приложение, когда нужно подписать или потратить.',
   'wallet.extensionHelp':
     'Чтобы кошелек появился здесь, держите активным браузерное расширение кошелька, например Solflare Wallet.',
+  'wallet.mobileAppHelp':
+    'Выберите Phantom или Solflare. Приложение кошелька запросит подтверждение. Не закрывайте игру и вернитесь в нее после завершения.',
+  'wallet.standaloneAppHelp':
+    'Подключение кошелька пока недоступно в приложении с главного экрана. Для Phantom или Solflare откройте World of ClaudeCraft в Safari или Chrome.',
+  'wallet.openAppTitle': 'Продолжить в {wallet}',
+  'wallet.openAppHelp':
+    'Откройте {wallet}, чтобы проверить этот запрос. Не закрывайте вкладку с игрой, пока открыто приложение кошелька.',
+  'wallet.openAppButton': 'Открыть {wallet}',
+  'wallet.manualReturnBrowserHelp':
+    'После подтверждения вернитесь на вкладку с игрой. Если iOS откроет другой браузер, закройте его и вручную вернитесь в исходный браузер.',
+  'wallet.manualReturnStandaloneHelp':
+    'После подтверждения вернитесь в World of ClaudeCraft с экрана «Домой». Если iOS откроет браузер, закройте его и снова откройте приложение с экрана «Домой».',
+  'wallet.preparingAppButton': 'Подготовка {wallet}...',
+  'wallet.walletAppUnavailable':
+    'Не удалось подготовить {wallet}. Закройте это окно и повторите попытку.',
   'wallet.flowConnect': 'Выберите кошелек. Подтверждение продолжится автоматически.',
   'wallet.flowSign':
     'Подпишите сообщение подтверждения в приложении кошелька. Транзакция и SOL не требуются.',
   'wallet.flowVerify': 'Подтверждение владения кошельком...',
   'wallet.linkFailed': 'Не удалось подтвердить кошелек.',
   'wallet.verifyFailed': 'Не удалось подтвердить кошелек.',
+  'wallet.browser.eyebrow': 'Авторизация кошелька для приложения',
+  'wallet.browser.title': 'Подключить кошелек Solana',
+  'wallet.browser.linkBody':
+    'Выберите расширение кошелька в этом браузере. Подпишите сообщение проверки, затем вернитесь в приложение.',
+  'wallet.browser.paymentBody':
+    'Выберите кошелек, привязанный к аккаунту, и подтвердите транзакцию в этом браузере.',
+  'wallet.browser.extensionHelp':
+    'Совместимое расширение кошелька не найдено. Установите или разблокируйте Phantom, Solflare либо другой браузерный кошелек Solana и повторите попытку.',
+  'wallet.browser.safety':
+    'World of ClaudeCraft никогда не запрашивает фразу восстановления или закрытый ключ.',
+  'wallet.browser.continueWith': 'Продолжить с {wallet}',
+  'wallet.browser.reviewTitle': 'Проверьте запрос в кошельке',
+  'wallet.browser.reviewBody': 'Следуйте подсказке {wallet}. Не закрывайте эту страницу браузера.',
+  'wallet.browser.completeTitle': 'Авторизация кошелька завершена',
+  'wallet.browser.completeBody': 'Можно вернуться в приложение World of ClaudeCraft.',
+  'wallet.browser.returnButton': 'Вернуться в приложение',
+  'wallet.browser.failed':
+    'Авторизация кошелька не удалась или истекла. Вернитесь в приложение и повторите попытку.',
+  'wallet.browser.retry': 'Повторить',
   'wallet.unlinkFailed': 'Не удалось отвязать кошелек.',
   'wallet.holder': 'держатель $WOC',
   'wallet.holderTierTitle': '{tier}: держатель $WOC',
@@ -6773,6 +6825,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'apiError.body.unsupported_media_type': 'Неподдерживаемый формат запроса.',
   'apiError.deeds.invalid_input': 'Недопустимые данные.',
   'apiError.steam.disabled': 'Привязка Steam сейчас недоступна.',
+  'apiError.wallet.handoff_invalid':
+    'Срок действия авторизации кошелька истек или ее не удалось проверить. Повторите попытку.',
   'apiError.steam.invalid_ticket':
     'Steam не смог подтвердить этот запрос на привязку. Повторите попытку из настольного приложения.',
   'apiError.steam.banned': 'Этот аккаунт Steam нельзя привязать.',

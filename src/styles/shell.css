@@ -659,6 +659,34 @@
     font-size: 11px;
     white-space: nowrap;
   }
+  .wallet-picker-disconnect {
+    justify-content: center;
+    width: 100%;
+    margin-top: 12px;
+  }
+  .wallet-picker-disconnect:hover,
+  .wallet-picker-disconnect:focus-visible {
+    color: var(--color-text-error);
+    border-color: var(--color-text-error);
+  }
+  .wallet-app-launch-button {
+    display: flex;
+    justify-content: center;
+    min-height: 48px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .wallet-app-launch-actions {
+    display: grid;
+    gap: 8px;
+  }
+  .wallet-app-launch-status {
+    min-height: 18px;
+    margin-top: 8px;
+    color: var(--color-text-muted);
+    font-size: 12px;
+    text-align: center;
+  }
 
   @media (max-width: 720px) {
     .cs-wallet {

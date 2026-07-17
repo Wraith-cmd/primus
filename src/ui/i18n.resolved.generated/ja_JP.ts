@@ -416,6 +416,18 @@ export const ja_JP: EnTranslations = {
       "armoryEyebrow": "シーズン1",
       "armoryTitle": "武器庫",
       "armoryBody": "シーズン1武器庫の限定武器スキン。アカウント共有の純粋な装飾で、周囲のプレイヤー全員に表示されます。",
+      "wallet": {
+        "title": "Solanaウォレット",
+        "unlinked": "ウォレットアプリを接続し、一度署名して公開アドレスをWoCアカウントにリンクしてください。リカバリーフレーズや秘密鍵を受け取ることはありません。",
+        "connectedUnlinked": "ウォレットアプリはこのブラウザに接続されていますが、公開アドレスはまだWoCアカウントにリンクされていません。",
+        "linkedDisconnected": "公開アドレスはリンク済みです。SOLまたはWOCで支払うときに、そのウォレットアプリを再接続してください。",
+        "linkedConnected": "リンク済みのウォレットアプリが接続され、SOLまたはWOCで購入できます。",
+        "mismatched": "別のウォレットが接続されています。認証してリンク済みアドレスを置き換えるか、リンク済みウォレットを再接続してください。",
+        "connect": "ウォレットを接続",
+        "verify": "認証してリンク",
+        "reconnect": "ウォレットを再接続",
+        "manage": "ウォレットを管理"
+      },
       "collectionLine": "{collection}コレクション",
       "collections": {
         "guildmark": "ギルドマーク",
@@ -2308,6 +2320,9 @@ export const ja_JP: EnTranslations = {
       "account_taken": "そのSteamアカウントは既に別のアカウントに連携されています。",
       "upstream": "Steamから応答がありません。しばらくしてからもう一度お試しください。"
     },
+    "wallet": {
+      "handoff_invalid": "ウォレット認証の有効期限が切れたか、確認できませんでした。もう一度お試しください。"
+    },
     "welcome": {
       "invalid_input": "入力が無効です。"
     }
@@ -4027,6 +4042,9 @@ export const ja_JP: EnTranslations = {
     "balancePreviewTitle": "接続中ウォレットの$WOC残高プレビュー",
     "balancePreviewAria": "接続中ウォレット残高プレビュー: {balance}。ウォレットを連携するとホルダー表示を認証できます。",
     "balanceAmount": "{amount} $WOC",
+    "bagConnect": "ウォレットをリンク",
+    "bagLink": "ウォレットを認証",
+    "bagReconnect": "ウォレットを再接続",
     "connected": "接続済み: {address}",
     "connectedWithBalance": "接続済み: {balance} - {address}",
     "connectedLinked": "認証済み: {address}",
@@ -4041,12 +4059,37 @@ export const ja_JP: EnTranslations = {
     "helpLinkedDisconnected": "ホルダー特典が有効です。署名や支払いが必要なときはアプリを接続してください。",
     "helpLinkedDisconnectedWithBalance": "ホルダー特典が有効です。署名や支払いが必要なときはアプリを接続してください。",
     "extensionHelp": "ここにウォレットを表示するには、Solflare Wallet などのブラウザ用ウォレット拡張機能を有効にしておいてください。",
+    "mobileAppHelp": "Phantom または Solflare を選択してください。ウォレットアプリで承認を求められます。ゲームを開いたままにし、完了後に戻ってください。",
+    "standaloneAppHelp": "ホーム画面アプリでは、まだウォレットに接続できません。Phantom または Solflare を使用するには、Safari か Chrome で World of ClaudeCraft を開いてください。",
+    "openAppTitle": "{wallet} で続行",
+    "openAppHelp": "{wallet} を開いてこのリクエストを確認してください。ウォレットアプリの使用中も、このゲームタブを開いたままにしてください。",
+    "openAppButton": "{wallet} を開く",
+    "manualReturnBrowserHelp": "承認後、このゲームタブに戻ってください。iOS で別のブラウザが開いた場合は閉じ、元のブラウザに手動で戻ってください。",
+    "manualReturnStandaloneHelp": "承認後、ホーム画面から World of ClaudeCraft に戻ってください。iOS でブラウザが開いた場合は閉じ、ホーム画面のアプリをもう一度開いてください。",
+    "preparingAppButton": "{wallet} を準備中...",
+    "walletAppUnavailable": "{wallet} を準備できませんでした。このウィンドウを閉じて、もう一度お試しください。",
     "flowConnect": "ウォレットを選択してください。認証は自動的に続行されます。",
     "flowSign": "ウォレットアプリで認証メッセージに署名してください。トランザクションや SOL は不要です。",
     "flowVerify": "ウォレット所有権を認証中...",
     "linkFailed": "ウォレット認証に失敗しました。",
     "verifyFailed": "ウォレット認証に失敗しました。",
     "unlinkFailed": "ウォレット連携を解除できませんでした。",
+    "browser": {
+      "eyebrow": "デスクトップウォレット認証",
+      "title": "Solanaウォレットを接続",
+      "linkBody": "このブラウザでウォレット拡張機能を選択してください。確認メッセージに署名した後、デスクトップアプリに戻ります。",
+      "paymentBody": "アカウントにリンクされたウォレットを選択し、このブラウザで取引を承認してください。",
+      "extensionHelp": "対応するウォレット拡張機能が見つかりません。Phantom、Solflare、または別のSolanaブラウザウォレットをインストールまたはロック解除して、再試行してください。",
+      "safety": "World of ClaudeCraftがリカバリーフレーズや秘密鍵を求めることはありません。",
+      "continueWith": "{wallet}で続行",
+      "reviewTitle": "ウォレットで確認",
+      "reviewBody": "{wallet}の指示に従ってください。このブラウザページは開いたままにしてください。",
+      "completeTitle": "ウォレット認証が完了しました",
+      "completeBody": "World of ClaudeCraftデスクトップアプリに戻れます。",
+      "returnButton": "デスクトップアプリに戻る",
+      "failed": "ウォレット認証に失敗したか期限切れです。デスクトップアプリに戻って再試行してください。",
+      "retry": "再試行"
+    },
     "holder": "$WOCホルダー",
     "holderTierTitle": "{tier} $WOCホルダー",
     "holderTiers": {

@@ -416,6 +416,18 @@ export const da_DK: EnTranslations = {
       "armoryEyebrow": "Sæson 1",
       "armoryTitle": "Våbenhuset",
       "armoryBody": "Begrænsede våbenskins fra sæson 1-våbenhuset. De gælder for hele kontoen, er rent kosmetiske og vises for alle omkring dig.",
+      "wallet": {
+        "title": "Solana wallet",
+        "unlinked": "Connect a wallet app, then sign once to link its public address to your WoC account. We never receive your recovery phrase or private key.",
+        "connectedUnlinked": "The wallet app is connected to this browser, but its public address is not linked to your WoC account yet.",
+        "linkedDisconnected": "Your public address is linked. Reconnect that wallet app when you want to pay with SOL or WOC.",
+        "linkedConnected": "Your linked wallet app is connected and ready for SOL or WOC purchases.",
+        "mismatched": "A different wallet is connected. Verify it to replace the linked address, or reconnect the linked wallet.",
+        "connect": "Connect wallet",
+        "verify": "Verify and link",
+        "reconnect": "Reconnect wallet",
+        "manage": "Manage wallet"
+      },
       "collectionLine": "{collection}-samlingen",
       "collections": {
         "guildmark": "Laugsmærke",
@@ -2308,6 +2320,9 @@ export const da_DK: EnTranslations = {
       "account_taken": "Den Steam-konto er allerede knyttet til en anden konto.",
       "upstream": "Steam svarede ikke. Prøv igen om et øjeblik."
     },
+    "wallet": {
+      "handoff_invalid": "That wallet authorization expired or could not be verified. Try again."
+    },
     "welcome": {
       "invalid_input": "Ugyldig indtastning."
     }
@@ -4027,6 +4042,9 @@ export const da_DK: EnTranslations = {
     "balancePreviewTitle": "Forhåndsvisning af forbundet pungs $WOC-saldo",
     "balancePreviewAria": "Forhåndsvisning af forbundet pungs saldo: {balance}. Tilknyt pungen for at verificere ejer-pynt.",
     "balanceAmount": "{amount} $WOC",
+    "bagConnect": "Link wallet",
+    "bagLink": "Verify wallet",
+    "bagReconnect": "Reconnect wallet",
     "connected": "Forbundet: {address}",
     "connectedWithBalance": "Forbundet: {balance} - {address}",
     "connectedLinked": "Verificeret: {address}",
@@ -4041,12 +4059,37 @@ export const da_DK: EnTranslations = {
     "helpLinkedDisconnected": "Ejerfordele er aktive. Forbind appen, når du har brug for at underskrive eller bruge midler.",
     "helpLinkedDisconnectedWithBalance": "Ejerfordele er aktive. Forbind appen, når du har brug for at underskrive eller bruge midler.",
     "extensionHelp": "For at se en pung her skal du holde en browser-pungudvidelse som Solflare Wallet aktiv.",
+    "mobileAppHelp": "Choose Phantom or Solflare. Your wallet app will ask for approval. Keep this game open and return to it when finished.",
+    "standaloneAppHelp": "Wallet connections are not available in the Home Screen app yet. Open World of ClaudeCraft in Safari or Chrome to use Phantom or Solflare.",
+    "openAppTitle": "Continue in {wallet}",
+    "openAppHelp": "Open {wallet} to review this request. Keep this game tab open while the wallet app is active.",
+    "openAppButton": "Open {wallet}",
+    "manualReturnBrowserHelp": "After approval, return to this game tab. If iOS opens another browser, close it and return to the original browser manually.",
+    "manualReturnStandaloneHelp": "After approval, return to World of ClaudeCraft from your Home Screen. If iOS opens a browser, close it and reopen the Home Screen app manually.",
+    "preparingAppButton": "Preparing {wallet}...",
+    "walletAppUnavailable": "{wallet} could not be prepared. Close this window and try again.",
     "flowConnect": "Vælg en pung. Verificeringen fortsætter automatisk.",
     "flowSign": "Underskriv verificeringsbeskeden i din pung-app. Ingen transaktion eller SOL kræves.",
     "flowVerify": "Verificerer ejerskab af pung...",
     "linkFailed": "Verificering af pung mislykkedes.",
     "verifyFailed": "Verificering af pung mislykkedes.",
     "unlinkFailed": "Kunne ikke frakoble pungen.",
+    "browser": {
+      "eyebrow": "Desktop wallet authorization",
+      "title": "Connect a Solana Wallet",
+      "linkBody": "Choose a wallet extension in this browser. You will sign a verification message, then return to the desktop app.",
+      "paymentBody": "Choose the wallet linked to your account and approve the transaction in this browser.",
+      "extensionHelp": "No compatible wallet extension was found. Install or unlock Phantom, Solflare, or another Solana browser wallet, then retry.",
+      "safety": "World of ClaudeCraft never asks for your recovery phrase or private key.",
+      "continueWith": "Continue with {wallet}",
+      "reviewTitle": "Review in your wallet",
+      "reviewBody": "Follow the prompt from {wallet}. Keep this browser page open.",
+      "completeTitle": "Wallet authorization complete",
+      "completeBody": "You can return to the World of ClaudeCraft desktop app.",
+      "returnButton": "Return to desktop app",
+      "failed": "Wallet authorization failed or expired. Return to the desktop app and try again.",
+      "retry": "Retry"
+    },
     "holder": "$WOC-ejer",
     "holderTierTitle": "{tier} $WOC-ejer",
     "holderTiers": {

@@ -416,6 +416,18 @@ export const zh_CN: EnTranslations = {
       "armoryEyebrow": "第一赛季",
       "armoryTitle": "兵器库",
       "armoryBody": "第一赛季兵器库限定武器外观。全账号通用，纯装饰性，周围所有玩家都能看到。",
+      "wallet": {
+        "title": "Solana 钱包",
+        "unlinked": "连接钱包应用，然后签名一次，将其公开地址绑定到你的 WoC 账号。我们绝不会获取你的恢复短语或私钥。",
+        "connectedUnlinked": "钱包应用已连接到此浏览器，但其公开地址尚未绑定到你的 WoC 账号。",
+        "linkedDisconnected": "你的公开地址已绑定。需要用 SOL 或 WOC 支付时，请重新连接该钱包应用。",
+        "linkedConnected": "已绑定的钱包应用已连接，可以使用 SOL 或 WOC 购买。",
+        "mismatched": "当前连接的是另一个钱包。验证它即可替换已绑定的地址，或重新连接原先绑定的钱包。",
+        "connect": "连接钱包",
+        "verify": "验证并绑定",
+        "reconnect": "重新连接钱包",
+        "manage": "管理钱包"
+      },
       "collectionLine": "{collection}系列",
       "collections": {
         "guildmark": "公会印记",
@@ -2308,6 +2320,9 @@ export const zh_CN: EnTranslations = {
       "account_taken": "该 Steam 账号已关联到另一个账号。",
       "upstream": "Steam 未响应。请稍后重试。"
     },
+    "wallet": {
+      "handoff_invalid": "钱包授权已过期或无法验证。请重试。"
+    },
     "welcome": {
       "invalid_input": "输入无效。"
     }
@@ -4027,6 +4042,9 @@ export const zh_CN: EnTranslations = {
     "balancePreviewTitle": "已连接钱包的 $WOC 余额预览",
     "balancePreviewAria": "已连接钱包余额预览：{balance}。绑定钱包即可验证持有者标识。",
     "balanceAmount": "{amount} $WOC",
+    "bagConnect": "绑定钱包",
+    "bagLink": "验证钱包",
+    "bagReconnect": "重新连接钱包",
     "connected": "已连接：{address}",
     "connectedWithBalance": "已连接：{balance} - {address}",
     "connectedLinked": "已验证：{address}",
@@ -4041,12 +4059,37 @@ export const zh_CN: EnTranslations = {
     "helpLinkedDisconnected": "持有者特权已启用。需要签名或消费时请连接应用。",
     "helpLinkedDisconnectedWithBalance": "持有者特权已启用。需要签名或消费时请连接应用。",
     "extensionHelp": "若要在此处看到钱包，请保持 Solflare Wallet 等浏览器钱包扩展处于启用状态。",
+    "mobileAppHelp": "选择 Phantom 或 Solflare。钱包应用会请求批准。请保持游戏打开，完成后返回游戏。",
+    "standaloneAppHelp": "主屏幕应用暂不支持连接钱包。若要使用 Phantom 或 Solflare，请在 Safari 或 Chrome 中打开 World of ClaudeCraft。",
+    "openAppTitle": "在 {wallet} 中继续",
+    "openAppHelp": "打开 {wallet} 查看此请求。钱包应用处于活动状态时，请保持此游戏标签页打开。",
+    "openAppButton": "打开 {wallet}",
+    "manualReturnBrowserHelp": "批准后请返回此游戏标签页。如果 iOS 打开了其他浏览器，请将其关闭并手动返回原浏览器。",
+    "manualReturnStandaloneHelp": "批准后请从主屏幕返回 World of ClaudeCraft。如果 iOS 打开了浏览器，请将其关闭并重新打开主屏幕应用。",
+    "preparingAppButton": "正在准备 {wallet}...",
+    "walletAppUnavailable": "无法准备 {wallet}。请关闭此窗口并重试。",
     "flowConnect": "选择一个钱包。验证会自动继续。",
     "flowSign": "在钱包应用中签署验证消息。无需交易或 SOL。",
     "flowVerify": "正在验证钱包所有权...",
     "linkFailed": "钱包验证失败。",
     "verifyFailed": "钱包验证失败。",
     "unlinkFailed": "无法解除钱包绑定。",
+    "browser": {
+      "eyebrow": "桌面钱包授权",
+      "title": "连接 Solana 钱包",
+      "linkBody": "在此浏览器中选择钱包扩展。签署验证消息后返回桌面应用。",
+      "paymentBody": "选择已关联到账号的钱包，并在此浏览器中批准交易。",
+      "extensionHelp": "未找到兼容的钱包扩展。请安装或解锁 Phantom、Solflare 或其他 Solana 浏览器钱包，然后重试。",
+      "safety": "World of ClaudeCraft 绝不会索要助记词或私钥。",
+      "continueWith": "使用 {wallet} 继续",
+      "reviewTitle": "在钱包中查看",
+      "reviewBody": "按照 {wallet} 中的提示操作。请保持此浏览器页面打开。",
+      "completeTitle": "钱包授权完成",
+      "completeBody": "现在可以返回 World of ClaudeCraft 桌面应用。",
+      "returnButton": "返回桌面应用",
+      "failed": "钱包授权失败或已过期。请返回桌面应用并重试。",
+      "retry": "重试"
+    },
     "holder": "$WOC 持有者",
     "holderTierTitle": "{tier} $WOC 持有者",
     "holderTiers": {

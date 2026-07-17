@@ -410,6 +410,9 @@ import { ValeCupWindow, vcupNationName } from './vale_cup_window';
 import { nextVoicedYell, type VoicedYellState, voicedYellGain } from './voice_events';
 import {
   onWalletUiChange,
+  verifiedWocBalance,
+  walletConnectionView,
+  walletDisplayAvailable,
   walletUiEnabled,
   wocBalance,
   wocBalanceVerified,
@@ -1548,6 +1551,7 @@ export class Hud {
     onWalletUiChange(() => {
       if ($('#bags').style.display !== 'none') this.renderBags();
       this.playerCard.refresh();
+      this.claudiumWindow.onWalletChanged();
     });
     $('#pf-name').textContent = sim.player.name;
     this.drawPlayerFramePortrait();
@@ -3317,6 +3321,7 @@ export class Hud {
     wocBalanceHtml: () => this.wocBalanceHtml(),
     claudiumLauncherHtml: () => this.claudiumLauncherHtml(),
     openClaudium: () => this.toggleClaudium(),
+    openWallet: () => window.dispatchEvent(new CustomEvent('woc:wallet-verify')),
     hideTooltip: () => this.hideTooltip(),
     consumePeek: () => this.peekGuard.consume(),
     cancelPetFeed: () => this.cancelPetFeed(),
@@ -3722,6 +3727,10 @@ export class Hud {
       return snapshot;
     },
     buy: (rail, sku) => this.claudiumHooks?.buy(rail, sku) ?? Promise.resolve(),
+    onWalletConnect: () => {
+      window.dispatchEvent(new CustomEvent('woc:wallet-verify'));
+    },
+    walletState: () => walletConnectionView(),
     ...this.windowFocus('#claudium-window'),
     onVisibilityChange: () => this.syncAnyWindowOpenState(),
   });
@@ -3846,8 +3855,17 @@ export class Hud {
   // account-linked wallet and may drive public holder claims elsewhere.
   private wocBalanceHtml(): string {
     if (!walletUiEnabled()) return '';
+    const state = walletConnectionView();
     const bal = wocBalance();
-    if (bal === null) return '';
+    if (bal === null) {
+      const label =
+        state.kind === 'linked_disconnected'
+          ? t('wallet.bagReconnect')
+          : state.kind === 'connected_unlinked' || state.kind === 'mismatched'
+            ? t('wallet.bagLink')
+            : t('wallet.bagConnect');
+      return `<button type="button" class="woc-balance woc-wallet-action" data-wallet-action aria-label="${esc(label)}"><span class="woc-coin" aria-hidden="true"></span>${esc(label)}</button>`;
+    }
     const amount = formatNumber(bal, { maximumFractionDigits: 2 });
     const balance = t('wallet.balanceAmount', { amount });
     const verified = wocBalanceVerified();
@@ -3855,7 +3873,8 @@ export class Hud {
     const aria = verified
       ? t('wallet.balanceAria', { balance })
       : t('wallet.balancePreviewAria', { balance });
-    return `<span class="woc-balance ${verified ? 'is-verified' : 'is-preview'}" title="${esc(title)}" aria-label="${esc(aria)}"><span class="woc-coin" aria-hidden="true"></span>${esc(balance)}</span>`;
+    const tag = verified ? 'span' : 'button type="button" data-wallet-action';
+    return `<${tag} class="woc-balance ${verified ? 'is-verified' : 'is-preview'}" title="${esc(title)}" aria-label="${esc(aria)}"><span class="woc-coin" aria-hidden="true"></span>${esc(balance)}</${verified ? 'span' : 'button'}>`;
   }
 
   private claudiumLauncherHtml(): string {

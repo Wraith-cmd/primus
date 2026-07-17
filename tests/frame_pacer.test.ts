@@ -1,11 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { FramePacer, pacedFrameRateFor } from '../src/game/frame_pacer';
+import {
+  FRAME_PACER_CALIBRATION_CALLBACKS,
+  FramePacer,
+  pacedFrameRateFor,
+} from '../src/game/frame_pacer';
 
 function stepAtRate(
   pacer: FramePacer,
   sourceFps: number,
   callbacks: number,
   startMs = 0,
+  previousFrameWorkMs?: number,
 ): { nowMs: number; rendered: number; maxConsecutiveSkips: number } {
   let nowMs = startMs;
   let rendered = 0;
@@ -14,7 +19,7 @@ function stepAtRate(
   const intervalMs = 1000 / sourceFps;
   for (let i = 0; i < callbacks; i++) {
     nowMs += intervalMs;
-    if (pacer.step(nowMs).shouldRun) {
+    if (pacer.step(nowMs, previousFrameWorkMs).shouldRun) {
       rendered++;
       consecutiveSkips = 0;
     } else {
@@ -30,20 +35,61 @@ function stepWithMissedVsyncWork(
   panelFps: number,
   callbacks: number,
   startMs: number,
-): { nowMs: number; rendered: number; elapsedMs: number } {
+  runIntervalMultiplier = 2,
+  previousFrameWorkMs?: number,
+): {
+  nowMs: number;
+  rendered: number;
+  elapsedMs: number;
+  maxConsecutiveSkips: number;
+} {
   let nowMs = startMs;
   let rendered = 0;
+  let consecutiveSkips = 0;
+  let maxConsecutiveSkips = 0;
   let previousFrameRan = false;
   const panelIntervalMs = 1000 / panelFps;
 
   for (let i = 0; i < callbacks; i++) {
-    nowMs += panelIntervalMs * (previousFrameRan ? 2 : 1);
-    const decision = pacer.step(nowMs);
+    nowMs += panelIntervalMs * (previousFrameRan ? runIntervalMultiplier : 1);
+    const decision = pacer.step(nowMs, previousFrameWorkMs);
     previousFrameRan = decision.shouldRun;
-    if (decision.shouldRun) rendered++;
+    if (decision.shouldRun) {
+      rendered++;
+      consecutiveSkips = 0;
+    } else {
+      consecutiveSkips++;
+      maxConsecutiveSkips = Math.max(maxConsecutiveSkips, consecutiveSkips);
+    }
   }
 
-  return { nowMs, rendered, elapsedMs: nowMs - startMs };
+  return { nowMs, rendered, elapsedMs: nowMs - startMs, maxConsecutiveSkips };
+}
+
+function observeAtRate(pacer: FramePacer, sourceFps: number, startMs = 0): number {
+  let nowMs = startMs;
+  for (let i = 0; i < FRAME_PACER_CALIBRATION_CALLBACKS; i++) {
+    nowMs += 1000 / sourceFps;
+    pacer.observe(nowMs);
+    if (pacer.snapshot().estimatedRefreshFps > 0) break;
+  }
+  return nowMs;
+}
+
+function steadyCallbackGaps(
+  pacer: FramePacer,
+  sourceFps: number,
+  callbacks: number,
+  startMs: number,
+) {
+  const intervalMs = 1000 / sourceFps;
+  const executed: number[] = [];
+  let nowMs = startMs;
+  for (let i = 0; i < callbacks; i++) {
+    nowMs += intervalMs;
+    if (pacer.step(nowMs).shouldRun) executed.push(i);
+  }
+  return executed.slice(1).map((index, i) => index - executed[i]);
 }
 
 describe('mobile frame pacer', () => {
@@ -53,6 +99,32 @@ describe('mobile frame pacer', () => {
     expect(pacedFrameRateFor(120, 60)).toBeCloseTo(60);
     expect(pacedFrameRateFor(144, 60)).toBeCloseTo(48);
     expect(pacedFrameRateFor(165, 60)).toBeCloseTo(55);
+  });
+
+  it('keeps executed frames on exact whole-panel-divisor spacing', () => {
+    for (const [sourceFps, expectedGap] of [
+      [90, 2],
+      [120, 2],
+      [144, 3],
+      [360, 6],
+    ] as const) {
+      const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+      const calibratedAt = observeAtRate(pacer, sourceFps);
+      const warmup = stepAtRate(pacer, sourceFps, 60, calibratedAt);
+      const gaps = steadyCallbackGaps(pacer, sourceFps, 90, warmup.nowMs);
+      expect(new Set(gaps), `${sourceFps} Hz cadence`).toEqual(new Set([expectedGap]));
+    }
+  });
+
+  it('caps future high-refresh touch displays instead of rejecting sub-4ms callbacks', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    const calibratedAt = observeAtRate(pacer, 360);
+    const warmup = stepAtRate(pacer, 360, 120, calibratedAt);
+    const steady = stepAtRate(pacer, 360, 360, warmup.nowMs);
+
+    expect(steady.rendered).toBeGreaterThanOrEqual(59);
+    expect(steady.rendered).toBeLessThanOrEqual(61);
+    expect(pacer.snapshot().targetFps).toBeCloseTo(60, 0);
   });
 
   it('renders every callback when pacing is disabled', () => {
@@ -128,6 +200,141 @@ describe('mobile frame pacer', () => {
     expect(snapshot.intentionallyPaced).toBe(false);
   });
 
+  it('does not repeatedly recalibrate a trusted panel when work is below the target', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    const calibratedAt = observeAtRate(pacer, 120);
+    const workloadLimited = stepWithMissedVsyncWork(pacer, 120, 1_200, calibratedAt, 4);
+    const recovered = stepAtRate(pacer, 120, 90, workloadLimited.nowMs);
+    const recoveredGaps = steadyCallbackGaps(pacer, 120, 120, recovered.nowMs);
+
+    expect(1_200 - workloadLimited.rendered).toBeLessThanOrEqual(10);
+    expect(workloadLimited.maxConsecutiveSkips).toBeLessThanOrEqual(1);
+    expect(pacer.snapshot().estimatedRefreshFps).toBeCloseTo(120, 0);
+    expect(pacer.snapshot().targetFps).toBeCloseTo(60, 0);
+    expect(pacer.snapshot().intentionallyPaced).toBe(true);
+    expect(new Set(recoveredGaps)).toEqual(new Set([2]));
+  });
+
+  it('preserves the trusted panel when measured work explains missed source callbacks', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    const calibratedAt = observeAtRate(pacer, 144);
+    const workloadLimited = stepWithMissedVsyncWork(pacer, 144, 1_200, calibratedAt, 2, 7);
+    const snapshot = pacer.snapshot();
+
+    expect(workloadLimited.maxConsecutiveSkips).toBeLessThanOrEqual(2);
+    expect(snapshot.estimatedRefreshFps).toBeCloseTo(144, 0);
+    expect(snapshot.targetFps).toBeCloseTo(48, 0);
+  });
+
+  it.each([
+    { workloadMultiplier: 4 / 3, cappedFps: 90, frameWorkMs: 8.3, targetFps: 45, expectedGap: 2 },
+    { workloadMultiplier: 4, cappedFps: 30, frameWorkMs: 8.3, targetFps: 30, expectedGap: 1 },
+  ])(
+    'promotes a real $cappedFps Hz cap after learning the same workload-limited cadence',
+    ({ workloadMultiplier, cappedFps, frameWorkMs, targetFps, expectedGap }) => {
+      const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+      const calibratedAt = observeAtRate(pacer, 120);
+      const workloadLimited = stepWithMissedVsyncWork(
+        pacer,
+        120,
+        1_200,
+        calibratedAt,
+        workloadMultiplier,
+      );
+
+      expect(pacer.snapshot().estimatedRefreshFps).toBeCloseTo(120, 0);
+      expect(pacer.snapshot().targetFps).toBeCloseTo(60, 0);
+      expect(workloadLimited.maxConsecutiveSkips).toBeLessThanOrEqual(1);
+
+      const transition = stepAtRate(pacer, cappedFps, 180, workloadLimited.nowMs, frameWorkMs);
+      const gaps = steadyCallbackGaps(pacer, cappedFps, 180, transition.nowMs);
+      const snapshot = pacer.snapshot();
+
+      expect(snapshot.estimatedRefreshFps).toBeCloseTo(cappedFps, 0);
+      expect(snapshot.targetFps).toBeCloseTo(targetFps, 0);
+      expect(new Set(gaps)).toEqual(new Set([expectedGap]));
+    },
+  );
+
+  it('requires uninterrupted frame-work headroom before promoting a real callback cap', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    const calibratedAt = observeAtRate(pacer, 120);
+    const workloadLimited = stepWithMissedVsyncWork(pacer, 120, 1_200, calibratedAt, 4);
+    const partialHeadroom = stepAtRate(pacer, 30, 7, workloadLimited.nowMs, 8.3);
+    const stalledAt = partialHeadroom.nowMs + 75;
+
+    expect(pacer.step(stalledAt, 8.3).shouldRun).toBe(true);
+    const afterOneFreshSample = stepAtRate(pacer, 30, 1, stalledAt, 8.3);
+    expect(pacer.snapshot().estimatedRefreshFps).toBeCloseTo(120, 0);
+
+    const completedHeadroom = stepAtRate(pacer, 30, 7, afterOneFreshSample.nowMs, 8.3);
+    const snapshot = pacer.snapshot();
+
+    expect(completedHeadroom.maxConsecutiveSkips).toBe(0);
+    expect(snapshot.estimatedRefreshFps).toBeCloseTo(30, 0);
+    expect(snapshot.targetFps).toBeCloseTo(30, 0);
+  });
+
+  it('tolerates a delayed loading callback and still establishes trusted calibration', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    let nowMs = 0;
+    for (let i = 0; i < FRAME_PACER_CALIBRATION_CALLBACKS; i++) {
+      nowMs += i === 4 ? 75 : 1000 / 60;
+      pacer.observe(nowMs);
+    }
+
+    expect(pacer.snapshot().estimatedRefreshFps).toBeCloseTo(60, 0);
+    expect(pacer.snapshot().targetFps).toBeCloseTo(60, 0);
+  });
+
+  it('finishes trusted loading calibration after the sampler is suspended', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    let nowMs = 0;
+    nowMs += 1000 / 144;
+    pacer.observe(nowMs);
+    nowMs += 1000 / 144;
+    pacer.observe(nowMs);
+    nowMs += 1_000;
+    pacer.observe(nowMs);
+
+    for (let i = 0; i < FRAME_PACER_CALIBRATION_CALLBACKS; i++) {
+      nowMs += 1000 / 144;
+      pacer.observe(nowMs);
+      if (pacer.snapshot().estimatedRefreshFps > 0) break;
+    }
+
+    const snapshot = pacer.snapshot();
+    const gaps = steadyCallbackGaps(pacer, 144, 45, nowMs);
+    expect(snapshot.estimatedRefreshFps).toBeCloseTo(144, 0);
+    expect(snapshot.targetFps).toBeCloseTo(48, 0);
+    expect(new Set(gaps)).toEqual(new Set([3]));
+  });
+
+  it.each([
+    { interruption: 'delayed callback', gapMs: 75 },
+    { interruption: 'suspended callback', gapMs: 1_000 },
+  ])('retries first-time touch calibration after a $interruption', ({ gapMs }) => {
+    const pacer = new FramePacer({ enabled: false, maxFps: 60 });
+    const desktop = stepAtRate(pacer, 120, 20);
+    pacer.setEnabled(true);
+
+    let nowMs = desktop.nowMs + 1000 / 120;
+    pacer.step(nowMs);
+    nowMs += gapMs;
+    const interrupted = pacer.step(nowMs);
+    expect(interrupted.shouldRun).toBe(true);
+
+    const calibration = stepAtRate(pacer, 120, 40, nowMs);
+    const trusted = pacer.snapshot();
+    expect(trusted.estimatedRefreshFps).toBeCloseTo(120, 0);
+    expect(trusted.targetFps).toBeCloseTo(60, 0);
+    expect(trusted.intentionallyPaced).toBe(true);
+
+    const workloadLimited = stepWithMissedVsyncWork(pacer, 120, 600, calibration.nowMs, 4);
+    expect(600 - workloadLimited.rendered).toBeLessThanOrEqual(10);
+    expect(workloadLimited.maxConsecutiveSkips).toBeLessThanOrEqual(1);
+  });
+
   it('carries timing remainder instead of drifting under callback jitter', () => {
     const pacer = new FramePacer({ enabled: true, maxFps: 60 });
     const jitterMs = [7.7, 8.8, 8.1, 8.6, 8.2, 8.5];
@@ -183,6 +390,68 @@ describe('mobile frame pacer', () => {
     expect(snapshot.targetFps).toBeCloseTo(60, 0);
   });
 
+  it('recalibrates upward when gameplay raises a trusted 60 Hz loading cadence to 120 Hz', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    let nowMs = 0;
+    for (let i = 0; i < FRAME_PACER_CALIBRATION_CALLBACKS; i++) {
+      nowMs += 1000 / 60;
+      pacer.observe(nowMs);
+    }
+
+    const transition = stepAtRate(pacer, 120, 90, nowMs);
+    const steady = stepAtRate(pacer, 120, 120, transition.nowMs);
+    const snapshot = pacer.snapshot();
+
+    expect(transition.maxConsecutiveSkips).toBeLessThanOrEqual(1);
+    expect(steady.rendered).toBeGreaterThanOrEqual(59);
+    expect(steady.rendered).toBeLessThanOrEqual(61);
+    expect(snapshot.estimatedRefreshFps).toBeCloseTo(120, 0);
+    expect(snapshot.targetFps).toBeCloseTo(60, 0);
+    expect(snapshot.intentionallyPaced).toBe(true);
+  });
+
+  it('recalibrates when a trusted 30 Hz low-power cadence returns to 120 Hz', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    let nowMs = 0;
+    for (let i = 0; i < FRAME_PACER_CALIBRATION_CALLBACKS; i++) {
+      nowMs += 1000 / 30;
+      pacer.observe(nowMs);
+    }
+
+    const transition = stepAtRate(pacer, 120, 90, nowMs);
+    const steady = stepAtRate(pacer, 120, 120, transition.nowMs);
+    const snapshot = pacer.snapshot();
+
+    expect(transition.maxConsecutiveSkips).toBeLessThanOrEqual(1);
+    expect(steady.rendered).toBeGreaterThanOrEqual(59);
+    expect(steady.rendered).toBeLessThanOrEqual(61);
+    expect(snapshot.estimatedRefreshFps).toBeCloseTo(120, 0);
+    expect(snapshot.targetFps).toBeCloseTo(60, 0);
+    expect(snapshot.intentionallyPaced).toBe(true);
+  });
+
+  it.each([
+    { fromFps: 90, toFps: 80, targetFps: 40, expectedGap: 2 },
+    { fromFps: 90, toFps: 48, targetFps: 48, expectedGap: 1 },
+    { fromFps: 144, toFps: 132, targetFps: 44, expectedGap: 3 },
+    { fromFps: 360, toFps: 320, targetFps: 320 / 6, expectedGap: 6 },
+  ])(
+    'revalidates a nearby $fromFps Hz to $toFps Hz transition',
+    ({ fromFps, toFps, targetFps, expectedGap }) => {
+      const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+      const calibratedAt = observeAtRate(pacer, fromFps);
+      const sourceSteady = stepAtRate(pacer, fromFps, 60, calibratedAt);
+      const transition = stepAtRate(pacer, toFps, 180, sourceSteady.nowMs);
+      const warmup = stepAtRate(pacer, toFps, 120, transition.nowMs);
+      const gaps = steadyCallbackGaps(pacer, toFps, 180, warmup.nowMs);
+      const snapshot = pacer.snapshot();
+
+      expect(snapshot.estimatedRefreshFps).toBeCloseTo(toFps, 0);
+      expect(snapshot.targetFps).toBeCloseTo(targetFps, 0);
+      expect(new Set(gaps)).toEqual(new Set([expectedGap]));
+    },
+  );
+
   it('revalidates a trusted high refresh rate after a sustained panel drop', () => {
     const pacer = new FramePacer({ enabled: true, maxFps: 60 });
     let nowMs = 0;
@@ -235,9 +504,31 @@ describe('mobile frame pacer', () => {
     expect(snapshot.intentionallyPaced).toBe(false);
   });
 
+  it('revalidates fresh callback samples after a panel change during suspension', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    const calibratedAt = observeAtRate(pacer, 90);
+    const sourceSteady = stepAtRate(pacer, 90, 60, calibratedAt);
+    const resumedAt = sourceSteady.nowMs + 1_000;
+
+    expect(pacer.step(resumedAt).shouldRun).toBe(true);
+    const freshSamples = stepAtRate(pacer, 60, 7, resumedAt);
+    expect(freshSamples.rendered).toBe(7);
+
+    const transition = stepAtRate(pacer, 60, 90, freshSamples.nowMs);
+    const steady = stepAtRate(pacer, 60, 60, transition.nowMs);
+    const snapshot = pacer.snapshot();
+
+    expect(transition.maxConsecutiveSkips).toBeLessThanOrEqual(2);
+    expect(steady.rendered).toBe(60);
+    expect(snapshot.estimatedRefreshFps).toBeCloseTo(60, 0);
+    expect(snapshot.targetFps).toBeCloseTo(60, 0);
+    expect(snapshot.intentionallyPaced).toBe(false);
+  });
+
   it('renders immediately and preserves trusted calibration after a suspended-tab gap', () => {
     const pacer = new FramePacer({ enabled: true, maxFps: 60 });
-    const warmup = stepAtRate(pacer, 120, 30);
+    const calibratedAt = observeAtRate(pacer, 120);
+    const warmup = stepAtRate(pacer, 120, 30, calibratedAt);
 
     const resumed = pacer.step(warmup.nowMs + 1000);
 

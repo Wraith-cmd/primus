@@ -179,6 +179,7 @@ export class RenderBudgetGovernor {
   private frameMsEma = 16.7;
   private submitMsEma = 0;
   private externalFrameCap = false;
+  private intentionalFramePacing = false;
   private stallPressure = 0;
   private recentSubmitStalls = 0;
   private lastSubmitStallMs = 0;
@@ -211,6 +212,7 @@ export class RenderBudgetGovernor {
     this.frameMsEma = 16.7;
     this.submitMsEma = 0;
     this.externalFrameCap = false;
+    this.intentionalFramePacing = false;
     this.stallPressure = 0;
     this.recentSubmitStalls = 0;
     this.lastSubmitStallMs = 0;
@@ -250,10 +252,17 @@ export class RenderBudgetGovernor {
     const workMs = Math.min(250, Math.max(0, sample.workMs ?? totalMs));
     const rawSubmitMs = Math.max(0, sample.submitMs);
     const submitMs = Math.min(250, rawSubmitMs);
+    const intentionalFramePacing = sample.intentionalFramePacing === true;
     // Pacing stretches wall-clock intervals without adding work. Use the measured
     // cost of the complete executed frame so non-render overruns remain visible.
-    const frameMs = sample.intentionalFramePacing ? workMs : cadenceMs;
+    const frameMs = intentionalFramePacing ? workMs : cadenceMs;
     const frameCost = Math.max(frameMs, totalMs);
+    if (intentionalFramePacing && !this.intentionalFramePacing && this.externalFrameCap) {
+      // Discard cadence-only history when an identified external cap is replaced
+      // by deliberate pacing. Current render and whole-frame work still apply.
+      this.frameMsEma = Math.min(this.frameMsEma, frameCost);
+    }
+    this.intentionalFramePacing = intentionalFramePacing;
     this.frameMsEma += (frameCost - this.frameMsEma) * 0.08;
     this.submitMsEma += (submitMs - this.submitMsEma) * 0.12;
     this.stallPressure = Math.max(
@@ -286,7 +295,7 @@ export class RenderBudgetGovernor {
     const rawFramePressure = Math.max(
       positiveRatio(this.frameMsEma, this.budget.dropFrameMs),
       positiveRatio(totalMs, this.budget.dropFrameMs),
-      sample.intentionalFramePacing ? positiveRatio(frameMs, this.budget.dropFrameMs) : 0,
+      intentionalFramePacing ? positiveRatio(frameMs, this.budget.dropFrameMs) : 0,
     );
     const submitPressure = Math.max(
       positiveRatio(this.submitMsEma, Math.max(8, this.budget.dropFrameMs * 0.58)),
@@ -307,7 +316,7 @@ export class RenderBudgetGovernor {
       drawPressure < 1 &&
       grassPressure < 1;
     this.externalFrameCap =
-      !sample.intentionalFramePacing &&
+      !intentionalFramePacing &&
       rawFramePressure >= 1 &&
       externalCadenceMs >= EXTERNAL_FRAME_CAP_MIN_MS &&
       externalCadenceMs <= EXTERNAL_FRAME_CAP_MAX_MS &&

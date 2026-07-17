@@ -5,6 +5,10 @@ const mainTs = readFileSync(new URL('../src/main.ts', import.meta.url), 'utf8').
   /\r\n/g,
   '\n',
 );
+const rendererTs = readFileSync(
+  new URL('../src/render/renderer.ts', import.meta.url),
+  'utf8',
+).replace(/\r\n/g, '\n');
 const frameStart = mainTs.indexOf('  function frame(now: number): void {');
 const frameEnd = mainTs.indexOf('  const controller = {', frameStart);
 const frameLoop = mainTs.slice(frameStart, frameEnd);
@@ -14,7 +18,7 @@ describe('main-loop frame pacing contract', () => {
     expect(frameStart).toBeGreaterThan(-1);
     expect(frameEnd).toBeGreaterThan(frameStart);
     expect(frameLoop).toMatch(
-      /const pacing = framePacer\.step\(now\);\s*if \(!pacing\.shouldRun\) return;\s*const frameWorkStartMs = performance\.now\(\);\s*let frameDt = \(now - last\) \/ 1000;\s*last = now;/,
+      /const pacing = framePacer\.step\(now, previousFrameWorkMs\);\s*if \(!pacing\.shouldRun\) return;\s*const frameWorkStartMs = performance\.now\(\);\s*let frameDt = \(now - last\) \/ 1000;\s*last = now;/,
     );
     expect(frameLoop.indexOf('if (!pacing.shouldRun) return;')).toBeLessThan(
       frameLoop.indexOf("perf.trace('input.updateTouchLook'"),
@@ -28,9 +32,29 @@ describe('main-loop frame pacing contract', () => {
     expect(frameLoop.match(/pacing\.intentionallyPaced,\s*previousFrameWorkMs,/g)).toHaveLength(2);
     expect(
       frameLoop.match(
-        /perf\.time\('hud',[\s\S]*?perf\.tick\(now\);\s*previousFrameWorkMs = performance\.now\(\) - frameWorkStartMs;/g,
+        /perf\.time\('hud',[\s\S]*?perf\.tick\(now\);\s*previousFrameWorkMs = performance\.now\(\) - frameWorkStartMs;\s*markFirstRenderedFrame\(\);/g,
       ),
     ).toHaveLength(2);
+  });
+
+  it('forwards pacing and full-frame work through Renderer into the governor', () => {
+    const syncStart = rendererTs.indexOf('  sync(\n');
+    const syncEnd = rendererTs.indexOf('    this.viewportPollTimer += dt;', syncStart);
+    const syncBlock = rendererTs.slice(syncStart, syncEnd);
+    const adaptiveStart = rendererTs.indexOf('  private updateAdaptiveResolution(');
+    const adaptiveEnd = rendererTs.indexOf('  private runtimeViewCreateBudget(', adaptiveStart);
+    const adaptiveBlock = rendererTs.slice(adaptiveStart, adaptiveEnd);
+
+    expect(syncStart).toBeGreaterThan(-1);
+    expect(syncEnd).toBeGreaterThan(syncStart);
+    expect(adaptiveStart).toBeGreaterThan(-1);
+    expect(adaptiveEnd).toBeGreaterThan(adaptiveStart);
+    expect(syncBlock).toContain(
+      'this.updateAdaptiveResolution(dt, intentionalFramePacing, previousFrameWorkMs);',
+    );
+    expect(adaptiveBlock).toMatch(
+      /this\.renderBudgetGovernor\.update\(\{[\s\S]*?intentionalFramePacing,[\s\S]*?workMs: previousFrameWorkMs > 0 \? previousFrameWorkMs : previousTotalMs,/,
+    );
   });
 
   it('collects trusted mobile panel samples under the loading screen', () => {
@@ -45,5 +69,24 @@ describe('main-loop frame pacing contract', () => {
     expect(loopStart).toBeGreaterThan(calibrationStart);
     expect(calibrationBlock).toContain('FRAME_PACER_CALIBRATION_CALLBACKS');
     expect(calibrationBlock).toContain('framePacer.observe(timestamp);');
+    expect(calibrationBlock).toMatch(
+      /for \(let i = 0; i < FRAME_PACER_CALIBRATION_CALLBACKS; i\+\+\) \{[\s\S]*?await new Promise<void>[\s\S]*?framePacer\.observe\(timestamp\);[\s\S]*?if \(framePacer\.snapshot\(\)\.estimatedRefreshFps > 0\) break;/,
+    );
+  });
+
+  it('waits for a completed gameplay frame before fading the loading screen', () => {
+    const launchStart = mainTs.indexOf('  last = performance.now();', frameEnd);
+    const launchEnd = mainTs.indexOf('  fadeOutHomepageMusic();', launchStart);
+    const launchBlock = mainTs.slice(launchStart, launchEnd);
+
+    expect(launchStart).toBeGreaterThan(frameEnd);
+    expect(launchEnd).toBeGreaterThan(launchStart);
+    expect(frameLoop.match(/markFirstRenderedFrame\(\);/g)).toHaveLength(2);
+    expect(launchBlock).toMatch(
+      /requestAnimationFrame\(frame\);\s*\/\/ Cut to the game only after an accepted frame has completed and reached paint\.\s*void firstRenderedFrame\.then\(\(\) => \{\s*requestAnimationFrame\(\(\) => \{\s*hideLoadingScreen\(\);/,
+    );
+    expect(launchBlock).not.toMatch(
+      /requestAnimationFrame\(\(\) =>\s*requestAnimationFrame\(\(\) => \{\s*hideLoadingScreen\(\);/,
+    );
   });
 });

@@ -149,4 +149,53 @@ describe('render budget governor with intentional frame pacing', () => {
     expect(state.externalFrameCap).toBe(false);
     expect(recovered).toBe(true);
   });
+
+  it('clears and restores external-cap detection across live pacing transitions', () => {
+    const governor = lowGovernor();
+    const externalCapSample = sample({
+      intentionalFramePacing: false,
+      frameMs: 33.4,
+      workMs: 8.3,
+      totalMs: 8.3,
+      submitMs: 4.6,
+      calls: 200,
+      triangles: 700_000,
+      grassVisibleTufts: 2_000,
+    });
+
+    let state = governor.state();
+    for (let i = 0; i < 24; i++) state = governor.update(externalCapSample);
+    expect(state.externalFrameCap).toBe(true);
+    expect(state.reason).toBe('frame-cap');
+    const baselineLevels = state.levels;
+
+    for (let i = 0; i < 60; i++) state = governor.update(sample());
+    expect(state.externalFrameCap).toBe(false);
+    expect(state.mode).toBe('stable');
+    expect(state.levels).toEqual(baselineLevels);
+
+    for (let i = 0; i < 24; i++) state = governor.update(externalCapSample);
+    expect(state.externalFrameCap).toBe(true);
+    expect(state.reason).toBe('frame-cap');
+    expect(state.levels).toEqual(baselineLevels);
+  });
+
+  it('falls back to render total when paced full-frame work is unavailable', () => {
+    const governor = lowGovernor();
+    const withoutFullFrameWork = sample({
+      frameMs: 33.4,
+      totalMs: 38,
+      submitMs: 24,
+      calls: 500,
+      triangles: 1_400_000,
+      grassVisibleTufts: 3_000,
+    });
+    delete withoutFullFrameWork.workMs;
+
+    const state = governor.update(withoutFullFrameWork);
+
+    expect(state.externalFrameCap).toBe(false);
+    expect(state.mode).toBe('degrading');
+    expect(state.levels.foliage).toBeLessThan(0.9);
+  });
 });

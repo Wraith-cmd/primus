@@ -2511,6 +2511,16 @@ async function startGame(
     maxFps: GFX.budget.targetFps,
   });
   let previousFrameWorkMs = 0;
+  let resolveFirstRenderedFrame: (() => void) | null = null;
+  const firstRenderedFrame = new Promise<void>((resolve) => {
+    resolveFirstRenderedFrame = resolve;
+  });
+  const markFirstRenderedFrame = (): void => {
+    const resolve = resolveFirstRenderedFrame;
+    if (!resolve) return;
+    resolveFirstRenderedFrame = null;
+    resolve();
+  };
   let onlineInputEchoMs = 0;
   let playerWasDead = world.player.dead;
   // Smoothed input-echo jitter (mean absolute deviation of RTT samples) for the
@@ -2768,7 +2778,7 @@ async function startGame(
   function frame(now: number): void {
     requestAnimationFrame(frame);
     framePacer.setEnabled(document.body.classList.contains('mobile-touch'));
-    const pacing = framePacer.step(now);
+    const pacing = framePacer.step(now, previousFrameWorkMs);
     if (!pacing.shouldRun) return;
     const frameWorkStartMs = performance.now();
     let frameDt = (now - last) / 1000;
@@ -2906,6 +2916,7 @@ async function startGame(
       perf.time('hud', () => perf.trace('hud.update', () => hud.update(), { mode: 'offline' }));
       perf.tick(now);
       previousFrameWorkMs = performance.now() - frameWorkStartMs;
+      markFirstRenderedFrame();
       return;
     }
 
@@ -3063,6 +3074,7 @@ async function startGame(
     perf.time('hud', () => perf.trace('hud.update', () => hud.update(), { mode: 'online' }));
     perf.tick(now);
     previousFrameWorkMs = performance.now() - frameWorkStartMs;
+    markFirstRenderedFrame();
   }
   const controller = {
     move(moveInput: unknown, facing?: unknown) {
@@ -3200,12 +3212,13 @@ async function startGame(
           resolve();
         });
       });
+      if (framePacer.snapshot().estimatedRefreshFps > 0) break;
     }
   }
   last = performance.now();
   requestAnimationFrame(frame);
-  // cut to the game only once the first frame is actually on screen
-  requestAnimationFrame(() =>
+  // Cut to the game only after an accepted frame has completed and reached paint.
+  void firstRenderedFrame.then(() => {
     requestAnimationFrame(() => {
       hideLoadingScreen();
       // Start the intro clock as the loading screen begins to fade: the camera
@@ -3250,8 +3263,8 @@ async function startGame(
           flushLockpickEvents: () => hud.flushLockpickEvents(),
         };
       }, LOADING_FADE_MS);
-    }),
-  );
+    });
+  });
   // Now in-game: fade the home-page theme out (it kept playing through loading).
   fadeOutHomepageMusic();
 }

@@ -106,6 +106,8 @@ describe('mobile frame pacer', () => {
       [90, 2],
       [120, 2],
       [144, 3],
+      [165, 3],
+      [240, 4],
       [360, 6],
     ] as const) {
       const pacer = new FramePacer({ enabled: true, maxFps: 60 });
@@ -224,6 +226,24 @@ describe('mobile frame pacer', () => {
     expect(workloadLimited.maxConsecutiveSkips).toBeLessThanOrEqual(2);
     expect(snapshot.estimatedRefreshFps).toBeCloseTo(144, 0);
     expect(snapshot.targetFps).toBeCloseTo(48, 0);
+  });
+
+  it('distinguishes 144 Hz workload misses from a real 72 Hz callback cap', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    const calibratedAt = observeAtRate(pacer, 144);
+    const workloadLimited = stepWithMissedVsyncWork(pacer, 144, 1_200, calibratedAt, 2, 7);
+
+    expect(pacer.snapshot().estimatedRefreshFps).toBeCloseTo(144, 0);
+    expect(pacer.snapshot().targetFps).toBeCloseTo(48, 0);
+    expect(workloadLimited.maxConsecutiveSkips).toBeLessThanOrEqual(2);
+
+    const transition = stepAtRate(pacer, 72, 180, workloadLimited.nowMs, 6.9);
+    const gaps = steadyCallbackGaps(pacer, 72, 180, transition.nowMs);
+    const snapshot = pacer.snapshot();
+
+    expect(snapshot.estimatedRefreshFps).toBeCloseTo(72, 0);
+    expect(snapshot.targetFps).toBeCloseTo(36, 0);
+    expect(new Set(gaps)).toEqual(new Set([2]));
   });
 
   it.each([

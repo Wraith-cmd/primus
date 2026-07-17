@@ -23,6 +23,8 @@ panel divisor that does not exceed the configured ceiling. Important outcomes ar
 | 90 Hz | 45 fps |
 | 120 Hz | 60 fps |
 | 144 Hz | 48 fps |
+| 165 Hz | 55 fps |
+| 240 Hz | 60 fps |
 
 This avoids the uneven callback pattern produced by attempting 60 fps on a 90 Hz source.
 The decision core carries sub-frame timing remainder so callback jitter does not produce
@@ -36,6 +38,11 @@ trusted rate is retained across Interface Mode changes and browser suspension. A
 sustained callback rate that is incompatible with the active panel divisor triggers a
 short lightweight resample. Probe callbacks are interleaved with game frames so an
 adaptive-refresh transition cannot freeze the whole loop while moving up or down.
+If a clean probe shows that slow callbacks came from missed panel refreshes, the pacer
+keeps the trusted panel rate. If the browser later applies a real cap at that same
+callback rate, a sustained run of completed frames with measured work below the trusted
+panel interval promotes the cap as the new source rate. Interrupted or expensive samples
+reset that evidence so workload pressure cannot be mistaken for a panel change.
 
 The frame-loop gate runs before `last` is advanced. Skipped callbacks therefore do not
 sample input or advance the fixed-step accumulator. The next executed frame receives the
@@ -61,9 +68,10 @@ external-cap path.
 
 ## Verification
 
-`tests/frame_pacer.test.ts` pins divisor selection, 90 Hz and 120 Hz decimation,
-low-power 30 fps behavior, remainder carry under jitter, live interface-mode changes,
-disabled desktop behavior, and suspend/resume recalibration.
+`tests/frame_pacer.test.ts` pins divisor selection and exact callback spacing from 90 Hz
+through 360 Hz, low-power 30 fps behavior, remainder carry under jitter, live
+interface-mode changes, disabled desktop behavior, suspend/resume recalibration, and the
+ambiguous boundary between missed panel refreshes and a real browser callback cap.
 
 `tests/render_budget_pacing.test.ts` pins the governor handoff at intentional 30 fps and
 40 fps and verifies that expensive renderer or non-render main-thread work still

@@ -271,12 +271,20 @@
     border-color: #d8c46bb8;
   }
   body.mobile-touch #mobile-autorun-target.locked {
+    top: 50%;
+    z-index: 1;
+    transform: translate(-50%, -50%) scale(1);
     color: #fff7c7;
     border-color: var(--gold);
     box-shadow:
       0 0 0 1px #0009,
       inset 0 1px 0 #ffffff24,
       0 0 18px #e3c66a99;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body.mobile-touch #mobile-autorun-target {
+      transition: none;
+    }
   }
   /* Hidden by default (settings.mobileCameraJoystick, def false): swipe-look on
      open gameplay space is the primary camera path (plan decision 2). Hidden
@@ -2435,6 +2443,7 @@
   body.mobile-touch #arena-window,
   body.mobile-touch #dungeon-finder-window,
   body.mobile-touch #valecup-window,
+  body.mobile-touch #card-duel-window,
   body.mobile-touch #delve-board,
   body.mobile-touch #leaderboard-window,
   body.mobile-touch #loot-settings-window,

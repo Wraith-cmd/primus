@@ -366,6 +366,7 @@ export const en_CA: EnTranslations = {
       "spinButton": "Spin",
       "tasks": "Tasks",
       "taskMultiplier": "x{multiplier} multiplier",
+      "oneVsOneExcluded": "1v1 matches do not grant daily reward points.",
       "pointsGained": "{points} daily rewards points gained.",
       "showChestButton": "Show Chest",
       "hideChestButton": "Hide Chest",
@@ -2199,9 +2200,10 @@ export const en_CA: EnTranslations = {
       "charTitleNone": "No title chosen",
       "charOpenBook": "Book of Deeds",
       "lbTab": "Renown",
-      "lbDeedsCol": "Deeds",
       "lbTitleCol": "Title",
-      "lbSelf": "Your standing: rank {rank}, top {percent} percent",
+      "lbScopeNote": "Accounts ranked by lifetime Renown. Each deed counts once across all characters on an account.",
+      "lbSelfAccount": "Your account: rank {rank}, top {percent} percent, {renown} Renown",
+      "lbSelfRank": "Your account: rank {rank}, top {percent} percent",
       "lbEmpty": "No ranked chroniclers yet.",
       "broadcastsLabel": "Share deed unlocks with guild and friends",
       "titledName": "{name} [{title}]"
@@ -2601,7 +2603,7 @@ export const en_CA: EnTranslations = {
       "effectsTitle": "Buffs, debuffs, and crowd control",
       "effectsBody": "Many abilities apply an effect that lingers. Helpful ones (buffs) raise your stats, shield you, or heal you a little at a time; harmful ones (debuffs) drain your health with damage over time or weaken you. Watch the small icons in the top corner of the screen, beside the minimap, to see what is on you and how long it lasts.",
       "ccBody": "Crowd control is a special kind of debuff that limits what a target can do: stuns, roots and slows, silences that stop spellcasting, disarms, fears, and transformations that turn a foe harmless for a moment. Against other players, control wears thin with repetition: the same kind reapplied too quickly weakens and then fails outright, and a stun that opens from stealth is counted apart from the stuns that follow, so nobody can be chained helpless forever. The creatures of the world hold no such grudge: control never weakens with repetition against them, though many of the mightiest foes, named elites and the strongest bosses among them, cannot be controlled at all.",
-      "metersBody": "Curious how a fight went? Press Z to open the party meters, which tally damage, healing, and threat for your group, encounter by encounter.",
+      "metersBody": "Curious how a fight went? Press Shift+H to open the party meters, which tally damage, healing, and threat for your group, encounter by encounter.",
       "queueTitle": "Your next move is already loaded",
       "queueBody": "You do not have to time your presses to the frame. Press your next ability in the closing moments of the current cast and it is queued, firing the instant the cast completes, so practiced play flows without gaps. A press too early is simply refused, so nothing is wasted. Some melee strikes work the same way, riding out on your next weapon swing.",
       "deathTitle": "When you fall",
@@ -2662,7 +2664,7 @@ export const en_CA: EnTranslations = {
       "petBarTerm": "Pet bar",
       "petBarDef": "The command row a hunter or warlock pet adds: Attack, Stop, Taunt, Defensive, and Aggressive, bound to Ctrl plus 1 through 5 by default.",
       "metersTerm": "Damage meters",
-      "metersDef": "The party scoreboard window for the current fight: damage dealt, healing done, and who holds the most threat, kept per encounter. Open it with its keybind (Z by default).",
+      "metersDef": "The party scoreboard window for the current fight: damage dealt, healing done, and who holds the most threat, kept per encounter. Open it with its keybind (Shift+H by default).",
       "targetMarkerTerm": "Target marker",
       "targetMarkerDef": "A symbol any party or raid member can pin over a target so everyone focuses, or avoids, the same one. Eight symbols, one target per symbol.",
       "loadoutTerm": "Loadout",
@@ -2991,6 +2993,8 @@ export const en_CA: EnTranslations = {
       "heroicRewardsTitle": "Heroic Marks and upgraded spoils",
       "heroicRewardsBody": "Heroic bosses drop the loot you know, upgraded and tagged Heroic on the tooltip, and the final boss of each run adds epics found nowhere else. That last kill also leaves Heroic Marks for every participant: a currency spent with Quartermaster Vex in Highwatch, whose stock of rings and necklaces is the only jewelry in the realm.",
       "heroicLockoutBody": "Normal dungeons can be run all day. Heroic asks patience: the final boss kill locks everyone in the run to one heroic clear of that dungeon per day, and the raid keeps a daily lockout for each difficulty. A cleared five-player run stays open to its own party for corpse runs and loot, so nobody is locked away from what they earned there. The raid is stricter: once its kill locks you, the door stays shut until the daily reset, so collect your spoils before you leave the arena.",
+      "resetTitle": "Resetting your instances",
+      "resetBody": "Switch difficulty while your group still holds claimed runs and the old claims linger for a while before clearing on their own. The party leader can let them go at once instead: choose Reset All Instances on their own portrait menu, or type /dungeon reset. A reset works only after the difficulty has actually been changed, only while nobody, living or fallen, remains inside, and a short cooldown separates one reset from the next. Arrive at the door on the wrong difficulty and the game says so before the run starts. The raid is never reset this way; its own lockout rules stand.",
       "templeLoreTitle": "The Drowned Temple, a little deeper",
       "templeLoreBody": "The temple has its own legend, older than the cult you chase elsewhere. On the shore of the Glimmermere, a tarn that drinks the moonlight and gives back the drowned, a lone watcher keeps a gate of pale light. Beneath the surface, a stair of cold stone runs down to it. The folk who sank there did not drown by misadventure: they were the Pale Choir, who went under in worship and never stopped singing. The old wardens scratched a single warning into the rocks before the water took them, a prayer to something they called the Drowned Moon, with a steadier hand adding two words beneath it: it only sleeps.",
       "cryptLeadTitle": "A door the dead were meant to keep shut",
@@ -3098,7 +3102,7 @@ export const en_CA: EnTranslations = {
       "howHeading": "How deeds work",
       "howBody": "Deeds are earned and kept one character at a time, so every hero you play builds a Book of their own; only the realm leaderboard gathers your Renown across every character you play, counting each deed just once. Each deed spells out plainly what it asks of you, right there in the Book of Deeds in game, so you always know what to chase, and you can set a watch on the ones you are after to keep them in sight while you play. A small few stay secret and reveal themselves only once you have earned them. The Book also keeps itself honest: whatever your past record can prove, it credits on the spot, so a veteran never opens it to an empty page; only the counting deeds begin their tally fresh.",
       "renownHeading": "Renown",
-      "renownBody": "Renown is the score behind the Book. Every deed you earn is worth a set amount, and your total only ever climbs, so a quiet week never costs you ground. A handful of deeds turn on luck rather than skill, and Feats are an honor of their own, so both of those are worth no Renown at all.",
+      "renownBody": "Renown is the score behind the Book. Every deed you earn is worth a set amount, and your total only ever climbs, so a quiet week never costs you ground. A handful of deeds turn on luck rather than skill, and Feats are an honor of their own, so both of those are worth no Renown at all. Deeds without Renown still count toward completion in your Book; they simply never score.",
       "rewardsHeading": "Titles and borders",
       "rewardsBody": "The rewards are all for show, and that is the point. Some deeds grant a title you can wear or a border to frame your name, and never anything that makes your hero stronger. Choose the title you want from the Book of Deeds and it rides along on your nameplate, in chat, and on the boards for everyone to see.",
       "chroniclesHeading": "Chronicles",
@@ -3107,7 +3111,7 @@ export const en_CA: EnTranslations = {
       "featsBody": "Feats are a shelf apart: records of legacy and world firsts, the deeds tied to a bygone era or a moment that will only ever happen once. They carry no Renown and sit outside the completion count, kept forever as a memory of what was done.",
       "catalogHeading": "The full roll of deeds",
       "catalogBody": "Here is every deed the Book can hold, gathered by category. The secret ones are left out on purpose, waiting for you to find them. Open the Book of Deeds in game to see exactly what each one asks.",
-      "standingsNote": "The realms keep a running tally of Renown across every account. To see who stands where, open the Leaderboard in game and turn to its Renown tab; the standings live there, not on the wiki.",
+      "standingsNote": "The realms keep a running tally of Renown across every account: the board ranks whole accounts by lifetime Renown, counting each deed once across all your characters, and it shows Renown alone, so deeds that carry none never move the standings even though they count in your Book. To see who stands where, open the Leaderboard in game and turn to its Renown tab; the standings live there, not on the wiki.",
       "catHeading": "{label} ({count})",
       "colName": "Deed",
       "colRenown": "Renown",
@@ -3198,7 +3202,7 @@ export const en_CA: EnTranslations = {
       "qualityNote": "Higher quality usually means better stats, but quality is a hint, not a rule. A well-matched piece for your class and level can beat a flashier one.",
       "upgradeTitle": "Keep your gear current",
       "upgradeBody": "Replacing an old piece with a fresh upgrade does more for you than playing perfectly in gear you have outgrown. When something better drops or a quest offers it, take it. Do not save your good items for later.",
-      "itemLevelBody": "If you want a quick way to compare two pieces, turn on Show Item Level in the options. Gear won out in the world, from enemies and quests, then shows an item level, a single figure for roughly how powerful it is based on where it came from, so you can tell at a glance which upgrade pulls more weight, even across different slots. Pieces with no such source, like plain vendor basics and starter gear, show no item level, so a missing figure is normal, not a fault.",
+      "itemLevelBody": "If you want a quick way to compare two pieces, turn on Show Item Level in the options. Gear with a known source, from enemies, quests, and the crafting trades, then shows an item level, a single figure for roughly how powerful it is based on where it came from, so you can tell at a glance which upgrade pulls more weight, even across different slots. Pieces with no such source, like plain vendor basics and starter gear, show no item level, so a missing figure is normal, not a fault.",
       "sourcesTitle": "Where gear comes from",
       "sourcesBody": "Most of your early upgrades are quest rewards, so it pays to finish quests rather than grind. Enemies drop gear when you defeat them, vendors in town sell solid basics, crafters turn gathered materials into wearable pieces, and the player market lets you buy from other adventurers. At the top of the hill, two mark currencies buy gear found nowhere else: Delve Marks at the delve keeper, and Heroic Marks at the heroic quartermaster.",
       "soulboundTitle": "Soulbound: yours and yours alone",
@@ -3242,7 +3246,7 @@ export const en_CA: EnTranslations = {
       "craftRecipesTitle": "Recipes and reagents",
       "craftRecipesBody": "Every recipe calls for specific reagents you gather or buy. The simplest recipes ask for nothing but common materials and are craftable from the very start, so you can begin working a trade the moment you pick it up. The recipe lists are still filling in: a few trades are waiting on their first recipes, and more arrive as the crafts grow.",
       "craftHowTitle": "The crafting window",
-      "craftHowBody": "Open the Crafting window (default key T) to see every recipe you know, what each one needs, and what you have on hand; when the materials are there, one click does the work. Common recipes can be crafted anywhere in the world. A handful of advanced tool recipes instead ask you to stand at the crafting hub in Highwatch.",
+      "craftHowBody": "Open the Crafting window (default key T) to see every recipe you know, what each one needs, and what you have on hand; when the materials are there, one click does the work. Common recipes can be crafted anywhere in the world. A handful of advanced recipes, higher-tier tools and rare caster armor among them, instead ask you to stand at the crafting hub in Highwatch.",
       "craftMasteryTitle": "Skill and mastery",
       "craftMasteryBody": "Crafting successfully builds skill in that trade, and skill never locks a craft's recipes away: if you know a recipe and hold its materials, you can attempt it. What skill buys you instead is quality, a practiced hand turns out finer work. The one exception is combination recipes, which ask you to have proven yourself in both of their crafts before they open up.",
       "craftComboTitle": "Combination recipes",
@@ -4364,6 +4368,24 @@ export const en_CA: EnTranslations = {
     "balance": "Heroic Marks: {count}",
     "buyAria": "Buy {item} for {marks} Heroic Marks"
   },
+  "cardDuel": {
+    "title": "Card Duel",
+    "close": "Close",
+    "join": "Join Queue",
+    "joinAria": "Join the Card Duel queue",
+    "leave": "Leave Queue",
+    "leaveAria": "Leave the Card Duel queue",
+    "forfeit": "Forfeit",
+    "forfeitAria": "Forfeit the Card Duel",
+    "queued": "Waiting for an opponent...",
+    "unavailable": "Card Duel requires another player online.",
+    "vsOpponent": "vs {name}",
+    "round": "Round score: {mine} - {theirs}",
+    "counts": "Deck: {deck} · Discard: {discard}",
+    "playCardAria": "Play the {value} card",
+    "waitingOnOpponent": "Waiting on your opponent's card...",
+    "yourTurn": "Play a card"
+  },
   "delveUi": {
     "board": {
       "title": "Delve Board",
@@ -4862,6 +4884,11 @@ export const en_CA: EnTranslations = {
       "quit": "Quit",
       "fatalBody": "World of ClaudeCraft hit an unexpected error and needs to close."
     }
+  },
+  "gpuNotice": {
+    "bodyDesktop": "The game is running without GPU acceleration and will be slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "bodyWeb": "The game is running without GPU acceleration and will be slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "No worlds available.",
@@ -8679,6 +8706,11 @@ export const en_CA: EnTranslations = {
         "title": "The Gilded Strongbox",
         "greeting": "Welcome to the Gilded Strongbox. Your goods rest safe behind our locks."
       },
+      "card_master": {
+        "name": "Card Master",
+        "title": "Dealer of Chance",
+        "greeting": "Care for a Card Duel? Best of three, winner takes the bragging rights."
+      },
       "bursar_petra_vell": {
         "name": "Bursar Petra Vell",
         "title": "The Gilded Strongbox",
@@ -9783,6 +9815,11 @@ export const en_CA: EnTranslations = {
         "sender": "Brother Aldric",
         "subject": "What you did in the dark",
         "body": "Few will ever know what was buried in that hollow, and fewer still would believe it. I know, and I will not forget.\n\nMay your road stay lit.\n- Brother Aldric"
+      },
+      "heroic_marks_reward": {
+        "sender": "The Heroic Quartermaster",
+        "subject": "Your Heroic Marks",
+        "body": "Your warband cleared the heroic trial while you fought from the back, or from the dirt. Your lockout was struck all the same, so your share of Heroic Marks flies to you here rather than being lost. Spend them well.\n\n- The Heroic Quartermaster"
       }
     },
     "itemSets": {
@@ -9808,7 +9845,7 @@ export const en_CA: EnTranslations = {
       },
       "necromancers": {
         "name": "Mournweave Raiment",
-        "bonus2": "Increases spell power by 20. You cannot be knocked back (100% knockback resistance).",
+        "bonus2": "Increases spell power by 20. Damage taken no longer delays your spellcasting (100% pushback resistance).",
         "bonus3": "Increases Intellect by 10 and Stamina by 10.",
         "bonus4": "Your spells have a 10% chance to grant Clearcasting, making your next spell free."
       },
@@ -9820,13 +9857,13 @@ export const en_CA: EnTranslations = {
       },
       "soulflame": {
         "name": "Wraithfire Regalia",
-        "bonus2": "Increases spell power by 20. You cannot be knocked back (100% knockback resistance).",
+        "bonus2": "Increases spell power by 20. Damage taken no longer delays your spellcasting (100% pushback resistance).",
         "bonus3": "Increases Intellect by 15, Spirit by 15, and attack and casting speed by 15%.",
         "bonus4": "Your spells have a 10% chance to grant Soulblaze, increasing spell power by 40 for 10 sec."
       },
       "stormcallers": {
         "name": "Galecall Vestments",
-        "bonus2": "Increases spell power by 20. You cannot be knocked back (100% knockback resistance).",
+        "bonus2": "Increases spell power by 20. Damage taken no longer delays your spellcasting (100% pushback resistance).",
         "bonus3": "Increases Intellect by 15, Spirit by 15, and attack and casting speed by 15%.",
         "bonus4": "Your spells have a 10% chance to grant Soulblaze, increasing spell power by 40 for 10 sec."
       },

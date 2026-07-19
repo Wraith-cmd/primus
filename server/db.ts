@@ -54,20 +54,9 @@ import { USER_ASSETS_SCHEMA } from './user_assets_db';
 // consumers (the market tests) keep importing it from ./db unchanged.
 export { marketStateKey } from './market_backfill';
 
-try {
-  process.loadEnvFile?.();
-} catch {
-  // .env is optional; production usually injects DATABASE_URL directly.
-}
-try {
-  // Local-dev convenience: also load .env.local so the server can reuse the
-  // client's VITE_* values (e.g. the Solana RPC + $WOC mint) for the in-world
-  // holder-tier reads. Existing keys from .env are not overwritten. In
-  // production these come from real env vars (SOLANA_RPC_URL / WOC_MINT).
-  process.loadEnvFile?.('.env.local');
-} catch {
-  // .env.local is optional.
-}
+// The actual load lives in server/env.ts so import-time readers other than
+// db.ts (realm.ts via main.ts's first import) share one bootstrap.
+import './env';
 
 export const DATABASE_URL =
   process.env.DATABASE_URL ??
@@ -3027,9 +3016,7 @@ export async function topGuilds(
 // completionTime is max over the scoring set of each deed's EARLIEST earn; the
 // display character is the account's highest per-character Renown character,
 // ties to the lowest id; ordering is renown desc, completion asc, accountId
-// asc. deed_count (the scoring-set size) is a deprecated wire-compat output
-// removed next release together with the pure spec's field (issue #2044,
-// executable-spec lockstep both times); it is not displayed by current clients.
+// asc.
 export async function deedsBoardRanked(
   deedIds: readonly string[],
   renowns: readonly number[],
@@ -3060,7 +3047,6 @@ export async function deedsBoardRanked(
      account_agg AS (
        SELECT pd.account_id,
               sum(r.renown)::int AS renown,
-              count(*)::int AS deed_count,
               max(pd.first_earned) AS completion_time
          FROM per_deed pd
          JOIN renown r ON r.deed_id = pd.deed_id
@@ -3083,7 +3069,6 @@ export async function deedsBoardRanked(
      )
      SELECT aa.account_id,
             aa.renown,
-            aa.deed_count,
             aa.completion_time,
             d.character_id AS display_character_id
        FROM account_agg aa
@@ -3094,7 +3079,6 @@ export async function deedsBoardRanked(
     const ranked: RankedDeedsAccount[] = res.rows.map((r) => ({
       accountId: Number(r.account_id),
       renown: Number(r.renown),
-      deedCount: Number(r.deed_count),
       // TIMESTAMPTZ back to epoch ms (Date via pg; string tolerated for driver
       // config drift), matching computeDeedsBoard's earnedMs.
       completionTime: new Date(r.completion_time).getTime(),

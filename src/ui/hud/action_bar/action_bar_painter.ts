@@ -5,8 +5,7 @@
 // It is constructed as new ActionBarPainter(writers, descriptor, resolveBgImage),
 // where the descriptor carries the container + the per-slot element refs and the
 // keybind set: multiplicity is a constructor arg, not a hardcoded id, so
-// a second/third bar is another descriptor with no code change (adding bars is a
-// follow-on feature).
+// every desktop row and mobile variant can reuse the family without a code fork.
 //
 // Three Top-risk-1/4 details:
 //   - The aria-label routes through the elided setAttr (the per-button cache keyed on
@@ -33,6 +32,8 @@ const CLASS_EMPTY = 'empty';
 const CLASS_UNUSABLE = 'unusable';
 const CLASS_OUT_OF_RANGE = 'oor';
 const CLASS_QUEUED = 'queued';
+const CLASS_PROC = 'proc';
+const CLASS_EMPOWERED = 'empowered';
 const CLASS_MANY_SPELLS = 'many-spells';
 
 /** The DOM refs for one slot the painter writes. */
@@ -92,6 +93,8 @@ export class ActionBarPainter {
       this.writers.toggleClass(el.btn, CLASS_UNUSABLE, !s.usable);
       this.writers.toggleClass(el.btn, CLASS_OUT_OF_RANGE, s.outOfRange);
       this.writers.toggleClass(el.btn, CLASS_QUEUED, s.queued);
+      this.writers.toggleClass(el.btn, CLASS_PROC, s.procGlow);
+      this.writers.toggleClass(el.btn, CLASS_EMPOWERED, s.empowered);
 
       this.writers.setAttr(el.btn, ARIA_LABEL_ATTR, s.ariaLabel);
       this.writers.setText(el.keybindEl, s.keybindLabel);

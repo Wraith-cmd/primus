@@ -233,6 +233,9 @@ export const ja_JP: EnTranslations = {
       "title": "タレント",
       "classTab": "クラス",
       "specTab": "専門化",
+      "choicesTab": "選択",
+      "rowUnlockToast": "新しいタレント選択が解放されました!",
+      "rowUnlocks": "レベル{level}で解放",
       "available": "使用可能",
       "spent": "使用済み",
       "pointSource": "レベル{first}から{cap}まで、レベルごとにタレントポイントを1獲得します。さらにポイントを得るにはレベルを上げてください。",
@@ -291,6 +294,7 @@ export const ja_JP: EnTranslations = {
         "noTree": "あなたのクラスにはまだタレントツリーがありません。",
         "locked": "タレントはまだ解除されていません——レベル{level}から始まります。",
         "noSpec": "専門化なし",
+        "rowsSummary": "タレント: {head}、選択済み行 {picked}/{unlocked}。",
         "summary": "タレント: {head}——{spent}/{total} ポイント使用済み（{breakdown}）。",
         "breakdownClass": "クラス {classPts}",
         "breakdownSpec": "クラス {classPts}、{spec} {specPts}",
@@ -314,6 +318,10 @@ export const ja_JP: EnTranslations = {
       "resurrectAtCorpse": "亡骸で復活",
       "resurrectAtHealer": "霊魂の癒し手（復活の後遺症）",
       "spiritHealerAlive": "霊魂の癒し手は死者を見守っている。あなたはまだ生者だ。"
+    },
+    "fct": {
+      "absorbed": "{amount} 吸収",
+      "cheap": "低コスト!"
     },
     "emotes": {
       "wave": "手を振る",
@@ -721,6 +729,7 @@ export const ja_JP: EnTranslations = {
       "playerLabel": "あなたのキャラクター",
       "targetLabel": "あなたのターゲット",
       "targetAnnounce": "ターゲット：{name}",
+      "targetOfTargetLabel": "ターゲットのターゲット",
       "partyLabel": "あなたのパーティ",
       "partyChip": "パーティ",
       "partyGroup": "グループ {n}",
@@ -741,6 +750,7 @@ export const ja_JP: EnTranslations = {
       "leaderboard": "ランキング",
       "dailyRewards": "ストア",
       "deeds": "功績",
+      "professions": "専門技能",
       "nameplates": "ネームプレート",
       "haptics": "振動",
       "hapticsOff": "振動オフ",
@@ -1023,16 +1033,40 @@ export const ja_JP: EnTranslations = {
       "aurasOnPlayerFrame": "バフをプレイヤーフレームに表示",
       "highContrastBackground": "高コントラスト背景",
       "startAttackOnAbility": "アビリティ使用時に自動攻撃",
-      "showAttackButton": "攻撃ボタンを表示",
       "walkByAutoloot": "通りがかり自動ルート",
       "groundReticle": "地面ターゲットのレティクル",
+      "mouseoverCast": "パーティフレームでマウスオーバーキャスト",
       "showItemLevel": "アイテムレベルを表示",
       "itemLevelLine": "アイテムレベル {level}",
       "itemScoreLine": "スコア {score}",
       "showSecondaryActionBar": "セカンダリアクションバーを表示",
+      "showThirdActionBar": "3本目のアクションバーを表示",
+      "showTargetOfTarget": "ターゲットのターゲットを表示",
+      "showAttackButton": "攻撃ボタンを表示",
       "showDailyRewardsChest": "デイリー報酬の宝箱を表示",
       "mobileCameraJoystick": "カメラスティック",
       "mobileLeftHanded": "左利き用レイアウト"
+    },
+    "talentRows": {
+      "tab": "選択",
+      "defaultLoadout": "デフォルト構成",
+      "comingSoon": "近日公開",
+      "readoutSummary": "タレント：{head}、{spent}/{total}行を選択済み。"
+    },
+    "abilityError": {
+      "shieldRequired": "盾を装備する必要があります。"
+    },
+    "specPanel": {
+      "primaryAttr": "主要能力値",
+      "complexity": "複雑さ",
+      "complexityLow": "低",
+      "complexityMedium": "中",
+      "complexityHigh": "高",
+      "exampleAbilities": "代表的なアビリティ",
+      "viewTalents": "タレントを見る",
+      "selectSpec": "スペシャライゼーションを選択",
+      "specUnlockBanner": "スペシャライゼーション解放！",
+      "specUnlockHint": "Nキーを押してスペシャライゼーションを選択してください。"
     },
     "controller": {
       "title": "コントローラー",
@@ -1145,6 +1179,7 @@ export const ja_JP: EnTranslations = {
         "spellPower": "呪文威力",
         "critRating": "クリティカルレーティング",
         "hasteRating": "ヘイストレーティング",
+        "parry": "受け流し",
         "hitRating": "命中レーティング",
         "warfare": "ウォーフェア"
       },
@@ -1163,6 +1198,7 @@ export const ja_JP: EnTranslations = {
         "dodge": "迫り来る近接攻撃を完全に回避し、ダメージを受けない確率です。",
         "critRating": "装備とセットボーナスによるクリティカルレーティング。クリティカル率が上昇します。約10レーティングで1%クリティカル。",
         "hasteRating": "装備とセットボーナスによるヘイストレーティング。攻撃と詠唱の速度が上昇します。約10レーティングで1%ヘイスト。",
+        "parry": "前方からの近接攻撃を完全に受け流し、ダメージを受けない確率です。背後からの一撃は受け流せません。",
         "hitRating": "装備とセットボーナスによる命中レーティング。攻撃がミスする頻度と呪文が抵抗される頻度を減らし、特に高レベルの敵に有効です。約10レーティングで1%命中。",
         "warfare": "プレイヤーに与えるダメージが {increase}% 増加し、プレイヤーから受けるダメージが {reduction}% 減少します。"
       },
@@ -1434,7 +1470,8 @@ export const ja_JP: EnTranslations = {
       "watchTwitch": "Twitch で視聴",
       "watchX": "X で見る",
       "watchKick": "Kick で視聴",
-      "watchYouTube": "YouTube で視聴"
+      "watchYouTube": "YouTube で視聴",
+      "streamerBadgeTitle": "認証済み配信者"
     },
     "lootSettings": {
       "title": "分配設定",
@@ -1513,9 +1550,35 @@ export const ja_JP: EnTranslations = {
       "attackSpeedSlow": "攻撃速度を{pct}%低下させる",
       "attackSpeedFast": "攻撃速度を{pct}%上昇させる",
       "haste": "攻撃速度と詠唱速度を{pct}%上昇させる",
+      "dmgDone": "与えるダメージを{pct}%上昇させる",
+      "dmgDoneReduce": "与えるダメージを{pct}%低下させる",
+      "heatingUp": "次の炎系ビルダーが連続でクリティカルになるとホットストリークを獲得し、クリティカルでなければヒーティングアップが解除されます",
+      "elementalConvergencePrimed": "次に異なる属性の呪文を唱えると、エレメンタル・コンバージェンスが発動します",
+      "battleStance": "バトルスタンス: 怒りの生成量が10%増加",
+      "berserkerStance": "バーサーカースタンス: クリティカル率が3%上昇し、与えるダメージが3%増加",
+      "crit": "クリティカル率を{pct}%上昇させる",
+      "rageGen": "怒りの生成量を{pct}%上昇させる",
+      "reckless": "クリティカル率を{pct}%、怒りの生成量を{ragePct}%上昇させる",
+      "avatar": "コロッサス: 与えるダメージが{pct}%増加",
+      "bloodbath": "クリティカル率と与えるダメージを{pct}%上昇させる",
+      "dieBySword": "受けるダメージを{pct}%軽減する",
+      "sanguine": "攻撃速度を{hastePct}%、与えるダメージを{dmgPct}%上昇させる",
+      "battleTrance": "次のレイヴァーストライクまたは重傷の一撃の怒りコストが0になる",
+      "revengeFree": "次の意趣返しの怒りコストが0になる",
+      "victoryRush": "勝利の追撃が使用可能",
+      "maxHpPct": "最大体力を{pct}%上昇させる",
+      "temporalHourglass": "ダメージを受けず行動不能になります。体力を回復し、クールダウンを加速します。右クリックで解除できます。",
       "tongues": "詠唱時間を{pct}%増加させる",
+      "combustionCrit": "火炎呪文が必ずクリティカルになる",
+      "overloadNext": "次の呪文の効果が{pct}%増加するが、マナ消費が50%増える",
+      "powerEchoNext": "次の直接呪文が同じ対象に{pct}%の威力で再発動する",
+      "iceFloesCasts": "次の{n}回の詠唱呪文を移動しながら唱えられる",
+      "freeCast": "次の詠唱のコストがゼロになる",
+      "instantCast": "次の詠唱時間のある呪文が即時発動になる",
+      "cheapCast": "次の呪文のコストが{pct}%減少する",
       "increase": {
         "ap": "攻撃力を{value}上昇させる",
+        "sp": "呪文の威力を{value}上昇させる",
         "armor": "防御力を{value}上昇させる",
         "int": "知力を{value}上昇させる",
         "agi": "敏捷性を{value}上昇させる",
@@ -1569,6 +1632,7 @@ export const ja_JP: EnTranslations = {
       "formBear": "ブルーインフォーム: 体力と防御力が上昇",
       "formCat": "キャットフォーム: 近接ダメージとエネルギー",
       "formTravel": "フリートフォーム: 移動速度が{pct}%上昇",
+      "formFireball": "火球形態：移動速度が{pct}%上昇、攻撃と呪文は使用不可",
       "defensiveStance": "ガーデッドスタンス: 受けるダメージが減少し、脅威度が上昇",
       "righteousFury": "バーニングオース: 神聖ダメージによる脅威度が大幅に上昇",
       "scale": "サイズが{pct}%増加",
@@ -1615,8 +1679,8 @@ export const ja_JP: EnTranslations = {
       "removeFromBarAria": "{name}をアクションバーから削除"
     },
     "nameplate": {
-      "mob": "[{level}] {name}",
-      "mobElite": "[{level}+] {name}"
+      "mobLevel": "{level}",
+      "mobEliteLevel": "{level}+"
     },
     "mobTooltip": {
       "levelFamily": "レベル{level} {family}",
@@ -2021,22 +2085,74 @@ export const ja_JP: EnTranslations = {
       "mining": "採掘",
       "logging": "伐採",
       "herbalism": "薬草学",
-      "notReady": "この資源ノードはまだあなたのために再生していません。"
+      "notReady": "この資源ノードはまだあなたのために再生していません。",
+      "gatherLine": "{name}を採集した。",
+      "gatherLineQty": "{name}を{qty}個採集した。"
     },
     "archetypeTitle": {
       "label": "称号",
       "none": "なし",
-      "hobbyLabel": "趣味",
-      "armorcrafting": "防具鍛冶師",
-      "weaponcrafting": "武器鍛冶師",
-      "jewelcrafting": "宝石職人",
-      "alchemy": "錬金術師",
-      "engineering": "工作師",
-      "cooking": "料理人",
-      "inscription": "銘文師",
-      "enchanting": "エンチャンター",
-      "tailoring": "仕立て屋",
-      "leatherworking": "皮革職人"
+      "hobbyLabel": "趣味"
+    },
+    "archetypePair": {
+      "engineering+alchemy": "爆破師",
+      "alchemy+cooking": "薬師",
+      "cooking+leatherworking": "罠師",
+      "leatherworking+tailoring": "装具師",
+      "tailoring+inscription": "魔織師",
+      "inscription+enchanting": "秘術師",
+      "enchanting+jewelcrafting": "宝石付与師",
+      "jewelcrafting+weaponcrafting": "刃鍛冶",
+      "weaponcrafting+armorcrafting": "鍛冶師",
+      "armorcrafting+engineering": "歯車鍛冶"
+    },
+    "craftName": {
+      "armorcrafting": "防具鍛冶",
+      "weaponcrafting": "武器鍛冶",
+      "jewelcrafting": "宝石細工",
+      "alchemy": "錬金術",
+      "engineering": "工作",
+      "cooking": "料理",
+      "inscription": "銘文",
+      "enchanting": "エンチャント",
+      "tailoring": "裁縫",
+      "leatherworking": "皮革加工"
+    },
+    "professions": {
+      "title": "専門技能",
+      "close": "専門技能を閉じる",
+      "ringAria": "技の輪",
+      "skillsHeader": "製作技能",
+      "gatheringHeader": "採集",
+      "perksHeader": "特典",
+      "identityHeader": "専門性",
+      "roleMajor": "主専攻",
+      "roleHobby": "趣味",
+      "roleDormant": "休眠中",
+      "roleUnattuned": "未調律",
+      "ceilingUnlimited": "強化上限なし",
+      "ceilingRare": "レア上限",
+      "ceilingCommon": "コモン上限",
+      "skillValue": "{skill} / {max}",
+      "tierPipAria": "ティア {tier}",
+      "nextUnlockTier": "次のティアまであと {points}：傑作の成功率が上がります",
+      "nextUnlockSpecialized": "専門化まであと {points}：素材コストが下がります",
+      "nextUnlockMax": "技能は最大です",
+      "perkSpecializedLine": "{craft}：専門化、素材コスト -{pct}%",
+      "perkSpecializedAt": "技能 {threshold} で専門化します",
+      "switchCost": "次のアーキタイプ切り替えには償いが {cost} 必要です",
+      "syncing": "サーバーから専門技能のデータを受信しています。",
+      "tutorialLine": "いずれかの技を技能 {target} まで上げると、最初のティアが解放されます。",
+      "ctaHeader": "次のステップ",
+      "ctaRaise": "{craft}を伸ばしましょう。次のティアまであと {points} です。",
+      "ctaStart": "いずれかの専門技能で製作か採集を行うと始まります。",
+      "unattunedIdentity": "まだアーキタイプに調律していません。技を伸ばし、調律を完了して組み合わせを選びましょう。",
+      "nudgeNearTier": "{craft}：次のティアまであと {points}",
+      "nudgeDormant": "{craft}の知識は休眠中です",
+      "hobbyLabel": "趣味：{craft}",
+      "majorsLabel": "主専攻：{a}と{b}",
+      "pairsHeld": "保持している組み合わせ：{count}",
+      "returnsLabel": "復帰：{count}"
     },
     "crafting": {
       "title": "製作",
@@ -2050,9 +2166,85 @@ export const ja_JP: EnTranslations = {
       "insufficientMaterials": "材料が不足しています。",
       "unknownRecipe": "そのレシピは存在しません。",
       "comboRequirementUnmet": "その組み合わせレシピに必要な両方の生産スキルの熟練度に達していません。",
-      "notAtHub": "それを製作するには、必要なレベルで製作拠点にいる必要があります。",
+      "comboRequires": "調律条件：{craftA} + {craftB}、ティア {tier}。",
+      "comboMet": "準備完了。",
+      "comboSyncing": "サーバーの調律状態を確認しています。",
+      "comboNotAttuned": "先にアーキタイプの組み合わせを選んでください。",
+      "comboWrongPair": "製作するには、この組み合わせを有効にしてください。",
+      "comboTierUnmet": "両方の主専攻を必要ティアまで上げてください。",
+      "comboTierUnmetNamed": "{crafts}をティア {tier} まで上げてください。",
+      "professionChoice": "職業の選択",
+      "noProfessionChoice": "現在選択できる職業はありません。",
+      "pairOptionLabel": "{pair}（{craftA} + {craftB}）",
+      "attunementPreview": "結果：{title}の称号を獲得し、{majorA}と{majorB}が上限なしの主専攻になります。{hobby}はレア上限の趣味になります。他の技能知識はすべて保持されますが、休眠中はコモン上限です。",
+      "hobbyPreview": "結果：{hobby}がレア上限の趣味になります。二つの主専攻と保持済みの技能値は変わりません。",
+      "identity": {
+        "title": "製作の専門性",
+        "syncing": "サーバーから製作の専門性を受信しています。",
+        "unattuned": "有効なアーキタイプの組み合わせがありません。知識は保持されますが、コンボレシピには調律済みの組み合わせが必要です。",
+        "titleLabel": "称号",
+        "majorsLabel": "主専攻",
+        "hobbyLabel": "趣味",
+        "historyLabel": "履歴",
+        "history": "発見した組み合わせ：{pairs}、完了した復帰：{returns}",
+        "roleMajor": "主専攻",
+        "roleHobby": "趣味",
+        "roleDormant": "休眠中の知識",
+        "roleUnattuned": "未調律",
+        "ceilingUnlimited": "強化上限なし",
+        "ceilingRare": "レア上限",
+        "ceilingCommon": "コモン上限",
+        "skillAria": "{craft}、技能 {skill}、ティア {tier}、{role}、{ceiling}",
+        "colCraft": "職種",
+        "colSkill": "技能",
+        "colRole": "役割",
+        "colCap": "上限",
+        "tutorial": "最初のティア：いずれかの技を技能 {skill} まで上げます。レシピの成功は他の知識を消さず、その技を成長させます。",
+        "nearTier": "{craft}は次のティアまであと技能 {points} です。",
+        "dormantKnowledge": "{craft}の知識は保持されていますが、その組み合わせか趣味が有効になるまで休眠します。"
+      },
+      "stationRequired": "それを製作するには{station}にいる必要があります。",
+      "stationName": {
+        "forge": "鍛冶場",
+        "kitchens": "厨房",
+        "apothecary": "薬房",
+        "tannery": "皮なめし場",
+        "loom": "織機",
+        "toolworks": "工作場"
+      },
       "throttled": "製作が速すぎます。少し待ってからもう一度お試しください。",
-      "recipeNotLearned": "そのレシピはまだ習得していません。"
+      "recipeNotLearned": "そのレシピはまだ習得していません。",
+      "skillReqLine": "{craft} {skill} が必要",
+      "difficultyFull": "技能上昇（全量）",
+      "difficultyReduced": "技能上昇（減少）",
+      "difficultyNone": "技能上昇なし",
+      "stationBadge": "製作拠点",
+      "stationOutOfRangeNamed": "{station}に移動して製作してください。",
+      "masterworkToast": "傑作！{name}",
+      "masterworkZoneLine": "{crafter}が傑作{name}を作り上げました！",
+      "tierUpToast": "{craft}がティア {tier} に到達しました！",
+      "makersMark": "製作者：{name}",
+      "masterworkSeal": "傑作",
+      "enchantedLine": "エンチャント済み"
+    },
+    "training": {
+      "title": "訓練：{name}",
+      "close": "訓練を閉じる",
+      "empty": "この師匠には教えられるレシピがありません。",
+      "free": "無料",
+      "stateKnown": "習得済み",
+      "stateTeachable": "習得可能",
+      "stateLocked": "未開放",
+      "requirement": "{craft} {skill} で伝授",
+      "trainAria": "{fee}で{name}を習得",
+      "dialogOption": "訓練",
+      "dialogOptionAria": "{name}から訓練を受ける",
+      "learned": "レシピを習得しました：{recipe}",
+      "tierUnmet": "そのレシピを習得するには{craft}が {skill} 必要です。",
+      "cannotAfford": "その訓練の費用を支払えません。",
+      "notTaughtHere": "そのレシピはここでは教えていません。",
+      "alreadyKnown": "そのレシピはすでに習得しています。",
+      "outOfRange": "訓練するには作業台のそばにいる必要があります。"
     },
     "finder": {
       "title": "ダンジョンファインダー",
@@ -2220,6 +2412,11 @@ export const ja_JP: EnTranslations = {
       "broadcastsLabel": "功績の達成をギルドとフレンドに共有する",
       "titledName": "{name}【{title}】"
     }
+  },
+  "gatherEvent": {
+    "pristineVein": "{finder}が純粋な鉱脈を掘り当てた！",
+    "ancientHeartwood": "{finder}が太古の心木を切り倒した！",
+    "moonlitBloom": "{finder}が月光の花を発見した！"
   },
   "apiError": {
     "validation": {
@@ -2782,10 +2979,10 @@ export const ja_JP: EnTranslations = {
     },
     "abilityHook": {
       "heroic_strike": "次の一撃にレイジを乗せ、より重い攻撃を予約します。",
+      "revenge": "前方の敵を薙ぎ払い、回避または受け流しの後に消費なしで使えることがある。",
+      "hamstring": "敵の移動を妨げ、逃走を阻止する。",
       "battle_shout": "パーティの攻撃力を高める鼓舞の雄叫びです。",
-      "commanding_shout": "持久力を底上げし、長い戦いでも全員が粘り強く戦えるようにします。",
       "charge": "離れた敵に突進し、短いスタンで戦闘の口火を切ります。",
-      "rend": "出血を与え、時間をかけて標的を削っていきます。",
       "thunder_clap": "周囲のすべてに当たり、相手の攻撃を遅くします。",
       "seal_of_righteousness": "一振りごとにホーリーダメージを付与し、ヴァーディクトで消費します。",
       "holy_light": "味方や自分の体力を満タンに戻す、安定した大きめのヒールです。",
@@ -2818,9 +3015,18 @@ export const ja_JP: EnTranslations = {
       "lightning_shield": "身にまとい、攻撃してきた相手にネイチャーダメージを与えます。",
       "flame_shock": "前面に一撃を与え、その後も継続して焼き続ける即時の燃焼です。",
       "fireball": "主力のファイア火力。一撃を当て、標的を燃焼させ続けます。",
+      "fireball_form": "生きた火球へと姿を変え、開けた場所を高速で駆け抜けます。",
       "frost_armor": "戦闘の前にアーマーを固める、持続する自己強化です。",
       "arcane_intellect": "知力を上げて仲間のマナ総量を増やします。プルの前に唱えておきましょう。",
       "frostbolt": "遠距離から攻撃し、標的を減速させて近づけなくします。",
+      "ice_lance": "氷の効果を消費する即時発動の氷片。凍結した対象には大幅に高いダメージを与えます。",
+      "flurry": "3発の氷弾を素早く放ち、次の氷系攻撃が対象を凍結状態として扱うようにします。",
+      "fingers_of_frost": "氷の矢が、ときどき次のアイスランスに対象を凍結状態として扱う力を与えます。",
+      "brain_freeze": "氷の矢が、ときどき次のウィンターラッシュを即時発動にして威力を高めます。",
+      "shatter": "凍結した対象に対する呪文のクリティカル率が大幅に上昇します。",
+      "frozen_orb": "ゆっくり進む氷球を敵の群れへ放ち、周囲を冷やして氷の効果を発生させます。",
+      "blizzard": "一帯を氷で覆い、敵の群れにダメージを与えながら移動速度を低下させます。",
+      "blink": "短い距離を前方へ瞬間移動し、移動不能効果を解除します。",
       "conjure_water": "マナを回復する飲み物を作り出し、プルの合間に補充できます。",
       "conjure_food": "座って食べると体力を回復する食料を作り出します。",
       "shadow_bolt": "標的に放つシャドウのボルト。主力の火力です。",
@@ -3263,13 +3469,13 @@ export const ja_JP: EnTranslations = {
       "craftHowTitle": "製作ウィンドウ",
       "craftHowBody": "製作ウィンドウ（初期設定はTキー）を開くと、あなたが知っているすべてのレシピ、それぞれに必要なもの、そして手持ちの材料が確認できます。材料がそろっていれば、クリック一つで作業が完了します。一般的なレシピは世界のどこでも製作できます。一部の高度なレシピ、上位の道具や希少なキャスター防具などは、ハイウォッチの製作拠点に立って作る必要があります。",
       "craftMasteryTitle": "技能と熟達",
-      "craftMasteryBody": "製作に成功するとその職の技能が上がりますが、技能がレシピを閉ざしてしまうことはありません。レシピを知っていて材料を持っていれば、いつでも挑戦できます。技能が高まって得られるのは品質です。熟練した手ほど、より上等な品を作り上げます。唯一の例外は組み合わせレシピで、これは解放される前に、その両方の職で腕前を証明しておくことを求めます。",
+      "craftMasteryBody": "製作に成功するとその職の技能が上がりますが、技能がレシピを閉ざしてしまうことはありません。レシピを知っていて材料を持っていれば、いつでも挑戦できます。どのレシピも約束どおりの品を仕上げますが、熟練した手はときに傑作を生み出します。同じ品ながら仕上がりが上等で、わずかな追加の力を宿しています。唯一の例外は組み合わせレシピで、二つの職をつなぐアーキタイプに調律し、両方の職で確かな腕前を示した製作者にのみ開かれます。",
       "craftComboTitle": "組み合わせレシピ",
       "craftComboBody": "単独の職自身のレシピ一覧に加えて、この輪は隣り合う二つの職を同時に呼び出す組み合わせレシピにも対応しており、孤立した一職だけでなく、輪の上で隣接する職に投資したキャラクターに報います。製作者はその二つの職を自分自身で修めていなければならず、いずれの側も取引相手の技能で代わりを務めることはできません。",
       "archetypeTitle": "十の生き方",
       "archetypeIntro": "十の職はそれぞれ生き方も体現しており、その職に単に従事すること以上の、より広いアイデンティティを取り入れることができる。あなたの現在の生き方は一度にひとつだけであり、チェックリストではない：あなたは一つを担い、望むならば後で変更することもできる。",
       "archetypeChooseTitle": "生き方を選ぶ",
-      "archetypeChooseBody": "生き方の宣言は、物語の一幕になる予定だ：そのアイデンティティへとあなたを正式に迎え入れるクエストである。その道はまだ建設中なので、今のところすべてのキャラクターは選択を前に残したまま世界を歩いており、その間、すべての製作はレアの品質ティアまで進められる。",
+      "archetypeChooseBody": "生き方の宣言は、物語の一幕だ：そのアイデンティティへとあなたを正式に迎え入れるクエストである。宣言するまでは、どの職の技能もレアのティアまで伸ばせる。ひと組を選び取れば、その二つの職は最後まで開かれ、輪の向こう側にある一つの職は趣味として手元に残り、やはりレアのティアまで働く。そのアイデンティティを掲げているあいだ、残るすべての職はコモンのティアにとどまる。",
       "archetypeSwitchTitle": "心変わり",
       "archetypeSwitchBody": "宣言が終身刑になるわけでもない。予定されているのは、新しい職を取り上げる前に古い職へ「償い」をする繰り返し可能な行いで、切り替えるたびに償いは少しずつ重くなる。そのため選択は代償のないものにはならず、意味を持ち続ける。宣言そのものと同じく、これもまだ道の途上にある。",
       "archetypeIdentityTitle": "あなたの生き方が意味するもの",
@@ -4851,6 +5057,11 @@ export const ja_JP: EnTranslations = {
     "discordCommunity": "World of ClaudeCraftのDiscordコミュニティに参加",
     "donateProject": "World of ClaudeCraftを支援するために寄付"
   },
+  "entryGuard": {
+    "title": "グラフィックを下げました",
+    "body": "ワールドへの入場中にゲームが予期せず終了したため、グラフィックは{preset}に設定されました。下のグラフィック選択またはゲーム内のオプションから変更できます。",
+    "dismiss": "閉じる"
+  },
   "loading": {
     "world": "世界を読み込み中...",
     "worldProgress": "世界を読み込み中... {done}/{total}",
@@ -4860,7 +5071,9 @@ export const ja_JP: EnTranslations = {
     "rendererFailed": "レンダラーを開始できません。再読み込みしてください。{error}",
     "enterTimeout": "世界に入れませんでした。接続がタイムアウトしました。ゲームサーバーは動作していますか？",
     "connectionLost": "サーバーとの接続が切断されました。",
-    "reconnecting": "サーバーとの接続が切断されました。再接続しています...",
+    "reconnectingAttempt": "サーバーとの接続が切断されました。再接続しています...（試行 {attempt}/{maxAttempts}、{seconds}秒後に再試行）",
+    "reconnectingNow": "サーバーとの接続が切断されました。今すぐ再接続しています...（試行 {attempt}/{maxAttempts}）",
+    "slowConnection": "読み込みに時間がかかっています。インターネット接続を確認してください。",
     "connectionRejected": "サーバーが接続を閉じました。",
     "realmFull": "このワールドは現在満員です。数分後にもう一度お試しください。",
     "tooManyConnections": "お使いのネットワークからこのワールドへの接続が多すぎます。余分なゲームウィンドウを閉じるか、数分後にもう一度お試しください。",
@@ -5354,11 +5567,14 @@ export const ja_JP: EnTranslations = {
       "openTrade": "取引を開く",
       "duelRequest": "{name}があなたに決闘を申し込みました！",
       "acceptDuel": "決闘を受ける",
+      "resurrectionOffer": "{name}があなたを蘇生しようとしています。受け入れますか？",
+      "acceptResurrection": "蘇生を受け入れる",
       "decline": "断る"
     },
     "combat": {
       "floatingMiss": "ミス",
       "floatingDodge": "回避",
+      "floatingParry": "受け流し",
       "floatingResist": "抵抗",
       "cannotMove": "動けない！",
       "attack": "攻撃",
@@ -5368,6 +5584,7 @@ export const ja_JP: EnTranslations = {
       "damageTakenCrit": "{source}からクリティカルで{amount}のダメージを受けました。",
       "miss": "{ability}は{target}に外れました。",
       "dodged": "{target}は{ability}を回避しました。",
+      "parried": "{target}は{ability}を受け流しました。",
       "resisted": "{target}は{ability}に抵抗しました。",
       "healSelf": "{ability}が自分を{amount}回復しました。",
       "healSelfCrit": "{ability}が自分をクリティカルで{amount}回復しました。",
@@ -5528,6 +5745,7 @@ export const ja_JP: EnTranslations = {
     },
     "pet": {
       "attack": "攻撃",
+      "waterJet": "ウォータージェット",
       "taunt": "挑発",
       "healDemon": "悪魔を治癒",
       "healPet": "ペットを治癒",
@@ -5536,6 +5754,8 @@ export const ja_JP: EnTranslations = {
       "aggressive": "攻撃",
       "petAttackTitle": "ペット攻撃",
       "petAttackDesc": "現在の敵対対象を攻撃するようペットに命令します。",
+      "waterJetTitle": "ウォータージェット",
+      "waterJetDesc": "ウォーターエレメンタルに、3秒間敵を減速させる水流を放つよう命令します。クールダウン8秒。右クリックすると、使用可能になるたびに自動で発動します。",
       "petTauntTitle": "ペット挑発",
       "petTauntDesc": "ペットに交戦を命じ、射程内でグロウルを使わせます。クールダウン10秒。",
       "healDemonDesc": "マナを消費し、5秒かけて悪魔へ治癒をチャネルします。",
@@ -5546,7 +5766,7 @@ export const ja_JP: EnTranslations = {
       "defensiveDesc": "あなたまたはペットを傷つけた敵を攻撃します。",
       "aggressiveDesc": "近くの敵対的な敵を攻撃します。",
       "rename": "ペット名変更",
-      "revive": "ペット蘇生",
+      "revive": "応急処置",
       "abandon": "ペット放棄",
       "cancel": "キャンセル",
       "renameLabel": "新しいペット名を選んでください。",
@@ -5802,6 +6022,8 @@ export const ja_JP: EnTranslations = {
     },
     "slots": {
       "mainhand": "メインハンド",
+      "twoHand": "両手",
+      "offhand": "オフハンド",
       "helmet": "頭",
       "neck": "首",
       "shoulder": "肩",
@@ -5842,7 +6064,8 @@ export const ja_JP: EnTranslations = {
       "attackPower": "攻撃力",
       "dps": "秒間ダメージ",
       "critChance": "クリティカル率",
-      "dodge": "回避"
+      "dodge": "回避",
+      "parry": "受け流し"
     },
     "tooltip": {
       "qualityKind": "{quality} {kind}",
@@ -5953,6 +6176,7 @@ export const ja_JP: EnTranslations = {
       "rarityUncommon": "高品質",
       "rarityRare": "レア",
       "rarityEpic": "エピック",
+      "rarityLegendary": "伝説",
       "merchantStock": "商人の在庫",
       "stackCount": "x{count}",
       "each": "各 {money}",
@@ -6081,23 +6305,15 @@ export const ja_JP: EnTranslations = {
       },
       "battle_shout": {
         "name": "鉄の咆哮",
-        "description": "2分間、攻撃力が{buff}増加します。"
-      },
-      "commanding_shout": {
-        "name": "鼓舞の号令",
-        "description": "2分間、スタミナが{buff}増加します。"
+        "description": "雄叫びを上げ、30分間、パーティメンバー全員の攻撃力を{buff}%増加させます。"
       },
       "demoralizing_shout": {
         "name": "戦慄の遠吠え",
-        "description": "恐ろしい雄叫びを上げ、30秒間、周囲の敵すべての攻撃力を{buff}低下させます。"
+        "description": "恐ろしい雄叫びを上げ、20秒間、周囲の敵すべてが与えるダメージを{buff}%低下させます。"
       },
       "charge": {
         "name": "突撃",
         "description": "敵に突撃し、怒りを9生成して1秒間スタンさせます。射程8-25yd。"
-      },
-      "rend": {
-        "name": "深き裂傷",
-        "description": "対象を負傷させ、{duration}秒かけて{damage}の出血ダメージを与えます。"
       },
       "thunder_clap": {
         "name": "震撼の一撃",
@@ -6143,6 +6359,10 @@ export const ja_JP: EnTranslations = {
         "name": "灰燼の矢",
         "description": "炎の球を放ち、{damage} の火炎ダメージと追加の継続ダメージを与えます。"
       },
+      "fireball_form": {
+        "name": "火球形態",
+        "description": "燃え盛る火球に変身し、移動速度が {buff}% 上昇します。変身中は攻撃や呪文の詠唱ができません。再使用すると元の姿に戻ります。"
+      },
       "frost_armor": {
         "name": "白霜の外套",
         "description": "霜で身を包み、30分間アーマーを{buff}増加させます。"
@@ -6154,6 +6374,94 @@ export const ja_JP: EnTranslations = {
       "frostbolt": {
         "name": "霧氷の槍",
         "description": "氷の矢を放ち、{damage} の冷気ダメージを与え、移動速度を40%低下させます。"
+      },
+      "blazing_barrier": {
+        "name": "ブレイジングバリア",
+        "description": "自身を炎で包み、{damage}ダメージを吸収します。60秒間持続します。（火）"
+      },
+      "cold_snap": {
+        "name": "冬の呼び戻し",
+        "description": "フリッカーステップ、フロストヴェール、グレーターインビジビリティのクールダウンを完了させます。（メイジタレント）"
+      },
+      "greater_invisibility": {
+        "name": "グレーターインビジビリティ",
+        "description": "20秒間姿を消します。継続ダメージ効果を2個解除し、透明状態の間と解除直後は受けるダメージが90%減少します。（メイジタレント）"
+      },
+      "hot_streak": {
+        "name": "ホットストリーク",
+        "description": "パッシブ：火系呪文（ファイアボール、ファイアブラスト、スコーチ、パイロブラスト、フレイムストライク）で2回連続してクリティカルを出すと、次のパイロブラストまたはフレイムストライクが即時発動となり、コストがなくなります。消費呪文は無料発動も含めて次の連続判定に加算されます。フレイムストライクは命中した敵の数にかかわらず1回のみ加算され、最初の着弾だけが判定されます。（火）"
+      },
+      "ice_floes": {
+        "name": "アイスフロー",
+        "description": "次の詠唱時間のある呪文2回を移動しながら発動できます。15秒間持続します。（メイジタレント）"
+      },
+      "ignition": {
+        "name": "イグニッション",
+        "description": "パッシブ：呪文のクリティカルが対象を燃焼させ、与えたダメージの40%を6秒かけて与えます。効果は累積します。（火のマスタリー）"
+      },
+      "mass_barrier": {
+        "name": "マスバリア",
+        "description": "自身と30メートル以内にいる近くの味方最大4人に、それぞれ130ダメージを吸収するシールドを60秒間付与します。（メイジタレント）"
+      },
+      "overload": {
+        "name": "オーバーロード",
+        "description": "次の呪文の効果が40%増幅されますが、マナ消費が50%増加します。10秒間持続します。（メイジタレント）"
+      },
+      "power_echo": {
+        "name": "パワーエコー",
+        "description": "次の直接呪文が同じ対象に50%の威力でもう一度発動します。10秒間持続します。（メイジタレント）"
+      },
+      "rings_of_frost": {
+        "name": "リング・オブ・フロスト",
+        "description": "10秒間持続する氷の輪を召喚します。輪の境界を越えた敵は4秒間凍結します。（メイジタレント）"
+      },
+      "rune_of_power": {
+        "name": "ルーン・オブ・パワー",
+        "description": "足元に15秒間持続する力のルーンを刻みます。8メートル以内に立つ味方が与えるダメージが10%増加します。（メイジタレント）"
+      },
+      "summon_water_elemental": {
+        "name": "ウォーターエレメンタル召喚",
+        "description": "共に戦うウォーターエレメンタルを召喚します。対象へウォーターボルトを投げ、ウォータージェットを放ちます。（氷）"
+      },
+      "ice_lance": {
+        "name": "アイスランス",
+        "description": "氷の槍を投げ、{damage}の氷ダメージを与えます。凍結した対象には3倍のダメージを与えます。フィンガーズ・オブ・フロストまたはウィンターズ・チルを1チャージ消費すると、対象を凍結状態として扱います。（氷）"
+      },
+      "flurry": {
+        "name": "ウィンターラッシュ",
+        "description": "3発の氷弾を放ち、それぞれ{damage}の氷ダメージを与え、対象にウィンターズ・チルを付与します。次に命中する対応呪文2回は対象を凍結状態として扱います。ブレインフリーズ発動時は即時発動となり、威力が30%上昇してクールダウンを無視します。（氷）"
+      },
+      "frozen_orb": {
+        "name": "フローズンオーブ",
+        "description": "渦巻く氷球を放ち、8秒間前方へ漂わせます。周囲の敵に毎秒{damage}の氷ダメージを与え、移動速度を30%低下させます。命中するとフィンガーズ・オブ・フロストを生成します。（氷）"
+      },
+      "blizzard": {
+        "name": "ブリザード",
+        "description": "対象地点に6秒間吹雪を呼び、毎秒{damage}の氷ダメージを与えて敵の移動速度を40%低下させます。敵1体に命中するたび、フローズンオーブのクールダウンを0.5秒、1回の発動につき最大3秒短縮します。（氷）"
+      },
+      "glacial_spike": {
+        "name": "グレイシャルスパイク",
+        "description": "巨大な氷の槍を作り、アイシクルを5個消費して{damage}の氷ダメージを与え、対象を4秒間その場で凍結させます。（氷）"
+      },
+      "glacial_front": {
+        "name": "氷河の前線",
+        "description": "長押しして広がる冷気を蓄え、円錐状に放出します。チャージが長いほど遠くまで届き、ダメージが増加します。命中したすべての敵の移動速度を4秒間50%低下させ、最大チャージ時はさらに1秒間移動不能にします。（氷）"
+      },
+      "dragons_breath": {
+        "name": "ドラゴンズブレス",
+        "description": "長押しして広がる炎の息を蓄え、円錐状に放出します。チャージが長いほど遠くまで届き、ダメージが増加します。命中した敵は混乱し、ダメージを受けると効果が解除されます。最大チャージ時は必ずクリティカルとなり、ホットストリークの条件に1回分加算されます。（火）"
+      },
+      "fingers_of_frost": {
+        "name": "フィンガーズ・オブ・フロスト",
+        "description": "ライムランスが15%の確率でフィンガーズ・オブ・フロストを1チャージ付与します（最大2チャージ）。次のアイスランスは対象を凍結状態として扱います。（氷）"
+      },
+      "brain_freeze": {
+        "name": "ブレインフリーズ",
+        "description": "ライムランスが20%の確率で、次のウィンターラッシュを即時発動にし、威力を30%上昇させ、クールダウンを無視させます。（氷）"
+      },
+      "shatter": {
+        "name": "脆き破滅",
+        "description": "凍結した対象に対する呪文のクリティカル率が50%上昇し、そのクリティカルダメージが20%上昇します。フィンガーズ・オブ・フロストとウィンターズ・チルも対象を凍結状態として扱います。（氷）"
       },
       "conjure_water": {
         "name": "水の召喚",
@@ -6177,7 +6485,7 @@ export const ja_JP: EnTranslations = {
       },
       "frost_nova": {
         "name": "氷縛",
-        "description": "周囲の敵すべてを最大8秒間その場に凍結させ、{damage} の冷気ダメージを与えます。"
+        "description": "周囲の敵すべてを最大8秒間その場に凍結させ、{damage} の冷気ダメージを与えます。移動不能効果は、対象の最大体力の15%に相当する累積ダメージを受けると解除されます。解除に必要なダメージは最低20、最大60です。"
       },
       "arcane_explosion": {
         "name": "エーテルバースト",
@@ -6575,10 +6883,6 @@ export const ja_JP: EnTranslations = {
         "name": "樫の肌",
         "description": "肌が樹皮のように硬くなり、15秒間アーマーが150増加します。"
       },
-      "ironhold": {
-        "name": "鉄壁",
-        "description": "堅固な守りで身を固め、8秒間、受けるすべてのダメージを40%軽減します。"
-      },
       "sacred_bulwark": {
         "name": "聖なる防壁",
         "description": "{duration}秒間、次に敵から受ける致命的な一撃を無効化し、代わりに体力を最大値の35%まで回復します。"
@@ -6667,6 +6971,10 @@ export const ja_JP: EnTranslations = {
         "name": "ホーリーショック",
         "description": "聖なる力で味方を衝撃し、体力を{damage}回復します。（ホーリー特性のシグネチャ）"
       },
+      "aura_surge": {
+        "name": "曙光の跳弾",
+        "description": "曙光で鍛えた盾を投げて{damage}の聖属性ダメージを与え、最初の対象を2秒間沈黙させる。その後、10ヤード以内の追加の敵最大2体へ跳ね返り、1回ごとに75%のダメージを与える。（パラディンのタレント）"
+      },
       "holy_shield": {
         "name": "ホーリーシールド",
         "description": "10秒間、聖なる力で自分を守り、防御力を90上げ、近接攻撃者に12の聖属性ダメージを与えます。（プロテクション特性のシグネチャ）"
@@ -6688,7 +6996,7 @@ export const ja_JP: EnTranslations = {
         "description": "10秒間、呪文ダメージが20%、呪文ヘイストが10%上がります。（アーケイン特性のシグネチャ）"
       },
       "combustion": {
-        "name": "コンバッション",
+        "name": "不死鳥のトランス",
         "description": "15秒間、呪文クリティカル率が50%上がります。（ファイア特性のシグネチャ）"
       },
       "icy_veins": {
@@ -6771,6 +7079,246 @@ export const ja_JP: EnTranslations = {
         "name": "レイスボーンの召喚",
         "description": "レイスボーンを意のままに束縛します。遠方から強力なシャドウダメージを降らせるエリート悪魔です。長い再使用時間がその破壊的な力を制限します。新たな悪魔を召喚すると現在の悪魔は解放されます。悪魔は一度に1体しか従えられません。"
       },
+      "battle_stance": {
+        "name": "バトルスタンス",
+        "description": "攻撃的な戦闘スタンスです。怒りの生成量が10%増加します。武器と防御の基本スタンスです。"
+      },
+      "berserker_stance": {
+        "name": "バーサーカースタンス",
+        "description": "無謀な戦闘スタンスです。クリティカルの発生率が3%上昇し、ダメージが3%増加します。狂怒ウォリアーは常にこのスタンスで戦います。"
+      },
+      "sweeping_strikes": {
+        "name": "広がる弧",
+        "description": "12秒間、単体攻撃が近くの敵1体にも100%のダメージで命中します。（武器）"
+      },
+      "deep_wounds": {
+        "name": "抉れた傷",
+        "description": "パッシブ: あなたの重傷の一撃が対象に出血を残し、6秒かけて物理ダメージを与えます。（武器）"
+      },
+      "enrage_passive": {
+        "name": "狂乱",
+        "description": "パッシブ: 激昂している間、与えるダメージが7%増加し、攻撃速度が25%、移動速度が10%上昇します（4秒間）。瀉血には30%の確率で激昂させる効果があり、赤い収穫は必ず激昂させます。（狂怒）"
+      },
+      "raging_gale": {
+        "name": "双撃",
+        "description": "武器で即座に2回攻撃し、それぞれ武器ダメージの40%に{damage}を加えたダメージを与え、怒りを4生成します。最大2チャージまで蓄積します。（狂怒）"
+      },
+      "red_harvest": {
+        "name": "赤い収穫",
+        "description": "すべてを注ぎ込み、狂乱のうちに3回攻撃し、それぞれ武器ダメージの65%に{damage}を加えたダメージを与え、必ず激怒状態になります。（狂怒）"
+      },
+      "furious_mending": {
+        "name": "憤怒の癒し",
+        "description": "10秒間、受けるダメージが20%減少し、効果中は瀉血が最大体力の20%を回復します。（狂怒）"
+      },
+      "emboldening_roar": {
+        "name": "奮起の咆哮",
+        "description": "奮い立たせる咆哮を上げ、40yd以内の自分と味方プレイヤーを鼓舞します。次の3回のアビリティが必ずクリティカルになります。（狂怒）"
+      },
+      "raised_guard": {
+        "name": "守りの構え",
+        "description": "盾の陰に身を構え、6秒間、受ける物理ダメージが50%減少します。最大2チャージまで蓄積します。（防御）"
+      },
+      "iron_resolve": {
+        "name": "鉄の決意",
+        "description": "歯を食いしばって痛みを堪え、最大40の怒り（最低20）を消費し、消費した怒り1につき4のダメージを吸収します。最大10秒間持続します。（防御）"
+      },
+      "faultline": {
+        "name": "断層",
+        "description": "地面に衝撃波を走らせ、前方8yd以内の敵に{damage}のダメージを与え、3秒間スタンさせます。（防御）"
+      },
+      "defiant_bellow": {
+        "name": "不屈の雄叫び",
+        "description": "不屈の雄叫びを上げ、10yd以内のすべての敵を挑発し、3秒間あなたを攻撃するよう強制します。（防御）"
+      },
+      "breachmaker": {
+        "name": "崩し手",
+        "description": "対象を打ち据えて武器ダメージに{damage}を加えたダメージを与え、その守りを崩します。8秒間、あなたがその対象に与えるダメージが20%増加します。（武器）"
+      },
+      "measured_fury": {
+        "name": "制御された怒り",
+        "description": "制御された怒りが効率を高め、アビリティの怒りコストが10%減少します。（武器）"
+      },
+      "seasoned_soldier": {
+        "name": "歴戦の兵",
+        "description": "クリティカルの通常攻撃が生成する怒りが10%増加します。（武器）"
+      },
+      "diabolical_twinstrike": {
+        "name": "極悪の双撃",
+        "description": "激昂している間、双撃のダメージが15%増加します。（狂怒）"
+      },
+      "cleaving_blows": {
+        "name": "切り裂く連撃",
+        "description": "赤い収穫は必ず双撃のチャージを1つ回復します。（狂怒）"
+      },
+      "sudden_death": {
+        "name": "突然死",
+        "description": "通常攻撃に、体力に関係なく早すぎる墓を怒りコストなしで使用できるようになる確率があります。（武器）"
+      },
+      "storm_bolt": {
+        "name": "嵐の一投",
+        "description": "武器を対象に投げつけて{damage}のダメージを与え、3秒間スタンさせます。"
+      },
+      "piercing_howl": {
+        "name": "貫く咆哮",
+        "description": "劈くような叫びを上げ、15yd以内のすべての敵の移動速度を8秒間、50%低下させます。"
+      },
+      "die_by_sword": {
+        "name": "剣に死す",
+        "description": "防御的クールダウン。8秒間、受けるダメージが30%減少し、攻撃を回避する確率が大幅に上昇します。"
+      },
+      "recklessness": {
+        "name": "無謀",
+        "description": "激昂。12秒間、怒りの生成量が50%、クリティカル率が20%増加します。"
+      },
+      "sanguine_aura": {
+        "name": "血のオーラ",
+        "description": "武器に敵の血を宿し、20秒間、自分と近接の味方の攻撃速度が10%、ダメージが10%増加します。"
+      },
+      "victory_rush": {
+        "name": "勝利の追撃",
+        "description": "武器ダメージに{damage}を加えたダメージを与え、最大体力の20%を回復します。敵を倒してから20秒以内にのみ使用できます。"
+      },
+      "intimidating_shout": {
+        "name": "威圧の雄叫び",
+        "description": "恐ろしい叫びを上げ、8yd以内の最大5体の敵を8秒間、恐怖で逃げ惑わせます。ダメージを受けると効果が解除されることがあります。"
+      },
+      "revenge": {
+        "name": "意趣返し",
+        "description": "大きく弧を描いて攻撃し、前方のすべての敵に物理ダメージを与えます。対象が5体を超えるとダメージが減少します。回避または受け流しに成功すると、次の意趣返しの怒りコストが0になることがあります。 (Protection)"
+      },
+      "heroic_leap": {
+        "name": "英雄的跳躍",
+        "description": "対象地点へ跳躍し、着地時に周囲の敵へ{damage}のダメージを与えます。"
+      },
+      "rallying_cry": {
+        "name": "勇気の雄叫び",
+        "description": "勇壮な雄叫びを上げ、自分と40ヤード以内のパーティメンバーの最大体力を10秒間20%増加させます。防御の対象は、効果中に受けるダメージも5%減少します。"
+      },
+      "aspect_of_the_wild": {
+        "name": "野牙の装い",
+        "description": "30ヤード以内の味方を野生の力で鼓舞し、攻撃力を45、攻撃速度を5%上昇させる。効果時間5分。（ハンターのタレント）"
+      },
+      "avatar": {
+        "name": "化身",
+        "description": "20秒間コロッサスに変身し、あらゆる行動妨害を解除し、与えるダメージが20%増加します。"
+      },
+      "avenging_wrath": {
+        "name": "復讐の翼",
+        "description": "復讐の力を呼び起こし、攻撃力を60、魔力を30上昇させる。効果時間20秒。（パラディンのタレント）"
+      },
+      "berserk": {
+        "name": "赤き霞",
+        "description": "攻撃力を70上昇させる。効果時間15秒。（ドルイドのタレント）"
+      },
+      "bladestorm": {
+        "name": "剣の嵐",
+        "description": "鋼の嵐と化し、4秒間、6ヤード以内のすべての敵に毎秒{damage}のダメージを与えます。"
+      },
+      "blink": {
+        "name": "瞬き歩み",
+        "description": "前方15ヤードへ瞬間移動し、移動不能効果を解除する。（メイジのタレント）"
+      },
+      "bloodlust": {
+        "name": "戦の太鼓",
+        "description": "30ヤード以内の味方を狂乱させ、攻撃速度を30%上昇させる。効果時間15秒。（シャーマンのタレント）"
+      },
+      "chain_lightning": {
+        "name": "枝分かれの稲妻",
+        "description": "対象地点へ雷を放ち、周囲の敵に{damage}のダメージを与える。（シャーマンのタレント）"
+      },
+      "chaos_bolt": {
+        "name": "破滅の矢",
+        "description": "混沌の炎を放ち、{damage}の火属性ダメージを与える。（ウォーロックのタレント）"
+      },
+      "cleansing_verdict": {
+        "name": "浄化の裁定",
+        "description": "味方1体の有害な魔法効果を解除し、{damage}の体力を回復する。"
+      },
+      "cloak_of_shadows": {
+        "name": "影まとい",
+        "description": "影で身を包み、5秒間に420のダメージを吸収する。（ローグのタレント）"
+      },
+      "cone_of_cold": {
+        "name": "霜払い",
+        "description": "周囲の敵を冷気で撃ち、{damage}の氷ダメージを与えます。（氷シグネチャー）"
+      },
+      "counterspell": {
+        "name": "スペルブレイク",
+        "description": "対象の呪文を打ち消し、6秒間その系統の呪文を封じる。"
+      },
+      "curse_of_exhaustion": {
+        "name": "鉛の呪い",
+        "description": "対象を呪い、移動速度を30%低下させる。効果時間12秒。（ウォーロックのタレント）"
+      },
+      "death_coil": {
+        "name": "墓所の螺旋",
+        "description": "敵に{damage}の闇属性ダメージを与え、その後3秒間恐怖状態にする。（ウォーロックのタレント）"
+      },
+      "deep_freeze": {
+        "name": "死霜",
+        "description": "対象を深く凍らせ、{damage} の冷気ダメージを与えて 4 秒間気絶させる。（メイジタレント）"
+      },
+      "desperate_prayer": {
+        "name": "最後の祈り",
+        "description": "自分の体力を即座に{damage}回復する。（プリーストのタレント）"
+      },
+      "deterrence": {
+        "name": "針毛の守り",
+        "description": "回避率を50パーセントポイント上昇させる。効果時間10秒。（ハンターのタレント）"
+      },
+      "divine_shield": {
+        "name": "光の護り",
+        "description": "聖なる力で身を守り、8秒間に900のダメージを吸収する。（パラディンのタレント）"
+      },
+      "earthbind": {
+        "name": "大地の縛り",
+        "description": "周囲の敵を大地に縛り、2秒間移動不能にする。（シャーマンのタレント）"
+      },
+      "evocation": {
+        "name": "エーテルの井戸",
+        "description": "マナを急速に回復する。（メイジタレント）"
+      },
+      "frenzied_regeneration": {
+        "name": "野生の癒し",
+        "description": "10秒かけて体力を180回復する。熊形態でのみ使用可能。（ドルイドのタレント）"
+      },
+      "frost_trap": {
+        "name": "霧氷の罠",
+        "description": "対象地点の敵を3秒間凍結させ、移動と行動を封じる。（ハンターのタレント）"
+      },
+      "ghostly_strike": {
+        "name": "亡霊の一撃",
+        "description": "敵に武器ダメージと{damage}の追加ダメージを与え、短時間、回避率を上昇させる。コンボポイントを1獲得する。（ローグのタレント）"
+      },
+      "hammer_of_wrath": {
+        "name": "鐘鳴りの槌",
+        "description": "傷ついた敵に聖なるハンマーを投げ、{damage}の聖属性ダメージを与える。体力が20%未満の対象にのみ使用可能。（パラディンのタレント）"
+      },
+      "healing_stream": {
+        "name": "湧き水",
+        "description": "味方1体の体力を12秒かけて120回復する。（シャーマンのタレント）"
+      },
+      "holy_wrath": {
+        "name": "聖者の怒り",
+        "description": "聖なる力を解き放ち、周囲の敵に{damage}のダメージを与える。（パラディンのタレント）"
+      },
+      "howl_of_terror": {
+        "name": "恐怖の遠吠え",
+        "description": "周囲の敵を最大3秒間恐怖状態にする。ダメージを受けると解除されることがある。（ウォーロックのタレント）"
+      },
+      "ice_block": {
+        "name": "冷たき棺",
+        "description": "自身を氷に封じ、大量のダメージを吸収する。効果時間 8 秒。（メイジタレント）"
+      },
+      "inner_focus": {
+        "name": "静まる心",
+        "description": "次に使用するスペルの消費をなくす。効果時間60秒。（プリーストのタレント）"
+      },
+      "innervate": {
+        "name": "生命の樹液",
+        "description": "生命の樹液が10秒間あふれ、現在のリソースを波状に20回復する。マナ、怒り、エナジーに対応し、変身しても中断されない。睡眠、スタン、ステイシス中は樹液が止まる。（ドルイドのタレント）"
+      },
       "pummel": {
         "name": "顎砕き",
         "description": "対象の呪文詠唱を中断し、4秒間その系統の呪文を封じる。"
@@ -6779,9 +7327,81 @@ export const ja_JP: EnTranslations = {
         "name": "ブーツ",
         "description": "対象の呪文詠唱を中断し、4秒間その系統の呪文を封じる。"
       },
-      "counterspell": {
-        "name": "スペルブレイク",
-        "description": "対象の呪文を打ち消し、6秒間その系統の呪文を封じる。"
+      "mend_pet": {
+        "name": "手当て",
+        "description": "15 秒かけて味方対象を {damage} 回復する。（ハンタータレント）"
+      },
+      "meteor": {
+        "name": "天の石",
+        "description": "対象地点へ隕石を落とし、{damage}の火属性ダメージを与える。その後6秒間、その場の敵に2秒ごとに12から18の火属性ダメージを与える。（メイジのタレント）"
+      },
+      "temporal_mend": {
+        "name": "時の繕い",
+        "description": "味方を一瞬だけ未来へ進め、より健やかな未来の体に馴染む間に体力を{damage}回復する。(クロノマンシーの特性)"
+      },
+      "temporal_barrier": {
+        "name": "時の障壁",
+        "description": "対象を現在から一拍だけずらし、時の殻が10秒間、{damage}のダメージを吸収してから時間軸が元に戻る。"
+      },
+      "temporal_echo": {
+        "name": "時の残響",
+        "description": "より健やかだった瞬間の残響で味方に刻印し、即座に{damage}の体力を回復する。{duration}秒間、与えた秘術ダメージの一部が残響を通じてその味方を癒やす。"
+      },
+      "temporal_cascade": {
+        "name": "時の連鎖",
+        "description": "時の残響をパーティ内に連鎖させ、対象と最も近い味方最大4人を即座に回復し、それぞれに{duration}秒間印を付けます。あなたが与えた秘術ダメージの一部が残響を通じて戻り、印のついた味方を回復します。（クロノマンシー）"
+      },
+      "temporal_reversal": {
+        "name": "時の逆転",
+        "description": "倒れた味方の時間軸を巻き戻し、戦闘中でも、その遺体の場所で体力とマナの一部を持った状態で蘇生します。（クロノマンシー）"
+      },
+      "collective_reversal": {
+        "name": "集団逆行",
+        "description": "グループまたはレイドの死亡した全メンバーの時間軸を巻き戻し、遺体のそばで体力とマナが30%の状態で蘇生する。戦闘中は詠唱できない。（時間魔法）"
+      },
+      "temporal_rewind": {
+        "name": "巻き戻し",
+        "description": "パーティまたはレイドに秘術の波を送り、時間を巻き戻します。40ヤード以内の各味方が過去5秒間に受けたダメージの30%を回復します（最大体力の35%まで）。この効果はクリティカルになりません。（クロノマンシー）"
+      },
+      "temporal_hourglass": {
+        "name": "停止の砂時計",
+        "description": "選択地点に時の砂時計を置きます。敵の足元では PvE で {hostilePveDuration} 秒、PvP で {hostilePvpDuration} 秒間停止させ、ダメージを受けると解除されます。自分またはパーティの味方の足元では {duration} 秒間の停滞となり、ダメージを受けず行動不能になり、最大体力の {healing}% を回復します。自分のクールダウンは {selfCooldownRecovery}%、味方は {allyCooldownRecovery}% 速く回復します。空の地面に置くと {groundDuration} 秒間待機し、最初に踏んだ有効な対象へ効果を与えます。強化効果は手動で解除できます。"
+      },
+      "temporal_acceleration": {
+        "name": "時間加速",
+        "description": "パーティまたはレイドの時間の流れを加速し、15秒間、攻撃、詠唱、チャネリング速度を30%上昇させます。直近に時間加速またはブラッドラストの影響を受けた味方は疲労しており、効果を得られません。（クロノマンシー）"
+      },
+      "perfect_moment": {
+        "name": "完璧な瞬間",
+        "description": "完璧な瞬間をつかみ、秘術チャージを即座に4つ獲得します。10秒間、エーテルダーツはチャージを消費しません。（クロノマンシー）"
+      },
+      "arcane_surge": {
+        "name": "エーテルサージ",
+        "description": "生の秘術エネルギーを敵に流し込み、{damage}のダメージを与えます。発動するたびに秘術チャージが残り、次のエーテルサージのダメージと詠唱速度が上昇します（1つにつき5%高速化）が、マナ消費も大幅に増えます。最大4チャージ。エーテルダーツはチャージを消費します。また発動時にエーテルラッシュが準備されることがあり、次のエーテルサージのマナ消費がなくなり、詠唱速度が2倍になります。"
+      },
+      "mind_sear": {
+        "name": "思念焼き",
+        "description": "対象地点へ闇のエネルギーをチャネリングし、周囲の敵に毎秒{damage}のダメージを与える。（プリーストのタレント）"
+      },
+      "multi_shot": {
+        "name": "分裂射撃",
+        "description": "対象地点へ矢の一斉射撃を放ち、8ヤード以内の敵に{damage}の物理ダメージを与える。（ハンターのタレント）"
+      },
+      "prayer_of_healing": {
+        "name": "聖歌の癒し",
+        "description": "周囲の味方の体力を{damage}回復する。（プリーストのタレント）"
+      },
+      "preparation": {
+        "name": "備え",
+        "description": "スプリント、回避、バニッシュのクールダウンを完了させる。（ローグのタレント）"
+      },
+      "presence_of_mind": {
+        "name": "駆ける心",
+        "description": "次の詠唱時間のある呪文を即時詠唱にする。効果時間 60 秒。（メイジタレント）"
+      },
+      "psychic_scream": {
+        "name": "精神の絶叫",
+        "description": "周囲の敵を最大4秒間恐怖状態にする。ダメージを受けると解除されることがある。（プリーストのタレント）"
       },
       "counter_shot": {
         "name": "沈黙の一射",
@@ -6791,6 +7411,26 @@ export const ja_JP: EnTranslations = {
         "name": "叱咤",
         "description": "対象の呪文詠唱を中断し、4秒間その系統の呪文を封じる。"
       },
+      "shadowstep": {
+        "name": "影すべり",
+        "description": "影を通り抜けて対象へ近づく。（ローグのタレント）"
+      },
+      "silence": {
+        "name": "沈黙",
+        "description": "対象を4秒間沈黙させる。（プリーストのタレント）"
+      },
+      "smoke_screen": {
+        "name": "スモークスクリーン",
+        "description": "煙幕に紛れ、8秒間、回避率を30%上昇させる。"
+      },
+      "spellsteal": {
+        "name": "魔法奪取",
+        "description": "敵の有益な魔法効果を1つ奪い、自分へ移す。"
+      },
+      "startle_shot": {
+        "name": "驚愕射撃",
+        "description": "荒々しい一射で対象を{duration}秒間混乱させる。ダメージを受けると解除される。"
+      },
       "skull_bash": {
         "name": "頭突き",
         "description": "突進する頭突きで対象の詠唱を中断し、4秒間その系統を封じる。"
@@ -6798,6 +7438,18 @@ export const ja_JP: EnTranslations = {
       "spell_lock": {
         "name": "猿轡",
         "description": "詠唱中の対象を沈黙させ、5秒間その系統の呪文を封じる。"
+      },
+      "tranquility": {
+        "name": "木立の歌",
+        "description": "4秒間、回復エネルギーをチャネリングし、30ヤード以内の味方の体力を毎秒42から52回復する。（ドルイドのタレント）"
+      },
+      "typhoon": {
+        "name": "タイフーン",
+        "description": "突風で8ヤード以内のすべての敵を吹き飛ばしてよろめかせ、4秒間、移動速度を50%低下させる。"
+      },
+      "voidfeast": {
+        "name": "虚無の饗宴",
+        "description": "魔法効果（敵の有益効果または味方の有害効果）を貪り、自分の最大体力の6%を回復する。"
       },
       "bear_charge": {
         "name": "ブルーインラッシュ",
@@ -6816,8 +7468,8 @@ export const ja_JP: EnTranslations = {
         "description": "ステルス状態からの先制攻撃で、武器ダメージに加えて{damage}のダメージを与え、9秒かけて出血ダメージを与える。コンボポイントを1獲得する。ウルフフォーム時のみ使用可能。"
       },
       "revive_pet": {
-        "name": "ペット蘇生",
-        "description": "死んだペットを蘇生させ、自分のそばに呼び戻す。"
+        "name": "応急処置",
+        "description": "ペットを応急処置する。生存している場合は12秒間、3秒ごとに回復し、合計{overTime}の体力を回復する。死亡している場合は体力35%で蘇生する。"
       }
     },
     "items": {
@@ -7580,6 +8232,24 @@ export const ja_JP: EnTranslations = {
       "emberglass_warstaff": {
         "name": "熾火硝子の戦杖"
       },
+      "copper_ore": {
+        "name": "銅鉱石"
+      },
+      "iron_ore": {
+        "name": "鉄鉱石"
+      },
+      "ironbark_log": {
+        "name": "アイアンバークの丸太"
+      },
+      "silverleaf_herb": {
+        "name": "シルバーリーフ草"
+      },
+      "conjured_water4": {
+        "name": "魔法の湧き水"
+      },
+      "conjured_bread4": {
+        "name": "魔法の祝宴パン"
+      },
       "bristleback_maul": {
         "name": "ギャロウグラスの大槌"
       },
@@ -8048,6 +8718,18 @@ export const ja_JP: EnTranslations = {
       "heroic_mark": {
         "name": "英雄の証"
       },
+      "eastbrook_buckler": {
+        "name": "イーストブルックのバックラー"
+      },
+      "eastbrook_greatsword": {
+        "name": "イーストブルックの大剣"
+      },
+      "highwatch_greatsword": {
+        "name": "ハイウォッチの大剣"
+      },
+      "highwatch_wallshield": {
+        "name": "ハイウォッチの壁盾"
+      },
       "morthens_cryptforged_hauberk": {
         "name": "モルセンの墓鋳ホーバーク"
       },
@@ -8200,6 +8882,18 @@ export const ja_JP: EnTranslations = {
       },
       "stormcallers_spaulders": {
         "name": "ゲイルコールの肩当て"
+      },
+      "bonewrought_greatsword": {
+        "name": "ボーンロートの大剣"
+      },
+      "direfang_greatblade": {
+        "name": "ダイアファングの大刀"
+      },
+      "bonewrought_bulwark": {
+        "name": "ボーンロートの大盾"
+      },
+      "wraithfire_orb": {
+        "name": "レイスファイアのオーブ"
       },
       "unknown_alien_weaponry": {
         "name": "未知の異星武装"
@@ -8449,9 +9143,6 @@ export const ja_JP: EnTranslations = {
       "nythraxis_skeleton_warrior": {
         "name": "蘇った王家の衛兵"
       },
-      "nythraxis_scourge_of_thornpeak": {
-        "name": "ナイスラクシス、ソーンピークの災厄"
-      },
       "nythraxis_heroic_warrior_add": {
         "name": "死なずの戦衛オルドレン"
       },
@@ -8460,6 +9151,9 @@ export const ja_JP: EnTranslations = {
       },
       "nythraxis_heroic_rogue_add": {
         "name": "死なずの刃ヴォス"
+      },
+      "nythraxis_scourge_of_thornpeak": {
+        "name": "ナイスラクシス、ソーンピークの災厄"
       },
       "reliquary_ledger_wraith": {
         "name": "台帳の亡霊"
@@ -8631,6 +9325,9 @@ export const ja_JP: EnTranslations = {
       },
       "ysolei": {
         "name": "イソレイ、溺月の化身"
+      },
+      "water_elemental": {
+        "name": "ウォーターエレメンタル"
       }
     },
     "npcs": {
@@ -8804,6 +9501,36 @@ export const ja_JP: EnTranslations = {
         "title": "ソーンピーク高地の年代記",
         "greeting": "山は何ひとつ忘れない、{playerName}よ。私もだ。あなたの成したことを見せてもらおう。"
       },
+      "forgemistress_darva": {
+        "name": "鍛冶長ダルヴァ",
+        "title": "鍛冶場の主",
+        "greeting": "炉は私に従う、{className}。良い鉱石を持って来れば、おまえにも従うようになる。"
+      },
+      "cook_marlow": {
+        "name": "料理人マーロウ",
+        "title": "厨房の主",
+        "greeting": "私の厨房から生煮えのまま出ていくものはない、{className}。座って食べて、それからまた行きな。"
+      },
+      "weaver_ottilie": {
+        "name": "織り手オッティリー",
+        "title": "機織り場の主",
+        "greeting": "糸に気をつけて、{className}。機を扱うなら、強い手より確かな手だよ。"
+      },
+      "tinker_gizzel": {
+        "name": "からくり師ギッゼル",
+        "title": "工房の主",
+        "greeting": "バネに歯車に切れ味のいい刃、{className}。あんたの手に足りないものは、この工房が何でも揃えるよ。"
+      },
+      "tanner_hesk": {
+        "name": "皮なめし職人ヘスク",
+        "title": "なめし場の主",
+        "greeting": "革の良し悪しはなめしで決まる、{className}。桶の用意はできている、あとはあんた次第だ。"
+      },
+      "alchemist_verane": {
+        "name": "錬金術師ヴェレーン",
+        "title": "薬房の主",
+        "greeting": "二度量って一度で注ぐ、{className}。薬房ではこぼした試薬に容赦はしない。"
+      },
       "tidewatcher_ondrel": {
         "name": "オンドレル・ヴェイン",
         "title": "潮見の番人",
@@ -8813,11 +9540,11 @@ export const ja_JP: EnTranslations = {
     "quests": {
       "q_prof_intro": {
         "title": "剣以外にも稼ぎはある",
-        "text": "イーストブルックの誰もが剣以外の生業を持っているものだ、{playerName}。町の周りに鉱脈が散らばっている。つるはしを振るって鉱石を5個持ってきてくれ。自分で採掘するんだぞ、見ればわかる。",
-        "completion": "どうだ？鞄には鉱石、手にはマメだ。旅の道中も採掘、伐採、薬草採取を続けるといい。町に戻ったら、市場そばのタウンフォーカス掲示板と近くの製作台も気にかけてくれ。その気があれば、どれも実入りのいい仕事になる。",
+        "text": "イーストブルックでは誰もが剣のほかに生業を持つ、{playerName}。町の南西、カッパー・ディグ周辺の岩場には鉱脈がある。つるはしを振るい、自分の手で5か所採掘してこい。ごまかしても分かるぞ。",
+        "completion": "どうだ？ 鉱石を採り、手にはまめができた。旅の途中でも採掘、伐採、薬草採集を続けるんだ。町へ戻ったら、市場そばのタウンフォーカス掲示板と近くの製作台も忘れるな。望むなら、どの仕事にもまっとうな稼ぎが待っている。",
         "objectives": {
           "0": {
-            "label": "鉱石のかけら"
+            "label": "鉱脈を採掘"
           }
         }
       },
@@ -9605,21 +10332,31 @@ export const ja_JP: EnTranslations = {
       },
       "q_archetype_acceptance": {
         "title": "己が選ぶべき技",
-        "text": "イーストブルックの職人は皆いずれ、己が選ぶべき一つの技に落ち着く。{playerName}よ、一つの行いで己を証明し、進むべき道を宣言せよ。",
-        "completion": "あなたの道は定まった。その道をしかと歩むがいい。",
+        "text": "技とは知識だ、{playerName}。だが調律は誓いだ。隣り合う二つの技を主専攻として選び、谷で自ら採掘した鉱石を持ってこい。",
+        "completion": "誓いは結ばれた。この二つの技が今やお前の主専攻となり、その反対側の知識が趣味となる。",
+        "objectives": {
+          "0": {
+            "label": "鉱脈を採掘"
+          }
+        }
+      },
+      "q_prof_make_amends": {
+        "title": "償い",
+        "text": "その組み合わせは以前にも身につけていたな、{playerName}。戻ることは新たな誓いではない。谷の道の安全を守り、かつて手が覚えていた感覚を働きながら取り戻せ。",
+        "completion": "昔の感覚が戻った。以前の組み合わせが再び有効になった。",
         "objectives": {
           "0": {
             "label": "フォレストウルフを討伐"
           }
         }
       },
-      "q_prof_make_amends": {
-        "title": "償い",
-        "text": "一つの技を捨て、別の技へと移るには、職人はまず歩まなかった道への償いを果たさねばならぬ、{playerName}よ。",
-        "completion": "償いは果たされた。新たな道があなたに開かれている。",
+      "q_prof_hobby_switch": {
+        "title": "別の嗜み",
+        "text": "主専攻には誓いが要る。趣味が問うのは、好奇心がどこへ向かうかだけだ、{playerName}。薬草をいくつか採集し、二つの主専攻の反対側にある技のうち、どちらを磨くか決めるのだ。",
+        "completion": "気軽な選択だが、役には立つ。その好奇心を、レア品質の仕事に届くところまで追いかけるといい。",
         "objectives": {
           "0": {
-            "label": "フォレストウルフを討伐"
+            "label": "薬草の群生地を採集"
           }
         }
       },
@@ -9863,6 +10600,56 @@ export const ja_JP: EnTranslations = {
         "sender": "英雄級補給官",
         "subject": "あなたの英雄の印",
         "body": "あなたが後方で、あるいは倒れて戦っている間に、あなたの部隊が英雄級の試練を突破しました。ロックアウトは同じように科されたので、あなたの分の英雄の印は失われることなく、ここへ飛んできました。大切に使ってください。\n\n- 英雄級補給官"
+      },
+      "guild_trend_engineering_alchemy": {
+        "sender": "製作ギルド",
+        "subject": "工作と錬金術の腕前について",
+        "body": "職人へ\n\n工作と錬金術に励むあなたの評判がギルドに届いています。火薬を量り、試薬を計り、二つの技が互いを高め合っていると。隣り合う技を共に磨く手は、調律の備えができた証です。この組を結んだ者は、やがて爆破師の名を得ます。イーストブルックの鍛冶師ハルドレンを訪ねてください。今は彼が親方たちの代弁を務めています。自らの手がけた仕事で腕前を示せば、彼がその二つの技をあなたの主専攻として調律してくれるでしょう。\n\n敬意を込めて、\n製作ギルド"
+      },
+      "guild_trend_alchemy_cooking": {
+        "sender": "製作ギルド",
+        "subject": "錬金術と料理の腕前について",
+        "body": "職人へ\n\n錬金術と料理に励むあなたの評判がギルドに届いています。秘薬を煎じ、皿の味を調え、二つの技が互いを高め合っていると。隣り合う技を共に磨く手は、調律の備えができた証です。この組を結んだ者は、やがて薬師の名を得ます。イーストブルックの鍛冶師ハルドレンを訪ねてください。今は彼が親方たちの代弁を務めています。自らの手がけた仕事で腕前を示せば、彼がその二つの技をあなたの主専攻として調律してくれるでしょう。\n\n敬意を込めて、\n製作ギルド"
+      },
+      "guild_trend_cooking_leatherworking": {
+        "sender": "製作ギルド",
+        "subject": "料理と皮革加工の腕前について",
+        "body": "職人へ\n\n料理と皮革加工に励むあなたの評判がギルドに届いています。料理を仕上げ、革をなめし、二つの技が互いを高め合っていると。隣り合う技を共に磨く手は、調律の備えができた証です。イーストブルックの鍛冶師ハルドレンを訪ねてください。今は彼が親方たちの代弁を務めています。自らの手がけた仕事で腕前を示せば、彼がその二つの技をあなたの主専攻として調律してくれるでしょう。\n\n敬意を込めて、\n製作ギルド"
+      },
+      "guild_trend_leatherworking_tailoring": {
+        "sender": "製作ギルド",
+        "subject": "皮革加工と裁縫の腕前について",
+        "body": "職人へ\n\n皮革加工と裁縫に励むあなたの評判がギルドに届いています。革を裁ち、布を縫い、二つの技が互いを高め合っていると。隣り合う技を共に磨く手は、調律の備えができた証です。この組を結んだ者は、やがて装具師の名を得ます。イーストブルックの鍛冶師ハルドレンを訪ねてください。今は彼が親方たちの代弁を務めています。自らの手がけた仕事で腕前を示せば、彼がその二つの技をあなたの主専攻として調律してくれるでしょう。\n\n敬意を込めて、\n製作ギルド"
+      },
+      "guild_trend_tailoring_inscription": {
+        "sender": "製作ギルド",
+        "subject": "裁縫と銘文の腕前について",
+        "body": "職人へ\n\n裁縫と銘文に励むあなたの評判がギルドに届いています。縫い目を整え、銘を書き入れ、二つの技が互いを高め合っていると。隣り合う技を共に磨く手は、調律の備えができた証です。イーストブルックの鍛冶師ハルドレンを訪ねてください。今は彼が親方たちの代弁を務めています。自らの手がけた仕事で腕前を示せば、彼がその二つの技をあなたの主専攻として調律してくれるでしょう。\n\n敬意を込めて、\n製作ギルド"
+      },
+      "guild_trend_inscription_enchanting": {
+        "sender": "製作ギルド",
+        "subject": "銘文とエンチャントの腕前について",
+        "body": "職人へ\n\n銘文とエンチャントに励むあなたの評判がギルドに届いています。巻物に銘を記し、魔力を編み、二つの技が互いを高め合っていると。隣り合う技を共に磨く手は、調律の備えができた証です。イーストブルックの鍛冶師ハルドレンを訪ねてください。今は彼が親方たちの代弁を務めています。自らの手がけた仕事で腕前を示せば、彼がその二つの技をあなたの主専攻として調律してくれるでしょう。\n\n敬意を込めて、\n製作ギルド"
+      },
+      "guild_trend_enchanting_jewelcrafting": {
+        "sender": "製作ギルド",
+        "subject": "エンチャントと宝石細工の腕前について",
+        "body": "職人へ\n\nエンチャントと宝石細工に励むあなたの評判がギルドに届いています。魔力を吹き込み、石を磨き、二つの技が互いを高め合っていると。隣り合う技を共に磨く手は、調律の備えができた証です。イーストブルックの鍛冶師ハルドレンを訪ねてください。今は彼が親方たちの代弁を務めています。自らの手がけた仕事で腕前を示せば、彼がその二つの技をあなたの主専攻として調律してくれるでしょう。\n\n敬意を込めて、\n製作ギルド"
+      },
+      "guild_trend_jewelcrafting_weaponcrafting": {
+        "sender": "製作ギルド",
+        "subject": "宝石細工と武器鍛冶の腕前について",
+        "body": "職人へ\n\n宝石細工と武器鍛冶に励むあなたの評判がギルドに届いています。宝石を据え、刃を研ぎ、二つの技が互いを高め合っていると。隣り合う技を共に磨く手は、調律の備えができた証です。イーストブルックの鍛冶師ハルドレンを訪ねてください。今は彼が親方たちの代弁を務めています。自らの手がけた仕事で腕前を示せば、彼がその二つの技をあなたの主専攻として調律してくれるでしょう。\n\n敬意を込めて、\n製作ギルド"
+      },
+      "guild_trend_weaponcrafting_armorcrafting": {
+        "sender": "製作ギルド",
+        "subject": "武器鍛冶と防具鍛冶の腕前について",
+        "body": "職人へ\n\n武器鍛冶と防具鍛冶に励むあなたの評判がギルドに届いています。刃を鍛え、板金を合わせ、二つの技が互いを高め合っていると。隣り合う技を共に磨く手は、調律の備えができた証です。この組を結んだ者は、やがて鍛冶師の名を得ます。イーストブルックの鍛冶師ハルドレンを訪ねてください。今は彼が親方たちの代弁を務めています。自らの手がけた仕事で腕前を示せば、彼がその二つの技をあなたの主専攻として調律してくれるでしょう。\n\n敬意を込めて、\n製作ギルド"
+      },
+      "guild_trend_armorcrafting_engineering": {
+        "sender": "製作ギルド",
+        "subject": "防具鍛冶と工作の腕前について",
+        "body": "職人へ\n\n防具鍛冶と工作に励むあなたの評判がギルドに届いています。板金を鋲で留め、歯車を調え、二つの技が互いを高め合っていると。隣り合う技を共に磨く手は、調律の備えができた証です。イーストブルックの鍛冶師ハルドレンを訪ねてください。今は彼が親方たちの代弁を務めています。自らの手がけた仕事で腕前を示せば、彼がその二つの技をあなたの主専攻として調律してくれるでしょう。\n\n敬意を込めて、\n製作ギルド"
       }
     },
     "itemSets": {

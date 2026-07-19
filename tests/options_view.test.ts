@@ -296,12 +296,39 @@ describe('options_view: interface dispatch matrix (cluster 5)', () => {
       'showAttackButton',
       'walkByAutoloot',
       'groundReticle',
+      'mouseoverCast',
       'aurasOnPlayerFrame',
       'showItemLevel',
       'showSecondaryActionBar',
+      'showThirdActionBar',
+      'showTargetOfTarget',
+      'showAttackButton',
       'showDailyRewardsChest',
     ]);
+    expect(find(controls, 'partyFrameStyle')).toMatchObject({
+      control: 'choice',
+      options: [
+        { value: 0, labelKey: 'hudChrome.partyFrames.styleAutomatic' },
+        { value: 1, labelKey: 'hudChrome.partyFrames.styleClassic' },
+        { value: 2, labelKey: 'hudChrome.partyFrames.styleRaid' },
+      ],
+    });
     expect(find(controls, 'reduceMotion')).toMatchObject({ control: 'boolToggle' });
+  });
+
+  it('enables the third action-bar toggle only while the secondary row is visible', () => {
+    const hidden = buildInterfaceControls(makeSource());
+    expect(find(hidden, 'showSecondaryActionBar')).toMatchObject({
+      control: 'boolToggle',
+      rerender: true,
+    });
+    expect(find(hidden, 'showThirdActionBar')).toMatchObject({
+      control: 'boolToggle',
+      disabled: true,
+    });
+
+    const visible = buildInterfaceControls(makeSource({}, { showSecondaryActionBar: true }));
+    expect(find(visible, 'showThirdActionBar')).toMatchObject({ disabled: false });
   });
 
   it('marks only uiScale as commit-on-release; the other comfort sliders stay live (#1558)', () => {

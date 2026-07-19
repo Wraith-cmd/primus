@@ -9,14 +9,26 @@
 // `src/sim`-pure: imports only sibling sim types (no DOM/Three/render/ui/game/net,
 // no Math.random/Date.now), enforced by tests/architecture.test.ts.
 
-import type { Aura, Entity } from '../types';
+import type { Aura, DamageBreakBudget, Entity } from '../types';
 
-// A stun freezes everything: movement, casts, melee, abilities. Incapacitate and
-// polymorph share the same total-lockout shape.
+export function damageBreakThreshold(maxHp: number, budget: DamageBreakBudget): number {
+  return Math.min(budget.max, Math.max(budget.min, Math.round(maxHp * budget.maxHpPct)));
+}
+
+// A stun freezes everything: movement, casts, melee, abilities. Stasis,
+// incapacitate, and polymorph share the same total-lockout shape.
 export function isStunned(e: Entity): boolean {
   return e.auras.some(
-    (a) => a.kind === 'stun' || a.kind === 'incapacitate' || a.kind === 'polymorph',
+    (a) =>
+      a.kind === 'stun' ||
+      a.kind === 'stasis' ||
+      a.kind === 'incapacitate' ||
+      a.kind === 'polymorph',
   );
+}
+
+export function isInStasis(e: Entity): boolean {
+  return e.auras.some((a) => a.kind === 'stasis');
 }
 
 export function isRooted(e: Entity): boolean {

@@ -7,6 +7,10 @@
 import type { DeedLocaleTable } from '../deed_i18n';
 
 export const table: DeedLocaleTable = {
+  pvp_card_duel_first_win: {
+    name: 'Faire la loi',
+    desc: 'Remportez un Duel de cartes auprès du Maître des cartes.',
+  },
   prog_first_steps: {
     name: 'Premiers pas',
     desc: 'Atteignez le niveau 2 et faites votre premier pas sur une longue route.',
@@ -38,8 +42,8 @@ export const table: DeedLocaleTable = {
     desc: 'Dépensez un point de talent dans un talent de la dernière rangée.',
   },
   prog_full_build: {
-    name: 'Les onze au complet',
-    desc: 'Dépensez vos onze points de talent dans un seul et même build.',
+    name: 'Les six au complet',
+    desc: 'Choisissez une option dans chacune des six rangées de talents d’un même build.',
   },
   prog_veteran: {
     name: 'Vétéran',
@@ -718,7 +722,6 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: 'Les outils du métier',
-    desc: "Réalisez une fabrication exigeant un établi au pôle d'artisanat de Highwatch.",
   },
   dgn_nythraxis_crypt: {
     name: 'Ce que gardait la crypte',

@@ -1,4 +1,30 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+// Mock the db layer so no Postgres is needed; only the wire encode/decode and
+// broadcast paths are under test (wireEntity round-trips plus a real GameServer
+// snapshot pipeline), never persistence.
+vi.mock('../server/db', () => ({
+  pool: { query: vi.fn(async () => ({ rows: [] })) },
+  saveCharacterState: vi.fn(async () => {}),
+  openPlaySession: vi.fn(async () => 1),
+  touchCharacterLogin: vi.fn(async () => {}),
+  closePlaySession: vi.fn(async () => {}),
+  insertChatLogs: vi.fn(async () => {}),
+  walletForAccount: vi.fn(async () => null),
+  loadAccountFlair: vi.fn(async () => ({ ai: false, streamer: false, links: {} })),
+  markAccountQuestComplete: vi.fn(async () => ({ completedQuestIds: [], mechChromaIds: [] })),
+  grantAccountMechChroma: vi.fn(async () => ({ completedQuestIds: [], mechChromaIds: [] })),
+  setAccountWeaponSkinLoadout: vi.fn(async () => ({
+    completedQuestIds: [],
+    mechChromaIds: [],
+    weaponSkinIds: [],
+    weaponSkinLoadout: {},
+  })),
+}));
+
+import { type ClientSession, GameServer, wireEntity } from '../server/game';
+import { corpseLootAvailability } from '../src/game/corpse_loot_availability';
+import { ClientWorld } from '../src/net/online';
 import { bagCapacity, stackSizeOf } from '../src/sim/bags';
 import { HARVEST_COMPONENT_ITEMS } from '../src/sim/content/professions';
 import { ITEMS, MOBS } from '../src/sim/data';
@@ -279,5 +305,224 @@ describe('signed materials (#1145)', () => {
     // This seed's focus-tier roll lands above the poor floor, so the fungible
     // grant is more than a single unit (harvestTierQuantity(tier), #1142).
     expect(sim.countItem('boar_hide', a)).toBe(2);
+  });
+});
+
+// A ClientWorld without the WebSocket plumbing, to drive applySnapshot directly
+// (the established bare-client idiom; see bareClient in tests/snapshots.test.ts
+// and tests/CLAUDE.md).
+function bareClient(pid: number): ClientWorld {
+  const c: any = Object.create(ClientWorld.prototype);
+  c.cfg = { seed: 20061, playerClass: 'warrior' };
+  c.entities = new Map();
+  c.playerId = pid;
+  c.ownPlayerId = pid;
+  c.ownPlayerClass = 'warrior';
+  c.spectating = null;
+  c.cupInfo = null;
+  c.sportRole = null;
+  c.moveInput = {};
+  c.inventory = [];
+  c.vendorBuyback = [];
+  c.equipment = {};
+  c.accountCosmetics = { completedQuestIds: [], mechChromaIds: [] };
+  c.copper = 0;
+  c.honor = 0;
+  c.lifetimeHonor = 0;
+  c.xp = 0;
+  c.known = [];
+  c.questLog = new Map();
+  c.questsDone = new Set();
+  c.pendingQuestCommands = new Map();
+  c.partyInfo = null;
+  c.selectedDungeonDifficulty = 'normal';
+  c.tradeInfo = null;
+  c.duelInfo = null;
+  c.lastSnapAt = 0;
+  c.snapInterval = 50;
+  c.serverTickHz = null;
+  c.missingSince = new Map();
+  c.pendingFacingDelta = 0;
+  c.connected = true;
+  c.eventQueue = [];
+  c.mouselookFacing = null;
+  c.lastInputSentAt = 0;
+  c.lastInputSig = '';
+  c.inputSeq = 0;
+  c.pendingInputSeqSentAt = new Map();
+  c.ackedInputSeq = 0;
+  c.inputEchoSamples = [];
+  c.spectateFacingPending = false;
+  c.pendingSpectateFacing = null;
+  c.nodeCooldowns = new Map();
+  return c;
+}
+
+// The online half of the claim: the server encodes harvestClaimedBy as the
+// sparse terse key `hcb` (server/game.ts wireEntity), ClientWorld mirrors it,
+// and the corpse picker's availability core (corpseLootAvailability) therefore
+// stops offering an already-claimed corpse online, exactly as offline.
+describe('corpse harvest claim over the wire (online picker parity)', () => {
+  it('a real claim rides hcb, mirrors into ClientWorld, and gates the picker', () => {
+    const { sim, mob, a, b } = setup();
+    sim.harvestCorpse(mob.id, undefined, a);
+    expect(mob.harvestClaimedBy).toBe(a);
+
+    const w = wireEntity(mob);
+    expect(w.hcb).toBe(a);
+
+    // Bravo's client sees Alpha's claim mirrored, and the picker refuses it.
+    const client = bareClient(b);
+    (client as any).applySnapshot({ t: 'snap', ents: [w] });
+    const mirrored = client.entities.get(mob.id)!;
+    expect(mirrored.harvestClaimedBy).toBe(a);
+    expect(corpseLootAvailability(mirrored, b).harvestable).toBe(false);
+  });
+
+  it('an unclaimed tagged corpse stays harvestable through the mirror', () => {
+    const { mob, b } = setup();
+
+    const w = wireEntity(mob);
+    expect(w).not.toHaveProperty('hcb');
+
+    const client = bareClient(b);
+    (client as any).applySnapshot({ t: 'snap', ents: [w] });
+    const mirrored = client.entities.get(mob.id)!;
+    expect(mirrored.harvestClaimedBy).toBeNull();
+    expect(corpseLootAvailability(mirrored, b).harvestable).toBe(true);
+  });
+});
+
+// The LIVE broadcast path (the hand-assembled snap envelopes above are always
+// fullJson-shaped): the per-session entity cache sends identity only on first
+// sight, so a claim landing AFTER a viewer has seen the corpse rides a lite
+// (dyn-only) record, and leaving interest scope evicts the corpse from the
+// session's sent set so re-entry gets a fresh full record. Both arms must
+// deliver claim truth to the mirror.
+interface FakeClient {
+  sent: any[];
+  ws: any;
+}
+
+function fakeWs(): FakeClient {
+  const sent: any[] = [];
+  return { sent, ws: { readyState: 1, send: (payload: string) => sent.push(JSON.parse(payload)) } };
+}
+
+function lastSnap(sent: any[]): any {
+  for (let i = sent.length - 1; i >= 0; i--) {
+    if (sent[i].t === 'snap') return sent[i];
+  }
+  return null;
+}
+
+function joinServer(server: GameServer, fc: FakeClient, id: number, name: string): ClientSession {
+  const session = server.join(fc.ws, id, id, name, 'warrior', null);
+  if ('error' in session) throw new Error(session.error);
+  session.blockListLoaded = true;
+  return session;
+}
+
+function broadcast(server: GameServer): void {
+  (server as any).broadcastSnapshots();
+}
+
+describe('corpse harvest claim over the live broadcast (delta + interest scope)', () => {
+  function liveSetup() {
+    const server = new GameServer();
+    const fcA = fakeWs();
+    const fcB = fakeWs();
+    const sa = joinServer(server, fcA, 81, 'Alpha');
+    const sb = joinServer(server, fcB, 82, 'Bravo');
+    const internals = server.sim as unknown as SimInternals;
+    for (const pid of [sa.pid, sb.pid]) {
+      const e = internals.entities.get(pid)!;
+      e.pos = { x: 0, y: 0, z: 0 };
+      e.prevPos = { x: 0, y: 0, z: 0 };
+    }
+    // A dead wolf corpse beside both players, with a world-unique entity id
+    // (the server sim is a full generated world, so 9999 could collide).
+    const template = MOBS.forest_wolf;
+    const mobId = Math.max(...internals.entities.keys()) + 1;
+    const mob = createMob(mobId, template, template.maxLevel, { x: 2, y: 0, z: 0 });
+    mob.dead = true;
+    mob.aiState = 'dead';
+    mob.corpseTimer = 9999;
+    mob.respawnTimer = 9999;
+    internals.entities.set(mob.id, mob);
+    // One tick re-indexes the spatial grid the interest scan reads
+    // (forEachInRadius), so the moved players and the inserted corpse land in
+    // their cells before the first broadcast.
+    server.sim.tick();
+    return { server, internals, fcB, sa, sb, mob };
+  }
+
+  it('a claim landing after first sight arrives as a lite delta record and gates the picker', () => {
+    const { server, fcB, sa, sb, mob } = liveSetup();
+
+    // First sight: Bravo's client mirrors the unclaimed corpse via a full record.
+    broadcast(server);
+    const client = bareClient(sb.pid);
+    (client as any).applySnapshot(lastSnap(fcB.sent));
+    const first = client.entities.get(mob.id)!;
+    expect(first.harvestClaimedBy).toBeNull();
+    expect(corpseLootAvailability(first, sb.pid).harvestable).toBe(true);
+
+    // Alpha claims AFTER Bravo has seen the corpse: the next broadcast carries
+    // the claim as a dyn-only lite record (identity already sent), the exact
+    // production sequence the hcb mirror exists for.
+    server.sim.harvestCorpse(mob.id, undefined, sa.pid);
+    expect(mob.harvestClaimedBy).toBe(sa.pid);
+    server.sim.tick(); // advance past the first broadcast's tick so the update is due
+    broadcast(server);
+    const snap = lastSnap(fcB.sent);
+    const rec = snap.ents.find((e: any) => e.id === mob.id);
+    expect(rec.hcb).toBe(sa.pid);
+    expect(rec).not.toHaveProperty('nm'); // lite record: no identity resend
+
+    (client as any).applySnapshot(snap);
+    const mirrored = client.entities.get(mob.id)!;
+    expect(mirrored.harvestClaimedBy).toBe(sa.pid);
+    expect(corpseLootAvailability(mirrored, sb.pid).harvestable).toBe(false);
+  });
+
+  it('scope re-entry rebuilds claim truth: claims and clears made out of view arrive on return', () => {
+    const { server, internals, fcB, sa, sb, mob } = liveSetup();
+
+    broadcast(server);
+    const client = bareClient(sb.pid);
+    (client as any).applySnapshot(lastSnap(fcB.sent));
+    expect(client.entities.get(mob.id)!.harvestClaimedBy).toBeNull();
+
+    // Bravo walks far out of interest range; the server evicts the corpse from
+    // this session's sent set, and the claim lands while it is out of view.
+    const bEnt = internals.entities.get(sb.pid)!;
+    const walkTo = (x: number) => {
+      bEnt.pos = { x, y: 0, z: 0 };
+      bEnt.prevPos = { x, y: 0, z: 0 };
+      server.sim.tick(); // re-index the interest grid at the new position
+      broadcast(server);
+      (client as any).applySnapshot(lastSnap(fcB.sent));
+    };
+    walkTo(5000);
+    server.sim.harvestCorpse(mob.id, undefined, sa.pid);
+    broadcast(server);
+    (client as any).applySnapshot(lastSnap(fcB.sent));
+
+    // Re-entry: the fresh full record carries the claim made out of view.
+    walkTo(0);
+    const back = client.entities.get(mob.id)!;
+    expect(back.harvestClaimedBy).toBe(sa.pid);
+    expect(corpseLootAvailability(back, sb.pid).harvestable).toBe(false);
+
+    // Inverse arm: the claim clears out of view (the respawn sweep write,
+    // mob lifecycle), so the re-entry record omits hcb and the stale
+    // mirrored pid must reset, not linger.
+    walkTo(5000);
+    mob.harvestClaimedBy = null;
+    walkTo(0);
+    const cleared = client.entities.get(mob.id)!;
+    expect(cleared.harvestClaimedBy).toBeNull();
+    expect(corpseLootAvailability(cleared, sb.pid).harvestable).toBe(true);
   });
 });

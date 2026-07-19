@@ -7,6 +7,10 @@
 import type { DeedLocaleTable } from '../deed_i18n';
 
 export const table: DeedLocaleTable = {
+  pvp_card_duel_first_win: {
+    name: 'Vlastní pravidla',
+    desc: 'Vyhraj Karetní souboj u Karetního mistra.',
+  },
   prog_first_steps: {
     name: 'První kroky',
     desc: 'Dosáhni úrovně 2 a udělej první krok na dlouhé cestě.',
@@ -32,8 +36,8 @@ export const table: DeedLocaleTable = {
     desc: 'Utrať talentový bod za talent z poslední řady.',
   },
   prog_full_build: {
-    name: 'Celá jedenáctka',
-    desc: 'Utrať všech jedenáct talentových bodů v jedné sestavě.',
+    name: 'Plná šestka',
+    desc: 'Vyber jednu možnost ve všech šesti řadách talentů v jedné sestavě.',
   },
   prog_veteran: {
     name: 'Veterán',
@@ -645,7 +649,6 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: 'Nástroje řemesla',
-    desc: 'Dokonči výrobu vázanou na stanoviště v highwatchském řemeslném centru.',
   },
   dgn_nythraxis_crypt: {
     name: 'Co krypta skrývala',

@@ -10,7 +10,10 @@
 // the `/dev gather` chat cheat and a future UI need; category/maxSkill are
 // the fields later profession issues (#1120/#1125/#1126/#1140) read against.
 // maxSkill follows the classic 1-300 profession skill scale.
+import type { StationDef, StationType } from '../professions/stations';
 import type { ProfessionRecord } from '../professions/types';
+import { ZONE1_ZONE } from './zone1';
+import { ZONE2_ZONE } from './zone2';
 import { ZONE3_ZONE } from './zone3';
 
 export type GatheringProfessionId = 'mining' | 'logging' | 'herbalism';
@@ -154,23 +157,22 @@ export const TOOL_EFFECT_IDS: ToolEffectId[] = [
 // no mechanic wiring: this file only defines the ring geometry (order, pole tags)
 // and the adjacency/opposite lookups derived from it. See issue #1125.
 //
-// Design-doc note (#1148 tuning pass): the canonical ring order lives at
-// https://woc.nervemart.com/docs/professions-system, which returned 403 Forbidden
-// when this file was authored and is reachable again as of this pass. The doc's
-// own ring text ("Engineering, Alchemy, Cooking, Leatherworking, Tailoring,
-// Inscription, Enchanting, Jewelcrafting, Weaponcrafting, Armorcrafting") differs
-// from the exact rotation below in SOME non-adjacent-pair placements, but every
-// adjacency this codebase has already committed to in real content is confirmed
-// consistent with it: armorcrafting-weaponcrafting (doc: adjacent, wrapping the
-// ring) and alchemy-engineering (doc: adjacent) are exactly the two pairs
-// content/recipes.ts COMBO_RECIPES already require. A full reorder to match the
-// doc craft-for-craft would also reshuffle every OTHER adjacency/opposite pair
-// (affecting future hobby/combo assignments) with a blast radius broader than
-// this pass's scope; deferred as its own follow-up rather than an unreviewed
-// reshuffle here. The 4 poles are this codebase's own grouping (not named in the
-// doc): Material (crafts that shape raw matter into gear), Experimental (crafts
-// driven by trial-and-error formulae), Formal (crafts built on exact patterns/
-// measurements), Cross-cutting (crafts that touch every other craft's output).
+// Design-doc note (#1148 tuning pass, reorder adopted in the Professions 2.0
+// Phase 1 blueprint): the canonical ring order lives at
+// https://woc.nervemart.com/docs/professions-system, and CRAFT_RING below now
+// matches the doc's ring text craft for craft ("Engineering, Alchemy, Cooking,
+// Leatherworking, Tailoring, Inscription, Enchanting, Jewelcrafting,
+// Weaponcrafting, Armorcrafting"). Both adjacencies this codebase commits to in
+// real content survive the reorder unchanged: armorcrafting-weaponcrafting
+// (adjacent, wrapping the ring) and alchemy-engineering (adjacent) are exactly
+// the two pairs content/recipes.ts COMBO_RECIPES requires, pinned by the
+// adjacency test in tests/professions.test.ts so a future reorder cannot
+// silently orphan a combo recipe. The 4 poles are this codebase's own grouping
+// (not named in the doc): Material (crafts that shape raw matter into gear),
+// Experimental (crafts driven by trial-and-error formulae), Formal (crafts
+// built on exact patterns/measurements), Cross-cutting (crafts that touch
+// every other craft's output). Each pole tag travels with its craft record, so
+// the reorder never re-grouped any craft.
 
 export type CraftPole = 'Material' | 'Experimental' | 'Formal' | 'Cross-cutting';
 
@@ -183,16 +185,16 @@ export interface CraftDef {
 // Fixed ring order (index is the ring position). Opposite crafts sit 5 positions
 // apart; adjacent crafts sit 1 position apart on either side.
 export const CRAFT_RING: CraftDef[] = [
-  { id: 'armorcrafting', name: 'Armorcrafting', pole: 'Material' },
-  { id: 'weaponcrafting', name: 'Weaponcrafting', pole: 'Material' },
-  { id: 'jewelcrafting', name: 'Jewelcrafting', pole: 'Material' },
-  { id: 'alchemy', name: 'Alchemy', pole: 'Experimental' },
   { id: 'engineering', name: 'Engineering', pole: 'Experimental' },
+  { id: 'alchemy', name: 'Alchemy', pole: 'Experimental' },
   { id: 'cooking', name: 'Cooking', pole: 'Cross-cutting' },
+  { id: 'leatherworking', name: 'Leatherworking', pole: 'Formal' },
+  { id: 'tailoring', name: 'Tailoring', pole: 'Formal' },
   { id: 'inscription', name: 'Inscription', pole: 'Cross-cutting' },
   { id: 'enchanting', name: 'Enchanting', pole: 'Cross-cutting' },
-  { id: 'tailoring', name: 'Tailoring', pole: 'Formal' },
-  { id: 'leatherworking', name: 'Leatherworking', pole: 'Formal' },
+  { id: 'jewelcrafting', name: 'Jewelcrafting', pole: 'Material' },
+  { id: 'weaponcrafting', name: 'Weaponcrafting', pole: 'Material' },
+  { id: 'armorcrafting', name: 'Armorcrafting', pole: 'Material' },
 ];
 
 const RING_SIZE = CRAFT_RING.length;
@@ -361,8 +363,9 @@ export const PERK_THRESHOLDS: Record<string, PerkThresholdDef> = Object.fromEntr
 
 // Mobile crafting station (#1134): how long a placed station stays usable
 // before it expires. See ../professions/mobile_station.ts for the placement
-// mechanic itself and why it is currently inert (no town/crafting-station
-// proximity gate exists anywhere in the engine yet for it to bypass).
+// mechanic; since Phase 8 an active mobile station satisfies the station
+// gate (../professions/crafting.ts) for recipes whose stationType matches
+// the placing craft (STATION_TYPE_BY_CRAFT below).
 export const MOBILE_CRAFTING_STATION_DURATION_TICKS = 20 * 60 * 10; // 10 minutes
 
 // Gold sink + output throttle tuning (#1301): professions is a large new
@@ -382,64 +385,84 @@ export const CRAFT_GOLD_SINK_COPPER_PER_BUDGET = 2;
 export const CRAFT_THROTTLE_WINDOW_SECONDS = 60;
 export const CRAFT_THROTTLE_MAX_PER_WINDOW = 10;
 
-// Level-20 crafting hub (issue #1297): a designated in-world location hosting
-// a station for every craft on CRAFT_RING, gated to characters at or above
-// zone3's top level. The gate/read logic lives in
-// ../professions/crafting_hub.ts behind the SimContext seam; this is the
-// content half: WHERE the hub sits and WHICH stations it hosts.
+// Crafting stations and masters (Professions 2.0 Phase 8): the content half
+// of ../professions/stations.ts. The old single level-20 crafting hub
+// (#1297's CRAFTING_HUB_* constants and its Highwatch circle) is retired
+// with its level gate (2026-07-17 maintainer ruling: the level arm goes
+// away entirely); in its place, six typed stations spread across the three
+// town hubs, each run by a resident master NPC.
 //
-// Location: rather than build a fourth, brand-new town (out of scope per the
-// issue's own notes: "Scope (which zone, what the hub includes) needs
-// maintainer confirmation... Independent of the wheel mechanics"), this reuses
-// Thornpeak Heights' existing Highwatch hub (content/zone3.ts ZONE3_ZONE.hub):
-// zone3's levelRange tops out at exactly 20 (`[13, 20]`), so "the level-20
-// zone" already exists and Highwatch is its town center. Importing the hub
-// circle directly (rather than re-typing its coordinates) keeps this content
-// from silently drifting if Highwatch's hub ever moves.
-export const CRAFTING_HUB_ZONE_ID = ZONE3_ZONE.id;
-export const CRAFTING_HUB_POS: { readonly x: number; readonly z: number } = {
-  x: ZONE3_ZONE.hub.x,
-  z: ZONE3_ZONE.hub.z,
+// Gate range around each station's pos (world units, the same order of
+// magnitude the old hub circle used).
+export const STATION_RADIUS = 20;
+
+// Which station type serves each craft. Crafts absent from this table
+// (jewelcrafting, inscription, enchanting) have no physical station and no
+// station-bound recipes today.
+export const STATION_TYPE_BY_CRAFT: Readonly<Record<string, StationType>> = {
+  weaponcrafting: 'forge',
+  armorcrafting: 'forge',
+  cooking: 'kitchens',
+  alchemy: 'apothecary',
+  leatherworking: 'tannery',
+  tailoring: 'loom',
+  engineering: 'toolworks',
 };
-export const CRAFTING_HUB_RADIUS = ZONE3_ZONE.hub.radius;
 
-// The level a character must have reached to use a hub station (issue
-// #1297's own title: "Professions: level-20 zone and crafting hub"). Matches
-// zone3's top level exactly, rather than inventing an unrelated number: by
-// the time a character can comfortably work the zone whose town hosts the
-// hub, they have reached the level the hub gates on.
-export const CRAFTING_HUB_MIN_LEVEL = 20;
-
-export interface CraftingHubStationDef {
-  /** Which craft on CRAFT_RING this station serves. */
-  craftId: string;
-  /** Offset from CRAFTING_HUB_POS, kept well within CRAFTING_HUB_RADIUS so
-   *  every station sits inside the hub's gate circle. */
-  offset: { x: number; z: number };
-}
-
-// One station per craft on the ring (ten total), laid out on a small circle
-// around the hub center so no two stations overlap. A future render pass
-// reads `craftId` + `offset` to place a minimal prop per station; this table
-// carries no display "name" field of its own (avoiding a new player-visible
-// string surface in this pass) since a station is identified by its craft id,
-// which already has a localized display name (src/ui/i18n.catalog/hud_chrome.ts
-// `archetypeTitle.<craftId>` / `gathering.*`).
-//
-// Has zero consumers today: forward content for that future render pass, kept
-// data-as-code (module-init cost is negligible, ten cheap trig calls). Its
-// `offset` is render-only positioning; never feed it back into sim state if a
-// consumer lands.
-export const CRAFTING_HUB_STATIONS: readonly CraftingHubStationDef[] = CRAFT_RING.map(
-  (craft, index) => {
-    const angle = (index / CRAFT_RING.length) * Math.PI * 2;
-    const stationRadius = CRAFTING_HUB_RADIUS * 0.6;
-    return {
-      craftId: craft.id,
-      offset: {
-        x: Math.round(Math.cos(angle) * stationRadius),
-        z: Math.round(Math.sin(angle) * stationRadius),
-      },
-    };
+// The six stations. `pos` values are final guard-safe town placements: each
+// sits inside its hosting hub circle, its master NPC stands 1 to 3 units
+// beside it, and every spot clears the strictest camp-safety margin any
+// pre-existing town NPC satisfies (about 11.2 units beyond camp radius plus
+// aggro radius; see the Phase 8 placement math in the phase notes). The
+// zone-1 forge shares smith_haldren's forge. `masterNpcId` values name the
+// resident master each station belongs to (NpcDefs in the zone modules).
+export const STATIONS: readonly StationDef[] = [
+  {
+    id: 'station_eastbrook_forge',
+    type: 'forge',
+    zoneId: ZONE1_ZONE.id,
+    // Smith Haldren's forge, northeast of the square.
+    pos: { x: 7, z: 16.5 },
+    masterNpcId: 'forgemistress_darva',
   },
-);
+  {
+    id: 'station_eastbrook_kitchens',
+    type: 'kitchens',
+    zoneId: ZONE1_ZONE.id,
+    // West side of the square, by the provisioner's stall.
+    pos: { x: -11, z: 4.5 },
+    masterNpcId: 'cook_marlow',
+  },
+  {
+    id: 'station_eastbrook_loom',
+    type: 'loom',
+    zoneId: ZONE1_ZONE.id,
+    // South of the well, on the quiet side of the square.
+    pos: { x: -2, z: -8 },
+    masterNpcId: 'weaver_ottilie',
+  },
+  {
+    id: 'station_eastbrook_toolworks',
+    type: 'toolworks',
+    zoneId: ZONE1_ZONE.id,
+    // Southeast corner, between the inn and the chronicler.
+    pos: { x: 11, z: -12 },
+    masterNpcId: 'tinker_gizzel',
+  },
+  {
+    id: 'station_fenbridge_tannery',
+    type: 'tannery',
+    zoneId: ZONE2_ZONE.id,
+    // Northwest edge of Fenbridge, downwind of the square.
+    pos: { x: -13, z: 314 },
+    masterNpcId: 'tanner_hesk',
+  },
+  {
+    id: 'station_highwatch_apothecary',
+    type: 'apothecary',
+    zoneId: ZONE3_ZONE.id,
+    // East of the Highwatch well, between it and the loremaster.
+    pos: { x: 7, z: 660 },
+    masterNpcId: 'alchemist_verane',
+  },
+];

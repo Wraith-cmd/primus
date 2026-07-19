@@ -1,4 +1,5 @@
 import {
+  GUILD_TREND_LETTERS,
   HEROIC_MARK_LETTER,
   type LetterDef,
   QUEST_LETTERS,
@@ -80,10 +81,10 @@ const MOB_IDS = [
   'vision_deathstalker_voss',
   'bound_guardian',
   'nythraxis_skeleton_warrior',
-  'nythraxis_scourge_of_thornpeak',
   'nythraxis_heroic_warrior_add',
   'nythraxis_heroic_priest_add',
   'nythraxis_heroic_rogue_add',
+  'nythraxis_scourge_of_thornpeak',
   // Collapsed Reliquary delve mobs
   'reliquary_ledger_wraith',
   'reliquary_funeral_ringer',
@@ -145,6 +146,12 @@ const NPC_IDS = [
   'chronicler_saul', // Book of Deeds Chronicler (Eastbrook, zone 1)
   'chronicler_osric_fenn', // Book of Deeds Chronicler (Fenbridge, zone 2)
   'chronicler_edda_hartwell', // Book of Deeds Chronicler (Highwatch, zone 3)
+  'forgemistress_darva', // crafting-station master: forge (Eastbrook, zone 1)
+  'cook_marlow', // crafting-station master: kitchens (Eastbrook, zone 1)
+  'weaver_ottilie', // crafting-station master: loom (Eastbrook, zone 1)
+  'tinker_gizzel', // crafting-station master: toolworks (Eastbrook, zone 1)
+  'tanner_hesk', // crafting-station master: tannery (Fenbridge, zone 2)
+  'alchemist_verane', // crafting-station master: apothecary (Highwatch, zone 3)
 ] as const;
 
 const QUEST_IDS = [
@@ -225,6 +232,7 @@ const QUEST_IDS = [
   'q_mogger',
   'q_archetype_acceptance',
   'q_prof_make_amends',
+  'q_prof_hobby_switch',
 ] as const;
 
 const ZONE_IDS = ['eastbrook_vale', 'mirefen_marsh', 'thornpeak_heights'] as const;
@@ -244,6 +252,18 @@ const LETTER_IDS = [
   'letter_q_greyjaw',
   'letter_q_hollow',
   'heroic_marks_reward',
+  // Guild trend letters (Professions 2.0 Phase 7), one per canonical adjacent
+  // pair in CRAFT_RING order (GUILD_TREND_LETTERS in src/sim/content/letters.ts).
+  'guild_trend_engineering_alchemy',
+  'guild_trend_alchemy_cooking',
+  'guild_trend_cooking_leatherworking',
+  'guild_trend_leatherworking_tailoring',
+  'guild_trend_tailoring_inscription',
+  'guild_trend_inscription_enchanting',
+  'guild_trend_enchanting_jewelcrafting',
+  'guild_trend_jewelcrafting_weaponcrafting',
+  'guild_trend_weaponcrafting_armorcrafting',
+  'guild_trend_armorcrafting_engineering',
 ] as const;
 
 type MobId = (typeof MOB_IDS)[number];
@@ -381,6 +401,7 @@ function makeEnglishWorldEntities(): WorldEntityTranslations {
     [HEROIC_MARK_LETTER.letterId]: HEROIC_MARK_LETTER,
   };
   for (const letter of Object.values(QUEST_LETTERS)) lettersById[letter.letterId] = letter;
+  for (const letter of Object.values(GUILD_TREND_LETTERS)) lettersById[letter.letterId] = letter;
   const letters = {} as LetterTranslations;
   orderedValues(LETTER_IDS, lettersById).forEach((letter) => {
     letters[letter.letterId as LetterId] = {

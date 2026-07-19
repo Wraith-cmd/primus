@@ -2,13 +2,14 @@
 // SimContext seam. The backing counters live on PlayerMeta (sim.ts); this
 // module holds the pure functions. Each gathering profession is an
 // independent, additive counter: granting one never touches another (no
-// shared/conserved pool). No world nodes exist yet (see issue #1119), so the
-// only producer today is the ALLOW_DEV_COMMANDS `/dev gather` chat cheat
-// (src/sim/social/chat.ts), which QUEUES a grant here; the queue is drained
-// once per player during the normal 20 Hz tick loop (sim.ts `tick()`, next to
-// `updateRested`), so a grant only ever takes effect on the deterministic tick
-// path, never out of band.
+// shared/conserved pool). Proficiency producers: world-node harvests
+// (resolveHarvest below, via the harvestNode command) and the
+// ALLOW_DEV_COMMANDS `/dev gather` chat cheat (src/sim/social/chat.ts). Both
+// QUEUE a grant here; the queue is drained once per player during the normal
+// 20 Hz tick loop (sim.ts `tick()`, next to `updateRested`), so a grant only
+// ever takes effect on the deterministic tick path, never out of band.
 
+import { bagCapacity } from '../bags';
 import { GATHER_NODES } from '../content/gather_nodes';
 import {
   GATHERING_PROFESSION_IDS,
@@ -16,63 +17,93 @@ import {
   type GatheringProfessionId,
   HARVEST_COMPONENT_ITEMS,
 } from '../content/professions';
-import { QUESTS } from '../data';
 import type { Rng } from '../rng';
 import type { PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
-import { type GatherNodeDef, type GatherNodeType, INTERACT_RANGE, type ItemDef } from '../types';
+import {
+  type GatherNodeDef,
+  type GatherNodeType,
+  type GatherRareEventFlavor,
+  INTERACT_RANGE,
+  type ItemDef,
+} from '../types';
+import {
+  announceGatherRareEvent,
+  GATHER_RARE_EVENT_YIELD_MULT,
+  rollGatherRareEvent,
+} from './gather_events';
 import { gatherActionXp } from './profession_xp';
 import type { PlayerProfessionSkill } from './types';
 
-// Quest-gated bonus grant (#1701 follow-up review): while the paired quest is
-// active and short of its collect objective, a harvest of this node type also
-// grants the quest's own dedicated item, never NODE_HARVEST_TABLE's shared
-// junk/reagent material. That material (e.g. bone_fragments) drops from mobs,
-// salvage, and the market, so a collect objective targeting it is satisfied by
-// anything but mining; the dedicated item can only ever come from here. Mirrors
-// the mob-loot questId gate (loot_roll.ts needsQuestDrop) but unconditional: a
-// gathering action has no miss chance, so a harvest that clears the node's own
-// respawn gate always also clears the quest need.
-const NODE_QUEST_GRANT: Partial<Record<GatherNodeType, { questId: string; itemId: string }>> = {
-  ore: { questId: 'q_prof_intro', itemId: 'chunk_of_ore' },
-};
-
-function neededNodeQuestItem(
-  ctx: SimContext,
-  meta: PlayerMeta,
-  node: GatherNodeDef,
-): string | undefined {
-  const grant = NODE_QUEST_GRANT[node.type];
-  if (!grant) return undefined;
-  if (meta.questLog.get(grant.questId)?.state !== 'active') return undefined;
-  const quest = QUESTS[grant.questId];
-  const objIdx = quest.objectives.findIndex(
-    (o) => o.type === 'collect' && o.itemId === grant.itemId,
-  );
-  if (objIdx < 0) return undefined;
-  return ctx.countItem(grant.itemId, meta.entityId) < quest.objectives[objIdx].count
-    ? grant.itemId
-    : undefined;
-}
-
 export type GatheringProficiency = Record<GatheringProfessionId, number>;
 
-// Per-node harvest tuning (#1121). Each node type grants one fixed material item
-// and one point of the matching gathering profession's proficiency; no rng draw,
-// so the outcome is fully deterministic given the same sequence of harvests (the
-// item's RARITY roll is explicitly out of scope, see issue #1122). The items
-// reused below are existing generic junk entries (src/sim/content/items.ts): a
-// placeholder grant that avoids expanding the positional per-locale item-name
-// arrays in src/ui/i18n.catalog/items.ts for this issue; dedicated ore/wood/herb
-// items are future content work.
+// Per-node harvest tuning (#1121). Each node type maps to one gathering
+// profession (one proficiency point per harvest) and a per-player respawn
+// timer. Which material item a harvest grants is zone-dependent and lives in
+// NODE_MATERIAL_TABLE below (Professions 2.0 Phase 4); the pre-Phase-4
+// placeholder junk grants (bone_fragments/linen_scrap/spider_leg) are gone,
+// but those items themselves survive (recipes consume them, players hold
+// them): only their node source went away.
 export const NODE_HARVEST_TABLE: Record<
   GatherNodeType,
-  { professionId: GatheringProfessionId; itemId: string; respawnSeconds: number }
+  { professionId: GatheringProfessionId; respawnSeconds: number }
 > = {
-  ore: { professionId: 'mining', itemId: 'bone_fragments', respawnSeconds: 120 },
-  wood: { professionId: 'logging', itemId: 'linen_scrap', respawnSeconds: 120 },
-  herb: { professionId: 'herbalism', itemId: 'spider_leg', respawnSeconds: 120 },
+  ore: { professionId: 'mining', respawnSeconds: 120 },
+  wood: { professionId: 'logging', respawnSeconds: 120 },
+  herb: { professionId: 'herbalism', respawnSeconds: 120 },
 };
+
+// Every material row yields this many units per rolled rarity (Phase 4's one
+// shared curve; Phase 15 tunes per family if playtests want divergence).
+// Frozen because every NODE_MATERIAL_TABLE row shares this one object: a
+// per-family tune must clone it per row, never mutate it in place.
+const MATERIAL_QTY_BY_RARITY: Record<MaterialRarity, number> = Object.freeze({
+  common: 1,
+  uncommon: 2,
+  rare: 2,
+  epic: 3,
+  legendary: 4,
+});
+
+// Zone x node-type material matrix (Professions 2.0 Phase 4): which item a
+// harvest grants in which zone, and the per-rarity unit counts. The zone-1
+// (eastbrook_vale) rows grant ONLY the dedicated sellValue-4 starter materials
+// (copper_ore/ironbark_log/silverleaf_herb), never the premium vendor
+// reagents: that is the stockpiling mitigation, so farming starter nodes
+// cannot pile up mid-tier trade goods. Exported so tests can pin the table
+// contents.
+export const NODE_MATERIAL_TABLE: Record<
+  GatherNodeType,
+  Record<string, { itemId: string; qtyByRarity: Record<MaterialRarity, number> }>
+> = {
+  ore: {
+    eastbrook_vale: { itemId: 'copper_ore', qtyByRarity: MATERIAL_QTY_BY_RARITY },
+    mirefen_marsh: { itemId: 'iron_ore', qtyByRarity: MATERIAL_QTY_BY_RARITY },
+    thornpeak_heights: { itemId: 'thorium_ore', qtyByRarity: MATERIAL_QTY_BY_RARITY },
+  },
+  wood: {
+    eastbrook_vale: { itemId: 'ironbark_log', qtyByRarity: MATERIAL_QTY_BY_RARITY },
+    mirefen_marsh: { itemId: 'ashwood_log', qtyByRarity: MATERIAL_QTY_BY_RARITY },
+    thornpeak_heights: { itemId: 'elderwood_log', qtyByRarity: MATERIAL_QTY_BY_RARITY },
+  },
+  herb: {
+    eastbrook_vale: { itemId: 'silverleaf_herb', qtyByRarity: MATERIAL_QTY_BY_RARITY },
+    mirefen_marsh: { itemId: 'goldleaf_herb', qtyByRarity: MATERIAL_QTY_BY_RARITY },
+    thornpeak_heights: { itemId: 'sunpetal_herb', qtyByRarity: MATERIAL_QTY_BY_RARITY },
+  },
+};
+
+// The material row for one node type in one zone. A zone without its own row
+// (a future zone added before its material content lands) falls back to the
+// eastbrook_vale starter row rather than throwing: degraded yields, never a
+// broken harvest.
+export function nodeMaterialFor(
+  type: GatherNodeType,
+  zoneId: string,
+): { itemId: string; qtyByRarity: Record<MaterialRarity, number> } {
+  const byZone = NODE_MATERIAL_TABLE[type];
+  return byZone[zoneId] ?? byZone.eastbrook_vale;
+}
 
 export function gatherNodeById(nodeId: string): GatherNodeDef | undefined {
   return GATHER_NODES.find((n) => n.id === nodeId);
@@ -155,23 +186,31 @@ export interface HarvestResolution {
   granted: boolean;
   itemId?: string;
   professionId?: GatheringProfessionId;
-  // The rolled material rarity (#1122), scaled by the player's proficiency in the
-  // node's matching profession at the moment of harvest. Informational for now:
-  // NODE_HARVEST_TABLE still grants one fixed placeholder item id regardless of
-  // rarity (dedicated per-rarity ore/wood/herb items are future content work, same
-  // as the NODE_HARVEST_TABLE comment above), so this does not yet change what
-  // gets granted; it settles the roll contract callers (loot text, future content)
-  // build against.
+  // The rolled material rarity (#1122), scaled by the player's proficiency in
+  // the node's matching profession at the moment of harvest. Since Phase 4 it
+  // drives the yield: unit count via the material row's qtyByRarity, and
+  // signing via isSignableMaterialRarity.
   rarity?: MaterialRarity;
+  // Units of itemId this harvest RESOLVES to (qtyByRarity[rarity], multiplied
+  // by GATHER_RARE_EVENT_YIELD_MULT on a rare event). The command boundary
+  // (harvestNode) may still truncate the actual grant to bag room.
+  qty?: number;
+  // True when the yield is granted as signed instances ({ signer: name }, the
+  // corpse-harvest precedent): a rare-or-better rarity roll, or any rare
+  // event, which forces signing regardless of the rolled rarity.
+  signed?: boolean;
+  // Non-null when draw #2 hit the zone-broadcast rare event (Phase 4).
+  rareEvent?: GatherRareEventFlavor | null;
 }
 
 // Resolves one player's harvest attempt against one node: if that player's own
-// timer for this node has elapsed, grants the node type's material (via the
-// caller's item-grant callback), rolls that material's rarity scaled by the
-// player's current proficiency in the node's profession, and queues the matching
-// profession's proficiency gain, then resets that player's timer; otherwise
-// denies without side effects. Never touches any other player's state for this
-// or any other node.
+// timer for this node has elapsed, resolves the zone's material and yield
+// (rarity scaled by the player's current proficiency in the node's profession,
+// plus the Phase 4 rare-event roll) and queues the matching profession's
+// proficiency gain, then resets that player's timer; otherwise denies without
+// side effects. Never touches any other player's state for this or any other
+// node. Granting is the caller's job (harvestNode), which may truncate to bag
+// room.
 export function resolveHarvest(
   meta: PlayerMeta,
   node: GatherNodeDef,
@@ -181,9 +220,26 @@ export function resolveHarvest(
   if (!isNodeHarvestableBy(meta, node.id, now)) return { granted: false };
   const entry = NODE_HARVEST_TABLE[node.type];
   meta.nodeHarvestReadyAt[node.id] = now + entry.respawnSeconds;
+  // Pinned determinism contract: once the harvest gate above passes, EXACTLY
+  // two rng draws happen, in this order, on every harvest, draw #1 the
+  // material rarity and draw #2 the rare-event roll, regardless of the
+  // caller's bag state, so a full or partial bag never shifts the world's
+  // rng stream.
   const rarity = rollMaterialRarity(meta.gatheringProficiency[entry.professionId], rng);
+  const rareEvent = rollGatherRareEvent(rng, node.type);
+  const material = nodeMaterialFor(node.type, node.zoneId);
+  const qty = material.qtyByRarity[rarity] * (rareEvent ? GATHER_RARE_EVENT_YIELD_MULT : 1);
+  const signed = rareEvent !== null || isSignableMaterialRarity(rarity);
   queueGatheringGrant(meta, entry.professionId, 1);
-  return { granted: true, itemId: entry.itemId, professionId: entry.professionId, rarity };
+  return {
+    granted: true,
+    itemId: material.itemId,
+    professionId: entry.professionId,
+    rarity,
+    qty,
+    signed,
+    rareEvent,
+  };
 }
 
 // Command entry point (behind the SimContext seam): resolves one player's
@@ -217,12 +273,15 @@ export function harvestNode(ctx: SimContext, nodeId: string, pid?: number): bool
     ctx.error(meta.entityId, 'This resource node has not respawned for you yet.');
     return false;
   }
-  const entry = NODE_HARVEST_TABLE[node.type];
-  if (!ctx.canAddItem(entry.itemId, 1, meta.entityId)) {
+  // Capacity pre-gate on the material this zone's node actually grants. The
+  // item id is known BEFORE any rng draw (zone x type lookup, no roll), so a
+  // full-bag denial here happens before the rng stream is touched and cannot
+  // shift the world's draw order.
+  const material = nodeMaterialFor(node.type, node.zoneId);
+  if (!ctx.canAddItem(material.itemId, 1, meta.entityId)) {
     ctx.error(meta.entityId, 'Your bags are full.');
     return false;
   }
-  const questItemId = neededNodeQuestItem(ctx, meta, node);
   const result = resolveHarvest(meta, node, ctx.time, ctx.rng);
   if (!result.granted) {
     // Unreachable in practice (the readiness check above already gates this),
@@ -231,33 +290,74 @@ export function harvestNode(ctx: SimContext, nodeId: string, pid?: number): bool
     ctx.error(meta.entityId, 'This resource node has not respawned for you yet.');
     return false;
   }
-  ctx.addItem(result.itemId!, 1, meta.entityId);
-  // Resolved against the timer/bags gates above, before the timer-consuming
-  // resolveHarvest call, so a full-bags quest item never eats the node's
-  // per-player respawn timer on its own.
-  if (questItemId && ctx.canAddItem(questItemId, 1, meta.entityId)) {
-    ctx.addItem(questItemId, 1, meta.entityId);
+  const { itemId, professionId, rarity, qty, signed, rareEvent } = result;
+  if (!itemId || !professionId || !rarity || !qty) {
+    // resolveHarvest's granted branch always supplies these fields. Keep the
+    // boundary defensive without introducing a player-visible impossible case.
+    // false: nothing was granted, so this is not a successful interaction for
+    // the autorun-stop contract (#1982).
+    return false;
   }
+  // Grant the resolved yield, truncated to what the bags actually absorb: the
+  // Sim grant hub (sim.ts addItem/addItemInstance) NEVER capacity-caps (an
+  // async award must not destroy items), so the command boundary here owns
+  // the truncation. Both rng draws already happened in resolveHarvest, so
+  // truncation never shifts the draw order.
+  let grantedQty = 0;
+  // Fungible grant: find the largest count that still fits (stack top-up
+  // plus free slots, ctx.canAddItem). The pre-gate guarantees at least 1.
+  const grantFungibleFit = (): number => {
+    let fit = qty;
+    while (fit > 1 && !ctx.canAddItem(itemId, fit, meta.entityId)) fit--;
+    ctx.addItem(itemId, fit, meta.entityId);
+    return fit;
+  };
+  if (signed) {
+    // Signed instances never merge into stacks (bags.ts addStacked, #1165):
+    // each unit is its own slot, so EVERY unit (the first included) needs a
+    // genuinely free slot and an oversized rare-event windfall truncates
+    // instead of overflowing the bag. The fungible pre-gate above can pass on
+    // stack top-up room alone, so when no free slot exists the yield falls
+    // back to an unsigned top-up grant (the truncation contract wins over
+    // signing in that self-inflicted edge; the crossing-case pin lives in
+    // tests/gather_rare_events.test.ts).
+    const capacity = bagCapacity(meta.bags);
+    for (let i = 0; i < qty; i++) {
+      if (meta.inventory.length >= capacity) break;
+      ctx.addItemInstance(itemId, { signer: meta.name }, meta.entityId);
+      grantedQty++;
+    }
+    if (grantedQty === 0) grantedQty = grantFungibleFit();
+  } else {
+    grantedQty = grantFungibleFit();
+  }
+  ctx.onNodeGatheredForQuests(node, itemId, meta);
   // Zone gather mark: one entry per zone and node type ever harvested.
   ctx.markVisited(meta, `gather:${node.zoneId}:${node.type}`);
   // Character XP for the harvest (profession_xp.ts), tier-scaled and
   // level-gated the same way kill XP is: a max-level player farming a
   // trivial (gray) node gets zero.
   ctx.grantXp(gatherActionXp(node.level, p.level), meta);
+  // Phase 4 rare event: soft zone broadcast plus the dormant per-flavor
+  // deed mark, resolved in gather_events.ts after the grant lands.
+  if (rareEvent) announceGatherRareEvent(ctx, meta, node, rareEvent, itemId);
   // Gather-completion event (#1729): personal (pid), so the client can play a
   // gathering audio cue for the acting player only. Emitted here on the granted
   // path exactly like craftItem emits craftResult on a completed craft; carries
   // the rolled rarity so a rare-material harvest is distinguishable for a
-  // special cue. Draws no rng, so the one-rarity-draw-per-harvest contract (see
-  // the rng-draw test) is unaffected.
+  // special cue, plus the Phase 4 fields: qty is the ACTUAL granted unit count
+  // (post-truncation), rareEvent the flavor or null. Draws no rng, so the
+  // two-draws-per-harvest contract (see the rng-draw test) is unaffected.
   ctx.emit({
     type: 'gatherResult',
     pid: meta.entityId,
     nodeId: node.id,
     nodeType: node.type,
-    professionId: result.professionId!,
-    itemId: result.itemId!,
-    rarity: result.rarity!,
+    professionId,
+    itemId,
+    rarity,
+    qty: grantedQty,
+    rareEvent: rareEvent ?? null,
   });
   return true;
 }
@@ -510,28 +610,4 @@ export function rollCorpseMaterialRarity(rng: Rng): MaterialRarity {
 // stays a plain fungible stack, same as before this issue.
 export function isSignableMaterialRarity(rarity: MaterialRarity): boolean {
   return rarity === 'rare' || rarity === 'epic' || rarity === 'legendary';
-}
-
-// Fixed rarity ladder, low to high, matching the tier-index scale professions/
-// archetype.ts's empowerment ceiling already uses (common=0, uncommon=1,
-// rare=2, epic=3, legendary=4).
-const MATERIAL_RARITY_ORDER: readonly MaterialRarity[] = [
-  'common',
-  'uncommon',
-  'rare',
-  'epic',
-  'legendary',
-];
-
-/** Clamp a rolled rarity down to at most `maxTier` (a tier index on the same
- *  ladder, e.g. from archetype.ts `archetypeCeilingFor`; `Infinity` is a no-op).
- *  Used to cap crafted-output quality at the #1129 empowerment ceiling: a
- *  dormant or hobby craft can still ROLL a high rarity off raw skill, but the
- *  actual result granted never exceeds what that craft is empowered to
- *  produce. Never raises a roll, only lowers it. */
-export function clampMaterialRarity(rarity: MaterialRarity, maxTier: number): MaterialRarity {
-  if (!Number.isFinite(maxTier)) return rarity;
-  const cap = Math.max(0, Math.min(MATERIAL_RARITY_ORDER.length - 1, Math.floor(maxTier)));
-  const rolled = MATERIAL_RARITY_ORDER.indexOf(rarity);
-  return MATERIAL_RARITY_ORDER[Math.min(rolled, cap)];
 }

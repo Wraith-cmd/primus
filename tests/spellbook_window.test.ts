@@ -38,6 +38,10 @@ describe('spellbook_window: WCAG chrome (rows + toggles + focus-return)', () => 
     expect(code).toContain('this.deps.addToBar(id)');
   });
 
+  it('keeps passive spellbook rows informational, without add or drag affordances', () => {
+    expect(code).toContain('known && isAbilityActionBarEligible(def)');
+  });
+
   it('keeps the reset-bar button gated on the form-bars flag', () => {
     expect(code).toContain('const resetBtnHtml = view.hasFormBars');
     expect(code).toContain('data-reset-bar');

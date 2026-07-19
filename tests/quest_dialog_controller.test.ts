@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { DELVES, NPCS } from '../src/sim/data';
+import { DELVES, NPCS, STATIONS } from '../src/sim/data';
 import { CHRONICLER_TEMPLATE_IDS } from '../src/sim/deeds';
 import type { Entity } from '../src/sim/types';
 import type { FocusTrapHandle } from '../src/ui/focus_manager';
@@ -46,6 +46,18 @@ function harness(entity = npc(10, ordinaryNpcId()), questState = 'available') {
     player: { name: 'Ari', pos: { x: 0, y: 0, z: 0 } },
     questLog: new Map(),
     partyInfo: null,
+    craftingIdentity: {
+      version: 1,
+      synced: true,
+      craftSkills: {},
+      activeArchetype: null,
+      pairedMajor: null,
+      hobbyCraft: null,
+      attunedPairs: [],
+      switchCount: 0,
+      amendsProgress: 0,
+      amendsRequired: 5,
+    },
     questState: vi.fn(() => questState),
     targetEntity,
     interact,
@@ -69,6 +81,7 @@ function harness(entity = npc(10, ordinaryNpcId()), questState = 'available') {
   const openDelveBoard = vi.fn();
   const openValeCup = vi.fn();
   const openCardDuel = vi.fn();
+  const openTrain = vi.fn();
   const controller = new QuestDialogController({
     element,
     document,
@@ -101,6 +114,7 @@ function harness(entity = npc(10, ordinaryNpcId()), questState = 'available') {
     openDelveBoard,
     openValeCup,
     openCardDuel,
+    openTrain,
     voice,
   });
   return {
@@ -126,6 +140,7 @@ function harness(entity = npc(10, ordinaryNpcId()), questState = 'available') {
     openDelveBoard,
     openValeCup,
     openCardDuel,
+    openTrain,
   };
 }
 
@@ -210,6 +225,52 @@ describe('QuestDialogController', () => {
     expect(ready.reportTelemetry).toHaveBeenCalledWith('quest_turnin', { timeMs: 0 });
   });
 
+  it('previews and dispatches the selected profession attunement target', () => {
+    const smith = npc(32, 'smith_haldren');
+    smith.questIds = ['q_archetype_acceptance'];
+    const test = harness(smith, 'available');
+    test.controller.open(smith.id);
+    test.element.querySelector<HTMLButtonElement>('[data-quest="q_archetype_acceptance"]')?.click();
+
+    const select = test.element.querySelector<HTMLSelectElement>('[data-profession-selection]');
+    const preview = test.element.querySelector<HTMLElement>('[data-profession-preview]');
+    expect(select?.options).toHaveLength(10);
+    expect(preview?.textContent).toBeTruthy();
+
+    if (!select) throw new Error('profession selector missing');
+    // The option labels lead with the pair archetype name and keep both craft
+    // names visible, e.g. "Bladewright (Jewelcrafting + Weaponcrafting)".
+    const option = [...select.options].find((o) => o.value === 'jewelcrafting+weaponcrafting');
+    expect(option?.textContent).toBe('Bladewright (Jewelcrafting + Weaponcrafting)');
+    select.value = 'jewelcrafting+weaponcrafting';
+    select.dispatchEvent(new Event('change'));
+    // The preview names the pair title and both major crafts.
+    expect(preview?.textContent).toContain('Bladewright');
+    expect(preview?.textContent).toContain('Jewelcrafting');
+    expect(preview?.textContent).toContain('Weaponcrafting');
+
+    test.element.querySelector<HTMLButtonElement>('.btn')?.click();
+    expect(test.acceptQuest).toHaveBeenCalledWith(
+      'q_archetype_acceptance',
+      'jewelcrafting+weaponcrafting',
+    );
+  });
+
+  it('keeps the accept action disabled when a profession quest has no target', () => {
+    const smith = npc(33, 'smith_haldren');
+    smith.questIds = ['q_prof_make_amends'];
+    const test = harness(smith, 'available');
+    test.controller.open(smith.id);
+    test.element.querySelector<HTMLButtonElement>('[data-quest="q_prof_make_amends"]')?.click();
+
+    const select = test.element.querySelector<HTMLSelectElement>('[data-profession-selection]');
+    const accept = test.element.querySelector<HTMLButtonElement>('.btn');
+    expect(select?.options).toHaveLength(0);
+    expect(accept?.disabled).toBe(true);
+    accept?.click();
+    expect(test.acceptQuest).not.toHaveBeenCalled();
+  });
+
   it('closes gossip before opening every non-quest destination', () => {
     const vendorNpc = npc(40, ordinaryNpcId());
     vendorNpc.vendorItems = ['minor_healing_potion'];
@@ -248,6 +309,30 @@ describe('QuestDialogController', () => {
     cardMaster.controller.open(45);
     cardMaster.element.querySelector<HTMLButtonElement>('[data-card-duel]')?.click();
     expect(cardMaster.openCardDuel).toHaveBeenCalledTimes(1);
+  });
+
+  it('a station master offers the Train option and routes it to openTrain (Phase 9)', () => {
+    // Every STATIONS masterNpcId renders the [data-train] gossip option; the
+    // click routes the NPC ENTITY id (not the template id) to deps.openTrain.
+    const master = harness(npc(46, STATIONS[0].masterNpcId));
+    master.controller.open(46);
+    const button = master.element.querySelector<HTMLButtonElement>('[data-train]');
+    expect(button).not.toBeNull();
+    expect(button?.getAttribute('aria-label')).toBeTruthy();
+    button?.click();
+    expect(master.openTrain).toHaveBeenCalledWith(46);
+    expect(master.release).toHaveBeenCalledWith(false);
+  });
+
+  it('a non-master NPC renders no Train option (Phase 9)', () => {
+    const masters = new Set(STATIONS.map((station) => station.masterNpcId));
+    const plainId = Object.values(NPCS).find(
+      (definition) => !definition.banker && !masters.has(definition.id),
+    )?.id;
+    if (!plainId) throw new Error('non-master NPC fixture not found');
+    const plain = harness(npc(47, plainId));
+    plain.controller.open(47);
+    expect(plain.element.querySelector('[data-train]')).toBeNull();
   });
 
   it('closes stale gossip when the authoritative NPC disappears', () => {

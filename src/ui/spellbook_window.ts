@@ -24,7 +24,11 @@ import type { IWorld } from '../world_api';
 import { markDialogRoot } from './dialog_root';
 import { classDisplayName, tEntity } from './entity_i18n';
 import { esc } from './esc';
-import { encodeHotbarAction, HOTBAR_ACTION_MIME } from './hud/action_bar/hotbar';
+import {
+  encodeHotbarAction,
+  HOTBAR_ACTION_MIME,
+  isAbilityActionBarEligible,
+} from './hud/action_bar/hotbar';
 import { formatNumber, t } from './i18n';
 import { iconDataUrl } from './icons';
 import { buildSpellbookView, type SpellbookRow } from './spellbook_view';
@@ -181,6 +185,8 @@ export class SpellbookWindow {
       hasFreeSlot: this.deps.hasFreeSlot(),
       attackOnBar: this.deps.attackOnBar(),
       hasFormBars: this.deps.hasFormBars(),
+      spec: world.talentSpec,
+      level: world.player.level,
     });
     const className = classDisplayName(view.classId);
     markDialogRoot(el, { label: t('abilityUi.spellbook.title') });
@@ -353,7 +359,7 @@ export class SpellbookWindow {
     el.innerHTML = `<div class="spell-icon" style="background-image:url(${iconDataUrl('ability', row.abilityId)})"></div>
         <div class="spell-text"><div class="spell-name">${esc(name)}${known && known.rank > 1 ? ` <span class="spell-rank">${esc(t('abilityUi.tooltip.rank', { rank: this.formatAbilityNumber(known.rank) }))}</span>` : ''}</div>
         <div class="spell-sub">${locked ? esc(t('abilityUi.spellbook.trainableAtLevel', { level: learnLevel })) : esc(summary)}</div></div>`;
-    if (known) {
+    if (known && isAbilityActionBarEligible(def)) {
       const toggle = document.createElement('button');
       toggle.type = 'button';
       toggle.className = `spell-hotbar-toggle${row.onBar ? ' remove' : ''}`;
@@ -408,10 +414,10 @@ export class SpellbookWindow {
         this.deps.setDragAction(null);
         this.deps.clearActionDropTargets();
       });
-      // Resolve the ability LIVE at hover time, not the object captured at render:
-      // a talent allocated while the spellbook is open reassigns world.known with a
-      // new cost/damage, and this row's tooltip must reflect it even before the next
-      // tickOpen rebuild lands.
+    }
+    if (known) {
+      // Resolve every learned ability LIVE at hover time, including informational
+      // passive rows that deliberately have no action-bar controls.
       this.deps.attachTooltip(el, () => {
         const live = this.deps.world().known.find((k) => k.def.id === known.def.id) ?? known;
         return this.deps.abilityTooltip(live);

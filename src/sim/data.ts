@@ -44,6 +44,7 @@ import {
   SPIRIT_HEALER_NPC_ID,
 } from './content/graveyards';
 import { GROUND_PICKUP_LINES } from './content/ground_pickup_lines';
+import { MAGE_PET_MOBS } from './content/mage_pets';
 import {
   ALL_RECIPES as ALL_RECIPES_CONTENT,
   COMMON_RECIPES as COMMON_RECIPES_CONTENT,
@@ -139,6 +140,7 @@ function mergeItems(...parts: Record<string, ItemDef>[]): Record<string, ItemDef
 export type { ClassDef } from './content/classes';
 export { ABILITIES, abilitiesKnownAt, CLASSES } from './content/classes';
 export { GATHER_NODE_TYPES } from './content/gather_nodes';
+export { STATIONS } from './content/professions';
 // Re-export content shapes so existing `from './data'` imports keep working.
 export type {
   BiomeId,
@@ -179,6 +181,7 @@ export const MOBS: Record<string, MobTemplate> = {
   ...ZONE3_MOBS,
   ...DUNGEON_MOBS,
   ...WARLOCK_PET_MOBS,
+  ...MAGE_PET_MOBS,
   ...TEMPLE_MOBS,
   ...TEMPLE_DUNGEON_MOBS,
   ...DELVE_MOBS,

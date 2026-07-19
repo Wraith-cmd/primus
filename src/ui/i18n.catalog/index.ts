@@ -201,6 +201,14 @@ export const en = {
   },
   game: gameStrings,
   hudChrome: hudChromeStrings,
+  // Rare gather events (Professions 2.0 Phase 4): the zone-broadcast lines
+  // rendered from the id-based gatherRareEvent SimEvent; {finder} is the
+  // harvester's player name and splices verbatim.
+  gatherEvent: {
+    pristineVein: '{finder} struck a pristine vein!',
+    ancientHeartwood: '{finder} felled an ancient heartwood!',
+    moonlitBloom: '{finder} discovered a moonlit bloom!',
+  },
   apiError: apiErrorStrings,
   guide: guideStrings,
   editor: editorStrings,
@@ -1244,6 +1252,10 @@ export const en = {
       kings_signet: { name: "King's Signet" },
       event_skin_token: { name: 'Mysterious Cosmetic Cache' },
       heroic_mark: { name: 'Heroic Mark' },
+      eastbrook_buckler: { name: 'Eastbrook Buckler' },
+      eastbrook_greatsword: { name: 'Eastbrook Greatsword' },
+      highwatch_greatsword: { name: 'Highwatch Greatsword' },
+      highwatch_wallshield: { name: 'Highwatch Wallshield' },
       morthens_cryptforged_hauberk: { name: "Morthen's Cryptforged Hauberk" },
       shadowpulse_handwraps: { name: 'Shadowpulse Handwraps' },
       bonechill_striders: { name: 'Bonechill Striders' },
@@ -1295,6 +1307,11 @@ export const en = {
       soulflame_mantle: { name: 'Wraithfire Mantle' },
       stormcallers_crown: { name: 'Galecall Crown' },
       stormcallers_spaulders: { name: 'Galecall Spaulders' },
+      // Nythraxis raid (normal): the offhand-slot + two-hander epics.
+      bonewrought_greatsword: { name: 'Bonewrought Greatsword' },
+      direfang_greatblade: { name: 'Direfang Greatblade' },
+      bonewrought_bulwark: { name: 'Bonewrought Bulwark' },
+      wraithfire_orb: { name: 'Wraithfire Orb' },
       unknown_alien_weaponry: { name: 'Unknown Alien Weaponry' },
       alien_armor_plate: { name: 'Alien Armor Plate' },
       amber_crimson_armor_plate: { name: 'Amber Crimson' },
@@ -1323,7 +1340,12 @@ export const en = {
       stormcallers_waistguard: { name: 'Galecall Waistguard' },
     },
     itemSets: itemSetEntityText,
-    mobs: { ...worldNames.en.entities.mobs, ...mergeEntities.en.mobs, ...mergeExtra.en.mobs },
+    mobs: {
+      ...worldNames.en.entities.mobs,
+      ...mergeEntities.en.mobs,
+      ...mergeExtra.en.mobs,
+      water_elemental: { name: 'Water Elemental' },
+    },
     npcs: { ...worldNames.en.entities.npcs, ...mergeExtra.en.npcs },
     quests: {
       ...worldNames.en.entities.quests,

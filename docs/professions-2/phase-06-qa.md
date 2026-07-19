@@ -1,7 +1,9 @@
 # Phase 06 QA: Verify Crafting window upgrades and celebrations
 
-Audit the Phase 6 implementation (crafting window legibility, masterwork celebrations, maker's
-mark tooltips) for correctness, missing tests, dead code, determinism, three-host parity, and
+Audit the Phase 6 implementation (crafting window legibility, masterwork celebrations with the
+zone-visible broadcast, tier-up toasts, maker's mark tooltips, and the two sanctioned seam
+touches: the zone-broadcast sim emit and the online-inspect identity-wire extension) for
+correctness, missing tests, dead code, determinism, three-host parity, and
 i18n completeness.
 
 ## QA Starter Prompt
@@ -36,8 +38,31 @@ Spawn an Explore agent to read and summarize:
 - All files created or modified in Phase 6 (use `git diff` against the phase-start commit)
 - CLAUDE.md (root), src/ui/CLAUDE.md, src/styles/CLAUDE.md
 The agent must return: the full list of Phase 6 deliverables and acceptance criteria, all
-new and modified files, the new hudChrome keys and the sim_i18n matcher rule, and any
-known issues or deferrals noted in progress.md.
+new and modified files, the new hudChrome keys and the broadcast localization path, and
+any known issues or deferrals noted in progress.md.
+
+AS-LANDED DEVIATIONS (2026-07-19, authoritative over this file's older wording; the
+state.md Phase 6 surfaces entry carries the full record):
+- There is NO sim_i18n matcher rule for the masterwork broadcast. The broadcast landed
+  as a structured, text-free masterworkZone SimEvent (ids plus values, the Phase 4
+  gatherRareEvent precedent); the HUD localizes it via hudChrome.crafting
+  masterworkZoneLine and the S3 guard passes by construction. Do not fail the audit
+  hunting a matcher row; DO verify the guard is green and the event carries no English.
+- The celebration gate is the deeds pure-plan style (craft_celebration_view.ts,
+  buildDeedUnlockPlan precedent); no deed-fireworks module exists anywhere. Reduced
+  motion trims only the banner fade (plan.motion, consumed by showBanner); the log
+  lines, banner text, sound, and the polite ARIA announcer are never gated.
+- The parity golden professions_craft eventDigest was re-pinned deliberately in its own
+  commit (the crafter receives their own masterworkZone copy); rng fingerprints are
+  byte-identical, which is the no-rng proof.
+- The gear-inspect surface is hud.ts openInspect/buildInspectSlotRow, NOT
+  armory_inspect.ts (that file is the cosmetic skin panel and was left untouched).
+- eqi rides identityFields beside eq (never ALL_DELTA_KEYS or dynamicFields), trimmed
+  server-side to signer/enchant/rolled (the boundTo/charges strip is negatively pinned
+  in tests/snapshots.test.ts).
+- The skill-gain difficulty label consumes the shared craftSkillGainMultiplier
+  (src/sim/professions/archetype.ts), the same function the sim grant site calls; the
+  ceiling arm is archetypeCeilingFor ALONE, never craftCeiling.
 
 STEP 2 - QA AUDIT (spawn the three agents below in parallel, using only the Explore
 summary; prompt each for COVERAGE not filtering: report every issue including low-severity
@@ -50,11 +75,19 @@ Correctness agent:
   tests/crafting_view.test.ts tests/localization_fixes.test.ts plus the updated window
   tests; the mobile guard trio (tests/mobile_window_coverage.test.ts,
   mobile_window_transform.test.ts, mobile_window_layout.test.ts); npm run i18n:gen then
-  npx vitest run tests/i18n_completeness.test.ts tests/localization_fixes.test.ts.
+  npx vitest run tests/i18n_completeness.test.ts tests/localization_fixes.test.ts; the
+  seam-touch rows: npx vitest run tests/snapshots.test.ts tests/env_protocol.test.ts
+  tests/bandwidth.test.ts tests/world_api_parity.test.ts tests/architecture.test.ts
+  tests/professions_masterwork.test.ts tests/professions_crafting.test.ts (the Phase 2
+  drawCounts pins must be green: the zone-broadcast emit draws no rng).
 - Exercise the real behavior, not just the tests: with npm run dev (and npm run server
   for the online host), open the crafting window, walk recipes across skill tiers, force
   each eligibility state, craft until a masterwork procs (dev commands allowed locally),
-  and confirm the toast, broadcast row, and tooltip seal appear; capture the mobile
+  and confirm the toast, the ZONE broadcast row (a SECOND nearby client must see it, the
+  crafter's own toast is not the probe), the tier-up toast at a 25/50/75 crossing in both
+  hosts, and the tooltip seal appear; inspect the crafter from the second client and
+  confirm the masterwork seal, enchant, and maker's mark render from the extended
+  identity wire (liveness, not shape: the 2033 stub trap); capture the mobile
   screenshot of the crafting window.
 - Verify the offline Sim path and the online ClientWorld path present identical rows,
   reasons, and celebrations (the craft button never lies in either host).
@@ -92,12 +125,24 @@ PHASE-SPECIFIC QA EMPHASIS (probe these explicitly):
   never the masterwork information (toast, broadcast, and seal still convey it).
 - The bare-disabled-button sweep: enumerate every disabled state the window can produce
   and confirm each one names its reason inline.
+- The zone-broadcast audience (2026-07-17 seam touch): a nearby player sees the
+  masterwork broadcast row and a distant player does not; the crafter's own toast still
+  renders from the personal Phase 2 SimEvent; the emit rides the Phase 4 soft-zone
+  mechanism and draws no rng (drawCounts pins green).
+- Tier-up toasts: fire at every TIER_SKILL_STEP crossing, client-derived identically in
+  both hosts, never on a non-crossing skill gain, and reduced-motion aware.
+- Online-inspect payloads (2026-07-17 seam touch): another player's masterwork and
+  enchant stats are visible via inspect in the ONLINE host (parity-pinned, live); and
+  the standing security invariant holds: no wire command ingests a client-supplied
+  ItemInstancePayload (attempt one; the server must re-mint or reject).
 
 Multi-agent review dispatch: apply the Review Dispatch Matrix in
 docs/professions-2/implementation-plan.md (the plan carries the one canonical copy).
 Check `git diff --name-only` against the phase-start commit and spawn ONLY the agents
-whose row matches (expected here: frontend-seam-reviewer, and cross-platform-sync if
-src/ui/sim_i18n.ts changed), plus qa-checklist (this is the phase-completion QA gate).
+whose row matches (expected here: frontend-seam-reviewer, cross-platform-sync for the
+broadcast localization path, the SimEvent emit, and the identity-wire extension, and
+architecture-reviewer for the sanctioned sim touch), plus qa-checklist (this is the
+phase-completion QA gate).
 Prompt each for COVERAGE not filtering. Resume any review agent that truncates
 mid-analysis with: "Stop reading more files. Output the full report now. No more tool
 calls. Format: BLOCKING / SHOULD-FIX / NICE-TO-HAVE / VERDICT."
@@ -124,6 +169,8 @@ Phase 7 implementation session.
 
 STOPPING RULES:
 - Stop and surface to the user if any BLOCKING item cannot be fixed without changing the
-  phase scope (for example, if a fix would require sim, wire, or station-system changes
-  that belong to Phase 2 or Phase 8).
+  phase scope. Fixes to the TWO sanctioned seam touches (the zone-broadcast emit and the
+  inspect payload extension) ARE Phase 6 scope; anything beyond them (station-system
+  changes, new craft mechanics) belongs to Phase 2 or Phase 8 and must be surfaced, not
+  fixed here.
 ```

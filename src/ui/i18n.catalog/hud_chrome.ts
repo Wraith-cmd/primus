@@ -31,6 +31,11 @@ export const hudChromeStrings = {
     resurrectAtHealer: "The Pale Keeper (Keeper's Toll)",
     spiritHealerAlive: 'The Pale Keeper watches over the dead. You are still among the living.',
   },
+  // Floating combat text self-notes (proc consume labels, absorb readout).
+  fct: {
+    absorbed: 'Absorbed {amount}',
+    cheap: 'Cheap!',
+  },
   // Overhead emote display names (wheel tooltips/labels, editor items, overhead
   // bubble text). Source ids/order mirror OVERHEAD_EMOTES in world_api.ts.
   emotes: {
@@ -326,6 +331,12 @@ export const hudChromeStrings = {
     // is a five-letter run), so this reuses the frame's own term for the target ("Mark", from
     // targetLabel above), which a screen-reader user already hears as the target frame's name.
     targetAnnounce: 'Mark {name}',
+    // targetOfTargetLabel names the optional #totarget-frame region (the classic
+    // "target of target": who your current target is targeting). Kept NON-WORDY (no
+    // run of four+ lowercase after stripping tokens) so an English-filled non-Latin
+    // locale does not trip the M16 untranslated-leak guard, reusing the frame's own
+    // term for the target ("Mark", from targetLabel): your mark's mark.
+    targetOfTargetLabel: "Mark's Mark",
     // partyLabel names the #party-frames region (a group of tappable / focusable
     // party member buttons, each named by its visible member name). Kept short and
     // non-wordy (no run of four+ lowercase) so an English-filled non-Latin locale
@@ -333,7 +344,7 @@ export const hudChromeStrings = {
     // companions, parallel to playerLabel / targetLabel.
     partyLabel: 'Your Band',
     // partyChip is the caption on the mobile-only collapse chip that stands in for the
-    // expanded party stack (the member frames + Leave button) on the touch HUD: tap it
+    // expanded party stack (the member frames) on the touch HUD: tap it
     // to reveal the stack, tap again to collapse. A distinct key from the chat channel
     // "Party" (a different render sink: a disclosure header, not a channel tab), so a
     // locale can name the two independently. WORDY by M16 ("Party" to "arty", a four-
@@ -386,6 +397,7 @@ export const hudChromeStrings = {
     leaderboard: 'Ranks',
     dailyRewards: 'Store',
     deeds: 'Deeds',
+    professions: 'Professions',
     nameplates: 'Names',
     haptics: 'Haptics',
     hapticsOff: 'Haptics Off',
@@ -838,12 +850,12 @@ export const hudChromeStrings = {
     // Interface panel toggle: also engage auto-attack when using an offensive
     // ability, so white swings start without a separate Attack press (on by default).
     startAttackOnAbility: 'Auto-Attack on Ability Use',
-    // Interface panel toggle: show the fixed Attack (auto-attack) button in slot 0
-    // of the action bar (on by default). Off frees slot 0 for a normal action.
-    showAttackButton: 'Show Attack Button',
     // Interface panel toggle: loot corpses by walking past them (off by default).
     walkByAutoloot: 'Walk-by Autoloot',
     groundReticle: 'Ground-Targeting Reticle',
+    // Interface panel toggle: Clique-style mouseover casting of friendly abilities
+    // on the hovered party frame (on by default).
+    mouseoverCast: 'Mouseover Cast on Party Frames',
     // Interface panel toggle + the item-tooltip lines it reveals (off by default).
     showItemLevel: 'Show Item Level',
     itemLevelLine: 'Item Level {level}',
@@ -851,6 +863,17 @@ export const hudChromeStrings = {
     // Interface panel toggle that reveals the optional second action bar row (off
     // by default). The abilities bound to its slots stay castable via their keybinds.
     showSecondaryActionBar: 'Show Secondary Action Bar',
+    // Enabled only while the secondary row is visible. Slots remain reachable
+    // through keybinds and the mobile action-ring pages while this row is hidden.
+    showThirdActionBar: 'Show Third Action Bar',
+    // Interface panel toggle for the classic "target of target" mini-frame (off by
+    // default): a small unit frame under the target frame showing who your target
+    // is targeting.
+    showTargetOfTarget: 'Show Target of Target',
+    // Interface panel toggle for the fixed Attack button in the first action-bar
+    // slot (on by default). Off frees that slot for a normal action (drag one in;
+    // its key then casts it). Right-clicking the Attack button flips this off too.
+    showAttackButton: 'Show Attack Button',
     showDailyRewardsChest: 'Show Daily Rewards Chest',
     // Touch-only Graphics panel toggles (mobile combat HUD rework, phase 2).
     // Camera joystick: hidden and off by default, swipe-look on open gameplay
@@ -860,6 +883,37 @@ export const hudChromeStrings = {
     // for left-thumb-dominant players; the same setting as the Key Bindings
     // panel's leftHandedTouch row, surfaced again here alongside the joystick.
     mobileLeftHanded: 'Left-handed layout',
+  },
+  // Choice-row talents (the rows tab in the talents window). The row OPTION
+  // names/descriptions are sim content (English source, localized with the
+  // talent-copy batch); only the chrome lives here. defaultLoadout is the
+  // loadout dropdown button's label while no saved build is active.
+  talentRows: {
+    tab: 'Choices',
+    defaultLoadout: 'Default Loadout',
+    // Badge on a row option whose mechanic is not implemented yet (empty
+    // effect): the pill renders disabled so nobody picks a no-op talent.
+    // Wordy (M16): filled in the five non-Latin locales in this change.
+    comingSoon: 'Coming soon',
+    readoutSummary: 'Talents: {head}, {spent}/{total} rows selected.',
+  },
+  abilityError: {
+    shieldRequired: 'You must have a shield equipped.',
+  },
+  // Specialization screen: the detail rows shown under the selected spec's card
+  // (role/description come from the spec itself; these label the extra facts).
+  // Wordy leaves (M16): filled in the five non-Latin locales in this change.
+  specPanel: {
+    primaryAttr: 'Primary attribute',
+    complexity: 'Complexity',
+    complexityLow: 'Low',
+    complexityMedium: 'Medium',
+    complexityHigh: 'High',
+    exampleAbilities: 'Example abilities',
+    viewTalents: 'View talents',
+    selectSpec: 'Select specialization',
+    specUnlockBanner: 'Specialization Unlocked!',
+    specUnlockHint: 'Press N to choose your specialization.',
   },
   // Controller / gamepad options panel (Options > Controller). Player-facing
   // chrome, so every label is a key here; the live numbers run through
@@ -999,6 +1053,7 @@ export const hudChromeStrings = {
       spellPower: 'Spell Power',
       critRating: 'Crit Rating',
       hasteRating: 'Haste Rating',
+      parry: 'Parry',
       hitRating: 'Hit Rating',
       warfare: 'Warfare',
     },
@@ -1018,11 +1073,13 @@ export const hudChromeStrings = {
       critChance: 'Your chance for an attack to strike critically, dealing double damage.',
       dodge: 'Your chance to completely avoid an incoming melee attack, taking no damage.',
       critRating:
-        'Crit rating from your gear and set bonuses, raising your critical strike chance. About 10 rating grants 1% crit.',
+        'Crit rating from your gear and set bonuses, raising the critical strike chance of both your attacks and your spells. Every 10 rating grants exactly 1% crit.',
       hasteRating:
-        'Haste rating from your gear and set bonuses, speeding up your attacks and spellcasting. About 10 rating grants 1% haste.',
+        'Haste rating from your gear and set bonuses, speeding up your attacks and spellcasting. Every 10 rating grants exactly 1% haste.',
+      parry:
+        'Your chance to fully parry a frontal melee attack, taking no damage. A blow from behind cannot be parried.',
       hitRating:
-        'Hit rating from your gear and set bonuses, reducing how often your attacks miss and your spells are resisted, especially against higher-level enemies. About 10 rating grants 1% hit.',
+        'Hit rating from your gear and set bonuses, reducing how often your attacks miss and your spells are resisted, especially against higher-level enemies. Every 10 rating grants exactly 1% hit.',
       warfare:
         'Increases damage dealt to players by {increase}% and reduces damage taken from players by {reduction}%.',
     },
@@ -1379,6 +1436,9 @@ export const hudChromeStrings = {
     watchX: 'View on X',
     watchKick: 'Watch on Kick',
     watchYouTube: 'Watch on YouTube',
+    // The chat-line badge marking a verified streamer's name; opens the same
+    // player menu the name itself opens, with the channel link(s) up top.
+    streamerBadgeTitle: 'Verified streamer',
   },
   lootSettings: {
     title: 'Loot Settings',
@@ -1495,9 +1555,41 @@ export const hudChromeStrings = {
     attackSpeedSlow: 'Slows attack speed by {pct}%',
     attackSpeedFast: 'Increases attack speed by {pct}%',
     haste: 'Increases attack and casting speed by {pct}%',
+    // wordy (M16): filled in the five non-Latin locales in this change.
+    dmgDone: 'Increases damage dealt by {pct}%',
+    dmgDoneReduce: 'Reduces damage dealt by {pct}%',
+    heatingUp:
+      'Your next consecutive Fire builder critical strike grants Hot Streak; a non-critical builder removes Heating Up',
+    elementalConvergencePrimed:
+      'Your next spell from the other elemental school grants Elemental Convergence',
+    battleStance: 'Battle Stance: 10% more rage generation',
+    berserkerStance: 'Berserker Stance: crits 3% more often and hit 3% harder',
+    crit: 'Increases critical strike chance by {pct}%',
+    rageGen: 'Increases Rage generation by {pct}%',
+    reckless: 'Increases critical strike chance by {pct}% and Rage generation by {ragePct}%',
+    avatar: 'Colossus: damage dealt increased by {pct}%',
+    bloodbath: 'Increases critical strike chance and damage dealt by {pct}%',
+    dieBySword: 'Reduces damage taken by {pct}%',
+    sanguine: 'Increases attack speed by {hastePct}% and damage dealt by {dmgPct}%',
+    // The two ability names are the locale's own (Reaver Strike / Brute Swing
+    // here; each fill uses its locale's translated names).
+    battleTrance: 'Your next Reaver Strike or Brute Swing costs no Rage',
+    revengeFree: 'Your next Revenge costs no Rage',
+    victoryRush: 'Victory Rush is ready',
+    maxHpPct: 'Increases maximum health by {pct}%',
+    temporalHourglass:
+      'Immune and unable to act; restores health and accelerates cooldown recovery. Right-click to cancel.',
     tongues: 'Increases casting time by {pct}%',
+    combustionCrit: 'Your Fire spells always critically strike',
+    overloadNext: 'Your next spell is amplified by {pct}% but costs 50% more mana',
+    powerEchoNext: 'Your next direct spell repeats at {pct}% power on the same target',
+    iceFloesCasts: 'Your next {n} spells with a cast time can be cast while moving',
+    freeCast: 'Your next cast costs nothing',
+    instantCast: 'Your next spell with a cast time is instant',
+    cheapCast: 'Your next spell costs {pct}% less',
     increase: {
       ap: 'Increases attack power by {value}',
+      sp: 'Increases spell power by {value}',
       armor: 'Increases armor by {value}',
       int: 'Increases Intellect by {value}',
       agi: 'Increases Agility by {value}',
@@ -1554,6 +1646,7 @@ export const hudChromeStrings = {
     formBear: 'Bruin Form: increased health and armor',
     formCat: 'Wolf Form: melee damage and energy',
     formTravel: 'Fleet Form: movement speed increased by {pct}%',
+    formFireball: 'Ember Form: movement speed increased by {pct}%; attacks and spells are disabled',
     defensiveStance: 'Guarded Stance: reduced damage taken, more threat',
     righteousFury: 'Burning Oath: greatly increased threat from Holy damage',
     scale: 'Size increased by {pct}%',
@@ -1616,13 +1709,14 @@ export const hudChromeStrings = {
     addToBarAria: 'Add {name} to action bar',
     removeFromBarAria: 'Remove {name} from action bar',
   },
-  // Live overworld mob nameplate label: a bracketed level then the localized mob
-  // name (mirrors the corpse branch's worldContent.corpseName template). {level}
-  // runs through formatNumber; {name} is already localized. Format-only (brackets /
-  // order may reorder per locale), kept here so an English-only add compiles.
+  // Live overworld mob nameplate level badge text. Level renders in its own
+  // element so con-color styling applies to the badge without recoloring the
+  // mob name line.
   nameplate: {
-    mob: '[{level}] {name}',
-    mobElite: '[{level}+] {name}',
+    // Level-only badge rendered in a separate element so the con color applies
+    // to the bracket only, not the mob name text.
+    mobLevel: '{level}',
+    mobEliteLevel: '{level}+',
   },
   // World mouseover tooltip shown when hovering a mob (mob_tooltip_view.ts):
   // name (colored by the nameplate con-color), then "Level N <type>" ({family}
@@ -2091,29 +2185,97 @@ export const hudChromeStrings = {
     // #1866: click/tap/interact-key error when a targeted node's per-viewer
     // respawn timer has not elapsed yet (IWorldProfessions#nodeHarvestableByMe).
     notReady: 'This resource node has not respawned for you yet.',
+    // Harvest feedback line (Professions 2.0 Phase 4), rendered from the
+    // id-based gatherResult SimEvent. Deliberately worded APART from the
+    // loot family: the grant hub's own 'loot' event already prints
+    // "You receive:" for the same harvest, so this line must never regress
+    // into that wording (divergence pin: tests/gather_event_i18n.test.ts).
+    gatherLine: 'You gather: {name}.',
+    gatherLineQty: 'You gather: {name} x{qty}.',
   },
-  // Archetype title (#1130): the named title granted by a character's currently
-  // active craft archetype (see src/sim/professions/archetype.ts). `none` is shown
-  // before the zone-1 acceptance quest has ever been completed (no "Jack of All
-  // Trades" fallback, just untitled). The ten per-craft names are keyed by the
-  // same craft id as CRAFT_RING (src/sim/content/professions.ts); keep both in sync.
+  // Archetype title chrome (#1130, pair-named under Professions 2.0 Phase 1):
+  // `label` heads the character-sheet title line, `none` is shown before the
+  // zone-1 acceptance quest has ever been completed (no "Jack of All Trades"
+  // fallback, just untitled), and `hobbyLabel` heads the hobby line (#1294).
+  // The title NAMES live under archetypePair below, keyed by canonical pair id.
   archetypeTitle: {
     label: 'Title',
     none: 'None',
-    // The hobby craft (#1294): one opposite craft empowered up to rare
-    // alongside the active archetype's majors. Reuses the same per-craft
-    // name table below (a hobby id IS a craft id on the ring).
     hobbyLabel: 'Hobby',
-    armorcrafting: 'Armorer',
-    weaponcrafting: 'Weaponsmith',
-    jewelcrafting: 'Jeweler',
-    alchemy: 'Alchemist',
-    engineering: 'Tinkerer',
-    cooking: 'Chef',
-    inscription: 'Scribe',
-    enchanting: 'Enchanter',
-    tailoring: 'Tailor',
-    leatherworking: 'Leathercrafter',
+  },
+  // Pair-named archetype titles (Professions 2.0 Phase 1): one named title per
+  // selectable adjacent-pair attunement, keyed by the CANONICAL PAIR ID from
+  // src/sim/professions/archetype.ts ARCHETYPE_PAIR_TARGETS (the two majors
+  // joined by '+' in CRAFT_RING order); keep both in sync. These replace the
+  // retired per-craft practitioner titles (Armorer, Weaponsmith, ...).
+  archetypePair: {
+    'engineering+alchemy': 'Bombardier',
+    'alchemy+cooking': 'Apothecary',
+    'cooking+leatherworking': 'Trapper',
+    'leatherworking+tailoring': 'Outfitter',
+    'tailoring+inscription': 'Mageweaver',
+    'inscription+enchanting': 'Arcanist',
+    'enchanting+jewelcrafting': 'Gembinder',
+    'jewelcrafting+weaponcrafting': 'Bladewright',
+    'weaponcrafting+armorcrafting': 'Smith',
+    'armorcrafting+engineering': 'Cogsmith',
+  },
+  // Per-craft display names, keyed by the same craft id as CRAFT_RING
+  // (src/sim/content/professions.ts); keep both in sync. Used wherever a CRAFT
+  // (not a title) is meant: the hobby line, identity-card skill rows and
+  // nudges, crafting-window section headers, and combo requirement labels.
+  craftName: {
+    armorcrafting: 'Armorcrafting',
+    weaponcrafting: 'Weaponcrafting',
+    jewelcrafting: 'Jewelcrafting',
+    alchemy: 'Alchemy',
+    engineering: 'Engineering',
+    cooking: 'Cooking',
+    inscription: 'Inscription',
+    enchanting: 'Enchanting',
+    tailoring: 'Tailoring',
+    leatherworking: 'Leatherworking',
+  },
+  // Professions window (Professions 2.0 Phase 5): the read-only craft-wheel
+  // window. Craft and pair NAMES resolve through craftName / archetypePair
+  // above; these keys are the window's own chrome. Wording follows the
+  // crafting identity card family (crafting.identity.*).
+  professions: {
+    title: 'Professions',
+    close: 'Close professions',
+    ringAria: 'Craft wheel',
+    skillsHeader: 'Craft skills',
+    gatheringHeader: 'Gathering',
+    perksHeader: 'Perks',
+    identityHeader: 'Identity',
+    roleMajor: 'Major',
+    roleHobby: 'Hobby',
+    roleDormant: 'Dormant',
+    roleUnattuned: 'Unattuned',
+    ceilingUnlimited: 'No empowerment cap',
+    ceilingRare: 'Rare cap',
+    ceilingCommon: 'Common cap',
+    skillValue: '{skill} / {max}',
+    tierPipAria: 'Tier {tier}',
+    nextUnlockTier: '{points} points to the next tier: masterwork odds improve',
+    nextUnlockSpecialized: '{points} points to Specialized: material costs drop',
+    nextUnlockMax: 'At maximum skill',
+    perkSpecializedLine: '{craft}: Specialized, material costs -{pct}%',
+    perkSpecializedAt: 'Specializes at {threshold} skill',
+    switchCost: 'Next archetype switch costs {cost} amends',
+    syncing: 'Waiting for your profession data from the realm.',
+    tutorialLine: 'Reach {target} skill in any craft to unlock your first tier.',
+    ctaHeader: 'Next step',
+    ctaRaise: 'Keep raising {craft}: {points} more points to the next tier.',
+    ctaStart: 'Craft or gather with any profession to begin.',
+    unattunedIdentity:
+      'You are not yet attuned to an archetype. Raise your crafts and complete an attunement to choose your pair.',
+    nudgeNearTier: '{craft}: {points} points from the next tier',
+    nudgeDormant: 'Your {craft} knowledge lies dormant',
+    hobbyLabel: 'Hobby: {craft}',
+    majorsLabel: 'Majors: {a} and {b}',
+    pairsHeld: 'Pairs held: {count}',
+    returnsLabel: 'Returns: {count}',
   },
   // Crafting window (#1127): the minimal common-tier crafting action, one row
   // per known recipe, a Craft button enabled only when every reagent is held.
@@ -2130,14 +2292,125 @@ export const hudChromeStrings = {
     unknownRecipe: 'That recipe does not exist.',
     comboRequirementUnmet:
       'You do not have both required crafts at the required tier for that recipe.',
-    // #1297: denied because the recipe is station-bound (the level-20
-    // crafting hub) and the player is either not there or not high enough
-    // level.
-    notAtHub: 'You must be at the crafting hub, at the required level, to craft that.',
+    comboRequires: 'Attunement: {craftA} + {craftB}, tier {tier}.',
+    comboMet: 'Ready.',
+    comboSyncing: 'Checking realm attunement.',
+    comboNotAttuned: 'Choose an archetype pair first.',
+    comboWrongPair: 'Activate this exact pair to craft it.',
+    comboTierUnmet: 'Raise both major crafts to the required tier.',
+    // Named tier_unmet guidance (Phase 6 QA): {crafts} is the localized
+    // craft-name list of ONLY the under-tier crafts, so the player can tell
+    // which one to raise from the row alone. comboTierUnmet above stays the
+    // defensive fallback when the eligibility result names no craft.
+    comboTierUnmetNamed: 'Raise {crafts} to tier {tier}.',
+    professionChoice: 'Profession choice',
+    noProfessionChoice: 'No valid profession choice is currently available.',
+    // One selectable pair in the attunement quest dropdown: the pair archetype
+    // name leading, the two major craft names kept visible for the choice.
+    pairOptionLabel: '{pair} ({craftA} + {craftB})',
+    attunementPreview:
+      'Result: {title} title; {majorA} and {majorB} become uncapped majors; {hobby} becomes the rare-capped hobby; all other skill knowledge is retained but capped at common while dormant.',
+    hobbyPreview:
+      'Result: {hobby} becomes the rare-capped hobby. Both majors and all retained skill values stay unchanged.',
+    identity: {
+      title: 'Crafting Identity',
+      syncing: 'Waiting for your crafting identity from the realm.',
+      unattuned:
+        'No archetype pair is active. Your knowledge is retained, but combo recipes require an attuned pair.',
+      titleLabel: 'Title',
+      majorsLabel: 'Majors',
+      hobbyLabel: 'Hobby',
+      historyLabel: 'History',
+      history: '{pairs} pairs discovered, {returns} returns completed',
+      roleMajor: 'Major',
+      roleHobby: 'Hobby',
+      roleDormant: 'Dormant knowledge',
+      roleUnattuned: 'Unattuned',
+      ceilingUnlimited: 'No empowerment cap',
+      ceilingRare: 'Rare cap',
+      ceilingCommon: 'Common cap',
+      skillAria: '{craft}, skill {skill}, tier {tier}, {role}, {ceiling}',
+      // Visual column headers over the skill rows (aria-hidden: each row
+      // already reads as the full skillAria sentence).
+      colCraft: 'Craft',
+      colSkill: 'Skill',
+      colRole: 'Role',
+      colCap: 'Cap',
+      tutorial:
+        'First tier: reach skill {skill} in a craft. Successful recipes raise that craft without erasing knowledge elsewhere.',
+      nearTier: '{craft} is {points} skill from its next tier.',
+      dormantKnowledge:
+        '{craft} knowledge is retained but dormant until its pair or hobby is active.',
+    },
+    // Professions 2.0 Phase 8 (supersedes the retired notAtHub key): denied
+    // because the recipe is station-bound and the player is not at a station
+    // of its type. {station} is the localized stationName.* value below.
+    stationRequired: 'You must be at the {station} to craft that.',
+    // The six station display names (stations.ts StationType), resolved via
+    // crafting_window.ts stationNameText, the craftName-table idiom.
+    stationName: {
+      forge: 'Forge',
+      kitchens: 'Kitchens',
+      apothecary: 'Apothecary',
+      tannery: 'Tannery',
+      loom: 'Loom',
+      toolworks: 'Toolworks',
+    },
     // #1301: denied because the rolling craft-output window is full.
     throttled: 'You are crafting too quickly. Wait a moment and try again.',
     // #1299: the recipe exists but this player has not learned it yet.
     recipeNotLearned: 'You have not learned that recipe yet.',
+    // Professions 2.0 Phase 6: crafting window legibility (skill requirement
+    // line, skill-gain difficulty labels, hub-station badge) plus the
+    // masterwork and tier-up celebration copy. Masterwork is a proc with
+    // baked bonus stats; the copy never claims a quality-rank upgrade.
+    skillReqLine: 'Requires {craft} {skill}',
+    difficultyFull: 'Full skill gain',
+    difficultyReduced: 'Reduced skill gain',
+    difficultyNone: 'No skill gain',
+    stationBadge: 'Station',
+    // Phase 8 (supersedes the retired stationOutOfRange key): the crafting
+    // window's out-of-range row note, naming WHICH station to walk to.
+    stationOutOfRangeNamed: 'Move to the {station} to craft this.',
+    masterworkToast: 'Masterwork! {name}',
+    masterworkZoneLine: '{crafter} crafted a masterwork {name}!',
+    tierUpToast: '{craft} advanced to tier {tier}!',
+    makersMark: 'Crafted by {name}',
+    masterworkSeal: 'Masterwork',
+    // Generic enchanted marker: EnchantDef.name has no localized display
+    // surface yet, so the tooltip marks the state without naming the enchant.
+    enchantedLine: 'Enchanted',
+  },
+  // Recipe training window (Professions 2.0 Phase 9): a station master
+  // teaches trainer-acquisition recipes for a tier-priced copper fee
+  // (src/sim/professions/training.ts). Recipe result names resolve through
+  // the item table, craft names through craftName above, so these keys are
+  // only the window's own chrome plus the trainResult chat lines (the
+  // 'trainResult' SimEvent is text-free; the client derives every name from
+  // recipeId plus static content).
+  training: {
+    title: 'Training: {name}',
+    close: 'Close training',
+    empty: 'This master has nothing to teach.',
+    free: 'Free',
+    stateKnown: 'Known',
+    stateTeachable: 'Available',
+    stateLocked: 'Locked',
+    // The locked-row requirement line: {craft} is the localized craft name,
+    // {skill} the flat skill threshold of the recipe's tier.
+    requirement: 'Taught at {craft} {skill}',
+    trainAria: 'Learn {name} for {fee}',
+    // The gossip-dialog Train option on a station master.
+    dialogOption: 'Training',
+    dialogOptionAria: 'Browse training from {name}',
+    // trainResult chat lines. learned is the ONE success surface: no toast,
+    // no sound cue (the grant-hub double-log trap).
+    learned: 'Recipe learned: {recipe}',
+    tierUnmet: 'You need {craft} {skill} to learn that recipe.',
+    cannotAfford: 'You cannot afford that training.',
+    notTaughtHere: 'That recipe is not taught here.',
+    alreadyKnown: 'You already know that recipe.',
+    outOfRange: 'You must be at the station to train.',
   },
   // Dungeon Finder window (docs/prd/dungeon-finder.md). Dungeon, creature,
   // item, quest, and zone NAMES resolve through tEntity/world_entity_i18n,

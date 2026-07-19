@@ -33,13 +33,6 @@ export const TARGETS = [
     when: ['tests/tank_defensive_cds.test.ts'],
     variants: [
       {
-        key: 'warrior-desktop',
-        charClass: 'warrior',
-        charName: 'Ironward',
-        abilityId: 'ironhold',
-        nearbyAbilityId: 'defensive_stance',
-      },
-      {
         key: 'paladin-desktop',
         charClass: 'paladin',
         charName: 'Dawnward',
@@ -201,11 +194,16 @@ export const TARGETS = [
     key: 'crafting',
     label: 'Crafting window',
     when: ['ui/crafting_view', 'ui/crafting_window', 'sim/content/recipes', 'sim/professions'],
+    // Desktop and mobile variants: the Phase 6 legibility rows (skill line,
+    // difficulty label, station badge, combo reason) are actionable info and
+    // must read on both form factors.
+    variants: [{ key: 'desktop' }, { key: 'mobile', mobile: true }],
     // Grant a spread of reagents across a few professions so several recipes read
     // craftable, force-hide then toggle so the open is deterministic, and clip to
     // the window.
-    async capture(page) {
+    async capture(page, variant) {
       await page.evaluate(() => {
+        document.querySelector('#gpu-notice')?.remove();
         const sim = window.__game?.sim;
         const ids = ['bone_fragments', 'linen_scrap', 'spider_leg'];
         for (const id of ids) {
@@ -222,7 +220,69 @@ export const TARGETS = [
       // bags/map windows do (getBoundingClientRect can report 0x0 for 2-4s), so
       // poll for a real size instead of guessing a fixed wait.
       const open = await pollForSize(page, '#crafting-window');
+      if (open && variant?.mobile) {
+        // The short landscape viewport shows only the identity card; scroll the
+        // first recipe section into view so the legibility rows are the shot.
+        await page.evaluate(() => {
+          document
+            .querySelector('#crafting-window .vendor-section-title')
+            ?.scrollIntoView({ block: 'start' });
+        });
+        await wait(300);
+      }
       return open ? { clip: '#crafting-window' } : {};
+    },
+  },
+  {
+    key: 'masterwork-tooltip',
+    label: 'Bag tooltip: masterwork seal, enchanted marker, makers mark',
+    when: ['ui/item_instance_tooltip', 'ui/painter_host', 'ui/bank_view'],
+    // Grant a signed masterwork copy, open bags, hover its slot: the tooltip's
+    // per-copy lines (gold seal, green baked bonus stats, Crafted by) all read
+    // in one frame. Full-frame shot: the tooltip renders beside the window and
+    // the single-selector clip cannot union the two rects.
+    async capture(page) {
+      await page.evaluate(() => {
+        document.querySelector('#gpu-notice')?.remove();
+        document.querySelector('.camera-prompt-confirm')?.click();
+        const game = window.__game;
+        try {
+          // A dungeon-drop def the starter bag can never contain, so the
+          // aria-label lookup below is unambiguous.
+          game?.sim?.addItemInstance('gravewyrm_gauntlets', {
+            signer: 'Thorgar',
+            rolled: { masterwork: true, stats: { str: 2, sta: 1 } },
+          });
+        } catch {}
+        const el = document.querySelector('#bags');
+        if (el) el.style.display = 'none';
+        game?.hud?.toggleBags?.();
+      });
+      // toggleBags tracks logical open state, so a shared page where an earlier
+      // target left the bags logically open needs a second toggle to reopen.
+      let open = await pollForSize(page, '#bags');
+      if (!open) {
+        await page.evaluate(() => window.__game?.hud?.toggleBags?.());
+        open = await pollForSize(page, '#bags');
+      }
+      if (!open) return {};
+      await page.evaluate(() => {
+        // The grant can pop a transient deed banner and the camera prompt on
+        // the shared page; clear both so the tooltip is the frame's subject.
+        document.querySelector('.camera-prompt-confirm')?.click();
+        const banner = document.querySelector('#banner');
+        if (banner) banner.style.opacity = '0';
+        // Real focus fires attachTooltip's focusin arm (keyboard-nav path), a
+        // sturdier trigger than synthetic mouseenter under headless.
+        const cell = Array.from(document.querySelectorAll('#bags button')).find((b) =>
+          b.getAttribute('aria-label')?.includes('Gravewyrm Gauntlets'),
+        );
+        cell?.scrollIntoView({ block: 'center' });
+        cell?.focus();
+      });
+      await pollForSize(page, '#tooltip');
+      await wait(300);
+      return {};
     },
   },
   {
@@ -269,6 +329,21 @@ export const TARGETS = [
         return !!w && getComputedStyle(w).display !== 'none';
       });
       return open ? { clip: '#char-window' } : {};
+    },
+  },
+  {
+    key: 'social-window',
+    label: 'Social window (Friends tab, landscape layout)',
+    when: ['ui/social_window'],
+    variants: [{ key: 'desktop' }, { key: 'mobile', mobile: true }],
+    async capture(page) {
+      await page.evaluate(() => {
+        const el = document.querySelector('#social-window');
+        if (el) el.classList.remove('open');
+        window.__game?.hud?.toggleSocial?.();
+      });
+      const open = await pollForSize(page, '#social-window');
+      return open ? { clip: '#social-window' } : {};
     },
   },
   {
@@ -324,6 +399,65 @@ export const TARGETS = [
       await page.evaluate(() => {
         document
           .querySelector('#chatlog-tabs button[data-tab="combat"]')
+          ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      });
+      await wait(200);
+      return { clip: '#chatlog-wrap' };
+    },
+  },
+  {
+    key: 'chat-flair-class-color',
+    label: 'Chat: class-colored name + verified-streamer badge',
+    when: ['ui/hud/chat/chat_line'],
+    // Mage: a bright, unmistakably-not-default-white class color, so the
+    // before/after class-color diff is obvious at a glance (the default
+    // 'warrior' tan reads close to the plain sender-name white already).
+    variants: [
+      { key: 'desktop', charClass: 'mage', charName: 'Lyravel' },
+      { key: 'mobile', charClass: 'mage', charName: 'Lyravel', mobile: true },
+    ],
+    // Synthesizes one party-channel 'chat' SimEvent, anchored on the real player
+    // entity (so its class resolves and the sender name colors accordingly) with
+    // a fabricated streamer flair, through the real dispatch (hud.handleEvents).
+    // Mirrors the log_event_route targets above: no live second player needed.
+    async capture(page, variant) {
+      // On mobile the chat log is collapsed behind the overlay toggle (body
+      // .mobile-chat-open); a real tap on the chat-open control sets this same
+      // class (src/game/mobile_controls.ts), so this reproduces that state
+      // directly rather than re-deriving the touch gesture. Also drop the
+      // headless-swiftshader GPU notice: it is a capture-environment artifact
+      // (no real GPU in CI/headless), not part of what this target shows.
+      await page.evaluate(() => {
+        document.querySelector('#gpu-notice')?.remove();
+      });
+      if (variant?.mobile) {
+        await page.evaluate(() => document.body.classList.add('mobile-chat-open'));
+      }
+      await pollForSize(page, '#chatlog-wrap', 60, 500);
+      await page.evaluate(() => {
+        const hud = window.__game?.hud;
+        const sim = window.__game?.sim;
+        if (!hud || !sim) return;
+        hud.handleEvents([
+          {
+            type: 'chat',
+            channel: 'party',
+            from: sim.player?.name ?? 'Zyx',
+            fromPid: sim.playerId,
+            text: 'checking flair: class-colored name and verified-streamer badge render correctly',
+            flair: { links: { twitch: 'https://twitch.tv/zyx' } },
+          },
+          // A trailing filler line, so the flair line above is not the very
+          // bottom row: the mobile chat log fades its bottom-most row under a
+          // "more content below" peek gradient (see hud.mobile.css), which
+          // would otherwise wash out the exact line this target exists to show.
+          { type: 'log', text: 'ready.', color: '#8a8a8a' },
+        ]);
+      });
+      await wait(300);
+      await page.evaluate(() => {
+        document
+          .querySelector('#chatlog-tabs button[data-tab="all"]')
           ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
       });
       await wait(200);
@@ -410,8 +544,6 @@ export const TARGETS = [
         if (!game) return;
         const fakePage = {
           leaders: [
-            // deedCount rides the wire for stale clients (issue #2044); the
-            // pre-change painter renders it, the current one never reads it.
             {
               rank: 1,
               name: 'Aldwin',
@@ -419,7 +551,6 @@ export const TARGETS = [
               cls: 'warrior',
               level: 20,
               renown: 1620,
-              deedCount: 129,
               title: 'prog_veteran',
             },
             {
@@ -429,7 +560,6 @@ export const TARGETS = [
               cls: 'mage',
               level: 20,
               renown: 1490,
-              deedCount: 117,
               title: null,
             },
             {
@@ -439,7 +569,6 @@ export const TARGETS = [
               cls: 'priest',
               level: 19,
               renown: 1390,
-              deedCount: 112,
               title: null,
             },
             {
@@ -449,7 +578,6 @@ export const TARGETS = [
               cls: 'rogue',
               level: 20,
               renown: 1350,
-              deedCount: 108,
               title: 'prog_veteran',
             },
             {
@@ -459,7 +587,6 @@ export const TARGETS = [
               cls: 'druid',
               level: 18,
               renown: 1245,
-              deedCount: 97,
               title: null,
             },
           ],
@@ -485,6 +612,200 @@ export const TARGETS = [
       );
       if (!open) throw new Error('Renown board rows did not render');
       return { clip: '#leaderboard-window' };
+    },
+  },
+  {
+    key: 'professions',
+    label: 'Professions wheel window',
+    when: ['src/ui/professions_view.ts', 'src/ui/professions_window.ts'],
+    variants: [
+      { key: 'desktop-full', charClass: 'warrior', charName: 'Forgeheart' },
+      { key: 'desktop-simplified', charClass: 'mage', charName: 'Newhand', simplified: true },
+      { key: 'mobile', charClass: 'warrior', charName: 'Anvilmar', mobile: true },
+    ],
+    // The offline sandbox starts unattuned with zero craft skill, which IS the
+    // simplified variant. The full variants stub the two IWorld reads with a
+    // representative attuned Smith (the renown-board precedent: the real pure
+    // core and painter render it exactly as a live identity), picking values
+    // that light every section: both majors specialized, a tier-1 hobby, a
+    // dormant-knowledge craft, a near-tier craft, and mixed gathering skill.
+    async capture(page, variant) {
+      await page.evaluate(() => {
+        document.querySelector('.camera-prompt-confirm')?.click();
+        document.querySelector('.tut-skip')?.click();
+        document.querySelector('.gpu-notice-dismiss')?.click();
+      });
+      await wait(300);
+      await page.evaluate((shot) => {
+        const game = window.__game;
+        if (!game) return;
+        if (!shot.simplified) {
+          const identity = {
+            version: 1,
+            synced: true,
+            craftSkills: {
+              weaponcrafting: 132,
+              armorcrafting: 87,
+              tailoring: 23,
+              leatherworking: 0,
+              cooking: 26,
+              alchemy: 4,
+              engineering: 51,
+              enchanting: 0,
+              jewelcrafting: 0,
+              inscription: 61,
+            },
+            activeArchetype: 'weaponcrafting',
+            pairedMajor: 'armorcrafting',
+            hobbyCraft: 'cooking',
+            attunedPairs: ['weaponcrafting+armorcrafting'],
+            switchCount: 1,
+            amendsProgress: 2,
+            amendsRequired: 8,
+          };
+          Object.defineProperty(game.world, 'craftingIdentity', {
+            value: identity,
+            configurable: true,
+          });
+          const gathering = {
+            skills: [
+              { professionId: 'mining', skill: 112, maxSkill: 300 },
+              { professionId: 'logging', skill: 45, maxSkill: 300 },
+              { professionId: 'herbalism', skill: 203, maxSkill: 300 },
+            ],
+          };
+          const stateIsFn = typeof game.world.professionsState === 'function';
+          Object.defineProperty(game.world, 'professionsState', {
+            value: stateIsFn ? () => gathering : gathering,
+            configurable: true,
+          });
+        }
+        const el = document.querySelector('#professions-window');
+        if (el) el.style.display = 'none';
+        game.hud.toggleProfessions?.();
+      }, variant);
+      const open = await pollForSize(page, '#professions-window');
+      if (!open) throw new Error('professions window did not open');
+      return { clip: '#professions-window' };
+    },
+  },
+  {
+    key: 'train-window',
+    label: 'Train view: station-master recipe training ladder',
+    when: ['ui/hud/vendor/train_view', 'ui/hud/vendor/train_window'],
+    // Desktop and mobile: the three-state teaching ladder is actionable info (a
+    // player decides what to train), so it must read on both form factors.
+    variants: [
+      { key: 'desktop', charClass: 'warrior', charName: 'Forgeheart' },
+      { key: 'mobile', charClass: 'warrior', charName: 'Anvilmar', mobile: true },
+    ],
+    // Show all three row states in one frame at Forgemistress Darva's forge. Set
+    // the viewer's craft skills so the forge ladder renders every state at once:
+    // weaponcrafting at tier 1 (skill 30) makes recipe_forgeguard_bulwark_gauntlets
+    // TEACHABLE at a 25s fee; armorcrafting at tier 0 (skill 10) leaves
+    // recipe_ironbound_warplate_helm LOCKED with its named "Taught at ... 25"
+    // requirement; the acquisition-free commons of both crafts read KNOWN. The two
+    // combo recipes are grandfathered into knownRecipes for existing saves, so drop
+    // them from the set first or they would read KNOWN too. Give the player enough
+    // copper that the fee reads affordable. openTrain takes the master's ENTITY id
+    // (renderTrain does sim.entities.get(id).templateId), so resolve the entity, not
+    // the template id.
+    async capture(page, variant) {
+      await page.evaluate(() => {
+        document.querySelector('.camera-prompt-confirm')?.click();
+        document.querySelector('.tut-skip')?.click();
+        document.querySelector('.gpu-notice-dismiss')?.click();
+        document.querySelector('#gpu-notice')?.remove();
+      });
+      await wait(300);
+      // Set state and open the window in ONE evaluate: the ticking sim would drift
+      // between two evaluates, and renderTrain reads the state synchronously here.
+      const setup = await page.evaluate(() => {
+        const game = window.__game;
+        const sim = game?.sim;
+        if (!sim) return { ok: false, reason: 'no sim' };
+        const master = [...sim.entities.values()].find(
+          (e) => e.templateId === 'forgemistress_darva',
+        );
+        if (!master) return { ok: false, reason: 'no forgemistress_darva entity' };
+        const meta = sim.players.get(sim.primaryId);
+        if (!meta) return { ok: false, reason: 'no primary player meta' };
+        meta.craftSkills = { ...meta.craftSkills, weaponcrafting: 30, armorcrafting: 10 };
+        meta.knownRecipes.delete('recipe_forgeguard_bulwark_gauntlets');
+        meta.knownRecipes.delete('recipe_ironbound_warplate_helm');
+        sim.copper = 100000;
+        // The HUD auto-closes the train window when the player is more than 8yd
+        // from the master (hud.ts openTrainNpcId proximity check), so stand the
+        // player right beside Darva in this SAME evaluate or the next tick closes it.
+        const p = sim.player;
+        if (p?.pos) {
+          p.pos.x = master.pos.x;
+          p.pos.z = master.pos.z - 2;
+        }
+        const el = document.querySelector('#train-window');
+        if (el) el.style.display = 'none';
+        game.hud.openTrain(master.id);
+        return { ok: true };
+      });
+      if (!setup.ok) throw new Error(`train-window setup failed: ${setup.reason}`);
+      const open = await pollForSize(page, '#train-window');
+      if (!open) throw new Error('train window did not open');
+      // Verify the ladder rendered all three states (the whole point of the shot).
+      const states = await page.evaluate(() => ({
+        known: document.querySelectorAll('#train-window .train-known').length,
+        teachable: document.querySelectorAll('#train-window .train-teachable').length,
+        locked: document.querySelectorAll('#train-window .train-locked').length,
+      }));
+      if (!(states.known > 0 && states.teachable > 0 && states.locked > 0)) {
+        throw new Error(`train ladder missing a state: ${JSON.stringify(states)}`);
+      }
+      if (variant?.mobile) {
+        // The short landscape viewport cannot show the whole ladder at once, and
+        // the teachable (AVAILABLE) row sits last; scroll it to the bottom so the
+        // frame carries all three states (a KNOWN and the LOCKED row stay above it).
+        await page.evaluate(() => {
+          document
+            .querySelector('#train-window .train-teachable')
+            ?.scrollIntoView({ block: 'end' });
+        });
+        await wait(300);
+      }
+      return { clip: '#train-window' };
+    },
+  },
+  {
+    key: 'station-props',
+    label: 'Crafting-station scenery (Eastbrook forge)',
+    when: ['render/stations', 'src/sim/content/professions'],
+    variants: [{ key: 'desktop', charClass: 'warrior', charName: 'Forgeheart' }],
+    // A world-scene shot of the Eastbrook forge station props (anvil + reused
+    // crate/barrel clutter) beside Forgemistress Darva, framed the way a player
+    // walks up to it. The station sits at STATIONS station_eastbrook_forge
+    // {x:7, z:16.5} (content/professions.ts); stand a few yards south-east and
+    // face it (the gather-node facing idiom: atan2(dx, dz) toward the target).
+    // The GLB streams in on first view, so wait generously before the frame.
+    // Full-viewport shot (return {}), no selector clip: this is scenery, not a
+    // window, and the corner minimap with its new station diamond marker rides
+    // along.
+    async capture(page) {
+      await page.evaluate(() => {
+        document.querySelector('.camera-prompt-confirm')?.click();
+        document.querySelector('.tut-skip')?.click();
+        document.querySelector('.gpu-notice-dismiss')?.click();
+        document.querySelector('#gpu-notice')?.remove();
+        const p = window.__game?.sim?.player;
+        if (p?.pos) {
+          // Eastbrook forge station (content/professions.ts station_eastbrook_forge).
+          const forge = { x: 7, z: 16.5 };
+          p.pos.x = 10;
+          p.pos.z = 10;
+          p.facing = Math.atan2(forge.x - p.pos.x, forge.z - p.pos.z);
+        }
+      });
+      // The anvil GLB and station clutter stream in on first view; wait generously.
+      await wait(4500);
+      await page.evaluate(() => document.querySelector('#gpu-notice')?.remove());
+      return {};
     },
   },
 ];

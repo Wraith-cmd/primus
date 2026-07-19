@@ -7,6 +7,10 @@
 import type { DeedLocaleTable } from '../deed_i18n';
 
 export const table: DeedLocaleTable = {
+  pvp_card_duel_first_win: {
+    name: 'Свои правила',
+    desc: 'Победите в карточной дуэли у Карточного мастера.',
+  },
   prog_first_steps: {
     name: 'Первые шаги',
     desc: 'Достигните 2-го уровня и сделайте первый шаг на долгом пути.',
@@ -35,8 +39,8 @@ export const table: DeedLocaleTable = {
     desc: 'Вложите очко талантов в талант последнего ряда.',
   },
   prog_full_build: {
-    name: 'Все одиннадцать',
-    desc: 'Потратьте все одиннадцать очков талантов в рамках одной сборки.',
+    name: 'Полная шестерка',
+    desc: 'Выберите по одному варианту во всех шести рядах талантов одной сборки.',
   },
   prog_veteran: {
     name: 'Ветеран',
@@ -667,7 +671,6 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: 'Орудия ремесла',
-    desc: 'Завершите изделие, требующее станка, в ремесленном центре Хайвотча.',
   },
   dgn_nythraxis_crypt: {
     name: 'Что хранил склеп',

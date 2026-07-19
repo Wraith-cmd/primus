@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CRAFTING_HUB_MIN_LEVEL, CRAFTING_HUB_POS } from '../src/sim/content/professions';
+import { STATION_TYPE_BY_CRAFT } from '../src/sim/content/professions';
 import {
   CASTER_HUB_RECIPES,
   COMBO_RECIPES,
@@ -13,6 +13,8 @@ import {
   resolveCraft,
   resolveCraftForRecipe,
 } from '../src/sim/professions/crafting';
+import { MASTERWORK_CHANCE_CAP } from '../src/sim/professions/masterwork';
+import { stationsOfType } from '../src/sim/professions/stations';
 import type { ProfessionRecipeRecord } from '../src/sim/professions/types';
 import type { Rng } from '../src/sim/rng';
 import { Sim } from '../src/sim/sim';
@@ -23,6 +25,19 @@ function makeSim(seed = 42) {
 
 function grantItem(sim: Sim, itemId: string, count: number, pid: number) {
   for (let i = 0; i < count; i++) sim.addItem(itemId, 1, pid);
+}
+
+// Phase 8: station-bound recipes gate on POSITION only (the old level-20 hub
+// arm retired), so a harness just walks the player onto the recipe's station
+// (the STATIONS record, so a content re-placement can never strand this).
+function placeAtStationFor(sim: Sim, pid: number, recipeId: string) {
+  const stationType = recipeById(recipeId)?.stationType;
+  if (!stationType) throw new Error(`${recipeId} is not station-bound`);
+  const station = stationsOfType(stationType)[0];
+  const entity = (sim as any).entities.get(pid);
+  entity.pos.x = station.pos.x;
+  entity.pos.z = station.pos.z;
+  entity.prevPos = { ...entity.pos };
 }
 
 describe('recipe content (#1127)', () => {
@@ -62,14 +77,10 @@ describe('TOOL_RECIPES (#1135 de-stub): tier 4/5 tool recipes', () => {
     const sim = makeSim();
     const pid = sim.playerId;
     const recipe = recipeById('recipe_thorium_mining_pick')!;
-    // #1297: TOOL_RECIPES are station-bound, so this recipe now also requires
-    // presence at the level-20 crafting hub (see professions_crafting_hub.test.ts
-    // for the gate's own dedicated coverage).
-    sim.setPlayerLevel(CRAFTING_HUB_MIN_LEVEL);
-    const entity = (sim as any).entities.get(pid);
-    entity.pos.x = CRAFTING_HUB_POS.x;
-    entity.pos.z = CRAFTING_HUB_POS.z;
-    entity.prevPos = { ...entity.pos };
+    // Phase 8: TOOL_RECIPES are station-bound (toolworks), so this recipe
+    // requires standing at that station; there is NO level arm anymore (see
+    // professions_crafting_hub.test.ts for the gate's dedicated coverage).
+    placeAtStationFor(sim, pid, recipe.id);
     grantItem(sim, 'thorium_ore', 4, pid);
     grantItem(sim, 'mithril_mining_pick', 1, pid);
 
@@ -96,16 +107,18 @@ describe('caster-stat (int/spi) crafting recipes', () => {
     expect(professionIds).toEqual(['armorcrafting', 'leatherworking', 'tailoring']);
     for (const recipe of casterCommon) {
       expect(recipe.skillReq).toBe(0);
-      expect(recipe.requiresHubStation).toBeUndefined();
+      expect(recipe.stationType).toBeUndefined();
     }
   });
 
-  it('CASTER_HUB_RECIPES defines one hub-gated int/spi piece per tailoring/leatherworking/armorcrafting', () => {
+  it('CASTER_HUB_RECIPES defines one station-bound int/spi piece per tailoring/leatherworking/armorcrafting', () => {
     expect(CASTER_HUB_RECIPES.length).toBe(3);
     const professionIds = CASTER_HUB_RECIPES.map((r) => r.professionId).sort();
     expect(professionIds).toEqual(['armorcrafting', 'leatherworking', 'tailoring']);
     for (const recipe of CASTER_HUB_RECIPES) {
-      expect(recipe.requiresHubStation).toBe(true);
+      // Phase 8: each piece is bound to ITS OWN craft's station type
+      // (loom/tannery/forge), never someone else's.
+      expect(recipe.stationType).toBe(STATION_TYPE_BY_CRAFT[recipe.professionId]);
       expect(recipe.skillReq).toBeGreaterThan(0);
       expect(recipe.reagents.length).toBeGreaterThan(0);
     }
@@ -135,15 +148,11 @@ describe('caster-stat (int/spi) crafting recipes', () => {
     expect(sim.countItem('eastbrook_ritual_vestments', pid)).toBe(1);
   });
 
-  it('crafts the hub-tier armorcrafting caster piece once station-gated and reagents held', () => {
+  it('crafts the station-tier armorcrafting caster piece once at the forge with reagents held', () => {
     const sim = makeSim();
     const pid = sim.playerId;
     const recipe = recipeById('recipe_sootscale_mantle')!;
-    sim.setPlayerLevel(CRAFTING_HUB_MIN_LEVEL);
-    const entity = (sim as any).entities.get(pid);
-    entity.pos.x = CRAFTING_HUB_POS.x;
-    entity.pos.z = CRAFTING_HUB_POS.z;
-    entity.prevPos = { ...entity.pos };
+    placeAtStationFor(sim, pid, recipe.id);
     grantItem(sim, 'thorium_ore', 4, pid);
     grantItem(sim, 'bone_fragments', 2, pid);
 
@@ -297,20 +306,27 @@ describe('resolveCraft (#1127)', () => {
     expect(meta.craftSkills.cooking).toBe(2);
   });
 
-  it('the quality roll is deterministic under a fixed seed and consumes exactly one rng draw', () => {
+  it('a fixed-seed craft resolves to an identical result across two runs, masterwork field included', () => {
     const runOnce = () => {
       const sim = makeSim(7);
       const pid = sim.playerId;
       grantItem(sim, 'spider_leg', 1, pid);
       const recipe = recipeById('recipe_tough_jerky')!;
-      const drawsBefore = (sim as any).rng.draws ?? 0;
-      const result = resolveCraft((sim as any).ctx, pid, recipe.id);
-      return { result, drawsBefore };
+      return resolveCraft((sim as any).ctx, pid, recipe.id);
     };
     const a = runOnce();
     const b = runOnce();
-    expect(a.result.quality).toBe(b.result.quality);
-    expect(typeof a.result.quality).toBe('string');
+    // Same seed, same scenario: the full CraftResult (masterwork proc outcome
+    // included) must be identical across runs.
+    expect(a).toEqual(b);
+    // Phase 2: quality reports the OUTPUT DEF quality, a static fact of the
+    // def (tough_jerky's def is common), identical for every craft of the
+    // recipe at any seed.
+    expect(a.quality).toBe('common');
+    // A consumable def (no slot, no primary-stat profile) can never
+    // masterwork, at any seed: the flag stays absent.
+    expect(a.masterwork).toBeUndefined();
+    expect(b.masterwork).toBeUndefined();
   });
 
   it('grants no craft skill on a denied craft', () => {
@@ -325,7 +341,7 @@ describe('resolveCraft (#1127)', () => {
     expect(meta.craftSkills.cooking).toBe(0);
   });
 
-  it('the quality roll is pinned for a fixed seed and consumes exactly one rng draw on success, zero on denial', () => {
+  it('a successful craft consumes exactly one rng draw (the masterwork proc), zero on denial', () => {
     const sim = makeSim(7);
     const pid = sim.playerId;
     const recipe = recipeById('recipe_tough_jerky')!;
@@ -345,8 +361,11 @@ describe('resolveCraft (#1127)', () => {
     rng.setObserver(null);
 
     expect(result.ok).toBe(true);
-    // Fresh cooking skill (0) at seed 7: the roll is pinned to this rarity.
+    // Phase 2: the output quality no longer rolls; it is the def's own static
+    // quality (tough_jerky: common), whatever the seed.
     expect(result.quality).toBe('common');
+    // Exactly one draw per successful craft: the masterwork proc roll, held at
+    // the position the retired quality roll occupied. Denials draw nothing.
     expect(draws).toBe(1);
   });
 });
@@ -359,6 +378,10 @@ describe('craftItem command (#1127)', () => {
     sim.craftItem('recipe_tough_jerky', pid);
     expect(sim.lastCraftResult?.ok).toBe(true);
     expect(sim.lastCraftResult?.itemId).toBe('tough_jerky');
+    // Phase 2: quality is the OUTPUT DEF quality (tough_jerky: common), and a
+    // plain deterministic craft never carries the masterwork flag.
+    expect(sim.lastCraftResult?.quality).toBe('common');
+    expect(sim.lastCraftResult?.masterwork).toBeUndefined();
     expect(sim.countItem('tough_jerky', pid)).toBe(1);
   });
 
@@ -452,7 +475,6 @@ describe('tiered mastery gating (#1128)', () => {
     resultCount: 1,
     reagents: [{ itemId: 'bone_fragments', count: 1 }],
     skillReq: 25,
-    trivialAt: 50,
     itemLevelBudget: 10,
     level: 10,
   };
@@ -557,8 +579,12 @@ describe('combo recipes requiring an adjacent craft pair (#1132)', () => {
   it('a player with both required crafts at or above minTier CAN craft the combo recipe', () => {
     const sim = makeSim();
     const pid = sim.playerId;
+    sim.acceptArchetypeQuest('armorcrafting');
     setSkill(sim, pid, 'armorcrafting', 25);
     setSkill(sim, pid, 'weaponcrafting', 25);
+    // Phase 9 acquisition switch: combo recipes are trainer-taught, so the
+    // fresh test player learns this one explicitly before crafting it.
+    (sim as any).players.get(pid).knownRecipes.add(comboRecipe.id);
     grantItem(sim, 'bone_fragments', 4, pid);
     grantItem(sim, 'linen_scrap', 2, pid);
 
@@ -578,10 +604,20 @@ describe('combo recipes requiring an adjacent craft pair (#1132)', () => {
     grantItem(sim, 'bone_fragments', 4, pid);
     grantItem(sim, 'linen_scrap', 2, pid);
 
+    let draws = 0;
+    const rng: Rng = (sim as any).ctx.rng;
+    rng.setObserver(() => {
+      draws++;
+    });
     const result = resolveCraftForRecipe((sim as any).ctx, pid, comboRecipe);
+    rng.setObserver(null);
 
     expect(result.ok).toBe(false);
     expect(result.reason).toBe('combo_requirement_unmet');
+    // The combo admission gate denies BEFORE the masterwork proc draw: a
+    // combo-denied craft consumes zero rng, same as every other denial, so
+    // the draw can never migrate ahead of admission unnoticed.
+    expect(draws).toBe(0);
     // Denied with no side effect: reagents untouched, no item granted.
     expect(sim.countItem('bone_fragments', pid)).toBe(4);
     expect(sim.countItem('linen_scrap', pid)).toBe(2);
@@ -724,10 +760,12 @@ describe('craft-completion event carries audio-relevant data (#1729)', () => {
     // the crafter (delivered-to-acting-player acceptance criterion).
     expect(craft.pid).toBe(pid);
     // quality is present on a completed craft so the client can distinguish a
-    // rare-quality result from a common one for a special cue. A skill-0 crafter
-    // always rolls common (the rarity ladder puts all weight there at skill 0),
-    // so this exact value is seed-independent.
+    // rare-def result from a common one for a special cue. Phase 2: this is
+    // the OUTPUT DEF quality (tough_jerky's def is common), a static fact of
+    // the def, so this exact value is seed-independent.
     expect(craft.quality).toBe('common');
+    // A plain deterministic craft never carries the masterwork flag.
+    expect(craft.masterwork).toBeUndefined();
   });
 
   it('a denied craft still emits a craftResult, with ok:false, no quality, and a reason', () => {
@@ -741,5 +779,144 @@ describe('craft-completion event carries audio-relevant data (#1729)', () => {
     expect(craft.ok).toBe(false);
     expect(craft.quality).toBeUndefined();
     expect(craft.reason).toBe('insufficient_materials');
+  });
+});
+
+// Professions 2.0 Phase 2: the masterwork proc model. Craft outputs are
+// deterministic (quality is the OUTPUT DEF quality, pinned above); the single
+// remaining output-side rng draw is the masterwork proc roll. These cases pin
+// the proc surface end to end: the CraftResult/craftResult-event flag, the
+// minted instance payload, the masterwork SimEvent, and the lastMasterwork
+// read surface, plus the miss arm's plain deterministic grant.
+describe('masterwork proc (Professions 2.0 Phase 2)', () => {
+  // A maximum-chance scenario: tailoring as the active archetype (a MAJOR
+  // craft, so the empowerment ceiling is unlimited), skill 200 (tier 8, far
+  // above the recipe's tier 0), and a self-signed consumed reagent, so the
+  // proc chance sums past the cap and lands at MASTERWORK_CHANCE_CAP (0.15).
+  // The output (eastbrook_ritual_vestments) is an equippable uncommon-def
+  // piece with a primary-stat profile (int/spi), so the effect gate passes:
+  // uncommon bumps to rare, under the major craft's unlimited ceiling.
+  function vestmentsScenario(seed: number) {
+    const sim = makeSim(seed);
+    const pid = sim.playerId;
+    sim.acceptArchetypeQuest('tailoring');
+    const meta = (sim as any).players.get(pid);
+    meta.craftSkills.tailoring = 200;
+    // The single self-signed linen scrap satisfies the whole linen requirement
+    // (the #1145 minus-one reduction composes with the specialization
+    // discount: 3 -> 2 -> floor(2 * 0.8) = 1) and marks selfSignedBonusApplied
+    // for the proc-chance input.
+    sim.addItemInstance('linen_scrap', { signer: meta.name }, pid);
+    sim.addItem('spider_leg', 1, pid);
+    return { sim, pid, meta };
+  }
+
+  it('a proc mints a signed masterwork instance and surfaces it on every seam (hunted seed)', () => {
+    // Seed 2 was hunted (bounded scan from seed 1 upward) so the single proc
+    // draw lands under the capped 15 percent chance; only the pinned literal
+    // is committed, per the suite's seed-pinning idiom.
+    const { sim, pid, meta } = vestmentsScenario(2);
+    sim.drainEvents();
+    let draws = 0;
+    const rng: Rng = (sim as any).ctx.rng;
+    rng.setObserver(() => {
+      draws++;
+    });
+    sim.craftItem('recipe_eastbrook_ritual_vestments', pid);
+    rng.setObserver(null);
+
+    // Still exactly one draw across the whole command path: the proc roll.
+    expect(draws).toBe(1);
+
+    // CraftResult (via the lastCraftResult stash) carries the flag; quality
+    // stays the OUTPUT DEF quality (uncommon), never the bumped tier.
+    expect(sim.lastCraftResult?.ok).toBe(true);
+    expect(sim.lastCraftResult?.quality).toBe('uncommon');
+    expect(sim.lastCraftResult?.masterwork).toBe(true);
+
+    const events = sim.drainEvents();
+    const craft = events.find((e) => e.type === 'craftResult');
+    if (craft?.type !== 'craftResult') throw new Error('expected a craftResult event');
+    expect(craft.ok).toBe(true);
+    expect(craft.quality).toBe('uncommon');
+    expect(craft.masterwork).toBe(true);
+
+    // The masterwork SimEvent: ids only, personal (pid = crafter entity id).
+    const mw = events.find((e) => e.type === 'masterwork');
+    if (mw?.type !== 'masterwork') throw new Error('expected a masterwork event');
+    expect(mw.recipeId).toBe('recipe_eastbrook_ritual_vestments');
+    expect(mw.itemId).toBe('eastbrook_ritual_vestments');
+    expect(mw.crafter).toBe(pid);
+    expect(mw.pid).toBe(pid);
+
+    // The minted copy: ONE signed instance whose rolled payload is the
+    // masterwork marker plus the baked TIER-DELTA stats (the uncommon-to-rare
+    // primary budget delta at the recipe's level 9, redistributed over the
+    // def's int/spi profile). New crafts never write rolled.quality.
+    const slots = meta.inventory.filter((s: any) => s.itemId === 'eastbrook_ritual_vestments');
+    expect(slots.length).toBe(1);
+    const instance = slots[0].instance;
+    expect(instance?.signer).toBe(meta.name);
+    expect(instance?.rolled?.masterwork).toBe(true);
+    expect(instance?.rolled?.quality).toBeUndefined();
+    expect(instance?.rolled?.stats).toEqual({ int: 1, spi: 1 });
+
+    // The IWorld read surface reflects the proc.
+    expect(sim.lastMasterwork).toEqual({
+      recipeId: 'recipe_eastbrook_ritual_vestments',
+      itemId: 'eastbrook_ritual_vestments',
+      crafter: pid,
+    });
+  });
+
+  it('a missed proc still draws exactly once and grants a plain common-def stack (hunted seed)', () => {
+    // The same maximum-chance shape on a common-def output (the chain vest,
+    // under armorcrafting as the MAJOR craft). Seed 1 was hunted so the single
+    // proc draw lands ABOVE the capped 15 percent chance: the roll itself
+    // misses, decisively. The observed-roll pin below keeps that premise
+    // load-bearing (this def is armor-only, so the effect gate would ALSO
+    // deny; without the pin, a re-seeded roll under the cap would pass
+    // silently through the gate instead of proving a roll miss).
+    const sim = makeSim(1);
+    const pid = sim.playerId;
+    sim.acceptArchetypeQuest('armorcrafting');
+    const meta = (sim as any).players.get(pid);
+    meta.craftSkills.armorcrafting = 200;
+    // One self-signed bone fragment satisfies the whole requirement (3 -> 2 ->
+    // floor(2 * 0.8) = 1), mirroring the proc case's chance inputs.
+    sim.addItemInstance('bone_fragments', { signer: meta.name }, pid);
+    sim.drainEvents();
+    let draws = 0;
+    let roll = -1;
+    const rng: Rng = (sim as any).ctx.rng;
+    rng.setObserver((value) => {
+      draws++;
+      roll = value;
+    });
+    sim.craftItem('recipe_eastbrook_chain_vest', pid);
+    rng.setObserver(null);
+
+    // The proc draw is unconditional on the success path: exactly one draw
+    // even when it misses, and the seed-1 draw really does land at or above
+    // the capped chance, so the miss is the roll's doing.
+    expect(draws).toBe(1);
+    expect(roll).toBeGreaterThanOrEqual(MASTERWORK_CHANCE_CAP);
+    expect(sim.lastCraftResult?.ok).toBe(true);
+    expect(sim.lastCraftResult?.quality).toBe('common');
+    expect(sim.lastCraftResult?.masterwork).toBeUndefined();
+
+    // No masterwork event fired.
+    const events = sim.drainEvents();
+    expect(events.find((e) => e.type === 'masterwork')).toBeUndefined();
+
+    // A common-def output stays a plain fungible stack: no instance minted,
+    // no rolled payload anywhere.
+    const slots = meta.inventory.filter((s: any) => s.itemId === 'eastbrook_chain_vest');
+    expect(slots.length).toBe(1);
+    expect(slots[0].count).toBe(1);
+    expect(slots[0].instance).toBeUndefined();
+
+    // The per-player masterwork read surface never moved.
+    expect(sim.lastMasterwork).toBeNull();
   });
 });

@@ -16,6 +16,10 @@ const itemStringsEn = {
     },
     slots: {
       mainhand: 'Main Hand',
+      // The tooltip label for hand:'twohand' weapons (the classic "Two-Hand"
+      // line), rendered instead of the mainhand slot name.
+      twoHand: 'Two-Hand',
+      offhand: 'Off Hand',
       helmet: 'Helmet',
       neck: 'Neck',
       shoulder: 'Shoulder',
@@ -54,6 +58,7 @@ const itemStringsEn = {
       dps: 'Damage/sec',
       critChance: 'Crit Chance',
       dodge: 'Dodge',
+      parry: 'Parry',
     },
     tooltip: {
       qualityKind: '{quality} {kind}',
@@ -149,6 +154,7 @@ const itemStringsEn = {
       rarityUncommon: 'Uncommon',
       rarityRare: 'Rare',
       rarityEpic: 'Epic',
+      rarityLegendary: 'Legendary',
       merchantStock: 'Merchant stock',
       stackCount: 'x{count}',
       each: '{money} each',
@@ -210,6 +216,8 @@ export const itemStrings = {
       },
       slots: {
         mainhand: 'Mano principal',
+        twoHand: 'Dos manos',
+        offhand: 'Mano secundaria',
         helmet: 'Cabeza',
         neck: 'Cuello',
         shoulder: 'Hombros',
@@ -247,6 +255,7 @@ export const itemStrings = {
         dps: 'Daño/seg',
         critChance: 'Prob. de crítico',
         dodge: 'Esquiva',
+        parry: 'Parada',
       },
       tooltip: {
         qualityKind: '{kind} {quality}',
@@ -370,6 +379,8 @@ export const itemStrings = {
       },
       slots: {
         mainhand: 'Main droite',
+        twoHand: 'Deux mains',
+        offhand: 'Main gauche',
         helmet: 'Tête',
         neck: 'Cou',
         shoulder: 'Épaules',
@@ -407,6 +418,7 @@ export const itemStrings = {
         dps: 'Dégâts/s',
         critChance: 'Chances de critique',
         dodge: 'Esquive',
+        parry: 'Parade',
       },
       tooltip: {
         qualityKind: '{kind} {quality}',
@@ -531,6 +543,8 @@ export const itemStrings = {
       },
       slots: {
         mainhand: 'Mano principale',
+        twoHand: 'Due mani',
+        offhand: 'Mano secondaria',
         helmet: 'Testa',
         neck: 'Collo',
         shoulder: 'Spalle',
@@ -568,6 +582,7 @@ export const itemStrings = {
         dps: 'Danni/sec',
         critChance: 'Prob. critico',
         dodge: 'Schivata',
+        parry: 'Parata',
       },
       tooltip: {
         qualityKind: '{kind} {quality}',
@@ -688,6 +703,8 @@ export const itemStrings = {
       },
       slots: {
         mainhand: 'Waffenhand',
+        twoHand: 'Zweihändig',
+        offhand: 'Nebenhand',
         helmet: 'Kopf',
         neck: 'Hals',
         shoulder: 'Schultern',
@@ -725,6 +742,7 @@ export const itemStrings = {
         dps: 'Schaden/Sek.',
         critChance: 'Krit. Chance',
         dodge: 'Ausweichen',
+        parry: 'Parieren',
       },
       tooltip: {
         qualityKind: '{quality} {kind}',
@@ -847,6 +865,8 @@ export const itemStrings = {
       },
       slots: {
         mainhand: '主手',
+        twoHand: '双手',
+        offhand: '副手',
         helmet: '头部',
         neck: '颈部',
         shoulder: '肩部',
@@ -884,6 +904,7 @@ export const itemStrings = {
         dps: '每秒伤害',
         critChance: '暴击几率',
         dodge: '躲闪',
+        parry: '招架',
       },
       tooltip: {
         qualityKind: '{quality}{kind}',
@@ -999,6 +1020,8 @@ export const itemStrings = {
       },
       slots: {
         mainhand: '主手',
+        twoHand: '雙手',
+        offhand: '副手',
         helmet: '頭部',
         neck: '頸部',
         shoulder: '肩部',
@@ -1036,6 +1059,7 @@ export const itemStrings = {
         dps: '每秒傷害',
         critChance: '暴擊機率',
         dodge: '閃躲',
+        parry: '招架',
       },
       tooltip: {
         qualityKind: '{quality}{kind}',
@@ -1151,6 +1175,8 @@ export const itemStrings = {
       },
       slots: {
         mainhand: '주장비',
+        twoHand: '양손',
+        offhand: '보조장비',
         helmet: '머리',
         neck: '목',
         shoulder: '어깨',
@@ -1188,6 +1214,7 @@ export const itemStrings = {
         dps: '초당 피해',
         critChance: '치명타율',
         dodge: '회피',
+        parry: '무기 막기',
       },
       tooltip: {
         qualityKind: '{quality} {kind}',
@@ -1307,6 +1334,8 @@ export const itemStrings = {
       },
       slots: {
         mainhand: 'メインハンド',
+        twoHand: '両手',
+        offhand: 'オフハンド',
         helmet: '頭',
         neck: '首',
         shoulder: '肩',
@@ -1344,6 +1373,7 @@ export const itemStrings = {
         dps: '秒間ダメージ',
         critChance: 'クリティカル率',
         dodge: '回避',
+        parry: '受け流し',
       },
       tooltip: {
         qualityKind: '{quality} {kind}',
@@ -1463,6 +1493,8 @@ export const itemStrings = {
       },
       slots: {
         mainhand: 'Mão principal',
+        twoHand: 'Duas mãos',
+        offhand: 'Mão secundária',
         helmet: 'Cabeça',
         neck: 'Pescoço',
         shoulder: 'Ombros',
@@ -1500,6 +1532,7 @@ export const itemStrings = {
         dps: 'Dano/s',
         critChance: 'Chance crítica',
         dodge: 'Esquiva',
+        parry: 'Aparo',
       },
       tooltip: {
         qualityKind: '{kind} {quality}',
@@ -1619,6 +1652,8 @@ export const itemStrings = {
       },
       slots: {
         mainhand: 'Правая рука',
+        twoHand: 'Двуручное',
+        offhand: 'Левая рука',
         helmet: 'Голова',
         neck: 'Шея',
         shoulder: 'Плечи',
@@ -1656,6 +1691,7 @@ export const itemStrings = {
         dps: 'Урон/сек',
         critChance: 'Шанс крита',
         dodge: 'Уклонение',
+        parry: 'Парирование',
       },
       tooltip: {
         qualityKind: '{quality} {kind}',
@@ -2023,6 +2059,10 @@ const ITEM_ENTITY_IDS = [
   'final_argument_greatblade',
   'first_blood_razor',
   'emberglass_warstaff',
+  'copper_ore',
+  'iron_ore',
+  'ironbark_log',
+  'silverleaf_herb',
 ] as const;
 
 type ItemEntityId = (typeof ITEM_ENTITY_IDS)[number];
@@ -2046,6 +2086,14 @@ function itemTranslations(names: readonly string[]): ItemEntityTranslations {
   return translations;
 }
 
+function itemTranslationsEn(names: readonly string[]) {
+  return {
+    ...itemTranslations(names),
+    conjured_water4: { name: 'Conjured Springwater' },
+    conjured_bread4: { name: 'Conjured Feastloaf' },
+  };
+}
+
 const itemNamesEn = {
   itemUi: {
     ...itemStrings.en.itemUi,
@@ -2064,7 +2112,7 @@ const itemNamesEn = {
   },
   entities: {
     ...classAbilityNamesEn.entities,
-    items: itemTranslations([
+    items: itemTranslationsEn([
       'Pitted Shortsword',
       'Bogoak Staff',
       'Rusty Dagger',
@@ -2318,6 +2366,10 @@ const itemNamesEn = {
       'Final Argument Greatblade',
       'First-Blood Razor',
       'Emberglass Warstaff',
+      'Copper Ore',
+      'Iron Ore',
+      'Ironbark Log',
+      'Silverleaf Herb',
     ]),
   },
 };
@@ -2596,6 +2648,10 @@ export const itemNames = {
         'Mandoble del argumento final',
         'Navaja de la primera sangre',
         'Bastón de guerra de cristal de ascua',
+        'Copper Ore',
+        'Iron Ore',
+        'Ironbark Log',
+        'Silverleaf Herb',
       ]),
     },
   },
@@ -2872,6 +2928,10 @@ export const itemNames = {
         "Grande lame de l'ultime argument",
         'Rasoir du premier sang',
         'Bâton de guerre de verre ardent',
+        'Copper Ore',
+        'Iron Ore',
+        'Ironbark Log',
+        'Silverleaf Herb',
       ]),
     },
   },
@@ -3149,6 +3209,10 @@ export const itemNames = {
         "Spadone dell'argomento finale",
         'Rasoio del primo sangue',
         'Bastone da guerra di vetro ardente',
+        'Copper Ore',
+        'Iron Ore',
+        'Ironbark Log',
+        'Silverleaf Herb',
       ]),
     },
   },
@@ -3424,6 +3488,10 @@ export const itemNames = {
         'Großklinge des letzten Arguments',
         'Klinge des ersten Blutes',
         'Kriegstab aus Glutglas',
+        'Copper Ore',
+        'Iron Ore',
+        'Ironbark Log',
+        'Silverleaf Herb',
       ]),
     },
   },
@@ -3699,6 +3767,10 @@ export const itemNames = {
         '最终论断巨刃',
         '初血剃刀',
         '烬晶战杖',
+        'Copper Ore',
+        'Iron Ore',
+        'Ironbark Log',
+        'Silverleaf Herb',
       ]),
     },
   },
@@ -3974,6 +4046,10 @@ export const itemNames = {
         '最終論斷巨刃',
         '初血剃刀',
         '燼晶戰杖',
+        'Copper Ore',
+        'Iron Ore',
+        'Ironbark Log',
+        'Silverleaf Herb',
       ]),
     },
   },
@@ -4249,6 +4325,10 @@ export const itemNames = {
         '최후 논박의 대검',
         '첫 피의 면도날',
         '불씨유리 전투지팡이',
+        'Copper Ore',
+        'Iron Ore',
+        'Ironbark Log',
+        'Silverleaf Herb',
       ]),
     },
   },
@@ -4524,6 +4604,10 @@ export const itemNames = {
         '最後の論駁の大剣',
         '初血の剃刀',
         '熾火硝子の戦杖',
+        'Copper Ore',
+        'Iron Ore',
+        'Ironbark Log',
+        'Silverleaf Herb',
       ]),
     },
   },
@@ -4799,6 +4883,10 @@ export const itemNames = {
         'Montante do argumento final',
         'Navalha do primeiro sangue',
         'Cajado de guerra de vidro em brasa',
+        'Copper Ore',
+        'Iron Ore',
+        'Ironbark Log',
+        'Silverleaf Herb',
       ]),
     },
   },
@@ -5074,10 +5162,14 @@ export const itemNames = {
         'Великий клинок последнего довода',
         'Бритва первой крови',
         'Боевой посох из огненного стекла',
+        'Copper Ore',
+        'Iron Ore',
+        'Ironbark Log',
+        'Silverleaf Herb',
       ]),
     },
   },
 };
 
-itemNames.es_ES = itemNames.es;
-itemNames.fr_CA = itemNames.fr_FR;
+itemNames.es_ES = itemNames.es as unknown as typeof itemNames.es_ES;
+itemNames.fr_CA = itemNames.fr_FR as unknown as typeof itemNames.fr_CA;

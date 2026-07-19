@@ -32,7 +32,7 @@ describe('main-loop frame pacing contract', () => {
     expect(frameLoop.match(/pacing\.intentionallyPaced,\s*previousFrameWorkMs,/g)).toHaveLength(2);
     expect(
       frameLoop.match(
-        /perf\.time\('hud',[\s\S]*?perf\.tick\(now\);\s*previousFrameWorkMs = performance\.now\(\) - frameWorkStartMs;\s*markFirstRenderedFrame\(\);/g,
+        /perf\.time\('hud',[\s\S]*?perf\.tick\(now\);\s*previousFrameWorkMs = performance\.now\(\) - frameWorkStartMs;\s*loadingHandoff\.markFirstRenderedFrame\(\);/g,
       ),
     ).toHaveLength(2);
   });
@@ -74,19 +74,16 @@ describe('main-loop frame pacing contract', () => {
     );
   });
 
-  it('waits for a completed gameplay frame before fading the loading screen', () => {
+  it('wires completed gameplay frames through the tested loading handoff', () => {
     const launchStart = mainTs.indexOf('  last = performance.now();', frameEnd);
     const launchEnd = mainTs.indexOf('  fadeOutHomepageMusic();', launchStart);
     const launchBlock = mainTs.slice(launchStart, launchEnd);
 
     expect(launchStart).toBeGreaterThan(frameEnd);
     expect(launchEnd).toBeGreaterThan(launchStart);
-    expect(frameLoop.match(/markFirstRenderedFrame\(\);/g)).toHaveLength(2);
+    expect(frameLoop.match(/loadingHandoff\.markFirstRenderedFrame\(\);/g)).toHaveLength(2);
     expect(launchBlock).toMatch(
-      /requestAnimationFrame\(frame\);\s*\/\/ Cut to the game only after an accepted frame has completed and reached paint\.\s*void firstRenderedFrame\.then\(\(\) => \{\s*requestAnimationFrame\(\(\) => \{\s*hideLoadingScreen\(\);/,
-    );
-    expect(launchBlock).not.toMatch(
-      /requestAnimationFrame\(\(\) =>\s*requestAnimationFrame\(\(\) => \{\s*hideLoadingScreen\(\);/,
+      /requestAnimationFrame\(frame\);\s*\/\/ Cut to the game only after an accepted frame has completed and reached paint\.\s*loadingHandoff\.start\(\(\) => \{\s*hideLoadingScreen\(\);/,
     );
   });
 });

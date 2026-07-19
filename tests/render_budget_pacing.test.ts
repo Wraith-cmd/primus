@@ -180,15 +180,15 @@ describe('render budget governor with intentional frame pacing', () => {
     expect(state.levels).toEqual(baselineLevels);
   });
 
-  it('falls back to render total when paced full-frame work is unavailable', () => {
+  it('keeps render-total frame pressure visible when full-frame work is unavailable', () => {
     const governor = lowGovernor();
     const withoutFullFrameWork = sample({
       frameMs: 33.4,
       totalMs: 38,
-      submitMs: 24,
-      calls: 500,
-      triangles: 1_400_000,
-      grassVisibleTufts: 3_000,
+      submitMs: 4,
+      calls: 200,
+      triangles: 700_000,
+      grassVisibleTufts: 2_000,
     });
     delete withoutFullFrameWork.workMs;
 
@@ -196,6 +196,6 @@ describe('render budget governor with intentional frame pacing', () => {
 
     expect(state.externalFrameCap).toBe(false);
     expect(state.mode).toBe('degrading');
-    expect(state.levels.foliage).toBeLessThan(0.9);
+    expect(state.reason).toBe('frame');
   });
 });

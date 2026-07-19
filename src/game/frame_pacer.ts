@@ -22,6 +22,8 @@ const MIN_REFRESH_INTERVAL_MS = 1;
 const MAX_REFRESH_INTERVAL_MS = 50;
 const SUSPEND_GAP_MS = 250;
 const FRAME_RATE_TOLERANCE = 1.03;
+const PACING_ENGAGEMENT_RATIO = 1.5;
+const PACING_ENGAGEMENT_EPSILON_FPS = 0.001;
 const EARLY_FRAME_TOLERANCE_MS = 0.5;
 const REFRESH_CHANGE_TOLERANCE = 0.12;
 const TARGET_DIVISOR_RELATIVE_TOLERANCE = 0.01;
@@ -40,6 +42,8 @@ function median(values: readonly number[], scratch: number[]): number {
 export function pacedFrameRateFor(refreshFps: number, maxFps: number): number {
   if (!Number.isFinite(maxFps) || maxFps <= 0) return 0;
   if (!Number.isFinite(refreshFps) || refreshFps <= 0) return maxFps;
+  if (refreshFps < maxFps * PACING_ENGAGEMENT_RATIO - PACING_ENGAGEMENT_EPSILON_FPS)
+    return refreshFps;
   if (refreshFps <= maxFps * FRAME_RATE_TOLERANCE) return refreshFps;
   const divisor = Math.max(1, Math.ceil(refreshFps / (maxFps * FRAME_RATE_TOLERANCE)));
   return refreshFps / divisor;

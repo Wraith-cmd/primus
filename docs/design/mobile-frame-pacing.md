@@ -14,19 +14,25 @@ ceiling comes from `GFX.budget.targetFps`, so graphics budgets remain the single
 of the configured maximum.
 
 The pacer estimates the browser animation-callback rate, then selects the highest whole
-panel divisor that does not exceed the configured ceiling. Important outcomes are:
+panel divisor that does not exceed the configured ceiling. Pacing engages only when the
+callback rate is at least 1.5 times the ceiling, so a noisy 60 Hz source or a 72 Hz to
+75 Hz panel keeps every callback instead of falling across a divisor cliff. Important
+outcomes are:
 
 | Browser callback rate | Game target |
 | --- | --- |
 | 30 Hz | 30 fps, no additional decimation |
 | 60 Hz | 60 fps |
+| 72 Hz | 72 fps, no additional decimation |
+| 75 Hz | 75 fps, no additional decimation |
 | 90 Hz | 45 fps |
 | 120 Hz | 60 fps |
 | 144 Hz | 48 fps |
 | 165 Hz | 55 fps |
 | 240 Hz | 60 fps |
 
-This avoids the uneven callback pattern produced by attempting 60 fps on a 90 Hz source.
+This avoids both halving mid-refresh panels and the uneven callback pattern produced by
+attempting 60 fps on a 90 Hz source.
 The decision core carries sub-frame timing remainder so callback jitter does not produce
 long-term cadence drift. A suspended-tab-sized gap clears timing remainder, preserves
 the trusted panel rate, and renders the first resumed callback immediately.
@@ -43,6 +49,9 @@ keeps the trusted panel rate. If the browser later applies a real cap at that sa
 callback rate, a sustained run of completed frames with measured work below the trusted
 panel interval promotes the cap as the new source rate. Interrupted or expensive samples
 reset that evidence so workload pressure cannot be mistaken for a panel change.
+The loading handoff waits for a completed gameplay frame and one following paint callback.
+A five-second watchdog uses that same paint boundary if frame work throws before completion,
+so a rendering failure cannot leave the loading screen visible forever.
 
 The frame-loop gate runs before `last` is advanced. Skipped callbacks therefore do not
 sample input or advance the fixed-step accumulator. The next executed frame receives the
@@ -72,6 +81,9 @@ external-cap path.
 through 360 Hz, low-power 30 fps behavior, remainder carry under jitter, live
 interface-mode changes, disabled desktop behavior, suspend/resume recalibration, and the
 ambiguous boundary between missed panel refreshes and a real browser callback cap.
+
+`tests/loading_handoff.test.ts` executes the loading handoff with injected animation and
+watchdog schedulers, including the failure path where a gameplay frame throws.
 
 `tests/render_budget_pacing.test.ts` pins the governor handoff at intentional 30 fps and
 40 fps and verifies that expensive renderer or non-render main-thread work still

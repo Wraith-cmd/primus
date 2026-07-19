@@ -48,6 +48,7 @@ import { Keybinds } from './game/keybinds';
 import { newKeyboardTurnState, stepKeyboardTurnFacing } from './game/keyboard_turn_facing';
 import { applyMobileKeyboardViewport } from './game/keyboard_viewport_applier';
 import { shouldUseStaticBackdrop } from './game/landing_backdrop';
+import { createLoadingHandoff } from './game/loading_handoff';
 import {
   interfaceModeFromSetting,
   isPhoneTouchDevice,
@@ -2509,16 +2510,13 @@ async function startGame(
     maxFps: GFX.budget.targetFps,
   });
   let previousFrameWorkMs = 0;
-  let resolveFirstRenderedFrame: (() => void) | null = null;
-  const firstRenderedFrame = new Promise<void>((resolve) => {
-    resolveFirstRenderedFrame = resolve;
+  const loadingHandoff = createLoadingHandoff({
+    requestAnimationFrame: (callback) => {
+      requestAnimationFrame(callback);
+    },
+    setTimeout: (callback, timeoutMs) => window.setTimeout(callback, timeoutMs),
+    clearTimeout: (handle) => window.clearTimeout(handle),
   });
-  const markFirstRenderedFrame = (): void => {
-    const resolve = resolveFirstRenderedFrame;
-    if (!resolve) return;
-    resolveFirstRenderedFrame = null;
-    resolve();
-  };
   let onlineInputEchoMs = 0;
   let playerWasDead = world.player.dead;
   // Smoothed input-echo jitter (mean absolute deviation of RTT samples) for the
@@ -2914,7 +2912,7 @@ async function startGame(
       perf.time('hud', () => perf.trace('hud.update', () => hud.update(), { mode: 'offline' }));
       perf.tick(now);
       previousFrameWorkMs = performance.now() - frameWorkStartMs;
-      markFirstRenderedFrame();
+      loadingHandoff.markFirstRenderedFrame();
       return;
     }
 
@@ -3072,7 +3070,7 @@ async function startGame(
     perf.time('hud', () => perf.trace('hud.update', () => hud.update(), { mode: 'online' }));
     perf.tick(now);
     previousFrameWorkMs = performance.now() - frameWorkStartMs;
-    markFirstRenderedFrame();
+    loadingHandoff.markFirstRenderedFrame();
   }
   const controller = {
     move(moveInput: unknown, facing?: unknown) {
@@ -3216,52 +3214,50 @@ async function startGame(
   last = performance.now();
   requestAnimationFrame(frame);
   // Cut to the game only after an accepted frame has completed and reached paint.
-  void firstRenderedFrame.then(() => {
-    requestAnimationFrame(() => {
-      hideLoadingScreen();
-      // Start the intro clock as the loading screen begins to fade: the camera
-      // holds the opening pose until now, so the fade doubles as the cut in.
-      if (intro) intro.startedAt = performance.now();
-      window.setTimeout(() => {
-        gameInputReady = true;
-        perf.reset();
-        startPerfReporter({
-          perf,
-          settings,
-          tokenProvider: () => api.token,
-          characterIdProvider: () => online?.characterId ?? null,
-        });
-        // Warm the procedural icon cache during idle time so the first
-        // bags/vendor/loot open never pays the compose burst synchronously
-        // (icon_prewarm.ts). Re-entry is a fast no-op: the cache is module-global.
-        prewarmIconCache(defaultIconPrewarmEntries());
-        // First-run camera-mode prompt (issue #1727): show once per browser on a
-        // mouse-driven interface, after any spawn cinematic has finished. Applies
-        // the choice through the same applySetting path as the Key Bindings toggle.
-        maybeShowFirstRunCameraPrompt({
-          applyMouseCamera: (enabled) => applySetting('mouseCamera', enabled),
-          isBlocked: () => intro !== null,
-        });
-        (window as any).__game = {
-          sim: world,
-          world,
-          renderer,
-          input,
-          hud,
-          online,
-          controller,
-          perf,
-          gamepad,
-          /** Opens the board and drains queued sim events. Do not call sim.lockpickEngage directly offline. */
-          lockpickEngage: (objectId: number, ante: number) =>
-            hud.submitLockpickEngage(objectId, ante as 1 | 2 | 3),
-          /** Syncs HUD col/row from sim before acting; always drains step events. Use instead of sim.lockpickAction. */
-          lockpickAction: (action: string) =>
-            hud.submitLockpickAction(action as import('./sim/lockpick').PickAction),
-          flushLockpickEvents: () => hud.flushLockpickEvents(),
-        };
-      }, LOADING_FADE_MS);
-    });
+  loadingHandoff.start(() => {
+    hideLoadingScreen();
+    // Start the intro clock as the loading screen begins to fade: the camera
+    // holds the opening pose until now, so the fade doubles as the cut in.
+    if (intro) intro.startedAt = performance.now();
+    window.setTimeout(() => {
+      gameInputReady = true;
+      perf.reset();
+      startPerfReporter({
+        perf,
+        settings,
+        tokenProvider: () => api.token,
+        characterIdProvider: () => online?.characterId ?? null,
+      });
+      // Warm the procedural icon cache during idle time so the first
+      // bags/vendor/loot open never pays the compose burst synchronously
+      // (icon_prewarm.ts). Re-entry is a fast no-op: the cache is module-global.
+      prewarmIconCache(defaultIconPrewarmEntries());
+      // First-run camera-mode prompt (issue #1727): show once per browser on a
+      // mouse-driven interface, after any spawn cinematic has finished. Applies
+      // the choice through the same applySetting path as the Key Bindings toggle.
+      maybeShowFirstRunCameraPrompt({
+        applyMouseCamera: (enabled) => applySetting('mouseCamera', enabled),
+        isBlocked: () => intro !== null,
+      });
+      (window as any).__game = {
+        sim: world,
+        world,
+        renderer,
+        input,
+        hud,
+        online,
+        controller,
+        perf,
+        gamepad,
+        /** Opens the board and drains queued sim events. Do not call sim.lockpickEngage directly offline. */
+        lockpickEngage: (objectId: number, ante: number) =>
+          hud.submitLockpickEngage(objectId, ante as 1 | 2 | 3),
+        /** Syncs HUD col/row from sim before acting; always drains step events. Use instead of sim.lockpickAction. */
+        lockpickAction: (action: string) =>
+          hud.submitLockpickAction(action as import('./sim/lockpick').PickAction),
+        flushLockpickEvents: () => hud.flushLockpickEvents(),
+      };
+    }, LOADING_FADE_MS);
   });
   // Now in-game: fade the home-page theme out (it kept playing through loading).
   fadeOutHomepageMusic();

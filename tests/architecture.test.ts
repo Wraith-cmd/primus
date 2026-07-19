@@ -207,6 +207,8 @@ const UI_PURE_CORES = [
   'src/ui/town_focus_view.ts',
   'src/ui/pet_action_icons.ts',
   'src/ui/welcome_screen_view.ts',
+  'src/game/frame_pacer.ts',
+  'src/game/loading_handoff.ts',
   'src/game/ui_effects_profile.ts',
   'src/game/ui_tier_knobs.ts',
 ].map((rel) => join(repoRoot, rel));
@@ -260,6 +262,8 @@ const BARE_NAMED = [
   'src/ui/log_event_route.ts',
   'src/ui/mobile_hud_layout.ts',
   'src/ui/pet_action_icons.ts',
+  'src/game/frame_pacer.ts',
+  'src/game/loading_handoff.ts',
   'src/game/ui_effects_profile.ts',
   'src/game/ui_tier_knobs.ts',
   'src/render/cast_bar.ts',

@@ -93,8 +93,16 @@ function steadyCallbackGaps(
 }
 
 describe('mobile frame pacer', () => {
+  it('keeps the loading calibration window bounded', () => {
+    expect(FRAME_PACER_CALIBRATION_CALLBACKS).toBe(13);
+  });
+
   it('selects the highest panel divisor at or below the frame-rate ceiling', () => {
     expect(pacedFrameRateFor(60, 60)).toBeCloseTo(60);
+    expect(pacedFrameRateFor(61.9, 60)).toBeCloseTo(61.9);
+    expect(pacedFrameRateFor(72, 60)).toBeCloseTo(72);
+    expect(pacedFrameRateFor(75, 60)).toBeCloseTo(75);
+    expect(pacedFrameRateFor(89.9, 60)).toBeCloseTo(89.9);
     expect(pacedFrameRateFor(90, 60)).toBeCloseTo(45);
     expect(pacedFrameRateFor(120, 60)).toBeCloseTo(60);
     expect(pacedFrameRateFor(144, 60)).toBeCloseTo(48);
@@ -228,7 +236,7 @@ describe('mobile frame pacer', () => {
     expect(snapshot.targetFps).toBeCloseTo(48, 0);
   });
 
-  it('distinguishes 144 Hz workload misses from a real 72 Hz callback cap', () => {
+  it('distinguishes 144 Hz workload misses from a real unpaced 72 Hz callback cap', () => {
     const pacer = new FramePacer({ enabled: true, maxFps: 60 });
     const calibratedAt = observeAtRate(pacer, 144);
     const workloadLimited = stepWithMissedVsyncWork(pacer, 144, 1_200, calibratedAt, 2, 7);
@@ -242,8 +250,9 @@ describe('mobile frame pacer', () => {
     const snapshot = pacer.snapshot();
 
     expect(snapshot.estimatedRefreshFps).toBeCloseTo(72, 0);
-    expect(snapshot.targetFps).toBeCloseTo(36, 0);
-    expect(new Set(gaps)).toEqual(new Set([2]));
+    expect(snapshot.targetFps).toBeCloseTo(72, 0);
+    expect(snapshot.intentionallyPaced).toBe(false);
+    expect(new Set(gaps)).toEqual(new Set([1]));
   });
 
   it.each([
@@ -293,6 +302,31 @@ describe('mobile frame pacer', () => {
     expect(completedHeadroom.maxConsecutiveSkips).toBe(0);
     expect(snapshot.estimatedRefreshFps).toBeCloseTo(30, 0);
     expect(snapshot.targetFps).toBeCloseTo(30, 0);
+  });
+
+  it('uses target-interval headroom when deciding whether to promote a learned cap', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    const calibratedAt = observeAtRate(pacer, 45);
+    const workloadLimited = stepWithMissedVsyncWork(pacer, 45, 1_200, calibratedAt, 2);
+
+    expect(pacer.snapshot().estimatedRefreshFps).toBeCloseTo(45, 0);
+    const expensiveFrames = stepAtRate(pacer, 22.5, 16, workloadLimited.nowMs, 20);
+    expect(pacer.snapshot().estimatedRefreshFps).toBeCloseTo(45, 0);
+
+    stepAtRate(pacer, 22.5, 8, expensiveFrames.nowMs, 10);
+    const promoted = pacer.snapshot();
+    expect(promoted.estimatedRefreshFps).toBeCloseTo(22.5, 0);
+    expect(promoted.targetFps).toBeCloseTo(22.5, 0);
+  });
+
+  it('does not revalidate after five incompatible callback samples', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    const calibratedAt = observeAtRate(pacer, 60);
+
+    const transientNoise = stepAtRate(pacer, 120, 12, calibratedAt);
+
+    expect(transientNoise.rendered).toBe(12);
+    expect(pacer.snapshot().estimatedRefreshFps).toBeCloseTo(60, 0);
   });
 
   it('tolerates a delayed loading callback and still establishes trusted calibration', () => {
@@ -450,8 +484,26 @@ describe('mobile frame pacer', () => {
     expect(snapshot.intentionallyPaced).toBe(true);
   });
 
+  it('revalidates a promoted callback cap when its rate changes again', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    const calibratedAt = observeAtRate(pacer, 120);
+    const workloadLimited = stepWithMissedVsyncWork(pacer, 120, 1_200, calibratedAt, 4 / 3);
+    const promoted = stepAtRate(pacer, 90, 180, workloadLimited.nowMs, 8.3);
+
+    expect(pacer.snapshot().estimatedRefreshFps).toBeCloseTo(90, 0);
+    const transition = stepAtRate(pacer, 80, 180, promoted.nowMs);
+    const warmup = stepAtRate(pacer, 80, 120, transition.nowMs);
+    const gaps = steadyCallbackGaps(pacer, 80, 180, warmup.nowMs);
+    const snapshot = pacer.snapshot();
+
+    expect(snapshot.estimatedRefreshFps).toBeCloseTo(80, 0);
+    expect(snapshot.targetFps).toBeCloseTo(80, 0);
+    expect(snapshot.intentionallyPaced).toBe(false);
+    expect(new Set(gaps)).toEqual(new Set([1]));
+  });
+
   it.each([
-    { fromFps: 90, toFps: 80, targetFps: 40, expectedGap: 2 },
+    { fromFps: 90, toFps: 80, targetFps: 80, expectedGap: 1 },
     { fromFps: 90, toFps: 48, targetFps: 48, expectedGap: 1 },
     { fromFps: 144, toFps: 132, targetFps: 44, expectedGap: 3 },
     { fromFps: 360, toFps: 320, targetFps: 320 / 6, expectedGap: 6 },

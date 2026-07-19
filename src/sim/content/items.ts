@@ -5,6 +5,14 @@ import type { ItemDef, PlayerClass } from '../types';
 const WAR: PlayerClass[] = ['warrior', 'paladin', 'shaman'];
 const MAG: PlayerClass[] = ['mage', 'priest', 'warlock', 'druid'];
 const ROG: PlayerClass[] = ['rogue', 'hunter'];
+const CASTER_WEAPON_CLASSES: PlayerClass[] = [
+  'mage',
+  'priest',
+  'warlock',
+  'shaman',
+  'paladin',
+  'druid',
+];
 
 // ---------------------------------------------------------------------------
 // Items
@@ -109,7 +117,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 7, max: 12, speed: 3.0 },
     stats: { int: 3, sta: 1 },
     sellValue: 120,
-    requiredClass: MAG,
+    requiredClass: CASTER_WEAPON_CLASSES,
   },
   keen_dirk: {
     id: 'keen_dirk',
@@ -1299,7 +1307,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 11, max: 18, speed: 3.0 },
     stats: { int: 5, spi: 2 },
     sellValue: 880,
-    requiredClass: MAG,
+    requiredClass: CASTER_WEAPON_CLASSES,
   },
   gravewardens_shiv: {
     id: 'gravewardens_shiv',
@@ -1708,7 +1716,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     weapon: { min: 9, max: 15, speed: 3.0 },
     stats: { int: 3, spi: 2 },
     sellValue: 175,
-    requiredClass: MAG,
+    requiredClass: CASTER_WEAPON_CLASSES,
   },
   caravan_warden_dirk: {
     id: 'caravan_warden_dirk',

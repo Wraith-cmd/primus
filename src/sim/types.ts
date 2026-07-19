@@ -3539,7 +3539,7 @@ export type SimEvent = { pid?: number } & (
         | 'combo_requirement_unmet'
         | 'recipe_not_learned'
         | 'throttled'
-        | 'not_at_hub';
+        | 'station_required';
     }
   // Masterwork proc (Professions 2.0 Phase 2): a successful craft's single
   // output-side rng draw procced, minting a masterwork instance with baked

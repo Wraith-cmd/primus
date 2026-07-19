@@ -33,6 +33,7 @@ import { warriorParryChance } from '../sim/combat/warrior_hit_table';
 import { DEED_ORDER, DEEDS } from '../sim/content/deeds';
 import { HEROIC_MARK_ITEM_ID } from '../sim/content/dungeon_difficulty';
 import { HEROIC_VENDOR_STOCK } from '../sim/content/heroic_vendor';
+import { recipeById } from '../sim/content/recipes';
 import { FIRST_TALENT_LEVEL, type TalentAllocation, talentsFor } from '../sim/content/talents';
 import type { ZoneDef } from '../sim/data';
 import {
@@ -59,8 +60,8 @@ import { canEquipItem, weaponHand } from '../sim/equipment_rules';
 import { isItemLevelEligible, itemLevel, itemScore } from '../sim/item_level';
 import { requiredLevelFor } from '../sim/item_level_req';
 import type { Ante, PickAction } from '../sim/lockpick';
-import { canUseCraftingHubStation } from '../sim/professions/crafting_hub';
 import { FOCUS_POINT_BUDGET, isInTownZone } from '../sim/professions/focus';
+import { inRangeStationTypes, stationTypesSignature } from '../sim/professions/stations';
 import { type QuestObjectiveRef, questObjectivesForMob } from '../sim/quest_targets';
 import type { ResolvedAbility } from '../sim/sim';
 import type {
@@ -167,7 +168,7 @@ import {
   observeCraftSkillsForTierUps,
 } from './craft_celebration_view';
 import { buildCraftingView } from './crafting_view';
-import { renderCraftingWindow } from './crafting_window';
+import { renderCraftingWindow, stationNameText } from './crafting_window';
 import { DailyRewardsWindow } from './daily_rewards_window';
 import {
   deedBroadcastLine,
@@ -1225,10 +1226,12 @@ export class Hud {
   // Drains left in the post-craftResult window during which the tier-up diff
   // runs (0 = disarmed; see the handleEvents tail).
   private craftTierUpDrains = 0;
-  // The stationInRange value the open crafting window was last painted with;
-  // the slowHud band repaints the cold window only when the live predicate
-  // flips (walking into/out of the hub), since the server re-validates anyway.
-  private lastCraftingStationInRange = true;
+  // Signature of the in-range station-type set as of the last crafting-window
+  // paint (stations.ts stationTypesSignature): the slow band compares the live
+  // set against this to keep an OPEN window fresh without per-frame repaints
+  // (walking into/out of a station, or the own mobile station expiring); the
+  // server re-validates the gate on every craft anyway.
+  private lastCraftingStationSig = '';
   private readonly delveBoard: DelveBoardController;
   private readonly delveTracker: DelveTrackerController;
   private readonly lockpickController: LockpickController;
@@ -6804,14 +6807,16 @@ export class Hud {
       const townFocusBtn = document.getElementById('mm-town-focus');
       if (townFocusBtn) townFocusBtn.style.display = inTown ? '' : 'none';
       if (this.townFocusOpen) this.renderTownFocus();
-      // Crafting window staleness (Phase 6): the window is a cold painter, so
-      // an open window repaints only when the hub-station predicate flips
-      // (walking in/out of range). Cheap distance check on the slow band; the
-      // server re-validates the gate on every craft regardless.
+      // Crafting window staleness (Phase 6, re-signaled for Phase 8): the
+      // window is a cold painter, so an open window repaints only when the
+      // in-range station-type set changes (walking in/out of a station's
+      // range, or the own mobile station appearing/expiring). Cheap distance
+      // checks on the slow band; the server re-validates the gate on every
+      // craft regardless.
       if (
         $('#crafting-window').style.display === 'block' &&
-        canUseCraftingHubStation(sim.player.pos, sim.player.level) !==
-          this.lastCraftingStationInRange
+        stationTypesSignature(inRangeStationTypes(sim.player.pos, sim.activeMobileStationCraft)) !==
+          this.lastCraftingStationSig
       )
         this.renderCrafting();
     }
@@ -8707,20 +8712,29 @@ export class Hud {
             this.log(t('hudChrome.crafting.craftedToast', { name }), '#7fdc4f');
             audio.lootItem();
           } else if (!ev.ok) {
+            // station_required (Phase 8) names WHICH station: no station field
+            // rides the event, the type resolves from the recipe content
+            // (identical in both worlds). An unresolvable recipe id (cannot
+            // happen from a well-formed server) falls through to the generic
+            // materials line rather than rendering a broken name.
+            const deniedStationType =
+              ev.reason === 'station_required' ? recipeById(ev.recipeId)?.stationType : undefined;
             this.log(
-              t(
-                ev.reason === 'unknown_recipe'
-                  ? 'hudChrome.crafting.unknownRecipe'
-                  : ev.reason === 'combo_requirement_unmet'
-                    ? 'hudChrome.crafting.comboRequirementUnmet'
-                    : ev.reason === 'not_at_hub'
-                      ? 'hudChrome.crafting.notAtHub'
-                      : ev.reason === 'throttled'
-                        ? 'hudChrome.crafting.throttled'
-                        : ev.reason === 'recipe_not_learned'
-                          ? 'hudChrome.crafting.recipeNotLearned'
-                          : 'hudChrome.crafting.insufficientMaterials',
-              ),
+              deniedStationType
+                ? t('hudChrome.crafting.stationRequired', {
+                    station: stationNameText(deniedStationType),
+                  })
+                : t(
+                    ev.reason === 'unknown_recipe'
+                      ? 'hudChrome.crafting.unknownRecipe'
+                      : ev.reason === 'combo_requirement_unmet'
+                        ? 'hudChrome.crafting.comboRequirementUnmet'
+                        : ev.reason === 'throttled'
+                          ? 'hudChrome.crafting.throttled'
+                          : ev.reason === 'recipe_not_learned'
+                            ? 'hudChrome.crafting.recipeNotLearned'
+                            : 'hudChrome.crafting.insufficientMaterials',
+                  ),
               '#ff6b6b',
             );
           }
@@ -10818,11 +10832,15 @@ export class Hud {
   }
 
   private renderCrafting(): void {
-    // Hub-station range for #1297 station-bound rows: the same pure predicate
-    // the sim's not_at_hub deny composes (position AND level), so the row
+    // Station range for Phase 8 station-bound rows: the same pure in-range
+    // set the sim's station_required deny composes (physical stations plus
+    // the own active mobile station), computed once per repaint, so the row
     // disable mirrors the deny exactly. The server re-validates on craft.
-    const stationInRange = canUseCraftingHubStation(this.sim.player.pos, this.sim.player.level);
-    this.lastCraftingStationInRange = stationInRange;
+    const inRangeStations = inRangeStationTypes(
+      this.sim.player.pos,
+      this.sim.activeMobileStationCraft,
+    );
+    this.lastCraftingStationSig = stationTypesSignature(inRangeStations);
     renderCraftingWindow(
       $('#crafting-window'),
       buildCraftingView(
@@ -10831,7 +10849,7 @@ export class Hud {
         ITEMS,
         this.sim.craftSkills,
         this.sim.craftingIdentity,
-        stationInRange,
+        inRangeStations,
       ),
       {
         ...this.presentationBag,

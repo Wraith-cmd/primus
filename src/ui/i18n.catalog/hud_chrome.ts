@@ -2342,10 +2342,20 @@ export const hudChromeStrings = {
       dormantKnowledge:
         '{craft} knowledge is retained but dormant until its pair or hobby is active.',
     },
-    // #1297: denied because the recipe is station-bound (the level-20
-    // crafting hub) and the player is either not there or not high enough
-    // level.
-    notAtHub: 'You must be at the crafting hub, at the required level, to craft that.',
+    // Professions 2.0 Phase 8 (supersedes the retired notAtHub key): denied
+    // because the recipe is station-bound and the player is not at a station
+    // of its type. {station} is the localized stationName.* value below.
+    stationRequired: 'You must be at the {station} to craft that.',
+    // The six station display names (stations.ts StationType), resolved via
+    // crafting_window.ts stationNameText, the craftName-table idiom.
+    stationName: {
+      forge: 'Forge',
+      kitchens: 'Kitchens',
+      apothecary: 'Apothecary',
+      tannery: 'Tannery',
+      loom: 'Loom',
+      toolworks: 'Toolworks',
+    },
     // #1301: denied because the rolling craft-output window is full.
     throttled: 'You are crafting too quickly. Wait a moment and try again.',
     // #1299: the recipe exists but this player has not learned it yet.
@@ -2359,7 +2369,9 @@ export const hudChromeStrings = {
     difficultyReduced: 'Reduced skill gain',
     difficultyNone: 'No skill gain',
     stationBadge: 'Station',
-    stationOutOfRange: 'Move to the crafting hub station to craft this.',
+    // Phase 8 (supersedes the retired stationOutOfRange key): the crafting
+    // window's out-of-range row note, naming WHICH station to walk to.
+    stationOutOfRangeNamed: 'Move to the {station} to craft this.',
     masterworkToast: 'Masterwork! {name}',
     masterworkZoneLine: '{crafter} crafted a masterwork {name}!',
     tierUpToast: '{craft} advanced to tier {tier}!',

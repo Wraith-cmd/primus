@@ -2203,7 +2203,15 @@ export const nl_NL: EnTranslations = {
         "nearTier": "{craft} mist {points} vaardigheid voor zijn volgende rang.",
         "dormantKnowledge": "{craft}-kennis wordt behouden maar is slapend tot zijn paar of liefhebberij actief is."
       },
-      "notAtHub": "Je moet bij de werkbank zijn, op het vereiste niveau, om dat te maken.",
+      "stationRequired": "You must be at the {station} to craft that.",
+      "stationName": {
+        "forge": "Forge",
+        "kitchens": "Kitchens",
+        "apothecary": "Apothecary",
+        "tannery": "Tannery",
+        "loom": "Loom",
+        "toolworks": "Toolworks"
+      },
       "throttled": "Je maakt te snel. Wacht even en probeer het opnieuw.",
       "recipeNotLearned": "Je hebt dat recept nog niet geleerd.",
       "skillReqLine": "Requires {craft} {skill}",
@@ -2211,7 +2219,7 @@ export const nl_NL: EnTranslations = {
       "difficultyReduced": "Reduced skill gain",
       "difficultyNone": "No skill gain",
       "stationBadge": "Station",
-      "stationOutOfRange": "Move to the crafting hub station to craft this.",
+      "stationOutOfRangeNamed": "Move to the {station} to craft this.",
       "masterworkToast": "Masterwork! {name}",
       "masterworkZoneLine": "{crafter} crafted a masterwork {name}!",
       "tierUpToast": "{craft} advanced to tier {tier}!",
@@ -9473,6 +9481,36 @@ export const nl_NL: EnTranslations = {
         "name": "Kroniekschrijver Zenzie",
         "title": "De Toppenkroniek",
         "greeting": "De berg vergeet niets, {playerName}, en ik evenmin. Laten we eens kijken wat je hebt gedaan."
+      },
+      "forgemistress_darva": {
+        "name": "Forgemistress Darva",
+        "title": "Master of the Forge",
+        "greeting": "The forge answers to me, {className}. Bring good ore and it will answer to you too."
+      },
+      "cook_marlow": {
+        "name": "Cook Marlow",
+        "title": "Master of the Kitchens",
+        "greeting": "Nothing leaves my kitchens half-cooked, {className}. Sit, eat, then get back out there."
+      },
+      "weaver_ottilie": {
+        "name": "Weaver Ottilie",
+        "title": "Master of the Loom",
+        "greeting": "Mind the threads, {className}. A steady hand at the loom beats a strong one."
+      },
+      "tinker_gizzel": {
+        "name": "Tinker Gizzel",
+        "title": "Master of the Toolworks",
+        "greeting": "Springs, sprockets, and sharp edges, {className}: the toolworks has whatever your hands lack."
+      },
+      "tanner_hesk": {
+        "name": "Tanner Hesk",
+        "title": "Master of the Tannery",
+        "greeting": "A hide is only as good as its tanning, {className}. The vats are ready when you are."
+      },
+      "alchemist_verane": {
+        "name": "Alchemist Verane",
+        "title": "Master of the Apothecary",
+        "greeting": "Measure twice and pour once, {className}. The apothecary has no patience for spilled reagents."
       },
       "tidewatcher_ondrel": {
         "name": "Ondrel Vane",

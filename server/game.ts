@@ -4064,6 +4064,9 @@ export class GameServer {
       case 'craft_item':
         if (typeof msg.recipe === 'string') sim.craftItem(msg.recipe, pid);
         break;
+      case 'place_mobile_station':
+        if (typeof msg.craft === 'string') sim.placeMobileStation(msg.craft, pid);
+        break;
       case 'sell_all_junk':
         sim.sellAllJunk(pid);
         break;
@@ -5469,6 +5472,12 @@ export class GameServer {
     // Craft skills and identity must arrive as one value so the client never
     // evaluates a recipe against a pair from one tick and skills from another.
     maybe('cprof', this.sim.craftingIdentityFor(anchorSession.pid));
+    // The viewer's own active mobile crafting station craft id (Professions
+    // 2.0 Phase 8), or null. Expiry resolves server-side (Sim.
+    // activeMobileStationCraftFor checks its own tickCount), so the delta
+    // naturally flips to null the tick a station lapses and the client never
+    // reasons about tick domains. Small scalar, diffed per tick like atitle.
+    maybe('mst', this.sim.activeMobileStationCraftFor(anchorSession.pid));
     maybe('tfocus', this.sim.townFocusFor(anchorSession.pid));
     // Raw gathering-profession proficiency map (IWorld `gatheringProficiency`,
     // #1119), a second small read alongside `prof` for the ORIGINAL flat-map

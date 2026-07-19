@@ -298,6 +298,11 @@ import {
 } from './professions/gathering';
 import { updateGuildTrendLetters } from './professions/guild_letter';
 import type { MasterworkProc } from './professions/masterwork';
+import {
+  isStationActive,
+  type MobileCraftingStation,
+  placeMobileStationForPlayer,
+} from './professions/mobile_station';
 import { type SalvageResult, salvageItem as salvageItemImpl } from './professions/salvage';
 import type { ProfessionRecipeRecord as RecipeDef } from './professions/types';
 import {
@@ -1110,6 +1115,13 @@ export interface PlayerMeta {
   // persisted: a fresh login gets a fresh window rather than carrying a
   // logout-time cooldown across sessions.
   craftThrottle: { windowStart: number; count: number };
+  // The player's own placed mobile crafting station (#1134, wired live in
+  // Professions 2.0 Phase 8: see professions/mobile_station.ts). TRANSIENT:
+  // never serialized to the character save (CharacterState has no field for
+  // it and serializeCharacter never writes one), and defaults to null at
+  // construction AND on load, because its expiry is tick-domain
+  // (expiresAtTick) and tick counts are not restart-safe.
+  mobileStation: MobileCraftingStation | null;
   // Active-archetype state and quest-gated switching (#1129, superseded scope: see
   // professions/archetype.ts). Never touches craftSkills. Persisted in CharacterState.
   archetype: ArchetypeState;
@@ -2086,6 +2098,9 @@ export class Sim {
       craftSkills: emptyCraftSkills(),
       knownRecipes: new Set(),
       craftThrottle: { windowStart: 0, count: 0 },
+      // Transient (never persisted; see the PlayerMeta field doc): stays null
+      // on load too, since savedState carries no mobile-station field.
+      mobileStation: null,
       marketQuery: defaultMarketQuery(),
       mailWelcomed: false,
       guildLetterSent: false,
@@ -6842,6 +6857,32 @@ export class Sim {
   // recent masterwork proc, or null before their first proc this session.
   get lastMasterwork(): MasterworkProc | null {
     return this.players.get(this.primaryId)?.lastMasterwork ?? null;
+  }
+
+  // Mobile crafting station command (Professions 2.0 Phase 8, wiring #1134):
+  // a thin delegate onto professions/mobile_station.ts, resolved on the
+  // deterministic tick the command arrives on, same shape as craftItem
+  // above. Specialization-gated inside the impl; a failed placement is a
+  // silent no-op (the crafting window's station row already communicates
+  // range, and the server re-validates the gate on every craft).
+  placeMobileStation(craftId: string, pid?: number): void {
+    placeMobileStationForPlayer(this.ctx, craftId, pid);
+  }
+
+  // IWorld read surface (IWorldProfessions, Phase 8): the craft id of the
+  // local viewer's own ACTIVE mobile station, or null when none is placed or
+  // the placed one has expired (tick-domain expiry, checked live).
+  get activeMobileStationCraft(): string | null {
+    return this.activeMobileStationCraftFor(this.primaryId);
+  }
+
+  /** Per-player form of `activeMobileStationCraft`, for the server's `mst`
+   *  self-delta (server/game.ts): the expiry check runs server-side against
+   *  this sim's own tickCount, so the client mirrors a server-authoritative
+   *  value and never reasons about tick domains. */
+  activeMobileStationCraftFor(pid: number): string | null {
+    const station = this.players.get(pid)?.mobileStation;
+    return station && isStationActive(station, this.tickCount) ? station.craftId : null;
   }
 
   // Recipe acquisition command (#1299): a thin delegate onto

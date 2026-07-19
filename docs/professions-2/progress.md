@@ -21,8 +21,8 @@ Update this file at the end of every implementation and QA session. Statuses:
 | 6 QA | Verify crafting window upgrades | complete | 2026-07-19 | 2026-07-19 |
 | 7 | The Guild letter and quest objectives | complete | 2026-07-19 | 2026-07-19 |
 | 7 QA | Verify the Guild letter and quest objectives | complete | 2026-07-19 | 2026-07-19 |
-| 8 | Stations and masters (sim and server) | not started | | |
-| 8 QA | Verify stations and masters | not started | | |
+| 8 | Stations and masters (sim and server) | complete | 2026-07-19 | 2026-07-19 |
+| 8 QA | Verify stations and masters | complete | 2026-07-19 | 2026-07-19 |
 | 9 | Station presence and recipe training | not started | | |
 | 9 QA | Verify station presence and training | not started | | |
 | 10 | Recipe ladders and materials content | not started | | |
@@ -345,10 +345,10 @@ CLAUDE.md.
 - Note: the "craft/gather quest objective types" line above predated the approved amendments; the letter rides `q_archetype_acceptance` (gather objective, shipped with PR 2039), so no new objective types were needed.
 
 ### Phase 8: Stations and masters (sim and server)
-- [ ] Station registry generalizes `requiresHubStation` to typed stations (forge, kitchens, apothecary, tannery, loom, toolworks); `CRAFTING_HUB_MIN_LEVEL` retired
-- [ ] Master NPC records for the six deep crafts, spread across the three zone hubs (four archetype anchors in zone 1; tannery in Fenbridge; apothecary in Highwatch; assignment pinned)
-- [ ] Automated placement-safety test: no profession NPC or station within aggro-plus-buffer of hostile spawns
-- [ ] Mobile crafting station perk activates (bypasses the station gate; specialization-gated)
+- [x] Station registry generalizes `requiresHubStation` to typed stations (forge, kitchens, apothecary, tannery, loom, toolworks); `CRAFTING_HUB_MIN_LEVEL` retired (`src/sim/professions/stations.ts` + `STATIONS`/`STATION_TYPE_BY_CRAFT` content; `recipe.stationType`; stable deny id `station_required`; `crafting_hub.ts` deleted with every consumer migrated; no recipe strands, the nine former hub recipes craft at their typed stations)
+- [x] Master NPC records for the six deep crafts, spread across the three zone hubs (four archetype anchors in zone 1; tannery in Fenbridge; apothecary in Highwatch; assignment pinned in `tests/professions_station_placement.test.ts`)
+- [x] Automated placement-safety test: no profession NPC or station within aggro-plus-buffer of hostile spawns (content-derived buffer, per-zone camps, mutation-proven failable)
+- [x] Mobile crafting station perk activates (bypasses the station gate for the placed craft's station type; specialization-gated `place_mobile_station` wire command in both worlds with the `mst` self-delta mirror, plus a `/dev mobilestation` arm)
 
 ### Phase 9: Station presence and recipe training
 - [ ] Stations render as world props; masters render and are interactable; minimap markers
@@ -611,3 +611,79 @@ to the postOffice lap bucket, a third backfill load, a dedicated parity
 scenario (the determinism pin covers the risk, the sweep draws zero
 rng). Release cut reminder: the 10 letters' pending rows for the
 non-M16 locales fill at the release-tier gate as usual.
+
+2026-07-19 Phase 8 (stations and masters) landed on
+feature/professions-2-phase-08-stations-masters off the release/v0.28.0
+tip 571ab0219 (the phase-start commit for the QA diff). Three-agent
+sequential build workflow (sim, content, tests) plus a six-reviewer
+dispatch (privacy-security, cross-platform-sync, architecture,
+frontend-seam, migration-safety, qa-checklist), zero blocking; the one
+should-fix (a stale optimistic-mirror doc comment on the
+activeMobileStationCraft facet member) was fixed with two follow-up
+guard tests (recipe-stamp stranding guard, mst expiry-to-null arm).
+Notable calls: the online liveness gap the build left (ClientWorld's
+activeMobileStationCraft pinned null) was closed IN-PHASE with the mst
+self-delta mirror rather than deferred, because a disabled online
+Craft button beside an active mobile station is exactly the 2033 stub
+class; the parity goldens were regenerated in their own commit for the
+six static NPCs' purely mechanical +6 entity-id shift (id-family keys
+only, draw order untouched, determinism arms green); the Tools of the
+Trade deed desc was reworded station-neutral with the 18 stale locale
+desc fills dropped for the release refill. Surprises: the
+placement-safety buffer is bound by bursar_fernando against the boar
+camp (11.19), not smith_haldren against the wolves (12.34) as
+predicted; sim/items.ts rejects vendor rows without a positive
+buyValue, so several natural reagent stocks were dead rows (tanner and
+weaver stocks are flavor picks instead); deleting an i18n catalog key
+hard-fails tsc on every overlay still carrying it (the retire recipe
+is catalog delete + orphan-row delete + i18n:gen in one pass); the
+RELEASE TIP ITSELF was red in tests/chronomancy.test.ts (the absorbed
+PR 2154 barrier-scaling merge missed the chronomancy absorb pins),
+repaired here in its own labeled commit (184/84 to 194/94, the
+documented 25 percent spell-power term). Content flow note for the
+maintainer: the six premium reagents still sell only at Quartermaster
+Bree in Highwatch while the toolworks/loom/forge recipes now craft in
+Eastbrook, a deliberate buy-then-travel loop to reconsider in Phase 9
+stocking. STILL OPEN (unchanged from Phase 7): the Guild letter's
+call to action dead-ends pre-q_prof_intro; the masters ship with
+EMPTY questIds hooks and no redirect was silently implemented.
+
+Phase 8 QA (2026-07-19): PASS with fixes, zero blocking. Nine-agent
+fan-out (three packet audits plus privacy-security, migration-safety,
+cross-platform-sync, architecture, frontend-seam and the closing
+qa-checklist; database-performance did not match the diff), every
+agent complete first try under the 30-call budget, with the phase
+validation matrix pre-verified green at the untouched tip and passed
+to every agent as ground. The correctness audit ran six live
+headless-Sim probes (deny away from the station, wrong-type deny,
+at-station success, all nine field recipes far from any station, the
+full mobile place/craft/expire cycle against real ticks, caster-recipe
+radius behavior at 19 vs 30 out) plus proof that FIELD_RECIPES equals
+the pre-phase nine COMMON_RECIPES ids. Findings: 18 total, 3
+should-fix, all fixed: the Phase 9 phase file still pointed its
+reader at the deleted crafting_hub.ts (swept to stations.ts and the
+crafting.ts gate), the /dev mobilestation arm had zero coverage (now
+proves the cheat routes through the real specialization gate), and
+the hud station_required deny toast had no binding pin (source-pinned
+in profession_identity_card.test.ts). Fixed NITs: the FIELD_RECIPES
+set pin was a tautology against its own definition source (now pins
+the nine literal ids), the mobile expiry boundary was only incidental
+(exact strict-below pin added: active at expiry-1, expired at the
+expiry tick), and two comments (stations.ts header, CraftResultView)
+implied a mobile-arm proximity check the spec'd gate deliberately
+does not have (reworded). Dissolved on verification: the
+crafting_hub test filename misnomer (its header documents the
+deliberate keep for the deeds.ts anchors), the hud fallthrough
+mislabel (unreachable by construction and documented in-code), the
+slow-band set allocation (cold painter, throttled, pre-phase
+equivalent), and the place_mobile_station rate-limit worry
+(self-scoped transient slot overwrite, no growth, no rng, no db).
+Closed decisively: guide freshness (wiki:content regenerates no
+diff; the guide does not enumerate town NPCs). Deferred with notes
+in state.md: the Eastbrook loom-toolworks radius overlap (design
+observation for Phase 9 props and minimap), the consumer-less
+MobileCraftingStation pos/placedAtTick/playerId fields (Phase 9
+props are the natural consumer), the expired station object
+lingering on the meta slot until the next placement (benign, every
+reader checks isStationActive), and the mobile-viewport station row
+being screenshot-verified only.

@@ -3073,6 +3073,10 @@ export type SimEvent = { pid?: number } & (
   | { type: 'xp'; amount: number; rested?: number }
   | { type: 'honor'; amount: number; reason: HonorReason }
   | { type: 'levelup'; level: number }
+  // opt-in post-cap rank reset (always personal: emitted with pid). The rank
+  // itself rides every self snapshot, so this exists to tell an open character
+  // sheet WHEN to repaint, the same job the honor event does for the Honor row.
+  | { type: 'prestige'; rank: number }
   // post-cap cosmetic progression (Max-Level XP Overflow): crossing a virtual
   // level past the cap (milestone unlocks ride the deedUnlocked event since
   // the milestone unification; the legacy milestoneUnlocked emit is gone)

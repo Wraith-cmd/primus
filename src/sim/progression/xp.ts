@@ -76,5 +76,6 @@ export function prestige(ctx: SimContext, pid?: number): boolean {
     text: `You have prestiged! Prestige Rank ${r.meta.prestigeRank}.`,
     color: '#ffd100',
   });
+  ctx.emit({ type: 'prestige', pid: r.e.id, rank: r.meta.prestigeRank });
   return true;
 }

@@ -2209,6 +2209,7 @@ export class Renderer {
   private updateAdaptiveResolution(
     dt: number,
     intentionalFramePacing: boolean,
+    pacedTargetFps: number,
     previousFrameWorkMs: number,
   ): void {
     if (!Number.isFinite(dt) || dt <= 0) return;
@@ -2236,6 +2237,7 @@ export class Renderer {
       minRenderScale: lockedRenderScale,
       maxRenderScale: lockedRenderScale,
       intentionalFramePacing,
+      pacedTargetFps,
       workMs: previousFrameWorkMs > 0 ? previousFrameWorkMs : previousTotalMs,
     });
     this.frameMsEma = state.frameMsEma;
@@ -4742,6 +4744,7 @@ export class Renderer {
     selfAlphaLead = 0,
     selfMotion: SelfMotionFrame | null = null,
     intentionalFramePacing = false,
+    pacedTargetFps = GFX.budget.targetFps,
     previousFrameWorkMs = 0,
   ): void {
     const totalStart = performance.now();
@@ -4764,7 +4767,7 @@ export class Renderer {
       return t;
     };
 
-    this.updateAdaptiveResolution(dt, intentionalFramePacing, previousFrameWorkMs);
+    this.updateAdaptiveResolution(dt, intentionalFramePacing, pacedTargetFps, previousFrameWorkMs);
     this.viewportPollTimer += dt;
     if (this.viewportPollTimer >= 0.25) {
       this.viewportPollTimer = 0;

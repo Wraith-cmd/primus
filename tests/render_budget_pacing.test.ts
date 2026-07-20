@@ -150,6 +150,48 @@ describe('render budget governor with intentional frame pacing', () => {
     expect(recovered).toBe(true);
   });
 
+  it('recovers within the paced frame budget instead of the 60 fps budget', () => {
+    const governor = lowGovernor();
+    let state = governor.update(
+      sample({
+        frameMs: 80,
+        workMs: 80,
+        totalMs: 80,
+        submitMs: 55,
+        calls: 600,
+        triangles: 1_500_000,
+        grassVisibleTufts: 4_000,
+      }),
+    );
+    const degraded = { ...state.levels };
+    let sawRecovery = false;
+
+    const pacedSample = {
+      ...sample({
+        dt: 1 / 45,
+        frameMs: 1000 / 45,
+        workMs: 18,
+        totalMs: 18,
+        submitMs: 4,
+        calls: 200,
+        triangles: 700_000,
+        grassVisibleTufts: 2_000,
+      }),
+      pacedTargetFps: 45,
+    } as RenderBudgetSample;
+    for (let i = 0; i < 4_000; i++) {
+      state = governor.update(pacedSample);
+      if (state.mode === 'recovering') sawRecovery = true;
+    }
+
+    const recovered = Object.keys(state.levels).some(
+      (key) =>
+        state.levels[key as keyof typeof state.levels] > degraded[key as keyof typeof degraded],
+    );
+    expect(sawRecovery).toBe(true);
+    expect(recovered).toBe(true);
+  });
+
   it('clears and restores external-cap detection across live pacing transitions', () => {
     const governor = lowGovernor();
     const externalCapSample = sample({

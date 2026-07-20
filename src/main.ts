@@ -2614,7 +2614,7 @@ async function startGame(
   let last = performance.now();
   let acc = 0;
   const framePacer = new FramePacer({
-    enabled: document.body.classList.contains('mobile-touch'),
+    enabled: NATIVE_APP,
     maxFps: GFX.budget.targetFps,
   });
   let previousFrameWorkMs = 0;
@@ -2881,7 +2881,6 @@ async function startGame(
 
   function frame(now: number): void {
     requestAnimationFrame(frame);
-    framePacer.setEnabled(document.body.classList.contains('mobile-touch'));
     const pacing = framePacer.step(now, previousFrameWorkMs);
     if (!pacing.shouldRun) return;
     const frameWorkStartMs = performance.now();
@@ -3005,6 +3004,7 @@ async function startGame(
               0,
               null,
               pacing.intentionallyPaced,
+              pacing.targetFps,
               previousFrameWorkMs,
             ),
           {
@@ -3161,6 +3161,7 @@ async function startGame(
             adaptiveSelfAlphaLead(onlineInputEchoMs, onlineJitterMs, net.snapInterval),
             selfMotion,
             pacing.intentionallyPaced,
+            pacing.targetFps,
             previousFrameWorkMs,
           ),
         {
@@ -3308,19 +3309,6 @@ async function startGame(
     console.warn('Renderer prewarm failed', err);
   }
   await nextPaint();
-  if (document.body.classList.contains('mobile-touch')) {
-    for (let i = 0; i < FRAME_PACER_CALIBRATION_CALLBACKS; i++) {
-      await new Promise<void>((resolve) => {
-        requestAnimationFrame((timestamp) => {
-          framePacer.observe(timestamp);
-          resolve();
-        });
-      });
-      if (framePacer.snapshot().estimatedRefreshFps > 0) break;
-    }
-  }
-  last = performance.now();
-  requestAnimationFrame(frame);
   // Cut to the game only after an accepted frame has completed and reached paint.
   loadingHandoff.start(() => {
     hideLoadingScreen();
@@ -3366,7 +3354,20 @@ async function startGame(
         flushLockpickEvents: () => hud.flushLockpickEvents(),
       };
     }, LOADING_FADE_MS);
-  });
+  }, hideLoadingScreen);
+  if (NATIVE_APP) {
+    for (let i = 0; i < FRAME_PACER_CALIBRATION_CALLBACKS; i++) {
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame((timestamp) => {
+          framePacer.observe(timestamp);
+          resolve();
+        });
+      });
+      if (framePacer.snapshot().estimatedRefreshFps > 0) break;
+    }
+  }
+  last = performance.now();
+  requestAnimationFrame(frame);
   // Now in-game: fade the home-page theme out (it kept playing through loading).
   fadeOutHomepageMusic();
 }

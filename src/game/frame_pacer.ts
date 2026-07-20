@@ -22,7 +22,8 @@ const MIN_REFRESH_INTERVAL_MS = 1;
 const MAX_REFRESH_INTERVAL_MS = 50;
 const SUSPEND_GAP_MS = 250;
 const FRAME_RATE_TOLERANCE = 1.03;
-const PACING_ENGAGEMENT_RATIO = 1.5;
+const PACING_ENGAGEMENT_RATIO = 1.45;
+const PACING_DISENGAGEMENT_RATIO = 1.4;
 const PACING_ENGAGEMENT_EPSILON_FPS = 0.001;
 const EARLY_FRAME_TOLERANCE_MS = 0.5;
 const REFRESH_CHANGE_TOLERANCE = 0.12;
@@ -39,11 +40,15 @@ function median(values: readonly number[], scratch: number[]): number {
   return scratch.length % 2 === 0 ? (scratch[middle - 1] + scratch[middle]) / 2 : scratch[middle];
 }
 
-export function pacedFrameRateFor(refreshFps: number, maxFps: number): number {
+export function pacedFrameRateFor(
+  refreshFps: number,
+  maxFps: number,
+  pacingEngaged = false,
+): number {
   if (!Number.isFinite(maxFps) || maxFps <= 0) return 0;
   if (!Number.isFinite(refreshFps) || refreshFps <= 0) return maxFps;
-  if (refreshFps < maxFps * PACING_ENGAGEMENT_RATIO - PACING_ENGAGEMENT_EPSILON_FPS)
-    return refreshFps;
+  const engagementRatio = pacingEngaged ? PACING_DISENGAGEMENT_RATIO : PACING_ENGAGEMENT_RATIO;
+  if (refreshFps < maxFps * engagementRatio - PACING_ENGAGEMENT_EPSILON_FPS) return refreshFps;
   if (refreshFps <= maxFps * FRAME_RATE_TOLERANCE) return refreshFps;
   const divisor = Math.max(1, Math.ceil(refreshFps / (maxFps * FRAME_RATE_TOLERANCE)));
   return refreshFps / divisor;
@@ -322,7 +327,11 @@ export class FramePacer {
     refreshFps = this.trustedRefreshFps || this.measuredRefreshFps(),
   ): void {
     this.estimatedRefreshFps = refreshFps;
-    this.targetFps = pacedFrameRateFor(this.estimatedRefreshFps, this.maxFps);
+    this.targetFps = pacedFrameRateFor(
+      this.estimatedRefreshFps,
+      this.maxFps,
+      this.intentionallyPaced,
+    );
     this.intentionallyPaced = this.enabled && this.targetFps < this.estimatedRefreshFps - 0.5;
   }
 }

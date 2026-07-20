@@ -29,7 +29,9 @@ describe('main-loop frame pacing contract', () => {
   });
 
   it('forwards pacing and previous full-frame work through both render paths', () => {
-    expect(frameLoop.match(/pacing\.intentionallyPaced,\s*previousFrameWorkMs,/g)).toHaveLength(2);
+    expect(
+      frameLoop.match(/pacing\.intentionallyPaced,\s*pacing\.targetFps,\s*previousFrameWorkMs,/g),
+    ).toHaveLength(2);
     expect(
       frameLoop.match(
         /perf\.time\('hud',[\s\S]*?perf\.tick\(now\);\s*previousFrameWorkMs = performance\.now\(\) - frameWorkStartMs;\s*loadingHandoff\.markFirstRenderedFrame\(\);/g,
@@ -49,17 +51,17 @@ describe('main-loop frame pacing contract', () => {
     expect(syncEnd).toBeGreaterThan(syncStart);
     expect(adaptiveStart).toBeGreaterThan(-1);
     expect(adaptiveEnd).toBeGreaterThan(adaptiveStart);
-    expect(syncBlock).toContain(
-      'this.updateAdaptiveResolution(dt, intentionalFramePacing, previousFrameWorkMs);',
+    expect(syncBlock).toMatch(
+      /this\.updateAdaptiveResolution\(\s*dt,\s*intentionalFramePacing,\s*pacedTargetFps,\s*previousFrameWorkMs,?\s*\);/,
     );
     expect(adaptiveBlock).toMatch(
-      /this\.renderBudgetGovernor\.update\(\{[\s\S]*?intentionalFramePacing,[\s\S]*?workMs: previousFrameWorkMs > 0 \? previousFrameWorkMs : previousTotalMs,/,
+      /this\.renderBudgetGovernor\.update\(\{[\s\S]*?intentionalFramePacing,[\s\S]*?pacedTargetFps,[\s\S]*?workMs: previousFrameWorkMs > 0 \? previousFrameWorkMs : previousTotalMs,/,
     );
   });
 
-  it('collects trusted mobile panel samples under the loading screen', () => {
+  it('collects trusted native panel samples under the loading screen', () => {
     const calibrationStart = mainTs.indexOf(
-      "if (document.body.classList.contains('mobile-touch')) {",
+      'if (NATIVE_APP) {',
       mainTs.indexOf('await renderer.prewarmInitialScene()'),
     );
     const loopStart = mainTs.indexOf('requestAnimationFrame(frame);', calibrationStart);
@@ -74,16 +76,27 @@ describe('main-loop frame pacing contract', () => {
     );
   });
 
-  it('wires completed gameplay frames through the tested loading handoff', () => {
-    const launchStart = mainTs.indexOf('  last = performance.now();', frameEnd);
+  it('arms the tested loading handoff before native calibration can stall', () => {
+    const launchStart = mainTs.indexOf('  loadingHandoff.start(() => {', frameEnd);
     const launchEnd = mainTs.indexOf('  fadeOutHomepageMusic();', launchStart);
     const launchBlock = mainTs.slice(launchStart, launchEnd);
+    const calibrationStart = launchBlock.indexOf('  if (NATIVE_APP) {');
+    const frameRequest = launchBlock.indexOf('  requestAnimationFrame(frame);');
 
     expect(launchStart).toBeGreaterThan(frameEnd);
     expect(launchEnd).toBeGreaterThan(launchStart);
     expect(frameLoop.match(/loadingHandoff\.markFirstRenderedFrame\(\);/g)).toHaveLength(2);
     expect(launchBlock).toMatch(
-      /requestAnimationFrame\(frame\);\s*\/\/ Cut to the game only after an accepted frame has completed and reached paint\.\s*loadingHandoff\.start\(\(\) => \{\s*hideLoadingScreen\(\);/,
+      /loadingHandoff\.start\(\s*\(\) => \{\s*hideLoadingScreen\(\);[\s\S]*?intro\.startedAt = performance\.now\(\);[\s\S]*?},\s*hideLoadingScreen,?\s*\);/,
     );
+    expect(calibrationStart).toBeGreaterThan(-1);
+    expect(frameRequest).toBeGreaterThan(calibrationStart);
+  });
+
+  it('scopes automatic pacing to the native runtime, not interface mode', () => {
+    expect(mainTs).toMatch(
+      /const framePacer = new FramePacer\(\{\s*enabled: NATIVE_APP,\s*maxFps: GFX\.budget\.targetFps,/,
+    );
+    expect(frameLoop).not.toContain('framePacer.setEnabled(');
   });
 });

@@ -7,17 +7,18 @@ input, simulation, rendering, and HUD work on paced-out callbacks.
 
 ## Policy
 
-The automatic policy applies while the client has the `mobile-touch` body class. A live
-Interface Mode change resets pacing remainder, so switching to Desktop resumes every
-animation callback and switching back to Touch reuses the trusted mobile cadence. The
+The automatic policy applies only in the Capacitor native runtime (`NATIVE_APP`). Interface
+Mode controls input and layout, not hardware policy, so choosing Touch on a desktop or
+2-in-1 display does not enable pacing. The Electron desktop shell is also excluded. The
 ceiling comes from `GFX.budget.targetFps`, so graphics budgets remain the single source
 of the configured maximum.
 
 The pacer estimates the browser animation-callback rate, then selects the highest whole
-panel divisor that does not exceed the configured ceiling. Pacing engages only when the
-callback rate is at least 1.5 times the ceiling, so a noisy 60 Hz source or a 72 Hz to
-75 Hz panel keeps every callback instead of falling across a divisor cliff. Important
-outcomes are:
+panel divisor that does not exceed the configured ceiling. Fresh pacing engages at 1.45
+times the ceiling, clear of normal 90 Hz calibration noise while leaving 72 Hz to 75 Hz
+panels untouched. Once engaged, it remains active down to 1.40 times the ceiling. This
+hysteresis prevents adaptive-refresh noise from repeatedly crossing a 2x divisor boundary.
+Important outcomes are:
 
 | Browser callback rate | Game target |
 | --- | --- |
@@ -25,6 +26,7 @@ outcomes are:
 | 60 Hz | 60 fps |
 | 72 Hz | 72 fps, no additional decimation |
 | 75 Hz | 75 fps, no additional decimation |
+| 89.9 Hz | 44.95 fps |
 | 90 Hz | 45 fps |
 | 120 Hz | 60 fps |
 | 144 Hz | 48 fps |
@@ -37,10 +39,10 @@ The decision core carries sub-frame timing remainder so callback jitter does not
 long-term cadence drift. A suspended-tab-sized gap clears timing remainder, preserves
 the trusted panel rate, and renders the first resumed callback immediately.
 
-Before the game loop starts on mobile, the loading screen stays up for a short run of
-lightweight animation callbacks. That trusted sample prevents expensive startup frames
+Before the game loop starts in the native runtime, the loading screen stays up for a short
+run of lightweight animation callbacks. That trusted sample prevents expensive startup frames
 from making a 90 Hz or 144 Hz panel look like a slower display after missed vsyncs. The
-trusted rate is retained across Interface Mode changes and browser suspension. A
+trusted rate is retained across native page suspension. A
 sustained callback rate that is incompatible with the active panel divisor triggers a
 short lightweight resample. Probe callbacks are interleaved with game frames so an
 adaptive-refresh transition cannot freeze the whole loop while moving up or down.
@@ -50,8 +52,9 @@ callback rate, a sustained run of completed frames with measured work below the 
 panel interval promotes the cap as the new source rate. Interrupted or expensive samples
 reset that evidence so workload pressure cannot be mistaken for a panel change.
 The loading handoff waits for a completed gameplay frame and one following paint callback.
-A five-second watchdog uses that same paint boundary if frame work throws before completion,
-so a rendering failure cannot leave the loading screen visible forever.
+Its five-second watchdog is armed before native refresh calibration begins. The normal path
+keeps the paint boundary. If animation callbacks stop, the watchdog hides the loading overlay
+directly while paint-dependent startup clocks remain paused until a gameplay frame completes.
 
 The frame-loop gate runs before `last` is advanced. Skipped callbacks therefore do not
 sample input or advance the fixed-step accumulator. The next executed frame receives the
@@ -63,8 +66,10 @@ owner of simulation catch-up.
 `Renderer.sync()` passes the pacer's `intentionallyPaced` signal to
 `RenderBudgetGovernor`. The governor preserves callback cadence for external-cap
 diagnostics, but uses the previously completed game frame's measured main-thread work
-as frame pressure while pacing is intentional. This includes input, simulation,
-rendering, and HUD work, so pacing cannot conceal a genuine non-render overrun.
+as frame pressure while pacing is intentional. The pacer's target also scales drop,
+urgent, and recovery thresholds from the 60 fps baseline to the executed-frame budget.
+This includes input, simulation, rendering, and HUD work, so pacing cannot conceal a
+genuine overrun or leave quality stuck below what the paced cadence can sustain.
 
 This distinction prevents both known failure modes:
 
@@ -77,17 +82,18 @@ external-cap path.
 
 ## Verification
 
-`tests/frame_pacer.test.ts` pins divisor selection and exact callback spacing from 90 Hz
-through 360 Hz, low-power 30 fps behavior, remainder carry under jitter, live
-interface-mode changes, disabled desktop behavior, suspend/resume recalibration, and the
-ambiguous boundary between missed panel refreshes and a real browser callback cap.
+`tests/frame_pacer.test.ts` pins divisor selection and exact callback spacing from noisy
+90 Hz through 360 Hz, engagement hysteresis, low-power 30 fps behavior, remainder carry
+under jitter, enabled and disabled behavior, suspend/resume recalibration, and the ambiguous
+boundary between missed panel refreshes and a real browser callback cap.
 
 `tests/loading_handoff.test.ts` executes the loading handoff with injected animation and
-watchdog schedulers, including the failure path where a gameplay frame throws.
+watchdog schedulers, including a gameplay-frame throw and animation callbacks that never
+resume.
 
-`tests/render_budget_pacing.test.ts` pins the governor handoff at intentional 30 fps and
-40 fps and verifies that expensive renderer or non-render main-thread work still
-triggers degradation.
+`tests/render_budget_pacing.test.ts` pins the governor handoff at intentional 30 fps,
+40 fps, and 45 fps, including recovery under 18 ms of sustained work, while verifying that
+expensive renderer or non-render main-thread work still triggers degradation.
 
 This policy currently covers the main game loop only. Preview render loops, native
 thermal signals, background quiescing, and proactive quality shedding are separate

@@ -9,7 +9,7 @@ export interface LoadingHandoffOptions<TimeoutHandle> {
 
 export interface LoadingHandoff {
   markFirstRenderedFrame(): void;
-  start(onHandoff: () => void): void;
+  start(onHandoff: () => void, onWatchdog?: () => void): void;
 }
 
 export function createLoadingHandoff<TimeoutHandle>(
@@ -19,6 +19,7 @@ export function createLoadingHandoff<TimeoutHandle>(
   let started = false;
   let handoffQueued = false;
   let onHandoff: (() => void) | null = null;
+  let onWatchdog: (() => void) | null = null;
   let watchdogHandle: TimeoutHandle | undefined;
 
   const clearWatchdog = (): void => {
@@ -27,15 +28,32 @@ export function createLoadingHandoff<TimeoutHandle>(
     watchdogHandle = undefined;
   };
 
+  const completeHandoff = (): void => {
+    if (!started || !onHandoff) return;
+    handoffQueued = true;
+    clearWatchdog();
+    const callback = onHandoff;
+    onHandoff = null;
+    onWatchdog = null;
+    callback();
+  };
+
+  const fireWatchdog = (): void => {
+    watchdogHandle = undefined;
+    if (!started || !onHandoff) return;
+    if (!onWatchdog) {
+      completeHandoff();
+      return;
+    }
+    const callback = onWatchdog;
+    onWatchdog = null;
+    callback();
+  };
+
   const queueHandoff = (): void => {
     if (!started || handoffQueued || !onHandoff) return;
     handoffQueued = true;
-    clearWatchdog();
-    options.requestAnimationFrame(() => {
-      const callback = onHandoff;
-      onHandoff = null;
-      callback?.();
-    });
+    options.requestAnimationFrame(completeHandoff);
   };
 
   return {
@@ -44,15 +62,15 @@ export function createLoadingHandoff<TimeoutHandle>(
       firstFrameRendered = true;
       queueHandoff();
     },
-    start(callback: () => void): void {
+    start(callback: () => void, watchdogCallback?: () => void): void {
       if (started) return;
       started = true;
       onHandoff = callback;
+      onWatchdog = watchdogCallback ?? null;
       watchdogHandle = options.setTimeout(
-        queueHandoff,
+        fireWatchdog,
         options.timeoutMs ?? LOADING_HANDOFF_WATCHDOG_MS,
       );
-      if (handoffQueued) clearWatchdog();
       if (firstFrameRendered) queueHandoff();
     },
   };

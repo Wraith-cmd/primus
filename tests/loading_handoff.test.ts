@@ -43,28 +43,62 @@ describe('loading handoff', () => {
 
     expect(onHandoff).not.toHaveBeenCalled();
     expect(harness.animationCallbacks).toHaveLength(1);
-    expect(harness.clearedWatchdogs).toEqual([1]);
+    expect(harness.clearedWatchdogs).toEqual([]);
 
     harness.animationCallbacks.shift()?.();
     expect(onHandoff).toHaveBeenCalledTimes(1);
+    expect(harness.clearedWatchdogs).toEqual([1]);
   });
 
   it('uses the bounded watchdog after a gameplay frame throws before completion', () => {
     const harness = handoffHarness();
     const onHandoff = vi.fn();
+    const onWatchdog = vi.fn();
     harness.animationCallbacks.push(() => {
       throw new Error('renderer failed');
     });
 
-    harness.handoff.start(onHandoff);
+    harness.handoff.start(onHandoff, onWatchdog);
     expect(harness.watchdogDelays).toEqual([5_000]);
     expect(() => harness.animationCallbacks.shift()?.()).toThrow('renderer failed');
     expect(onHandoff).not.toHaveBeenCalled();
 
     harness.watchdogCallbacks.get(1)?.();
-    expect(harness.animationCallbacks).toHaveLength(1);
-    harness.animationCallbacks.shift()?.();
 
+    expect(harness.animationCallbacks).toHaveLength(0);
+    expect(onWatchdog).toHaveBeenCalledTimes(1);
+    expect(onHandoff).not.toHaveBeenCalled();
+  });
+
+  it('keeps the watchdog armed until the queued paint completes', () => {
+    const harness = handoffHarness();
+    const onHandoff = vi.fn();
+    const onWatchdog = vi.fn();
+
+    harness.handoff.start(onHandoff, onWatchdog);
+    harness.handoff.markFirstRenderedFrame();
+
+    expect(harness.animationCallbacks).toHaveLength(1);
+    expect(harness.clearedWatchdogs).toEqual([]);
+
+    harness.watchdogCallbacks.get(1)?.();
+    expect(onWatchdog).toHaveBeenCalledTimes(1);
+    expect(onHandoff).not.toHaveBeenCalled();
+
+    harness.animationCallbacks.shift()?.();
     expect(onHandoff).toHaveBeenCalledTimes(1);
+  });
+
+  it('falls back even when animation callbacks never resume', () => {
+    const harness = handoffHarness();
+    const onHandoff = vi.fn();
+    const onWatchdog = vi.fn();
+
+    harness.handoff.start(onHandoff, onWatchdog);
+    harness.watchdogCallbacks.get(1)?.();
+
+    expect(onWatchdog).toHaveBeenCalledTimes(1);
+    expect(onHandoff).not.toHaveBeenCalled();
+    expect(harness.animationCallbacks).toHaveLength(0);
   });
 });

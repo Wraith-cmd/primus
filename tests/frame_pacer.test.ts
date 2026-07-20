@@ -102,11 +102,17 @@ describe('mobile frame pacer', () => {
     expect(pacedFrameRateFor(61.9, 60)).toBeCloseTo(61.9);
     expect(pacedFrameRateFor(72, 60)).toBeCloseTo(72);
     expect(pacedFrameRateFor(75, 60)).toBeCloseTo(75);
-    expect(pacedFrameRateFor(89.9, 60)).toBeCloseTo(89.9);
+    expect(pacedFrameRateFor(89.9, 60)).toBeCloseTo(44.95);
     expect(pacedFrameRateFor(90, 60)).toBeCloseTo(45);
     expect(pacedFrameRateFor(120, 60)).toBeCloseTo(60);
     expect(pacedFrameRateFor(144, 60)).toBeCloseTo(48);
     expect(pacedFrameRateFor(165, 60)).toBeCloseTo(55);
+  });
+
+  it('uses hysteresis around the high-refresh engagement boundary', () => {
+    expect(pacedFrameRateFor(86, 60)).toBeCloseTo(86);
+    expect(pacedFrameRateFor(86, 60, true)).toBeCloseTo(43);
+    expect(pacedFrameRateFor(83.9, 60, true)).toBeCloseTo(83.9);
   });
 
   it('keeps executed frames on exact whole-panel-divisor spacing', () => {
@@ -186,6 +192,31 @@ describe('mobile frame pacer', () => {
     expect(steady.rendered).toBeLessThanOrEqual(91);
     expect(snapshot.estimatedRefreshFps).toBeCloseTo(90, 0);
     expect(snapshot.targetFps).toBeCloseTo(45, 0);
+  });
+
+  it('holds pacing through calibration noise and releases below the hysteresis band', () => {
+    const pacer = new FramePacer({ enabled: true, maxFps: 60 });
+    let nowMs = observeAtRate(pacer, 89.9);
+
+    nowMs += 1_000;
+    pacer.step(nowMs);
+    for (let i = 0; i < 9; i++) {
+      nowMs += 1000 / 86;
+      pacer.observe(nowMs);
+    }
+    expect(pacer.snapshot().estimatedRefreshFps).toBeCloseTo(86, 0);
+    expect(pacer.snapshot().targetFps).toBeCloseTo(43, 0);
+    expect(pacer.snapshot().intentionallyPaced).toBe(true);
+
+    nowMs += 1_000;
+    pacer.step(nowMs);
+    for (let i = 0; i < 9; i++) {
+      nowMs += 1000 / 83;
+      pacer.observe(nowMs);
+    }
+    expect(pacer.snapshot().estimatedRefreshFps).toBeCloseTo(83, 0);
+    expect(pacer.snapshot().targetFps).toBeCloseTo(83, 0);
+    expect(pacer.snapshot().intentionallyPaced).toBe(false);
   });
 
   it('keeps a 60 Hz source at 60 fps without unnecessary decimation', () => {

@@ -3912,7 +3912,7 @@ export const SFX_CLIPS =
     "category": "other",
     "preload": "startup",
     "spatial": true,
-    "gain": 1.698244,
+    "gain": 2.570396,
     "playbackRate": 1,
     "bytes": 46436,
     "hash": "e6573acbb5cf",

@@ -35,7 +35,11 @@ import {
   readEntryProbeRaw,
   stampEntryProbe,
 } from './game/entry_crash_guard';
-import { FRAME_PACER_CALIBRATION_CALLBACKS, FramePacer } from './game/frame_pacer';
+import {
+  FRAME_PACER_CALIBRATION_CALLBACKS,
+  FramePacer,
+  MOBILE_FRAME_RATE_CEILING_FPS,
+} from './game/frame_pacer';
 import { GamepadManager } from './game/gamepad';
 import { GamepadBindings } from './game/gamepad_bindings';
 import { handleGatherNodeInteract } from './game/gather_node_interact';
@@ -150,7 +154,7 @@ import { skinCount } from './render/characters/manifest';
 import { playerPortraitDataUrl } from './render/characters/portrait';
 import { installWebGLContextRelease } from './render/context_release';
 import { firstRunGraphicsPreset, GFX, graphicsPresetLabel } from './render/gfx';
-import { Renderer } from './render/renderer';
+import { type FramePacingInfo, Renderer, type RendererSyncOptions } from './render/renderer';
 import type { SelfMotionFrame } from './render/self_motion';
 import { navigatorSaveData } from './render/sky';
 import { desktopBridge } from './runtime';
@@ -2615,9 +2619,17 @@ async function startGame(
   let acc = 0;
   const framePacer = new FramePacer({
     enabled: NATIVE_APP,
-    maxFps: GFX.budget.targetFps,
+    maxFps: MOBILE_FRAME_RATE_CEILING_FPS,
   });
   let previousFrameWorkMs = 0;
+  const framePacingInfo: FramePacingInfo = {
+    intentional: false,
+    targetFps: MOBILE_FRAME_RATE_CEILING_FPS,
+    previousWorkMs: 0,
+  };
+  const rendererSyncOptions: RendererSyncOptions = {
+    framePacing: framePacingInfo,
+  };
   const loadingHandoff = createLoadingHandoff({
     requestAnimationFrame: (callback) => {
       requestAnimationFrame(callback);
@@ -2883,6 +2895,9 @@ async function startGame(
     requestAnimationFrame(frame);
     const pacing = framePacer.step(now, previousFrameWorkMs);
     if (!pacing.shouldRun) return;
+    framePacingInfo.intentional = pacing.intentionallyPaced;
+    framePacingInfo.targetFps = pacing.targetFps;
+    framePacingInfo.previousWorkMs = previousFrameWorkMs;
     const frameWorkStartMs = performance.now();
     let frameDt = (now - last) / 1000;
     last = now;
@@ -2993,26 +3008,13 @@ async function startGame(
       const offlineRenderFacing =
         visualFacingFor(input.readMoveInput(), movementFacing ?? offlineSim.player.facing) ??
         movementFacing;
+      rendererSyncOptions.renderFacingOverride = offlineRenderFacing;
       perf.time('renderer', () =>
-        perf.trace(
-          'renderer.sync',
-          () =>
-            renderer.sync(
-              acc / DT,
-              frameDt,
-              offlineRenderFacing,
-              0,
-              null,
-              pacing.intentionallyPaced,
-              pacing.targetFps,
-              previousFrameWorkMs,
-            ),
-          {
-            mode: 'offline',
-            views: renderer.views.size,
-            alpha: acc / DT,
-          },
-        ),
+        perf.trace('renderer.sync', () => renderer.sync(acc / DT, frameDt, rendererSyncOptions), {
+          mode: 'offline',
+          views: renderer.views.size,
+          alpha: acc / DT,
+        }),
       );
       perf.trace('ui.clickMoveMarker', () => updateClickMoveMarker());
       perf.markInputVisible(performance.now());
@@ -3146,31 +3148,22 @@ async function startGame(
     renderer.camPitch = input.camPitch;
     renderer.camDist = input.camDist;
     syncGroundAimReticle();
+    // netFacing is applied server-side as soon as it arrives, so the model can
+    // show it without waiting for the predicted position's round trip.
+    rendererSyncOptions.renderFacingOverride = net.spectating === null ? onlineRenderFacing : null;
+    rendererSyncOptions.selfAlphaLead = adaptiveSelfAlphaLead(
+      onlineInputEchoMs,
+      onlineJitterMs,
+      net.snapInterval,
+    );
+    rendererSyncOptions.selfMotion = selfMotion;
     perf.time('renderer', () =>
-      perf.trace(
-        'renderer.sync',
-        () =>
-          renderer.sync(
-            alpha,
-            frameDt,
-            // netFacing (mouselook, keyboard turn, click-move, release latch)
-            // is applied server-side the moment it arrives, so the model may
-            // show it immediately; without it the click-move yaw would lag
-            // the predicted position by a round trip and corners would slide.
-            net.spectating === null ? onlineRenderFacing : null,
-            adaptiveSelfAlphaLead(onlineInputEchoMs, onlineJitterMs, net.snapInterval),
-            selfMotion,
-            pacing.intentionallyPaced,
-            pacing.targetFps,
-            previousFrameWorkMs,
-          ),
-        {
-          mode: 'online',
-          views: renderer.views.size,
-          alpha,
-          frameDtMs: frameDt * 1000,
-        },
-      ),
+      perf.trace('renderer.sync', () => renderer.sync(alpha, frameDt, rendererSyncOptions), {
+        mode: 'online',
+        views: renderer.views.size,
+        alpha,
+        frameDtMs: frameDt * 1000,
+      }),
     );
     perf.trace('ui.clickMoveMarker', () => updateClickMoveMarker());
     maybeShowImmobileNote(now);

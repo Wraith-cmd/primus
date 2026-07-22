@@ -50,7 +50,7 @@ describe('loading handoff', () => {
     expect(harness.clearedWatchdogs).toEqual([1]);
   });
 
-  it('uses the bounded watchdog after a gameplay frame throws before completion', () => {
+  it('completes startup through a second bounded watchdog after gameplay keeps throwing', () => {
     const harness = handoffHarness();
     const onHandoff = vi.fn();
     const onWatchdog = vi.fn();
@@ -68,6 +68,11 @@ describe('loading handoff', () => {
     expect(harness.animationCallbacks).toHaveLength(0);
     expect(onWatchdog).toHaveBeenCalledTimes(1);
     expect(onHandoff).not.toHaveBeenCalled();
+    expect(harness.watchdogDelays).toEqual([5_000, 5_000]);
+
+    harness.watchdogCallbacks.get(2)?.();
+
+    expect(onHandoff).toHaveBeenCalledTimes(1);
   });
 
   it('keeps the watchdog armed until the queued paint completes', () => {
@@ -84,12 +89,14 @@ describe('loading handoff', () => {
     harness.watchdogCallbacks.get(1)?.();
     expect(onWatchdog).toHaveBeenCalledTimes(1);
     expect(onHandoff).not.toHaveBeenCalled();
+    expect(harness.watchdogDelays).toEqual([5_000, 5_000]);
 
     harness.animationCallbacks.shift()?.();
     expect(onHandoff).toHaveBeenCalledTimes(1);
+    expect(harness.clearedWatchdogs).toEqual([2]);
   });
 
-  it('falls back even when animation callbacks never resume', () => {
+  it('finishes startup even when animation callbacks never resume', () => {
     const harness = handoffHarness();
     const onHandoff = vi.fn();
     const onWatchdog = vi.fn();
@@ -100,5 +107,9 @@ describe('loading handoff', () => {
     expect(onWatchdog).toHaveBeenCalledTimes(1);
     expect(onHandoff).not.toHaveBeenCalled();
     expect(harness.animationCallbacks).toHaveLength(0);
+
+    harness.watchdogCallbacks.get(2)?.();
+
+    expect(onHandoff).toHaveBeenCalledTimes(1);
   });
 });

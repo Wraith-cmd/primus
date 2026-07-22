@@ -1,10 +1,12 @@
 export const LOADING_HANDOFF_WATCHDOG_MS = 5_000;
+export const LOADING_HANDOFF_COMPLETION_WATCHDOG_MS = 5_000;
 
 export interface LoadingHandoffOptions<TimeoutHandle> {
   requestAnimationFrame: (callback: () => void) => void;
   setTimeout: (callback: () => void, delayMs: number) => TimeoutHandle;
   clearTimeout: (handle: TimeoutHandle) => void;
   timeoutMs?: number;
+  completionTimeoutMs?: number;
 }
 
 export interface LoadingHandoff {
@@ -47,6 +49,10 @@ export function createLoadingHandoff<TimeoutHandle>(
     }
     const callback = onWatchdog;
     onWatchdog = null;
+    watchdogHandle = options.setTimeout(
+      completeHandoff,
+      options.completionTimeoutMs ?? LOADING_HANDOFF_COMPLETION_WATCHDOG_MS,
+    );
     callback();
   };
 

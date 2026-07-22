@@ -10,8 +10,10 @@ input, simulation, rendering, and HUD work on paced-out callbacks.
 The automatic policy applies only in the Capacitor native runtime (`NATIVE_APP`). Interface
 Mode controls input and layout, not hardware policy, so choosing Touch on a desktop or
 2-in-1 display does not enable pacing. The Electron desktop shell is also excluded. The
-ceiling comes from `GFX.budget.targetFps`, so graphics budgets remain the single source
-of the configured maximum.
+ceiling is the fixed `MOBILE_FRAME_RATE_CEILING_FPS` policy in `frame_pacer.ts`. It is
+deliberately independent of graphics-tier budgets so a future low-tier render target cannot
+quietly reduce gameplay responsiveness. A sweep from 30 Hz through 480 Hz pins every paced
+target above the 30 fps fairness floor.
 
 The pacer estimates the browser animation-callback rate, then selects the highest whole
 panel divisor that does not exceed the configured ceiling. Fresh pacing engages at 1.45
@@ -37,7 +39,9 @@ This avoids both halving mid-refresh panels and the uneven callback pattern prod
 attempting 60 fps on a 90 Hz source.
 The decision core carries sub-frame timing remainder so callback jitter does not produce
 long-term cadence drift. A suspended-tab-sized gap clears timing remainder, preserves
-the trusted panel rate, and renders the first resumed callback immediately.
+the trusted panel rate, and renders the first resumed callback immediately. Later resumed
+callbacks keep using the trusted cadence while fresh samples revalidate the panel, avoiding
+an eight-frame full-rate burst after an ordinary hitch or garbage-collection pause.
 
 Before the game loop starts in the native runtime, the loading screen stays up for a short
 run of lightweight animation callbacks. That trusted sample prevents expensive startup frames
@@ -53,8 +57,10 @@ panel interval promotes the cap as the new source rate. Interrupted or expensive
 reset that evidence so workload pressure cannot be mistaken for a panel change.
 The loading handoff waits for a completed gameplay frame and one following paint callback.
 Its five-second watchdog is armed before native refresh calibration begins. The normal path
-keeps the paint boundary. If animation callbacks stop, the watchdog hides the loading overlay
-directly while paint-dependent startup clocks remain paused until a gameplay frame completes.
+keeps the paint boundary. If animation callbacks stop, the first watchdog hides the loading
+overlay, then arms a second bounded watchdog. A completed frame can still win during that
+grace period; otherwise the second watchdog completes startup exactly once so input, telemetry,
+icon prewarming, the camera prompt, and the debug game handle cannot remain uninitialized.
 
 The frame-loop gate runs before `last` is advanced. Skipped callbacks therefore do not
 sample input or advance the fixed-step accumulator. The next executed frame receives the
@@ -63,7 +69,8 @@ owner of simulation catch-up.
 
 ## Render budget contract
 
-`Renderer.sync()` passes the pacer's `intentionallyPaced` signal to
+`Renderer.sync()` receives the pacing fields through a typed `framePacing` options member,
+instead of positional booleans and numeric fillers, and passes `intentionallyPaced` to
 `RenderBudgetGovernor`. The governor preserves callback cadence for external-cap
 diagnostics, but uses the previously completed game frame's measured main-thread work
 as frame pressure while pacing is intentional. The pacer's target also scales drop,
@@ -83,9 +90,10 @@ external-cap path.
 ## Verification
 
 `tests/frame_pacer.test.ts` pins divisor selection and exact callback spacing from noisy
-90 Hz through 360 Hz, engagement hysteresis, low-power 30 fps behavior, remainder carry
-under jitter, enabled and disabled behavior, suspend/resume recalibration, and the ambiguous
-boundary between missed panel refreshes and a real browser callback cap.
+90 Hz through 360 Hz, the 30 fps policy floor through 480 Hz, engagement hysteresis,
+low-power 30 fps behavior, remainder carry under jitter, static enabled and disabled modes,
+suspend/resume pacing and recalibration, and the ambiguous boundary between missed panel
+refreshes and a real browser callback cap.
 
 `tests/loading_handoff.test.ts` executes the loading handoff with injected animation and
 watchdog schedulers, including a gameplay-frame throw and animation callbacks that never

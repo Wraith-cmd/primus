@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   FRAME_PACER_CALIBRATION_CALLBACKS,
   FramePacer,
+  MOBILE_FRAME_RATE_CEILING_FPS,
   pacedFrameRateFor,
 } from '../src/game/frame_pacer';
 
@@ -115,6 +116,14 @@ describe('mobile frame pacer', () => {
     expect(pacedFrameRateFor(83.9, 60, true)).toBeCloseTo(83.9);
   });
 
+  it('keeps the configured mobile pacing policy above the 30 fps fairness floor', () => {
+    for (let refreshFps = 30; refreshFps <= 480; refreshFps += 0.1) {
+      expect(pacedFrameRateFor(refreshFps, MOBILE_FRAME_RATE_CEILING_FPS)).toBeGreaterThanOrEqual(
+        30,
+      );
+    }
+  });
+
   it('keeps executed frames on exact whole-panel-divisor spacing', () => {
     for (const [sourceFps, expectedGap] of [
       [90, 2],
@@ -149,24 +158,6 @@ describe('mobile frame pacer', () => {
 
     expect(result.rendered).toBe(240);
     expect(pacer.snapshot().intentionallyPaced).toBe(false);
-  });
-
-  it('follows live interface-mode changes and recalibrates on each transition', () => {
-    const pacer = new FramePacer({ enabled: false, maxFps: 60 });
-    const desktop = stepAtRate(pacer, 120, 30);
-
-    pacer.setEnabled(true);
-    const touchWarmup = stepAtRate(pacer, 120, 30, desktop.nowMs);
-    const touch = stepAtRate(pacer, 120, 120, touchWarmup.nowMs);
-    expect(touch.rendered).toBeGreaterThanOrEqual(59);
-    expect(touch.rendered).toBeLessThanOrEqual(61);
-    expect(pacer.snapshot().intentionallyPaced).toBe(true);
-
-    pacer.setEnabled(false);
-    const desktopAgain = stepAtRate(pacer, 120, 30, touch.nowMs);
-    expect(desktopAgain.rendered).toBe(30);
-    expect(pacer.snapshot().intentionallyPaced).toBe(false);
-    expect(pacer.snapshot().estimatedRefreshFps).toBeCloseTo(120, 0);
   });
 
   it('decimates 120 Hz callbacks to a stable 60 fps cadence', () => {
@@ -395,31 +386,6 @@ describe('mobile frame pacer', () => {
     expect(new Set(gaps)).toEqual(new Set([3]));
   });
 
-  it.each([
-    { interruption: 'delayed callback', gapMs: 75 },
-    { interruption: 'suspended callback', gapMs: 1_000 },
-  ])('retries first-time touch calibration after a $interruption', ({ gapMs }) => {
-    const pacer = new FramePacer({ enabled: false, maxFps: 60 });
-    const desktop = stepAtRate(pacer, 120, 20);
-    pacer.setEnabled(true);
-
-    let nowMs = desktop.nowMs + 1000 / 120;
-    pacer.step(nowMs);
-    nowMs += gapMs;
-    const interrupted = pacer.step(nowMs);
-    expect(interrupted.shouldRun).toBe(true);
-
-    const calibration = stepAtRate(pacer, 120, 40, nowMs);
-    const trusted = pacer.snapshot();
-    expect(trusted.estimatedRefreshFps).toBeCloseTo(120, 0);
-    expect(trusted.targetFps).toBeCloseTo(60, 0);
-    expect(trusted.intentionallyPaced).toBe(true);
-
-    const workloadLimited = stepWithMissedVsyncWork(pacer, 120, 600, calibration.nowMs, 4);
-    expect(600 - workloadLimited.rendered).toBeLessThanOrEqual(10);
-    expect(workloadLimited.maxConsecutiveSkips).toBeLessThanOrEqual(1);
-  });
-
   it('carries timing remainder instead of drifting under callback jitter', () => {
     const pacer = new FramePacer({ enabled: true, maxFps: 60 });
     const jitterMs = [7.7, 8.8, 8.1, 8.6, 8.2, 8.5];
@@ -607,7 +573,7 @@ describe('mobile frame pacer', () => {
     expect(snapshot.intentionallyPaced).toBe(false);
   });
 
-  it('revalidates fresh callback samples after a panel change during suspension', () => {
+  it('revalidates fresh callback samples without an unpaced burst after suspension', () => {
     const pacer = new FramePacer({ enabled: true, maxFps: 60 });
     const calibratedAt = observeAtRate(pacer, 90);
     const sourceSteady = stepAtRate(pacer, 90, 60, calibratedAt);
@@ -615,7 +581,7 @@ describe('mobile frame pacer', () => {
 
     expect(pacer.step(resumedAt).shouldRun).toBe(true);
     const freshSamples = stepAtRate(pacer, 60, 7, resumedAt);
-    expect(freshSamples.rendered).toBe(7);
+    expect(freshSamples.rendered).toBe(5);
 
     const transition = stepAtRate(pacer, 60, 90, freshSamples.nowMs);
     const steady = stepAtRate(pacer, 60, 60, transition.nowMs);
@@ -638,5 +604,8 @@ describe('mobile frame pacer', () => {
     expect(resumed.shouldRun).toBe(true);
     expect(resumed.intentionallyPaced).toBe(true);
     expect(resumed.estimatedRefreshFps).toBeCloseTo(120, 0);
+
+    const resumedCallbacks = stepAtRate(pacer, 120, 8, warmup.nowMs + 1000);
+    expect(resumedCallbacks.rendered).toBe(4);
   });
 });

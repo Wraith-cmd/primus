@@ -1,3 +1,5 @@
+export const MOBILE_FRAME_RATE_CEILING_FPS = 60;
+
 export interface FramePacerOptions {
   enabled: boolean;
   maxFps: number;
@@ -63,7 +65,7 @@ function callbackRateMatchesTarget(refreshFps: number, targetFps: number): boole
 }
 
 export class FramePacer {
-  private enabled: boolean;
+  private readonly enabled: boolean;
   private readonly maxFps: number;
   private lastCallbackMs: number | null = null;
   private remainderMs = 0;
@@ -92,23 +94,6 @@ export class FramePacer {
       targetFps: this.targetFps,
       intentionallyPaced: this.intentionallyPaced,
     };
-  }
-
-  setEnabled(enabled: boolean): void {
-    if (this.enabled === enabled) return;
-    this.enabled = enabled;
-    this.remainderMs = 0;
-    this.calibrationSourceRefreshFps = 0;
-    this.workloadLimitedCallbackFps = 0;
-    this.workloadHeadroomSamples = 0;
-    this.refreshMismatchSamples = 0;
-    if (enabled && this.trustedRefreshFps === 0) {
-      this.beginCalibration();
-    } else {
-      this.calibrationGate = false;
-      this.collectCalibrationSample = false;
-    }
-    this.updateRefreshEstimate();
   }
 
   observe(nowMs: number): void {
@@ -144,6 +129,9 @@ export class FramePacer {
     }
 
     if (this.refreshIntervalsMs.length < REFRESH_CALIBRATION_SAMPLES) {
+      if (this.trustedRefreshFps > 0) {
+        return this.stepPacing(callbackIntervalMs);
+      }
       return this.decision(true);
     }
     const measuredRefreshFps = this.measuredRefreshFps();
@@ -181,6 +169,10 @@ export class FramePacer {
       return this.decision(true);
     }
 
+    return this.stepPacing(callbackIntervalMs);
+  }
+
+  private stepPacing(callbackIntervalMs: number): FramePacerDecision {
     const targetIntervalMs = 1000 / this.targetFps;
     this.remainderMs += callbackIntervalMs;
     if (this.remainderMs + EARLY_FRAME_TOLERANCE_MS < targetIntervalMs) {

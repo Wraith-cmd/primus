@@ -18,7 +18,7 @@ describe('main-loop frame pacing contract', () => {
     expect(frameStart).toBeGreaterThan(-1);
     expect(frameEnd).toBeGreaterThan(frameStart);
     expect(frameLoop).toMatch(
-      /const pacing = framePacer\.step\(now, previousFrameWorkMs\);\s*if \(!pacing\.shouldRun\) return;\s*const frameWorkStartMs = performance\.now\(\);\s*let frameDt = \(now - last\) \/ 1000;\s*last = now;/,
+      /const pacing = framePacer\.step\(now, previousFrameWorkMs\);\s*if \(!pacing\.shouldRun\) return;\s*framePacingInfo\.intentional = pacing\.intentionallyPaced;\s*framePacingInfo\.targetFps = pacing\.targetFps;\s*framePacingInfo\.previousWorkMs = previousFrameWorkMs;\s*const frameWorkStartMs = performance\.now\(\);\s*let frameDt = \(now - last\) \/ 1000;\s*last = now;/,
     );
     expect(frameLoop.indexOf('if (!pacing.shouldRun) return;')).toBeLessThan(
       frameLoop.indexOf("perf.trace('input.updateTouchLook'"),
@@ -29,8 +29,11 @@ describe('main-loop frame pacing contract', () => {
   });
 
   it('forwards pacing and previous full-frame work through both render paths', () => {
+    expect(frameLoop).toMatch(
+      /framePacingInfo\.intentional = pacing\.intentionallyPaced;\s*framePacingInfo\.targetFps = pacing\.targetFps;\s*framePacingInfo\.previousWorkMs = previousFrameWorkMs;/,
+    );
     expect(
-      frameLoop.match(/pacing\.intentionallyPaced,\s*pacing\.targetFps,\s*previousFrameWorkMs,/g),
+      frameLoop.match(/renderer\.sync\((?:acc \/ DT|alpha), frameDt, rendererSyncOptions\)/g),
     ).toHaveLength(2);
     expect(
       frameLoop.match(
@@ -40,7 +43,7 @@ describe('main-loop frame pacing contract', () => {
   });
 
   it('forwards pacing and full-frame work through Renderer into the governor', () => {
-    const syncStart = rendererTs.indexOf('  sync(\n');
+    const syncStart = rendererTs.indexOf('  sync(');
     const syncEnd = rendererTs.indexOf('    this.viewportPollTimer += dt;', syncStart);
     const syncBlock = rendererTs.slice(syncStart, syncEnd);
     const adaptiveStart = rendererTs.indexOf('  private updateAdaptiveResolution(');
@@ -51,6 +54,9 @@ describe('main-loop frame pacing contract', () => {
     expect(syncEnd).toBeGreaterThan(syncStart);
     expect(adaptiveStart).toBeGreaterThan(-1);
     expect(adaptiveEnd).toBeGreaterThan(adaptiveStart);
+    expect(syncBlock).toMatch(
+      /const framePacing = options\?\.framePacing;[\s\S]*?const previousFrameWorkMs = framePacing\?\.previousWorkMs \?\? 0;/,
+    );
     expect(syncBlock).toMatch(
       /this\.updateAdaptiveResolution\(\s*dt,\s*intentionalFramePacing,\s*pacedTargetFps,\s*previousFrameWorkMs,?\s*\);/,
     );
@@ -95,7 +101,7 @@ describe('main-loop frame pacing contract', () => {
 
   it('scopes automatic pacing to the native runtime, not interface mode', () => {
     expect(mainTs).toMatch(
-      /const framePacer = new FramePacer\(\{\s*enabled: NATIVE_APP,\s*maxFps: GFX\.budget\.targetFps,/,
+      /const framePacer = new FramePacer\(\{\s*enabled: NATIVE_APP,\s*maxFps: MOBILE_FRAME_RATE_CEILING_FPS,/,
     );
     expect(frameLoop).not.toContain('framePacer.setEnabled(');
   });

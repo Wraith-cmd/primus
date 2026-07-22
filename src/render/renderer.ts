@@ -602,6 +602,19 @@ function selfSnapshotAlpha(alpha: number, lead: number): number {
   return Math.min(1.25, alpha + Math.max(0, lead));
 }
 
+export interface FramePacingInfo {
+  intentional: boolean;
+  targetFps: number;
+  previousWorkMs: number;
+}
+
+export interface RendererSyncOptions {
+  renderFacingOverride?: number | null;
+  selfAlphaLead?: number;
+  selfMotion?: SelfMotionFrame | null;
+  framePacing?: FramePacingInfo;
+}
+
 export interface EntityView {
   group: THREE.Group;
   /** rigged glTF visual for characters; null for object views (doors/crates) */
@@ -4737,16 +4750,14 @@ export class Renderer {
     this.targetCone = { group, pos, localXZ: fan.localXZ, worldXYZ, ringPos, ringXZ, ringWorldXYZ };
   }
 
-  sync(
-    alpha: number,
-    dt: number,
-    renderFacingOverride: number | null,
-    selfAlphaLead = 0,
-    selfMotion: SelfMotionFrame | null = null,
-    intentionalFramePacing = false,
-    pacedTargetFps = GFX.budget.targetFps,
-    previousFrameWorkMs = 0,
-  ): void {
+  sync(alpha: number, dt: number, options: RendererSyncOptions | null = null): void {
+    const renderFacingOverride = options?.renderFacingOverride ?? null;
+    const selfAlphaLead = options?.selfAlphaLead ?? 0;
+    const selfMotion = options?.selfMotion ?? null;
+    const framePacing = options?.framePacing;
+    const intentionalFramePacing = framePacing?.intentional ?? false;
+    const pacedTargetFps = framePacing?.targetFps ?? GFX.budget.targetFps;
+    const previousFrameWorkMs = framePacing?.previousWorkMs ?? 0;
     const totalStart = performance.now();
     let phaseStart = totalStart;
     const framePhaseMs = emptyFramePhaseMs();

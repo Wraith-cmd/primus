@@ -232,6 +232,9 @@ const baseEnTable = {
   // Cauterize's 5 min lockout debuff (combat/fire_mage.ts); survives death.
   'aura.cauterizeFatigue': 'Cauterize Fatigue',
   'mechanic.warStomp': 'Shuddering Stomp',
+  // Heroic warrior-mob anti-kite charge (MobTemplate.charge, src/sim/mob/charge.ts):
+  // the stun debuff on the player and the {mechanic} in the "unleashes" line.
+  'mechanic.charge': 'Charge',
   'mechanic.boneCarapace': 'Bone Carapace',
   'mechanic.bansheesWail': 'Keening Wail',
   'mechanic.crushingSweep': 'Crushing Sweep',
@@ -5861,6 +5864,7 @@ const AURA_NAME_KEY: Record<string, SimMessageKey> = {
   'Caustic Spores': 'aura.causticSpores',
   // Boss / mob mechanics (the {mechanic} in "{mob} unleashes {mechanic}!").
   'Shuddering Stomp': 'mechanic.warStomp',
+  Charge: 'mechanic.charge',
   'Bone Carapace': 'mechanic.boneCarapace',
   'Keening Wail': 'mechanic.bansheesWail',
   'Crushing Sweep': 'mechanic.crushingSweep',

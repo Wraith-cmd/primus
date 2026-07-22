@@ -130,6 +130,14 @@ export const TEMPLE_DUNGEON_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 20,
     moveSpeed: 6.5,
     aggroRadius: 12,
+    charge: {
+      minRange: 5,
+      maxRange: 30,
+      cooldown: 12,
+      stunDuration: 0.5,
+      name: 'Charge',
+      school: 'physical',
+    },
     loot: [
       { copper: 200, chance: 1 },
       { itemId: 'bone_fragments', chance: 0.6 },
@@ -199,6 +207,14 @@ export const TEMPLE_DUNGEON_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 22,
     moveSpeed: 6.5,
     aggroRadius: 12,
+    charge: {
+      minRange: 5,
+      maxRange: 30,
+      cooldown: 12,
+      stunDuration: 0.5,
+      name: 'Charge',
+      school: 'physical',
+    },
     loot: [
       { copper: 260, chance: 1 },
       { itemId: 'pale_pearl', chance: 0.6 },

@@ -992,6 +992,10 @@ describe('S3: every sim.ts emit is recognized (drift guard)', () => {
     // Bank system: the pooled bank deposit/withdraw/buy-slots command bodies
     // emit the quest-item/full/afford/max-slots refusals + the purchase notice.
     fs.readFileSync(path.resolve(process.cwd(), 'src/sim/bank.ts'), 'utf8'),
+    // Heroic anti-kite mob charge: the "unleashes" announce line (the mechanic
+    // name doubles as the mob_charge_stun debuff, localized via AURA_NAME_KEY's
+    // 'Charge' row like the other boss mechanics).
+    fs.readFileSync(path.resolve(process.cwd(), 'src/sim/mob/charge.ts'), 'utf8'),
     socialSrc,
   ].join('\n');
   // Hardened S3: also scan the authoritative server's player-facing emits. The

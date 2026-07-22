@@ -20,6 +20,14 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 18,
     moveSpeed: 6.5,
     aggroRadius: 12,
+    charge: {
+      minRange: 5,
+      maxRange: 30,
+      cooldown: 12,
+      stunDuration: 0.5,
+      name: 'Charge',
+      school: 'physical',
+    },
     loot: [
       { copper: 90, chance: 1 },
       { itemId: 'bone_fragments', chance: 0.8 },
@@ -86,6 +94,14 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 22,
     moveSpeed: 7,
     aggroRadius: 14,
+    charge: {
+      minRange: 5,
+      maxRange: 30,
+      cooldown: 12,
+      stunDuration: 0.5,
+      name: 'Charge',
+      school: 'physical',
+    },
     loot: [
       { copper: 400, chance: 1 },
       { itemId: 'quilted_trousers', chance: 0.4 },
@@ -141,6 +157,14 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 18,
     moveSpeed: 6.5,
     aggroRadius: 12,
+    charge: {
+      minRange: 5,
+      maxRange: 30,
+      cooldown: 12,
+      stunDuration: 0.5,
+      name: 'Charge',
+      school: 'physical',
+    },
     loot: [
       { copper: 150, chance: 1 },
       { itemId: 'bone_fragments', chance: 0.7 },
@@ -188,6 +212,14 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 10,
     moveSpeed: 7.5,
     aggroRadius: 12,
+    charge: {
+      minRange: 5,
+      maxRange: 30,
+      cooldown: 12,
+      stunDuration: 0.5,
+      name: 'Charge',
+      school: 'physical',
+    },
     loot: [], // summoned add — nothing to loot
     scale: 0.95,
     color: 0x6fae9e,
@@ -207,6 +239,14 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 24,
     moveSpeed: 7,
     aggroRadius: 14,
+    charge: {
+      minRange: 5,
+      maxRange: 30,
+      cooldown: 12,
+      stunDuration: 0.5,
+      name: 'Charge',
+      school: 'physical',
+    },
     loot: [
       { copper: 800, chance: 1 },
       { itemId: 'trollhide_leggings', chance: 0.5, rollGroup: 'olen_guaranteed_uncommon' },
@@ -273,6 +313,14 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 22,
     moveSpeed: 6.5,
     aggroRadius: 12,
+    charge: {
+      minRange: 5,
+      maxRange: 30,
+      cooldown: 12,
+      stunDuration: 0.5,
+      name: 'Charge',
+      school: 'physical',
+    },
     loot: [
       { copper: 300, chance: 1 },
       { itemId: 'bone_fragments', chance: 0.6 },
@@ -321,6 +369,14 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     armorPerLevel: 12,
     moveSpeed: 7,
     aggroRadius: 12,
+    charge: {
+      minRange: 5,
+      maxRange: 30,
+      cooldown: 12,
+      stunDuration: 0.5,
+      name: 'Charge',
+      school: 'physical',
+    },
     loot: [], // summoned add — nothing to loot
     scale: 1.0,
     color: 0xc8cfc8,

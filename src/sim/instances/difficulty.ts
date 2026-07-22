@@ -116,4 +116,8 @@ export function applyDungeonMobTuning(
     mob.ccImmune = true;
     mob.slowImmune = true;
   }
+  // Heroic-only anti-kite activation: a template that carries `charge` only
+  // actually charges when its spawn is stamped here, so normal spawns of the
+  // same template never charge (mob/charge.ts gates on the entity flag).
+  if (MOBS[mob.templateId]?.charge) mob.chargeEnabled = true;
 }

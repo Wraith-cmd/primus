@@ -10,7 +10,10 @@
 // Necromancer Velkhar, Korzul's sanctum, and Thunzharr's stormlings).
 
 import { describe, expect, it } from 'vitest';
-import { HEROIC_DUNGEON_TUNING } from '../src/sim/content/dungeon_difficulty';
+import {
+  HEROIC_DUNGEON_TUNING,
+  NORMAL_DUNGEON_TUNING,
+} from '../src/sim/content/dungeon_difficulty';
 import { MOBS } from '../src/sim/data';
 import { enterDungeon } from '../src/sim/instances/dungeons';
 import { Sim } from '../src/sim/sim';
@@ -138,16 +141,27 @@ describe('heroic boss adds swing at addDamageMultiplier', () => {
     expect(tuning.addDamageMultiplier).toBeLessThan(tuning.damageMultiplier);
   });
 
-  it('normal-difficulty adds are untouched by the heroic add multiplier', () => {
+  it('normal-difficulty adds use the normal per-mob retune, not the heroic add multiplier', () => {
     const sim = makeSim(321);
     const pid = sim.addPlayer('warrior', 'Normie');
     enterDungeon(sim.ctx, 'gravewyrm_sanctum', pid);
     const boss = velkharIn(sim, claimedSanctum(sim, 'normal'));
     const adds = fireFirstWave(sim, boss, pid);
     expect(adds).toHaveLength(3);
+
+    // Normal Sanctum carries its own per-mob retune (economy fix, see
+    // NORMAL_DUNGEON_TUNING): bonewalkers swing at 23x base and keep their
+    // rolled level, distinct from the heroic addDamageMultiplier path.
+    const normalMult =
+      NORMAL_DUNGEON_TUNING.gravewyrm_sanctum.damageMultiplierByMob.raised_bonewalker;
+    expect(normalMult).toBe(23);
+    const tmpl = MOBS.raised_bonewalker;
+    const addDmg = (tmpl.dmgBase + tmpl.dmgPerLevel * (tmpl.minLevel - 1)) * normalMult;
     for (const add of adds) {
-      expect(add.level).toBe(MOBS.raised_bonewalker.minLevel);
-      expect(add.mechanicDamageMult).toBeUndefined();
+      expect(add.level).toBe(tmpl.minLevel);
+      expect(add.weapon.min).toBe(Math.round(addDmg * 0.8));
+      expect(add.weapon.max).toBe(Math.round(addDmg * 1.25));
+      expect(add.mechanicDamageMult).toBe(normalMult);
     }
   });
 });

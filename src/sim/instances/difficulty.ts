@@ -1,4 +1,4 @@
-import { HEROIC_DUNGEON_TUNING } from '../content/dungeon_difficulty';
+import { HEROIC_DUNGEON_TUNING, NORMAL_DUNGEON_TUNING } from '../content/dungeon_difficulty';
 import { MOBS } from '../data';
 import type { DungeonDifficulty, Entity, MobTemplate } from '../types';
 
@@ -28,7 +28,20 @@ export function mobTemplateForDungeonDifficulty(
   difficulty: DungeonDifficulty,
   role?: HeroicSpawnRole,
 ): MobTemplate {
-  if (difficulty !== 'heroic') return template;
+  if (difficulty !== 'heroic') {
+    // Normal retunes are per mob (see NORMAL_DUNGEON_TUNING); a dungeon with
+    // no record, or a mob with no factor, spawns from the raw base template.
+    const normal = NORMAL_DUNGEON_TUNING[dungeonId];
+    if (!normal) return template;
+    const dmgMult = normal.damageMultiplierByMob[template.id] ?? 1;
+    return {
+      ...template,
+      hpBase: template.hpBase * normal.healthMultiplier,
+      hpPerLevel: template.hpPerLevel * normal.healthMultiplier,
+      dmgBase: template.dmgBase * dmgMult,
+      dmgPerLevel: template.dmgPerLevel * dmgMult,
+    };
+  }
   const tuning = HEROIC_DUNGEON_TUNING[dungeonId];
   if (!tuning) return template;
   const dmgMult = role?.summonedAdd ? tuning.addDamageMultiplier : tuning.damageMultiplier;
@@ -57,19 +70,32 @@ export function mobLevelForDungeonDifficulty(
 // Boss/support mechanic numbers (aoePulse, bigCast, stomp damage; mendAlly,
 // wardAllies, stoneskin amounts) are read from the base MOBS table at FIRE
 // time, not from the spawn-time transformed template, so the template
-// multipliers above cannot reach them. Instead a heroic spawn carries these
+// multipliers above cannot reach them. Instead a tuned spawn (heroic, or a
+// normal dungeon with a NORMAL_DUNGEON_TUNING record) carries these
 // per-entity multipliers, applied at each fire site AFTER the rng draw (the
-// draw count and order stay identical to normal, which the parity gate pins).
-// Boss-flagged mobs additionally become CC- and snare-immune on heroic (the
-// entity-level twins of the template ccImmune/slowImmune flags, which are
-// also base-table reads): heroic bosses can be neither controlled nor kited.
-export function applyHeroicMobTuning(
+// draw count and order stay identical to an untuned spawn, which the parity
+// gate pins). Boss-flagged mobs additionally become CC- and snare-immune on
+// heroic (the entity-level twins of the template ccImmune/slowImmune flags,
+// which are also base-table reads): heroic bosses can be neither controlled
+// nor kited.
+export function applyDungeonMobTuning(
   mob: Entity,
   dungeonId: string,
   difficulty: DungeonDifficulty,
   role?: HeroicSpawnRole,
 ): void {
-  if (difficulty !== 'heroic') return;
+  if (difficulty !== 'heroic') {
+    // Normal retunes: the mob's own melee factor drives its mechanics too, so
+    // an aoePulse/stomp keeps pace with the swing it lands between. Heals from
+    // support mobs keep pace with the doubled health pool.
+    const normal = NORMAL_DUNGEON_TUNING[dungeonId];
+    const dmgMult = normal?.damageMultiplierByMob[mob.templateId];
+    if (normal && dmgMult !== undefined) {
+      mob.mechanicDamageMult = dmgMult;
+      mob.mechanicHealMult = normal.healthMultiplier;
+    }
+    return;
+  }
   const tuning = HEROIC_DUNGEON_TUNING[dungeonId];
   if (!tuning) return;
   mob.mechanicDamageMult = role?.summonedAdd ? tuning.addDamageMultiplier : tuning.damageMultiplier;

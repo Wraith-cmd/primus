@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
 import { HEROIC_DUNGEON_TUNING, HEROIC_MARK_ITEM_ID } from '../src/sim/content/dungeon_difficulty';
 import { ITEMS, MOBS } from '../src/sim/data';
 import {
-  applyHeroicMobTuning,
+  applyDungeonMobTuning,
   claimDifficultyForDungeon,
   HEROIC_DUNGEON_IDS,
   mobLevelForDungeonDifficulty,
@@ -177,41 +177,41 @@ describe('mobLevelForDungeonDifficulty', () => {
   });
 });
 
-describe('applyHeroicMobTuning', () => {
+describe('applyDungeonMobTuning', () => {
   it('stamps the fire-time mechanic multipliers only for heroic spawns', () => {
     const mob = { mechanicDamageMult: undefined, mechanicHealMult: undefined } as Entity;
-    applyHeroicMobTuning(mob, 'sunken_bastion', 'heroic');
+    applyDungeonMobTuning(mob, 'sunken_bastion', 'heroic');
     expect(mob.mechanicDamageMult).toBe(HEROIC_DUNGEON_TUNING.sunken_bastion.damageMultiplier);
     expect(mob.mechanicHealMult).toBe(HEROIC_DUNGEON_TUNING.sunken_bastion.healthMultiplier);
 
     // A boss-summoned add stamps the softer add multiplier on its mechanics too.
     const summoned = { mechanicDamageMult: undefined, mechanicHealMult: undefined } as Entity;
-    applyHeroicMobTuning(summoned, 'sunken_bastion', 'heroic', { summonedAdd: true });
+    applyDungeonMobTuning(summoned, 'sunken_bastion', 'heroic', { summonedAdd: true });
     expect(summoned.mechanicDamageMult).toBe(
       HEROIC_DUNGEON_TUNING.sunken_bastion.addDamageMultiplier,
     );
     expect(summoned.mechanicHealMult).toBe(HEROIC_DUNGEON_TUNING.sunken_bastion.healthMultiplier);
 
     const normalMob = { mechanicDamageMult: undefined, mechanicHealMult: undefined } as Entity;
-    applyHeroicMobTuning(normalMob, 'sunken_bastion', 'normal');
+    applyDungeonMobTuning(normalMob, 'sunken_bastion', 'normal');
     expect(normalMob.mechanicDamageMult).toBeUndefined();
-    applyHeroicMobTuning(normalMob, 'no_such_dungeon', 'heroic');
+    applyDungeonMobTuning(normalMob, 'no_such_dungeon', 'heroic');
     expect(normalMob.mechanicDamageMult).toBeUndefined();
   });
 
   it('grants CC and snare immunity to boss-flagged heroic spawns only', () => {
     const boss = { templateId: 'morthen' } as Entity;
-    applyHeroicMobTuning(boss, 'hollow_crypt', 'heroic');
+    applyDungeonMobTuning(boss, 'hollow_crypt', 'heroic');
     expect(boss.ccImmune).toBe(true);
     expect(boss.slowImmune).toBe(true);
 
     const trash = { templateId: 'crypt_shambler' } as Entity;
-    applyHeroicMobTuning(trash, 'hollow_crypt', 'heroic');
+    applyDungeonMobTuning(trash, 'hollow_crypt', 'heroic');
     expect(trash.ccImmune).toBeUndefined();
     expect(trash.slowImmune).toBeUndefined();
 
     const normalBoss = { templateId: 'morthen' } as Entity;
-    applyHeroicMobTuning(normalBoss, 'hollow_crypt', 'normal');
+    applyDungeonMobTuning(normalBoss, 'hollow_crypt', 'normal');
     expect(normalBoss.ccImmune).toBeUndefined();
     expect(normalBoss.slowImmune).toBeUndefined();
   });

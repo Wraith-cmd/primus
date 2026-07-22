@@ -389,7 +389,7 @@ export type { MailSave } from './mail/post_office';
 export type { MarketSave } from './market';
 
 import {
-  applyHeroicMobTuning,
+  applyDungeonMobTuning,
   mobLevelForDungeonDifficulty,
   mobTemplateForDungeonDifficulty,
 } from './instances/difficulty';
@@ -6574,7 +6574,7 @@ export class Sim {
       );
       const level = mobLevelForDungeonDifficulty(inst?.dungeonId ?? '', difficulty, rolledLevel);
       const add = createMob(this.nextId++, addTemplate, level, pos);
-      applyHeroicMobTuning(add, inst?.dungeonId ?? '', difficulty, { summonedAdd: true });
+      applyDungeonMobTuning(add, inst?.dungeonId ?? '', difficulty, { summonedAdd: true });
       // The add is anchored where it ERUPTED (createMob already set spawnPos to the
       // spawn point beside the boss): a boss kited far from HIS original spawn must
       // not hatch adds that are instantly past their own leash and evade home without

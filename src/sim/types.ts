@@ -2869,7 +2869,7 @@ export interface Entity {
   firedSummons: number; // summonAdds thresholds already triggered
   summonedIds: number[]; // live adds this boss summoned; despawned on reset
   enraged: boolean; // enrage mechanic active
-  // Heroic-instance mechanic scaling (instances/difficulty.ts applyHeroicMobTuning).
+  // Heroic-instance mechanic scaling (instances/difficulty.ts applyDungeonMobTuning).
   // Mechanic numbers (aoePulse/bigCast/stomp damage; mendAlly/wardAllies/stoneskin
   // amounts) are read from the base MOBS table at fire time, so the fire sites
   // multiply by these AFTER the rng draw. undefined = 1 (normal difficulty).
@@ -2878,7 +2878,7 @@ export interface Entity {
   // Entity-level CC/snare immunity, the per-spawn twin of the MobTemplate
   // ccImmune/slowImmune flags (which are read from the base MOBS table, so a
   // spawn-time template transform cannot grant them). Heroic instances set
-  // both on boss-flagged mobs (applyHeroicMobTuning); the applyAura gates and
+  // both on boss-flagged mobs (applyDungeonMobTuning); the applyAura gates and
   // the polymorph cast gate check template OR entity.
   ccImmune?: boolean;
   slowImmune?: boolean;

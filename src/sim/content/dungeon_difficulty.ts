@@ -51,6 +51,47 @@ export interface HeroicDungeonTuning {
 // to tidy multipliers (drowned_temple 5.7 to 4.3 is a 24.6% cut, hollow_crypt
 // 5.1 to 2.55 is exactly half); the round numbers are intentional, do not
 // "fix" one back to the exact fraction.
+// NORMAL-difficulty retunes. Normal spawns default to the raw base templates;
+// a dungeon appears here only when its normal mode needs its own calibration.
+// Unlike the heroic table this one is PER MOB, because the floor-style targets
+// below need different factors for trash, non-elite adds (no 1.5x elite swing
+// multiplier), and bosses. The per-mob factor also drives mechanicDamageMult,
+// so a boss's aoePulse/stomp scale with its own melee (../instances/difficulty.ts).
+export interface NormalDungeonTuning {
+  id: string;
+  difficulty: Extract<DungeonDifficulty, 'normal'>;
+  healthMultiplier: number;
+  damageMultiplierByMob: Record<string, number>;
+}
+
+// Economy retune (v0.29): soloable normal Sanctum runs were printing up to 6
+// gold per clear. Calibration target: every mob's health DOUBLES, and the
+// minimum non-crit swing lands at least 300 (trash) / 600 (bosses) on the
+// maximum-mitigation reference warrior: level-20 prot in the max-armor kit
+// (full heroic plate + shield, prot mastery), 2861 armor, in Defensive Stance
+// (takes 10% less), i.e. only ~37-38% of a raw swing gets through. Solving the
+// floor per mob at its minimum spawn level gives the ladder below; the
+// non-elite raised_bonewalker needs roughly double the trash factor because it
+// lacks the 1.5x elite swing multiplier. Pinned by
+// tests/gravewyrm_normal_tuning.test.ts, which also pins the heroic transform
+// so this retune cannot leak into heroic (heroic multiplies the same base
+// templates and is deliberately untouched).
+export const NORMAL_DUNGEON_TUNING: Record<string, NormalDungeonTuning> = {
+  gravewyrm_sanctum: {
+    id: 'gravewyrm_sanctum',
+    difficulty: 'normal',
+    healthMultiplier: 2.0,
+    damageMultiplierByMob: {
+      sanctum_boneguard: 11.5,
+      sanctum_drakonid: 11,
+      raised_bonewalker: 23,
+      korgath_the_bound: 19.5,
+      grand_necromancer_velkhar: 20.5,
+      korzul_the_gravewyrm: 19,
+    },
+  },
+};
+
 export const HEROIC_DUNGEON_TUNING: Record<string, HeroicDungeonTuning> = {
   hollow_crypt: {
     id: 'hollow_crypt',

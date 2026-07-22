@@ -92,4 +92,15 @@ describe('landing detector', () => {
     expect(stepLandingDetector(tp, -40, 1 / 60)).toBe(0);
     expect(stepLandingDetector(tp, -40, 1 / 60)).toBe(0);
   });
+
+  it('never thumps on an instant one-frame drop (sitting down, short relocations)', () => {
+    const s = createCameraFeel();
+    stepLandingDetector(s, 10, 1 / 60);
+    stepLandingDetector(s, 10, 1 / 60);
+    // A 0.5 yd pose drop lands in ONE frame: fast "fall speed" but not a
+    // sustained fall, so the settle must not kick the camera.
+    expect(stepLandingDetector(s, 9.5, 1 / 60)).toBe(0);
+    expect(stepLandingDetector(s, 9.5, 1 / 60)).toBe(0);
+    expect(stepLandingDetector(s, 9.5, 1 / 60)).toBe(0);
+  });
 });

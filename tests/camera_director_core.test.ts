@@ -69,6 +69,23 @@ describe('camera director', () => {
     expect(cameraDirectiveActive(s)).toBe(false);
   });
 
+  it('a cancel mid-sweep releases CONTINUOUSLY, never snapping to the live pose', () => {
+    const s = createCameraDirector();
+    startVista(s);
+    let prev = LIVE;
+    for (let i = 0; i < Math.round(2 / DT); i++) prev = stepCameraDirector(s, LIVE, DT, false);
+    // From full weight, every release frame must stay a small step: a
+    // regression that zeroed the weight on cancel snaps ~6 yd of dist here.
+    for (let i = 0; i < Math.round((DIRECTOR_RELEASE_TIME + 0.3) / DT); i++) {
+      const cur = stepCameraDirector(s, LIVE, DT, true);
+      expect(Math.abs(cur.dist - prev.dist)).toBeLessThan(0.35);
+      expect(Math.abs(cur.pitch - prev.pitch)).toBeLessThan(0.03);
+      expect(Math.abs(cur.yaw - prev.yaw)).toBeLessThan(0.03);
+      prev = cur;
+    }
+    expect(prev).toEqual(LIVE);
+  });
+
   it('death drift persists until cancelled, then releases', () => {
     const s = createCameraDirector();
     startDeathDrift(s);

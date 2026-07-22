@@ -947,8 +947,12 @@ export class Renderer {
   // Player-pose mirror from last frame: any change while a directive runs is
   // manual camera input (or the follow system), which cancels the directive.
   private readonly camMirror = { yaw: Number.NaN, pitch: Number.NaN, dist: Number.NaN };
-  // One death drift per death: once the player cancels it, stay hands-off.
-  private deathDriftPlayed = false;
+  // Death-drift arming: only an alive-to-dead EDGE of the SAME viewed entity
+  // arms one drift (a spectate switch onto a corpse never does), and a
+  // cancelled drift stays cancelled for that death.
+  private camSelfId = -1;
+  private camSelfWasDead = false;
+  private deathDriftArmed = false;
   // settings-backed in-game "Reduce motion" switch; OR-ed with the OS
   // prefers-reduced-motion query in reducedMotion(). Initialized from Settings
   // and kept live by main.ts's applySetting dispatcher (mirrors showDevBadges).
@@ -6335,16 +6339,30 @@ export class Renderer {
     }
     stepCameraFeel(this.camFeel, velX, velZ, dt, !reduce);
 
+    // Flipping reduce motion on mid-directive blends any running move out.
+    if (reduce) cancelCameraDirective(this.camDirector);
+
     // Death drift: one slow elevated drift per death while the body lies
-    // unreleased; releasing/resurrecting (or any camera input) blends it out.
-    if (p.dead && !p.ghost) {
-      if (!this.deathDriftPlayed && !reduce) {
-        startDeathDrift(this.camDirector);
-        this.deathDriftPlayed = true;
-      }
-    } else {
-      this.deathDriftPlayed = false;
+    // unreleased. Armed only on the alive-to-dead EDGE of the SAME viewed
+    // entity, so a spectate switch onto an already-dead target never drifts;
+    // the edge releases a running vista first and the drift starts once the
+    // director is free. Releasing/resurrecting (or camera input) blends out.
+    const deadBody = p.dead && !p.ghost;
+    if (p.id !== this.camSelfId) {
+      this.camSelfId = p.id;
+      this.deathDriftArmed = false;
+      cancelCameraDirective(this.camDirector);
+    } else if (deadBody && !this.camSelfWasDead) {
+      this.deathDriftArmed = true;
+      cancelCameraDirective(this.camDirector);
+    }
+    this.camSelfWasDead = deadBody;
+    if (!deadBody) {
+      this.deathDriftArmed = false;
       if (this.camDirector.kind === 'deathDrift') cancelCameraDirective(this.camDirector);
+    } else if (this.deathDriftArmed && !reduce && this.camDirector.kind === null) {
+      startDeathDrift(this.camDirector);
+      this.deathDriftArmed = false;
     }
 
     // Directed moves blend OVER the live player pose; any change to that pose
@@ -6366,10 +6384,18 @@ export class Renderer {
     mirror.pitch = this.camPitch;
     mirror.dist = this.camDist;
 
+    // The camera ORBITS the lagged/led pivot, but the occlusion ray and the
+    // pull-in anchor stay on the AVATAR's eye: the avatar is collision
+    // resolved so the ray origin can never sit inside a collider's pad
+    // (which would blind the sweep and let the camera see through the wall),
+    // and the min-distance clamp stays avatar-relative.
     const px = this.camBoom.x + this.camFeel.leadX;
     const py = this.camBoom.y;
     const pz = this.camBoom.z + this.camFeel.leadZ;
     const eyeY = py + 2.0;
+    const ax = selfPos.x;
+    const ay = selfPos.y + 2.0;
+    const az = selfPos.z;
     let cx = px - Math.sin(pose.yaw) * Math.cos(pose.pitch) * pose.dist;
     let cy = eyeY + Math.sin(pose.pitch) * pose.dist;
     let cz = pz - Math.cos(pose.yaw) * Math.cos(pose.pitch) * pose.dist;
@@ -6385,19 +6411,19 @@ export class Renderer {
       // Thread the active run's module chain so camera collision matches the
       // delve's actual (possibly Heroic/varied) layout, not just the default.
       const delveMods = this.sim.delveRun?.modules;
-      let hardT = cameraOcclusion(seed, px, eyeY, pz, cx, cy, cz, CAMERA_COLLIDER_PAD, delveMods);
+      let hardT = cameraOcclusion(seed, ax, ay, az, cx, cy, cz, CAMERA_COLLIDER_PAD, delveMods);
       let softT = cameraOcclusion(
         seed,
-        px,
-        eyeY,
-        pz,
+        ax,
+        ay,
+        az,
         cx,
         cy,
         cz,
         CAMERA_SOFT_COLLIDER_PAD,
         delveMods,
       );
-      const segLen = Math.hypot(cx - px, cy - eyeY, cz - pz);
+      const segLen = Math.hypot(cx - ax, cy - ay, cz - az);
       if (segLen > 1e-3) {
         const minT = CAMERA_MIN_DIST / segLen;
         hardT = Math.min(1, Math.max(hardT, minT));
@@ -6415,10 +6441,12 @@ export class Renderer {
         CAMERA_MAX_COMP_FOV,
       );
     }
+    // Pull-in slides along the swept avatar-eye ray, so the resolved point is
+    // exactly what the occlusion pass certified clear.
     const ct = this.camOcclusion.pullT;
-    cx = px + (cx - px) * ct;
-    cy = eyeY + (cy - eyeY) * ct;
-    cz = pz + (cz - pz) * ct;
+    cx = ax + (cx - ax) * ct;
+    cy = ay + (cy - ay) * ct;
+    cz = az + (cz - az) * ct;
     const groundY = groundHeight(cx, cz, seed) + 0.6;
     this.camera.position.set(cx, Math.max(cy, groundY), cz);
     // Occlusion-compensated FOV plus the feel kicks (speed widen, landing

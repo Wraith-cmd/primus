@@ -134,7 +134,9 @@ export function stepCameraDirector(
     }
   }
 
-  const vista = s.kind === 'vista' || (s.releasing && s.kind !== null && s.kind !== 'deathDrift');
+  // `kind` is preserved all the way through a release, so this stays the
+  // shape selector for the blend-out too.
+  const vista = s.kind === 'vista';
   const sweepRate = vista ? VISTA_SWEEP_RATE : DRIFT_SWEEP_RATE;
   const pitchTarget = vista ? VISTA_PITCH : DRIFT_PITCH;
   const distPush = vista ? VISTA_DIST_PUSH : DRIFT_DIST_PUSH;

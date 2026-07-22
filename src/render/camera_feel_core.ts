@@ -18,9 +18,13 @@ export interface CameraFeelState {
   speedKick: number;
   /** Transient FOV impulse (degrees), decays to 0. */
   punchKick: number;
-  // Landing detector: last display height + last vertical display velocity.
+  // Landing detector: last display height + last vertical display velocity,
+  // plus how many consecutive frames the body has been falling fast. Only a
+  // SUSTAINED fall thumps: an instant one-frame drop (sitting on a bench, a
+  // short relocation) is a pose change, not a landing.
   lastY: number;
   lastVy: number;
+  fallFrames: number;
   detectorActive: boolean;
 }
 
@@ -41,6 +45,8 @@ export const PUNCH_DECAY = 6;
 export const THUMP_MIN_FALL = 7;
 /** Fall speed for a full-strength (1.0) thump. */
 export const THUMP_MAX_FALL = 20;
+/** Consecutive fast-falling frames required before a settle may thump. */
+export const THUMP_MIN_FALL_FRAMES = 3;
 const MAX_STEP = 0.25;
 
 export function createCameraFeel(): CameraFeelState {
@@ -51,16 +57,9 @@ export function createCameraFeel(): CameraFeelState {
     punchKick: 0,
     lastY: 0,
     lastVy: 0,
+    fallFrames: 0,
     detectorActive: false,
   };
-}
-
-export function resetCameraFeel(s: CameraFeelState): void {
-  s.leadX = 0;
-  s.leadZ = 0;
-  s.speedKick = 0;
-  s.punchKick = 0;
-  s.detectorActive = false;
 }
 
 const ease = (current: number, target: number, omega: number, dt: number): number =>
@@ -118,19 +117,23 @@ export function stepLandingDetector(s: CameraFeelState, y: number, dt: number): 
     s.detectorActive = true;
     s.lastY = y;
     s.lastVy = 0;
+    s.fallFrames = 0;
     return 0;
   }
   const dy = y - s.lastY;
   const vy = dy / Math.min(Math.max(dt, 1e-4), MAX_STEP);
   const prevVy = s.lastVy;
+  const fell = s.fallFrames;
   s.lastY = y;
   // A teleport (huge jump in either direction) resets rather than thumps.
   if (Math.abs(dy) > 6) {
     s.lastVy = 0;
+    s.fallFrames = 0;
     return 0;
   }
   s.lastVy = vy;
-  if (prevVy < -THUMP_MIN_FALL && vy > -1) {
+  s.fallFrames = vy < -THUMP_MIN_FALL ? s.fallFrames + 1 : 0;
+  if (prevVy < -THUMP_MIN_FALL && vy > -1 && fell >= THUMP_MIN_FALL_FRAMES) {
     return Math.min(1, (-prevVy - THUMP_MIN_FALL) / (THUMP_MAX_FALL - THUMP_MIN_FALL));
   }
   return 0;

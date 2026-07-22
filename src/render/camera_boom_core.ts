@@ -39,13 +39,6 @@ export function createCameraBoom(): CameraBoomState {
   return { x: 0, y: 0, z: 0, vx: 0, vy: 0, vz: 0, active: false };
 }
 
-export function resetCameraBoom(s: CameraBoomState): void {
-  s.active = false;
-  s.vx = 0;
-  s.vy = 0;
-  s.vz = 0;
-}
-
 // One axis of the exact critically damped spring over dt.
 // y(t) = (y0 + (v0 + w*y0)*t) * e^(-w*t), differentiated for the velocity.
 function dampAxis(

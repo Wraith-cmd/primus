@@ -1,10 +1,14 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import {
+  CAMPFIRE_MOVE_TOP,
+  CRATE_TOP,
   isBlocked,
   MANTLE_REACH,
   moverHeight,
+  ROCK_TOP_PER_SCALE,
   resolveMovement,
   resolvePosition,
+  seatGroundedAt,
   supportHeightAt,
 } from '../src/sim/colliders';
 import { BUILTIN_WORLD, setActiveWorldContent } from '../src/sim/data';
@@ -23,6 +27,7 @@ import {
   groundHeight,
   terrainHeight,
   terrainSteepness,
+  terrainSteepnessAt,
   WATER_LEVEL,
 } from '../src/sim/world';
 
@@ -40,8 +45,6 @@ import {
 // same bit-for-bit contract tests/player_motion.test.ts pins on open ground.
 
 const SEED = 42;
-const CRATE_TOP = 1.35;
-const CAMPFIRE_MOVE_TOP = 0.55;
 
 afterEach(() => {
   setActiveWorldContent(null);
@@ -73,6 +76,20 @@ function findFlatCourse(len: number): { x: number; z0: number } {
 }
 
 const COURSE = findFlatCourse(18);
+
+// A steep on-wall footing on the west rim, measured with terrainSteepnessAt,
+// the SAME rounded-cell sampler the kernel's slope and coyote gates read, so
+// a returned point is guaranteed to trip them.
+function findSteepFooting(seed: number): { x: number; z: number } {
+  for (let z = -60; z <= 820; z += 7) {
+    for (let x = -130; x >= -184; x -= 0.25) {
+      if (terrainHeight(x, z, seed) < WATER_LEVEL + 0.5) break;
+      if (isBlocked(seed, x, z, 0.6)) break;
+      if (terrainSteepnessAt(x, z, seed) > 1.9) return { x, z };
+    }
+  }
+  throw new Error('no steep footing found');
+}
 
 function makeSim(): Sim {
   const sim = new Sim({ seed: SEED, playerClass: 'warrior', autoEquip: true });
@@ -165,8 +182,39 @@ describe('supportHeightAt: standable prop tops', () => {
     );
     expect(rock).toBeDefined();
     if (!rock) return;
-    const top = groundHeight(rock.x, rock.z, SEED) + 1.25 * rock.scale;
+    const top = groundHeight(rock.x, rock.z, SEED) + ROCK_TOP_PER_SCALE * rock.scale;
     expect(supportHeightAt(SEED, rock.x, rock.z, 0.5, top + 1)).toBeCloseTo(top, 6);
+  });
+});
+
+describe('seatGroundedAt: instant-relocation end points', () => {
+  const CX = COURSE.x;
+  const CZ = COURSE.z0 + 5;
+
+  it('seats on a crate top the mover previously stood level with', () => {
+    setActiveWorldContent(world({ crates: [[CX, CZ]] }));
+    const top = groundHeight(CX, CZ, SEED) + CRATE_TOP;
+    const seat = seatGroundedAt(SEED, CX, CZ, 0.5, top);
+    expect(seat.x).toBe(CX);
+    expect(seat.z).toBe(CZ);
+    expect(seat.y).toBeCloseTo(top, 6);
+  });
+
+  it('nudges clear of a passed-over campfire instead of embedding in it', () => {
+    setActiveWorldContent(world({ campfires: [[CX, CZ]] }));
+    const g = groundHeight(CX, CZ, SEED);
+    const seat = seatGroundedAt(SEED, CX, CZ, 0.5, g + 2);
+    expect(Math.hypot(seat.x - CX, seat.z - CZ)).toBeGreaterThanOrEqual(1.35 - 1e-6);
+    expect(seat.y).toBeCloseTo(groundHeight(seat.x, seat.z, SEED), 6);
+  });
+
+  it('returns an open-ground point unchanged', () => {
+    setActiveWorldContent(world({}));
+    const g = groundHeight(CX, CZ, SEED);
+    const seat = seatGroundedAt(SEED, CX, CZ, 0.5, g);
+    expect(seat.x).toBe(CX);
+    expect(seat.z).toBe(CZ);
+    expect(seat.y).toBeCloseTo(g, 6);
   });
 });
 
@@ -334,6 +382,60 @@ describe('parkour kernel: jump-over, mantle, momentum, coyote, air control', () 
     const late = walkOff(lateDelay);
     expect(late.vy).toBeLessThan(0);
     expect(late.jumping).toBe(false);
+  });
+
+  it('never double-jumps: a held jump through a full arc launches exactly once', () => {
+    setActiveWorldContent(world({}));
+    const sim = makeSim();
+    const deps = clientDeps(SEED);
+    teleport(sim, CX, COURSE.z0 + 5);
+    const actor = mirrorActor(sim);
+    let launches = 0;
+    let prevVy = 0;
+    for (let i = 0; i < 40; i++) {
+      actor.prevPos = { ...actor.pos };
+      stepPlayerMotion(deps, actor, mi({ jump: true }));
+      // A launch is the only way vy can RISE to a positive value while jump is
+      // held: gravity only lowers it between launches and a landing resets it
+      // to exactly 0. This fails if the coyote window (vy in
+      // (0, -GRAVITY*COYOTE_TIME]) ever re-fires mid-descent.
+      if (actor.vy > prevVy + 1e-9 && actor.vy > 0) launches++;
+      prevVy = actor.vy;
+      if (launches === 1 && actor.onGround) break; // full arc completed
+    }
+    expect(launches).toBe(1);
+    expect(actor.onGround).toBe(true);
+  });
+
+  it('denies the coyote jump while hanging over unwalkably steep terrain', () => {
+    setActiveWorldContent(world({}));
+    const sim = makeSim();
+    const deps = clientDeps(SEED);
+    const steep = findSteepFooting(SEED);
+
+    // Airborne one gravity-tick after a walk-off, over the steep face: denied.
+    teleport(sim, steep.x, steep.z);
+    const overCliff = mirrorActor(sim);
+    overCliff.pos.y += 0.5;
+    overCliff.prevPos = { ...overCliff.pos };
+    overCliff.onGround = false;
+    overCliff.jumping = false;
+    overCliff.vy = -0.5;
+    stepPlayerMotion(deps, overCliff, mi({ jump: true }));
+    expect(overCliff.jumping).toBe(false);
+    expect(overCliff.vy).toBeLessThan(0);
+
+    // The same state over the flat course: the coyote jump fires.
+    teleport(sim, CX, COURSE.z0 + 5);
+    const overFlat = mirrorActor(sim);
+    overFlat.pos.y += 0.5;
+    overFlat.prevPos = { ...overFlat.pos };
+    overFlat.onGround = false;
+    overFlat.jumping = false;
+    overFlat.vy = -0.5;
+    stepPlayerMotion(deps, overFlat, mi({ jump: true }));
+    expect(overFlat.jumping).toBe(true);
+    expect(overFlat.vy).toBeCloseTo(JUMP_VELOCITY - GRAVITY * (1 / 20), 6);
   });
 
   it('air control steers a jump started in place; no input stays in place', () => {

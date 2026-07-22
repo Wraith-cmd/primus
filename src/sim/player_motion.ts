@@ -308,8 +308,16 @@ export function stepPlayerMotion(deps: PlayerMotionDeps, p: Entity, inp: MoveInp
   // Coyote window: within COYOTE_TIME of WALKING off a ledge (vy starts at 0
   // there and only gravity has touched it since; a jump sets `jumping`), the
   // jump still fires, so running off a crate or a bank never eats the input.
+  // Denied while the body hangs over unwalkably steep terrain: a steep-slide
+  // carrying the player off a cliff lip must stay the uncontrollable drop the
+  // grounded steepGround gate enforces, not become a steerable mid-air jump.
   const coyote =
-    !p.onGround && !p.jumping && !swimming && p.vy <= 0 && p.vy > -GRAVITY * COYOTE_TIME;
+    !p.onGround &&
+    !p.jumping &&
+    !swimming &&
+    p.vy <= 0 &&
+    p.vy > -GRAVITY * COYOTE_TIME &&
+    terrainSteepnessAt(p.pos.x, p.pos.z, deps.seed) <= MAX_CLIMB_SLOPE;
   if (inp.jump && (p.onGround || coyote) && !isRooted(p) && !steepGround) {
     p.vy = JUMP_VELOCITY * jumpMult(p);
     p.vx = wishX * wishSpeed;

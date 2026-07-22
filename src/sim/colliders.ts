@@ -99,7 +99,7 @@ export type Collider = CircleCollider | ObbCollider;
  */
 export const MANTLE_REACH = 0.55;
 /** Float slack when comparing feet height against a collider top. */
-export const MOVE_TOP_EPS = 1e-3;
+const MOVE_TOP_EPS = 1e-3;
 // How much of the body radius must overlap a standable top before it supports
 // the mover: standing needs the center meaningfully over the prop, while the
 // full collision radius still gates entry, so a jump can graze past a rim
@@ -108,9 +108,10 @@ const SUPPORT_OVERLAP = 0.5;
 // Physical movement tops (yards above the prop's ground). The camera/sight
 // tops above stay untouched: cameraTopY for a campfire includes the flame,
 // but the SOLID obstacle is only the log pile, which is what a jump clears.
-const CRATE_TOP = 1.35;
-const CAMPFIRE_MOVE_TOP = 0.55;
-const ROCK_TOP_PER_SCALE = 1.25;
+// Exported so tests pin against the one authoritative value.
+export const CRATE_TOP = 1.35;
+export const CAMPFIRE_MOVE_TOP = 0.55;
+export const ROCK_TOP_PER_SCALE = 1.25;
 
 /** The mover's feet altitude plus how much standable lift it gets (the
  * airborne mantle assist). Both hosts derive it from the SAME entity fields so
@@ -598,6 +599,33 @@ export function supportHeightAt(
     }
   }
   return best;
+}
+
+/**
+ * Grounded seat for an INSTANT relocation end point (heroic leap landing,
+ * knockback end): the height-gated sweep that produced (x,z) may have passed
+ * over low props, so a plain terrain re-seat could embed the body inside one.
+ * Stand on a standable top under the point when the mover's previous feet
+ * reached it; otherwise nudge full-height out of any overlapped collider and
+ * seat on the terrain there. A clear point is returned unchanged.
+ */
+export function seatGroundedAt(
+  seed: number,
+  x: number,
+  z: number,
+  r: number,
+  prevFeetY: number,
+): { x: number; z: number; y: number } {
+  const ground = groundHeight(x, z, seed);
+  // Instanced regions have no prop tops and their own bounds/door clamps
+  // (applied by the caller's sweep): plain terrain seat there, untouched.
+  if (isYumiMazePos(x) || isDelvePos(x) || isArenaPos(x) || x > DUNGEON_X_THRESHOLD) {
+    return { x, z, y: ground };
+  }
+  const support = supportHeightAt(seed, x, z, r, prevFeetY + MOVE_TOP_EPS);
+  if (support > ground) return { x, z, y: support };
+  const res = resolvePosition(seed, x, z, r);
+  return { x: res.x, z: res.z, y: groundHeight(res.x, res.z, seed) };
 }
 
 function crossesFence(fromX: number, fromZ: number, toX: number, toZ: number, r: number): boolean {

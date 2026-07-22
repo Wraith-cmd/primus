@@ -980,6 +980,192 @@ export const TARGETS = [
     },
   },
   {
+    key: 'class-colors',
+    label: 'Class color palette: chat names, party frames + minimap dots, character model',
+    // .ts-suffixed so the substring does NOT also fire on tests/class_colors.test.ts
+    // (classifyDiff treats .test.ts as non-visual).
+    when: ['sim/content/classes.ts', 'styles/shell.css'],
+    // The palette is one shared value (CLASSES[cls].color), so a refresh must be
+    // eyeballed on every surface that reads it: the chat sender names (all nine
+    // classes across channels), the party-frame class accents plus the minimap
+    // party dots, and the 3D model tint (priest moved the furthest, off pure white).
+    variants: [
+      { key: 'chat', charClass: 'warrior', charName: 'Thorgar' },
+      // The class names paint on whatever panel the active UI theme sets
+      // (src/ui/theme.ts presets), so legibility must be checked per theme,
+      // not only on the shipped classic dark panel.
+      { key: 'chat-midnight', charClass: 'warrior', charName: 'Thorgar', theme: 'midnight' },
+      { key: 'chat-parchment', charClass: 'warrior', charName: 'Thorgar', theme: 'parchment' },
+      {
+        key: 'chat-highcontrast',
+        charClass: 'warrior',
+        charName: 'Thorgar',
+        theme: 'highContrast',
+      },
+      { key: 'party', charClass: 'priest', charName: 'Lumina' },
+      { key: 'raid', charClass: 'warrior', charName: 'Thorgar' },
+      { key: 'model', charClass: 'priest', charName: 'Lumina' },
+    ],
+    async capture(page, variant) {
+      // Headless-swiftshader GPU notice is a capture-environment artifact; the
+      // camera prompt can arrive late and overlay the scene.
+      await page.evaluate(() => {
+        document.querySelector('.camera-prompt-confirm')?.click();
+        document.querySelector('.tut-skip')?.click();
+        document.querySelector('#gpu-notice')?.remove();
+      });
+      if (variant.key.startsWith('chat')) {
+        if (variant.theme) {
+          // Switch the UI theme through the REAL options hook (store +
+          // applyTheme), the same path the Options panel preset buttons take.
+          await page.evaluate((preset) => {
+            window.__game?.hud?.optionsHooks?.theme?.setPreset(preset);
+          }, variant.theme);
+          await wait(300);
+        }
+        await pollForSize(page, '#chatlog-wrap', 60, 500);
+        // One line per class, spread across channels, through the real dispatch
+        // (hud.handleEvents; mirrors the chat-flair-class-color target). pid-less
+        // events pass the personal-event gate; classId is what colors the name.
+        // Mage sits in PARTY on purpose: the old cyan collided with the party
+        // channel tint, which is the collision this refresh fixes.
+        await page.evaluate(() => {
+          const hud = window.__game?.hud;
+          if (!hud) return;
+          const lines = [
+            ['warrior', 'Thorgar', 'yell', 'Form up at the gate, pulling in ten.'],
+            ['mage', 'Emberlyn', 'party', 'Sheep is on the moon marker, do not break it.'],
+            ['druid', 'Brightoak', 'party', 'Innervate is ready when you need it.'],
+            ['shaman', 'Stormcaller', 'general', 'Dropping totems at the bridge camp.'],
+            ['warlock', 'Morgatha', 'general', 'Summons up at the stone in two minutes.'],
+            ['priest', 'Selene', 'guild', 'Renew rolling on the tank, save your potions.'],
+            ['rogue', 'Nightblade', 'whisper', 'Meet me behind the mill after this pull.'],
+            ['paladin', 'Aurelius', 'world', 'Selling arcane dust stacks, whisper me.'],
+            ['hunter', 'Fletcher', 'lfg', 'LF healer for the delve, last spot.'],
+          ];
+          hud.handleEvents(
+            lines.map(([classId, from, channel, text], i) => ({
+              type: 'chat',
+              channel,
+              from,
+              fromPid: 9000 + i,
+              classId,
+              text,
+            })),
+          );
+        });
+        await wait(300);
+        await page.evaluate(() => {
+          document
+            .querySelector('#chatlog-tabs button[data-tab="all"]')
+            ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        });
+        await wait(200);
+        return { clip: '#chatlog-wrap' };
+      }
+      if (variant.key === 'party') {
+        // Mixed-class party staged on the PartyMachine (the party-below-target
+        // recipe); full frame so the shot shows the frame accents AND the
+        // minimap party dots reading the same shared color.
+        await page.evaluate(() => {
+          const sim = window.__game.sim;
+          const me = sim.primaryId;
+          const p = sim.player;
+          const pm = sim.party;
+          const roster = [
+            ['Thorgar', 'warrior'],
+            ['Stormcaller', 'shaman'],
+            ['Emberlyn', 'mage'],
+            ['Brightoak', 'druid'],
+          ];
+          const pids = roster.map(([name, cls], i) => {
+            const pid = sim.addPlayer(cls, name);
+            const e = sim.entities.get(pid);
+            if (e) {
+              e.pos = { x: p.pos.x + (i % 4) * 2 - 3, y: p.pos.y, z: p.pos.z + 2 };
+              e.prevPos = { ...e.pos };
+            }
+            return pid;
+          });
+          const party = {
+            id: pm.nextPartyId++,
+            leader: me,
+            members: [me, ...pids],
+            raid: false,
+            raidGroups: new Map(),
+            lootStrategies: {},
+          };
+          pm.parties.set(party.id, party);
+          pm.partyByPid.set(me, party.id);
+          for (const q of pids) pm.partyByPid.set(q, party.id);
+        });
+        await wait(1200);
+        // Becoming leader auto-opens Loot Settings; close it after the HUD
+        // noticed the party so the scene stays clean.
+        await page.evaluate(() => window.__game.hud.closeLootSettings?.());
+        await wait(600);
+        return {};
+      }
+      if (variant.key === 'raid') {
+        // Two-group raid covering all nine classes (me = warrior makes ten), so
+        // the raid-style frames show every class accent at once; same
+        // PartyMachine struct as the party variant with raid: true and each
+        // member placed into a raid group.
+        await page.evaluate(() => {
+          const sim = window.__game.sim;
+          const me = sim.primaryId;
+          const p = sim.player;
+          const pm = sim.party;
+          const roster = [
+            ['Aurelius', 'paladin'],
+            ['Fletcher', 'hunter'],
+            ['Nightblade', 'rogue'],
+            ['Selene', 'priest'],
+            ['Stormcaller', 'shaman'],
+            ['Emberlyn', 'mage'],
+            ['Morgatha', 'warlock'],
+            ['Brightoak', 'druid'],
+            ['Ironhide', 'warrior'],
+          ];
+          const pids = roster.map(([name, cls], i) => {
+            const pid = sim.addPlayer(cls, name);
+            const e = sim.entities.get(pid);
+            if (e) {
+              e.pos = {
+                x: p.pos.x + (i % 5) * 2 - 4,
+                y: p.pos.y,
+                z: p.pos.z + 2 + Math.floor(i / 5) * 2,
+              };
+              e.prevPos = { ...e.pos };
+            }
+            return pid;
+          });
+          const members = [me, ...pids];
+          const party = {
+            id: pm.nextPartyId++,
+            leader: me,
+            members,
+            raid: true,
+            raidGroups: new Map(members.map((pid, i) => [pid, i < 5 ? 1 : 2])),
+            lootStrategies: {},
+          };
+          pm.parties.set(party.id, party);
+          for (const q of members) pm.partyByPid.set(q, party.id);
+        });
+        await wait(1200);
+        await page.evaluate(() => window.__game.hud.closeLootSettings?.());
+        await wait(600);
+        return {};
+      }
+      // model: the character sheet's 3D stage, tinted via the shared class color
+      // (partial lerp, so the shift is subtle; priest moved the furthest).
+      await page.evaluate(() => window.__game.hud.toggleChar());
+      await pollForSize(page, '#char-window');
+      await wait(600);
+      return { clip: '#char-window' };
+    },
+  },
+  {
     key: 'gpu-notice',
     label: 'Software rendering notice',
     when: ['ui/gpu_notice', 'render/software_renderer', 'game/software_render_notice'],
@@ -1262,6 +1448,7 @@ export const TARGETS = [
             switchCount: 1,
             amendsProgress: 2,
             amendsRequired: 8,
+            knownRecipes: [],
           };
           Object.defineProperty(game.world, 'craftingIdentity', {
             value: identity,

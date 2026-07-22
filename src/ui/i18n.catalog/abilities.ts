@@ -1622,7 +1622,7 @@ const classAbilityNamesEn = {
       [
         'avatar',
         'Avatar',
-        'Transform into a colossus for 20 sec, breaking all control on you and increasing your damage dealt by 20%.',
+        'Transform into a colossus for 20 sec, breaking enemy control effects on you (boss control is unaffected) and increasing your damage dealt by 20%.',
       ],
       [
         'avenging_wrath',

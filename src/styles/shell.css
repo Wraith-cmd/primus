@@ -2675,31 +2675,31 @@
     margin-left: 0;
   }
   .mini-class[data-class="warrior"] {
-    --class-color: #c79c6e;
+    --class-color: #d67a54;
   }
   .mini-class[data-class="paladin"] {
-    --class-color: #f58cba;
+    --class-color: #f58ca0;
   }
   .mini-class[data-class="hunter"] {
-    --class-color: #abd473;
+    --class-color: #a6d84f;
   }
   .mini-class[data-class="rogue"] {
-    --class-color: #fff569;
+    --class-color: #fcee58;
   }
   .mini-class[data-class="priest"] {
-    --class-color: #ffffff;
+    --class-color: #c6d4f0;
   }
   .mini-class[data-class="shaman"] {
-    --class-color: #0070de;
+    --class-color: #4e8aea;
   }
   .mini-class[data-class="mage"] {
-    --class-color: #69ccf0;
+    --class-color: #33c1f1;
   }
   .mini-class[data-class="warlock"] {
-    --class-color: #9482c9;
+    --class-color: #a785e6;
   }
   .mini-class[data-class="druid"] {
-    --class-color: #ff7d0a;
+    --class-color: #ff8c1a;
   }
 
   .mini-class {
@@ -3512,9 +3512,9 @@
     color: #fff;
   }
   .skin-swatch.sel {
-    border-color: var(--class-color, #69ccf0);
+    border-color: var(--class-color, #33c1f1);
     color: #fff;
-    box-shadow: 0 0 9px var(--class-color, #69ccf0);
+    box-shadow: 0 0 9px var(--class-color, #33c1f1);
   }
   .skin-unequip-btn {
     min-height: 34px;
@@ -4719,7 +4719,7 @@
     color: #c73c3c;
   }
   .class-details-role.role-ranged {
-    color: #abd473;
+    color: #a6d84f;
   }
   .class-details-role.role-healer {
     color: #58beea;
@@ -4843,15 +4843,15 @@
   }
 
   .badge-resource.resource-energy {
-    background: rgba(255, 245, 105, 0.12);
-    border-color: rgba(255, 245, 105, 0.4);
-    color: #fff569;
+    background: rgba(252, 238, 88, 0.12);
+    border-color: rgba(252, 238, 88, 0.4);
+    color: #fcee58;
   }
 
   .badge-resource.resource-rage {
-    background: rgba(199, 156, 110, 0.15);
-    border-color: rgba(199, 156, 110, 0.4);
-    color: #c79c6e;
+    background: rgba(214, 122, 84, 0.15);
+    border-color: rgba(214, 122, 84, 0.4);
+    color: #d67a54;
   }
 
   /* Signature Abilities Section */
@@ -5744,31 +5744,31 @@
 
   /* Class color tokens, any element with data-class exposes --class-color */
   [data-class="warrior"] {
-    --class-color: #c79c6e;
+    --class-color: #d67a54;
   }
   [data-class="paladin"] {
-    --class-color: #f58cba;
+    --class-color: #f58ca0;
   }
   [data-class="hunter"] {
-    --class-color: #abd473;
+    --class-color: #a6d84f;
   }
   [data-class="rogue"] {
-    --class-color: #fff569;
+    --class-color: #fcee58;
   }
   [data-class="priest"] {
-    --class-color: #ffffff;
+    --class-color: #c6d4f0;
   }
   [data-class="shaman"] {
-    --class-color: #0070de;
+    --class-color: #4e8aea;
   }
   [data-class="mage"] {
-    --class-color: #69ccf0;
+    --class-color: #33c1f1;
   }
   [data-class="warlock"] {
-    --class-color: #9482c9;
+    --class-color: #a785e6;
   }
   [data-class="druid"] {
-    --class-color: #ff7d0a;
+    --class-color: #ff8c1a;
   }
 
   /* Portrait chip, a class-ringed headshot rendered from the 3D model.
@@ -5869,6 +5869,11 @@
     border: 1px solid #463a1c;
     border-radius: 999px;
     background: rgba(0, 0, 0, 0.3);
+  }
+  .char-title-text .panel-subtitle.char-archetype-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
   }
   /* The honor chip drops its special gold to the shared muted chip color, so it
      reads as one of the header pills rather than a highlighted line. */

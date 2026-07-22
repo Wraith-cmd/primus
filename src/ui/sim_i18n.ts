@@ -67,6 +67,9 @@ const baseEnTable = {
   'error.notForSale': 'That item is not for sale.',
   'error.noMerchant': 'There is no merchant nearby.',
   'error.noSellQuest': 'You cannot sell quest items.',
+  // Phase 15 QA directed fix: sellItem refuses a bound (boundTo-stamped) copy so
+  // the vendor can never launder the Maker's Bond into a plain buyback copy.
+  'error.sellBound': 'That item is bound and cannot be sold.',
   'error.noBuyback': 'That item is not available for buyback.',
   'error.nailedShut': 'It is nailed shut.',
   'error.enoughOfThose': 'You have enough of those.',
@@ -512,6 +515,7 @@ const BASE_DICT: Record<SupportedLanguage, Partial<Record<BaseSimMessageKey, str
     'error.notForSale': 'That item is not for sale.',
     'error.noMerchant': 'There is no merchant nearby.',
     'error.noSellQuest': 'You cannot sell quest items.',
+    'error.sellBound': 'That item is bound and cannot be sold.',
     'error.noBuyback': 'That item is not available for buyback.',
     'error.nailedShut': 'It is nailed shut.',
     'error.enoughOfThose': 'You have enough of those.',
@@ -2064,6 +2068,7 @@ const BASE_DICT: Record<SupportedLanguage, Partial<Record<BaseSimMessageKey, str
     'error.notForSale': 'That item is not for sale.',
     'error.noMerchant': 'There is no merchant nearby.',
     'error.noSellQuest': 'You cannot sell quest items.',
+    'error.sellBound': 'That item is bound and cannot be sold.',
     'error.noBuyback': 'That item is not available for buyback.',
     'error.nailedShut': 'It is nailed shut.',
     'error.enoughOfThose': 'You have enough of those.',

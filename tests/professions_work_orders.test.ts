@@ -97,6 +97,9 @@ describe.each(WORK_ORDERS)('$questId economics (Phase 14, live data)', ({ questI
     const quest = QUESTS[questId];
     expect(quest.xpReward).toBe(100);
     expect(quest.repeatable).toBe(true);
+    // Phase 15 pin-coverage audit: the cadence itself is a literal contract
+    // (36000 ticks = 30 minutes at 20 Hz), not just a derived comparison.
+    expect(WORK_ORDER_CADENCE_TICKS).toBe(36000);
     expect(quest.repeatCadenceTicks).toBe(WORK_ORDER_CADENCE_TICKS);
   });
 

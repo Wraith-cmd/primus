@@ -94,7 +94,6 @@ export const table: DeedLocaleTable = {
   },
   prog_master_gatherer: {
     name: 'Maître récolteur',
-    desc: 'Atteignez 100 points de maîtrise en Minage, en Bûcheronnage et en Herboristerie.',
   },
   prog_first_craft: { name: 'Fait main', desc: 'Réussissez votre première fabrication.' },
   prog_craft_specialist: {

@@ -43,11 +43,11 @@ get written permission.
   if you want to ship these icons.
 - **Commercial and prestige art owned by the project.** The Season 1 Armory
   weapon models and storefront renders, the Claudium visual asset set, the
-  legacy Claudium prototype weapons, the Book of Deeds achievement icons, and
-  the elite dragon rank emblem. These are commissioned or commercially produced
-  art tied to the store and to player prestige, and **rights in them are
-  reserved**. They are not covered by the MIT licence. Ask if you want to use
-  them.
+  legacy Claudium prototype weapons, the Book of Deeds achievement icons, the
+  Professions 2.0 art set, and the elite dragon rank emblem. These are commissioned
+  or commercially produced art tied to the game, store, or player prestige, and
+  **rights in them are reserved**. They are not covered by the MIT licence. Ask if
+  you want to use them.
 - **Artwork and recordings used with permission.** The Collective Reversal and
   Hourglass of Suspension mage icons, the `fireball_form` and `counterspell`
   mage artwork, and the `temporal_clock` sound effect. These are used in World
@@ -117,6 +117,7 @@ than free, so ask before you rely on it.
 | Meshy creature models (edda_reedhand, reedbound_acolyte, tolling_bell, spider_egg_sac from the Drowned Litany, yumi_cat from Protect Yumi, in `public/models/creatures/`) | World of ClaudeCraft | Project-generated via Meshy AI (text-to-3D; the humanoids and yumi_cat rigged and animated), owned under the Meshy paid-plan license | Project asset | With the project only |
 | Legacy Claudium prototype weapon models and source images (emberfang, Red Skull, and Purple sets, in `public/models/weapons/` and `public/ui/weapons/`) | World of ClaudeCraft | Project-generated and normalized through the PR 1405 asset pipeline | Project asset, rights reserved | **No, permission required** |
 | Bag icons (`public/ui/items/{backpack,linen_pouch,travelers_knapsack,wolfhide_satchel,gravewoven_bag,mistcallers_duffel}.webp`, encoded to 128px WebP via `scripts/convert_item_icons_webp.mjs`) | World of ClaudeCraft | Project art created for this game; provenance per icon in `public/ui/items/mapping.json` | Project asset | With the project only |
+| Professions 2.0 art set (`public/ui/professions/*.webp`, the `woc_professions_art` material icons recorded in `public/ui/items/mapping.json`, and the inline maker's-mark glyph in `src/ui/ui_icons.ts`) | World of ClaudeCraft | Maintainer-commissioned original art created for this game and normalized through the profession/item pipelines; provenance per raster in the corresponding mapping file | Project asset, rights reserved | **No, permission required** |
 | Class ability icons (`public/ui/skills/<class>/*.webp`, re-encoded from the source-pack PNGs to WebP via `scripts/convert_skill_icons_webp.mjs`; all 9 classes: paladin, hunter, priest, warlock, rogue, warrior, mage, druid, shaman; source packs paladin/archer/priest/warlock/thief/warrior/berserker/demon/druid/pyromancer/cryomancer/aeromancer/lightning-mage/earth-magician/100-rpg-skill-icons/100-skill-icons-pack-for-rpg + per-ability fill sets) | CraftPix | https://craftpix.net | CraftPix premium (royalty-free commercial), purchased by Levy Street account (callum@levystreet.com) | **No, permission required** |
 | Collective Reversal and Hourglass of Suspension ability icons (`public/ui/skills/mage/collective_reversal.webp`, `public/ui/skills/mage/temporal_hourglass.webp`) | World of ClaudeCraft project owner | Owner-provided original artwork | Used with permission (Levy Street) | **No, permission required** |
 | Season 1 Armory weapon models, source images, generated store thumbnails, and promotional card (Guildmark, Emberwrought, Hoarfrost, and Fallen Star collections, in `public/models/weapons/`, `public/ui/weapons/`, and `public/ui/store/`) | World of ClaudeCraft | Project-generated via `scripts/asset_pipeline` (Tripo AI 3D); storefront renders composited locally, with the text-free promo background derived through OpenAI image editing | Project asset, rights reserved | **No, permission required** |

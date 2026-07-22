@@ -39,6 +39,9 @@ describe('profession identity card painter contract', () => {
     expect(card?.getAttribute('role')).toBe('region');
     expect(card?.getAttribute('aria-label')).toBeTruthy();
     expect(card?.querySelectorAll('.profession-skill-row')).toHaveLength(10);
+    const crest = card?.querySelector<HTMLImageElement>('.profession-archetype-crest');
+    expect(crest?.getAttribute('src')).toBe('/ui/professions/archetype_smith.webp');
+    expect(crest?.getAttribute('alt')).toBe('');
     // The title line renders the PAIR archetype name (weaponcrafting +
     // armorcrafting is the Smith pair); the skill rows render craft names.
     expect(card?.textContent).toContain('Smith');
@@ -68,10 +71,36 @@ describe('profession identity card painter contract', () => {
     expect(parent.querySelectorAll('.profession-skill-header')).toHaveLength(0);
     // No return-cost line while syncing or unattuned (only shown once attuned).
     expect(parent.querySelectorAll('.profession-identity-returncost')).toHaveLength(0);
+    expect(parent.querySelector('.profession-archetype-crest')).toBeNull();
+  });
+
+  it('renders a synced but unattuned identity without an archetype crest', () => {
+    const parent = document.createElement('div');
+    const identity = {
+      version: 1 as const,
+      synced: true,
+      craftSkills: { cooking: 10 },
+      activeArchetype: null,
+      pairedMajor: null,
+      hobbyCraft: null,
+      attunedPairs: [],
+      switchCount: 0,
+      amendsProgress: 0,
+      amendsRequired: 5,
+      knownRecipes: [],
+    };
+
+    renderProfessionIdentityCard(parent, buildProfessionIdentityView(identity));
+
+    expect(parent.querySelector('.profession-identity-card')).not.toBeNull();
+    expect(parent.querySelectorAll('.profession-skill-row')).toHaveLength(10);
+    expect(parent.querySelector('.profession-archetype-crest')).toBeNull();
+    expect(parent.querySelector('.profession-identity-returncost')).toBeNull();
   });
 
   it('renders combo guidance outside the faded disabled craft button', () => {
     const parent = document.createElement('div');
+    const attachTooltip = vi.fn();
     renderCraftingWindow(
       parent,
       {
@@ -105,7 +134,7 @@ describe('profession identity card painter contract', () => {
         itemIcon: vi.fn(() => ''),
         moneyHtml: vi.fn(() => ''),
         itemTooltip: vi.fn(() => ''),
-        attachTooltip: vi.fn(),
+        attachTooltip,
         commissionChecked: () => false,
         onToggleCommission: vi.fn(),
       },
@@ -113,6 +142,19 @@ describe('profession identity card painter contract', () => {
 
     const button = parent.querySelector<HTMLButtonElement>('button.vendor-item');
     const note = parent.querySelector<HTMLElement>('.crafting-combo-requirement');
+    const sectionIcon = parent.querySelector<HTMLImageElement>('.crafting-section-icon');
+    expect(sectionIcon?.getAttribute('src')).toBe('/ui/professions/prof_armorcrafting.webp');
+    expect(sectionIcon?.getAttribute('alt')).toBe('');
+    const section = parent.querySelector<HTMLElement>('.crafting-section-title');
+    expect(section?.getAttribute('role')).toBe('heading');
+    expect(section?.getAttribute('aria-level')).toBe('3');
+    expect(section?.tabIndex).toBe(-1);
+    expect(attachTooltip.mock.calls.some(([target]) => target === section)).toBe(false);
+    const recipeTooltip = attachTooltip.mock.calls.find(([target]) => target === button)?.[1] as
+      | (() => string)
+      | undefined;
+    expect(recipeTooltip?.()).toContain('/ui/professions/prof_armorcrafting.webp');
+    expect(recipeTooltip?.()).toContain('Armorcrafting');
     expect(button?.disabled).toBe(true);
     // The rendered guidance is the localized copy for the given reason
     // (not_attuned), so a wrong or empty reason string reddens here.
@@ -462,7 +504,9 @@ describe('crafting window Phase 6 QA pins', () => {
       },
       d,
     );
-    const build = d.attachTooltip.mock.calls[0]?.[1] as () => string;
+    const build = d.attachTooltip.mock.calls.find(([target]) =>
+      (target as HTMLElement).matches('button.vendor-item'),
+    )?.[1] as () => string;
     const html = build();
     expect(html).toContain('Requires Armorcrafting 25');
     expect(html).toContain('Full skill gain');

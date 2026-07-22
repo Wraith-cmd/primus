@@ -36,7 +36,7 @@ export const table: DeedLocaleTable = {
   prog_mining_100: { name: '血脉藏矿', desc: '采矿熟练度达到100点。' },
   prog_logging_100: { name: '直取心木', desc: '伐木熟练度达到100点。' },
   prog_herbalism_100: { name: '草甸之主', desc: '草药学熟练度达到100点。' },
-  prog_master_gatherer: { name: '采集大师', desc: '采矿、伐木与草药学的熟练度均达到100点。' },
+  prog_master_gatherer: { name: '采集大师' },
   prog_first_craft: { name: '亲手所制', desc: '完成你的第一次成功制造。' },
   prog_craft_specialist: {
     name: '独门手艺',

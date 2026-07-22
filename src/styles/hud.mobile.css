@@ -2223,6 +2223,13 @@
     white-space: normal;
     overflow-wrap: anywhere;
   }
+  body.mobile-touch #banner.banner-with-art {
+    gap: 6px;
+  }
+  body.mobile-touch #banner .banner-art {
+    width: 34px;
+    height: 34px;
+  }
   /* Vale Cup notification compaction (mobile). The desktop indicator (top:70px) and
      in-match strip (top:64px, min-width 260px, 24px score) carry no touch rules, so
      on a short landscape phone they float as a large upper-middle band. Compact both

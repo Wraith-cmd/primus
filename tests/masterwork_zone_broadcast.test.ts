@@ -1,3 +1,5 @@
+// @vitest-environment jsdom
+
 // Masterwork zone broadcast (Professions 2.0 Phase 6): a masterwork proc in
 // the overworld emits one pid-scoped `masterworkZone` copy per player in the
 // crafter's zone, the crafter included, next to (never instead of) the
@@ -8,7 +10,9 @@
 // here with the same observer idiom. Client side, the zone copy must reach
 // the HUD eventQueue and must NOT touch lastMasterwork (that mirror rebuilds
 // from ANY 'masterwork' event, which is exactly why this is a separate type).
-import { describe, expect, it, vi } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 // Mock the db layer so the live GameServer routing suite below needs no
 // Postgres; only the sim fanout and the tick -> routeEvents wire pump are
@@ -35,11 +39,16 @@ vi.mock('../server/db', () => ({
 
 import { type ClientSession, GameServer } from '../server/game';
 import { ClientWorld } from '../src/net/online';
-import { DUNGEON_X_THRESHOLD, zoneAt } from '../src/sim/data';
+import { DUNGEON_X_THRESHOLD, ITEMS, zoneAt } from '../src/sim/data';
 import { announceMasterworkZone } from '../src/sim/professions/gather_events';
 import type { Rng } from '../src/sim/rng';
 import { Sim } from '../src/sim/sim';
 import type { Entity, SimEvent } from '../src/sim/types';
+import { itemDisplayName } from '../src/ui/entity_i18n';
+import { Hud } from '../src/ui/hud';
+import { t } from '../src/ui/i18n';
+import { QUALITY_COLOR } from '../src/ui/icons';
+import { MASTERWORK_SEAL_IMAGE_URL } from '../src/ui/profession_art';
 
 const RECIPE_ID = 'recipe_eastbrook_ritual_vestments';
 const ITEM_ID = 'eastbrook_ritual_vestments';
@@ -67,6 +76,8 @@ function runScenario(opts?: { crafterInInstanceSpace?: boolean }) {
   meta.craftSkills.tailoring = 200;
   for (let i = 0; i < 3; i++) sim.addItem('linen_scrap', 1, crafter);
   sim.addItem('spider_leg', 1, crafter);
+  sim.addItem('homespun_cloth', 3, crafter);
+  sim.addItem('spool_of_thread', 5, crafter);
 
   const crafterE = sim.entities.get(crafter)!;
   const zoneId = zoneAt(crafterE.pos.z).id;
@@ -297,26 +308,98 @@ describe('masterworkZone over the live GameServer wire (session routing)', () =>
   });
 });
 
-// The HUD arm contract for the zone copy (no test instantiates the full Hud,
-// so the render rules are source-pinned): every recipient logs the localized
-// line in the epic quality color, and NOBODY gets an audio cue from this arm
-// (the crafter's own celebration sound rides the personal masterwork plan).
-import { readFileSync } from 'node:fs';
+interface MasterworkZoneHudHarness {
+  sim: {
+    playerId: number;
+    craftingIdentity: { synced: boolean };
+    craftSkills: Record<string, number>;
+  };
+  renderer: { handleEvent: ReturnType<typeof vi.fn> };
+  playEventSfx: ReturnType<typeof vi.fn>;
+  meters: { onEvent: ReturnType<typeof vi.fn> };
+  isNythraxisEvent: ReturnType<typeof vi.fn>;
+  chatLogEl: HTMLElement;
+  chatTimestamps: boolean;
+  chatWindow: { hideIfFiltered: ReturnType<typeof vi.fn> };
+  chatAnnouncer: { push: ReturnType<typeof vi.fn> };
+  prevCraftSkills: Record<string, number> | null;
+  craftTierUpDrains: number;
+  handleEvents(events: SimEvent[]): void;
+}
 
-describe('hud masterworkZone arm (source pins)', () => {
-  const hud = readFileSync(new URL('../src/ui/hud.ts', import.meta.url), 'utf8');
+function masterworkZoneHud(): MasterworkZoneHudHarness {
+  const hud = Object.create(Hud.prototype) as unknown as MasterworkZoneHudHarness;
+  hud.sim = {
+    playerId: 9,
+    craftingIdentity: { synced: false },
+    craftSkills: {},
+  };
+  hud.renderer = { handleEvent: vi.fn() };
+  hud.playEventSfx = vi.fn();
+  hud.meters = { onEvent: vi.fn() };
+  hud.isNythraxisEvent = vi.fn(() => false);
+  hud.chatLogEl = document.createElement('div');
+  hud.chatTimestamps = false;
+  hud.chatWindow = { hideIfFiltered: vi.fn() };
+  hud.chatAnnouncer = { push: vi.fn() };
+  hud.prevCraftSkills = null;
+  hud.craftTierUpDrains = 0;
+  return hud;
+}
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  document.body.replaceChildren();
+});
+
+describe('hud masterworkZone arm', () => {
+  const hud = readFileSync(join(process.cwd(), 'src/ui/hud.ts'), 'utf8');
+  const hudCss = readFileSync(join(process.cwd(), 'src/styles/hud.css'), 'utf8');
   const arm = hud.slice(
     hud.indexOf("case 'masterworkZone': {"),
     hud.indexOf('break;', hud.indexOf("case 'masterworkZone': {")),
   );
 
-  it('logs the localized zone line in the epic color', () => {
-    expect(arm).toContain("t('hudChrome.crafting.masterworkZoneLine'");
-    expect(arm).toContain('QUALITY_COLOR.epic');
+  it('renders a decorative seal while preserving the exact visible and announced text', () => {
+    const clientHud = masterworkZoneHud();
+    clientHud.handleEvents([
+      {
+        type: 'masterworkZone',
+        pid: 9,
+        crafterPid: 7,
+        crafterName: 'Crafter',
+        itemId: ITEM_ID,
+        recipeId: RECIPE_ID,
+        zoneId: 'eastbrook_vale',
+      },
+    ]);
+
+    expect(clientHud.chatLogEl.children).toHaveLength(1);
+    const line = clientHud.chatLogEl.firstElementChild as HTMLElement;
+    const icon = line.querySelector<HTMLImageElement>('img.chat-masterwork-seal');
+    const expected = t('hudChrome.crafting.masterworkZoneLine', {
+      crafter: 'Crafter',
+      name: itemDisplayName(ITEMS[ITEM_ID]),
+    });
+    expect(icon?.getAttribute('src')).toBe(MASTERWORK_SEAL_IMAGE_URL);
+    expect(icon?.alt).toBe('');
+    expect(icon?.getAttribute('aria-hidden')).toBe('true');
+    expect(icon?.draggable).toBe(false);
+    expect(line.textContent).toBe(expected);
+    const colorProbe = document.createElement('span');
+    colorProbe.style.color = QUALITY_COLOR.epic;
+    expect(line.style.color).toBe(colorProbe.style.color);
+    expect(clientHud.chatAnnouncer.push).toHaveBeenCalledTimes(1);
+    expect(clientHud.chatAnnouncer.push.mock.calls[0][0]).toBe(expected);
+    expect(clientHud.chatWindow.hideIfFiltered).toHaveBeenCalledWith(line, 'system');
   });
 
   it('plays no audio cue for the zone copy (the personal plan owns the sound)', () => {
     expect(arm).not.toContain('audio.');
     expect(arm).not.toContain('playSound');
+  });
+
+  it('keeps the decorative seal at the compact chat size', () => {
+    expect(hudCss).toMatch(/#chatlog \.chat-masterwork-seal[\s\S]*?width:\s*15px/);
   });
 });

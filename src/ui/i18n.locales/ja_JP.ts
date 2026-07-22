@@ -6930,51 +6930,20 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'guide.professions.intro':
     '戦闘やクエストだけでなく、この世界は大地を耕し鍛冶場に立つあなたにも報いてくれます。原材料を採集し、十の製作職を通じてそれを装備や品物へと変え、それらの職が体現する十のアーキタイプのひとつとして自らのアイデンティティを築いていきます。',
-  'guide.professions.gatherTitle': '採集：採掘、伐採、薬草学',
-  'guide.professions.gatherIntro':
-    '三つの採集職があり、世界から直接原材料を得られます。採掘は鉱脈から鉱石と石を掘り出し、伐採は木立から木材を切り出し、薬草学は野生に育つ薬草や植物を集めます。それぞれ別々に進行が管理されるため、ひとつに取り組んでも他の進行が遅れることはありません。何もかも初めてですか。イーストブルックのオデル親方が「万人のための生業」という短い用事を用意しており、最初の採集まで手ほどきしてくれます。',
-  'guide.professions.gatherWhatTitle': '資源ノード',
-  'guide.professions.gatherWhatBody':
-    '鉱脈、木立、薬草の茂みは、渓谷と湿地に目に見える所有者のない設備として配置されています。近づいて操作すれば、そこにあるものを採集できます。一度採集したノードは、あなた自身が再び採集できるようになるまで回復に時間がかかりますが、他のプレイヤーを妨げることは決してありません。その間に別のプレイヤーが同じノードを採集することもできます。',
-  'guide.professions.gatherProficiencyTitle': '熟練度',
-  'guide.professions.gatherProficiencyBody':
-    '採集に成功するたびに、その採集職の熟練度が上がり、キャラクターシートは各職を個別に記録します。練習を重ねることは決して進行の妨げにならず、常にそれを積み増すだけです。',
-  'guide.professions.gatherToolsTitle': '職の道具',
-  'guide.professions.gatherToolsBody':
-    '各採集職の基本的な道具は商人から購入でき、より優れた道具は製作できます。今のところ、ノードで作業するのに道具は必要ありません。道具は、これから登場するより豊かなノードへの布石であり、そこでは上位ティアのつるはし、斧、鎌が入口となります。',
   'guide.professions.harvestTitle': '狩りそのものを採取する',
   'guide.professions.harvestBody':
     '採集はノードで終わらない。倒した獣の中には、通常の戦利品と並んで、死体から直接素材を採取できるものがいる：毛皮、牙、絹糸、さらに奇妙なものまで。一体の獲物につき採り手は一人：最初に採取した者がすべてを手にする。そして選択は毎回あなたのものだ：死体が差し出すすべてを剥ぎ取るか、ひとつの素材に集中してより上のグレードを受け取るか。採取はどのキャラクターにもでき、職も訓練も要らない。とりわけ見事な素材には、採取した者の名まで刻まれる。',
   'guide.professions.focusTitle': '町のフォーカス',
   'guide.professions.focusBody':
     'どの拠点の町にも、訪れる採り手のための「町のフォーカス」パネルがある。町の中に立ってミニマップの脇から開き、わずかなフォーカスポイントの持ち分を、気にかける素材の種類へ振り分けよう。フォーカスした素材は、以後どの死体からもワングレード上質に、そして少し多めに採れる。割り振りはどこを歩いてもキャラクターに付いてまわり、後で町を訪れれば、無料で何度でも組み直せる。',
-  'guide.professions.craftTitle': '十の製作職',
-  'guide.professions.craftIntro':
-    '十の製作職は、採集した素材を完成した装備や品へと変える：防具製作、武器製作、宝石細工は原材料を装備品へと形作り、錬金術と工学は試行錯誤に基づき、料理、書記、エンチャントはそれぞれ他の職の産物に手を加え、裁縫と革細工は正確な型紙に沿って作業する。これらは合わせてひとつの輪を形成し、各職は二つの隣人と隣り合い、もう一つの職と向かい合う。',
-  'guide.professions.craftRingTitle': '専門職の輪',
-  'guide.professions.craftRingBody':
-    '十の職は固定された輪の上に配置され、その輪上での位置が重要な意味を持つ：輪の上で隣り合う職同士は、対角にある職同士よりも多くの共通点を持つ。ひとつの職に打ち込むことは、孤立した技能を選ぶのではなく、関連する職の一族に加わるような感覚であるべきだ。',
-  'guide.professions.craftRecipesTitle': 'レシピと材料',
-  'guide.professions.craftRecipesBody':
-    'どのレシピにも、採集または購入して手に入れる特定の材料が必要です。最も単純なレシピは一般的な材料だけで作れ、最初から製作できるので、その職を手に入れた瞬間から作業を始められます。レシピ一覧はまだ充実の途中です。いくつかの職は最初のレシピを待っている状態で、職が育つにつれてさらに増えていきます。',
   'guide.professions.craftMasteryTitle': '技能と熟達',
   'guide.professions.craftMasteryBody':
     '製作に成功するとその職の技能が上がりますが、技能がレシピを閉ざしてしまうことはありません。レシピを知っていて材料を持っていれば、いつでも挑戦できます。どのレシピも約束どおりの品を仕上げますが、熟練した手はときに傑作を生み出します。同じ品ながら仕上がりが上等で、わずかな追加の力を宿しています。唯一の例外は組み合わせレシピで、二つの職をつなぐアーキタイプに調律し、両方の職で確かな腕前を示した製作者にのみ開かれます。',
-  'guide.professions.craftComboTitle': '組み合わせレシピ',
-  'guide.professions.craftComboBody':
-    '単独の職自身のレシピ一覧に加えて、この輪は隣り合う二つの職を同時に呼び出す組み合わせレシピにも対応しており、孤立した一職だけでなく、輪の上で隣接する職に投資したキャラクターに報います。製作者はその二つの職を自分自身で修めていなければならず、いずれの側も取引相手の技能で代わりを務めることはできません。',
-  'guide.professions.archetypeTitle': '十の生き方',
-  'guide.professions.archetypeIntro':
-    '十の職はそれぞれ生き方も体現しており、その職に単に従事すること以上の、より広いアイデンティティを取り入れることができる。あなたの現在の生き方は一度にひとつだけであり、チェックリストではない：あなたは一つを担い、望むならば後で変更することもできる。',
   'guide.professions.archetypeChooseTitle': '生き方を選ぶ',
   'guide.professions.archetypeChooseBody':
     '生き方の宣言は、物語の一幕だ：そのアイデンティティへとあなたを正式に迎え入れるクエストである。宣言するまでは、どの職の技能もレアのティアまで伸ばせる。ひと組を選び取れば、その二つの職は最後まで開かれ、輪の向こう側にある一つの職は趣味として手元に残り、やはりレアのティアまで働く。そのアイデンティティを掲げているあいだ、残るすべての職はコモンのティアにとどまる。',
-  'guide.professions.archetypeSwitchTitle': '心変わり',
   'guide.professions.archetypeSwitchBody':
     '宣言が終身刑になるわけでもない。予定されているのは、新しい職を取り上げる前に古い職へ「償い」をする繰り返し可能な行いで、切り替えるたびに償いは少しずつ重くなる。そのため選択は代償のないものにはならず、意味を持ち続ける。宣言そのものと同じく、これもまだ道の途上にある。',
-  'guide.professions.archetypeIdentityTitle': 'あなたの生き方が意味するもの',
-  'guide.professions.archetypeIdentityBody':
-    'あなたの現在の生き方は、あなたのキャラクターがこの世界で何者であるかについての表明であり、他者や世界があなたをどう呼ぶかに反映される。それに伴う具体的な報酬や認知はまだ調整中だ。システムが充実していくのを見守ってほしい。',
   'apiError.validation.failed': '一部の項目が無効です。入力内容を確認してもう一度お試しください。',
   'apiError.json.malformed': 'リクエストを読み取れませんでした。もう一度お試しください。',
   'apiError.body.too_large': 'リクエストが大きすぎます。データを減らしてもう一度お試しください。',
@@ -7329,6 +7298,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.crafting.tierUpToast': '{craft}がティア {tier} に到達しました！',
   'hudChrome.crafting.makersMark': '製作者：{name}',
   'hudChrome.bags.itemAriaInstanced': '{item}、数量 {count}、銘入りの品',
+  'hudChrome.bags.itemAriaMasterwork': '{item}、数量 {count}、傑作',
   'hudChrome.crafting.gatheredBy': '採集者：{name}',
   'hudChrome.crafting.masterworkSeal': '傑作',
   'hudChrome.crafting.enchantedLine': 'エンチャント済み',
@@ -7899,8 +7869,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'guide.models.formTravel': 'フリートフォーム',
   'guide.models.groupForms': 'ドルイドの変身形態',
   'guide.nav.sidebarLabel': 'ガイドの項目',
-  'guide.professions.craftHowBody':
-    '製作ウィンドウ（初期設定はTキー）を開くと、あなたが知っているすべてのレシピ、それぞれに必要なもの、そして手持ちの材料が確認できます。材料がそろっていれば、クリック一つで作業が完了します。一般的なレシピは世界のどこでも製作できます。一部の高度なレシピ、上位の道具や希少なキャスター防具などは、ハイウォッチの製作拠点に立って作る必要があります。',
   'guide.professions.craftHowTitle': '製作ウィンドウ',
   'guide.search.typeAbility': 'アビリティ',
   'guide.search.typeDeed': '功績',
@@ -8702,4 +8670,363 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.unbind.notBound': 'そのアイテムはバインドされていません。',
   'hudChrome.unbind.cannotAfford': 'バインド解除の手数料を支払えません。',
   'hudChrome.unbind.outOfRange': 'バインド解除するには作業台のそばにいる必要があります。',
+  // Professions 2.0 Phase 15 wiki arm: the professions hub rewrite and the
+  // /wiki/professions detail pages (M16 non-Latin fills, added with the keys).
+  'guide.professions.ringHeading': '製作の輪',
+  'guide.professions.ringBody':
+    '十の製作職がひとつの輪に並び、それぞれが独自のスキルを記録します。カードを開くと完全なレシピ表と数値を確認できます。',
+  'guide.professions.ringWaveNote':
+    '宝石細工と銘文は現在も輪の上にありますが、レシピはまだありません。その内容は今後のゾーン拡張とともに追加されます。',
+  'guide.professions.capFmt': '上限{cap}',
+  'guide.professions.comingSoon': 'レシピ未実装',
+  'guide.professions.gatherHubHeading': '採集',
+  'guide.professions.gatherHubBody':
+    '四つの採集職が製作に素材を供給します。採掘・伐採・薬草学の上限は100、釣りは200です。',
+  'guide.professions.archetypesHeading': '十の生き方',
+  'guide.professions.archetypesBody':
+    '隣り合う二つの職に調律すると対の称号を得ます。二つの主専攻は上限まで伸ばせ、反対側の一つは趣味としてレア段階まで残り、その他の職はコモン段階に留まります。',
+  'guide.professions.pairFmt': '{a}と{b}',
+  'guide.professions.curveHeading': '熟達カーブ',
+  'guide.professions.curveBody':
+    'スキル{step}ポイントごとに1段階。自分の段階以上のレシピは全量の成長を与え、レシピが下に離れるにつれ半分、四分の一と減り、やがて止まります。',
+  'guide.professions.provenanceHeading': '来歴',
+  'guide.professions.provenanceBody':
+    'レア以上の作品には作り手の名が刻まれ、傑作は品質が1段階上がり、受注品は受け取った相手にバインドされます（作り手の絆）。',
+  'guide.professions.stationsHeading': '作業場と師匠',
+  'guide.professions.stationsBody':
+    '三つの町の拠点に六つの種類別作業場があり、常駐の師匠がレシピを教え、作業依頼を出しています。',
+  'guide.professions.colStation': '作業場',
+  'guide.professions.colHub': '拠点',
+  'guide.professions.colMaster': '師匠',
+  'guide.professions.masterCellFmt': '{name}（{title}）',
+  'guide.profPages.back': '生産職の概要へ戻る',
+  'guide.profPages.capLabel': 'スキル上限',
+  'guide.profPages.stationLabel': '作業場',
+  'guide.profPages.stationNone': '作業場不要',
+  'guide.profPages.stationAnywhere': 'どこでも',
+  'guide.profPages.mastersLabel': '師匠',
+  'guide.profPages.masterFmt': '{name}（{hub}）',
+  'guide.profPages.specializationLabel': '特化',
+  'guide.profPages.specializationFact': 'スキル{at}：素材コスト{pct}%減',
+  'guide.profPages.matFmt': '{name}×{count}',
+  'guide.profPages.outputFmt': '{name}×{count}',
+  'guide.profPages.comboReq': '{a}と{b}が必要',
+  'guide.profPages.sourceTrainerFee': '訓練師、{fee}',
+  'guide.profPages.sourceTrainerFree': '訓練師、無料',
+  'guide.profPages.sourceKnown': '最初から習得済み',
+  'guide.profPages.colRecipe': 'レシピ',
+  'guide.profPages.colSkill': 'スキル',
+  'guide.profPages.colSource': '入手先',
+  'guide.profPages.colStation': '作業場',
+  'guide.profPages.colMaterials': '素材',
+  'guide.profPages.colQuality': '品質',
+  'guide.profPages.colGain': '成長減衰点',
+  'guide.profPages.colMaterial': '素材',
+  'guide.profPages.colTool': '道具',
+  'guide.profPages.colTier': 'ティア',
+  'guide.profPages.colPrice': '価格',
+  'guide.profPages.colZone': 'ゾーン',
+  'guide.profPages.colNodes': 'ノード数',
+  'guide.profPages.colNodeTier': 'ノードのティア',
+  'guide.profPages.colToolNeeded': '必要な道具',
+  'guide.profPages.craftIntro.weaponcrafting':
+    '武器鍛冶はイーストブルックの鍛冶場で斧・メイス・刃・杖を打ち、銅の入門武器からレアのトリウムやアーケナイトの逸品まで手掛けます。',
+  'guide.profPages.craftIntro.armorcrafting':
+    '防具鍛冶はイーストブルックの鍛冶場でメイル防具を打ち、鋲打ちの銅装備からレアのトリウム鱗の重装まで作ります。',
+  'guide.profPages.craftIntro.tailoring':
+    '裁縫はイーストブルックの織機でキャスター用の布防具と大きめのかばんを織り、手織りの基本からレアのサンウィーブまで仕立てます。',
+  'guide.profPages.craftIntro.leatherworking':
+    '皮革加工はフェンブリッジのなめし場で軽快な革装備をなめし、獣皮の基本からレアのマイアウォーデンまで作ります。',
+  'guide.profPages.craftIntro.cooking':
+    '料理はイーストブルックの厨房で魚や獲物や薬草を腰を据えて食べる料理に変え、最高はレアの祝宴料理に届きます。',
+  'guide.profPages.craftIntro.alchemy':
+    '錬金術はハイウォッチの薬房で治癒とマナの薬、そしてスタミナの霊薬を調合します。',
+  'guide.profPages.craftIntro.engineering':
+    '工作はイーストブルックの工作場でティア4と5の採集道具を作り、どれも一段下の道具を材料として消費します。',
+  'guide.profPages.craftIntro.enchanting':
+    'エンチャントは不要な装備を秘術素材へ分解し、それを永続的な装備エンチャントに注ぎ込みます。作業場は不要です。',
+  'guide.profPages.howHeading': '製作の流れ',
+  'guide.profPages.howBody':
+    '素材を揃えて製作ウィンドウ（デフォルトキーT）を開きます。作業場限定のレシピは対応する作業場のそばで、フィールドレシピはどこでも製作できます。',
+  'guide.profPages.recipesHeading': 'レシピ',
+  'guide.profPages.recipesNote':
+    '各レシピの正確なスキルと素材の必要量、習得先、そして成長が減衰し始めるスキル値の一覧です。',
+  'guide.profPages.masteryHeading': 'スキル成長',
+  'guide.profPages.masteryBody':
+    'スキル{step}ポイントごとに1段階。自分の段階以上のレシピは全量、1段下は半分、2段下は四分の一、3段以上下は成長なしで、この職の上限は{cap}です。',
+  'guide.profPages.masterworkHeading': '傑作',
+  'guide.profPages.masterworkBody':
+    '製作成功のたびに{base}%の傑作率があり、レシピより1段高いごとに{perTier}%、署名入り素材の使用で{signed}%、特化で{spec}%が加算され、上限は{cap}%です。',
+  'guide.profPages.trainingHeading': '訓練',
+  'guide.profPages.trainingBody':
+    'この職での段階がレシピ自身の段階に達すると師匠が教えてくれます。段階0のレシピは無料、段階1は{tier1}、段階2は{tier2}です。',
+  'guide.profPages.specializationHeading': '特化',
+  'guide.profPages.specializationBody':
+    'スキルが{at}に達するとこの職に特化し、レシピの素材コストが{pct}%減ります。',
+  'guide.profPages.ench.disenchantHeading': '分解',
+  'guide.profPages.ench.disenchantNote': '分解は不要な武器や防具を品質に応じた秘術素材へ砕きます。',
+  'guide.profPages.ench.typedHeading': '種別副産物',
+  'guide.profPages.ench.typedNote':
+    'レア以上の装備は、種別ごとのトレードバインド副産物も産出します。レア装備からは{rare}個、エピックか伝説からは{epicMin}から{epicMax}個です。',
+  'guide.profPages.ench.colSource': '分解元',
+  'guide.profPages.ench.meleeWeapons': '近接武器',
+  'guide.profPages.ench.timberWeapons': '杖・ワンド・弓・クロスボウ',
+  'guide.profPages.ench.enchantsHeading': 'エンチャント',
+  'guide.profPages.ench.enchantsNote':
+    '各エンチャントの対象部位・素材・正確なボーナスの一覧です。ルーンの段だけが種別副産物の使い道です。',
+  'guide.profPages.ench.colEnchant': 'エンチャント',
+  'guide.profPages.ench.colSlot': '部位',
+  'guide.profPages.ench.colTier': '段',
+  'guide.profPages.ench.colBonus': 'ボーナス',
+  'guide.profPages.ench.tier.base': '基本',
+  'guide.profPages.ench.tier.runed': 'ルーン',
+  'guide.profPages.ench.tier.greater': '上級',
+  'guide.profPages.ench.salvageHeading': 'サルベージ',
+  'guide.profPages.ench.salvageNote':
+    '誰でも武器や防具を品質に応じた普通の素材へ回収できます。エンチャントのスキルは不要です。',
+  'guide.profPages.ench.bonusFmt': '+{value} {stat}',
+  'guide.profPages.gatherIntro.mining':
+    '採掘は三つのゾーンの鉱脈から鉱石を掘り出し、鍛冶系の職に素材を供給します。上限は100です。',
+  'guide.profPages.gatherIntro.logging':
+    '伐採は三つのゾーンの林から木材を切り出し、武器の柄や道具に素材を供給します。上限は100です。',
+  'guide.profPages.gatherIntro.herbalism':
+    '薬草学は三つのゾーンで薬草を摘み、錬金術と料理に素材を供給します。上限は100です。',
+  'guide.profPages.gatherIntro.fishing':
+    '釣りはアタリとリールの呼吸で各ゾーンの開けた水辺から獲物を釣り上げます。上限は200です。',
+  'guide.profPages.rhythmHeading': '採集のリズム',
+  'guide.profPages.rhythmBody':
+    '採集は目に見える詠唱です。基本{base}秒、最短{floor}秒で、道具がノードより1ティア高いごとに{tool}秒、熟練度バンドごとに{band}秒短くなります。',
+  'guide.profPages.gainBody':
+    '熟練度{step}ごとに1成長段階となり、ノードのティアと比べられます。低いノードの成長はやがて消え、より高いティアのノードが上限{cap}までの道のりを支えます。',
+  'guide.profPages.nodesHeading': 'ゾーン別ノード',
+  'guide.profPages.nodesNote':
+    'ノードの場所・ティア・必要な道具・産出の一覧です。各ノードはあなたの採集から{respawn}秒後に、あなた専用に再出現します。',
+  'guide.profPages.toolsHeading': '道具',
+  'guide.profPages.toolsNote':
+    '道具の段階と正確な商人価格の一覧です。ティア4と5の道具は製作のみで、販売されません。',
+  'guide.profPages.toolCrafted': '製作品（{craft}）',
+  'guide.profPages.toolVendor': '{name}（{hub}）',
+  'guide.profPages.toolUnavailable': '非売品',
+  'guide.profPages.priceNone': '非売品',
+  'guide.profPages.toolTierReq': 'ティア{tier}の道具',
+  'guide.profPages.bareHands': '素手で可',
+  'guide.profPages.bandsHeading': '熟練度バンド',
+  'guide.profPages.bandsBody': '熟練度バンドは採集の詠唱を速め、釣りでは釣果表も左右します。',
+  'guide.profPages.bandFmt': 'バンド{band}：熟練度{at}から',
+  'guide.profPages.rareHeading': '珍しい発見',
+  'guide.profPages.rareBody':
+    '採集のたびに{oneIn}分の1の確率で珍しい発見が起こり、収穫が{mult}倍になり、必ず署名され、ゾーン全体に告知されます。',
+  'guide.profPages.specimenBody':
+    '死体の採集では署名入りの完璧な標本が見つかることもあります。死体採集の約{pct}%はレア以上を引き当てます。',
+  'guide.profPages.fish.biteHeading': 'アタリとリール',
+  'guide.profPages.fish.biteBody':
+    'キャストから{min}から{max}秒でアタリが来ます（良い竿は待ちを最大{rod}秒縮めます）。リールの猶予は{reel}秒に竿がティア1つ上がるごとに{reelRod}秒加わり、1回のセッションは最長{cap}秒です。',
+  'guide.profPages.fish.scheduleHeading': '熟練度成長',
+  'guide.profPages.fish.scheduleNote':
+    '釣りの成長は熟練度ごとの固定スケジュールに従い、{cutoff}からはガラクタを釣っても何も学べません。',
+  'guide.profPages.fish.colProficiency': '熟練度',
+  'guide.profPages.fish.colGain': '1匹あたりの成長',
+  'guide.profPages.fish.belowFmt': '{below}未満',
+  'guide.profPages.fish.tablesHeading': '釣果表',
+  'guide.profPages.fish.tablesNote':
+    '各バンドのゾーン別の正確な釣果確率です。どの行でも{rare}が珍しい獲物です。',
+  'guide.profPages.fish.bandHeading': 'バンド{band}：熟練度{at}以上、竿ティア{rod}',
+  'guide.profPages.fish.colCatch': '釣果',
+  'guide.profPages.fish.colOdds': '確率',
+  'guide.profPages.fish.emptyHook': 'アタリなし',
+  'guide.profPages.econ.title': '製作経済',
+  'guide.profPages.econ.intro': '生産経済を支える正確な手数料・シンク・報酬の一覧です。',
+  'guide.profPages.econ.feesHeading': '手数料とシンク',
+  'guide.profPages.econ.feesNote':
+    '製作ごとのゴールドシンクから市場の手数料まで、生産に関わる各種費用です。',
+  'guide.profPages.econ.feeCraft': '製作費',
+  'guide.profPages.econ.feeCraftValue': 'アイテム予算1ポイントにつき{fee}',
+  'guide.profPages.econ.feeMarket': '市場手数料',
+  'guide.profPages.econ.feeMarketValue': '成立した取引の{pct}%',
+  'guide.profPages.econ.feeDeposit': '出品保証金',
+  'guide.profPages.econ.feeDepositValue': 'なし',
+  'guide.profPages.econ.feeUnbind': 'バインド解除料',
+  'guide.profPages.econ.feeUnbindValue': '良質{uncommon}、レア{rare}、エピック{epic}',
+  'guide.profPages.econ.trainingHeading': '訓練費',
+  'guide.profPages.econ.trainingNote':
+    'レシピの段階ごとの固定料金で、師匠が教える際に一度だけ支払います。',
+  'guide.profPages.econ.trainingTierFmt': '段階{tier}：{fee}',
+  'guide.profPages.econ.free': '無料',
+  'guide.profPages.econ.workOrdersHeading': '作業依頼',
+  'guide.profPages.econ.workOrdersNote':
+    '各師匠は自分の定番素材の束を店売り価格の{pct}%で買い取り、{minutes}分ごとに繰り返せます。',
+  'guide.profPages.econ.colOrder': '作業依頼',
+  'guide.profPages.econ.colMaster': '師匠',
+  'guide.profPages.econ.colAsks': '要求',
+  'guide.profPages.econ.colPays': '支払い',
+  'guide.profPages.econ.commissionsHeading': '受注品と作り手の絆',
+  'guide.profPages.econ.commissionsBody':
+    '任意で選ぶ受注製作には作り手の絆が宿ります。作品は取引で受け取った相手にバインドされ、どの作業場の師匠でも段階料金で解除できます。',
+  'guide.profPages.econ.provenanceHeading': '署名入りの品',
+  'guide.profPages.econ.provenanceBody':
+    'レア以上の製作品と発見には作り手の署名が入り、署名が完全に一致する品は今でもスタックできます。',
+  'guide.profPages.econ.throttleHeading': '行動の制限',
+  'guide.profPages.econ.throttleBody':
+    '製作・分解・エンチャント・サルベージはひとつの制限を共有します。{seconds}秒あたり最大{actions}回です。',
+  'guide.profPages.econ.doctrineHeading': 'プレイヤー同士の取引',
+  'guide.profPages.econ.doctrineBody':
+    '製作装備の強さは常にレイドの下限を下回り、上記の費用は品物を商店の循環ではなくプレイヤー間の取引へと押し出します。',
+  'guide.profPages.faq.title': '生産職FAQ',
+  'guide.profPages.faq.intro': '作り手からよく聞かれる質問への短い答えです。',
+  'guide.profPages.faq.q1': '生産職はいくつ覚えられますか？',
+  'guide.profPages.faq.a1':
+    'どのキャラクターも八つの修得可能な製作職と四つの採集職をすべて伸ばせます。唯一の選択は生き方だけです。',
+  'guide.profPages.faq.q2': 'レシピはどこで覚えますか？',
+  'guide.profPages.faq.a2':
+    '訓練師のレシピは各作業場の常駐の師匠から学び、九つの共通フィールドレシピと道具レシピは全員が最初から知っています。',
+  'guide.profPages.faq.q3': '採集に道具は必要ですか？',
+  'guide.profPages.faq.a3':
+    'ティア1のノードは素手で採れます。ティア2や3のノードには、そのティア以上の対応する道具が必要です。',
+  'guide.profPages.faq.q4': 'なぜスキルが上がらなくなったのですか？',
+  'guide.profPages.faq.a4':
+    'レシピが自分より下に離れるにつれ、熟達カーブは成長を半分、四分の一、ゼロへと減らし、各職は上限で止まります。',
+  'guide.profPages.faq.q5': '傑作とは何ですか？',
+  'guide.profPages.faq.a5':
+    'どの製作にも品質が1段階高く仕上がる小さな確率（3%から上限15%）があり、レイドの下限を超えることはありません。',
+  'guide.profPages.faq.q6': '「作り手：」とは何の意味ですか？',
+  'guide.profPages.faq.a6':
+    '九つの共通の野外レシピと道具のレシピは、最初から誰もが習得しています。作業場に縛られる三つの上級レシピ（ススウロコのマント、ワードウィーヴのフード、ダスクハイドの手甲）も同様で、師匠は不要ですが、その作業場は必要です。それ以外はすべて、三つの拠点の町にある各作業場の師匠が教えます。多くはイーストブルックにおり、なめし職人はフェンブリッジのなめし場に、錬金術師はハイウォッチの薬房にいます。\n\nトレーナーのレシピはスキル0、25、50の段階に分かれ、一度きりの料金として無料、銀25、金1で習えます。師匠はその職のあなたの段階がレシピ自身の段階に達すると教えてくれ、習得には師匠の作業場に立っている必要があります。移動式の作業場は数に入りません。',
+  'guide.profPages.faq.q7': '作り手の絆とは何ですか？',
+  'guide.profPages.faq.a7':
+    '受注品は取引で受け取った相手にバインドされ、どの作業場の師匠でも段階料金で解除できます。',
+  'guide.profPages.faq.q8': '生き方は変えられますか？',
+  'guide.profPages.faq.a8':
+    '一度も持ったことのない組み合わせは新しい調律クエストひとつで済み、かつて持っていた組み合わせに戻るには、代償が増えていく償いの用事が必要です。',
+  // Professions 2.0 Phase 15 wiki arm, final prose sections (M16 non-Latin
+  // fills for the NEW keys; item, NPC, and deed names stay English, the baked
+  // proper-noun precedent).
+  'guide.professions.whatHeading': '剣のかたわらの生業',
+  'guide.professions.whatBody':
+    '専門技能はこの世界の暮らしそのものです。四つの採集職が大地から素材を引き出し、十の製作職がそれを装備や食事、薬、道具に変えます。すべてが連鎖します。掘った鉱石は剣になり、剣はエンチャントを受け、そのエンチャントは古い装備を砕いた粉を必要とします。職業数の制限はありません。今内容のある八つの製作職と四つの採集職をすべて並行して伸ばせます。唯一の排他的な選択は、いずれ誓う生き方だけです。ただし、いったん誓いを立てると、その陰で休眠に入った製作職は伸びが止まります。スキルは決して下がらず、学んだことが失われることもありません。',
+  'guide.professions.deedsHeading': '旅路を刻む功績',
+  'guide.professions.deedsBody':
+    '功績の書が歩みに寄り添います。初めての調律でGuildsworn、初めての傑作でMasterwrightを獲得し、どちらも称号として身につけられます。八つの製作職はそれぞれスキル50で節目の功績、上限125でGrandmaster称号を戴き、釣りは熟練100でOld Salt、200でMaster Angler称号を得ます。初めての採集や製作、野外の幸運な発見、サルベージにも静かなページがあります。すべて装飾のみ。称号と名声だけで、功績が力を与えることはありません。',
+  'guide.professions.startHeading': 'どこから始めるか',
+  'guide.professions.startBody':
+    'Eastbrookに着いたばかりなら、Foreman Odellを訪ねてA Trade for Every Handを受けましょう。町の南西Copper Digの鉱脈を教えてくれます。以後は旅の途中で見かける鉱脈や木立、薬草をすべて採ること。町ではTキーで製作ウィンドウを開き、誰もが知る初期レシピを作り、鍛冶場、厨房、織機、工作場の師匠たちを訪ね、作業依頼で堅実に稼ぎましょう。ギルドの手紙が届く頃には、どの対が我が家か分かっているはずです。',
+  'guide.profPages.yieldsHeading': '採集の実り',
+  'guide.profPages.yieldsBody':
+    '採集のたびに品質が抽選され、その確率は熟練度がすべてです。始めたばかりの採集者は常にコモン品ですが、熟練が上がるほど高い等級へ重みが移り、決して後退しません。上限100ではコモンが完全に消え、60%が良質、30%がレア、8%がエピック、2%が伝説になります。品質は量でもあります。コモンは1個、良質とレアは2個、エピックは3個、伝説は4個。レア以上の収穫はあなたの署名入り（Gathered by）で届き、上限では十回に四回、名前が刻まれます。',
+  'guide.profPages.gatherDeedsHeading': '道すがらの功績',
+  'guide.profPages.gatherDeeds.mining':
+    'どの採集職でも最初の採取でFruits of the Fieldを、採掘100でOre in the Bloodを刻みます。採掘、伐採、薬草学、釣りのうち三つで100に達するとMaster Gatherer（名声25）。pristine veinを掘り当てれば専用の収集印も。功績は称号と名声のみで、力は与えません。',
+  'guide.profPages.gatherDeeds.logging':
+    'どの採集職でも最初の採取でFruits of the Fieldを、伐採100でHeartwood Hewerを刻みます。四採集職のうち三つで100に達するとMaster Gatherer（名声25）。ancient heartwoodを切り出せば専用の収集印も。功績は称号と名声のみで、力は与えません。',
+  'guide.profPages.gatherDeeds.herbalism':
+    'どの採集職でも最初の採取でFruits of the Fieldを、薬草学100でMaster of the Meadowを刻みます。四採集職のうち三つで100に達するとMaster Gatherer（名声25）。moonlit bloomを摘めば専用の収集印も。功績は称号と名声のみで、力は与えません。',
+  'guide.profPages.gatherDeeds.fishing':
+    '熟練100でOld Saltを、200でMaster Anglerとその称号を刻みます。釣り人の頂点です。釣りもMaster Gatherer（三職100）に数えられます。各地方の水域で最初の一匹を釣ればそれぞれのページが埋まり、Glimmerfin Koiを釣ればGlimmer of Hopeが記されます。',
+  'guide.profPages.fish.startHeading': 'はじめかた',
+  'guide.profPages.fish.startBody':
+    'Simple Fishing PoleはEastbrookのFisherman Brandtが20銅で売っています（町の東端でMirror Lakeを睨む老練の釣り師です）。Tinker Gizzel、FenbridgeのProvisioner Hale、HighwatchのQuartermaster Breeにも在庫があります。前方約24ヤード以内の十分に深い水面に向かって竿を使えば、浮きが飛んでいきます。戦闘中、泳いでいる間、死亡中は投げられません。岸から釣るのが本来の姿で、どの地方の釣れる水域でも構いません。',
+  'guide.profPages.fish.koiHeading': 'Glimmerfin Koi',
+  'guide.profPages.fish.koiBody':
+    '世界中のあらゆる水域に同じ大物が潜んでいます。Glimmerfin Koi、良質のきらめく錦鯉で、商人に売れば75銅、誇りとしてはそれ以上の価値があります。確率は釣り上げごとに一律3%（Thornpeakの冷たい水では4%）でスキルに左右されず、桟橋の新人もMaster Anglerも同じ土俵です。釣り上げれば功績の書にGlimmer of Hope（名声ゼロの収集印）が記されます。',
+  'guide.profPages.econ.sellsHeading': '何が売れるか、なぜか',
+  'guide.profPages.econ.sellsBody':
+    '最も堅実な商売は消耗品です。使えばなくなり、また買われるからです。薬、料理、エンチャントはすべて消えもの。剣を一度買った戦士も回復薬は永遠に買い続けます。傑作は高級品市場です。注文生産はできないため、望まれた一品には本物の上乗せがつき、刻まれた署名は歩く看板になります。素材が第三の柱です。分解で得る秘術素材、砕き手からエンチャンターへ直接流れるResonant副産物、そして傑作を狙う職人が割高でも買う署名入り採集素材です。',
+  'guide.profPages.econ.marketHeading': '世界市場と手数料',
+  'guide.profPages.econ.marketBody':
+    '世界市場はレルム全体の取引所で、EastbrookのMerchantとHighwatchのAuctioneer Vossが取り仕切ります。出品は無料。保証金はなく、売れ残りはそのまま戻ります。手数料は成立時のみ、売値の5%です。重要な制限として、市場が扱うのは無印の品だけです。署名入り、傑作、エンチャント済み、バインド済みの品は出品されないため、特別な品は取引ウィンドウで直接手渡しされます。値付けは自分で。市場が教えてくれるのは無印の相場だけです。',
+  'guide.profPages.econ.collectorsHeading': '収集家と戦利品、物語の値段',
+  'guide.profPages.econ.collectorsBody':
+    '商人は来歴を見ません。署名入りでもNPCへの売値は無印と同額です。署名の上乗せはプレイヤーの間にだけ存在し、だからこそ面白いのです。名の知れた採集者が署名した幸運の鉱石、Prime Cutの一切れ、引退した職人の名を刻む傑作の剣。値段は誰かの記憶が決めます。功績の書も同じ心を汲みます。Pristine Vein、Ancient Heartwood、Moonlit Bloom、A Perfect Specimen、Glimmer of Hopeはいずれも名声ゼロの収集印で、その瞬間があなたに起きた証のためだけにあります。これらは力ではありません。来歴は能力値を買わず、戦いにも勝ちません。良き日々の控えです。',
+  'guide.profPages.craftProse.weaponcrafting.identityHeading': '誰もが買い求める刃',
+  'guide.profPages.craftProse.weaponcrafting.identityBody':
+    'レア段だけで三つの欲求を満たします。力の近接向けThorium Warblade、敏捷の戦士向けArcanite War Axe、そして知力と精神の杖Elderwood Battle Staff。製作の環では防具鍛冶と宝石細工の間に座り、鍛冶師（武器鍛冶と防具鍛冶）はForgemistress Darvaの前で鉱脈を三つ自らの手で掘って誓えます。宝石細工との対Bladewrightは、宝石細工のレシピが将来の地方で届くまで誓えません。',
+  'guide.profPages.craftProse.weaponcrafting.materialsHeading': '炉が飲み込むもの',
+  'guide.profPages.craftProse.weaponcrafting.materialsBody':
+    '採掘が背骨です。銅鉱石はEastbrook Vale、鉄鉱石はMirefen Marsh、トリウムはThornpeak Heightsから。伐採も想像以上に重要で、ironbarkが猪槍の柄になり、ashwoodが槌を支え、elderwoodの丸太一本が杖になります。残りは狩りと売店から。粗皮は狼や猪の亡骸から剥ぎ、骨片は日々の狩りで出ます。梯子のレシピはSmithing Flux（Darvaで20銅）を焚きます。採掘が追いつかなければ、Darvaがトリウム鉱石を、Tinker Gizzelが工作場でアーケナイトの延べ棒を、割高で売ってくれます。',
+  'guide.profPages.craftProse.weaponcrafting.ladderHeading': '梯子を一段ずつ',
+  'guide.profPages.craftProse.weaponcrafting.ladderBody':
+    '野外レシピのEastbrook Arming Swordは全員が最初から知っていて、どこでも作れます。本当の梯子は鍛冶場限定の三段九レシピ。銅段はスキル0で無料、鉄段はスキル25で各25銀、トリウム段はスキル50で各1金。あなたの段が届いた瞬間にDarvaが教えてくれます。対に乗るレシピがもう一つ、Gravewyrm Gauntlets。武器鍛冶と防具鍛冶が共に25の調律済み鍛冶師だけが作れる合作の品で、作業場すら要りません。',
+  'guide.profPages.craftProse.weaponcrafting.routeHeading': '傑作と、125への道のり',
+  'guide.profPages.craftProse.weaponcrafting.routeBody':
+    '能力値を持つ品（鉄段以上）だけが傑作になり得ます。無能力値の銅段コモン品は決して発動しません。鉄は素材段階1（+1%）、elderwoodとアーケナイトは段階2（+2%）です。道のりは銅段で25、鉄段で50、トリウム段で75。以降は上位レシピが未実装のため半減から四分の一へ薄れ、上限125まではおよそ150回。毎分10回の共有スロットルも忘れずに。Darvaの作業依頼は30分ごとに銅鉱石8個を引き取ります。功績の書はスキル50でEdge and Temper、125でGrandmaster Weaponcraftingを刻みます。',
+  'guide.profPages.craftProse.armorcrafting.identityHeading': '前線のメイル',
+  'guide.profPages.craftProse.armorcrafting.identityBody':
+    '梯子は兵士の経歴のようです。鋲打ちの銅装備で始まり、ironlink段で初めて本物の能力値がつき、レアのthoriumscale兜、胸当て、脚甲は職人が打てる最大の防御力を誇る力とスタミナの装備です。静かな一面もあります。野外コモンのEastbrook Warded Leggingsとスキル75のSootscale Mantle（知力と精神のメイル肩）が、呪文使いのメイル職を顧客に留めます。環では武器鍛冶と工作の間。鍛冶師の対はDarvaの前で誓え、工作との対Cogsmithには誓いのクエストがまだありません。',
+  'guide.profPages.craftProse.armorcrafting.materialsHeading': '袋いっぱいの鉱石',
+  'guide.profPages.craftProse.armorcrafting.materialsBody':
+    'これほど鉱石を食う職はありません。ironlink hauberk一着で鉄鉱石5個、thoriumscaleは各piece3から4個のトリウムにアーケナイトの延べ棒1本。本気の防具職人はMirefen MarshとThornpeak Heightsを自ら掘るか、誰かに払います。銅は最初の段の分で、Copper Dig脇の鉱脈から。金属の周りには柔らかい素材、粗皮、骨片、リネンの端切れ、そしてほぼ全レシピにSmithing Flux（鍛冶場で20銅）。急ぎならDarvaがトリウムを店売りしています。',
+  'guide.profPages.craftProse.armorcrafting.ladderHeading': 'Darvaの炉で学ぶ',
+  'guide.profPages.craftProse.armorcrafting.ladderBody':
+    '野外コモン二着（Eastbrook Chainmail VestとWarded Leggings）は最初から誰でもどこでも。訓練の梯子はEastbrook鍛冶場の三段九レシピで、銅段はスキル0無料、ironlink段はスキル25で各25銀、thoriumscale段はスキル50で各1金。梯子の外に二つの特例。Boundstone Helmは鍛冶師の合作レシピ（要調律、両スキル25、作業場不要）。Sootscale Mantleは師匠不要で全員が知っていますが、スキル75かつ鍛冶場限定、この職の第3段の締めくくりです。',
+  'guide.profPages.craftProse.armorcrafting.routeHeading': '傑作と、125への道のり',
+  'guide.profPages.craftProse.armorcrafting.routeBody':
+    'ironlink段以上はすべて傑作の抽選があります。防御力しかない銅段コモンは発動しません。鉄は素材段階1、アーケナイトは段階2。道は定番の三段、銅で25、ironlinkで50、thoriumscaleで75。75以降の幸運はSootscale Mantleです。第3段レシピなので99まで全速、以降半減。最後の50ポイントが150回ではなくおよそ75回で済みます。1着にトリウム7個とSmithing Flux 5個、Thornpeakと鍛冶場カウンターで買いだめを。Darvaの依頼は30分ごとに銅鉱石8個。スキル50でHammer and Plate、125でGrandmaster Armorcraftingです。',
+  'guide.profPages.craftProse.tailoring.identityHeading': '術者の布、皆の鞄',
+  'guide.profPages.craftProse.tailoring.identityBody':
+    "梯子はhomespunの基本からgoldweave一式を経てレア段のSilkbinder's Raimentとsunweaveへ。第二の商売は万人向けです。Silkspun Satchelは10枠の鞄で、鞄を嫌う職業もレベルもありません。環では皮革加工と銘文の間。生きた対は装具師（皮革加工と裁縫）で、Eastbrookの織機のWeaver Ottilieの前で、webwood蜘蛛を四匹狩って絹を捧げて誓います。銘文との対Mageweaverは銘文最初のレシピ待ちです。",
+  'guide.profPages.craftProse.tailoring.materialsHeading': '糸と絹、それに薬草',
+  'guide.profPages.craftProse.tailoring.materialsBody':
+    "織機は狩りの戦利品と野の恵みで回ります。リネンの端切れと手織り布は人型の敵から、蜘蛛の糸は蜘蛛の亡骸から。レア段の目玉Silkbinder's RaimentにはPristine Silk（亡骸採集の署名入り標本）が要ります。薬草学はどの装備職よりも裁縫を養います。silverleafが履物を飾り、goldleafがgoldweaveを染め、sunpetalがレア段全体を縫い上げます。Spool of ThreadはOttilieで12銅。織機は金属を一切求めず、Wardweave Cowlの上級品でさえpremium herbs、Pristine Silk、蜘蛛の糸、糸で織られます。",
+  'guide.profPages.craftProse.tailoring.ladderHeading': 'Ottilieの織機で学ぶ',
+  'guide.profPages.craftProse.tailoring.ladderBody':
+    '野外コモン二着（Eastbrook Wool TrousersとRitual Vestments）は最初からどこでも。訓練の梯子はEastbrookの井戸の南の織機で、homespun段はスキル0無料、goldweave段（Silkspun Satchel含む）はスキル25で各25銀、レア段はスキル50で各1金。Wardweave Cowlに師匠は不要で全員が知っていますが、スキル75かつ織機限定、この職の第3段の締めくくりです。例によって、段が届けばOttilieがすぐ教えてくれます。',
+  'guide.profPages.craftProse.tailoring.routeHeading': '傑作と、125への道のり',
+  'guide.profPages.craftProse.tailoring.routeBody':
+    'RaimentのPristine Silkはそれだけで署名素材ボーナスを満たし、goldleafとsunpetalは素材段階1と2に数えられるので、レア段が最も発動しやすい場所です。鞄のような無能力値の品は決して発動しません。道はhomespunで25、goldweaveで50、レア段で75。75からはWardweave Cowl（第3段レシピ、99まで全速、以降半減）が引き継ぎ、最後の50ポイントはおよそ75回、1回にPristine Silk 2枚、蜘蛛の糸4本、sunpetalとgoldleafの薬草を各2、糸2。鞄は文字通り全員に売れ、Ottilieの依頼は30分ごとに蜘蛛の糸6本。スキル50でA Fine Seam、125でGrandmaster Tailoringです。',
+  'guide.profPages.craftProse.leatherworking.identityHeading': '俊敏な者の革',
+  'guide.profPages.craftProse.leatherworking.identityBody':
+    "梯子は素朴なFenbridgeの硬革の脚絆、靴、帯から、良質のmarshstalker一式を経て、職人が裁てる最高の革であるレアのmirewarden一式へ。術者向けの二着、野外コモンのEastbrook Druid's Hideとスキル75のDuskhide Wrapsが陣容を締めます。環では料理と裁縫の間。生きた対は装具師（皮革加工と裁縫）でEastbrookのWeaver Ottilieの前で誓い、料理との対Trapperには誓いのクエストがまだありません。",
+  'guide.profPages.craftProse.leatherworking.materialsHeading': '狩りこそが収穫',
+  'guide.profPages.craftProse.leatherworking.materialsBody':
+    '皮革加工ではレベリングの道と補給線が同じ一本道です。粗皮は皮を持つ亡骸、とりわけ狼と猪から直接剥ぎ、亡骸一体につき早い者勝ちの一人だけ。レア以上の採集判定はPristine Hideも授け、Mirewarden Jerkinがまさにそれを求めるので、見つけたら必ず取っておくこと。脇役は少なめで、蜘蛛の脚と糸、人型の手織り布、mirewardenのレア各着にトリウム1個（Duskhide Wrapsの上級品は6個）、そしてなめし場カウンターのTanning Agent（16銅）。掘りたくなければTanner Hesk がトリウムも売っています。',
+  'guide.profPages.craftProse.leatherworking.ladderHeading': 'Fenbridgeで修行',
+  'guide.profPages.craftProse.leatherworking.ladderBody':
+    "ひとつだけ違うところ。なめし場はMirefen Marsh街道のFenbridgeにあり、Eastbrookの外で修行する唯一の本格職です。Tanner Heskが桶のそばで教えます。硬革段はスキル0無料、marshstalker段はスキル25から各25銀、mirewarden段はスキル50から各1金。二つのレシピは師匠を飛ばします。野外コモン（Tanned Leather JerkinとDruid's Hide）は最初からどこでも、Duskhide Wrapsは全員が知っていますがスキル75かつなめし場限定。装具師の誓い自体はEastbrookのOttilieの前です。沼で行うのは修行だけ。",
+  'guide.profPages.craftProse.leatherworking.routeHeading': '傑作と、125への道のり',
+  'guide.profPages.craftProse.leatherworking.routeBody':
+    "marshstalker段以上はすべて傑作の抽選があり、Mirewarden JerkinのPristine Hideが署名素材ボーナスを自動で満たします。トリウムは素材段階1。無能力値の硬革コモンは発動しません。自然に育てましょう。レベル1から狼と猪を残らず剥ぎ、硬革段はその場で25まで、クエストで沼に入るついでに修行を。marshstalkerで50、mirewardenで75、以降はDuskhide Wraps（第3段レシピ、トリウム6個、Pristine Hide 3枚、粗皮2枚、Tanning Agent 1）が99まで全速、以降半減で、最後の50ポイントはおよそ75回。75の特化で得る移動なめし場はこの職で最も輝きます。焚き火のそばで革袋が装備に変わり、Fenbridgeへの往復が消えます。Heskの依頼は30分ごとに粗皮8枚。スキル50でTanner's Trade、上限でGrandmaster Leatherworkingです。",
+  'guide.profPages.craftProse.cooking.identityHeading': '一行を養う鍋',
+  'guide.profPages.craftProse.cooking.identityBody':
+    "料理を食べると18秒の休憩で回復します。戦闘の合間には最安の回復です。梯子は回復90のPan-Seared River Perchから、現存最大の座り回復であるMarlow's Grand Roast（980）まで。環では錬金術と皮革加工の間。生きた対は薬師（錬金術と料理）で、Eastbrook厨房のCook Marlowの前で猪を四頭狩って誓います。皮革加工との対Trapperには誓いのクエストがまだありません。",
+  'guide.profPages.craftProse.cooking.materialsHeading': '竿と包丁が満たす食料庫',
+  'guide.profPages.craftProse.cooking.materialsBody':
+    '看板食材は釣りが地方ごとに供給します。Eastbrook Valeの鏡鱒と川鱸、Mirefen Marshの沼カワカマスと泥鰻、Thornpeak Heightsの霜鰓鱒と板鰭鯉。梯子の各段はその段の魚を調理するので、釣る料理人は品切れ知らずです。肉屋の側は亡骸採集から。猪などの獣肉、そしてレア以上の採集判定で署名入りのPrime Cut、大ローストの主役が出ます。薬草が上位の皿に香りを添え、ashwoodの丸太一本が鰻を燻し、Cooking SaltはMarlowの店で一袋8銅です。',
+  'guide.profPages.craftProse.cooking.ladderHeading': '干し肉から大ローストへ',
+  'guide.profPages.craftProse.cooking.ladderBody':
+    "Salted Jerkyが野外レシピです。最初から誰でも、蜘蛛の脚1本で、どこでも作れる駆け出しの携行食。訓練の梯子は広場西側のEastbrook厨房で、無料段はスキル0（川鱸、Hunter's Game Skewer、Herbed Marsh Pike）、中段はスキル25で各25銀（Ashwood Smoked Eel、Goldleaf Game Stew、Frostgill Chowder）、レア段はスキル50で各1金（Silvered Carp Supper、Angler's Feast Platter、Marlow's Grand Roast）。まとめ料理は食材を伸ばします。燻製鰻と煮込みは1回で2皿、宴会盛りは3皿です。",
+  'guide.profPages.craftProse.cooking.routeHeading': '傑作ではなく特化、そして125への道',
+  'guide.profPages.craftProse.cooking.routeBody':
+    '料理は傑作物語の正直な例外です。皿に伸ばす能力値がないので傑作は決して発動せず、追う必要もありません。この職の極みは75の特化です。全食材が2割引きになり（まとめ料理では加速度的に効きます）、移動式の野外厨房でダンジョンの扉の前で宴が炊けます。釣った物を料理し、二つの技能を互いに養いましょう。干し肉と無料段で25、中段で50、レア段で75。以降は上位の皿が未実装のため半減から四分の一へ薄れ、上限まではおよそ150回。作り置きと考えれば無駄がなく、ギルドは全皿を平らげます。Marlowの依頼は30分ごとに獣肉8個。スキル50でSeasoned Chef、125でGrandmaster Cooking称号です。',
+  'guide.profPages.craftProse.alchemy.identityHeading': '戦いを制する小瓶',
+  'guide.profPages.craftProse.alchemy.identityBody':
+    'この職はHighwatchの薬房で営みます。主はAlchemist Verane。レシピの梯子を教え、Glass Vialを12銅で売り、作業依頼で薬草に金を払います。錬金術は試行錯誤の職たちと並び、片側に工作、もう片側に料理。ゆえに対は二つ、爆破師（工作と錬金術、EastbrookのTinker Gizzelの前で）と薬師（錬金術と料理、Cook Marlowの前で）です。どちらかに調律すれば錬金術は主専攻となり上限まで開きます。それまでは未宣誓の職と同じくレア段階まで働きます。',
+  'guide.profPages.craftProse.alchemy.materialsHeading': '薬草と毒腺とガラス',
+  'guide.profPages.craftProse.alchemy.materialsBody':
+    'どの薬もGlass Vialひとつと段に応じた薬草を求めます。silverleafはEastbrook Vale、goldleafはMirefen Marsh、sunpetalはThornpeak Heightsに育ち、一地方に一種、薬瓶は世界と共に登っていきます。薬草学は生まれつきの相棒ですが、採集者や市場から買っても構いません。深い地方の上位の草むらは良い鎌を求めるので、自分で摘むなら道具を新しく。強壮剤の系統には狩人の素材が加わります。毒持ちの亡骸から採るVenom Gland、頂点の強壮剤にはPristine Venom Gland（署名入りのレア標本）です。',
+  'guide.profPages.craftProse.alchemy.ladderHeading': 'レシピの梯子',
+  'guide.profPages.craftProse.alchemy.ladderBody':
+    'Minor Healing Potionは全員が最初から知り、どこでも混ぜられます。本当の梯子はVeraneが薬房で教える九つのレシピ、各段三つずつ。スキル0の段は無料、25の段は各25銀、50の段は各1金です。各段は回復薬、マナ薬、スタミナ強壮剤の三点で、コモンのsilverleaf瓶（回復120、マナ160）から良質のgoldleaf（200と260）、レアのsunpetal（280と360）へ。強壮剤も同じく登ります。Elixir of the Boarはスタミナ6を10分、Venomfire Elixirは9を15分、Elixir of the Serpentは12を15分で一度に2本。脇にもう一つ、合作のElixir of the Bear。錬金25でVeraneが25銀で教え、どこでも混ぜられますが、両スキル25の調律済み爆破師だけが作れます。',
+  'guide.profPages.craftProse.alchemy.routeHeading': '調合師の125への道',
+  'guide.profPages.craftProse.alchemy.routeBody':
+    '薬は決して傑作になりません。あれは能力値を持つ装備のものです。それでも名前は旅をします。レアのsunpetal薬は一本ずつ醸され署名入りで届き、2本組のElixir of the Serpentは無印のままです。スキル75で特化し、以後すべての錬金レシピの素材が2割引き。薬草学を早めに取り、レベリングしながら摘みましょう。silverleafは谷中にあり、Veraneの調合台に着けば、無料段はどのみち摘んだ薬草で25まで綺麗に運んでくれます。25の段は開いた瞬間に習い、摘み場を沼のgoldleafへ移し、Veraneの依頼（Goldleaf Herb6本で45銅、30分ごと）で小銭を回収。50からはThornpeakの薬草でsunpetal薬とSerpentを醸します。100から125は意図された細流なので、数字のために薬草を燃やさず、売れる物を醸すこと。スキル50でStrange Brews、上限でGrandmaster Alchemyです。',
+  'guide.profPages.craftProse.engineering.identityHeading': '道具職人の独占',
+  'guide.profPages.craftProse.engineering.identityBody':
+    'この職はEastbrook広場南東角の工作場で営みます。主はTinker Gizzel。どの道具系統も段階1から3は普通の店売り品ですが、段階4と5はエンジニアの手からしか生まれません。環では錬金術と防具鍛冶の間で、対は爆破師（工作と錬金術）とCogsmith（未実装の誓い）。ここで何より大事な警告をひとつ。工作の両レシピ段は、趣味や未宣誓の職が働くレア段階の天井より上にあるため、スキルが動くのは工作を主専攻に持つ者、今日で言えば爆破師だけです。道具は誰でも作れます。未調律の職人は、作っても何も学ばないだけです。',
+  'guide.profPages.craftProse.engineering.materialsHeading': '素材と前段の道具',
+  'guide.profPages.craftProse.engineering.materialsBody':
+    'どの道具レシピも一段下の道具と上位素材を飲み込みます。Thorium Ore4個とMithril Mining PickがThorium Mining Pickになり、Arcanite Bar2本とそのトリウムのつるはしがArcanite Mining Pickになります。斧と鎌の系統もAshwoodとElderwoodの丸太、GoldleafとSunpetalの薬草で同じ形をなぞります。急ぎならGizzelが工作場で六種の上位素材をすべて置いていますが、鉱石も丸太も薬草もMirefen MarshとThornpeak Heightsで採れ、利益は自前の採集にあります。唯一の例外は店売りのみのArcanite Barで、アーケナイト級の道具には固定の金額が底値として組み込まれます。',
+  'guide.profPages.craftProse.engineering.ladderHeading': '道具の梯子',
+  'guide.profPages.craftProse.engineering.ladderBody':
+    '梯子全体でレシピは六つだけ。すべて工作場限定で自動習得、修行費は一切なし。スキル75で段階4のつるはし、斧、鎌、スキル150で段階5です。150は誤植ではなく、現在の上限125より上に据えた意図的な数字です。ここではスキル要件が製作を止めることはなく、成長の形を決めるだけなので、素材と前段の道具が揃った日に段階5の道具を作れます。完成品はすべてレアかエピックで、出荷時から署名入り。工作は合作レシピの半分も担ぎます。Elixir of the Bear、両スキル25の調律済み爆破師の醸す一本です。',
+  'guide.profPages.craftProse.engineering.routeHeading': 'エンジニアの125への道',
+  'guide.profPages.craftProse.engineering.routeBody':
+    '道具に戦闘能力値はないため傑作は決して発動しません。特化は例によってスキル75で、素材2割引きに加え、どんな採集行も作業場に変える臨時の野外工作場を得ます。成長はほとんど薄れません。スキル75のレシピは100まで全速で以降半減、スキル150のレシピは上限125まで全速。本当の制約は素材と資金であって、灰色のレシピではありません。まず対を決めること。Tinker Gizzelから爆破師の調律を。あとは梯子に食わせるだけです。採掘、伐採、薬草学を自分で上げるか採集者と親しくなり、段階3の道具は店で揃え、Gizzelの依頼（Ironbark Log8本で16銅、30分ごと）は小遣いに。売り文句はひとりでに書けます。節点より上の道具段階ひとつごとに2.5秒の採集詠唱から0.4秒を削る（下限1.5秒）。スキル50でCogs and Sprockets、125でGrandmaster Engineeringです。',
+  'guide.profPages.craftProse.enchanting.identityHeading': '装備を解き、力を戻す',
+  'guide.profPages.craftProse.enchanting.identityBody':
+    '作業場も師匠も買うべきレシピ表もありません。すべてのエンチャントは最初から知られ、分解は誰でも初日からでき、スキルは他の職と同じく125が上限です。環では銘文と宝石細工の間に座り、対はArcanist（銘文とエンチャント）とGembinder（エンチャントと宝石細工）ですが、両隣ともレシピが届くまで誓えません。つまり今日のエンチャントは皆の手仕事です。誓い以前は自由にレア段階まで登り、爆破師や薬師の趣味枠としても自然な選択です。エンチャンターは採集の世界も支えています。装着できる三種の道具効果はすべてエンチャンターの作で、原作者は自作の充填を割引で行え、特化すればさらに深くなります。',
+  'guide.profPages.craftProse.enchanting.levelingHeading': 'エンチャントの上げ方',
+  'guide.profPages.craftProse.enchanting.levelingBody':
+    'スキルを動かす行動は二つ、分解とエンチャント付与です。成功ごとに最大1ポイント、仕事の重さで換算されます。コモンの分解と粉だけのエンチャントはコモンの仕事、良質の分解とエッセンスのエンチャントは良質、レアの分解とRunedやGreaterのエンチャントはレア、エピックと伝説の分解はさらに上です。お馴染みの熟達の薄れが25ポイント刻みで効き、コモンの仕事はスキル75で、良質は100で、レアの仕事はちょうど上限の125で灰色になります。エンチャントだけの情けもひとつ。天井を超える入力はゼロではなく天井へ丸められるため、誓う前でもエピックの分解はレアとして数えられ、無駄になりません。エンチャントが休眠に落ちればすべてコモン扱いで登りは75で止まり、趣味に据えればレアの仕事はまだ実り、75以降が遅くなるだけです。',
+  'guide.profPages.craftProse.enchanting.marketHeading': '付与済みの品と来歴と市場',
+  'guide.profPages.craftProse.enchanting.marketBody':
+    '付与は鞄の中の未装備の一品と素材を消費し、別個の付与済みの品を返します。装備すれば効果は永遠にその品に付き従います。一品にひとつ。付与済みの品は再付与も分解もできず、売却、破棄、分解はどれも無印の品を先に選ぶので、完成品がうっかり食われることはありません。同一の付与品同士は重ねられます。傑作とエンチャントは友人です。傑作は問題なく付与でき、効果は傑作ボーナスにも署名にも触れず上乗せされます。全部を積んだ署名入り傑作のGreater付与が工芸品の頂点で、それでも設計上レイド戦利品の下に座ります。世界市場は無印の品しか扱わないため、付与済みや署名入りは取引ウィンドウで直接手渡し。市場に出せる半分は素材の方です。粉、エッセンス、シャードは自由に出品でき、出品無料、手数料は成立時の5%だけです。',
 };

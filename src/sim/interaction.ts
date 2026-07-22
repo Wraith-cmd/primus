@@ -391,6 +391,11 @@ export function harvestCorpse(
     const payload = { signer: meta.name };
     if (canGrantItemInstance(meta.inventory, bagCapacity(meta.bags), grant.itemId, payload)) {
       ctx.addItemInstance(grant.itemId, payload, meta.entityId);
+      // Phase 15: the perfect-specimen find mark (col_perfect_specimen), on
+      // the LANDED jackpot only (a truncated find got away, like a fish with
+      // no bag room). Every rarity draw happened in the roll loop above, so
+      // this mark write cannot perturb the pinned draw sequence.
+      ctx.markVisited(meta, 'gather_event:perfect_specimen');
     } else if (!downgradeEmitted) {
       downgradeEmitted = true;
       ctx.emit({ type: 'gatherDowngrade', pid: meta.entityId, surface: 'corpse', lost: 'find' });

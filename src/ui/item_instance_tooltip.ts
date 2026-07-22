@@ -14,6 +14,8 @@ import type { ItemDef, ItemInstancePayload, Stats } from '../sim/types';
 import { esc } from './esc';
 import { formatNumber, type TranslationKey, t } from './i18n';
 import { QUALITY_COLOR } from './icons';
+import { MASTERWORK_SEAL_IMAGE_URL } from './profession_art';
+import { svgIcon } from './ui_icons';
 
 const ITEM_STAT_LABEL_KEYS: Partial<Record<keyof Stats, TranslationKey>> = {
   armor: 'itemUi.stats.armor',
@@ -92,7 +94,7 @@ export function instanceBadgeLines(instance?: ItemInstancePayload): string {
   if (!instance) return '';
   let html = '';
   if (instance.rolled?.masterwork) {
-    html += `<div class="tt-sub" style="color:#ffd100">${esc(t('hudChrome.crafting.masterworkSeal'))}</div>`;
+    html += `<div class="tt-sub tt-masterwork-seal" style="color:#ffd100"><img class="tt-masterwork-seal-icon" src="${MASTERWORK_SEAL_IMAGE_URL}" alt="" aria-hidden="true" draggable="false"><span>${esc(t('hudChrome.crafting.masterworkSeal'))}</span></div>`;
   }
   if (isEnchantedInstance(instance)) {
     html += `<div class="tt-sub" style="color:${QUALITY_COLOR.uncommon}">${esc(t('hudChrome.crafting.enchantedLine'))}</div>`;
@@ -138,10 +140,12 @@ export function instanceMakersMarkLine(
   kind?: ItemDef['kind'],
 ): string {
   if (!instance?.signer) return '';
-  const key = isGatheredProvenanceKind(kind)
-    ? 'hudChrome.crafting.gatheredBy'
-    : 'hudChrome.crafting.makersMark';
-  return `<div class="tt-sub" style="color:${QUALITY_COLOR.uncommon}">${esc(
-    t(key, { name: instance.signer }),
-  )}</div>`;
+  if (isGatheredProvenanceKind(kind)) {
+    return `<div class="tt-sub" style="color:${QUALITY_COLOR.uncommon}">${esc(
+      t('hudChrome.crafting.gatheredBy', { name: instance.signer }),
+    )}</div>`;
+  }
+  return `<div class="tt-sub tt-makers-mark" style="color:${QUALITY_COLOR.uncommon}">${svgIcon('makers-mark', { cls: 'tt-makers-mark-icon' })}<span>${esc(
+    t('hudChrome.crafting.makersMark', { name: instance.signer }),
+  )}</span></div>`;
 }

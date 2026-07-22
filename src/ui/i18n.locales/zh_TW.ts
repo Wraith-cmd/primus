@@ -6593,51 +6593,20 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'guide.professions.intro':
     '除了戰鬥與任務之外，這個世界還會獎勵你耕耘土地與鍛造：採集原材料，透過十種製作行業將其打造成裝備與物品，並在這些行業所代表的十種命途之一中確立自己的身分。',
-  'guide.professions.gatherTitle': '採集：採礦、伐木與草藥學',
-  'guide.professions.gatherIntro':
-    '三種採集行業讓你從世界中直接取得原材料：採礦從礦脈中開採礦石與石料，伐木從林地中砍伐木材，草藥學採集野生生長的草藥與植物。三者分別計算進度，從事其中一項不會拖慢你在另一項上的進展。初次接觸這一切嗎？東溪鎮的工頭歐戴爾有一項簡短的差事，「人人皆可從事的行業」，會帶你走過你的第一次採集。',
-  'guide.professions.gatherWhatTitle': '資源節點',
-  'guide.professions.gatherWhatBody':
-    '礦脈、林地與藥草叢作為可見、無主的地物分布在溪谷與濕地各處。走近並與之互動即可採集其中的資源。採集過一個節點後，它需要一段時間才能恢復供你本人再次採集，但這從不會阻擋其他玩家：其他人可以在此期間採集同一個節點。',
-  'guide.professions.gatherProficiencyTitle': '熟練度',
-  'guide.professions.gatherProficiencyBody':
-    '每次成功採集都會提升你在該採集行業的熟練度，而你的角色資訊面板會分別記錄每一門行業。多加練習永遠不會損及你的進展，只會不斷為它增添。',
-  'guide.professions.gatherToolsTitle': '行業工具',
-  'guide.professions.gatherToolsBody':
-    '商人出售各採集行業的基礎工具，更好的工具則可以製作出來。目前採集節點並不需要任何工具：工具是為日後更豐富的節點所鋪的基礎，屆時更高階的鎬、斧與鐮刀將是採集它們的門路。',
   'guide.professions.harvestTitle': '從狩獵本身採收',
   'guide.professions.harvestBody':
     '採集並不止於節點。有些被擊倒的野獸可以採收出部件：獸皮、獠牙、絲線，以及更稀奇的東西，直接從屍體上取得，與它的普通戰利品並存。每次擊殺只容一位採收者：誰先動手，就全歸誰所有。每一次也都由你選擇：把屍體能給的一切盡數剝下，或專注於單一部件，換取更精細的品級。任何角色都能採收，無需入行也無需訓練，而一件特別精良的部件甚至會冠上採收者的名字。',
   'guide.professions.focusTitle': '城鎮專注',
   'guide.professions.focusBody':
     '每座主據點城鎮都為到訪的採收者備有一面城鎮專注面板：站在鎮上，從小地圖旁打開它，把一小筆專注點數投向你在意的部件類型。此後每具屍體上的專注部件都會精細一個品級、也略微豐厚一些；你的分配會跟著角色走遍天涯，而且日後任何一次回到鎮上，都能免費重新調整。',
-  'guide.professions.craftTitle': '十大製作行業',
-  'guide.professions.craftIntro':
-    '十種製作行業將採集到的材料轉化為成品裝備與物品：製甲、製械與珠寶加工將原材料塑形為可穿戴裝備；煉金術與工程學依靠反覆試驗；烹飪、銘文與附魔各自作用於其他行業的產出；裁縫與製皮則依照精確的圖樣進行。它們共同構成一個輪環，每種行業都與兩個鄰居相鄰，並與另一種行業相對。',
-  'guide.professions.craftRingTitle': '專精之輪',
-  'guide.professions.craftRingBody':
-    '十種行業排列在一個固定的輪環上，行業在輪環上的位置很重要：相鄰的行業彼此之間的共通之處比處於對面的行業更多。專注於一種行業應當讓人感覺像是加入了一個相關行業組成的家族，而不是選擇了一項孤立的技能。',
-  'guide.professions.craftRecipesTitle': '配方與材料',
-  'guide.professions.craftRecipesBody':
-    '每個配方都需要你採集或購買的特定材料。最簡單的配方只需要普通材料，從一開始就能製作，因此你一拿起一門行業就能立刻上手。配方清單仍在持續補齊：少數行業還在等待它們的第一批配方，而隨著這些行業成長，會有更多配方登場。',
   'guide.professions.craftMasteryTitle': '技能與精通',
   'guide.professions.craftMasteryBody':
     '成功製作會提升你在該行業的技能，而技能從不會把行業的配方鎖起來：只要你會某個配方並持有其材料，就能嘗試製作。每個配方產出的都是它所承諾的那件成品，而熟練的手藝偶爾能打造出一件傑作：同樣的成品，做工更精，並蘊含一絲額外的力量。唯一的例外是組合配方：只有調諧到連接這兩門行業的原型、並在兩門行業都證明過技藝的製作者，才能使用它們。',
-  'guide.professions.craftComboTitle': '組合配方',
-  'guide.professions.craftComboBody':
-    '除了單一行業自身的配方列表之外，這個輪環還支援需要同時調用兩個相鄰行業的組合配方，用以獎勵那些在輪環上投入了相鄰行業的角色，而非只專精孤立一項的人。製作者必須自己同時掌握這兩門行業；夥伴的技能無法替代其中任一半。',
-  'guide.professions.archetypeTitle': '十大命途',
-  'guide.professions.archetypeIntro':
-    '十種行業各自也代表一種命途，一種超越單純從事該行業本身的更廣闊身分。你的當前命途一次只能有一個，而非一份清單：你只承載一個命途，但如果願意，之後可以更改。',
   'guide.professions.archetypeChooseTitle': '選擇你的命途',
   'guide.professions.archetypeChooseBody':
     '宣告命途是一個劇情時刻：一個正式接納你進入該身分的任務。在你宣告之前，每種行業的技能都能提升到稀有層級。一旦你選定一對行業，這兩門行業便完全放開；輪盤對側的一門行業會作為嗜好留在你身邊，仍能練到稀有層級；而在你保有這一身分期間，其餘所有行業都停留在普通層級。',
-  'guide.professions.archetypeSwitchTitle': '回心轉意',
   'guide.professions.archetypeSwitchBody':
     '宣告也不會是一紙終身判決。目前的計畫是：在拿起新行業之前，先向你的舊行業完成一次可重複的贖罪，而每轉換一次，贖罪就會加重一分，因此這個選擇始終有其分量，而非毫無代價。它和宣告本身一樣，仍在路上。',
-  'guide.professions.archetypeIdentityTitle': '你的命途意味著什麼',
-  'guide.professions.archetypeIdentityBody':
-    '你當前的命途，是關於你的角色在這個世界中是誰的一種宣告，會體現在他人與世界如何稱呼你之中。它所附帶的具體獎勵與認可仍在完善之中；請隨著系統的完善持續關注。',
   'apiError.validation.failed': '部分欄位無效。請檢查表單後再試一次。',
   'apiError.json.malformed': '無法讀取該請求。請再試一次。',
   'apiError.body.too_large': '該請求過大。請減少資料後再試一次。',
@@ -6966,6 +6935,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.crafting.tierUpToast': '{craft}提升至階級 {tier}！',
   'hudChrome.crafting.makersMark': '製作者：{name}',
   'hudChrome.bags.itemAriaInstanced': '{item}，數量 {count}，帶工匠印記的物品',
+  'hudChrome.bags.itemAriaMasterwork': '{item}，數量 {count}，傑作',
   'hudChrome.crafting.gatheredBy': '採集者：{name}',
   'hudChrome.crafting.masterworkSeal': '傑作',
   'hudChrome.crafting.enchantedLine': '已附魔',
@@ -7517,8 +7487,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'guide.models.formTravel': '迅捷形態',
   'guide.models.groupForms': '德魯伊形態',
   'guide.nav.sidebarLabel': '指南主題',
-  'guide.professions.craftHowBody':
-    '開啟製作視窗（預設按鍵 T），即可看到你已學會的每一個配方、各自所需的材料，以及你手邊現有的材料；材料齊備時，一鍵即可完成製作。常見的配方可以在世界任何地方製作。少數進階配方，包括高階工具與稀有的施法者護甲，則要求你站在高守哨站的製作站前。',
   'guide.professions.craftHowTitle': '製作視窗',
   'guide.search.typeAbility': '技能',
   'guide.search.typeDeed': '功績',
@@ -8294,4 +8262,357 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.unbind.notBound': '該物品未綁定。',
   'hudChrome.unbind.cannotAfford': '你付不起解綁費用。',
   'hudChrome.unbind.outOfRange': '你必須站在對應的工作臺旁才能解綁。',
+  // Professions 2.0 Phase 15 wiki arm: the professions hub rewrite and the
+  // /wiki/professions detail pages (M16 non-Latin fills, added with the keys).
+  'guide.professions.ringHeading': '製作之輪',
+  'guide.professions.ringBody':
+    '十種製作行業排列在一個輪環上，各自獨立記錄技能；點開一張卡片即可查看完整的配方表與數值。',
+  'guide.professions.ringWaveNote':
+    '珠寶設計與銘文學如今已在輪環上，但尚未提供任何配方；它們的內容將隨後續的區域擴充一同到來。',
+  'guide.professions.capFmt': '上限{cap}',
+  'guide.professions.comingSoon': '暫無配方',
+  'guide.professions.gatherHubHeading': '採集',
+  'guide.professions.gatherHubBody':
+    '四種採集行業為製作供給材料：採礦、伐木與藥草學的上限為100，釣魚為200。',
+  'guide.professions.archetypesHeading': '十大命途',
+  'guide.professions.archetypesBody':
+    '調諧到兩個相鄰行業即可獲得一個成對頭銜：兩門主修可以一路練到最高層級，對側的一門行業作為愛好保留在精良層級，其餘行業則停留在普通層級。',
+  'guide.professions.pairFmt': '{a}與{b}',
+  'guide.professions.curveHeading': '精通曲線',
+  'guide.professions.curveBody':
+    '每{step}點技能為一個層級：在自身層級或以上的配方給予全額成長，隨著配方落到你之下，成長會減半、再減為四分之一，最終停止。',
+  'guide.professions.provenanceHeading': '出處',
+  'guide.professions.provenanceBody':
+    '精良及以上的成品帶有製作者的名字，傑作會額外提升一個品質層級，而委託製品會綁定給它的收貨人（製作者之約）。',
+  'guide.professions.stationsHeading': '工位與大師',
+  'guide.professions.stationsBody':
+    '三座主城中共設六座分類工位，常駐大師在此傳授配方並發布工作訂單。',
+  'guide.professions.colStation': '工位',
+  'guide.professions.colHub': '主城',
+  'guide.professions.colMaster': '大師',
+  'guide.professions.masterCellFmt': '{name}（{title}）',
+  'guide.profPages.back': '返回專業總覽',
+  'guide.profPages.capLabel': '技能上限',
+  'guide.profPages.stationLabel': '工位',
+  'guide.profPages.stationNone': '無需工位',
+  'guide.profPages.stationAnywhere': '任意地點',
+  'guide.profPages.mastersLabel': '大師',
+  'guide.profPages.masterFmt': '{name}（{hub}）',
+  'guide.profPages.specializationLabel': '專精',
+  'guide.profPages.specializationFact': '技能{at}：材料消耗減少{pct}%',
+  'guide.profPages.matFmt': '{name}×{count}',
+  'guide.profPages.outputFmt': '{name}×{count}',
+  'guide.profPages.comboReq': '需要{a}與{b}',
+  'guide.profPages.sourceTrainerFee': '訓練師，{fee}',
+  'guide.profPages.sourceTrainerFree': '訓練師，免費',
+  'guide.profPages.sourceKnown': '初始即會',
+  'guide.profPages.colRecipe': '配方',
+  'guide.profPages.colSkill': '技能',
+  'guide.profPages.colSource': '來源',
+  'guide.profPages.colStation': '工位',
+  'guide.profPages.colMaterials': '材料',
+  'guide.profPages.colQuality': '品質',
+  'guide.profPages.colGain': '成長衰減點',
+  'guide.profPages.colMaterial': '材料',
+  'guide.profPages.colTool': '工具',
+  'guide.profPages.colTier': '階',
+  'guide.profPages.colPrice': '價格',
+  'guide.profPages.colZone': '區域',
+  'guide.profPages.colNodes': '節點數',
+  'guide.profPages.colNodeTier': '節點階級',
+  'guide.profPages.colToolNeeded': '所需工具',
+  'guide.profPages.craftIntro.weaponcrafting':
+    '武器鍛造在東溪的鍛造坊打造斧、錘、刃與法杖，從銅製入門武器一路到精良的釷金與奧金之作。',
+  'guide.profPages.craftIntro.armorcrafting':
+    '護甲鍛造在東溪的鍛造坊打造鎖甲，從鉚接銅甲到精良的釷鱗重甲。',
+  'guide.profPages.craftIntro.tailoring':
+    '裁縫在東溪的織布機旁織造施法者布甲與一只寬敞的背包，從家紡基礎款到精良的日織系列。',
+  'guide.profPages.craftIntro.leatherworking':
+    '製皮在芬橋的製革坊鞣製靈巧的皮甲，從獸皮基礎款到精良的澤守系列。',
+  'guide.profPages.craftIntro.cooking':
+    '烹飪在東溪的廚房把魚、野味和草藥做成坐下享用的餐食，最高可達精良的盛宴佳餚。',
+  'guide.profPages.craftIntro.alchemy': '鍊金術在高望的藥坊調配治療與法力藥劑，以及耐力合劑。',
+  'guide.profPages.craftIntro.engineering':
+    '工程學在東溪的工坊打造4階與5階採集工具，每一件都要消耗低一階的工具。',
+  'guide.profPages.craftIntro.enchanting':
+    '附魔將不需要的裝備分解成奧術材料，再將其用於永久性的裝備附魔，無需任何工位。',
+  'guide.profPages.howHeading': '製作流程',
+  'guide.profPages.howBody':
+    '備齊材料後打開製作視窗（預設按鍵T）；綁定工位的配方要求你站在對應工位旁，野外配方則隨處可做。',
+  'guide.profPages.recipesHeading': '配方',
+  'guide.profPages.recipesNote':
+    '每個配方的確切技能與材料需求、學習來源，以及其成長開始衰減的技能數值。',
+  'guide.profPages.masteryHeading': '技能成長',
+  'guide.profPages.masteryBody':
+    '每{step}點技能為一個層級：配方在你層級或以上給予全額成長，低一層減半，低兩層為四分之一，低三層及以上則毫無成長；本行業的上限為{cap}。',
+  'guide.profPages.masterworkHeading': '傑作',
+  'guide.profPages.masterworkBody':
+    '每次成功製作都有{base}%的傑作機率，你每高於配方一層再加{perTier}%，使用任何署名材料加{signed}%，專精後加{spec}%，上限為{cap}%。',
+  'guide.profPages.trainingHeading': '訓練',
+  'guide.profPages.trainingBody':
+    '當你在本行業的層級達到配方自身的層級時，大師即可傳授：0層配方免費，1層需{tier1}，2層需{tier2}。',
+  'guide.profPages.specializationHeading': '專精',
+  'guide.profPages.specializationBody': '技能達到{at}即在本行業專精，配方材料消耗減少{pct}%。',
+  'guide.profPages.ench.disenchantHeading': '分解',
+  'guide.profPages.ench.disenchantNote': '分解會按品質把不需要的武器或護甲拆成奧術材料。',
+  'guide.profPages.ench.typedHeading': '定向副產物',
+  'guide.profPages.ench.typedNote':
+    '精良及以上的裝備還會產出一種定向的、交易綁定的副產物：精良裝備產出{rare}件，史詩或傳說產出{epicMin}到{epicMax}件。',
+  'guide.profPages.ench.colSource': '拆解來源',
+  'guide.profPages.ench.meleeWeapons': '近戰武器',
+  'guide.profPages.ench.timberWeapons': '法杖、魔杖、弓與弩',
+  'guide.profPages.ench.enchantsHeading': '附魔',
+  'guide.profPages.ench.enchantsNote':
+    '每種附魔的目標部位、材料與確切加成；符文層級是定向副產物的唯一去處。',
+  'guide.profPages.ench.colEnchant': '附魔',
+  'guide.profPages.ench.colSlot': '部位',
+  'guide.profPages.ench.colTier': '層級',
+  'guide.profPages.ench.colBonus': '加成',
+  'guide.profPages.ench.tier.base': '基礎',
+  'guide.profPages.ench.tier.runed': '符文',
+  'guide.profPages.ench.tier.greater': '強效',
+  'guide.profPages.ench.salvageHeading': '回收',
+  'guide.profPages.ench.salvageNote':
+    '任何人都可以把武器或護甲按品質回收成普通材料，無需附魔技能。',
+  'guide.profPages.ench.bonusFmt': '+{value}{stat}',
+  'guide.profPages.gatherIntro.mining':
+    '採礦在三大區域的礦脈中開採礦石，供給鍛造類行業，上限為100。',
+  'guide.profPages.gatherIntro.logging':
+    '伐木在三大區域的林地中砍伐木材，供給武器柄材與工具，上限為100。',
+  'guide.profPages.gatherIntro.herbalism':
+    '藥草學在三大區域採集草藥，供給鍊金術與烹飪，上限為100。',
+  'guide.profPages.gatherIntro.fishing':
+    '釣魚通過咬鉤與收線的節奏，在每個區域的開闊水面垂釣，上限為200。',
+  'guide.profPages.rhythmHeading': '採集節奏',
+  'guide.profPages.rhythmBody':
+    '採集是一段可見的施法：基礎{base}秒，最短不低於{floor}秒；工具每高於節點一階縮短{tool}秒，每個熟練度區間再縮短{band}秒。',
+  'guide.profPages.gainBody':
+    '每{step}點熟練度為一個成長層級，與節點階級相比較：低階節點的成長會逐漸消退，而更高階的節點會帶你練到{cap}的上限。',
+  'guide.profPages.nodesHeading': '各區域節點',
+  'guide.profPages.nodesNote':
+    '節點的位置、階級、所需工具與產出；每個節點在你採集後{respawn}秒才會為你本人重生。',
+  'guide.profPages.toolsHeading': '工具',
+  'guide.profPages.toolsNote': '工具階梯與確切的商人售價；4階與5階工具只能製作，無法購買。',
+  'guide.profPages.toolCrafted': '製作獲得（{craft}）',
+  'guide.profPages.toolVendor': '{name}（{hub}）',
+  'guide.profPages.toolUnavailable': '無販售',
+  'guide.profPages.priceNone': '無販售',
+  'guide.profPages.toolTierReq': '{tier}階工具',
+  'guide.profPages.bareHands': '徒手即可',
+  'guide.profPages.bandsHeading': '熟練度區間',
+  'guide.profPages.bandsBody': '熟練度區間會加快你的採集施法；對釣魚而言還決定漁獲表。',
+  'guide.profPages.bandFmt': '區間{band}：自{at}熟練度起',
+  'guide.profPages.rareHeading': '稀有發現',
+  'guide.profPages.rareBody':
+    '每次採集都有{oneIn}分之一的機率觸發稀有發現：產量乘以{mult}、必定署名，並向全區域播報。',
+  'guide.profPages.specimenBody':
+    '採集屍體還可能獲得署名的完美標本：約{pct}%的屍體採集會擲出精良或更高品質。',
+  'guide.profPages.fish.biteHeading': '咬鉤與收線',
+  'guide.profPages.fish.biteBody':
+    '拋竿後{min}到{max}秒之間魚會咬鉤（更好的魚竿最多縮短{rod}秒等待），收線視窗持續{reel}秒、魚竿每高一階再加{reelRod}秒，單次垂釣最長{cap}秒。',
+  'guide.profPages.fish.scheduleHeading': '熟練度成長',
+  'guide.profPages.fish.scheduleNote':
+    '釣魚成長按熟練度遵循固定檔位，且從{cutoff}起，釣上雜物不再有任何成長。',
+  'guide.profPages.fish.colProficiency': '熟練度',
+  'guide.profPages.fish.colGain': '每次漁獲成長',
+  'guide.profPages.fish.belowFmt': '低於{below}',
+  'guide.profPages.fish.tablesHeading': '漁獲表',
+  'guide.profPages.fish.tablesNote':
+    '每個區間在各區域的確切漁獲機率；每一行中的{rare}都是稀有漁獲。',
+  'guide.profPages.fish.bandHeading': '區間{band}：熟練度{at}及以上，需{rod}階魚竿',
+  'guide.profPages.fish.colCatch': '漁獲',
+  'guide.profPages.fish.colOdds': '機率',
+  'guide.profPages.fish.emptyHook': '無魚上鉤',
+  'guide.profPages.econ.title': '製作經濟',
+  'guide.profPages.econ.intro': '專業經濟背後的確切費用、回收與報酬。',
+  'guide.profPages.econ.feesHeading': '費用與回收',
+  'guide.profPages.econ.feesNote': '各項專業費用，從每次製作的金幣回收到市場抽成。',
+  'guide.profPages.econ.feeCraft': '製作費',
+  'guide.profPages.econ.feeCraftValue': '每點物品預算{fee}',
+  'guide.profPages.econ.feeMarket': '市場抽成',
+  'guide.profPages.econ.feeMarketValue': '成交額的{pct}%',
+  'guide.profPages.econ.feeDeposit': '掛單押金',
+  'guide.profPages.econ.feeDepositValue': '無',
+  'guide.profPages.econ.feeUnbind': '解綁費',
+  'guide.profPages.econ.feeUnbindValue': '優秀{uncommon}、精良{rare}、史詩{epic}',
+  'guide.profPages.econ.trainingHeading': '訓練費',
+  'guide.profPages.econ.trainingNote': '按配方層級收取一筆固定費用，僅在大師傳授時收取一次。',
+  'guide.profPages.econ.trainingTierFmt': '{tier}層：{fee}',
+  'guide.profPages.econ.free': '免費',
+  'guide.profPages.econ.workOrdersHeading': '工作訂單',
+  'guide.profPages.econ.workOrdersNote':
+    '每位大師都會以商店價的{pct}%收購一批本行常用材料，每{minutes}分鐘可重複一次。',
+  'guide.profPages.econ.colOrder': '工作訂單',
+  'guide.profPages.econ.colMaster': '大師',
+  'guide.profPages.econ.colAsks': '需求',
+  'guide.profPages.econ.colPays': '報酬',
+  'guide.profPages.econ.commissionsHeading': '委託與製作者之約',
+  'guide.profPages.econ.commissionsBody':
+    '自願選擇的委託製作會附上製作者之約：成品會綁定給交易中收到它的人，而任意工位大師都可按層級費用為其解綁。',
+  'guide.profPages.econ.provenanceHeading': '署名作品',
+  'guide.profPages.econ.provenanceBody':
+    '精良及以上的成品與發現都帶有製作者的署名，而署名完全相同的物品仍可堆疊。',
+  'guide.profPages.econ.throttleHeading': '操作限頻',
+  'guide.profPages.econ.throttleBody':
+    '製作、分解、附魔與回收共用一個限頻：每{seconds}秒最多{actions}次操作。',
+  'guide.profPages.econ.doctrineHeading': '玩家與玩家交易',
+  'guide.profPages.econ.doctrineBody':
+    '製作裝備的強度始終低於團隊副本的底線，而上述費用會把貨物推向玩家之間的交易，而非商店循環。',
+  'guide.profPages.faq.title': '專業常見問題',
+  'guide.profPages.faq.intro': '製作者最常問的問題，一併作答。',
+  'guide.profPages.faq.q1': '我能學多少專業？',
+  'guide.profPages.faq.a1':
+    '每個角色都可以提升全部八種可修煉製作行業和全部四種採集行業；只有命途身分是唯一的選擇。',
+  'guide.profPages.faq.q2': '在哪裡學配方？',
+  'guide.profPages.faq.a2':
+    '訓練師階梯配方由各工位的常駐大師傳授，而九個通用野外配方和工具配方所有人從一開始就會。',
+  'guide.profPages.faq.q3': '採集需要工具嗎？',
+  'guide.profPages.faq.a3': '1階節點徒手即可；2階或3階節點需要至少同階級的對應工具。',
+  'guide.profPages.faq.q4': '為什麼技能不再增長？',
+  'guide.profPages.faq.a4':
+    '當配方落到你之下時，精通曲線會把成長減為一半、四分之一直至歸零，而每種專業都會在上限處停止。',
+  'guide.profPages.faq.q5': '什麼是傑作？',
+  'guide.profPages.faq.a5':
+    '每次製作都有一個小機率（3%起，上限15%）產出品質高一層的成品，但絕不會超過團隊副本的底線。',
+  'guide.profPages.faq.q6': '「由某某製作」是什麼意思？',
+  'guide.profPages.faq.a6':
+    '九種通用的野外配方與工具配方人人從一開始便已知曉，三種綁定作業台的上級配方（灰鱗披肩、織衛兜帽、暮影裹手）也是如此，它們無需訓練師，只需對應的作業台。其餘一切都由三座樞紐城鎮中各作業台旁的常駐師傅傳授：多數在東溪，製革師守著芬橋的製革場，煉金師守著高望的藥房。\n\n訓練師配方分為技能0、25、50三檔，作為一次性費用分別是免費、25銀和1金。當你在該行業的檔位達到配方自身的檔位時，師傅便會傳授，而且學習時你必須站在其作業台旁：移動作業台不算數。',
+  'guide.profPages.faq.q7': '什麼是製作者之約？',
+  'guide.profPages.faq.a7':
+    '委託製品會綁定給交易中收到它的人，而任意工位大師都可按層級費用為其解綁。',
+  'guide.profPages.faq.q8': '我能更換命途嗎？',
+  'guide.profPages.faq.a8':
+    '從未持有過的組合只需一次全新的調諧任務，而回到曾經持有的組合則需要完成代價遞增的贖罪差事。',
+  // Professions 2.0 Phase 15 wiki arm, final prose sections (M16 non-Latin
+  // fills for the NEW keys; item, NPC, and deed names stay English, the baked
+  // proper-noun precedent).
+  'guide.professions.whatHeading': '劍之外的一門手藝',
+  'guide.professions.whatBody':
+    '專業是這個世界的營生：四種採集行業從大地中獲取原料，十種製作行業把它們變成裝備、飯菜、藥水與工具。萬物環環相扣：你挖出的礦石成為刀劍，刀劍接受附魔，而附魔又需要從舊裝備中分解出的粉塵。這裡沒有專業數量限制：每個角色都能同時修習全部八種已有內容的製作行業與全部四種採集行業，唯一的排他選擇是你最終宣誓的命途，而一旦宣誓，落入休眠的製作行業便不再上升。技能永不下降，學會的東西也永遠不會被奪走。',
+  'guide.professions.deedsHeading': '銘記旅程的功業',
+  'guide.professions.deedsBody':
+    '功業之書伴隨這一切：首次調諧獲得Guildsworn，首次傑作獲得Masterwright，均可作為頭銜佩戴。八種可修行業各在技能50設有里程碑功業，並在上限125加冕Grandmaster頭銜；釣魚在100熟練獲得Old Salt，200獲得Master Angler頭銜。此外還有首次採集、首次製作、野外奇遇與拆解回收的功業。這一切皆為裝飾：只有頭銜與聲望，功業永不賦予力量。',
+  'guide.professions.startHeading': '從哪裡開始',
+  'guide.professions.startBody':
+    '初到Eastbrook？找Foreman Odell接下A Trade for Every Hand，他會指給你鎮西南Copper Dig一帶的礦脈。此後旅途中經過的每處礦脈、樹木與藥草都值得採集。回到鎮上按T打開製作視窗，先做人人都會的普通配方，再去鍛造坊、廚房、織布機與工坊拜訪諸位大師，順便接下他們的工作訂單換取穩定的銅板。等公會的信找到你時，你早已知道哪一對行業才是歸宿。',
+  'guide.profPages.yieldsHeading': '一次採集的收穫',
+  'guide.profPages.yieldsBody':
+    '每次採集都會擲出品質，而熟練度決定一切：新手永遠採到普通品，熟練度越高，權重越向高品質移動，絕不倒退。到100上限時普通品完全消失：60%優秀、30%精良、8%史詩、2%傳說。品質也意味著數量：普通1個，優秀與精良2個，史詩3個，傳說4個。精良及以上的收穫都會以你的名字署名（Gathered by），封頂時十次採集有四次帶著你的名字。',
+  'guide.profPages.gatherDeedsHeading': '沿途的功業',
+  'guide.profPages.gatherDeeds.mining':
+    '任意行業的第一次採集獲得Fruits of the Field，採礦100上限銘刻Ore in the Blood。採礦、伐木、藥草學與釣魚中任意三項達到100可得Master Gatherer（25聲望），鑿開純淨礦脈另有收藏印記。功業只有頭銜與聲望，永不賦予力量。',
+  'guide.profPages.gatherDeeds.logging':
+    '任意行業的第一次採集獲得Fruits of the Field，伐木100上限銘刻Heartwood Hewer。四種採集行業中任意三項達到100可得Master Gatherer（25聲望），劈出遠古心材另有收藏印記。功業只有頭銜與聲望，永不賦予力量。',
+  'guide.profPages.gatherDeeds.herbalism':
+    '任意行業的第一次採集獲得Fruits of the Field，藥草學100上限銘刻Master of the Meadow。四種採集行業中任意三項達到100可得Master Gatherer（25聲望），採下月光綻放另有收藏印記。功業只有頭銜與聲望，永不賦予力量。',
+  'guide.profPages.gatherDeeds.fishing':
+    '釣魚100熟練銘刻Old Salt，200銘刻Master Angler及其頭銜，垂釣技藝的頂點；釣魚同樣計入Master Gatherer（任意三項採集達到100）。在每個區域的水域釣起第一條魚各有其頁，釣起Glimmerfin Koi則記下Glimmer of Hope。',
+  'guide.profPages.fish.startHeading': '入門',
+  'guide.profPages.fish.startBody':
+    '一根Simple Fishing Pole在Eastbrook的Fisherman Brandt處只賣20銅（他在鎮東緣望著Mirror Lake）；Tinker Gizzel、Fenbridge的Provisioner Hale和Highwatch的Quartermaster Bree也有存貨。面向前方約24碼內足夠深的水面使用魚竿即可拋竿。戰鬥中、游泳時或死亡時無法拋竿：站在岸上釣才是正途，任何區域的可釣水域都行。',
+  'guide.profPages.fish.koiHeading': 'Glimmerfin Koi',
+  'guide.profPages.fish.koiBody':
+    '全世界的每片水域都藏著同一份大獎：Glimmerfin Koi，一尾優秀品質的閃光錦鯉，賣給商人值75銅，對你的自豪感則遠不止此。牠的機率固定為每次起竿3%（Thornpeak的冷水中為4%），不隨技能變化，因此碼頭上的新手與Master Angler機會均等。釣起牠會在功業之書記下Glimmer of Hope（零聲望的收藏印記）。',
+  'guide.profPages.econ.sellsHeading': '什麼好賣，為什麼',
+  'guide.profPages.econ.sellsBody':
+    '最穩的生意是消耗品，因為用掉就要再買：藥水、熟食與附魔都隨使用而消失。傑作是高端市場：無法訂做，想要的人只能出高價，而上面的署名就是行走的招牌。原料是第三支柱：分解所得的奧術材料、直接從拆解者流向附魔師的各類Resonant次級材料，以及追逐傑作觸發的工匠願意溢價收購的署名採集品。',
+  'guide.profPages.econ.marketHeading': '世界市場與抽成',
+  'guide.profPages.econ.marketBody':
+    '世界市場是全服交易所，由Eastbrook的Merchant與Highwatch的Auctioneer Voss主持。掛單免費，沒有押金，流拍原樣退回；只在成交時抽取5%。重要限制：市場只經手無標記的普通貨，署名、傑作、附魔或已綁定的副本一律不收，這些特殊物品只能面對面透過交易視窗轉手。',
+  'guide.profPages.econ.collectorsHeading': '收藏家、戰利品與故事的價格',
+  'guide.profPages.econ.collectorsBody':
+    '商人看不見出處：署名物品賣給NPC只值普通價，簽名的溢價只存在於玩家之間。名家署名的橫財礦石、一塊Prime Cut、一柄署著已退隱工匠之名的傑作之刃，價格全憑記憶開價。功業之書裡的Pristine Vein、Ancient Heartwood、Moonlit Bloom、A Perfect Specimen與Glimmer of Hope都是零聲望的收藏印記，只為證明那一刻發生在你身上。出處不買屬性也不贏戰鬥，它是這遊戲裡美好日子的存根。',
+  'guide.profPages.craftProse.weaponcrafting.identityHeading': '人人都要買的鋒刃',
+  'guide.profPages.craftProse.weaponcrafting.identityBody':
+    '精良一檔就涵蓋三種胃口：力量近戰的Thorium Warblade、敏捷戰士的Arcanite War Axe，以及施法者的智力精神法杖Elderwood Battle Staff。在製作之輪上它位於護甲鍛造與珠寶設計之間；鐵匠（武器鍛造與護甲鍛造）可在Forgemistress Darva處宣誓，與珠寶設計組成的Bladewright則要等後者的配方隨未來區域到來。',
+  'guide.profPages.craftProse.weaponcrafting.materialsHeading': '鍛爐吞噬什麼',
+  'guide.profPages.craftProse.weaponcrafting.materialsBody':
+    '採礦是根基：銅礦出自Eastbrook Vale，鐵礦出自Mirefen Marsh，釷礦出自Thornpeak Heights。伐木也很重要：鐵皮木做矛桿，梣木做錘柄，一根古木成杖。粗皮從狼和野豬屍體上剝取，碎骨來自日常獵殺，梯子上的配方要燒Smithing Flux（Darva處20銅一罐）。Darva賣釷礦，Tinker Gizzel在工坊賣奧金錠，價格不菲。',
+  'guide.profPages.craftProse.weaponcrafting.ladderHeading': '一級一級的梯子',
+  'guide.profPages.craftProse.weaponcrafting.ladderBody':
+    '野外配方Eastbrook Arming Sword人人都會、隨處可做。真正的梯子是三檔九個訓練師配方，全部綁定鍛造坊：銅檔技能0免費，鐵檔技能25每個25銀，釷檔技能50每個1金；你的層級一到，Darva就會教。另有一件組合配方Gravewyrm Gauntlets：只有武器鍛造與護甲鍛造都到25的調諧鐵匠能做，且不需要任何工位。',
+  'guide.profPages.craftProse.weaponcrafting.routeHeading': '傑作與通往125之路',
+  'guide.profPages.craftProse.weaponcrafting.routeBody':
+    '有屬性的成品（鐵檔及以上）才可能出傑作；無屬性的銅檔普通件永遠不會觸發。鐵算一級材料（加成1%），古木與奧金算二級（2%）。路線：銅檔到25，鐵檔到50，釷檔到75；此後暫無更高配方，釷檔衰減為半速再到四分之一，到125上限約需再做150次，注意每分鐘十次的共享節流。Darva的工作訂單每30分鐘收八塊銅礦。功業之書在技能50記下Edge and Temper，125加冕Grandmaster Weaponcrafting。',
+  'guide.profPages.craftProse.armorcrafting.identityHeading': '前線的鎖甲',
+  'guide.profPages.craftProse.armorcrafting.identityBody':
+    '梯子如同士兵的履歷：鉚接銅甲起步，ironlink一檔有了真正的屬性，精良的thoriumscale頭盔、胸甲與護腿則是工匠能敲出的最大護甲數值。還有安靜的一面：野外普通件Eastbrook Warded Leggings與技能75的Sootscale Mantle（智力精神鎖甲肩）留住法系鎖甲客戶。它位於武器鍛造與工程學之間；鐵匠對可在Darva處宣誓，Cogsmith暫無誓約任務。',
+  'guide.profPages.craftProse.armorcrafting.materialsHeading': '成袋的礦石',
+  'guide.profPages.craftProse.armorcrafting.materialsBody':
+    '沒有哪個行業吃礦更快：ironlink hauberk一件就要五塊鐵礦，每件thoriumscale要三到四塊釷礦外加一塊奧金錠，認真的甲匠要麼自己挖遍Mirefen Marsh和Thornpeak Heights，要麼花錢請人。金屬之外還有軟料：粗皮、碎骨與亞麻碎布，幾乎每個配方都要一罐Smithing Flux（鍛造坊20銅）。急用時Darva櫃檯就賣釷礦。',
+  'guide.profPages.craftProse.armorcrafting.ladderHeading': '在Darva的鍛爐學藝',
+  'guide.profPages.craftProse.armorcrafting.ladderBody':
+    '兩件野外普通件（Eastbrook Chainmail Vest與Warded Leggings）人人都會、隨處可做。訓練師梯子是Eastbrook鍛造坊的三檔九個配方：銅檔技能0免費，ironlink檔25技能每個25銀，thoriumscale檔50技能每個1金。梯子之外有兩件特例：Boundstone Helm是鐵匠組合配方（需調諧且雙技能25，不佔工位）；Sootscale Mantle無需老師，但要技能75且綁定鍛造坊，是本行業的三層壓軸。',
+  'guide.profPages.craftProse.armorcrafting.routeHeading': '傑作與通往125之路',
+  'guide.profPages.craftProse.armorcrafting.routeBody':
+    'ironlink檔及以上都擲傑作；只有護甲值的銅檔普通件不會觸發。鐵算一級材料，奧金算二級。路線照常：銅到25，ironlink到50，thoriumscale到75。75之後的運氣在於Sootscale Mantle：三層配方，到99全速、之後半速，最後五十點約75次而非150次；每件要七塊釷礦五份Smithing Flux，先在Thornpeak和鍛造坊櫃檯備貨。Darva的訂單每30分鐘收八塊銅礦。技能50記下Hammer and Plate，125等著Grandmaster Armorcrafting。',
+  'guide.profPages.craftProse.tailoring.identityHeading': '施法者的布衣，所有人的背包',
+  'guide.profPages.craftProse.tailoring.identityBody':
+    "梯子從homespun基礎布裝經goldweave套裝爬到精良檔：Silkbinder's Raiment與sunweave件。第二門生意人人需要：Silkspun Satchel是十格背包，沒有哪個職業或等級嫌包多。裁縫位於製皮與銘文學之間；製裝師（製皮與裁縫）在Eastbrook織布機旁的Weaver Ottilie處宣誓（先獵四隻webwood蜘蛛取絲），與銘文學組成的Mageweaver要等銘文學的第一批配方。",
+  'guide.profPages.craftProse.tailoring.materialsHeading': '線、絲，還有藥草',
+  'guide.profPages.craftProse.tailoring.materialsBody':
+    "織布機靠獵獲與田野運轉：亞麻碎布與家紡布來自人形生物，蜘蛛絲從蛛屍上採取，精良檔的核心Silkbinder's Raiment要一塊Pristine Silk（屍體採集的署名標本）。藥草餵養裁縫勝過任何裝備行業：銀葉鑲拖鞋，金葉染goldweave，日瓣草貫穿整個精良檔。Spool of Thread在Ottilie處12銅一軸，織布機根本不用金屬，連Wardweave Cowl頂階也是用高級草藥、Pristine Silk、蛛絲與線織成。",
+  'guide.profPages.craftProse.tailoring.ladderHeading': '在Ottilie的織布機學藝',
+  'guide.profPages.craftProse.tailoring.ladderBody':
+    '兩件野外普通件（Eastbrook Wool Trousers與Ritual Vestments）隨處可做。訓練師梯子在Eastbrook水井南側的織布機：homespun檔技能0免費，goldweave檔（含Silkspun Satchel）技能25每個25銀，精良檔技能50每個1金。Wardweave Cowl無需訓練師：人人都會，但要技能75且綁定織布機，是本行業的三層壓軸。',
+  'guide.profPages.craftProse.tailoring.routeHeading': '傑作與通往125之路',
+  'guide.profPages.craftProse.tailoring.routeBody':
+    '長袍裡的Pristine Silk本身就補足署名材料加成，金葉與日瓣草分別算一、二級材料，精良檔因此觸發率最高；背包之類無屬性的成品永不觸發。路線：homespun到25，goldweave到50，精良檔到75；75之後靠Wardweave Cowl（三層配方，到99全速、之後半速），最後五十點約75次，每次兩塊Pristine Silk、四束蛛絲、日瓣草與金葉各兩、兩份線。背包賣給所有人，Ottilie的訂單每30分鐘收六束蛛絲。技能50記下A Fine Seam，125等著Grandmaster Tailoring。',
+  'guide.profPages.craftProse.leatherworking.identityHeading': '迅捷者的皮甲',
+  'guide.profPages.craftProse.leatherworking.identityBody':
+    "梯子從樸素的Fenbridge硬皮件經優秀的marshstalker件爬到精良的mirewarden套裝，工匠能裁出的最好皮甲。兩件法系皮件補全陣容：野外普通件Eastbrook Druid's Hide與技能75的Duskhide Wraps。製皮位於烹飪與裁縫之間；製裝師在Eastbrook的Weaver Ottilie處宣誓，與烹飪組成的Trapper暫無誓約任務。",
+  'guide.profPages.craftProse.leatherworking.materialsHeading': '狩獵即收穫',
+  'guide.profPages.craftProse.leatherworking.materialsBody':
+    '在製皮這裡，練級路線與供應線是同一條：粗皮直接從帶皮屍體上剝取（狼和野豬最多），每具屍體只服務先到的一人。精良及以上的採集還會給出Pristine Hide，Mirewarden Jerkin正需要這種署名標本，見一塊存一塊。配角不多：蛛腿與蛛絲、人形生物的家紡布、每件mirewarden精良品一塊釷礦（Duskhide Wraps頂階要六塊），以及製革坊櫃檯16銅的Tanning Agent。不想挖礦的話Tanner Hesk也賣釷礦。',
+  'guide.profPages.craftProse.leatherworking.ladderHeading': '在Fenbridge受訓',
+  'guide.profPages.craftProse.leatherworking.ladderBody':
+    "特別之處：製革坊在Mirefen Marsh路上的Fenbridge，這是唯一在Eastbrook之外受訓的深度行業。Tanner Hesk在他的鞣池邊授課：硬皮檔技能0免費，marshstalker檔技能25每個25銀，mirewarden檔技能50每個1金。兩件配方跳過訓練師：野外普通件（Tanned Leather Jerkin與Druid's Hide）隨處可做，Duskhide Wraps人人都會但要技能75且綁定製革坊。注意製裝師誓約本身在Eastbrook的Ottilie處宣誓，只有授課在沼澤。",
+  'guide.profPages.craftProse.leatherworking.routeHeading': '傑作與通往125之路',
+  'guide.profPages.craftProse.leatherworking.routeBody':
+    "marshstalker檔及以上都擲傑作，Mirewarden Jerkin裡的Pristine Hide自動提供署名材料加成；釷礦算一級材料。無屬性的硬皮普通件不會觸發。自然而然地練：從一級起剝下每隻狼和野豬，硬皮檔隨地做到25，隨任務進沼澤時順路受訓；marshstalker到50，mirewarden到75，此後Duskhide Wraps（三層配方，六塊釷礦、三塊Pristine Hide、兩塊粗皮、一份Tanning Agent）帶你走完最後五十點（約75次）。75專精後移動製革坊尤其寶貴：營火邊就能把一袋皮子變成成品。Hesk的訂單每30分鐘收八張粗皮。技能50記下Tanner's Trade，上限處是Grandmaster Leatherworking。",
+  'guide.profPages.craftProse.cooking.identityHeading': '餵飽隊伍的鍋',
+  'guide.profPages.craftProse.cooking.identityBody':
+    "吃下熟食會在18秒的休息中治療你，這是拉怪間隙最便宜的治療。梯子從90點治療的Pan-Seared River Perch一路做到980點的Marlow's Grand Roast，現存最大的坐地回復。烹飪位於鍊金術與製皮之間；藥劑師（鍊金術與烹飪）在Eastbrook廚房的Cook Marlow處宣誓（先為鍋獵四頭野豬），與製皮組成的Trapper暫無誓約任務。",
+  'guide.profPages.craftProse.cooking.materialsHeading': '釣竿與獵刀供養的食櫃',
+  'guide.profPages.craftProse.cooking.materialsBody':
+    '釣魚按區域供應招牌食材：Eastbrook Vale的鏡鱒與河鱸，Mirefen Marsh的沼狗魚與泥鰻，Thornpeak Heights的霜鰓鱒與板鰭鯉，每一檔都烹本檔的魚。屠夫的一側來自屍體採集：野味肉，以及精良採集擲出的署名Prime Cut（大烤肉的核心）。藥草調味，梣木燻鰻，Cooking Salt在Marlow攤位8銅一袋。',
+  'guide.profPages.craftProse.cooking.ladderHeading': '從肉乾到大烤肉',
+  'guide.profPages.craftProse.cooking.ladderBody':
+    "Salted Jerky是野外配方：初始即會、一條蛛腿、隨處可做。訓練師梯子在廣場西側的Eastbrook廚房：免費檔技能0（河鱸、Hunter's Game Skewer、Herbed Marsh Pike），中檔技能25每個25銀（Ashwood Smoked Eel、Goldleaf Game Stew、Frostgill Chowder），精良檔技能50每個1金（Silvered Carp Supper、Angler's Feast Platter、Marlow's Grand Roast）。批量菜省料：燻鰻與燉肉每次兩份，宴會拼盤三份。",
+  'guide.profPages.craftProse.cooking.routeHeading': '專精而非傑作，以及通往125之路',
+  'guide.profPages.craftProse.cooking.routeBody':
+    '烹飪是傑作故事裡誠實的例外：菜餚沒有屬性可提升，永不觸發，也不必追。這門手藝的精通在於75的專精：每樣食材省五分之一（批量菜上疊加極快），外加移動野外廚房，讓宴席在副本門口出鍋。邊釣邊做，兩門技能互相供養：免費檔到25，中檔到50，精良檔到75；此後精良菜衰減為半速與四分之一，到上限約再做150次。Marlow的訂單每30分鐘收八塊野味肉。技能50記下Seasoned Chef，125是Grandmaster Cooking頭銜。',
+  'guide.profPages.craftProse.alchemy.identityHeading': '贏下戰鬥的瓶子',
+  'guide.profPages.craftProse.alchemy.identityBody':
+    '這門手藝在Highwatch的藥坊操持，主人是Alchemist Verane：教配方、賣12銅的Glass Vial、以工作訂單收藥草。鍊金術位於工程學與烹飪之間，因此有兩條命途：爆破師（工程學與鍊金術，在Eastbrook的Tinker Gizzel處受誓）與藥劑師（鍊金術與烹飪，在Cook Marlow處宣誓）。調諧任一對即可讓鍊金成為主修直至上限；此前它像所有未宣誓行業一樣練到精良層。',
+  'guide.profPages.craftProse.alchemy.materialsHeading': '藥草、毒腺與玻璃',
+  'guide.profPages.craftProse.alchemy.materialsBody':
+    '每瓶藥劑要一個Glass Vial外加對應檔位的藥草：銀葉生於Eastbrook Vale，金葉生於Mirefen Marsh，日瓣草生於Thornpeak Heights，一區一藥，瓶子隨世界一起攀升。藥草學是天然的夥伴技能；深區的高階草叢需要更好的鐮刀。強化藥劑一線另需獵手的材料：從帶毒屍體採集的Venom Gland，頂級藥劑還要一塊Pristine Venom Gland（署名標本）。',
+  'guide.profPages.craftProse.alchemy.ladderHeading': '配方階梯',
+  'guide.profPages.craftProse.alchemy.ladderBody':
+    'Minor Healing Potion人人初始即會、隨處可調。真正的梯子是Verane在藥坊教的九個配方，每檔三個：技能0免費，25檔每個25銀，50檔每個1金；每檔都是治療藥劑、法力藥劑與耐力強化劑，從普通銀葉瓶（120生命、160法力）經優秀金葉（200、260）到精良日瓣（280、360）。強化劑同樣攀升：Elixir of the Boar給6耐力10分鐘，Venomfire Elixir給9耐力15分鐘，Elixir of the Serpent給12耐力15分鐘且一次兩瓶。旁邊還有組合配方Elixir of the Bear：鍊金25時Verane以25銀傳授，隨處可調，但只有雙技能25的調諧爆破師能做。',
+  'guide.profPages.craftProse.alchemy.routeHeading': '釀藥師的125之路',
+  'guide.profPages.craftProse.alchemy.routeBody':
+    '藥劑永不出傑作，那屬於有屬性的裝備；但名字仍會流傳：精良的日瓣藥劑單瓶釀造、出瓶即署名，雙瓶的Elixir of the Serpent則是無名的。75專精後每個配方省20%材料。早學藥草邊練邊採：銀葉遍布山谷，到了Verane的工作檯，免費檔就能靠順手採的藥草乾淨地推到25；25檔一開就學，採藥轉往沼澤，Verane的訂單（六株Goldleaf Herb換45銅，每30分鐘一次）順路回本。50以後用Thornpeak的藥草釀日瓣與蛇藥；100到125是刻意的涓流，釀能賣的，別為數字燒草。技能50記下Strange Brews，上限處是Grandmaster Alchemy。',
+  'guide.profPages.craftProse.engineering.identityHeading': '工具匠的獨門生意',
+  'guide.profPages.craftProse.engineering.identityBody':
+    '這門手藝在Eastbrook廣場東南角的工坊操持，主人是Tinker Gizzel。每條工具線的1到3級都是尋常商店貨，4級與5級只出自工程師之手。它位於鍊金術與護甲鍛造之間，兩條命途是爆破師（工程學與鍊金術）與Cogsmith（尚不可宣誓）。最要緊的警告：工程學的兩檔配方都高於愛好與未宣誓者的精良層上限，技能只為主修包含工程學的人（今天即爆破師）增長；誰都能做這些工具，未調諧者只是學不到東西。',
+  'guide.profPages.craftProse.engineering.materialsHeading': '材料與前置工具',
+  'guide.profPages.craftProse.engineering.materialsBody':
+    '每個工具配方都吞掉低一級的工具外加高級材料：四塊Thorium Ore加一把Mithril Mining Pick成為Thorium Mining Pick，再用兩塊Arcanite Bar加釷鎬成為Arcanite Mining Pick；斧與鐮兩條線以Ashwood與Elderwood Log、Goldleaf與Sunpetal Herb如法炮製。Gizzel在工坊備齊全部六種高級材料，但礦、木、草都能在Mirefen Marsh與Thornpeak Heights自採，自採才有利潤；唯一例外是僅商店有售的Arcanite Bar，給每件奧金級工具墊了固定的成本底價。',
+  'guide.profPages.craftProse.engineering.ladderHeading': '工具階梯',
+  'guide.profPages.craftProse.engineering.ladderBody':
+    '整條梯子只有六個配方，全部綁定工坊且自動學會、永不收費：技能75的4級鎬、斧、鐮，與技能150的5級版本。150不是筆誤，故意高於當前125上限：技能需求從不阻止製作，只影響成長，材料與前置工具到手當天就能做出5級工具。每件成品都是精良或史詩品質且出廠署名。工程學還撐起一件組合配方的一半：Elixir of the Bear，由雙技能25的調諧爆破師調製。',
+  'guide.profPages.craftProse.engineering.routeHeading': '工程師的125之路',
+  'guide.profPages.craftProse.engineering.routeBody':
+    '工具沒有戰鬥屬性，永不出傑作。75照常專精：省20%材料，外加把任何採集之旅變成車間的臨時野外工坊。成長幾乎不衰減：75檔配方到100全速、之後半速，150檔配方到125上限一路全速，真正的瓶頸是材料與銅板。先定命途，從Tinker Gizzel處取爆破師調諧；再餵梯子：自練採集或結交採集者，商店買齊3級工具，把Gizzel的訂單（八根Ironbark Log換16銅，每30分鐘一次）當零花錢。賣點不言自明：高於節點的每級工具都從2.5秒採集讀條裡削去0.4秒（下限1.5秒）。技能50記下Cogs and Sprockets，125是Grandmaster Engineering。',
+  'guide.profPages.craftProse.enchanting.identityHeading': '拆開裝備，注回力量',
+  'guide.profPages.craftProse.enchanting.identityBody':
+    '沒有工位、沒有訓練師、沒有要買的配方書：所有附魔初始即會，誰都能從第一天開始分解，技能與各行業一樣以125為上限。它位於銘文學與珠寶設計之間，兩條命途是Arcanist與Gembinder，均因鄰居還沒有配方而暫不可宣誓；因此附魔今天是所有人的手藝：宣誓前自由練到精良層，也是爆破師或藥劑師天然的愛好選擇。附魔師還維繫著採集世界：三種可鑲嵌的工具效果都是附魔師的作品，原作者為自己的作品充能享有折扣，專精後更深。',
+  'guide.profPages.craftProse.enchanting.levelingHeading': '附魔如何升級',
+  'guide.profPages.craftProse.enchanting.levelingBody':
+    '兩種行動推動技能：分解與施加附魔，每次成功最多一點，按工作的分量折算：普通分解與純粉塵附魔算普通活；優秀分解與精華附魔算優秀活；精良分解與所有Runed或Greater附魔算精良活；史詩與傳說分解更高。熟悉的精通衰減按25點層級作用：普通活在技能75變灰，優秀活在100，精良活恰在125上限。附魔另有一份仁慈：高於命途上限的輸入向下取整而非歸零，宣誓前史詩分解按精良計而非一無所獲；若附魔淪為休眠，一切按普通活計，爬升停在75；作為愛好則精良活仍有收益，只是75之後變慢。',
+  'guide.profPages.craftProse.enchanting.marketHeading': '附魔副本、出處與市場',
+  'guide.profPages.craftProse.enchanting.marketBody':
+    '施加附魔消耗背包中未裝備的一件副本加材料，交還一件獨立的附魔副本；穿上它，加成永遠跟隨。一件一附魔：附魔副本不能再附魔也不能分解，出售、丟棄與分解都優先取用普通副本，成品不會被誤吞；完全相同的附魔副本還能疊放。傑作與附魔是朋友：傑作完全可附魔，附魔疊加在傑作加成與署名之上互不干擾；署名傑作配Greater附魔是工藝品的極致，仍按設計低於團本戰利品。世界市場只經手無標記的普通貨，附魔與署名件都面對面交易；材料才是可上市的一半：粉塵、精華與碎片自由掛單，掛單免費，成交才抽5%。',
 };

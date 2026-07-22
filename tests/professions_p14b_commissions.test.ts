@@ -60,6 +60,8 @@ const VESTMENTS = 'eastbrook_ritual_vestments'; // armor
 const POTION_RECIPE = 'recipe_minor_healing_potion';
 const POTION = 'minor_healing_potion'; // potion kind: commission-INELIGIBLE
 const BOUND_DENY = 'That item is bound and cannot be traded.';
+// Phase 15 QA directed fix: the vendor-side sibling of BOUND_DENY (items.ts sellItem).
+const SELL_BOUND_DENY = 'That item is bound and cannot be sold.';
 
 function recipeOf(id: string): ProfessionRecipeRecord {
   const recipe = ALL_RECIPES.find((r) => r.id === id);
@@ -1044,10 +1046,12 @@ describe('live GameServer: commission craft, bound trade refusal, unbind over th
 });
 
 // ---------------------------------------------------------------------------
-// 11. The bound holder keeps every non-trade right (binding restricts trade
-//     ONLY: equip, unequip, bank, and vendor all stay open, payload intact).
+// 11. The bound holder keeps every non-transfer right (equip, unequip, and
+//     bank all stay open, payload intact). Vendor sell is CLOSED for bound
+//     copies since the Phase 15 QA directed fix: selling minted a plain
+//     buyback copy, laundering the bond for a 0 copper spread.
 // ---------------------------------------------------------------------------
-describe('bound holder lifecycle: every non-trade right survives the bond', () => {
+describe('bound holder lifecycle: every non-transfer right survives the bond', () => {
   // Expectation literals are built FRESH per assertion: addItemInstance can
   // store the minted payload by reference, so comparing against the same
   // object we handed it would be a self-comparison a field-dropping mutation
@@ -1119,11 +1123,12 @@ describe('bound holder lifecycle: every non-trade right survives the bond', () =
     expect(back[0].instance).toEqual(expectedBound(pid));
   });
 
-  it('vendor sell of a bound piece is allowed: the bond gates trade, never the vendor', () => {
-    // The equipment-kind sibling of the Phase 13 bound-reagent sell pin
-    // (professions_p13_bound_surfaces.test.ts); the buyback-laundering class
-    // stays open in scope elsewhere, this pins only the deliverable: selling
-    // is never refused by the bond.
+  it('vendor sell of a bound piece is refused: the bond gates the vendor too', () => {
+    // Phase 15 QA directed fix, maintainer-approved 2026-07-22, closes the
+    // buyback-plain wash: this arm previously pinned vendor sell ALLOWED for a
+    // bound copy, but selling recorded a PLAIN buyback row, so sell + buyback
+    // stripped boundTo AND bindOnTrade for a 0 copper spread, bypassing the
+    // 2500 to 40000 copper unbind ladder. The bond now gates the vendor.
     const sim = makeSim();
     const pid = sim.playerId;
     const wilkes = [...sim.entities.values()].find((e) => e.templateId === 'trader_wilkes');
@@ -1135,9 +1140,12 @@ describe('bound holder lifecycle: every non-trade right survives the bond', () =
     mintBound(sim, pid);
     const before = copperOf(sim, pid);
     sim.sellItem(SWORD, 1, pid);
-    expect(errorTexts(sim.drainEvents())).toHaveLength(0);
-    expect(slotsOf(sim, pid, SWORD)).toHaveLength(0);
-    expect(copperOf(sim, pid)).toBe(before + ITEMS[SWORD].sellValue!);
+    expect(errorTexts(sim.drainEvents())).toContain(SELL_BOUND_DENY);
+    const kept = slotsOf(sim, pid, SWORD);
+    expect(kept).toHaveLength(1);
+    expect(kept[0].instance).toEqual(expectedBound(pid));
+    expect(copperOf(sim, pid)).toBe(before);
+    expect(sim.players.get(pid)!.vendorBuyback.find((s) => s.itemId === SWORD)).toBeUndefined();
   });
 });
 
@@ -1172,6 +1180,135 @@ describe('mixed bound + unbound copies of one equipment itemId trade slot-accura
     const kept = slotsOf(sim, a, SWORD);
     expect(kept).toHaveLength(1);
     expect(kept[0].instance?.boundTo).toBe(a);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 12b. Phase 15 QA directed fix (maintainer-approved 2026-07-22): the vendor
+//      buyback-plain wash is closed end to end. sellItem now excludes bound
+//      (boundTo-stamped) copies from the sellable count, mirroring the trade
+//      gate: plain and unbound copies of the same itemId remain sellable, a
+//      bound-only request is refused, and buyback can never mint a plain copy
+//      of a bound piece.
+// ---------------------------------------------------------------------------
+describe('Phase 15: the vendor buyback-plain wash is closed', () => {
+  function vendorSetup(): { sim: Sim; pid: number } {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    const wilkes = [...sim.entities.values()].find((e) => e.templateId === 'trader_wilkes');
+    if (!wilkes) throw new Error('Trader Wilkes not spawned');
+    const p = sim.entities.get(pid)!;
+    p.pos = { ...wilkes.pos };
+    p.prevPos = { ...p.pos };
+    sim.rebucket(p);
+    sim.drainEvents();
+    return { sim, pid };
+  }
+
+  // Fresh expectation literal per assertion (addItemInstance stores by
+  // reference; comparing against the minted object would self-compare).
+  function boundPayload(pid: number): ItemInstancePayload {
+    return { bindOnTrade: true, boundTo: pid };
+  }
+
+  it('a bound-only holding is refused: no payout, no buyback row, payload intact', () => {
+    const { sim, pid } = vendorSetup();
+    setCopper(sim, pid, 0);
+    sim.ctx.addItemInstance(SWORD, { bindOnTrade: true, boundTo: pid }, pid);
+    sim.drainEvents();
+    sim.sellItem(SWORD, 1, pid);
+    expect(errorTexts(sim.drainEvents())).toContain(SELL_BOUND_DENY);
+    expect(copperOf(sim, pid)).toBe(0);
+    const kept = slotsOf(sim, pid, SWORD);
+    expect(kept).toHaveLength(1);
+    expect(kept[0].instance).toEqual(boundPayload(pid));
+    expect(sim.players.get(pid)!.vendorBuyback.find((s) => s.itemId === SWORD)).toBeUndefined();
+  });
+
+  it('mixed plain + bound: a sell-2 request clamps to the 1 plain copy, bound copy untouched', () => {
+    const { sim, pid } = vendorSetup();
+    setCopper(sim, pid, 0);
+    sim.addItem(SWORD, 1, pid);
+    sim.ctx.addItemInstance(SWORD, { bindOnTrade: true, boundTo: pid }, pid);
+    sim.drainEvents();
+    sim.sellItem(SWORD, 2, pid);
+    // The clamp is silent (an unbound copy covered part of the request): the
+    // plain copy sells, the bound copy stays, the buyback row records ONLY the
+    // plain copy actually sold.
+    expect(errorTexts(sim.drainEvents())).toHaveLength(0);
+    expect(copperOf(sim, pid)).toBe(ITEMS[SWORD].sellValue!);
+    const kept = slotsOf(sim, pid, SWORD);
+    expect(kept).toHaveLength(1);
+    expect(kept[0].instance).toEqual(boundPayload(pid));
+    expect(sim.players.get(pid)!.vendorBuyback.find((s) => s.itemId === SWORD)?.count).toBe(1);
+  });
+
+  it('removal order spares a bound copy sitting ABOVE an unbound instanced one', () => {
+    // Both copies are instanced (no fungible copy), and the bound copy is
+    // added LAST so it sits at the higher inventory index, exactly where the
+    // highest-index-first walk starts: without the sell path's skip predicate
+    // the bound copy would be the one consumed.
+    const { sim, pid } = vendorSetup();
+    setCopper(sim, pid, 0);
+    sim.ctx.addItemInstance(SWORD, { signer: 'Ayla' }, pid);
+    sim.ctx.addItemInstance(SWORD, { bindOnTrade: true, boundTo: pid }, pid);
+    sim.drainEvents();
+    sim.sellItem(SWORD, 1, pid);
+    expect(errorTexts(sim.drainEvents())).toHaveLength(0);
+    expect(copperOf(sim, pid)).toBe(ITEMS[SWORD].sellValue!);
+    const kept = slotsOf(sim, pid, SWORD);
+    expect(kept).toHaveLength(1);
+    expect(kept[0].instance).toEqual(boundPayload(pid));
+  });
+
+  it('buyback of a legitimately sold plain copy is unchanged', () => {
+    const { sim, pid } = vendorSetup();
+    setCopper(sim, pid, 0);
+    sim.addItem(SWORD, 1, pid);
+    sim.drainEvents();
+    sim.sellItem(SWORD, 1, pid);
+    expect(errorTexts(sim.drainEvents())).toHaveLength(0);
+    expect(copperOf(sim, pid)).toBe(ITEMS[SWORD].sellValue!);
+    sim.buyBackItem(SWORD, pid);
+    expect(errorTexts(sim.drainEvents())).toHaveLength(0);
+    expect(copperOf(sim, pid)).toBe(0);
+    const back = slotsOf(sim, pid, SWORD);
+    expect(back).toHaveLength(1);
+    expect(back[0].instance).toBeUndefined();
+  });
+
+  it('the full wash probe is impossible end to end: sell denied, then buyback denied', () => {
+    const { sim, pid } = vendorSetup();
+    setCopper(sim, pid, 100000);
+    sim.ctx.addItemInstance(SWORD, { bindOnTrade: true, boundTo: pid }, pid);
+    sim.drainEvents();
+    sim.sellItem(SWORD, 1, pid);
+    expect(errorTexts(sim.drainEvents())).toContain(SELL_BOUND_DENY);
+    sim.buyBackItem(SWORD, pid);
+    expect(errorTexts(sim.drainEvents())).toContain('That item is not available for buyback.');
+    // The bond survives untouched: no plain copy was minted anywhere and the
+    // only path to an unbound copy remains the unbind fee ladder.
+    expect(copperOf(sim, pid)).toBe(100000);
+    const kept = slotsOf(sim, pid, SWORD);
+    expect(kept).toHaveLength(1);
+    expect(kept[0].instance).toEqual(boundPayload(pid));
+  });
+
+  it('an equipped bound piece is outside the sell scan: the vendor reads bags only', () => {
+    const { sim, pid } = vendorSetup();
+    const meta = sim.players.get(pid)!;
+    setCopper(sim, pid, 0);
+    sim.ctx.addItemInstance(SWORD, { bindOnTrade: true, boundTo: pid }, pid);
+    sim.equipItem(SWORD, pid);
+    sim.drainEvents();
+    sim.sellItem(SWORD, 1, pid);
+    expect(errorTexts(sim.drainEvents())).toContain("You don't have that item.");
+    expect(copperOf(sim, pid)).toBe(0);
+    const wornSlot = (Object.entries(meta.equipment).find(([, id]) => id === SWORD) ?? [])[0] as
+      | EquipSlot
+      | undefined;
+    expect(wornSlot, 'the bound sword stayed equipped').toBeTruthy();
+    expect(meta.equipmentInstance?.[wornSlot!]).toEqual(boundPayload(pid));
   });
 });
 

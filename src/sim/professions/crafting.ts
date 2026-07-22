@@ -574,6 +574,14 @@ export function craftItem(
     if (recipeById(recipeId)?.stationType) {
       ctx.bumpDeedStat(r.meta, 'hubCraftsPerformed', 1);
     }
+    // Phase 15: a masterwork proc feeds the Masterwright counter
+    // (prog_masterwright). Resolved strictly AFTER the resolve's single
+    // output-side proc draw; this bump draws nothing. Deliberately NO retro
+    // arm: masterworking is repeatable, so a veteran whose procs predate the
+    // counter simply earns it on the next proc.
+    if (result.masterwork) {
+      ctx.bumpDeedStat(r.meta, 'masterworksCrafted', 1);
+    }
     // The dirty mark also covers the craft-skill gain the resolve applied.
     ctx.markDeedsDirty(r.meta.entityId);
     ctx.onRecipeCraftedForQuests(recipeId, r.meta);

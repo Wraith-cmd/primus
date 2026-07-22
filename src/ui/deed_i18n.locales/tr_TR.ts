@@ -79,7 +79,6 @@ export const table: DeedLocaleTable = {
   },
   prog_master_gatherer: {
     name: 'Usta Toplayıcı',
-    desc: 'Madencilik, Odunculuk ve Şifalı Otçulukta 100 yetkinliğe ulaş.',
   },
   prog_first_craft: { name: 'El Emeği Göz Nuru', desc: 'İlk başarılı üretimini tamamla.' },
   prog_craft_specialist: {

@@ -5,7 +5,9 @@ import {
   cadenceBlockedKeys,
   clampCadenceOnLoad,
   isCadenceBlocked,
+  isCadenceElapsed,
   NUDGE_CADENCE_TICKS,
+  serializeCadence,
   WORK_ORDER_CADENCE_TICKS,
 } from '../src/sim/professions/cadence';
 import { computeQuestState, Sim } from '../src/sim/sim';
@@ -103,6 +105,33 @@ describe('cadence.ts pure helpers', () => {
     );
     expect(clamped.has('atNow')).toBe(false);
     expect(clamped.get('atCap')).toBe(100 + WORK_ORDER_CADENCE_TICKS);
+  });
+
+  it('isCadenceElapsed is the shared inclusive-at-now boundary (Phase 15 QA directed fix)', () => {
+    // The ONE predicate both clampCadenceOnLoad and serializeCadence sit on:
+    // a window lapsing exactly at `now` is already available, hence elapsed.
+    expect(isCadenceElapsed(100, 99)).toBe(false); // still live
+    expect(isCadenceElapsed(100, 100)).toBe(true);
+    expect(isCadenceElapsed(100, 101)).toBe(true);
+  });
+
+  it('serializeCadence prunes elapsed keys, passes live ones byte-identically, never mutates', () => {
+    const map = new Map<string, number>([
+      ['live', 500],
+      ['elapsed', 100],
+      ['atNow', 200],
+    ]);
+    expect(serializeCadence(map, 200)).toEqual({ live: 500 });
+    // The live map is untouched: the cprof cadenceBlockedQuests mirror keeps
+    // deriving from it (cadenceBlockedKeys), so pruning must never reach it.
+    expect([...map.entries()]).toEqual([
+      ['live', 500],
+      ['elapsed', 100],
+      ['atNow', 200],
+    ]);
+    // Nothing live left -> null, so the save field omits (zero-default omission).
+    expect(serializeCadence(map, 500)).toBe(null);
+    expect(serializeCadence(new Map(), 0)).toBe(null);
   });
 
   it('armCadence clamps a negative window to immediately elapsed and floors a fraction', () => {
@@ -221,6 +250,54 @@ describe('work-order turn-in arms the cooldown (Sim, Phase 14)', () => {
     const sim = makeSim();
     const saved = sim.serializeCharacter(sim.playerId);
     expect(saved && 'questCadence' in saved).toBe(false);
+  });
+
+  it('an elapsed key is pruned at serialize while a live one survives unchanged (Phase 15 QA directed fix)', () => {
+    const sim = makeSim();
+    turnInWorkOrder(sim);
+    const meta = sim.players.get(sim.playerId)!;
+    const liveAt = meta.questCadence.get(WORK_ORDER)!;
+    // A window that lapsed mid-session: pre-fix, load-only pruning meant every
+    // autosave of a long-running session carried it forward forever.
+    meta.questCadence.set('q_prof_workorder_stale', sim.tickCount);
+
+    const saved = sim.serializeCharacter(sim.playerId);
+    expect(saved?.questCadence).toEqual({ [WORK_ORDER]: liveAt }); // live arm byte-identical
+    // Serialize never mutates the live map, and the cprof wire mirror
+    // (craftingIdentityFor -> cadenceBlockedKeys over the LIVE map) is
+    // untouched by the prune: the stale key stays in the map, and only the
+    // genuinely blocked quest rides the wire, exactly as before.
+    expect(meta.questCadence.get('q_prof_workorder_stale')).toBe(sim.tickCount);
+    expect(sim.craftingIdentityFor(sim.playerId).cadenceBlockedQuests).toEqual([WORK_ORDER]);
+  });
+
+  it('a map holding only elapsed keys serializes no questCadence field at all', () => {
+    const sim = makeSim();
+    turnInWorkOrder(sim);
+    const meta = sim.players.get(sim.playerId)!;
+    meta.questCadence.set(WORK_ORDER, sim.tickCount); // lapse the only window
+    const saved = sim.serializeCharacter(sim.playerId);
+    expect(saved && 'questCadence' in saved).toBe(false); // zero-default omission holds
+  });
+
+  it('a serialize-load-serialize round trip is a fixed point', () => {
+    const sim = makeSim();
+    turnInWorkOrder(sim);
+    const first = sim.serializeCharacter(sim.playerId);
+    expect(first?.questCadence?.[WORK_ORDER]).toBeGreaterThan(0);
+
+    const reloaded = makeSim(7716);
+    const pid = reloaded.addPlayer('warrior', 'Reloaded', { state: first ?? undefined });
+    const second = reloaded.serializeCharacter(pid);
+    expect(second?.questCadence).toEqual({
+      [WORK_ORDER]: reloaded.tickCount + WORK_ORDER_CADENCE_TICKS,
+    });
+
+    // Same construction tick (same seed), so the clamp keeps the at-cap value
+    // as-is and the third serialize reproduces the second byte-for-byte.
+    const again = makeSim(7716);
+    const pid2 = again.addPlayer('warrior', 'Reloaded2', { state: second ?? undefined });
+    expect(again.serializeCharacter(pid2)?.questCadence).toEqual(second?.questCadence);
   });
 
   it('surfaces the blocked work order to the online cprof mirror via craftingIdentityFor', () => {

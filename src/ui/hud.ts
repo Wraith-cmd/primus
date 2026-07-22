@@ -175,6 +175,7 @@ import { buildCraftingView, craftLearnHints } from './crafting_view';
 import { renderCraftingWindow, stationNameText } from './crafting_window';
 import { shouldRefreshDailyRewardsLauncher } from './daily_rewards_launcher_core';
 import { DailyRewardsWindow } from './daily_rewards_window';
+import { decorativeArtImg } from './decorative_art';
 import {
   deedBroadcastLine,
   deedName,
@@ -224,7 +225,11 @@ import {
   resetFramePositionsOnce,
   TARGET_FRAME_POS_KEY,
 } from './frame_pos_reset';
-import { gatherDeniedLineKey, gatherDowngradeLineKey } from './gathering_view';
+import {
+  buildGatheringProficiencyRows,
+  gatherDeniedLineKey,
+  gatherDowngradeLineKey,
+} from './gathering_view';
 import { isSelfOnlyAbility } from './hud/action_bar/ability_self_only';
 import { ActionBarController } from './hud/action_bar/action_bar_controller';
 import {
@@ -428,8 +433,12 @@ import {
   procOverlayState,
 } from './proc_overlay_view';
 import { maskProfanity } from './profanity';
+import { MASTERWORK_SEAL_IMAGE_URL } from './profession_art';
 import { type ProfessionEventInput, planProfessionEvent } from './profession_event_lines_core';
-import { buildProfessionIdentityView } from './profession_identity_view';
+import {
+  buildProfessionIdentityView,
+  professionSurfaceRefreshSig,
+} from './profession_identity_view';
 import { buildProfessionTutorialModel } from './profession_tutorial_view';
 import { renderProfessionTutorial } from './profession_tutorial_window';
 import { ProfessionsWindow } from './professions_window';
@@ -1289,6 +1298,11 @@ export class Hud {
   // (walking into/out of a station, or the own mobile station expiring); the
   // server re-validates the gate on every craft anyway.
   private lastCraftingStationSig = '';
+  // Character and Crafting are cold painters. Diff the local crafting
+  // identity plus the gathering proficiency rows on the slow band so a late
+  // online cprof or professions snapshot replaces stale archetype art/title
+  // and Gathering numbers without repainting for attunedZone bystanders.
+  private lastProfessionSurfaceSig = '';
   // Commission opt-in state (Professions 2.0 Phase 14b): recipe ids whose
   // NEXT craft goes out with the commission flag. Held here (not in the
   // painter) so the crafting window's staleness repaints never untick a
@@ -7678,6 +7692,7 @@ export class Hud {
     // The bank closes itself when the bank mirror goes null (left the banker).
     if (slowHud && this.bankWindow.isOpen) this.bankWindow.refreshIfChanged();
     if (slowHud && this.deedsWindow.isOpen) this.deedsWindow.refreshIfChanged();
+    if (slowHud) this.refreshOpenProfessionSurfacesIfChanged();
     if (slowHud && this.professionsWindow.isOpen) this.professionsWindow.refreshIfChanged();
     // The deed tracker is always-on chrome (not gated on a window): watched
     // progress climbs from normal play, and earned deeds drop off.
@@ -9132,6 +9147,7 @@ export class Hud {
               name: item ? itemDisplayName(item) : ev.itemId,
             }),
             QUALITY_COLOR.epic,
+            MASTERWORK_SEAL_IMAGE_URL,
           );
           break;
         }
@@ -10302,7 +10318,11 @@ export class Hud {
           : tierUpText(plan.banner);
       // plan.motion trims the banner fade only; the announcer push below is
       // the polite #combat-live ARIA region (accessibility, never gated).
-      this.showBanner(text, plan.motion);
+      this.showBanner(
+        text,
+        plan.motion,
+        plan.banner.kind === 'masterwork' ? MASTERWORK_SEAL_IMAGE_URL : undefined,
+      );
       // The banner div carries no live semantics (the handleDeedUnlocks
       // precedent), so the polite #combat-live region carries the copy.
       this.combatAnnouncer.push(text, performance.now());
@@ -10354,6 +10374,10 @@ export class Hud {
         this.showBanner(text, plan.motion);
         this.combatAnnouncer.push(text, performance.now());
         if (plan.playSound) audio.achievement();
+        // Offline identity is already mutated when this personal event drains,
+        // so refresh immediately. If online cprof lands later, the slow-band
+        // signature above catches that second edge and converges then.
+        this.refreshOpenProfessionSurfacesIfChanged();
         break;
       }
     }
@@ -10415,8 +10439,8 @@ export class Hud {
     }
   }
 
-  log(text: string, color = '#ccc'): void {
-    this.appendLog(this.chatLogEl, text, color, true, 'system');
+  log(text: string, color = '#ccc', decorativeIconUrl?: string): void {
+    this.appendLog(this.chatLogEl, text, color, true, 'system', decorativeIconUrl);
   }
 
   private noteProcAuraGain(name: string): void {
@@ -11035,6 +11059,7 @@ export class Hud {
     color: string,
     timestamp = false,
     chan = 'system',
+    decorativeIconUrl?: string,
   ): void {
     const wasNearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
     const div = document.createElement('div');
@@ -11044,6 +11069,9 @@ export class Hud {
     if (el === this.chatLogEl) {
       div.dataset.chan = chan;
       this.hideIfFiltered(div, chan);
+    }
+    if (decorativeIconUrl) {
+      div.append(decorativeArtImg(document, 'chat-masterwork-seal', decorativeIconUrl));
     }
     // Loot lines carry name-free item tokens ([[i:id]]); render those as clickable
     // links via the shared chat item-link renderer. Plain system/combat lines keep
@@ -11109,8 +11137,19 @@ export class Hud {
     }
   }
 
-  showBanner(text: string, motion = true): void {
-    this.bannerEl.textContent = text;
+  showBanner(text: string, motion = true, decorativeIconUrl?: string): void {
+    const copy = document.createElement('span');
+    copy.className = 'banner-copy';
+    copy.textContent = text;
+    if (decorativeIconUrl) {
+      this.bannerEl.replaceChildren(
+        decorativeArtImg(document, 'banner-art', decorativeIconUrl),
+        copy,
+      );
+    } else {
+      this.bannerEl.replaceChildren(copy);
+    }
+    this.bannerEl.classList.toggle('banner-with-art', Boolean(decorativeIconUrl));
     // Reduced-motion celebrations (craft plan.motion) show and hide the
     // banner without the fade transition: identical text and duration, no
     // animation. Motion-trimming only; information always survives.
@@ -11810,6 +11849,22 @@ export class Hud {
 
   private renderCharIfOpen(): void {
     this.charWindow.renderIfOpen();
+  }
+
+  private refreshOpenProfessionSurfacesIfChanged(): void {
+    // Unlike the isOpen-gated siblings on the slow band, the signature is
+    // computed even with both surfaces closed: at the 2 Hz slow cadence the
+    // stringify is negligible, and keeping the signature warm means reopening
+    // a surface (which always paints fresh) is not followed by a redundant
+    // signature-diff repaint on the next slow tick.
+    const sig = professionSurfaceRefreshSig(
+      this.sim.craftingIdentity,
+      buildGatheringProficiencyRows(this.sim),
+    );
+    if (sig === this.lastProfessionSurfaceSig) return;
+    this.lastProfessionSurfaceSig = sig;
+    this.charWindow.renderIfOpen();
+    if ($('#crafting-window').style.display === 'block') this.renderCrafting();
   }
 
   renderBags(): void {

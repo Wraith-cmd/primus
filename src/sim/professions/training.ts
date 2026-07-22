@@ -32,10 +32,14 @@ import { type CraftSkills, tierForSkill } from './wheel';
 
 // Flat training fee per recipe TIER (tierForSkill(recipe.skillReq)), in
 // copper: common (tier 0) is free, uncommon (tier 1) is 25 silver, rare
-// (tier 2) is 1 gold. Tiers beyond the table clamp to the last entry; the
-// Phase 10/15 tuning passes own extending this table when higher-tier
-// trainer-taught content lands.
-export const TRAINING_FEE_BY_TIER: readonly number[] = Object.freeze([0, 2500, 10000]);
+// (tier 2) is 1 gold, then a 4x geometric step per tier (Phase 15 resolved
+// tuning): tier 3 is 4 gold, tier 4 is 16 gold. Tiers beyond the table still
+// clamp to the last entry. Behavior-neutral for shipped wave-one content: no
+// trainer-taught recipe sits above tier 2 (the skillReq 75/150 recipes are
+// all grandfathered pre-training entries with no 'trainer' acquisition).
+export const TRAINING_FEE_BY_TIER: readonly number[] = Object.freeze([
+  0, 2500, 10000, 40000, 160000,
+]);
 
 /** The one-time training fee for `recipe`, in copper: its tier's
  *  TRAINING_FEE_BY_TIER entry, clamped to the last entry for tiers past the

@@ -755,42 +755,11 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'Zadeklarowanie archetypu będzie momentem fabularnym: zadaniem, które formalnie przyjmuje cię do tej tożsamości. Ta droga wciąż powstaje, więc na razie każda postać przemierza świat z tym wyborem wciąż przed sobą, a każde rzemiosło w międzyczasie rozwija się do poziomu rzadkiej jakości.',
   'guide.professions.archetypeChooseTitle': 'Wybór archetypu',
-  'guide.professions.archetypeIdentityBody':
-    'Aktywny archetyp to deklaracja, kim twoja postać jest w świecie, widoczna w tym, jak zwracają się do ciebie inni i sam świat. Dokładne nagrody i wyróżnienia z nim związane wciąż są dopracowywane; zaglądaj tu, w miarę jak system się rozrasta.',
-  'guide.professions.archetypeIdentityTitle': 'Co oznacza twój archetyp',
-  'guide.professions.archetypeIntro':
-    'Każde z dziesięciu rzemiosł reprezentuje też archetyp, szerszą tożsamość, którą możesz przyjąć ponad samo uprawianie fachu. Aktywny archetyp to pojedynczy wybór, nie lista do odhaczenia: nosisz jeden i możesz go później zmienić, jeśli zechcesz.',
   'guide.professions.archetypeSwitchBody':
     'Deklaracja nie będzie też dożywotnim wyrokiem. W planach jest powtarzalny akt zadośćuczynienia twojemu dawnemu fachowi, zanim podejmiesz nowy, przy czym zadośćuczynienie robi się coraz surowsze z każdą zmianą, dzięki czemu wybór pozostaje znaczący, a nie darmowy. Podobnie jak sama deklaracja, wciąż jest w drodze.',
-  'guide.professions.archetypeSwitchTitle': 'Zmiana zdania',
-  'guide.professions.archetypeTitle': 'Dziesięć archetypów',
-  'guide.professions.craftComboBody':
-    'Poza listą przepisów pojedynczego rzemiosła koło wspiera też przepisy łączone, które wymagają dwóch sąsiadujących rzemiosł naraz, nagradzając postać, która zainwestowała w sąsiednie fachy na kręgu, a nie w jeden w izolacji. Rzemieślnik musi sam władać oboma fachami; umiejętność partnera nie zastąpi żadnej z połówek.',
-  'guide.professions.craftComboTitle': 'Przepisy łączone',
-  'guide.professions.craftIntro':
-    'Dziesięć rzemiosł przetwarza zebrane materiały w gotowy ekwipunek i towary: Płatnerstwo, Zbrojmistrzostwo i Jubilerstwo nadają surowej materii kształt noszonego ekwipunku; Alchemia i Inżynieria opierają się na próbach i błędach; Gotowanie, Inskrypcja i Zaklinanie sięgają po wytwory innych rzemiosł; Krawiectwo i Garbarstwo pracują według dokładnych wzorów. Razem tworzą koło, w którym każde rzemiosło sąsiaduje z dwoma innymi i leży naprzeciw jednego.',
   'guide.professions.craftMasteryBody':
     'Udane wytwarzanie buduje umiejętność w danym fachu, a umiejętność nigdy nie zamyka przepisów rzemiosła: jeśli znasz przepis i masz jego materiały, możesz spróbować. To, co daje ci umiejętność, to jakość, wprawna ręka wykonuje lepszą robotę. Jedynym wyjątkiem są przepisy łączone, które wymagają, byś wykazał się w obu ich fachach, zanim się otworzą.',
   'guide.professions.craftMasteryTitle': 'Umiejętność i biegłość',
-  'guide.professions.craftRecipesBody':
-    'Każdy przepis wymaga konkretnych składników, które zbierasz lub kupujesz. Najprostsze przepisy potrzebują wyłącznie pospolitych materiałów i są dostępne od samego początku, więc możesz zacząć pracę w fachu od chwili, gdy go podejmiesz. Listy przepisów wciąż się zapełniają: kilka fachów czeka na swoje pierwsze przepisy, a kolejne pojawiają się wraz z rozwojem rzemiosł.',
-  'guide.professions.craftRecipesTitle': 'Przepisy i składniki',
-  'guide.professions.craftRingBody':
-    'Dziesięć rzemiosł ułożonych jest w stały krąg, a miejsce rzemiosła na tym kręgu ma znaczenie: rzemiosła sąsiadujące ze sobą na kole mają ze sobą więcej wspólnego niż te po przeciwnych stronach. Oddanie się jednemu rzemiosłu ma przypominać dołączenie do rodziny pokrewnych fachów, a nie wybór odosobnionej umiejętności.',
-  'guide.professions.craftRingTitle': 'Koło specjalności',
-  'guide.professions.craftTitle': 'Dziesięć rzemiosł',
-  'guide.professions.gatherIntro':
-    'Trzy fachy zbierackie pozwalają czerpać surowce prosto ze świata: Górnictwo wydobywa rudę i kamień z żył, Wyrąb pozyskuje drewno z kęp drzew, a Zielarstwo zbiera dziko rosnące zioła i rośliny. Każdy z nich liczony jest osobno, więc praca w jednym nigdy nie spowalnia postępów w innym. Nowy w tym wszystkim? Brygadzista Odell w Eastbrook ma krótkie zlecenie, Fach dla każdej ręki, które przeprowadzi cię przez pierwszy zbiór.',
-  'guide.professions.gatherProficiencyBody':
-    'Każdy udany zbiór buduje twoją wprawę w danym fachu zbierackim, a twoja karta postaci śledzi każdy fach osobno. Więcej praktyki nigdy nie szkodzi twoim postępom, zawsze je tylko zwiększa.',
-  'guide.professions.gatherProficiencyTitle': 'Wprawa',
-  'guide.professions.gatherTitle': 'Zbieractwo: Górnictwo, Wyrąb i Zielarstwo',
-  'guide.professions.gatherToolsBody':
-    'Sprzedawcy oferują podstawowe narzędzia dla każdego fachu zbierackiego, a lepsze można wytworzyć. Dziś do pracy przy węźle nie jest wymagane żadne narzędzie: narzędzia to fundament pod bogatsze węzły, które nadejdą, gdzie kilofy, siekiery i sierpy wyższego stopnia będą drogą do środka.',
-  'guide.professions.gatherToolsTitle': 'Narzędzia fachu',
-  'guide.professions.gatherWhatBody':
-    'Żyły rudy, kępy drzew i kępki ziół rozmieszczone są w Dolinie i na trzęsawisku jako widoczne, niczyje obiekty. Podejdź do jednego z nich i użyj go, aby zebrać, co skrywa. Po zbiorze węzeł potrzebuje czasu, by się odnowić, zanim ty osobiście zbierzesz z niego ponownie, ale nigdy nie blokuje innych: inny gracz może w tym czasie zebrać z tego samego węzła.',
-  'guide.professions.gatherWhatTitle': 'Węzły zasobów',
   'guide.professions.intro':
     'Poza walką i zadaniami świat nagradza pracę na roli i przy kuźni: zbieranie surowców, przekuwanie ich w ekwipunek i towary w dziesięciu rzemiosłach oraz wrastanie w tożsamość jednego z dziesięciu archetypów, które te fachy reprezentują.',
   'guide.valeCupPage.heading': 'Puchar Doliny',
@@ -8471,8 +8440,6 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
     'Jeśli zmienisz trudność, gdy grupa wciąż ma zajęte podejścia, stare przypisania pozostaną przez pewien czas. Przywódca może porzucić je natychmiast, wybierając Resetuj wszystkie instancje w menu własnego portretu albo wpisując /dungeon reset. Trudność musi faktycznie zostać zmieniona, wewnątrz nie może pozostać nikt żywy ani poległy, a kolejne resety dzieli krótki czas odnowienia. Przy wejściu na złej trudności gra ostrzeże przed rozpoczęciem. Rajdu nie resetuje się w ten sposób; obowiązują jego własne zasady blokady.',
   'guide.gear.itemLevelBody':
     'Aby szybko porównać dwa przedmioty, włącz w opcjach Pokaż poziom przedmiotu. Wyposażenie o znanym źródle, zdobyte z wrogów, zadań i profesji rzemieślniczych, pokazuje wtedy poziom przedmiotu: jedną liczbę przybliżającą jego moc na podstawie pochodzenia, co ułatwia ocenę ulepszeń nawet między różnymi miejscami. Przedmioty bez takiego źródła, jak podstawowe towary kupców i sprzęt startowy, nie pokazują poziomu; brak liczby jest normalny.',
-  'guide.professions.craftHowBody':
-    'Otwórz okno Rzemiosła (domyślnie klawisz T), aby zobaczyć wszystkie znane receptury, ich wymagania i posiadane materiały; gdy masz składniki, wystarczy jedno kliknięcie. Zwykłe receptury można tworzyć wszędzie. Niektóre zaawansowane, w tym narzędzia wyższego poziomu i rzadkie pancerze dla czarujących, wymagają centrum rzemiosła w Highwatch.',
   'hudChrome.auraEffect.battleStance': 'Postawa bojowa: generowanie wściekłości zwiększone o 10%',
   'hudChrome.auraEffect.berserkerStance':
     'Postawa berserkera: trafienia krytyczne o 3% częstsze i o 3% silniejsze',

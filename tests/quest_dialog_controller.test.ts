@@ -4,8 +4,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DELVES, NPCS, STATIONS } from '../src/sim/data';
 import { CHRONICLER_TEMPLATE_IDS } from '../src/sim/deeds';
 import type { Entity } from '../src/sim/types';
+import { craftNameText } from '../src/ui/char_window';
 import type { FocusTrapHandle } from '../src/ui/focus_manager';
 import { QuestDialogController } from '../src/ui/hud/quest/quest_dialog_controller';
+import { t } from '../src/ui/i18n';
 import type { IWorld } from '../src/world_api';
 
 function npc(id: number, templateId: string, x = 0): Entity {
@@ -252,6 +254,8 @@ describe('QuestDialogController', () => {
     // The pinned pair is the only legal target for an unattuned player.
     expect(select?.options).toHaveLength(1);
     expect(preview?.textContent).toBeTruthy();
+    expect(preview?.getAttribute('aria-live')).toBe('polite');
+    expect(preview?.getAttribute('aria-atomic')).toBe('true');
 
     if (!select) throw new Error('profession selector missing');
     // The single option leads with the pair archetype name and keeps both craft
@@ -266,6 +270,27 @@ describe('QuestDialogController', () => {
     expect(preview?.textContent).toContain('Weaponcrafting');
     expect(preview?.textContent).toContain('Armorcrafting');
     expect(preview?.textContent).toContain('make-amends');
+    const smithCrest = preview?.querySelector<HTMLImageElement>('.qd-profession-crest');
+    expect(smithCrest?.getAttribute('src')).toBe('/ui/professions/archetype_smith.webp');
+    expect(smithCrest?.getAttribute('alt')).toBe('');
+
+    // The preview painter updates both the localized copy and its crest when
+    // the selection changes. Add a second canonical option to exercise that
+    // reusable select path even though this quest currently pins one pair.
+    const bombardier = document.createElement('option');
+    bombardier.value = 'engineering+alchemy';
+    bombardier.textContent = 'Bombardier';
+    select.appendChild(bombardier);
+    select.value = 'engineering+alchemy';
+    select.dispatchEvent(new Event('change'));
+    expect(preview?.textContent).toContain('Bombardier');
+    expect(
+      preview?.querySelector<HTMLImageElement>('.qd-profession-crest')?.getAttribute('src'),
+    ).toBe('/ui/professions/archetype_bombardier.webp');
+
+    // Restore the quest's legal pinned target before dispatching acceptance.
+    select.value = 'weaponcrafting+armorcrafting';
+    select.dispatchEvent(new Event('change'));
 
     test.element.querySelector<HTMLButtonElement>('.btn')?.click();
     expect(test.acceptQuest).toHaveBeenCalledWith(
@@ -274,11 +299,40 @@ describe('QuestDialogController', () => {
     );
   });
 
+  it('renders the real hobby-switch preview as localized copy with no archetype crest', () => {
+    const haldren = npc(33, 'smith_haldren');
+    haldren.questIds = ['q_prof_hobby_switch'];
+    const test = harness(haldren, 'available');
+    Object.assign(test.world.craftingIdentity, {
+      activeArchetype: 'armorcrafting',
+      pairedMajor: 'weaponcrafting',
+      hobbyCraft: 'leatherworking',
+      attunedPairs: ['weaponcrafting+armorcrafting'],
+    });
+
+    test.controller.open(haldren.id);
+    test.element.querySelector<HTMLButtonElement>('[data-quest="q_prof_hobby_switch"]')?.click();
+
+    const select = test.element.querySelector<HTMLSelectElement>('[data-profession-selection]');
+    const preview = test.element.querySelector<HTMLElement>('[data-profession-preview]');
+    if (!select) throw new Error('hobby profession selector missing');
+    expect([...select.options].map((option) => option.value)).toEqual(['tailoring']);
+    expect(preview?.textContent).toBe(
+      t('hudChrome.crafting.hobbyPreview', { hobby: craftNameText('tailoring') }),
+    );
+    expect(preview?.getAttribute('aria-live')).toBe('polite');
+    expect(preview?.getAttribute('aria-atomic')).toBe('true');
+    expect(preview?.querySelector('.qd-profession-crest')).toBeNull();
+
+    select.dispatchEvent(new Event('change'));
+    expect(preview?.querySelector('.qd-profession-crest')).toBeNull();
+  });
+
   it('keeps the accept action disabled when a profession quest has no target', () => {
     // Phase 14: the make-amends return quest at Forgemistress Darva is only
     // legal for a pair the character has held before, so an unattuned player
     // (no history) sees zero targets and a disabled accept.
-    const darva = npc(33, 'forgemistress_darva');
+    const darva = npc(34, 'forgemistress_darva');
     darva.questIds = ['q_prof_amends_smith'];
     const test = harness(darva, 'available');
     test.controller.open(darva.id);

@@ -119,7 +119,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'deep_wounds',
       'enrage_passive',
     ],
-    color: 0xc79c6e,
+    color: 0xd67a54,
   },
   mage: {
     id: 'mage',
@@ -207,7 +207,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'perfect_moment',
       'fireball_form',
     ],
-    color: 0x69ccf0,
+    color: 0x33c1f1,
   },
   rogue: {
     id: 'rogue',
@@ -247,7 +247,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'stealth',
       'kick',
     ],
-    color: 0xfff569,
+    color: 0xfcee58,
   },
   paladin: {
     id: 'paladin',
@@ -280,7 +280,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'rebuke',
       'sacred_bulwark',
     ],
-    color: 0xf58cba,
+    color: 0xf58ca0,
   },
   hunter: {
     id: 'hunter',
@@ -314,7 +314,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'volley',
       'counter_shot',
     ],
-    color: 0xabd473,
+    color: 0xa6d84f,
   },
   priest: {
     id: 'priest',
@@ -342,7 +342,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'mind_flay',
       'flash_heal',
     ],
-    color: 0xfffff0,
+    color: 0xc6d4f0,
   },
   shaman: {
     id: 'shaman',
@@ -370,7 +370,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'ghost_wolf',
       'earthquake',
     ],
-    color: 0x0070de,
+    color: 0x4e8aea,
   },
   warlock: {
     id: 'warlock',
@@ -407,7 +407,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'rain_of_fire',
       'spell_lock',
     ],
-    color: 0x9482c9,
+    color: 0xa785e6,
   },
   druid: {
     id: 'druid',
@@ -463,7 +463,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'skull_bash',
       'primal_reflexes',
     ],
-    color: 0xff7d0a,
+    color: 0xff8c1a,
   },
 };
 
@@ -5252,6 +5252,10 @@ export const ABILITIES: Record<string, AbilityDef> = {
     school: 'physical',
     requiresTarget: false,
     offGcd: true,
+    // The whole point of the break is escaping fear/stun, so the cast must be
+    // pressable while controlled (like Ice Block); the stun gate would
+    // otherwise make breakControl unreachable exactly when it matters.
+    usableWhileControlled: true,
     effects: [
       { type: 'breakControl' },
       // ONE aura for both halves (value = damage amp; the body scale is the
@@ -5260,7 +5264,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
       { type: 'selfBuff', kind: 'buff_avatar', value: 0.2, duration: 20 },
     ],
     description:
-      'Transform into a colossus for 20 sec, breaking all control on you and increasing your damage dealt by 20%.',
+      'Transform into a colossus for 20 sec, breaking enemy control effects on you (boss control is unaffected) and increasing your damage dealt by 20%.',
   },
   sanguine_aura: {
     id: 'sanguine_aura',

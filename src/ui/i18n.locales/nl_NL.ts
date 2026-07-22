@@ -747,42 +747,11 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'Een archetype uitroepen wordt een verhaalmoment: een quest die je formeel in die identiteit opneemt. Die weg wordt nog gebouwd, dus voorlopig loopt elk personage door de wereld met de keuze nog vóór zich, en elk ambacht vordert ondertussen tot de kwaliteitsrang Zeldzaam.',
   'guide.professions.archetypeChooseTitle': 'Je archetype kiezen',
-  'guide.professions.archetypeIdentityBody':
-    'Je actieve archetype is een uitspraak over wie je personage in de wereld is, herkenbaar in hoe anderen en de wereld je aanspreken. De precieze beloningen en erkenning die erbij horen worden nog uitgewerkt; kom later terug naarmate het systeem zich vult.',
-  'guide.professions.archetypeIdentityTitle': 'Wat je archetype betekent',
-  'guide.professions.archetypeIntro':
-    'Elk van de tien ambachten staat ook voor een archetype, een bredere identiteit die je kunt aannemen en die verder gaat dan alleen dat vak uitoefenen. Je actieve archetype is één keuze tegelijk, geen afvinklijst: je draagt er één, en kunt later van keuze veranderen als je dat wilt.',
   'guide.professions.archetypeSwitchBody':
     'Een uitroeping is evenmin een levenslange gevangenisstraf. Het plan is een herhaalbare daad van goedmaken tegenover je oude vak voor je een nieuw vak opneemt, waarbij het goedmaken elke keer dat je wisselt steiler wordt, zodat de keuze betekenisvol blijft in plaats van gratis. Net als de uitroeping zelf is ook dit nog onderweg.',
-  'guide.professions.archetypeSwitchTitle': 'Van gedachten veranderen',
-  'guide.professions.archetypeTitle': 'De tien archetypen',
-  'guide.professions.craftComboBody':
-    'Naast de eigen receptenlijst van een ambacht ondersteunt het wiel ook combinatierecepten die twee naburige ambachten tegelijk aanspreken, als beloning voor een personage dat in aangrenzende vakken op de ring heeft geïnvesteerd in plaats van in één vak alleen. De maker moet beide vakken zelf beheersen; de vaardigheid van een partner kan geen van beide helften vervangen.',
-  'guide.professions.craftComboTitle': 'Combinatierecepten',
-  'guide.professions.craftIntro':
-    'Tien ambachten maken van verzamelde materialen afgewerkte uitrusting en goederen: Harnasmaken, Wapensmeden en Juwelenmaken vormen ruwe grondstoffen om tot draagbare uitrusting; Alchemie en Knutselwerk draaien op vallen en opstaan; Koken, Inscriptie en Betoveren raken elk het werk van andere ambachten; Kleermaken en Leerbewerken werken naar exacte patronen. Samen vormen ze een wiel, waarbij elk ambacht naast twee buren zit en tegenover één ander.',
   'guide.professions.craftMasteryBody':
     'Succesvol iets maken bouwt vaardigheid op in dat vak, en vaardigheid houdt de recepten van een ambacht nooit achter slot: als je een recept kent en de materialen ervan bezit, kun je het proberen. Wat vaardigheid je in plaats daarvan oplevert, is kwaliteit: een geoefende hand levert fijner werk af. De enige uitzondering zijn combinatierecepten, die vragen dat je jezelf in beide ambachten hebt bewezen voordat ze opengaan.',
   'guide.professions.craftMasteryTitle': 'Vaardigheid en meesterschap',
-  'guide.professions.craftRecipesBody':
-    'Elk recept vraagt om specifieke reagentia die je verzamelt of koopt. De meest eenvoudige recepten vragen niets anders dan gewone materialen en zijn vanaf het allereerste begin te maken, zodat je een vak meteen kunt gaan uitoefenen zodra je het oppakt. De receptenlijsten worden nog aangevuld: een paar vakken wachten nog op hun eerste recepten, en er komen er meer bij naarmate de ambachten groeien.',
-  'guide.professions.craftRecipesTitle': 'Recepten en reagentia',
-  'guide.professions.craftRingBody':
-    'De tien ambachten staan in een vaste ring, en waar een ambacht op die ring zit doet ertoe: ambachten die naast elkaar op het wiel liggen hebben meer met elkaar gemeen dan ambachten die tegenover elkaar liggen. Je aan één ambacht verbinden moet voelen als toetreden tot een familie van verwante vakken, niet als het kiezen van een losstaande vaardigheid.',
-  'guide.professions.craftRingTitle': 'Een wiel van specialiteiten',
-  'guide.professions.craftTitle': 'De tien ambachten',
-  'guide.professions.gatherIntro':
-    'Drie verzamelvakken laten je grondstoffen rechtstreeks uit de wereld halen: Mijnbouw slaat erts en steen uit aders, Houtkap velt timmerhout uit bomengroepen, en Kruidenkunde plukt kruiden en planten die in het wild groeien. Elk wordt apart bijgehouden, dus aan het ene werken vertraagt nooit je voortgang in het andere. Nieuw in dit alles? Voorman Odell in Oostbeek heeft een kort klusje, Een Vak voor Elke Hand, dat je door je eerste oogst loodst.',
-  'guide.professions.gatherProficiencyBody':
-    'Elke geslaagde oogst bouwt je bedrevenheid in dat verzamelvak op, en je personageblad houdt elk vak apart bij. Meer oefening schaadt je voortgang nooit, ze draagt er alleen maar aan bij.',
-  'guide.professions.gatherProficiencyTitle': 'Bedrevenheid',
-  'guide.professions.gatherTitle': 'Verzamelen: Mijnbouw, Houtkap en Kruidenkunde',
-  'guide.professions.gatherToolsBody':
-    'Handelaren verkopen basisgereedschap voor elk verzamelvak, en beter gereedschap kan worden gemaakt. Vandaag is er geen gereedschap nodig om een grondstofbron te bewerken: gereedschap is het voorwerk voor rijkere bronnen die nog komen, waar houwelen, bijlen en sikkels van hogere rang de manier zullen zijn om binnen te komen.',
-  'guide.professions.gatherToolsTitle': 'Gereedschap van het vak',
-  'guide.professions.gatherWhatBody':
-    'Ertsaders, bomengroepen en kruidenveldjes staan in het Dal en het moeras als zichtbare, onbeheerde vaste punten. Loop ernaartoe en gebruik ze om te oogsten wat ze bevatten. Heb je een bron eenmaal geoogst, dan heeft die tijd nodig om te herstellen voordat jij persoonlijk er opnieuw kunt oogsten, maar niemand anders wordt geblokkeerd: een andere speler kan intussen precies dezelfde bron oogsten.',
-  'guide.professions.gatherWhatTitle': 'Grondstofbronnen',
   'guide.professions.intro':
     'Naast gevecht en quests beloont de wereld je voor het bewerken van het land en de smidse: grondstoffen verzamelen, ze in tien ambachtsvakken tot uitrusting en goederen maken, en een identiteit aannemen als een van de tien archetypen die deze vakken vertegenwoordigen.',
   'guide.valeCupPage.heading': 'De Dalbeker',
@@ -8510,8 +8479,6 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
     'Als je van moeilijkheid wisselt terwijl je groep nog geclaimde runs heeft, blijven de oude claims even staan voordat ze vanzelf verdwijnen. De groepsleider kan ze direct loslaten via Alle instanties resetten in het menu van het eigen portret, of met /dungeon reset. De moeilijkheid moet echt gewijzigd zijn, er mag niemand, levend of gevallen, binnen zijn en tussen resets geldt een korte afkoeltijd. Bij de deur op de verkeerde moeilijkheid waarschuwt het spel voor de start. De raid wordt nooit zo gereset; daarvoor blijven de eigen lockoutregels gelden.',
   'guide.gear.itemLevelBody':
     'Schakel Itemniveau tonen in de opties in om twee stukken snel te vergelijken. Uitrusting met een bekende bron, van vijanden, quests en ambachten, toont dan een itemniveau: één getal dat de kracht op basis van de herkomst benadert en upgrades zelfs tussen verschillende vakken vergelijkbaar maakt. Stukken zonder zo’n bron, zoals eenvoudige handelswaar en startuitrusting, tonen geen itemniveau; een ontbrekend getal is normaal.',
-  'guide.professions.craftHowBody':
-    'Open het Vervaardigingsvenster (standaardtoets T) om al je bekende recepten, hun benodigdheden en je voorraad te zien; als de materialen er zijn, volstaat één klik. Gewone recepten kunnen overal worden gemaakt. Enkele geavanceerde recepten, waaronder hoogwaardig gereedschap en zeldzaam pantser voor magiërs, vereisen het vervaardigingscentrum in Highwatch.',
   'guide.gear.qualityBody':
     'Elk voorwerp heeft een kwaliteit en de naam krijgt de bijbehorende kleur, zodat je de waarde in één oogopslag ziet. Van gewoon tot kostbaar:',
   'hudChrome.auraEffect.battleStance': 'Strijdhouding: 10% meer woedeopbouw',

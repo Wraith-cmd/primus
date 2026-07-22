@@ -615,42 +615,11 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'Declarar un arquetipo será un momento de historia: una misión que te acepta formalmente en esa identidad. Ese camino aún se está construyendo, así que por ahora cada personaje recorre el mundo con la elección todavía por delante, y mientras tanto cada oficio avanza hasta el nivel de calidad Raro.',
   'guide.professions.archetypeChooseTitle': 'Elegir tu arquetipo',
-  'guide.professions.archetypeIdentityBody':
-    'Tu arquetipo activo es una declaración de quién es tu personaje en el mundo, reconocida en cómo se dirigen a ti los demás y el propio mundo. Las recompensas y el reconocimiento exactos que lo acompañan aún se están definiendo; vuelve a consultar a medida que el sistema se complete.',
-  'guide.professions.archetypeIdentityTitle': 'Qué significa tu arquetipo',
-  'guide.professions.archetypeIntro':
-    'Cada uno de los diez oficios de artesanía representa también un arquetipo, una identidad más amplia que puedes adoptar más allá de ejercer ese oficio. Tu arquetipo activo es una única elección a la vez, no una lista de tareas: llevas uno, y puedes cambiarlo más adelante si así lo decides.',
   'guide.professions.archetypeSwitchBody':
     'Tampoco será una declaración una condena de por vida. El plan es un acto repetible de enmendar las cosas con tu antiguo oficio antes de adoptar uno nuevo, y la enmienda se vuelve más exigente cada vez que cambias, de modo que la elección siga teniendo peso en lugar de salir gratis. Como la propia declaración, aún está en camino.',
-  'guide.professions.archetypeSwitchTitle': 'Cambiar de idea',
-  'guide.professions.archetypeTitle': 'Los diez arquetipos',
-  'guide.professions.craftComboBody':
-    'Más allá de la lista de recetas propia de cada oficio, la rueda también admite recetas combinadas que recurren a dos oficios vecinos a la vez, y premian a un personaje que ha invertido en oficios adyacentes del anillo en lugar de en uno aislado. El fabricante debe dominar ambos oficios él mismo; la habilidad de un socio no puede sustituir ninguna de las dos mitades.',
-  'guide.professions.craftComboTitle': 'Recetas combinadas',
-  'guide.professions.craftIntro':
-    'Diez oficios de artesanía convierten los materiales recolectados en equipo y bienes acabados: la Forja de armaduras, la Forja de armas y la Joyería dan forma a la materia prima como equipo que puedes llevar; la Alquimia y la Ingeniería avanzan a base de ensayo y error; la Cocina, la Inscripción y el Encantamiento trabajan sobre la producción de otros oficios; la Sastrería y la Peletería trabajan a partir de patrones exactos. Juntos forman una rueda, con cada oficio junto a dos vecinos y frente a otro.',
   'guide.professions.craftMasteryBody':
     'Fabricar con éxito aumenta tu habilidad en ese oficio, y la habilidad nunca deja bajo llave las recetas de un oficio: si conoces una receta y tienes sus materiales, puedes intentarla. Lo que la habilidad te compra, en cambio, es calidad: una mano experta produce un trabajo más fino. La única excepción son las recetas combinadas, que te piden haberte probado en ambos oficios antes de abrirse.',
   'guide.professions.craftMasteryTitle': 'Habilidad y maestría',
-  'guide.professions.craftRecipesBody':
-    'Cada receta requiere reactivos concretos que recolectas o compras. Las recetas más sencillas no piden más que materiales comunes y pueden fabricarse desde el primer momento, así que puedes empezar a ejercer un oficio en cuanto lo adoptas. Las listas de recetas aún se están completando: unos pocos oficios esperan sus primeras recetas, y llegan más a medida que los oficios crecen.',
-  'guide.professions.craftRecipesTitle': 'Recetas y reactivos',
-  'guide.professions.craftRingBody':
-    'Los diez oficios están dispuestos en un anillo fijo, y el lugar que ocupa cada uno en ese anillo importa: los oficios contiguos en la rueda comparten más entre sí que los situados en lados opuestos. Comprometerse con un oficio debe sentirse como unirse a una familia de oficios afines, no como escoger una habilidad aislada.',
-  'guide.professions.craftRingTitle': 'Una rueda de especialidades',
-  'guide.professions.craftTitle': 'Los diez oficios de artesanía',
-  'guide.professions.gatherIntro':
-    'Tres oficios de recolección te permiten extraer materias primas directamente del mundo: la Minería arranca mineral y piedra de las vetas, la Tala derriba madera de las arboledas y la Herboristería recoge hierbas y plantas silvestres. Cada uno se registra por separado, así que trabajar uno nunca frena tu progreso en otro. ¿Nuevo en la recolección? El capataz Odell, en Eastbrook, tiene un breve encargo, Un oficio para cada mano, que te guía en tu primera cosecha.',
-  'guide.professions.gatherProficiencyBody':
-    'Cada cosecha lograda aumenta tu pericia en ese oficio de recolección, y tu hoja de personaje registra cada oficio por separado. Más práctica nunca perjudica tu progreso, solo lo aumenta.',
-  'guide.professions.gatherProficiencyTitle': 'Pericia',
-  'guide.professions.gatherTitle': 'Recolección: Minería, Tala y Herboristería',
-  'guide.professions.gatherToolsBody':
-    'Los vendedores ofrecen herramientas básicas para cada oficio de recolección, y se pueden fabricar otras mejores. Hoy no se necesita ninguna herramienta para trabajar un nodo: las herramientas son la base para nodos más ricos que llegarán, donde los picos, hachas y hoces de mayor rango serán la vía de acceso.',
-  'guide.professions.gatherToolsTitle': 'Las herramientas del oficio',
-  'guide.professions.gatherWhatBody':
-    'Las vetas de mineral, las arboledas y las matas de hierbas están repartidas por el Valle y la ciénaga como elementos visibles y sin dueño. Acércate a uno e interactúa con él para cosechar lo que contenga. Una vez que has cosechado un nodo, necesita tiempo para recuperarse antes de que tú, personalmente, puedas cosecharlo de nuevo, aunque nunca bloquea a nadie más: otro jugador puede cosechar ese mismo nodo mientras tanto.',
-  'guide.professions.gatherWhatTitle': 'Nodos de recursos',
   'guide.professions.intro':
     'Más allá del combate y las misiones, el mundo te recompensa por trabajar la tierra y la fragua: recolectar materias primas, convertirlas en equipo y bienes a lo largo de diez oficios de artesanía, y asentarte en una identidad como uno de los diez arquetipos que esos oficios representan.',
   'guide.valeCupPage.heading': 'La Copa del Valle',
@@ -8392,8 +8361,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
     'Si cambias la dificultad mientras tu grupo aún conserva recorridos reclamados, las reclamaciones anteriores permanecen un tiempo antes de borrarse solas. El líder del grupo puede liberarlas de inmediato: elige Restablecer todas las instancias en el menú de su propio retrato o escribe /dungeon reset. Solo funciona después de cambiar realmente la dificultad, cuando no queda nadie dentro, vivo o caído, y hay un breve tiempo de espera entre restablecimientos. Si llegas a la entrada con la dificultad equivocada, el juego te avisa antes de comenzar. La banda nunca se restablece así; conserva sus propias reglas de bloqueo.',
   'guide.gear.itemLevelBody':
     'Para comparar rápidamente dos piezas, activa Mostrar nivel de objeto en las opciones. El equipo de origen conocido, obtenido de enemigos, misiones y profesiones de artesanía, mostrará un nivel de objeto: una cifra que aproxima su poder según su procedencia y permite ver de un vistazo qué mejora pesa más, incluso entre ranuras distintas. Las piezas sin ese origen, como los artículos básicos de vendedor y el equipo inicial, no muestran nivel de objeto; que falte la cifra es normal, no un error.',
-  'guide.professions.craftHowBody':
-    'Abre la ventana de Artesanía (tecla T de forma predeterminada) para ver todas las recetas que conoces, lo que requiere cada una y los materiales que tienes; cuando estén disponibles, basta un clic. Las recetas comunes pueden elaborarse en cualquier lugar. Algunas recetas avanzadas, como herramientas de nivel superior y armaduras raras para taumaturgos, exigen estar en el centro de artesanía de Highwatch.',
   'hudChrome.auraEffect.battleStance': 'Actitud de Batalla: un 10% más de generación de ira',
   'hudChrome.auraEffect.berserkerStance':
     'Actitud Rabiosa: los críticos aciertan un 3% más a menudo y golpean un 3% más fuerte',

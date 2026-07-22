@@ -715,42 +715,11 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'Einen Archetyp zu erklären wird ein Story-Moment sein: eine Quest, die dich förmlich in diese Identität aufnimmt. Dieser Weg wird noch gebaut, daher zieht vorerst jeder Charakter mit der noch offenen Wahl durch die Welt, und jedes Handwerk steigt in der Zwischenzeit bis zur Qualitätsstufe Selten auf.',
   'guide.professions.archetypeChooseTitle': 'Deinen Archetyp wählen',
-  'guide.professions.archetypeIdentityBody':
-    'Dein aktiver Archetyp ist eine Aussage darüber, wer dein Charakter in der Welt ist, und spiegelt sich darin, wie andere und die Welt dich ansprechen. Die genauen Belohnungen und die Anerkennung, die damit einhergehen, werden noch ausgearbeitet; schau wieder vorbei, während das System Gestalt annimmt.',
-  'guide.professions.archetypeIdentityTitle': 'Was dein Archetyp bedeutet',
-  'guide.professions.archetypeIntro':
-    'Jedes der zehn Handwerke steht zugleich für einen Archetyp, eine umfassendere Identität, die du über das bloße Ausüben des Gewerbes hinaus annehmen kannst. Dein aktiver Archetyp ist eine einzelne Wahl, keine Checkliste: Du trägst einen und kannst später wechseln, wenn du möchtest.',
   'guide.professions.archetypeSwitchBody':
     'Eine Erklärung wird auch keine lebenslange Bindung sein. Der Plan ist ein wiederholbarer Akt der Wiedergutmachung gegenüber deinem alten Gewerbe, bevor du ein neues aufnimmst, wobei die Wiedergutmachung mit jedem Wechsel steiler ausfällt, damit die Wahl bedeutsam bleibt statt kostenlos. Wie die Erklärung selbst ist auch er noch unterwegs.',
-  'guide.professions.archetypeSwitchTitle': 'Es dir anders überlegen',
-  'guide.professions.archetypeTitle': 'Die zehn Archetypen',
-  'guide.professions.craftComboBody':
-    'Über die eigene Rezeptliste eines einzelnen Handwerks hinaus unterstützt das Rad auch Kombinationsrezepte, die zwei benachbarte Handwerke zugleich fordern, und belohnt damit einen Charakter, der in benachbarte Gewerbe auf dem Ring investiert hat statt in eines allein. Der Handwerker muss beide Gewerbe selbst beherrschen; die Fertigkeit eines Partners kann für keine der beiden Hälften einspringen.',
-  'guide.professions.craftComboTitle': 'Kombinationsrezepte',
-  'guide.professions.craftIntro':
-    'Zehn Handwerksgewerbe verwandeln gesammelte Materialien in fertige Ausrüstung und Waren: Rüstungsschmieden, Waffenschmieden und Juwelierskunst formen rohen Stoff zu tragbarer Ausrüstung; Alchemie und Ingenieurskunst leben von Versuch und Irrtum; Kochkunst, Inschriftenkunde und Verzauberungskunst greifen jeweils auf die Erzeugnisse anderer Handwerke zurück; Schneiderei und Gerberei arbeiten nach exakten Schnittmustern. Zusammen bilden sie ein Rad, auf dem jedes Handwerk neben zwei Nachbarn und einem anderen genau gegenüber sitzt.',
   'guide.professions.craftMasteryBody':
     'Erfolgreiches Herstellen steigert deine Fertigkeit in diesem Gewerbe, und Fertigkeit sperrt niemals die Rezepte eines Handwerks weg: Kennst du ein Rezept und hältst seine Materialien, kannst du es versuchen. Was Fertigkeit dir stattdessen einbringt, ist Güte, eine geübte Hand liefert feinere Arbeit. Die eine Ausnahme sind Kombinationsrezepte, die verlangen, dass du dich in beiden ihrer Handwerke bewährt hast, bevor sie sich öffnen.',
   'guide.professions.craftMasteryTitle': 'Fertigkeit und Meisterschaft',
-  'guide.professions.craftRecipesBody':
-    'Jedes Rezept verlangt bestimmte Reagenzien, die du sammelst oder kaufst. Die einfachsten Rezepte brauchen nichts als gewöhnliche Materialien und lassen sich von Anfang an herstellen, sodass du ein Gewerbe in dem Moment aufnehmen kannst, in dem du es erlernst. Die Rezeptlisten füllen sich noch: Ein paar Gewerbe warten noch auf ihre ersten Rezepte, und weitere kommen hinzu, während die Handwerke wachsen.',
-  'guide.professions.craftRecipesTitle': 'Rezepte und Reagenzien',
-  'guide.professions.craftRingBody':
-    'Die zehn Handwerke sind in einem festen Ring angeordnet, und wo ein Handwerk auf diesem Ring sitzt, spielt eine Rolle: Nebeneinanderliegende Handwerke haben mehr miteinander gemein als solche auf gegenüberliegenden Seiten. Sich einem Handwerk zu verschreiben soll sich anfühlen, als träte man einer Familie verwandter Gewerbe bei, nicht wie das Wählen einer isolierten Fertigkeit.',
-  'guide.professions.craftRingTitle': 'Ein Rad der Spezialitäten',
-  'guide.professions.craftTitle': 'Die zehn Handwerke',
-  'guide.professions.gatherIntro':
-    'Drei Sammelgewerbe lassen dich Rohstoffe direkt aus der Welt ziehen: Bergbau schlägt Erz und Stein aus Adern, Holzfällen fällt Nutzholz aus Baumbeständen, und Kräuterkunde sammelt wild wachsende Kräuter und Pflanzen. Jedes wird getrennt gezählt, sodass die Arbeit an einem nie deinen Fortschritt in einem anderen bremst. Ganz neu darin? Vorarbeiter Odell in Eastbrook hält einen kurzen Botengang bereit, Ein Handwerk für jede Hand, der dich durch deine erste Ernte führt.',
-  'guide.professions.gatherProficiencyBody':
-    'Jede erfolgreiche Ernte steigert deine Fertigkeit in diesem Sammelgewerbe, und dein Charakterbogen führt jedes Gewerbe für sich. Mehr Übung schadet deinem Fortschritt nie, sie fügt ihm immer nur hinzu.',
-  'guide.professions.gatherProficiencyTitle': 'Fertigkeit',
-  'guide.professions.gatherTitle': 'Sammeln: Bergbau, Holzfällen und Kräuterkunde',
-  'guide.professions.gatherToolsBody':
-    'Händler verkaufen einfache Werkzeuge für jedes Sammelgewerbe, und bessere lassen sich herstellen. Für die Arbeit an einem Vorkommen ist heute kein Werkzeug erforderlich: Werkzeuge sind die Grundlage für reichere Vorkommen, die noch kommen, wo Spitzhacken, Äxte und Sicheln höherer Stufe der Zugang sein werden.',
-  'guide.professions.gatherToolsTitle': 'Das Werkzeug des Handwerks',
-  'guide.professions.gatherWhatBody':
-    'Erzadern, Baumbestände und Kräuterflecken stehen als sichtbare, herrenlose Fixpunkte draußen im Tal und im Moor. Geh auf eines zu und interagiere damit, um zu ernten, was es enthält. Hast du ein Vorkommen abgeerntet, braucht es Zeit, um sich zu erholen, bevor du persönlich es erneut ernten kannst; andere blockiert es aber nie: Ein anderer Spieler kann dasselbe Vorkommen in der Zwischenzeit ernten.',
-  'guide.professions.gatherWhatTitle': 'Rohstoffvorkommen',
   'guide.professions.intro':
     'Jenseits von Kampf und Quests belohnt dich die Welt für die Arbeit an Land und Esse: Rohstoffe sammeln, sie über zehn Handwerksgewerbe hinweg zu Ausrüstung und Waren verarbeiten und in eine Identität als einer der zehn Archetypen hineinwachsen, für die diese Gewerbe stehen.',
   'guide.valeCupPage.heading': 'Der Talpokal',
@@ -8450,8 +8419,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Wenn ihr die Schwierigkeit wechselt, während eure Gruppe noch beanspruchte Läufe hält, bleiben die alten Ansprüche eine Weile bestehen. Der Gruppenleiter kann sie sofort aufgeben: Wählt im Menü des eigenen Porträts Alle Instanzen zurücksetzen oder gebt /dungeon reset ein. Das funktioniert erst nach einem tatsächlichen Schwierigkeitswechsel, nur wenn niemand, ob lebend oder gefallen, drinnen ist, und zwischen Rücksetzungen gilt eine kurze Abklingzeit. Bei falscher Schwierigkeit warnt euch das Spiel vor dem Start. Der Schlachtzug wird so niemals zurückgesetzt; seine eigenen Bindungsregeln bleiben bestehen.',
   'guide.gear.itemLevelBody':
     'Aktiviere Gegenstandsstufe anzeigen in den Optionen, um zwei Ausrüstungsteile schnell zu vergleichen. Ausrüstung bekannter Herkunft, von Gegnern, Quests und Handwerksberufen, zeigt dann eine Gegenstandsstufe: eine einzelne Zahl, die ihre Stärke anhand der Quelle grob angibt und Verbesserungen auch über verschiedene Plätze hinweg vergleichbar macht. Teile ohne solche Herkunft, etwa einfache Händlerware und Startausrüstung, zeigen keine Gegenstandsstufe; eine fehlende Zahl ist normal.',
-  'guide.professions.craftHowBody':
-    'Öffne das Handwerksfenster (Standardtaste T), um alle bekannten Rezepte, ihre Zutaten und deinen Vorrat zu sehen; sind die Materialien vorhanden, genügt ein Klick. Gewöhnliche Rezepte lassen sich überall herstellen. Einige fortgeschrittene Rezepte, darunter höherstufige Werkzeuge und seltene Zaubererrüstung, erfordern dagegen das Handwerkszentrum in Highwatch.',
   'hudChrome.auraEffect.battleStance': 'Kampfhaltung: 10% mehr Wuterzeugung',
   'hudChrome.auraEffect.berserkerStance':
     'Berserkerhaltung: Kritische Treffer gelingen 3% öfter und treffen 3% härter',

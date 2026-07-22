@@ -46,15 +46,28 @@
 
 import type { ProfessionRecipeRecord } from '../professions/types';
 
+// Phase 15 QA directed burn-down (maintainer-directed): the reagent lists of
+// the former LEGACY_GOLD_POSITIVE_RECIPE_IDS members below were reworked so
+// input value exceeds output sellValue (the locked recipe_economy.test.ts
+// rule). INPUT reworks only: ids, results, resultCounts, skillReq, stations,
+// and acquisition are untouched. Every material on a rung-0 common is
+// obtainable by a fresh zone-1 character (starter mob drops, tier-1 nodes,
+// Eastbrook vendor staples); tanning_agent (zone-2 vendor) and glass_vial
+// (zone-3 vendor) are deliberately NOT used at rung 0. Four members could not
+// clear the invariant with sane, obtainable counts and stay on the frozen
+// legacy list unchanged (see tests/recipe_economy.test.ts).
 export const COMMON_RECIPES: ProfessionRecipeRecord[] = [
   {
     id: 'recipe_eastbrook_arming_sword',
     professionId: 'weaponcrafting',
     resultItemId: 'eastbrook_arming_sword',
     resultCount: 1,
+    // Fang-hilted arming sword: the first wolf_fang consumer (Phase 15 closed
+    // the zero-consumer harvest family). Input 156 vs output 140.
     reagents: [
-      { itemId: 'bone_fragments', count: 2 },
-      { itemId: 'linen_scrap', count: 1 },
+      { itemId: 'wolf_fang', count: 2 },
+      { itemId: 'bone_fragments', count: 4 },
+      { itemId: 'smithing_flux', count: 6 },
     ],
     skillReq: 0,
     itemLevelBudget: 10,
@@ -65,7 +78,11 @@ export const COMMON_RECIPES: ProfessionRecipeRecord[] = [
     professionId: 'armorcrafting',
     resultItemId: 'eastbrook_chain_vest',
     resultCount: 1,
-    reagents: [{ itemId: 'bone_fragments', count: 3 }],
+    // Chain needs links: copper smelted under flux. Input 196 vs output 180.
+    reagents: [
+      { itemId: 'copper_ore', count: 4 },
+      { itemId: 'smithing_flux', count: 9 },
+    ],
     skillReq: 0,
     itemLevelBudget: 10,
     level: 10,
@@ -75,7 +92,11 @@ export const COMMON_RECIPES: ProfessionRecipeRecord[] = [
     professionId: 'tailoring',
     resultItemId: 'eastbrook_wool_trousers',
     resultCount: 1,
-    reagents: [{ itemId: 'linen_scrap', count: 3 }],
+    // Harvested cloth volume plus vendor thread. Input 120 vs output 110.
+    reagents: [
+      { itemId: 'homespun_cloth', count: 3 },
+      { itemId: 'spool_of_thread', count: 9 },
+    ],
     skillReq: 0,
     itemLevelBudget: 8,
     level: 8,
@@ -85,9 +106,14 @@ export const COMMON_RECIPES: ProfessionRecipeRecord[] = [
     professionId: 'leatherworking',
     resultItemId: 'tanned_leather_jerkin',
     resultCount: 1,
+    // Phase 15 QA directed burn-down (maintainer-approved 2026-07-22, paired
+    // arm): zone-1 leather palette (hide, sinew, thread; tanning_agent is
+    // zone-2 vendored and stays barred at the entry tier) plus the output
+    // sellValue re-priced below input in items.ts. Input 88 vs sell 80.
     reagents: [
+      { itemId: 'rough_hide', count: 4 },
       { itemId: 'spider_leg', count: 2 },
-      { itemId: 'bone_fragments', count: 1 },
+      { itemId: 'spool_of_thread', count: 5 },
     ],
     skillReq: 0,
     itemLevelBudget: 9,
@@ -108,9 +134,13 @@ export const COMMON_RECIPES: ProfessionRecipeRecord[] = [
     professionId: 'alchemy',
     resultItemId: 'minor_healing_potion',
     resultCount: 1,
+    // Phase 15 QA directed burn-down: silverleaf (the zone-1 healing herb)
+    // joins the brew. glass_vial was rejected here: its only vendor is in
+    // zone 3 and this is the level-1 field alchemy entry. Input 15 vs output 8.
     reagents: [
       { itemId: 'linen_scrap', count: 1 },
       { itemId: 'spider_leg', count: 1 },
+      { itemId: 'silverleaf_herb', count: 2 },
     ],
     skillReq: 0,
     itemLevelBudget: 1,
@@ -118,15 +148,26 @@ export const COMMON_RECIPES: ProfessionRecipeRecord[] = [
   },
   // Caster-stat (int/spi) common-tier recipes: one per
   // tailoring/leatherworking/armorcrafting, alongside the armor-only pieces
-  // above. Reuses the same harvested reagents as the rest of COMMON_RECIPES.
+  // above. All three cleared the economy invariant in the Phase 15 QA
+  // directed burn-down via the maintainer-approved paired arm (zone-1
+  // thematic input rework plus an output sellValue re-priced below input in
+  // items.ts); the frozen legacy list is empty. See tests/recipe_economy.test.ts.
   {
     id: 'recipe_eastbrook_ritual_vestments',
     professionId: 'tailoring',
     resultItemId: 'eastbrook_ritual_vestments',
     resultCount: 1,
+    // Phase 15 QA directed burn-down (paired arm, see the jerkin note):
+    // cloth palette; also retires this piece as the dust-mill fodder the
+    // Phase 15 evidence review flagged. The original linen 3 + spider_leg 1
+    // core is KEPT (the count-1 spider row is a load-bearing premise of the
+    // masterwork count-1 signed-reagent pins); cloth and thread add the
+    // volume. Input 85 vs sell 72.
     reagents: [
       { itemId: 'linen_scrap', count: 3 },
       { itemId: 'spider_leg', count: 1 },
+      { itemId: 'homespun_cloth', count: 3 },
+      { itemId: 'spool_of_thread', count: 5 },
     ],
     skillReq: 0,
     itemLevelBudget: 9,
@@ -137,9 +178,12 @@ export const COMMON_RECIPES: ProfessionRecipeRecord[] = [
     professionId: 'leatherworking',
     resultItemId: 'eastbrook_druids_hide',
     resultCount: 1,
+    // Phase 15 QA directed burn-down (paired arm, see the jerkin note).
+    // Input 93 vs sell 84.
     reagents: [
+      { itemId: 'rough_hide', count: 5 },
       { itemId: 'spider_leg', count: 2 },
-      { itemId: 'bone_fragments', count: 1 },
+      { itemId: 'spool_of_thread', count: 5 },
     ],
     skillReq: 0,
     itemLevelBudget: 9,
@@ -150,9 +194,12 @@ export const COMMON_RECIPES: ProfessionRecipeRecord[] = [
     professionId: 'armorcrafting',
     resultItemId: 'eastbrook_warded_leggings',
     resultCount: 1,
+    // Phase 15 QA directed burn-down (paired arm, see the jerkin note).
+    // Input 117 vs sell 105.
     reagents: [
       { itemId: 'bone_fragments', count: 3 },
-      { itemId: 'linen_scrap', count: 1 },
+      { itemId: 'copper_ore', count: 4 },
+      { itemId: 'smithing_flux', count: 4 },
     ],
     skillReq: 0,
     itemLevelBudget: 10,
@@ -268,15 +315,24 @@ export const TOOL_RECIPES: ProfessionRecipeRecord[] = [
 // the COMMON_RECIPES caster pieces above): one per tailoring/leatherworking/
 // armorcrafting, at the same thorium tier as TOOL_RECIPES, each bound to its
 // own craft's station type (loom/tannery/forge).
+// Phase 15 QA directed burn-down: all three caster-hub reagent lists were
+// reworked gold-negative (input above output under the recipe_economy rule).
+// skillReq-75 recipes may consume rare-band materials; the plain volume-based
+// shapes were used (the resonant-consumer variant was deliberately not taken).
 export const CASTER_HUB_RECIPES: ProfessionRecipeRecord[] = [
   {
     id: 'recipe_wardweave_cowl',
     professionId: 'tailoring',
     resultItemId: 'wardweave_cowl',
     resultCount: 1,
+    // Silk volume warded with premium herbs (the ladder's sunweave/goldweave
+    // idiom); the odd thorium padding is gone. Input 534 vs output 440.
     reagents: [
-      { itemId: 'thorium_ore', count: 3 },
-      { itemId: 'linen_scrap', count: 2 },
+      { itemId: 'sunpetal_herb', count: 2 },
+      { itemId: 'goldleaf_herb', count: 2 },
+      { itemId: 'pristine_silk', count: 2 },
+      { itemId: 'spider_silk', count: 4 },
+      { itemId: 'spool_of_thread', count: 2 },
     ],
     skillReq: 75,
     itemLevelBudget: 20,
@@ -288,9 +344,14 @@ export const CASTER_HUB_RECIPES: ProfessionRecipeRecord[] = [
     professionId: 'leatherworking',
     resultItemId: 'duskhide_wraps',
     resultCount: 1,
+    // Hide volume (pristine plus rough) tanned at the vats; thorium studs
+    // carry the value (tanner_hesk sells both reagents at the tannery).
+    // Input 461 vs output 420.
     reagents: [
-      { itemId: 'thorium_ore', count: 3 },
-      { itemId: 'spider_leg', count: 2 },
+      { itemId: 'thorium_ore', count: 6 },
+      { itemId: 'pristine_hide', count: 3 },
+      { itemId: 'rough_hide', count: 2 },
+      { itemId: 'tanning_agent', count: 1 },
     ],
     skillReq: 75,
     itemLevelBudget: 20,
@@ -302,9 +363,11 @@ export const CASTER_HUB_RECIPES: ProfessionRecipeRecord[] = [
     professionId: 'armorcrafting',
     resultItemId: 'sootscale_mantle',
     resultCount: 1,
+    // Ore stays (mail theme) plus smithing_flux volume (both sold by
+    // forgemistress_darva at the forge). Input 520 vs output 470.
     reagents: [
-      { itemId: 'thorium_ore', count: 4 },
-      { itemId: 'bone_fragments', count: 2 },
+      { itemId: 'thorium_ore', count: 7 },
+      { itemId: 'smithing_flux', count: 5 },
     ],
     skillReq: 75,
     itemLevelBudget: 20,
@@ -317,15 +380,24 @@ export const CASTER_HUB_RECIPES: ProfessionRecipeRecord[] = [
 // adjacent pair at the recipe's tier (comboRequirement.minTier), on top of the
 // normal reagent/skillReq gating above. See the module comment for why these
 // two pairs were chosen.
+// Phase 15 QA directed burn-down: all three combo reagent lists were reworked
+// gold-negative. The two rare-output showcases may consume rare-band
+// materials (every reagent is vendor-stocked or harvestable in Eastbrook);
+// the resonant-secondary variant was deliberately not taken.
 export const COMBO_RECIPES: ProfessionRecipeRecord[] = [
   {
     id: 'recipe_ironbound_warplate_helm',
     professionId: 'armorcrafting',
     resultItemId: 'boundstone_helm',
     resultCount: 1,
+    // Warplate showcase: bar and ore under flux, crested with wolf fangs (the
+    // second wolf_fang home, closing the zero-consumer harvest family).
+    // Input 516 vs output 460.
     reagents: [
-      { itemId: 'bone_fragments', count: 4 },
-      { itemId: 'linen_scrap', count: 2 },
+      { itemId: 'arcanite_bar', count: 1 },
+      { itemId: 'thorium_ore', count: 5 },
+      { itemId: 'wolf_fang', count: 4 },
+      { itemId: 'smithing_flux', count: 2 },
     ],
     skillReq: 25,
     itemLevelBudget: 20,
@@ -338,9 +410,12 @@ export const COMBO_RECIPES: ProfessionRecipeRecord[] = [
     professionId: 'weaponcrafting',
     resultItemId: 'gravewyrm_gauntlets',
     resultCount: 1,
+    // Same combo family as the helm: thorium volume fluxed around an iron
+    // core. Input 424 vs output 390.
     reagents: [
-      { itemId: 'bone_fragments', count: 3 },
-      { itemId: 'linen_scrap', count: 3 },
+      { itemId: 'thorium_ore', count: 6 },
+      { itemId: 'iron_ore', count: 3 },
+      { itemId: 'smithing_flux', count: 2 },
     ],
     skillReq: 25,
     itemLevelBudget: 18,
@@ -353,9 +428,14 @@ export const COMBO_RECIPES: ProfessionRecipeRecord[] = [
     professionId: 'alchemy',
     resultItemId: 'elixir_of_the_bear',
     resultCount: 1,
+    // Venom glands deepen the gland sink; the vial is sold by
+    // alchemist_verane, the very master who teaches this recipe at the
+    // apothecary. Input 38 vs output 20.
     reagents: [
       { itemId: 'linen_scrap', count: 2 },
       { itemId: 'spider_leg', count: 2 },
+      { itemId: 'venom_gland', count: 2 },
+      { itemId: 'glass_vial', count: 1 },
     ],
     skillReq: 25,
     itemLevelBudget: 16,

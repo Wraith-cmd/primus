@@ -2029,6 +2029,17 @@
     border-radius: 0 6px 6px 6px;
     position: relative;
   }
+  /* The project-owned masterwork seal decorates zone celebration lines. Its
+     empty alt plus aria-hidden keep #chat-live's relayed text exactly the
+     localized line while sighted players get the authored visual cue. */
+  #chatlog .chat-masterwork-seal {
+    width: 15px;
+    height: 15px;
+    margin: 0 4px 0 1px;
+    object-fit: contain;
+    vertical-align: -3px;
+    pointer-events: none;
+  }
   /* the empty area of the tab strip is a move handle (the tab buttons sit above it) */
   #chatlog-tabs {
     cursor: var(--cursor-move, move);
@@ -3257,6 +3268,36 @@
     color: var(--color-text-muted);
     font-size: 11px;
   }
+  #tooltip .tt-masterwork-seal,
+  #tooltip .tt-makers-mark {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  #tooltip .tt-masterwork-seal-icon {
+    flex: 0 0 auto;
+    width: calc(20px * var(--tooltip-scale, 1));
+    height: calc(20px * var(--tooltip-scale, 1));
+    object-fit: contain;
+  }
+  #tooltip .tt-makers-mark-icon {
+    flex: 0 0 auto;
+    width: calc(16px * var(--tooltip-scale, 1));
+    height: calc(16px * var(--tooltip-scale, 1));
+  }
+  #tooltip .tt-profession-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--color-text-light);
+    font-family: var(--title-font);
+  }
+  #tooltip .tt-profession-header img {
+    flex: 0 0 auto;
+    width: calc(40px * var(--tooltip-scale, 1));
+    height: calc(40px * var(--tooltip-scale, 1));
+    object-fit: contain;
+  }
   /* World mob-hover tooltip (mob_tooltip_view.ts): a bit roomier than the default
      item/ability tooltip box, since it is read at a glance while moving. The
      compound selector (higher specificity than the plain #tooltip .tt-title/
@@ -4357,6 +4398,19 @@
     font-family: var(--title-font);
     letter-spacing: 1px;
     white-space: nowrap;
+  }
+  #banner.banner-with-art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+  }
+  #banner .banner-art {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+    filter: drop-shadow(var(--art-shadow-lg));
   }
   /* Reduced-motion celebrations (hud.ts showBanner motion=false): the banner
      appears and clears instantly, same text and duration, no fade. */

@@ -4309,8 +4309,12 @@ function professionsCraft(seed = 21): Scenario {
       // Phase 2: plain deterministic craft. The single proc draw happens on the
       // success path, but a consumable (potion) def can never masterwork, so the
       // effect is gated off; the output is the def quality (common).
+      // Phase 15 QA directed burn-down: the potion now also consumes
+      // silverleaf_herb x2 (addItem draws no rng, so the draw stream and its
+      // digest are unchanged; the golden state moves only via the new grants).
       sim.addItem('linen_scrap', 1, pid);
       sim.addItem('spider_leg', 1, pid);
+      sim.addItem('silverleaf_herb', 2, pid);
       sim.craftItem('recipe_minor_healing_potion', false, pid);
       rec.snapshot('craft-plain');
 
@@ -4329,6 +4333,10 @@ function professionsCraft(seed = 21): Scenario {
       // qualifies), mirroring the crafting suite's proc test.
       sim.addItemInstance('linen_scrap', { signer: meta.name }, pid);
       sim.addItem('spider_leg', 1, pid);
+      // Phase 15 QA directed burn-down: the vestments recipe gained cloth and
+      // thread volume (grants draw no rng; only golden state rows move).
+      sim.addItem('homespun_cloth', 3, pid);
+      sim.addItem('spool_of_thread', 5, pid);
       sim.craftItem('recipe_eastbrook_ritual_vestments', false, pid);
       rec.snapshot('craft-masterwork');
 
@@ -4336,6 +4344,7 @@ function professionsCraft(seed = 21): Scenario {
       // normally (one draw) after the proc.
       sim.addItem('linen_scrap', 1, pid);
       sim.addItem('spider_leg', 1, pid);
+      sim.addItem('silverleaf_herb', 2, pid);
       sim.craftItem('recipe_minor_healing_potion', false, pid);
       rec.snapshot('craft-plain-2');
     },

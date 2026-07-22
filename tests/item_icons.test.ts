@@ -46,6 +46,45 @@ const BAG_IDS = [
   'wolfhide_satchel',
 ];
 
+// Professions 2.0 materials commissioned as one coherent painted set. This literal pin makes
+// dropping a single prepared material from the registry, public tree, or provenance map fail
+// even though the older generic item-art bijection would remain internally consistent.
+const PROFESSION_MATERIAL_IDS = [
+  'arcane_dust',
+  'arcane_essence',
+  'arcane_shard',
+  'arcanite_bar',
+  'ashwood_log',
+  'cooking_salt',
+  'copper_ore',
+  'elderwood_log',
+  'game_meat',
+  'glass_vial',
+  'goldleaf_herb',
+  'homespun_cloth',
+  'iron_ore',
+  'ironbark_log',
+  'prime_cut',
+  'pristine_hide',
+  'pristine_silk',
+  'pristine_venom_gland',
+  'resonant_hide',
+  'resonant_links',
+  'resonant_steel',
+  'resonant_thread',
+  'resonant_timber',
+  'rough_hide',
+  'silverleaf_herb',
+  'smithing_flux',
+  'spider_leg',
+  'spider_silk',
+  'spool_of_thread',
+  'sunpetal_herb',
+  'tanning_agent',
+  'thorium_ore',
+  'venom_gland',
+] as const;
+
 // Dimensions straight out of the WebP header (lossy VP8, lossless VP8L, extended VP8X), so the
 // size guard needs no image dependency. Layout: 12-byte RIFF/WEBP preamble, then a 4-char chunk
 // tag at 12 and its 4-byte size at 16, so the chunk payload starts at byte 20.
@@ -93,7 +132,13 @@ const webpFiles = (): string[] =>
 
 type Mapping = {
   iconSize: number;
-  entries: { itemId: string; name: string; sourcePack: string; license?: string }[];
+  entries: {
+    itemId: string;
+    name: string;
+    sourcePack: string;
+    sourceFile: string;
+    license?: string;
+  }[];
 };
 const mapping = (): Mapping =>
   JSON.parse(readFileSync(path.join(itemsDir, 'mapping.json'), 'utf8')) as Mapping;
@@ -209,6 +254,62 @@ describe('item webp icons', () => {
     for (const id of [...BAG_IDS, 'backpack']) {
       const entry = m.entries.find((e) => e.itemId === id);
       expect(entry?.license, `${id} must carry its own license override`).toContain(
+        'World of ClaudeCraft original art',
+      );
+    }
+  });
+
+  it('F2) ships the complete project-owned professions material art set', () => {
+    const m = mapping();
+    const canonical = [...PROFESSION_MATERIAL_IDS].sort();
+    const files = new Set(webpFiles().map((file) => path.basename(file, '.webp')));
+    const projectOwnedIds = m.entries
+      .filter((entry) => entry.sourcePack === 'woc_professions_art')
+      .map((entry) => entry.itemId)
+      .sort();
+    const manifest = JSON.parse(
+      readFileSync(path.join(repoRoot, 'docs/professions-2/asset-manifest.json'), 'utf8'),
+    ) as {
+      categories: {
+        name: string;
+        assets?: {
+          id: string;
+          batch: string;
+          acceptedVersion: string;
+        }[];
+      }[];
+    };
+    const manifestEntries = manifest.categories.find((category) =>
+      category.name.startsWith('Material item icons'),
+    )?.assets;
+    expect(
+      manifestEntries,
+      'the material manifest category must enumerate its exact assets',
+    ).toBeDefined();
+    const declaredIds = (manifestEntries ?? []).map((entry) => entry.id).sort();
+
+    // Reverse exactness matters here: the generic item-art bijection would accept a 34th file
+    // if it were also wired and mapped. The commissioned professions set is intentionally the
+    // literal 33-id set above, so any added or dropped project-owned material fails this arm.
+    expect(projectOwnedIds).toEqual(canonical);
+    expect(declaredIds).toEqual(canonical);
+    expect(projectOwnedIds.filter((id) => files.has(id)).sort()).toEqual(canonical);
+    expect(projectOwnedIds.filter((id) => ITEM_IMAGE_IDS.has(id)).sort()).toEqual(canonical);
+
+    for (const id of PROFESSION_MATERIAL_IDS) {
+      expect(ITEM_IMAGE_IDS.has(id), `${id} must be wired into ITEM_IMAGE_IDS`).toBe(true);
+      expect(existsSync(path.join(itemsDir, `${id}.webp`)), `${id}.webp must be committed`).toBe(
+        true,
+      );
+      const entry = m.entries.find((candidate) => candidate.itemId === id);
+      expect(entry?.sourcePack, `${id} must retain its professions-art provenance`).toBe(
+        'woc_professions_art',
+      );
+      const declared = manifestEntries?.find((candidate) => candidate.id === id);
+      expect(entry?.sourceFile, `${id} mapping and manifest batch/version must agree`).toBe(
+        `${declared?.batch}/masters/${id}.png (accepted ${declared?.acceptedVersion})`,
+      );
+      expect(entry?.license, `${id} must override the mapping's CraftPix default`).toContain(
         'World of ClaudeCraft original art',
       );
     }

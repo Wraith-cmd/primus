@@ -292,6 +292,7 @@ import {
   type CadenceMap,
   cadenceBlockedKeys,
   clampCadenceOnLoad,
+  serializeCadence,
   WORK_ORDER_CADENCE_TICKS,
 } from './professions/cadence';
 import { unbindItem as unbindItemImpl } from './professions/commission';
@@ -3040,9 +3041,15 @@ export class Sim {
       // Phase 14: all three written only when non-empty/true (zero-default
       // omission), so a character with no work orders, no attunement, and no
       // tutorial serializes byte-identically to a pre-Phase-14 save.
-      ...(meta.questCadence.size > 0
-        ? { questCadence: Object.fromEntries(meta.questCadence) }
-        : {}),
+      ...(() => {
+        // Phase 15 QA directed fix (load hygiene): prune windows that have
+        // already elapsed at serialize time too, not only at load, so a
+        // long-running session's autosave stops carrying past-due keys
+        // forward. Live windows serialize byte-identically, the field still
+        // omits when nothing live remains, and the live map is untouched.
+        const cadence = serializeCadence(meta.questCadence, this.tickCount);
+        return cadence ? { questCadence: cadence } : {};
+      })(),
       ...(meta.tierMailSent.size > 0
         ? { tierMailSent: Object.fromEntries(meta.tierMailSent) }
         : {}),

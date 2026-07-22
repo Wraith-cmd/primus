@@ -1,5 +1,15 @@
 # Phase 15 QA: Verify Deeds, tuning, and polish
 
+> **2026-07-22 as-executed process amendment (maintainer-directed):** this QA
+> phase executes INSIDE the Phase 15 session, on the same branch, shipping as
+> one combined PR (see the matching amendment atop `phase-15-deeds-polish.md`
+> for the directed fix list). STEP 2's audits and the dispatch-matrix reviewers
+> run against the BRANCH diff (phase-start 560972962 to the branch head) before
+> the PR opens; `migration-safety` joins the dispatch because the directed
+> cadence-serialize prune touches the `characters.state` serialize path. The
+> qa-checklist matrix evidence, the teardown offer, and the memory update all
+> still happen exactly as specified below.
+
 Audit the Phase 15 diff and run the whole-feature integration matrix: this QA session is the
 final audit of the entire Professions 2.0 packet, ending with the teardown offer.
 

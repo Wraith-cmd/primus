@@ -14,7 +14,7 @@
 // raw hex sits in this painter.
 
 import { audio } from '../game/audio';
-import type { EquipSlot } from '../sim/types';
+import type { ItemSlot } from '../sim/types';
 import type { IWorld } from '../world_api';
 import { markDialogRoot } from './dialog_root';
 import { dropdownKeyNav } from './dropdown_nav';
@@ -75,7 +75,7 @@ export interface MarketWindowDeps extends PainterHostPresentation {
   captureFocus(): HTMLElement | null;
   restoreFocus(target: HTMLElement | null): void;
   showError(text: string): void;
-  slotName(slot: EquipSlot): string;
+  slotName(slot: ItemSlot): string;
   /** Render the bags window and, when `open`, reveal it alongside the market. */
   syncBags(open: boolean): void;
 }
@@ -743,7 +743,7 @@ export class MarketWindow {
           ? 'itemUi.market.filterArmorAll'
           : 'itemUi.market.filterWeaponAll',
       );
-    if (this.itemTypeFilter === 'armor') return this.deps.slotName(filter as EquipSlot);
+    if (this.itemTypeFilter === 'armor') return this.deps.slotName(filter as ItemSlot);
     if (filter === 'sword') return t('itemUi.market.weaponSword');
     if (filter === 'dagger') return t('itemUi.market.weaponDagger');
     if (filter === 'staff') return t('itemUi.market.weaponStaff');

@@ -3249,9 +3249,12 @@ describe('full self-state snapshot delta fixture', () => {
       switchCount: 0,
       amendsProgress: 0,
     };
+    // Phase 15 QA directed burn-down reagents for the warplate helm.
     meta.inventory = [
-      { itemId: 'bone_fragments', count: 4 },
-      { itemId: 'linen_scrap', count: 2 },
+      { itemId: 'arcanite_bar', count: 1 },
+      { itemId: 'thorium_ore', count: 5 },
+      { itemId: 'wolf_fang', count: 4 },
+      { itemId: 'smithing_flux', count: 2 },
     ];
     // Phase 9 acquisition switch: combo recipes are trainer-taught now, so a
     // fresh test player must learn this one explicitly before crafting it.

@@ -13,6 +13,7 @@ import { esc } from './esc';
 import { formatNumber, type TranslationKey, t } from './i18n';
 import { GOLD_ACCENT_COLOR, QUALITY_COLOR } from './icons';
 import type { PainterHostPresentation } from './painter_host';
+import { professionImageUrl } from './profession_art';
 import { renderProfessionIdentityCard } from './profession_identity_card';
 import type { ProfessionIdentityModel } from './profession_identity_view';
 import { svgIcon } from './ui_icons';
@@ -113,8 +114,22 @@ export function renderCraftingWindow(
 
   for (const [professionId, rows] of sections) {
     const section = document.createElement('div');
-    section.className = 'vendor-section-title';
-    section.textContent = craftNameText(professionId);
+    section.className = 'vendor-section-title crafting-section-title';
+    section.setAttribute('role', 'heading');
+    section.setAttribute('aria-level', '3');
+    const sectionName = craftNameText(professionId);
+    const sectionImageUrl = professionImageUrl(`prof_${professionId}`);
+    if (sectionImageUrl) {
+      const icon = document.createElement('img');
+      icon.className = 'crafting-section-icon';
+      icon.src = sectionImageUrl;
+      icon.alt = '';
+      icon.draggable = false;
+      section.appendChild(icon);
+    }
+    const sectionLabel = document.createElement('span');
+    sectionLabel.textContent = sectionName;
+    section.appendChild(sectionLabel);
     el.appendChild(section);
 
     // Phase 14 "learnable at a master" hint: shown once under the section when
@@ -228,7 +243,7 @@ export function renderCraftingWindow(
       deps.attachTooltip(
         craftBtn,
         () =>
-          `${row.result ? deps.itemTooltip(row.result) : ''}<div class="tt-sub">${esc(t('hudChrome.crafting.reagentsNeeded'))} ${esc(reagentLines)}</div><div class="tt-sub">${esc(skillLine)} ${esc(difficultyLabel)}</div>${row.station ? `<div class="tt-sub">${esc(stationLabel)}${stationOutOfRange ? ` ${esc(stationOutOfRange)}` : ''}</div>` : ''}${comboLine ? `<div class="tt-sub">${esc(comboLine)} ${esc(comboStatus)}</div>` : ''}`,
+          `<div class="tt-profession-header">${sectionImageUrl ? `<img src="${esc(sectionImageUrl)}" alt="" draggable="false">` : ''}<span>${esc(sectionName)}</span></div>${row.result ? deps.itemTooltip(row.result) : ''}<div class="tt-sub">${esc(t('hudChrome.crafting.reagentsNeeded'))} ${esc(reagentLines)}</div><div class="tt-sub">${esc(skillLine)} ${esc(difficultyLabel)}</div>${row.station ? `<div class="tt-sub">${esc(stationLabel)}${stationOutOfRange ? ` ${esc(stationOutOfRange)}` : ''}</div>` : ''}${comboLine ? `<div class="tt-sub">${esc(comboLine)} ${esc(comboStatus)}</div>` : ''}`,
       );
       item.appendChild(craftBtn);
       // Commission opt-in (Professions 2.0 Phase 14b): a per-craft checkbox,

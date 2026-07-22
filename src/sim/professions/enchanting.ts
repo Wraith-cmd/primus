@@ -91,7 +91,7 @@ const QUALITY_ORDER: readonly NonNullable<ItemDef['quality']>[] = [
 // strictly better than plain salvage.ts's generic yield from `rare` up
 // (arcane_dust and bone_fragments vendor near-identically at `common`; see
 // #1712 round-3 review point 12).
-const DISENCHANT_MATERIAL_BY_QUALITY: Readonly<Record<string, string>> = {
+export const DISENCHANT_MATERIAL_BY_QUALITY: Readonly<Record<string, string>> = {
   common: 'arcane_dust',
   uncommon: 'arcane_dust',
   rare: 'arcane_essence',

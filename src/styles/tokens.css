@@ -205,6 +205,12 @@
     --fx-shadow: 1;
     --fx-ambient-anim: running;
     --motion-scale: 1;
+    /* Shared painted-art shadows. The color is theme-addressable and the blur
+       follows the graphics shadow tier so small decorative raster art stays
+       legible without forcing full-cost shadows on the low preset. */
+    --color-art-shadow: rgb(0 0 0 / 75%);
+    --art-shadow-sm: 0 1px calc(2px * var(--fx-shadow, 1)) var(--color-art-shadow);
+    --art-shadow-lg: 0 2px calc(5px * var(--fx-shadow, 1)) var(--color-art-shadow);
     /* Shared with src/game/cursors.ts, keep hotspots in sync.
        --cursor-arrow = default; --cursor-point = interactive/hover (gauntlet finger). */
     --cursor-arrow: url("/ui/cursors/arrow.png") 7 2, default;

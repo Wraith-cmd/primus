@@ -48,6 +48,15 @@ export function cadenceBlockedKeys(map: CadenceMap, now: number): string[] {
   return out.sort();
 }
 
+/** Whether a stored availableAt has already lapsed at tick `now` (the key is
+ *  available again, so it carries no state worth keeping). The ONE elapsed
+ *  predicate shared by the load-time drop (clampCadenceOnLoad) and the
+ *  serialize-time prune (serializeCadence, Phase 15 QA directed fix); both
+ *  arms sit on it so a serialize-load-serialize round trip is a fixed point. */
+export function isCadenceElapsed(availableAt: number, now: number): boolean {
+  return availableAt <= now;
+}
+
 /** Load-time clamp: rebuild a persisted cooldown record into a live map, capping
  *  every stored availableAt at now + windowTicks so a tick-counter reset (a fresh
  *  offline Sim starts at tick 0, a server restart rewinds the counter) can never
@@ -65,7 +74,25 @@ export function clampCadenceOnLoad(
   for (const [key, value] of Object.entries(saved)) {
     if (typeof value !== 'number' || !Number.isFinite(value)) continue;
     const clamped = Math.min(value, cap);
-    if (clamped > now) map.set(key, clamped);
+    if (!isCadenceElapsed(clamped, now)) map.set(key, clamped);
   }
   return map;
+}
+
+/** Serialize-time counterpart of clampCadenceOnLoad (Phase 15 QA directed fix):
+ *  the still-live entries of a cadence map as a plain persistable record, or
+ *  null when nothing live remains so the save field omits (zero-default
+ *  omission). Load-only pruning let a long-running session autosave past-due
+ *  keys forever; pruning here with the same elapsed predicate closes that.
+ *  Live entries pass through byte-identical, and the live map is NEVER
+ *  mutated: the cprof cadenceBlockedQuests wire mirror keeps reading it
+ *  directly via cadenceBlockedKeys. */
+export function serializeCadence(map: CadenceMap, now: number): Record<string, number> | null {
+  let record: Record<string, number> | null = null;
+  for (const [key, availableAt] of map) {
+    if (isCadenceElapsed(availableAt, now)) continue;
+    if (record === null) record = {};
+    record[key] = availableAt;
+  }
+  return record;
 }

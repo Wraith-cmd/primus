@@ -79,7 +79,6 @@ export const table: DeedLocaleTable = {
   prog_herbalism_100: { name: 'Bậc Thầy Đồng Cỏ', desc: 'Đạt 100 điểm thành thạo Thảo Dược Học.' },
   prog_master_gatherer: {
     name: 'Bậc Thầy Thu Thập',
-    desc: 'Đạt 100 điểm thành thạo trong Khai Khoáng, Đốn Gỗ, và Thảo Dược Học.',
   },
   prog_first_craft: {
     name: 'Làm Bằng Đôi Tay',

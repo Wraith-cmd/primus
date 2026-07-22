@@ -91,7 +91,6 @@ export const table: DeedLocaleTable = {
   },
   prog_master_gatherer: {
     name: 'Maestro Raccoglitore',
-    desc: 'Raggiungi 100 di competenza in Estrazione, Disboscamento ed Erboristeria.',
   },
   prog_first_craft: {
     name: 'Fatto a Mano',

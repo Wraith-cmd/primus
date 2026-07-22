@@ -752,42 +752,11 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'Menyatakan sebuah arketipe akan menjadi momen cerita: sebuah misi yang secara resmi menerimamu ke dalam identitas itu. Jalan itu masih dibangun, jadi untuk saat ini setiap karakter menjelajahi dunia dengan pilihan itu masih di depannya, dan setiap kerajinan berkembang hingga tingkat kualitas Langka untuk sementara.',
   'guide.professions.archetypeChooseTitle': 'Memilih arketipemu',
-  'guide.professions.archetypeIdentityBody':
-    'Arketipe aktifmu adalah pernyataan tentang siapa karaktermu di dunia, terlihat dari cara orang lain dan dunia menyapamu. Hadiah dan pengakuan pastinya masih dirampungkan; tengok kembali seiring sistem ini dilengkapi.',
-  'guide.professions.archetypeIdentityTitle': 'Makna arketipemu',
-  'guide.professions.archetypeIntro':
-    'Masing-masing dari sepuluh kerajinan juga mewakili sebuah arketipe, identitas yang lebih luas yang bisa kamu sandang di luar sekadar menekuni kerajinannya. Arketipe aktifmu adalah satu pilihan pada satu waktu, bukan daftar centang: kamu menyandang satu, dan bisa menggantinya kelak jika mau.',
   'guide.professions.archetypeSwitchBody':
     'Pernyataan pun tak akan menjadi hukuman seumur hidup. Rencananya adalah tindakan menebus kesalahan yang dapat diulang kepada kerajinan lamamu sebelum menekuni yang baru, dengan tebusan yang semakin berat setiap kali kamu berpindah, sehingga pilihan itu tetap bermakna, bukan tanpa harga. Seperti pernyataan itu sendiri, ini pun masih dalam perjalanan.',
-  'guide.professions.archetypeSwitchTitle': 'Berubah pikiran',
-  'guide.professions.archetypeTitle': 'Sepuluh arketipe',
-  'guide.professions.craftComboBody':
-    'Di luar daftar resep tiap kerajinan, roda ini juga mendukung resep kombinasi yang memakai dua kerajinan bertetangga sekaligus, mengganjar karakter yang menekuni kerajinan bersebelahan di lingkaran alih-alih satu kerajinan secara terpisah. Sang perajin harus menguasai kedua kerajinan itu sendiri; keahlian seorang mitra tak bisa menggantikan salah satu bagiannya.',
-  'guide.professions.craftComboTitle': 'Resep kombinasi',
-  'guide.professions.craftIntro':
-    'Sepuluh kerajinan mengubah bahan yang terkumpul menjadi perlengkapan dan barang jadi: Penempaan Zirah, Penempaan Senjata, dan Kriya Permata membentuk bahan mentah menjadi perlengkapan yang bisa dikenakan; Alkimia dan Rekayasa berjalan lewat coba-coba; Memasak, Inskripsi, dan Pemantraan masing-masing menyentuh hasil kerajinan lain; Menjahit dan Pengolahan Kulit bekerja dari pola yang persis. Bersama-sama semuanya membentuk sebuah roda, dengan tiap kerajinan duduk di samping dua tetangga dan berseberangan dengan satu kerajinan lain.',
   'guide.professions.craftMasteryBody':
     'Berhasil membuat barang menumbuhkan keahlianmu di kerajinan itu, dan keahlian tak pernah mengunci resep sebuah kerajinan: jika kamu mengetahui sebuah resep dan memegang bahannya, kamu bisa mencobanya. Yang justru dibeli keahlian untukmu adalah mutu, tangan yang terlatih menghasilkan karya yang lebih halus. Satu pengecualiannya adalah resep kombinasi, yang mengharuskanmu membuktikan diri di kedua kerajinannya sebelum ia terbuka.',
   'guide.professions.craftMasteryTitle': 'Keahlian dan penguasaan',
-  'guide.professions.craftRecipesBody':
-    'Setiap resep membutuhkan reagen tertentu yang kamu kumpulkan atau beli. Resep paling sederhana hanya meminta bahan umum dan bisa dibuat sejak awal, jadi kamu bisa mulai menekuni sebuah kerajinan begitu mengambilnya. Daftar resep masih terus terisi: beberapa kerajinan sedang menanti resep pertamanya, dan lebih banyak lagi tiba seiring kerajinan berkembang.',
-  'guide.professions.craftRecipesTitle': 'Resep dan reagen',
-  'guide.professions.craftRingBody':
-    'Sepuluh kerajinan tersusun dalam lingkaran tetap, dan posisi sebuah kerajinan di lingkaran itu penting: kerajinan yang bersebelahan di roda punya lebih banyak kesamaan satu sama lain dibanding kerajinan di sisi berlawanan. Berkomitmen pada satu kerajinan dimaksudkan terasa seperti bergabung dengan keluarga kerajinan serumpun, bukan memilih keterampilan yang terpencil.',
-  'guide.professions.craftRingTitle': 'Roda spesialisasi',
-  'guide.professions.craftTitle': 'Sepuluh kerajinan',
-  'guide.professions.gatherIntro':
-    'Tiga profesi pengumpulan memungkinkanmu menarik bahan mentah langsung dari dunia: Penambangan memahat bijih dan batu dari urat tambang, Penebangan merobohkan kayu dari rumpun pohon, dan Herbalisme memetik herba serta tanaman liar. Masing-masing dicatat terpisah, jadi menekuni satu tak pernah memperlambat kemajuanmu di yang lain. Baru dalam semua ini? Foreman Odell di Eastbrook menyimpan tugas singkat, A Trade for Every Hand, yang memandumu melalui panen pertamamu.',
-  'guide.professions.gatherProficiencyBody':
-    'Setiap panen yang berhasil menumbuhkan kecakapanmu di profesi pengumpulan itu, dan lembar karaktermu melacak tiap profesi secara tersendiri. Lebih banyak latihan tak pernah merugikan kemajuanmu, ia hanya menambahnya.',
-  'guide.professions.gatherProficiencyTitle': 'Kecakapan',
-  'guide.professions.gatherTitle': 'Pengumpulan: Penambangan, Penebangan, dan Herbalisme',
-  'guide.professions.gatherToolsBody':
-    'Penjaja menjual perkakas dasar untuk tiap profesi pengumpulan, dan yang lebih baik bisa dibuat. Tak ada perkakas yang wajib untuk menggarap simpul saat ini: perkakas adalah landasan bagi simpul yang lebih kaya di masa depan, tempat beliung, kapak, dan sabit tingkat lebih tinggi kelak menjadi jalan masuknya.',
-  'guide.professions.gatherToolsTitle': 'Perkakas kerja',
-  'guide.professions.gatherWhatBody':
-    'Urat bijih, rumpun kayu, dan petak herba ditempatkan di Lembah dan rawa sebagai objek yang terlihat dan tak bertuan. Dekati satu dan berinteraksilah untuk memanen isinya. Setelah kamu memanen sebuah simpul, simpul itu butuh waktu untuk pulih sebelum kamu pribadi bisa memanennya lagi, tapi itu tak pernah menghalangi orang lain: pemain lain bisa memanen simpul yang sama sementara itu.',
-  'guide.professions.gatherWhatTitle': 'Simpul sumber daya',
   'guide.professions.intro':
     'Di luar pertempuran dan misi, dunia mengganjarmu karena menggarap tanah dan tempaan: mengumpulkan bahan mentah, mengolahnya menjadi perlengkapan dan barang lewat sepuluh kerajinan, dan menetap dalam identitas sebagai salah satu dari sepuluh arketipe yang diwakili kerajinan-kerajinan itu.',
   'guide.valeCupPage.heading': 'Piala Lembah',
@@ -8427,8 +8396,6 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
     'Jika kesulitan diganti saat kelompok masih memegang perjalanan yang diklaim, klaim lama bertahan sebentar sebelum hilang sendiri. Pemimpin kelompok dapat segera melepaskannya dengan memilih Reset Semua Instansi di menu potretnya sendiri atau mengetik /dungeon reset. Kesulitan harus benar-benar sudah diubah, tidak boleh ada siapa pun, hidup atau gugur, di dalam, dan ada jeda singkat antarreset. Jika tiba di pintu dengan kesulitan yang salah, permainan akan memberi tahu sebelum perjalanan dimulai. Raid tidak pernah direset dengan cara ini; aturan pengunciannya sendiri tetap berlaku.',
   'guide.gear.itemLevelBody':
     'Untuk membandingkan dua perlengkapan dengan cepat, aktifkan Tampilkan Level Item di opsi. Perlengkapan yang sumbernya diketahui, dari musuh, misi, dan profesi kerajinan, kemudian menampilkan level item: satu angka yang memperkirakan kekuatan berdasarkan asalnya dan memudahkan melihat peningkatan terbaik, bahkan antar-slot. Item tanpa sumber seperti itu, misalnya barang dasar pedagang dan perlengkapan awal, tidak menampilkan level; angka yang tidak ada adalah hal normal.',
-  'guide.professions.craftHowBody':
-    'Buka jendela Kerajinan (tombol bawaan T) untuk melihat semua resep yang diketahui, kebutuhan tiap resep, dan bahan yang tersedia; jika bahannya lengkap, satu klik menyelesaikannya. Resep umum dapat dibuat di mana saja. Beberapa resep lanjutan, termasuk alat tingkat tinggi dan zirah langka untuk perapal, mengharuskanmu berada di pusat kerajinan Highwatch.',
   'hudChrome.auraEffect.battleStance': 'Kuda-kuda Tempur: penghasilan amarah 10% lebih banyak',
   'hudChrome.auraEffect.berserkerStance':
     'Kuda-kuda Berserker: kritis 3% lebih sering dan menghantam 3% lebih keras',

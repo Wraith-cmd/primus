@@ -1530,6 +1530,9 @@ export const hudChromeStrings = {
     // visual tab is aria-hidden, so the per-copy flag rides the cell's label
     // (the tooltip on focus stays the detail surface).
     itemAriaInstanced: '{item}, quantity {count}, maker-marked copy',
+    // Accessible-name sibling for the authored masterwork seal. Keep the whole
+    // phrase in one key so punctuation and status placement remain localizable.
+    itemAriaMasterwork: '{item}, quantity {count}, masterwork',
     filterGroupAria: 'Filter bags by category',
     filterAll: 'All',
     filterWeapon: 'Weapons',

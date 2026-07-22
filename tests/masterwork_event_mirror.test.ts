@@ -26,6 +26,8 @@ function craftMasterwork() {
   const pid = sim.playerId;
   for (let i = 0; i < 3; i++) sim.addItem('linen_scrap', 1, pid);
   sim.addItem('spider_leg', 1, pid);
+  sim.addItem('homespun_cloth', 3, pid);
+  sim.addItem('spool_of_thread', 5, pid);
   sim.craftItem(RECIPE_ID, false, pid);
   const events = sim.drainEvents().filter((ev) => ev.type === 'masterwork');
   return { sim, pid, events };

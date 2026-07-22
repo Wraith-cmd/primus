@@ -773,42 +773,11 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'Tuyên bố một hình mẫu sẽ là một khoảnh khắc cốt truyện: một nhiệm vụ chính thức đón nhận bạn vào danh phận đó. Con đường ấy vẫn đang được xây dựng, nên hiện giờ mọi nhân vật đều bước đi trong thế giới với lựa chọn còn ở phía trước, và trong lúc chờ đợi, mọi nghề chế tác đều thăng tiến tới phẩm cấp Hiếm.',
   'guide.professions.archetypeChooseTitle': 'Chọn hình mẫu của bạn',
-  'guide.professions.archetypeIdentityBody':
-    'Hình mẫu đang mang là một lời tuyên bố về việc nhân vật của bạn là ai trong thế giới, được ghi nhận trong cách người khác và thế giới xưng gọi bạn. Những phần thưởng và sự công nhận cụ thể đi kèm vẫn đang được hoàn thiện; hãy quay lại xem khi hệ thống dần đầy đủ.',
-  'guide.professions.archetypeIdentityTitle': 'Hình mẫu của bạn có ý nghĩa gì',
-  'guide.professions.archetypeIntro':
-    'Mỗi nghề trong mười nghề chế tác cũng đại diện cho một hình mẫu, một danh phận rộng hơn mà bạn có thể khoác lên ngoài việc chỉ hành nghề. Hình mẫu đang mang là một lựa chọn duy nhất tại một thời điểm, không phải một danh sách cần hoàn thành: bạn mang một, và có thể đổi sang cái khác sau này nếu muốn.',
   'guide.professions.archetypeSwitchBody':
     'Một lời tuyên bố cũng sẽ không phải là bản án chung thân. Kế hoạch là một hành động chuộc lỗi lặp lại được với nghề cũ trước khi bạn nhận lấy nghề mới, với phần chuộc lỗi càng lúc càng nặng hơn mỗi lần bạn đổi, để lựa chọn luôn có ý nghĩa thay vì không mất gì. Giống như chính lời tuyên bố, nó vẫn đang trên đường tới.',
-  'guide.professions.archetypeSwitchTitle': 'Đổi ý',
-  'guide.professions.archetypeTitle': 'Mười hình mẫu',
-  'guide.professions.craftComboBody':
-    'Ngoài danh sách công thức của riêng từng nghề, bánh xe còn hỗ trợ các công thức kết hợp cần tới hai nghề kề nhau cùng lúc, tưởng thưởng cho nhân vật đã đầu tư vào các nghề liền kề trên vòng thay vì một nghề đơn lẻ. Người chế tác phải tự mình nắm cả hai nghề; kỹ năng của một người bạn hàng không thể thay thế cho nửa nào.',
-  'guide.professions.craftComboTitle': 'Công thức kết hợp',
-  'guide.professions.craftIntro':
-    'Mười nghề chế tác biến nguyên liệu thu thập thành trang bị và hàng hóa hoàn chỉnh: Chế Giáp, Rèn Vũ Khí và Kim Hoàn nhào nặn vật chất thô thành trang bị mặc được; Giả Kim và Cơ Khí vận hành bằng thử và sai; Nấu Ăn, Khắc Chữ và Phù Phép đều chạm tới sản phẩm của các nghề khác; May Vá và Thuộc Da làm việc theo những mẫu rập chính xác. Cùng nhau chúng tạo thành một bánh xe, mỗi nghề nằm cạnh hai nghề láng giềng và đối diện một nghề khác.',
   'guide.professions.craftMasteryBody':
     'Chế tác thành công sẽ tích lũy kỹ năng trong nghề đó, và kỹ năng không bao giờ khóa các công thức của một nghề lại: nếu bạn biết một công thức và có nguyên liệu của nó, bạn có thể thử làm. Thứ mà kỹ năng mang lại cho bạn thay vào đó là phẩm chất, một đôi tay lành nghề cho ra sản phẩm tinh xảo hơn. Ngoại lệ duy nhất là các công thức kết hợp, vốn đòi hỏi bạn phải chứng tỏ mình trong cả hai nghề của chúng trước khi chúng mở ra.',
   'guide.professions.craftMasteryTitle': 'Kỹ năng và tinh thông',
-  'guide.professions.craftRecipesBody':
-    'Mỗi công thức đòi hỏi những nguyên liệu cụ thể bạn thu thập hoặc mua. Các công thức đơn giản nhất chẳng cần gì ngoài nguyên liệu thường và chế được ngay từ đầu, nên bạn có thể bắt tay vào một nghề ngay khoảnh khắc nhận nó. Các danh sách công thức vẫn đang được bổ sung: một vài nghề còn đang chờ những công thức đầu tiên, và sẽ có thêm khi các nghề lớn dần.',
-  'guide.professions.craftRecipesTitle': 'Công thức và nguyên liệu',
-  'guide.professions.craftRingBody':
-    'Mười nghề được xếp trên một vòng cố định, và vị trí của một nghề trên vòng đó rất quan trọng: các nghề kề nhau trên bánh xe có nhiều điểm chung với nhau hơn các nghề ở hai phía đối diện. Gắn bó với một nghề được thiết kế để giống như gia nhập một gia đình các nghề liên quan, chứ không phải chọn một kỹ năng đơn độc.',
-  'guide.professions.craftRingTitle': 'Bánh xe chuyên môn',
-  'guide.professions.craftTitle': 'Mười nghề chế tác',
-  'guide.professions.gatherIntro':
-    'Ba nghề thu thập cho bạn lấy nguyên liệu thô thẳng từ thế giới: Khai Khoáng đục quặng và đá từ mạch khoáng, Đốn Gỗ hạ cây lấy gỗ từ các cụm rừng, và Thảo Dược Học hái cây cỏ mọc hoang. Mỗi nghề được theo dõi riêng, nên làm nghề này không bao giờ làm chậm tiến độ nghề kia. Mới mẻ với tất cả những điều này? Đốc Công Odell ở Eastbrook có một việc vặt ngắn, Nghề Cho Mọi Bàn Tay, dẫn bạn qua lần thu hoạch đầu tiên.',
-  'guide.professions.gatherProficiencyBody':
-    'Mỗi lần thu hoạch thành công đều tích lũy độ thành thạo của bạn trong nghề thu thập đó, và bảng nhân vật của bạn theo dõi từng nghề một cách riêng biệt. Luyện tập thêm không bao giờ làm hại tiến độ của bạn, nó chỉ luôn cộng thêm vào đó.',
-  'guide.professions.gatherProficiencyTitle': 'Độ thành thạo',
-  'guide.professions.gatherTitle': 'Thu thập: Khai Khoáng, Đốn Gỗ và Thảo Dược Học',
-  'guide.professions.gatherToolsBody':
-    'Thương nhân bán dụng cụ cơ bản cho từng nghề thu thập, và dụng cụ tốt hơn có thể được chế tác. Hiện không cần dụng cụ nào để khai thác một điểm tài nguyên: dụng cụ là nền móng cho những điểm tài nguyên giàu có hơn sắp tới, nơi cuốc, rìu, và liềm bậc cao hơn sẽ là lối vào.',
-  'guide.professions.gatherToolsTitle': 'Dụng cụ hành nghề',
-  'guide.professions.gatherWhatBody':
-    'Các mạch quặng, cụm gỗ và bãi thảo dược được đặt rải rác khắp Thung Lũng và đầm lầy như những điểm cố định hữu hình, không thuộc về ai. Đi tới một điểm và tương tác với nó để thu hoạch những gì nó chứa. Sau khi bạn thu hoạch một điểm, nó cần thời gian hồi phục trước khi chính bạn có thể thu hoạch lại, nhưng nó không bao giờ chặn người khác: một người chơi khác vẫn có thể thu hoạch chính điểm đó trong lúc ấy.',
-  'guide.professions.gatherWhatTitle': 'Điểm tài nguyên',
   'guide.professions.intro':
     'Ngoài chiến đấu và nhiệm vụ, thế giới còn tưởng thưởng cho bạn khi cày cuốc và rèn đúc: thu thập nguyên liệu thô, biến chúng thành trang bị và hàng hóa qua mười nghề chế tác, và an cư trong một danh phận là một trong mười hình mẫu mà các nghề ấy đại diện.',
   'guide.valeCupPage.heading': 'Cúp Thung Lũng',
@@ -8377,8 +8346,6 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
     'Nếu đổi độ khó khi đội vẫn giữ các lượt đã nhận, quyền cũ sẽ tồn tại một lúc rồi tự xóa. Trưởng nhóm có thể bỏ chúng ngay bằng cách chọn Đặt Lại Tất Cả Phụ Bản trong menu chân dung của mình hoặc gõ /dungeon reset. Độ khó phải thực sự đã đổi, không ai dù còn sống hay đã ngã xuống được ở bên trong, và có thời gian chờ ngắn giữa các lần đặt lại. Nếu đến cửa với độ khó sai, trò chơi sẽ báo trước khi bắt đầu. Raid không bao giờ được đặt lại theo cách này; quy tắc khóa riêng vẫn áp dụng.',
   'guide.gear.itemLevelBody':
     'Để so sánh nhanh hai món, hãy bật Hiện Cấp Vật Phẩm trong tùy chọn. Trang bị có nguồn rõ ràng từ kẻ địch, nhiệm vụ và nghề chế tạo sẽ hiện cấp vật phẩm: một con số ước lượng sức mạnh theo nguồn gốc, giúp nhận ra nâng cấp tốt hơn ngay cả giữa các ô khác nhau. Các món không có nguồn như vậy, chẳng hạn hàng cơ bản của thương nhân và trang bị khởi đầu, không hiện cấp; thiếu con số là bình thường.',
-  'guide.professions.craftHowBody':
-    'Mở cửa sổ Chế Tạo (phím mặc định T) để xem mọi công thức đã biết, nguyên liệu cần thiết và số bạn đang có; khi đủ nguyên liệu, chỉ cần một lần nhấp. Công thức thường có thể chế tạo ở bất cứ đâu. Một số công thức nâng cao, gồm công cụ cấp cao và giáp hiếm cho người thi triển, yêu cầu đứng tại trung tâm chế tạo ở Highwatch.',
   'hudChrome.auraEffect.battleStance': 'Thế Công: tạo nộ khí nhiều hơn 10%',
   'hudChrome.auraEffect.berserkerStance':
     'Thế Cuồng Chiến: chí mạng thường xuyên hơn 3% và mạnh hơn 3%',

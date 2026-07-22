@@ -61,10 +61,11 @@ function trainResultsOf(events: SimEvent[]): SimEvent[] {
 }
 
 describe('TRAINING_FEE_BY_TIER and trainingFeeFor', () => {
-  it('is literally [0, 2500, 10000] copper and frozen', () => {
+  it('is literally [0, 2500, 10000, 40000, 160000] copper and frozen', () => {
     // Literal expectation on purpose (never a derived comparison): common is
-    // free, uncommon 25 silver, rare 1 gold.
-    expect(TRAINING_FEE_BY_TIER).toEqual([0, 2500, 10000]);
+    // free, uncommon 25 silver, rare 1 gold, then the Phase 15 resolved 4x
+    // geometric step (tier 3 is 4 gold, tier 4 is 16 gold).
+    expect(TRAINING_FEE_BY_TIER).toEqual([0, 2500, 10000, 40000, 160000]);
     expect(Object.isFrozen(TRAINING_FEE_BY_TIER)).toBe(true);
   });
 
@@ -72,11 +73,13 @@ describe('TRAINING_FEE_BY_TIER and trainingFeeFor', () => {
     const base = recipeById('recipe_tough_jerky')!;
     expect(trainingFeeFor({ ...base, skillReq: 0 })).toBe(0); // tier 0
     expect(trainingFeeFor({ ...base, skillReq: 25 })).toBe(2500); // tier 1
-    expect(trainingFeeFor({ ...base, skillReq: 50 })).toBe(10000); // tier 2, last entry
-    // Tier 3+ recipes (skillReq >= 75) clamp to the last entry until the
-    // Phase 10/15 tuning extends the table.
-    expect(trainingFeeFor({ ...base, skillReq: 75 })).toBe(10000);
-    expect(trainingFeeFor({ ...base, skillReq: 150 })).toBe(10000);
+    expect(trainingFeeFor({ ...base, skillReq: 50 })).toBe(10000); // tier 2
+    // Deliberate Phase 15 re-pin: the resolved 4x geometric extension prices
+    // tier 3 at 40000 and tier 4 at 160000; tiers past the table (skillReq
+    // 125+, tier 5 and up) clamp to the 160000 last entry.
+    expect(trainingFeeFor({ ...base, skillReq: 75 })).toBe(40000); // tier 3
+    expect(trainingFeeFor({ ...base, skillReq: 100 })).toBe(160000); // tier 4, last entry
+    expect(trainingFeeFor({ ...base, skillReq: 150 })).toBe(160000); // tier 6 clamps to last
   });
 
   it('prices every trainer-taught combo recipe at 2500 (tier 1)', () => {

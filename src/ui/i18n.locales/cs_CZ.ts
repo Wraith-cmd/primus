@@ -624,42 +624,11 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'Vyhlášení archetypu bude příběhový okamžik: úkol, který tě do dané identity formálně přijme. Tato cesta se teprve buduje, takže prozatím každá postava chodí světem s volbou před sebou a každé řemeslo mezitím postupuje až po vzácnou úroveň kvality.',
   'guide.professions.archetypeChooseTitle': 'Volba archetypu',
-  'guide.professions.archetypeIdentityBody':
-    'Tvůj aktivní archetyp je prohlášením o tom, kým tvá postava ve světě je, a projevuje se v tom, jak tě ostatní i svět oslovují. Přesné odměny a uznání, které s ním přicházejí, se ještě dolaďují; vracej se sem, jak se systém bude doplňovat.',
-  'guide.professions.archetypeIdentityTitle': 'Co tvůj archetyp znamená',
-  'guide.professions.archetypeIntro':
-    'Každé z deseti řemesel zároveň představuje archetyp, širší identitu, kterou můžeš přijmout nad rámec samotné práce v daném oboru. Aktivní archetyp je vždy jen jedna volba, ne seznam k odškrtání: neseš jeden a později ho můžeš změnit, pokud se tak rozhodneš.',
   'guide.professions.archetypeSwitchBody':
     'Ani vyhlášení nebude doživotní ortel. V plánu je opakovatelné odčinění vůči tvému starému oboru, než se chopíš nového, přičemž s každou další změnou je odčinění strmější, takže volba zůstává smysluplná, ne bezplatná. Stejně jako samotné vyhlášení je i tohle teprve na cestě.',
-  'guide.professions.archetypeSwitchTitle': 'Změna názoru',
-  'guide.professions.archetypeTitle': 'Deset archetypů',
-  'guide.professions.craftComboBody':
-    'Kromě vlastního seznamu receptů jednotlivého řemesla podporuje kolo i kombinované recepty, které čerpají ze dvou sousedních řemesel najednou a odměňují postavu, jež investovala do sousedících oborů na kruhu, ne do jednoho v izolaci. Výrobce musí ovládat obě řemesla sám; dovednost partnera nemůže zastoupit ani jednu z polovin.',
-  'guide.professions.craftComboTitle': 'Kombinované recepty',
-  'guide.professions.craftIntro':
-    'Deset výrobních řemesel proměňuje nasbírané suroviny v hotovou výbavu a zboží: zbrojířství, kovářství zbraní a klenotnictví tvarují surovou hmotu v nositelnou výbavu; alchymie a inženýrství stojí na pokusech a omylech; vaření, písařství a očarovávání se dotýkají výstupů ostatních řemesel; krejčovství a koželužství pracují podle přesných střihů. Dohromady tvoří kolo, kde každé řemeslo sousedí se dvěma dalšími a stojí naproti jednomu.',
   'guide.professions.craftMasteryBody':
     'Úspěšná výroba zvyšuje dovednost v daném řemesle a dovednost nikdy nezamyká recepty řemesla: pokud recept znáš a máš jeho materiály, můžeš se o něj pokusit. Co ti dovednost místo toho kupuje, je kvalita, zkušená ruka odvede jemnější práci. Jedinou výjimkou jsou kombinované recepty, které tě žádají, aby ses osvědčil v obou jejich řemeslech, než se otevřou.',
   'guide.professions.craftMasteryTitle': 'Dovednost a mistrovství',
-  'guide.professions.craftRecipesBody':
-    'Každý recept vyžaduje konkrétní přísady, které nasbíráš nebo koupíš. Nejjednodušší recepty žádají jen běžné materiály a lze je vyrábět od samého začátku, takže se do oboru můžeš pustit hned, jak si ho osvojíš. Seznamy receptů se stále doplňují: pár řemesel čeká na své první recepty a další přibývají, jak řemesla rostou.',
-  'guide.professions.craftRecipesTitle': 'Recepty a přísady',
-  'guide.professions.craftRingBody':
-    'Deset řemesel je uspořádáno do pevného kruhu a na tom, kde řemeslo na kruhu sedí, záleží: řemesla vedle sebe toho mají společného víc než řemesla na protilehlých stranách. Oddat se jednomu řemeslu má působit jako vstup do rodiny příbuzných oborů, ne jako výběr izolované dovednosti.',
-  'guide.professions.craftRingTitle': 'Kolo specializací',
-  'guide.professions.craftTitle': 'Deset řemesel',
-  'guide.professions.gatherIntro':
-    'Tři sběračské obory ti umožňují získávat suroviny přímo ze světa: Těžba dobývá rudu a kámen ze žil, Dřevorubectví kácí dřevo v porostech stromů a Bylinkářství sbírá divoce rostoucí byliny a rostliny. Každý se počítá zvlášť, takže práce v jednom nikdy nezpomalí tvůj postup v jiném. Jsi v tom nový? Předák Odell v Eastbrooku má krátkou pochůzku, Řemeslo pro každou ruku, která tě provede tvou první sklizní.',
-  'guide.professions.gatherProficiencyBody':
-    'Každá úspěšná sklizeň zvyšuje tvou zběhlost v daném sběračském oboru a karta postavy sleduje každý obor zvlášť. Více praxe tvému postupu nikdy neškodí, vždy k němu jen přidává.',
-  'guide.professions.gatherProficiencyTitle': 'Zběhlost',
-  'guide.professions.gatherTitle': 'Sběr: Těžba, Dřevorubectví a Bylinkářství',
-  'guide.professions.gatherToolsBody':
-    'Obchodníci prodávají základní nástroje pro každý sběračský obor a lepší lze vyrobit. K práci na nalezišti dnes není žádný nástroj potřeba: nástroje jsou základ pro bohatší naleziště, která teprve přijdou, kde budou cestou dovnitř krumpáče, sekery a srpy vyšších stupňů.',
-  'guide.professions.gatherToolsTitle': 'Nástroje řemesla',
-  'guide.professions.gatherWhatBody':
-    'Rudné žíly, porosty dřeva a záhony bylin jsou rozmístěny po Údolí a močálu jako viditelné objekty, které nikomu nepatří. Přijď k jednomu a interakcí sklidíš, co ukrývá. Jakmile naleziště sklidíš, potřebuje čas na zotavení, než ho ty osobně sklidíš znovu, nikomu jinému ale nebrání: jiný hráč může totéž naleziště mezitím sklidit.',
-  'guide.professions.gatherWhatTitle': 'Naleziště surovin',
   'guide.professions.intro':
     'Kromě boje a úkolů tě svět odměňuje i za práci na poli a u výhně: za sběr surovin, jejich proměnu ve výbavu a zboží napříč deseti výrobními řemesly a za přijetí identity jednoho z deseti archetypů, které tato řemesla představují.',
   'guide.valeCupPage.heading': 'Pohár údolí',
@@ -8280,8 +8249,6 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
     'Když změníte obtížnost, zatímco skupina stále drží přidělené průchody, staré nároky chvíli zůstanou a pak samy zmizí. Vůdce skupiny je může opustit okamžitě volbou Resetovat všechny instance v nabídce vlastního portrétu nebo příkazem /dungeon reset. Obtížnost musí být skutečně změněna, uvnitř nesmí zůstat nikdo živý ani padlý a mezi resety je krátká prodleva. U dveří na špatné obtížnosti vás hra varuje před začátkem. Raid se takto nikdy neresetuje; platí pro něj vlastní pravidla uzamčení.',
   'guide.gear.itemLevelBody':
     'Pro rychlé porovnání dvou kusů zapněte v možnostech Zobrazit úroveň předmětu. Výbava se známým původem, od nepřátel, z úkolů a řemesel, pak ukazuje úroveň předmětu: jediné číslo, které přibližně vyjadřuje sílu podle zdroje a umožňuje poznat lepší vylepšení i mezi různými sloty. Kusy bez takového původu, například základní zboží obchodníků a počáteční výbava, úroveň neukazují; chybějící číslo je normální.',
-  'guide.professions.craftHowBody':
-    'Otevřete okno Výroba (výchozí klávesa T) a uvidíte všechny známé recepty, jejich požadavky i své zásoby; máte-li materiály, stačí jedno kliknutí. Běžné recepty lze vyrábět kdekoli. Některé pokročilé recepty, včetně nástrojů vyšší úrovně a vzácné zbroje pro sesilatele, vyžadují výrobní centrum v Highwatchi.',
   'hudChrome.auraEffect.battleStance': 'Bojový postoj: o 10 % vyšší generování vzteku',
   'hudChrome.auraEffect.berserkerStance':
     'Postoj berserka: kritické zásahy o 3 % častěji a o 3 % tvrdší',

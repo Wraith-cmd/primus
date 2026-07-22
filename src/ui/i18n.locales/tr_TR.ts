@@ -754,42 +754,11 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'Bir arketip ilan etmek bir hikaye anı olacak: seni o kimliğe resmen kabul eden bir görev. Ama o yol henüz inşa ediliyor, bu yüzden şimdilik her karakter bu seçim önünde dururken dünyayı dolaşır ve bu arada her zanaat Ender kalite kademesine dek ilerler.',
   'guide.professions.archetypeChooseTitle': 'Arketipini seçmek',
-  'guide.professions.archetypeIdentityBody':
-    'Etkin arketipin, karakterinin bu dünyada kim olduğuna dair bir beyandır ve başkalarının ve dünyanın sana nasıl hitap ettiğine yansır. Beraberinde gelen ödüller ve tanınırlık hâlâ son haline getiriliyor; sistem tamamlandıkça yeniden göz at.',
-  'guide.professions.archetypeIdentityTitle': 'Arketipin ne anlama gelir',
-  'guide.professions.archetypeIntro':
-    'On zanaatın her biri aynı zamanda bir arketipi, yani o işi yapmanın ötesinde benimseyebileceğin daha geniş bir kimliği temsil eder. Etkin arketipin bir kontrol listesi değil, her seferinde tek bir seçimdir: bir tane taşırsın ve istersen daha sonra hangisini taşıdığını değiştirebilirsin.',
   'guide.professions.archetypeSwitchBody':
     'Bir ilan aynı zamanda ömür boyu bir hüküm de olmayacak. Plan şu: yeni bir zanaata başlamadan önce eski zanaatının gönlünü almak için tekrarlanabilir bir görevi yerine getirmek; her geçişte bu gönül alma biraz daha ağırlaşır, böylece seçim bedelsiz değil, anlamlı kalır. Tıpkı ilanın kendisi gibi, bu da hâlâ yolda.',
-  'guide.professions.archetypeSwitchTitle': 'Fikir değiştirmek',
-  'guide.professions.archetypeTitle': 'On arketip',
-  'guide.professions.craftComboBody':
-    'Tek bir zanaatın kendi tarif listesinin ötesinde, çark aynı anda iki komşu zanaata başvuran birleşim tariflerini de destekler; bu, tek başına bir zanaata değil, halkadaki komşu işlere yatırım yapmış bir karakteri ödüllendirir. Zanaatçının her iki zanaatı da kendisi bilmesi gerekir; bir ortağın becerisi iki yarıdan birinin yerini tutamaz.',
-  'guide.professions.craftComboTitle': 'Birleşim tarifleri',
-  'guide.professions.craftIntro':
-    'On zanaat kolu, toplanan malzemeleri bitmiş teçhizata ve mala dönüştürür: Zırhçılık, Silah Ustalığı ve Kuyumculuk ham maddeyi giyilebilir teçhizata şekillendirir; Simya ve Mühendislik deneme yanılmayla ilerler; Aşçılık, Kâtiplik ve Efsunculuk diğer zanaatların ürünlerine dokunur; Terzilik ve Dericilik ise kesin kalıplarla çalışır. Hep birlikte bir çark oluştururlar: her zanaat iki komşusunun yanında ve bir diğerinin karşısında yer alır.',
   'guide.professions.craftMasteryBody':
     'Başarılı her üretim o zanaattaki becerini geliştirir ve beceri bir zanaatın tariflerini asla kilit altında tutmaz: bir tarifi biliyor ve malzemelerine sahipsen onu deneyebilirsin. Becerinin sana kazandırdığı şey bunun yerine kalitedir; usta bir el daha iyi işler çıkarır. Tek istisna birleşim tarifleridir; bunlar açılmadan önce her iki zanaatta da kendini kanıtlamış olmanı ister.',
   'guide.professions.craftMasteryTitle': 'Beceri ve ustalık',
-  'guide.professions.craftRecipesBody':
-    'Her tarif, topladığın ya da satın aldığın belirli malzemeleri ister. En basit tarifler sıradan malzemeden başkasını istemez ve en baştan üretilebilir; böylece bir zanaatı edindiğin an işlemeye başlayabilirsin. Tarif listeleri hala doluyor: birkaç zanaat henüz ilk tariflerini bekliyor ve zanaatlar geliştikçe daha fazlası ekleniyor.',
-  'guide.professions.craftRecipesTitle': 'Tarifler ve malzemeler',
-  'guide.professions.craftRingBody':
-    'On zanaat sabit bir halkaya dizilmiştir ve bir zanaatın o halkadaki yeri önemlidir: çark üzerinde yan yana duran zanaatlar, karşı taraftakilere kıyasla birbirleriyle daha çok ortaklık taşır. Bir zanaata bağlanmak, yalıtılmış bir beceri seçmek gibi değil, akraba işlerden oluşan bir aileye katılmak gibi hissettirmelidir.',
-  'guide.professions.craftRingTitle': 'Uzmanlıklar çarkı',
-  'guide.professions.craftTitle': 'On zanaat',
-  'guide.professions.gatherIntro':
-    "Üç toplayıcılık kolu ham maddeyi doğrudan dünyadan çekip almanı sağlar: Madencilik damarlardan cevher ve taş çıkarır, Ağaç Kesme ağaç kümelerinden kereste devirir, Bitkicilik ise yabani büyüyen ot ve bitkileri toplar. Her biri ayrı ayrı izlenir; birinde çalışmak diğerindeki ilerlemeni asla yavaşlatmaz. Hepsine yeni misin? Doğudere'deki Ustabaşı Odell, ilk hasadında sana yol gösteren kısa bir iş tutar: Her Ele Bir Zanaat.",
-  'guide.professions.gatherProficiencyBody':
-    'Başarılı her hasat o toplayıcılık kolundaki yetkinliğini artırır ve karakter sayfan her kolu ayrı ayrı izler. Daha çok pratik ilerlemene asla zarar vermez, yalnızca ona ekler.',
-  'guide.professions.gatherProficiencyTitle': 'Yetkinlik',
-  'guide.professions.gatherTitle': 'Toplayıcılık: Madencilik, Ağaç kesme ve Bitkicilik',
-  'guide.professions.gatherToolsBody':
-    'Satıcılar her toplayıcılık kolu için temel aletler satar ve daha iyileri üretilebilir. Bugün bir kaynak noktasında çalışmak için hiçbir alet gerekmez: aletler, gelecek daha zengin kaynaklar için bir zemin hazırlar; orada daha yüksek kademe kazmalar, baltalar ve oraklar giriş yolu olacak.',
-  'guide.professions.gatherToolsTitle': 'Zanaatın aletleri',
-  'guide.professions.gatherWhatBody':
-    "Cevher damarları, ağaç kümeleri ve ot öbekleri Vadi'ye ve bataklığa görünür, sahipsiz nesneler olarak yerleştirilmiştir. Birine yaklaş ve içindekini toplamak için onunla etkileşime geç. Bir kaynağı topladıktan sonra, senin onu yeniden toplayabilmen için toparlanmaya ihtiyaç duyar; ama bu başkasını asla engellemez: bu arada başka bir oyuncu aynı kaynağı toplayabilir.",
-  'guide.professions.gatherWhatTitle': 'Kaynak noktaları',
   'guide.professions.intro':
     'Dünya seni savaşın ve görevlerin ötesinde, toprağı ve ocağı işlediğin için de ödüllendirir: ham madde toplamak, on ayrı zanaat kolunda onları teçhizata ve mallara dönüştürmek ve bu zanaatların temsil ettiği on arketipten birinin kimliğine yerleşmek.',
   'guide.valeCupPage.heading': 'Vadi Kupası',
@@ -8265,8 +8234,6 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     'Grubun sahiplenilmiş koşuları tutarken zorluğu değiştirirsen eski haklar kendiliğinden silinmeden önce bir süre kalır. Grup lideri kendi portre menüsünden Tüm Örnekleri Sıfırla seçeneğini seçerek veya /dungeon reset yazarak bunları hemen bırakabilir. Zorluk gerçekten değiştirilmiş olmalı, içeride canlı ya da düşmüş hiç kimse kalmamalı ve sıfırlamalar arasında kısa bir bekleme süresi vardır. Kapıya yanlış zorlukta gelirsen oyun başlamadan önce uyarır. Baskın bu şekilde asla sıfırlanmaz; kendi kilit kuralları geçerlidir.',
   'guide.gear.itemLevelBody':
     'İki parçayı hızlıca karşılaştırmak için seçeneklerden Eşya Seviyesini Göster’i aç. Düşmanlardan, görevlerden ve üretim mesleklerinden gelen, kaynağı bilinen teçhizat bir eşya seviyesi gösterir: kaynağına göre gücünü yaklaşık belirten tek bir sayı, farklı yuvalar arasında bile hangi yükseltmenin daha etkili olduğunu gösterir. Basit satıcı eşyaları ve başlangıç teçhizatı gibi böyle bir kaynağı olmayan parçalarda seviye görünmez; sayının olmaması normaldir.',
-  'guide.professions.craftHowBody':
-    'Bildiğin tüm tarifleri, gerekenleri ve elindeki malzemeleri görmek için Üretim penceresini (varsayılan T tuşu) aç; malzemeler hazırsa tek tıklama yeter. Yaygın tarifler dünyanın her yerinde üretilebilir. Yüksek seviye aletler ve nadir büyücü zırhları gibi bazı gelişmiş tarifler ise Highwatch üretim merkezinde bulunmanı ister.',
   'guide.professions.craftHowTitle': 'Üretim penceresi',
   'hudChrome.auraEffect.battleStance': 'Savaş Duruşu: %10 daha fazla öfke üretimi',
   'hudChrome.auraEffect.berserkerStance':

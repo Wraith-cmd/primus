@@ -720,42 +720,11 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'Declarar um arquétipo será um momento de história: uma missão que o aceita formalmente naquela identidade. Esse caminho ainda está sendo construído, então, por ora, cada personagem percorre o mundo com a escolha ainda pela frente, e cada ofício avança até o grau de qualidade raro nesse meio-tempo.',
   'guide.professions.archetypeChooseTitle': 'Escolhendo seu arquétipo',
-  'guide.professions.archetypeIdentityBody':
-    'Seu arquétipo ativo é uma declaração sobre quem o seu personagem é no mundo, reconhecida na forma como os outros e o próprio mundo se dirigem a você. As recompensas e os reconhecimentos exatos que o acompanham ainda estão sendo finalizados; volte aqui conforme o sistema for se completando.',
-  'guide.professions.archetypeIdentityTitle': 'O que seu arquétipo significa',
-  'guide.professions.archetypeIntro':
-    'Cada um dos dez ofícios também representa um arquétipo, uma identidade mais ampla que você pode adotar além de simplesmente trabalhar naquele ofício. Seu arquétipo ativo é uma escolha única por vez, não uma lista de tarefas: você carrega um, e pode trocar depois se quiser.',
   'guide.professions.archetypeSwitchBody':
     'Uma declaração também não será uma sentença perpétua. O plano é um ato repetível de fazer as pazes com o seu antigo ofício antes de assumir um novo, com a reparação ficando mais exigente a cada troca, para que a escolha continue significativa em vez de gratuita. Assim como a própria declaração, ele ainda está a caminho.',
-  'guide.professions.archetypeSwitchTitle': 'Mudando de ideia',
-  'guide.professions.archetypeTitle': 'Os dez arquétipos',
-  'guide.professions.craftComboBody':
-    'Além da lista de receitas de um único ofício, a roda também aceita receitas combinadas que recorrem a dois ofícios vizinhos ao mesmo tempo, recompensando um personagem que investiu em ofícios adjacentes no anel em vez de em um só isolado. O próprio artesão precisa dominar os dois ofícios; a perícia de um parceiro não pode substituir nenhuma das metades.',
-  'guide.professions.craftComboTitle': 'Receitas combinadas',
-  'guide.professions.craftIntro':
-    'Dez ofícios de criação transformam materiais coletados em equipamentos e bens acabados: a Forja de Armaduras, a Forja de Armas e a Joalheria dão forma à matéria bruta em equipamento vestível; a Alquimia e a Engenharia avançam por tentativa e erro; a Culinária, a Escrivania e o Encantamento tocam, cada um, o produto de outros ofícios; a Alfaiataria e a Couraria trabalham a partir de moldes exatos. Juntos eles formam uma roda, com cada ofício ao lado de dois vizinhos e oposto a um outro.',
   'guide.professions.craftMasteryBody':
     'Criar com sucesso desenvolve a perícia naquele ofício, e a perícia nunca tranca as receitas de um ofício longe de você: se você conhece uma receita e tem seus materiais, pode tentá-la. O que a perícia lhe compra, em vez disso, é qualidade, uma mão treinada produz um trabalho mais fino. A única exceção são as receitas combinadas, que pedem que você tenha se provado nos dois ofícios delas antes de se abrirem.',
   'guide.professions.craftMasteryTitle': 'Perícia e maestria',
-  'guide.professions.craftRecipesBody':
-    'Cada receita pede reagentes específicos que você coleta ou compra. As receitas mais simples não pedem nada além de materiais comuns e podem ser criadas desde o comecinho, então você pode começar a trabalhar um ofício no momento em que o adota. As listas de receitas ainda estão sendo preenchidas: alguns ofícios aguardam suas primeiras receitas, e mais chegam conforme os ofícios crescem.',
-  'guide.professions.craftRecipesTitle': 'Receitas e reagentes',
-  'guide.professions.craftRingBody':
-    'Os dez ofícios estão dispostos em um anel fixo, e a posição de um ofício nesse anel importa: ofícios vizinhos na roda têm mais em comum entre si do que ofícios em lados opostos. Comprometer-se com um ofício deve parecer entrar para uma família de ofícios aparentados, não escolher uma habilidade isolada.',
-  'guide.professions.craftRingTitle': 'Uma roda de especialidades',
-  'guide.professions.craftTitle': 'Os dez ofícios',
-  'guide.professions.gatherIntro':
-    'Três ofícios de coleta permitem extrair matérias-primas diretamente do mundo: a Mineração arranca minério e pedra dos veios, a Lenharia derruba madeira dos bosques, e o Herborismo colhe ervas e plantas que crescem soltas. Cada um é acompanhado em separado, então trabalhar um nunca atrasa seu progresso em outro. Novato em tudo isso? O Capataz Odell, em Eastbrook, tem uma tarefa curta, Um Ofício para Cada Mão, que guia você pela sua primeira colheita.',
-  'guide.professions.gatherProficiencyBody':
-    'Cada colheita bem-sucedida aumenta sua proficiência naquele ofício de coleta, e sua ficha de personagem acompanha cada ofício por conta própria. Mais prática nunca prejudica seu progresso, só o aumenta.',
-  'guide.professions.gatherProficiencyTitle': 'Proficiência',
-  'guide.professions.gatherTitle': 'Coleta: Mineração, Lenharia e Herborismo',
-  'guide.professions.gatherToolsBody':
-    'Vendedores oferecem ferramentas básicas para cada ofício de coleta, e as melhores podem ser criadas. Nenhuma ferramenta é exigida para trabalhar um nó hoje: as ferramentas são a base para nós mais ricos que virão, onde picaretas, machados e foices de nível mais alto serão o caminho de entrada.',
-  'guide.professions.gatherToolsTitle': 'Ferramentas do ofício',
-  'guide.professions.gatherWhatBody':
-    'Veios de minério, bosques de madeira e canteiros de ervas ficam espalhados pelo Vale e pelo pântano como pontos visíveis e sem dono. Aproxime-se de um e interaja com ele para colher o que houver ali. Depois que você colhe um nó, ele precisa de um tempo para se recuperar antes que você, pessoalmente, possa colhê-lo de novo, mas ele nunca bloqueia mais ninguém: outro jogador pode colher exatamente o mesmo nó nesse meio-tempo.',
-  'guide.professions.gatherWhatTitle': 'Nós de recurso',
   'guide.professions.intro':
     'Além do combate e das missões, o mundo recompensa quem trabalha a terra e a forja: coletando matérias-primas, transformando-as em equipamento e bens ao longo de dez ofícios de criação e assumindo uma identidade como um dos dez arquétipos que esses ofícios representam.',
   'guide.valeCupPage.heading': 'A Copa do Vale',
@@ -8339,8 +8308,6 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
     'Ao trocar a dificuldade enquanto o grupo ainda mantém incursões reivindicadas, as reivindicações antigas permanecem por algum tempo antes de sumirem. O líder pode abandoná-las imediatamente escolhendo Redefinir todas as instâncias no menu do próprio retrato ou digitando /dungeon reset. Isso só funciona depois que a dificuldade realmente mudou, quando ninguém, vivo ou caído, permanece dentro, e há um curto intervalo entre redefinições. Se você chegar à entrada na dificuldade errada, o jogo avisará antes do início. A raide nunca é redefinida assim; suas próprias regras de vínculo continuam valendo.',
   'guide.gear.itemLevelBody':
     'Para comparar duas peças rapidamente, ative Mostrar nível do item nas opções. Equipamentos de origem conhecida, obtidos de inimigos, missões e profissões de criação, passam a mostrar um nível do item: um único número que estima a força com base na origem e permite identificar a melhor melhoria, mesmo entre espaços diferentes. Peças sem essa origem, como itens básicos de vendedores e equipamento inicial, não mostram nível; a ausência do número é normal.',
-  'guide.professions.craftHowBody':
-    'Abra a janela de Criação (tecla padrão T) para ver todas as receitas conhecidas, o que cada uma exige e os materiais disponíveis; quando tudo estiver à mão, basta um clique. Receitas comuns podem ser criadas em qualquer lugar. Algumas receitas avançadas, incluindo ferramentas de nível alto e armaduras raras para conjuradores, exigem o centro de criação de Highwatch.',
   'hudChrome.auraEffect.battleStance': 'Postura de Batalha: 10% mais geração de raiva',
   'hudChrome.auraEffect.berserkerStance':
     'Postura de Berserker: críticos 3% mais frequentes e 3% mais fortes',

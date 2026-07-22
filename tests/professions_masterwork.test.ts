@@ -408,6 +408,9 @@ describe('draw-order determinism over a real Sim (Phase 2)', () => {
     meta.craftSkills.tailoring = 200;
     for (let i = 0; i < 12; i++) sim.addItem('linen_scrap', 1, pid);
     for (let i = 0; i < 6; i++) sim.addItem('spider_leg', 1, pid);
+    // Phase 15 burn-down: the vestments recipe gained cloth and thread volume.
+    for (let i = 0; i < 9; i++) sim.addItem('homespun_cloth', 1, pid);
+    for (let i = 0; i < 15; i++) sim.addItem('spool_of_thread', 1, pid);
     sim.drainEvents();
     const rng: Rng = (sim as any).ctx.rng;
     let draws = 0;
@@ -526,6 +529,8 @@ describe('proc-chance wiring over a real Sim (hunted boundary-window seeds)', ()
       sim.addItemInstance('linen_scrap', { signer: meta.name }, pid);
       sim.addItem('linen_scrap', 1, pid);
       sim.addItem('spider_leg', 1, pid);
+      sim.addItem('homespun_cloth', 3, pid);
+      sim.addItem('spool_of_thread', 5, pid);
     });
     expect(signed.ok).toBe(true);
     expect(signed.selfSignedBonusApplied).toBe(true);
@@ -535,6 +540,8 @@ describe('proc-chance wiring over a real Sim (hunted boundary-window seeds)', ()
     const plain = craftVestments(SEED, (sim, pid) => {
       for (let i = 0; i < 3; i++) sim.addItem('linen_scrap', 1, pid);
       sim.addItem('spider_leg', 1, pid);
+      sim.addItem('homespun_cloth', 3, pid);
+      sim.addItem('spool_of_thread', 5, pid);
     });
     expect(plain.ok).toBe(true);
     expect(plain.selfSignedBonusApplied).toBe(false);
@@ -553,6 +560,8 @@ describe('proc-chance wiring over a real Sim (hunted boundary-window seeds)', ()
       sim.addItemInstance('linen_scrap', { signer: 'Gatherer Friend' }, pid);
       sim.addItem('linen_scrap', 2, pid);
       sim.addItem('spider_leg', 1, pid);
+      sim.addItem('homespun_cloth', 3, pid);
+      sim.addItem('spool_of_thread', 5, pid);
     });
     expect(traded.ok).toBe(true);
     expect(traded.selfSignedBonusApplied).toBe(false);
@@ -569,6 +578,8 @@ describe('proc-chance wiring over a real Sim (hunted boundary-window seeds)', ()
       const meta = (sim as any).players.get(pid);
       for (let i = 0; i < 3; i++) sim.addItem('linen_scrap', 1, pid);
       sim.addItemInstance('spider_leg', { signer: meta.name }, pid);
+      sim.addItem('homespun_cloth', 3, pid);
+      sim.addItem('spool_of_thread', 5, pid);
     });
     expect(countOne.ok).toBe(true);
     expect(countOne.selfSignedBonusApplied).toBe(false);
@@ -593,6 +604,8 @@ describe('proc-chance wiring over a real Sim (hunted boundary-window seeds)', ()
         meta.craftSkills.tailoring = skill;
         for (let i = 0; i < 3; i++) sim.addItem('linen_scrap', 1, pid);
         sim.addItem('spider_leg', 1, pid);
+        sim.addItem('homespun_cloth', 3, pid);
+        sim.addItem('spool_of_thread', 5, pid);
       });
     const r74 = at(74);
     const r75 = at(75);

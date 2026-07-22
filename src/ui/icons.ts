@@ -10,7 +10,10 @@
 
 import { ABILITIES, ITEMS } from '../sim/data';
 import { DEED_IMAGE_IDS } from './deed_image_ids';
+import { PROFESSION_IMAGE_IDS, professionImageUrl } from './profession_art';
 import { ITEM_WEAPON_VARIANTS } from './weapon_variants';
+
+export { PROFESSION_IMAGE_IDS, professionImageUrl } from './profession_art';
 
 export type IconKind = 'ability' | 'item' | 'aura' | 'crest';
 
@@ -3965,10 +3968,11 @@ export function abilityImageUrl(id: string): string | null {
 }
 
 // Item ids with committed painted art under /ui/items/<id>.webp (curated from the CraftPix
-// resource/consumable AND armor/equipment packs; provenance + license in
-// public/ui/items/mapping.json). Served for kind 'item' (bags, tooltips, loot, vendor, the
-// /wiki guide). Covers everything except weapons, which keep their rendered-model thumbnails
-// via WEAPON_ICON_DIR; items not listed fall through to the procedural ITEM_RECIPES below.
+// resource/consumable and armor/equipment packs, plus project-owned profession materials;
+// provenance + license in public/ui/items/mapping.json). Served for kind 'item' (bags,
+// tooltips, loot, vendor, the /wiki guide). Covers everything except weapons, which keep
+// their rendered-model thumbnails via WEAPON_ICON_DIR; items not listed fall through to the
+// procedural ITEM_RECIPES below.
 // For armor the icon is purely cosmetic (rarity colour still comes from item.quality), and the
 // flashier icons are reserved for higher-rarity pieces. WebP only, like the skill icons. Add
 // art via `npm run assets:items`, then list the item id here. Guarded by tests/item_icons.test.ts.
@@ -4241,6 +4245,40 @@ export const ITEM_IMAGE_IDS = new Set<string>([
   'orange_steel_armor_plate',
   'silverleaf_sickle',
   'vanguard_chrome_armor_plate',
+  // profession materials
+  'arcane_dust',
+  'arcane_essence',
+  'arcane_shard',
+  'arcanite_bar',
+  'ashwood_log',
+  'cooking_salt',
+  'copper_ore',
+  'elderwood_log',
+  'game_meat',
+  'glass_vial',
+  'goldleaf_herb',
+  'homespun_cloth',
+  'iron_ore',
+  'ironbark_log',
+  'prime_cut',
+  'pristine_hide',
+  'pristine_silk',
+  'pristine_venom_gland',
+  'resonant_hide',
+  'resonant_links',
+  'resonant_steel',
+  'resonant_thread',
+  'resonant_timber',
+  'rough_hide',
+  'silverleaf_herb',
+  'smithing_flux',
+  'spider_leg',
+  'spider_silk',
+  'spool_of_thread',
+  'sunpetal_herb',
+  'tanning_agent',
+  'thorium_ore',
+  'venom_gland',
   // junk
   'bandit_bandana',
   'briny_idol',
@@ -4437,18 +4475,6 @@ const PROFESSION_RECIPES: Record<string, IconRecipe> = {
   ),
   gather_fishing: r('drink', 'sky', [{ p: 'fish' }], ['glow']),
 };
-
-// Painted profession art override (mirrors ITEM_IMAGE_IDS / DEED_IMAGE_IDS): ids
-// whose committed WebP under public/ui/professions/ wins over the procedural
-// recipe. Empty until painted art lands; tests/profession_icons.test.ts pins the
-// bijection with the committed files.
-export const PROFESSION_IMAGE_IDS = new Set<string>([]);
-
-const PROFESSION_ICON_DIR = '/ui/professions';
-/** Static URL of a profession icon's painted art, or null while unshipped. */
-export function professionImageUrl(id: string): string | null {
-  return PROFESSION_IMAGE_IDS.has(id) ? `${PROFESSION_ICON_DIR}/${id}.webp` : null;
-}
 
 /** True when `id` has an explicit profession recipe, as opposed to falling
  *  through to the generic fallback; lets a test pin every manifest id to a

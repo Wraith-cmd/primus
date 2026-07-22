@@ -43,13 +43,16 @@ import type { InvSlot } from '../src/sim/types';
 import { buildCraftingView, type CraftingRecipeRow } from '../src/ui/crafting_view';
 
 // The armorcrafting+weaponcrafting minTier-1 combo recipe (content pinned by
-// tests/professions_contracts.test.ts; reagents bone_fragments x4, linen_scrap x2).
+// tests/professions_contracts.test.ts; Phase 15 QA directed burn-down
+// reagents: arcanite_bar x1, thorium_ore x5, wolf_fang x4, smithing_flux x2).
 const RECIPE = COMBO_RECIPES.find((entry) => entry.id === 'recipe_ironbound_warplate_helm')!;
 
 function makeReagents(): InvSlot[] {
   return [
-    { itemId: 'bone_fragments', count: 4 },
-    { itemId: 'linen_scrap', count: 2 },
+    { itemId: 'arcanite_bar', count: 1 },
+    { itemId: 'thorium_ore', count: 5 },
+    { itemId: 'wolf_fang', count: 4 },
+    { itemId: 'smithing_flux', count: 2 },
   ];
 }
 

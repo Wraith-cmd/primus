@@ -1082,7 +1082,11 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     slot: 'chest',
     quality: 'common',
     stats: { armor: 40 },
-    sellValue: 160,
+    // Phase 15 QA directed burn-down (paired arm): sellValue re-priced below
+    // the reworked craft input (88); buyValue is the armorer's shop price and
+    // deliberately keeps the old 10x-of-160 figure so the vendor catalog is
+    // untouched by the economy fix.
+    sellValue: 80,
     buyValue: 1600,
   },
   hobnail_boots: {
@@ -1119,7 +1123,11 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     slot: 'chest',
     quality: 'uncommon',
     stats: { armor: 30, int: 2, spi: 1 },
-    sellValue: 210,
+    // Phase 15 QA directed burn-down (paired arm): re-priced below the
+    // reworked craft input (85); this also retires the piece as the cheapest
+    // disenchant fodder (the evidence review's dust-mill row). Not vendored,
+    // so buyValue is inert and keeps its historical figure.
+    sellValue: 72,
     buyValue: 2100,
   },
   eastbrook_druids_hide: {
@@ -1130,7 +1138,9 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     slot: 'chest',
     quality: 'uncommon',
     stats: { armor: 52, int: 2, spi: 1 },
-    sellValue: 230,
+    // Phase 15 QA directed burn-down (paired arm): re-priced below the
+    // reworked craft input (93). Not vendored; buyValue inert, kept.
+    sellValue: 84,
     buyValue: 2300,
   },
   eastbrook_warded_leggings: {
@@ -1141,7 +1151,9 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     slot: 'legs',
     quality: 'uncommon',
     stats: { armor: 50, int: 2, spi: 1 },
-    sellValue: 220,
+    // Phase 15 QA directed burn-down (paired arm): re-priced below the
+    // reworked craft input (117). Not vendored; buyValue inert, kept.
+    sellValue: 105,
     buyValue: 2200,
   },
   // Hub-tier (level-20, crafting-hub-gated) caster pieces, one per craft,
@@ -1559,11 +1571,16 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     sellValue: 320,
   },
   // --- junk (gray) ---
+  // Phase 15 QA directed burn-down: wolf_fang became a crafting reagent
+  // (recipe_eastbrook_arming_sword, recipe_ironbound_warplate_helm), so it
+  // follows the same convention as spider_leg/bone_fragments/linen_scrap
+  // below: common (white), NOT 'poor', or sellAllJunk would sweep it. Its
+  // sellValue is unchanged. See tests/crafting_materials_quality.test.ts.
   wolf_fang: {
     id: 'wolf_fang',
     name: 'Cracked Wolf Fang',
     kind: 'junk',
-    quality: 'poor',
+    quality: 'common',
     sellValue: 4,
   },
   bandit_bandana: {

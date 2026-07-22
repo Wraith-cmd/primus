@@ -1130,42 +1130,11 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     "Déclarer un archétype sera un moment d'histoire : une quête qui vous accueille officiellement dans cette identité. Cette voie est encore en construction, si bien que pour l'instant chaque personnage parcourt le monde avec ce choix devant lui, et chaque métier progresse jusqu'à la qualité rare en attendant.",
   'guide.professions.archetypeChooseTitle': 'Choisir son archétype',
-  'guide.professions.archetypeIdentityBody':
-    "Votre archétype actif dit qui est votre personnage dans le monde, et se reflète dans la façon dont les autres et le monde s'adressent à vous. Les récompenses et marques de reconnaissance exactes qui l'accompagnent sont encore en cours de finalisation ; revenez voir à mesure que le système se met en place.",
-  'guide.professions.archetypeIdentityTitle': 'Ce que votre archétype signifie',
-  'guide.professions.archetypeIntro':
-    "Chacun des dix métiers d'artisanat incarne aussi un archétype, une identité plus large que vous pouvez adopter au-delà du simple exercice du métier. Votre archétype actif est un choix unique, pas une liste à cocher : vous n'en portez qu'un à la fois, et vous pourrez en changer plus tard si vous le souhaitez.",
   'guide.professions.archetypeSwitchBody':
     "Une déclaration ne sera pas non plus une condamnation à perpétuité. Le principe prévu est un acte répétable où vous faites amende honorable envers votre ancien métier avant d'en embrasser un nouveau, l'amende devenant plus lourde à chaque changement, pour que le choix garde du sens au lieu d'être gratuit. Comme la déclaration elle-même, cela reste à venir.",
-  'guide.professions.archetypeSwitchTitle': "Changer d'avis",
-  'guide.professions.archetypeTitle': 'Les dix archétypes',
-  'guide.professions.craftComboBody':
-    "Au-delà de la liste de recettes propre à chaque métier, la roue permet aussi des recettes combinées qui font appel à deux métiers voisins à la fois, récompensant un personnage qui a investi dans des métiers adjacents sur l'anneau plutôt que dans un seul, isolé. L'artisan doit posséder lui-même les deux métiers ; la compétence d'un partenaire ne peut se substituer à aucune des deux moitiés.",
-  'guide.professions.craftComboTitle': 'Recettes combinées',
-  'guide.professions.craftIntro':
-    "Dix métiers d'artisanat transforment les matériaux récoltés en équipement et en marchandises : la fabrication d'armures, la forge d'armes et la joaillerie façonnent la matière brute en équipement portable ; l'alchimie et l'ingénierie avancent par essais et erreurs ; la cuisine, la calligraphie et l'enchantement touchent chacun au produit des autres métiers ; la couture et le travail du cuir suivent des patrons précis. Ensemble, ils forment une roue où chaque métier siège entre deux voisins, à l'opposé d'un autre.",
   'guide.professions.craftMasteryBody':
     "Réussir une fabrication fait progresser votre compétence dans ce métier, et la compétence ne verrouille jamais les recettes d'un métier : si vous connaissez une recette et en détenez les matériaux, vous pouvez la tenter. Ce que la compétence vous apporte, c'est la qualité, une main exercée produit un ouvrage plus fin. La seule exception, ce sont les recettes combinées, qui exigent que vous ayez fait vos preuves dans leurs deux métiers avant de s'ouvrir.",
   'guide.professions.craftMasteryTitle': 'Compétence et maîtrise',
-  'guide.professions.craftRecipesBody':
-    "Chaque recette réclame des composants précis que vous récoltez ou achetez. Les recettes les plus simples ne demandent que des matériaux communs et se fabriquent dès le tout début, si bien que vous pouvez exercer un métier dès l'instant où vous l'adoptez. Les listes de recettes se remplissent encore : quelques métiers attendent leurs premières recettes, et d'autres arrivent à mesure que les métiers s'étoffent.",
-  'guide.professions.craftRecipesTitle': 'Recettes et composants',
-  'guide.professions.craftRingBody':
-    "Les dix métiers sont disposés en un anneau fixe, et la place d'un métier sur cet anneau compte : les métiers voisins sur la roue ont plus en commun entre eux que ceux qui se font face. S'engager dans un métier doit donner le sentiment de rejoindre une famille de métiers apparentés, pas de choisir une compétence isolée.",
-  'guide.professions.craftRingTitle': 'Une roue de spécialités',
-  'guide.professions.craftTitle': "Les dix métiers d'artisanat",
-  'guide.professions.gatherIntro':
-    "Trois métiers de récolte vous permettent de tirer des matières premières directement du monde : le Minage extrait minerai et pierre des filons, le Bûcheronnage abat le bois des bosquets, et l'Herboristerie cueille herbes et plantes sauvages. Chacun est suivi séparément : en pratiquer un ne ralentit jamais vos progrès dans un autre. Novice en la matière ? Le contremaître Odell à Eastbrook garde une courte course, Un métier pour chaque main, qui vous guide dans votre première récolte.",
-  'guide.professions.gatherProficiencyBody':
-    'Chaque récolte réussie augmente votre aptitude dans ce métier de récolte, et votre feuille de personnage suit chaque métier séparément. Plus de pratique ne nuit jamais à vos progrès, elle ne fait que les accroître.',
-  'guide.professions.gatherProficiencyTitle': 'Aptitude',
-  'guide.professions.gatherTitle': 'Récolte : Minage, Bûcheronnage et Herboristerie',
-  'guide.professions.gatherToolsBody':
-    "Les marchands vendent des outils de base pour chaque métier de récolte, et de meilleurs peuvent être fabriqués. Aucun outil n'est requis pour exploiter un gisement aujourd'hui : les outils posent les bases des gisements plus riches à venir, où pioches, haches et faucilles de niveau supérieur seront la voie d'accès.",
-  'guide.professions.gatherToolsTitle': 'Les outils du métier',
-  'guide.professions.gatherWhatBody':
-    "Filons de minerai, bosquets de bois et carrés d'herbes sont disséminés dans le Val et le marais comme des éléments visibles, sans propriétaire. Approchez-vous et interagissez pour récolter ce qu'ils contiennent. Une fois un gisement récolté, il lui faut du temps pour se régénérer avant que vous puissiez, vous, le récolter à nouveau, mais il ne bloque jamais personne d'autre : un autre joueur peut récolter le même gisement entre-temps.",
-  'guide.professions.gatherWhatTitle': 'Les gisements de ressources',
   'guide.professions.intro':
     "Au-delà des combats et des quêtes, le monde vous récompense de travailler la terre et la forge : récolter des matières premières, les transformer en équipement et en biens à travers dix métiers d'artisanat, et vous installer dans une identité, celle de l'un des dix archétypes que ces métiers incarnent.",
   'guide.valeCupPage.heading': 'La Coupe du Val',
@@ -8593,8 +8562,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
     'Si vous changez de difficulté alors que votre groupe détient encore des parcours revendiqués, les anciennes revendications persistent un moment avant de disparaître. Le chef de groupe peut les abandonner immédiatement : choisissez Réinitialiser toutes les instances dans le menu de son portrait, ou saisissez /dungeon reset. La difficulté doit réellement avoir changé, personne, vivant ou mort, ne doit rester à l’intérieur, et un court délai sépare deux réinitialisations. Si vous arrivez à l’entrée avec la mauvaise difficulté, le jeu vous avertit avant le début. Le raid n’est jamais réinitialisé ainsi ; ses propres règles de verrouillage restent en vigueur.',
   'guide.gear.itemLevelBody':
     'Pour comparer rapidement deux pièces, activez Afficher le niveau d’objet dans les options. L’équipement dont la provenance est connue, obtenu sur les ennemis, par les quêtes ou les métiers, affiche alors un niveau d’objet : une valeur unique qui estime sa puissance d’après sa source et permet de repérer la meilleure amélioration, même entre emplacements différents. Les pièces sans telle provenance, comme les articles de base des marchands et l’équipement de départ, n’en affichent pas ; cette absence est normale.',
-  'guide.professions.craftHowBody':
-    'Ouvrez la fenêtre d’artisanat (touche T par défaut) pour voir toutes vos recettes, leurs composants et ce que vous possédez ; lorsque les matériaux sont réunis, un clic suffit. Les recettes courantes se fabriquent partout. Quelques recettes avancées, dont des outils de haut niveau et de rares armures de lanceur de sorts, exigent toutefois le centre d’artisanat de Highwatch.',
   'guide.gear.qualityBody':
     'Chaque objet possède une qualité, et son nom prend la couleur correspondante afin que sa valeur soit lisible en un coup d’œil. Du plus courant au plus précieux :',
   'guide.gear.qualityCommon': 'Commun',

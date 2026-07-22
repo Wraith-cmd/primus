@@ -23,6 +23,7 @@ import {
   attunementMasterForPair,
   type ProfessionEventInput,
 } from '../src/ui/profession_event_lines_core';
+import type { CraftingIdentityView } from '../src/world_api/professions';
 
 // jsdom ships no matchMedia; the handler reads only `.matches` to derive the
 // reduced-motion flag. A never-matching stub keeps motion on (the desktop
@@ -34,6 +35,12 @@ interface ProfessionEventHarness {
   log: ReturnType<typeof vi.fn>;
   showBanner: ReturnType<typeof vi.fn>;
   combatAnnouncer: { push: ReturnType<typeof vi.fn> };
+  sim: {
+    craftingIdentity: CraftingIdentityView;
+    professionsState: { skills: readonly { professionId: string; skill: number }[] };
+  };
+  charWindow: { renderIfOpen: ReturnType<typeof vi.fn> };
+  renderCrafting: ReturnType<typeof vi.fn>;
   openProfessionTutorial: ReturnType<typeof vi.fn>;
   handleProfessionEvent(ev: ProfessionEventInput): void;
 }
@@ -43,6 +50,29 @@ function makeHud(): ProfessionEventHarness {
   hud.log = vi.fn();
   hud.showBanner = vi.fn();
   hud.combatAnnouncer = { push: vi.fn() };
+  hud.sim = {
+    craftingIdentity: {
+      version: 1,
+      synced: true,
+      craftSkills: {},
+      activeArchetype: 'leatherworking',
+      pairedMajor: 'tailoring',
+      hobbyCraft: null,
+      attunedPairs: ['leatherworking+tailoring'],
+      switchCount: 0,
+      amendsProgress: 0,
+      amendsRequired: 5,
+      knownRecipes: [],
+    },
+    professionsState: { skills: [] },
+  };
+  hud.charWindow = { renderIfOpen: vi.fn() };
+  hud.renderCrafting = vi.fn();
+  document.getElementById('crafting-window')?.remove();
+  const craftingWindow = document.createElement('div');
+  craftingWindow.id = 'crafting-window';
+  craftingWindow.style.display = 'none';
+  document.body.appendChild(craftingWindow);
   // Instance stub shadows the private prototype method: the tierTutorial arm
   // only has to ROUTE here; the panel itself is pinned in
   // profession_tutorial_window.test.ts.
@@ -140,6 +170,38 @@ describe('Hud.handleProfessionEvent', () => {
     expect(hud.combatAnnouncer.push.mock.calls[0][0]).toBe(text);
     expect(achievement).toHaveBeenCalledTimes(1);
     expect(hud.log).not.toHaveBeenCalled();
+    expect(hud.charWindow.renderIfOpen).toHaveBeenCalledTimes(1);
+    expect(hud.renderCrafting).not.toHaveBeenCalled();
+  });
+
+  it('attuned repaints an OPEN Crafting window through the probe, then elides the repeat', () => {
+    vi.spyOn(audio, 'achievement').mockImplementation(() => {});
+    const hud = makeHud();
+    const craftingWindow = document.getElementById('crafting-window') as HTMLElement;
+    craftingWindow.style.display = 'block';
+
+    hud.handleProfessionEvent({ type: 'attuned', pairId: 'leatherworking+tailoring' });
+    expect(hud.charWindow.renderIfOpen).toHaveBeenCalledTimes(1);
+    expect(hud.renderCrafting).toHaveBeenCalledTimes(1);
+
+    // The identity mirror has not moved since the first probe, so a second
+    // drain elides both repaints (the signature diff, not the event, decides).
+    hud.handleProfessionEvent({ type: 'attuned', pairId: 'leatherworking+tailoring' });
+    expect(hud.charWindow.renderIfOpen).toHaveBeenCalledTimes(1);
+    expect(hud.renderCrafting).toHaveBeenCalledTimes(1);
+
+    // A moved mirror claims the edge again for both open surfaces.
+    hud.sim.craftingIdentity = { ...hud.sim.craftingIdentity, switchCount: 1 };
+    hud.handleProfessionEvent({ type: 'attuned', pairId: 'leatherworking+tailoring' });
+    expect(hud.charWindow.renderIfOpen).toHaveBeenCalledTimes(2);
+    expect(hud.renderCrafting).toHaveBeenCalledTimes(2);
+
+    // The OTHER facet moves the same edge: a late gathering snapshot alone
+    // (crafting identity untouched) must also converge both surfaces.
+    hud.sim.professionsState = { skills: [{ professionId: 'fishing', skill: 40 }] };
+    hud.handleProfessionEvent({ type: 'attuned', pairId: 'leatherworking+tailoring' });
+    expect(hud.charWindow.renderIfOpen).toHaveBeenCalledTimes(3);
+    expect(hud.renderCrafting).toHaveBeenCalledTimes(3);
   });
 
   it('profTierTutorial routes to openProfessionTutorial and does nothing else', () => {

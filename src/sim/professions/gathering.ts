@@ -136,7 +136,7 @@ export const MATERIAL_RARITY_MAX_PROFICIENCY = 100;
 // never hurts your odds" acceptance bar. Tuned so legendary stays rare even at max
 // proficiency (2% at p=100) while uncommon becomes the single likeliest non-common
 // outcome quickly.
-const MATERIAL_RARITY_SHARE: Record<Exclude<MaterialRarity, 'common'>, number> = {
+export const MATERIAL_RARITY_SHARE: Record<Exclude<MaterialRarity, 'common'>, number> = {
   uncommon: 0.6,
   rare: 0.3,
   epic: 0.08,

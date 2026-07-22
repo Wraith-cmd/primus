@@ -764,8 +764,12 @@ export const ZONE1_NPCS: Record<string, NpcDef> = {
     // anchor master. Attunement, make-amends return, and the repeatable loom work
     // order live here.
     questIds: ['q_prof_attune_outfitter', 'q_prof_amends_outfitter', 'q_prof_workorder_loom'],
-    // Phase 9 station stocking: thorium_ore is the premium reagent the loom
-    // station's own recipe (recipe_wardweave_cowl) consumes.
+    // Phase 9 station stocking: thorium_ore was stocked as the premium
+    // reagent of the loom's own recipe. The Phase 15 QA directed burn-down
+    // moved recipe_wardweave_cowl off thorium (silk plus premium herbs now),
+    // but the stock stays: removing a shipped vendor row is out of that
+    // change's input-rework scope, and loom customers still buy it for the
+    // forge crafts next door.
     vendorItems: [
       'linen_pouch',
       'travelers_knapsack',

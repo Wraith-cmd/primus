@@ -1267,6 +1267,24 @@
     color: #fff;
     font-weight: normal;
   }
+  .char-gather-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+  }
+  .char-gather-icon {
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+  .char-archetype-title-crest {
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
   /* Honor the OS-level reduced-motion preference too, not just the in-app toggle. */
   @media (prefers-reduced-motion: reduce) {
     .stat-panel .stat-cell,
@@ -4845,6 +4863,17 @@
     font-family: var(--title-font);
     font-size: 12px;
   }
+  .crafting-section-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .crafting-section-icon {
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
   .qd-profession-choice {
     display: grid;
     gap: 4px;
@@ -4863,10 +4892,22 @@
     font-family: var(--ui-font);
   }
   .qd-profession-preview {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     margin-bottom: 8px;
     color: var(--color-text-muted);
     font-size: 11px;
     line-height: 1.4;
+  }
+  .qd-profession-crest {
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+  }
+  .qd-profession-preview-copy {
+    min-width: 0;
   }
   .profession-identity-card {
     margin: 8px 0 10px;
@@ -4880,6 +4921,21 @@
     color: var(--gold);
     font-family: var(--title-font);
     font-size: 13px;
+  }
+  .profession-identity-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .profession-identity-heading h3 {
+    margin: 0;
+  }
+  .profession-archetype-crest {
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
   }
   .profession-identity-summary {
     display: grid;
@@ -5268,6 +5324,16 @@
     clip-path: polygon(0 0, 100% 0, 0 100%);
     background: var(--color-accent);
     pointer-events: none;
+  }
+  .bag-item .bi-masterwork-seal {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    pointer-events: none;
+    filter: drop-shadow(var(--art-shadow-sm));
   }
   .bag-item.empty {
     cursor: default;
@@ -6159,6 +6225,20 @@
     font-family: var(--title-font);
     font-size: 14px;
     color: var(--gold);
+  }
+  .prof-archetype-summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .prof-archetype-crest {
+    flex: 0 0 64px;
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+  }
+  .prof-archetype-copy {
+    min-width: 0;
   }
   .prof-identity-line,
   .prof-identity-paragraph,

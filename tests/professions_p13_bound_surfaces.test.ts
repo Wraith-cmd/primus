@@ -255,7 +255,7 @@ describe('World Market: armed and stamped copies can never be listed', () => {
   });
 });
 
-describe('vendor: selling works (known buyback-laundering class stays in scope elsewhere)', () => {
+describe('vendor: plain and armed copies sell, stamped copies are refused (wash closed)', () => {
   function vendorSetup() {
     const sim = makeWorld();
     const pid = sim.addPlayer('warrior', 'Seller');
@@ -264,13 +264,33 @@ describe('vendor: selling works (known buyback-laundering class stays in scope e
     return { sim, pid };
   }
 
-  it('selling a stamped copy (the only copy) is NOT refused: pays sellValue 40', () => {
+  it('selling a stamped copy (the only copy) IS refused: the bond gates the vendor too', () => {
+    // Phase 15 QA directed fix, maintainer-approved 2026-07-22, closes the
+    // buyback-plain wash: this arm previously pinned the stamped sell ALLOWED
+    // (the laundering class was left open in scope), but sell + buyback
+    // stripped boundTo AND bindOnTrade for a 0 copper spread. The bond now
+    // gates the vendor exactly like the trade.
     const { sim, pid } = vendorSetup();
     setCopper(sim, pid, 0);
     sim.addItemInstance(R, { ...STAMPED }, pid);
     sim.sellItem(R, 1, pid);
     const events = sim.drainEvents();
-    expect(errorTexts(events)).toHaveLength(0);
+    expect(errorTexts(events)).toContain('That item is bound and cannot be sold.');
+    expect(copperOf(sim, pid)).toBe(0);
+    const kept = slotsOf(sim, pid, R);
+    expect(kept).toHaveLength(1);
+    expect(kept[0].instance).toEqual({ bindOnTrade: true, boundTo: 999 });
+  });
+
+  it('selling an ARMED (not yet stamped) copy stays allowed: only boundTo gates the vendor', () => {
+    // The arm/stamp split is load-bearing: bindOnTrade alone is the primed
+    // state (never traded yet), and an armed copy has no bond to launder, so
+    // it sells exactly like a plain copy.
+    const { sim, pid } = vendorSetup();
+    setCopper(sim, pid, 0);
+    sim.addItemInstance(R, { ...ARMED }, pid);
+    sim.sellItem(R, 1, pid);
+    expect(errorTexts(sim.drainEvents())).toHaveLength(0);
     expect(copperOf(sim, pid)).toBe(40);
     expect(slotsOf(sim, pid, R)).toHaveLength(0);
   });

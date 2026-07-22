@@ -2,10 +2,11 @@
 // LADDER_RECIPES (54 trainer recipes across six crafts at skillReq 0/25/50) plus
 // the new materials/specimens/vendor reagents in content/profession_items.ts.
 // The locked economy decision: no recipe vendors above its input value. Several
-// PRE-Phase-10 recipes are grossly gold-positive and the prime directive forbids
-// touching any existing recipe or item value, so the invariant carries a FROZEN
-// legacy exception list (a Phase 15 burn-down target, never an escape hatch for
-// new content).
+// PRE-Phase-10 recipes were grossly gold-positive, so the invariant carries a
+// FROZEN legacy exception list (never an escape hatch for new content). The
+// Phase 15 QA directed burn-down reworked the reagent lists of 10 of the 14
+// members gold-negative; the 4 residual members whose outputs cannot be
+// covered by sane, accessible inputs remain frozen below.
 import { describe, expect, it } from 'vitest';
 import { STATION_TYPE_BY_CRAFT } from '../src/sim/content/professions';
 import { ALL_RECIPES, COMBO_RECIPES, LADDER_RECIPES, recipeById } from '../src/sim/content/recipes';
@@ -37,53 +38,22 @@ function outputValue(recipe: ProfessionRecipeRecord): number {
   return def.sellValue * recipe.resultCount;
 }
 
-// The FROZEN pre-Phase-10 gold-positive recipes: every recipe whose output
-// sellValue meets or exceeds its summed reagent value TODAY, all authored before
-// Phase 10 (8 of the 9 common recipes, all 3 caster-hub recipes, all 3 combo
-// recipes). This list is a Phase 15 balance burn-down target, NEVER an escape
-// hatch for new content: every member is pinned to PRE_TRAINING_RECIPE_IDS below,
-// so no post-Phase-9 recipe can ever join it, and each member is re-checked to
-// still violate, so a later balance pass that fixes one reds this suite and the
-// id must be removed deliberately.
-const LEGACY_GOLD_POSITIVE_RECIPE_IDS: ReadonlySet<string> = new Set([
-  // COMMON_RECIPES (8 of 9; recipe_tough_jerky already clears the invariant)
-  'recipe_eastbrook_arming_sword',
-  'recipe_eastbrook_chain_vest',
-  'recipe_eastbrook_wool_trousers',
-  'recipe_tanned_leather_jerkin',
-  'recipe_minor_healing_potion',
-  'recipe_eastbrook_ritual_vestments',
-  'recipe_eastbrook_druids_hide',
-  'recipe_eastbrook_warded_leggings',
-  // CASTER_HUB_RECIPES (all 3)
-  'recipe_wardweave_cowl',
-  'recipe_duskhide_wraps',
-  'recipe_sootscale_mantle',
-  // COMBO_RECIPES (all 3)
-  'recipe_ironbound_warplate_helm',
-  'recipe_forgeguard_bulwark_gauntlets',
-  'recipe_volatile_flux_elixir',
-]);
+// The legacy gold-positive exception list is EMPTY as of the Phase 15 QA
+// directed burn-down (maintainer-approved 2026-07-22): 10 of the original 14
+// members were reworked gold-negative through INPUT-only reagent reworks, and
+// the last 4 (jerkin, vestments, druids hide, warded leggings) through the
+// approved paired arm: a zone-1-legal thematic input rework PLUS an output
+// sellValue re-priced below the new input (vendor buyValue untouched). The
+// invariant below now enforces EVERY recipe. The mechanism stays so any
+// future exception must carry the same three-way proof (a, b, c below):
+// membership in PRE_TRAINING_RECIPE_IDS, a currently-violating margin
+// (self-pruning), and the exact sorted literal pin.
+const LEGACY_GOLD_POSITIVE_RECIPE_IDS: ReadonlySet<string> = new Set([]);
 
 // The exact sorted membership, spelled out as literals (property c below). Kept
 // separate from the authoring-grouped Set above so a stray addition/removal reds
 // the toEqual rather than silently passing.
-const EXPECTED_LEGACY_SORTED = [
-  'recipe_duskhide_wraps',
-  'recipe_eastbrook_arming_sword',
-  'recipe_eastbrook_chain_vest',
-  'recipe_eastbrook_druids_hide',
-  'recipe_eastbrook_ritual_vestments',
-  'recipe_eastbrook_warded_leggings',
-  'recipe_eastbrook_wool_trousers',
-  'recipe_forgeguard_bulwark_gauntlets',
-  'recipe_ironbound_warplate_helm',
-  'recipe_minor_healing_potion',
-  'recipe_sootscale_mantle',
-  'recipe_tanned_leather_jerkin',
-  'recipe_volatile_flux_elixir',
-  'recipe_wardweave_cowl',
-];
+const EXPECTED_LEGACY_SORTED: string[] = [];
 
 describe('THE ECONOMY INVARIANT', () => {
   // Operator: strict less-than. Measured against the shipped tables, the
@@ -100,7 +70,7 @@ describe('THE ECONOMY INVARIANT', () => {
       ).toBeLessThan(inputValue(recipe));
     }
     // Guard the enumeration is real (not an empty sweep): all recipes minus the
-    // 14 frozen legacy ids.
+    // frozen legacy ids (zero members since the Phase 15 burn-down completed).
     expect(checked).toBe(ALL_RECIPES.length - LEGACY_GOLD_POSITIVE_RECIPE_IDS.size);
     expect(checked).toBeGreaterThan(0);
   });

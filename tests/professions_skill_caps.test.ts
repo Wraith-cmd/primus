@@ -153,6 +153,8 @@ describe('at cap, actions still work: only skill gain stops', () => {
     for (let i = 0; i < 200 && masterworks === 0; i++) {
       for (let j = 0; j < 3; j++) sim.addItem('linen_scrap', 1, pid);
       sim.addItem('spider_leg', 1, pid);
+      sim.addItem('homespun_cloth', 3, pid);
+      sim.addItem('spool_of_thread', 5, pid);
       // Harness-only throttle reset: #1301's rolling window caps successful
       // crafts per minute, which is not what this pin is about.
       meta.craftThrottle.count = 0;

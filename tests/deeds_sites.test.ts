@@ -1395,8 +1395,10 @@ describe('station-bound craft counter (prog_tools_of_the_trade)', () => {
   it('an ordinary field recipe crafted while standing at the station never counts', () => {
     const sim = makeSim();
     const meta = stationCrafter(sim);
-    sim.ctx.addItem('bone_fragments', 2, meta.entityId);
-    sim.ctx.addItem('linen_scrap', 1, meta.entityId);
+    // Phase 15 QA directed burn-down reagents for the field sword.
+    sim.ctx.addItem('wolf_fang', 2, meta.entityId);
+    sim.ctx.addItem('bone_fragments', 4, meta.entityId);
+    sim.ctx.addItem('smithing_flux', 6, meta.entityId);
     const result = craftItem(sim.ctx, FIELD_RECIPE, false, meta.entityId);
     expect(result.ok).toBe(true);
     expect(meta.deedStats.counters.craftsPerformed).toBe(1);

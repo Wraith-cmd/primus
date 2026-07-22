@@ -662,42 +662,11 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'At erklære en arketype vil blive et historieøjeblik: et opdrag, der formelt optager dig i den identitet. Den vej er stadig under opbygning, så indtil videre vandrer hver karakter gennem verden med valget foran sig, og hvert håndværk avancerer til den sjældne kvalitetsgrad i mellemtiden.',
   'guide.professions.archetypeChooseTitle': 'Valg af din arketype',
-  'guide.professions.archetypeIdentityBody':
-    'Din aktive arketype er en erklæring om, hvem din karakter er i verden, og den anerkendes i, hvordan andre og verden tiltaler dig. De præcise belønninger og den anerkendelse, der følger med, er stadig ved at blive fastlagt; kig forbi igen, efterhånden som systemet vokser til.',
-  'guide.professions.archetypeIdentityTitle': 'Hvad din arketype betyder',
-  'guide.professions.archetypeIntro':
-    'Hvert af de ti håndværk står også for en arketype, en bredere identitet du kan påtage dig ud over blot at arbejde med faget. Din aktive arketype er ét valg ad gangen, ikke en tjekliste: du bærer én og kan senere skifte til en anden, hvis du vil.',
   'guide.professions.archetypeSwitchBody':
     'En erklæring vil heller ikke være en livstidsdom. Planen er en gentagelig handling, hvor du gør bod over for dit gamle fag, før du tager et nyt op, og boden bliver stejlere for hver gang du skifter, så valget forbliver meningsfuldt frem for omkostningsfrit. Ligesom selve erklæringen er den stadig på vej.',
-  'guide.professions.archetypeSwitchTitle': 'At skifte mening',
-  'guide.professions.archetypeTitle': 'De ti arketyper',
-  'guide.professions.craftComboBody':
-    'Ud over et enkelt håndværks egen opskriftsliste understøtter hjulet også kombinationsopskrifter, der trækker på to nabohåndværk på én gang, og belønner en karakter, som har investeret i tilstødende fag på ringen frem for ét i isolation. Håndværkeren skal selv besidde begge fag; en partners færdighed kan ikke træde i stedet for nogen af halvdelene.',
-  'guide.professions.craftComboTitle': 'Kombinationsopskrifter',
-  'guide.professions.craftIntro':
-    'Ti håndværksfag forvandler indsamlede materialer til færdigt udstyr og varer: Rustningssmedning, Våbensmedning og Juvelering former råstof til udstyr, man kan bære; Alkymi og Ingeniørkunst drives af forsøg og fejl; Madlavning, Skriverkunst og Fortryllelse rører hver ved andre håndværks frembringelser; Skrædderi og Garveri arbejder ud fra nøjagtige mønstre. Sammen danner de et hjul, hvor hvert håndværk sidder ved siden af to naboer og over for ét andet.',
   'guide.professions.craftMasteryBody':
     'Vellykket håndværk opbygger færdighed i faget, og færdighed låser aldrig et håndværks opskrifter væk: kender du en opskrift og har dens materialer, kan du forsøge dig. Hvad færdighed i stedet giver dig, er kvalitet, en øvet hånd frembringer finere arbejde. Den ene undtagelse er kombinationsopskrifter, der beder dig bevise dig selv i begge deres håndværk, før de åbner sig.',
   'guide.professions.craftMasteryTitle': 'Færdighed og mesterskab',
-  'guide.professions.craftRecipesBody':
-    'Hver opskrift kræver bestemte reagenser, du samler eller køber. De simpleste opskrifter beder ikke om andet end almindelige materialer og kan laves fra allerførste færd, så du kan begynde at arbejde med et fag i samme øjeblik, du tager det op. Opskriftslisterne er stadig ved at fylde sig ud: nogle få fag venter på deres første opskrifter, og flere kommer til, efterhånden som håndværkene vokser.',
-  'guide.professions.craftRecipesTitle': 'Opskrifter og reagenser',
-  'guide.professions.craftRingBody':
-    'De ti håndværk er ordnet i en fast ring, og hvor et håndværk sidder på ringen, betyder noget: håndværk ved siden af hinanden på hjulet har mere til fælles end håndværk på modsatte sider. At binde sig til ét håndværk skal føles som at træde ind i en familie af beslægtede fag, ikke som at vælge en isoleret færdighed.',
-  'guide.professions.craftRingTitle': 'Et hjul af specialer',
-  'guide.professions.craftTitle': 'De ti håndværk',
-  'guide.professions.gatherIntro':
-    'Tre samlerfag lader dig hente råmaterialer direkte ud af verden: Minedrift slår malm og sten løs fra årer, Skovhugst fælder tømmer i trægrupper, og Urtekundskab samler urter og planter, der vokser vildt. Hvert fag spores for sig, så arbejde i det ene aldrig sinker dine fremskridt i et andet. Ny i det hele? Formand Odell i Eastbrook har et kort ærinde, Et Fag for Hver Hånd, der fører dig gennem din første høst.',
-  'guide.professions.gatherProficiencyBody':
-    'Hver vellykket høst opbygger din kyndighed i det samlerfag, og dit karakterark sporer hvert fag for sig. Mere øvelse skader aldrig dine fremskridt, den lægger kun til dem.',
-  'guide.professions.gatherProficiencyTitle': 'Kyndighed',
-  'guide.professions.gatherTitle': 'Samlerfag: Minedrift, Skovhugst og Urtekundskab',
-  'guide.professions.gatherToolsBody':
-    'Handlende sælger grundlæggende værktøj til hvert samlerfag, og bedre kan fremstilles. Intet værktøj kræves for at arbejde en forekomst i dag: værktøj er grundlaget for rigere forekomster, der kommer, hvor spidshakker, økser og segl af højere grad bliver vejen ind.',
-  'guide.professions.gatherToolsTitle': 'Fagets værktøj',
-  'guide.professions.gatherWhatBody':
-    'Malmårer, trægrupper og urtebede står ude i Dalen og sumpen som synlige forekomster, som ingen ejer. Gå hen til en og interager med den for at høste, hvad den rummer. Når du har høstet en forekomst, skal den bruge tid på at komme sig, før du personligt kan høste den igen, men den blokerer aldrig for andre: en anden spiller kan høste den selvsamme forekomst i mellemtiden.',
-  'guide.professions.gatherWhatTitle': 'Ressourceforekomster',
   'guide.professions.intro':
     'Ud over kamp og opdrag belønner verden dig for at arbejde med jorden og essen: at samle råmaterialer, forvandle dem til udstyr og varer på tværs af ti håndværksfag og finde sig til rette i en identitet som en af de ti arketyper, fagene står for.',
   'guide.valeCupPage.heading': 'Dalpokalen',
@@ -8441,8 +8410,6 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
     'Hvis du skifter sværhedsgrad, mens gruppen stadig har krævede gennemløb, bliver de gamle krav stående et stykke tid. Gruppelederen kan straks opgive dem ved at vælge Nulstil alle instanser i menuen på sit eget portræt eller skrive /dungeon reset. Sværhedsgraden skal faktisk være ændret, ingen levende eller faldne må være indenfor, og der er en kort nedkøling mellem nulstillinger. Ved døren på forkert sværhedsgrad advarer spillet før start. Raidet nulstilles aldrig sådan; dets egne låsningsregler gælder.',
   'guide.gear.itemLevelBody':
     'Slå Vis genstandsniveau til i indstillingerne for hurtigt at sammenligne to dele. Udstyr med en kendt kilde, fra fjender, opgaver og håndværksfag, viser derefter et genstandsniveau: et enkelt tal, der omtrent angiver styrken ud fra oprindelsen og gør opgraderinger sammenlignelige, selv på tværs af pladser. Dele uden en sådan kilde, som simple handelsvarer og startudstyr, viser intet niveau; et manglende tal er normalt.',
-  'guide.professions.craftHowBody':
-    'Åbn håndværksvinduet (standardtast T) for at se alle kendte opskrifter, deres krav og dine materialer; når materialerne er der, er ét klik nok. Almindelige opskrifter kan fremstilles overalt. Nogle avancerede opskrifter, herunder værktøj på højt niveau og sjældne rustninger til magikere, kræver håndværkscentret i Highwatch.',
   'hudChrome.auraEffect.battleStance': 'Kampstilling: 10% mere raserigenerering',
   'hudChrome.auraEffect.berserkerStance':
     'Berserkerstilling: kritiske slag rammer 3% oftere og slår 3% hårdere',

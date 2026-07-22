@@ -727,43 +727,11 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     "Dichiarare un archetipo sarà un momento di trama: una missione che ti accoglie formalmente in quell'identità. Quella strada è ancora in costruzione, perciò per ora ogni personaggio percorre il mondo con la scelta ancora davanti a sé, e nel frattempo ogni mestiere avanza fino al grado di qualità raro.",
   'guide.professions.archetypeChooseTitle': 'Scegliere il tuo archetipo',
-  'guide.professions.archetypeIdentityBody':
-    "L'archetipo attivo è una dichiarazione su chi è il tuo personaggio nel mondo, riconosciuta nel modo in cui gli altri e il mondo si rivolgono a te. Le ricompense e i riconoscimenti esatti che lo accompagnano sono ancora in via di definizione; torna a controllare man mano che il sistema prende forma.",
-  'guide.professions.archetypeIdentityTitle': 'Cosa significa il tuo archetipo',
-  'guide.professions.archetypeIntro':
-    "Ognuno dei dieci mestieri artigiani rappresenta anche un archetipo, un'identità più ampia che puoi adottare oltre al semplice esercizio del mestiere. L'archetipo attivo è una scelta singola alla volta, non una lista da spuntare: ne porti uno solo, e in seguito puoi cambiarlo se lo desideri.",
   'guide.professions.archetypeSwitchBody':
     "Né una dichiarazione sarà una condanna a vita. Il piano è un atto ripetibile di fare ammenda verso il tuo vecchio mestiere prima di intraprenderne uno nuovo, con l'ammenda che si fa più esigente a ogni cambio, così che la scelta resti significativa anziché gratuita. Come la dichiarazione stessa, è ancora in arrivo.",
-  'guide.professions.archetypeSwitchTitle': 'Cambiare idea',
-  'guide.professions.archetypeTitle': 'I dieci archetipi',
-  'guide.professions.craftComboBody':
-    "Oltre alla lista di ricette di un singolo mestiere, la ruota supporta anche ricette combinate che richiedono due mestieri vicini allo stesso tempo, premiando un personaggio che ha investito in mestieri adiacenti sull'anello anziché in uno solo isolato. L'artigiano deve possedere entrambi i mestieri di persona; l'abilità di un partner non può sostituire nessuna delle due metà.",
-  'guide.professions.craftComboTitle': 'Ricette combinate',
-  'guide.professions.craftIntro':
-    'Dieci mestieri artigiani trasformano i materiali raccolti in equipaggiamento e beni finiti: Fabbricazione di armature, Fabbricazione di armi e Gioielleria danno forma alla materia grezza in equipaggiamento indossabile; Alchimia e Ingegneria procedono per tentativi ed errori; Cucina, Inscrizione e Incantamento toccano ciascuno il prodotto di altri mestieri; Sartoria e Conciatura lavorano da modelli esatti. Insieme formano una ruota, con ogni mestiere accanto a due vicini e opposto a un altro.',
   'guide.professions.craftMasteryBody':
     "Creare con successo accresce l'abilità in quel mestiere, e l'abilità non blocca mai le ricette di un mestiere: se conosci una ricetta e ne possiedi i materiali, puoi tentarla. Ciò che l'abilità ti dà è invece la qualità, una mano esperta produce lavori più fini. L'unica eccezione sono le ricette combinate, che ti chiedono di esserti dimostrato valido in entrambi i loro mestieri prima di aprirsi.",
   'guide.professions.craftMasteryTitle': 'Abilità e maestria',
-  'guide.professions.craftRecipesBody':
-    "Ogni ricetta richiede reagenti specifici da raccogliere o comprare. Le ricette più semplici non chiedono altro che materiali comuni e si possono creare fin dall'inizio, così puoi cominciare a esercitare un mestiere nel momento in cui lo scegli. Le liste delle ricette si stanno ancora completando: alcuni mestieri sono in attesa delle loro prime ricette, e altre ne arrivano man mano che i mestieri crescono.",
-  'guide.professions.craftRecipesTitle': 'Ricette e reagenti',
-  'guide.professions.craftRingBody':
-    "I dieci mestieri sono disposti in un anello fisso, e la posizione di un mestiere su quell'anello conta: i mestieri vicini tra loro sulla ruota hanno più cose in comune di quelli sui lati opposti. Impegnarsi in un mestiere deve dare la sensazione di entrare in una famiglia di mestieri affini, non di scegliere un'abilità isolata.",
-  'guide.professions.craftRingTitle': 'Una ruota di specialità',
-  'guide.professions.craftTitle': 'I dieci mestieri artigiani',
-  'guide.professions.gatherIntro':
-    "Tre mestieri di raccolta ti permettono di estrarre materie prime direttamente dal mondo: l'Estrazione mineraria cava minerale e pietra dalle vene, il Taglio del legname abbatte tronchi dai gruppi di alberi e l'Erbalismo raccoglie erbe e piante selvatiche. Ognuno è tracciato separatamente, quindi esercitarne uno non rallenta mai i tuoi progressi in un altro. Sei alle prime armi? Il Capomastro Odell a Eastbrook ha un breve incarico, Un Mestiere per Ogni Mano, che ti guida attraverso la tua prima raccolta.",
-  'guide.professions.gatherProficiencyBody':
-    'Ogni raccolto riuscito accresce la tua competenza in quel mestiere di raccolta, e la scheda del personaggio tiene traccia di ogni mestiere per conto suo. Più pratica non peggiora mai i tuoi progressi, non fa che aggiungervisi.',
-  'guide.professions.gatherProficiencyTitle': 'Competenza',
-  'guide.professions.gatherTitle':
-    'Raccolta: Estrazione mineraria, Taglio del legname ed Erbalismo',
-  'guide.professions.gatherToolsBody':
-    "I venditori offrono attrezzi di base per ogni mestiere di raccolta, e se ne possono creare di migliori. Oggi nessun attrezzo è necessario per lavorare un nodo: gli attrezzi sono la base per i nodi più ricchi in arrivo, dove picconi, asce e falci di livello superiore saranno la via d'accesso.",
-  'guide.professions.gatherToolsTitle': 'Gli attrezzi del mestiere',
-  'guide.professions.gatherWhatBody':
-    'Vene di minerale, gruppi di alberi e macchie di erbe sono collocati nella Valle e nella palude come elementi visibili e senza padrone. Avvicinati a uno e interagisci per raccogliere ciò che contiene. Una volta raccolto un nodo, serve tempo perché si riprenda prima che tu, personalmente, possa raccoglierlo di nuovo, ma non blocca mai nessun altro: un altro giocatore può raccogliere lo stesso identico nodo nel frattempo.',
-  'guide.professions.gatherWhatTitle': 'Nodi di risorse',
   'guide.professions.intro':
     "Oltre al combattimento e alle missioni, il mondo ti ricompensa per il lavoro della terra e della forgia: raccogliere materie prime, trasformarle in equipaggiamento e beni attraverso dieci mestieri artigiani e assumere un'identità come uno dei dieci archetipi che quei mestieri rappresentano.",
   'guide.valeCupPage.heading': 'La Coppa della Valle',
@@ -8494,8 +8462,6 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
     'Se cambi difficoltà mentre il gruppo conserva ancora delle spedizioni assegnate, le vecchie assegnazioni restano per un po’ prima di svanire. Il capogruppo può abbandonarle subito scegliendo Reimposta tutte le istanze dal menu del proprio ritratto oppure digitando /dungeon reset. La difficoltà deve essere stata davvero cambiata, nessuno, vivo o caduto, può trovarsi all’interno e tra due ripristini passa un breve tempo di recupero. Se arrivi all’ingresso con la difficoltà sbagliata, il gioco ti avvisa prima dell’inizio. L’incursione non viene mai reimpostata così e mantiene le proprie regole di vincolo.',
   'guide.gear.itemLevelBody':
     'Per confrontare rapidamente due pezzi, attiva Mostra livello oggetto nelle opzioni. L’equipaggiamento di provenienza nota, ottenuto da nemici, missioni e mestieri, mostra un livello oggetto: un unico valore che ne indica approssimativamente la potenza in base alla fonte e rende immediata la scelta del miglior potenziamento, anche tra slot diversi. I pezzi senza tale provenienza, come gli articoli base dei mercanti e l’equipaggiamento iniziale, non mostrano alcun livello; è normale.',
-  'guide.professions.craftHowBody':
-    'Apri la finestra Creazione (tasto predefinito T) per vedere tutte le ricette note, i loro requisiti e ciò che possiedi; quando hai i materiali basta un clic. Le ricette comuni si possono creare ovunque. Alcune ricette avanzate, tra cui strumenti di livello superiore e rare armature da incantatore, richiedono invece il centro di creazione di Highwatch.',
   'guide.gear.qualityBody':
     'Ogni oggetto ha una qualità e il suo nome assume il colore corrispondente, così puoi capirne il valore a colpo d’occhio. Dal più comune al più prezioso:',
   'guide.gear.qualityCommon': 'Comune',

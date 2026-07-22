@@ -600,15 +600,44 @@ export function sellItem(ctx: SimContext, itemId: string, count = 1, pid?: numbe
     ctx.error(meta.entityId, 'You cannot sell quest items.');
     return;
   }
-  removePreferFungible(ctx, itemId, sellCount, meta.entityId);
-  recordVendorBuyback(meta, itemId, sellCount);
-  const payout = def.sellValue * sellCount;
+  // Phase 15 QA directed fix (maintainer-approved 2026-07-22): a bound copy
+  // (instance payload carrying boundTo, the Maker's Bond trade lock) is never
+  // vendor-sellable. Selling one recorded a PLAIN buyback row, so sell + buyback
+  // laundered the piece into an unbound copy for a 0 copper spread, bypassing
+  // the unbind fee ladder (professions/commission.ts) and permanently stripping
+  // bindOnTrade. Mirror the trade gate (social/trade.ts offerableCount): clamp
+  // the request to the unbound copies and refuse only when none covers it.
+  // `?? []`: same contract as social/trade.ts boundCount, a decoupled test ctx
+  // may model counts elsewhere and carry no inventory array; its bound count
+  // is simply zero and every copy stays sellable.
+  let boundHeld = 0;
+  for (const s of meta.inventory ?? []) {
+    if (s.itemId === itemId && s.instance?.boundTo !== undefined) boundHeld += s.count;
+  }
+  const sellableCount = Math.min(sellCount, available - boundHeld);
+  if (sellableCount <= 0) {
+    ctx.error(meta.entityId, 'That item is bound and cannot be sold.');
+    return;
+  }
+  // The skip predicate is defence in depth (same as the trade swap): the clamp
+  // above already guarantees enough unbound copies, but removePreferFungible's
+  // highest-index-first instanced walk must still spare a bound copy sitting
+  // above an unbound instanced one.
+  removePreferFungible(
+    ctx,
+    itemId,
+    sellableCount,
+    meta.entityId,
+    (instance) => instance.boundTo !== undefined,
+  );
+  recordVendorBuyback(meta, itemId, sellableCount);
+  const payout = def.sellValue * sellableCount;
   meta.copper += payout;
   ctx.emit({ type: 'vendor', action: 'sell', itemId, pid: meta.entityId });
   ctx.emit({
     type: 'loot',
     // biome-ignore lint/style/useTemplate: keep this scanner-friendly shape for i18n extraction.
-    text: `Sold ${def.name}${sellCount > 1 ? ' x' + sellCount : ''} for ${formatMoney(payout)}.`,
+    text: `Sold ${def.name}${sellableCount > 1 ? ' x' + sellableCount : ''} for ${formatMoney(payout)}.`,
     pid: meta.entityId,
   });
 }

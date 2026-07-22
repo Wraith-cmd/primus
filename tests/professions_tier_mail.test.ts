@@ -270,19 +270,54 @@ describe('tier-crossing master mail (Professions 2.0 Phase 14)', () => {
     expect(saved && 'tierMailSent' in saved).toBe(false);
   });
 
-  it('normalizeTierMailOnLoad drops invalid entries and keeps valid ones', () => {
+  it('normalizeTierMailOnLoad keeps only KNOWN ring craft ids with valid tiers', () => {
     expect(normalizeTierMailOnLoad(undefined).size).toBe(0);
     expect([
       ...normalizeTierMailOnLoad({
         [PRIMARY]: 3,
         [SECONDARY]: 0,
-        bad: Number.NaN,
-        alsoBad: -1,
-        infinite: Infinity,
+        // Invalid VALUES on KNOWN ring ids: the value arm must fire on its own
+        // (an unknown-id key would be dropped before the value check runs).
+        [DORMANT]: Number.NaN,
+        [HOBBY]: -1,
+        alchemy: Infinity,
+        // Phase 15 QA directed fix: a VALID tier on an id not on the shipped
+        // ring (a retired craft, a corrupt save) drops instead of being kept
+        // forever, so the record self-heals on load.
+        goldsmithing: 2,
       }).entries(),
     ]).toEqual([
       [PRIMARY, 3],
       [SECONDARY, 0],
     ]);
+  });
+
+  it('drops an unknown craft id on load while known keys survive the round trip (Phase 15 QA directed fix)', () => {
+    const sim = makeSim();
+    const meta = attunedMeta(sim);
+    meta.craftSkills[PRIMARY] = tierSkill(2);
+    meta.craftSkills[SECONDARY] = tierSkill(1);
+    baselineActivePairTierMail(meta);
+    // A stale acknowledgement written by content that no longer ships: the
+    // serialize arm passes it through verbatim (the heal is load-side only).
+    meta.tierMailSent.set('goldsmithing', 2);
+
+    const saved = sim.serializeCharacter(sim.playerId);
+    expect(saved?.tierMailSent).toEqual({ [PRIMARY]: 2, [SECONDARY]: 1, goldsmithing: 2 });
+
+    const reloaded = makeSim(5152);
+    const pid = reloaded.addPlayer('warrior', 'Reloaded', { state: saved ?? undefined });
+    const reloadedMeta = reloaded.players.get(pid)!;
+    expect(reloadedMeta.tierMailSent.has('goldsmithing')).toBe(false); // self-healed
+    expect([...reloadedMeta.tierMailSent.entries()]).toEqual([
+      [PRIMARY, 2],
+      [SECONDARY, 1],
+    ]);
+    // The healed record is what the next save writes: the unknown key is gone
+    // for good, never resurrected by a later serialize.
+    expect(reloaded.serializeCharacter(pid)?.tierMailSent).toEqual({
+      [PRIMARY]: 2,
+      [SECONDARY]: 1,
+    });
   });
 });

@@ -402,6 +402,7 @@ describe('i18n Localization Key Coverage', () => {
     price: '1g 20s',
     proceeds: '95s',
     quality: 'Rare',
+    quest: 'A Trade for Every Hand',
     rating: 1513,
     range: 30,
     rank: 2,
@@ -1311,7 +1312,9 @@ describe('i18n Localization Key Coverage', () => {
 
   it('should provide deed content translations for every supported locale', () => {
     const deedEntries = deedTranslationManifest();
-    expect(deedEntries.length).toBe(Object.keys(DEEDS).length * 2 + 19);
+    // name + desc per deed, plus one title entry per title deed (30 as of
+    // Professions 2.0 Phase 15; tests/deeds_content.test.ts pins the count).
+    expect(deedEntries.length).toBe(Object.keys(DEEDS).length * 2 + 30);
 
     for (const lang of supportedLanguages) {
       setLanguage(lang);

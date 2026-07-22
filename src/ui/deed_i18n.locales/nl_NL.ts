@@ -85,7 +85,6 @@ export const table: DeedLocaleTable = {
   },
   prog_master_gatherer: {
     name: 'Meesterverzamelaar',
-    desc: 'Bereik 100 vaardigheid in Mijnbouw, Houthakken en Kruidenkunde.',
   },
   prog_first_craft: { name: 'Handwerk', desc: 'Voltooi je eerste geslaagde ambachtswerk.' },
   prog_craft_specialist: {

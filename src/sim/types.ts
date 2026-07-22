@@ -4203,7 +4203,10 @@ export type DeedStatKey =
   | 'dungeonFinalBossKills'
   | 'thunzharrKills'
   | 'bloatCleanKills'
-  | 'hubCraftsPerformed';
+  | 'hubCraftsPerformed'
+  | 'attunementsCompleted'
+  | 'masterworksCrafted'
+  | 'salvagesPerformed';
 
 // The canonical counter key list (init/serialize iterate it in this fixed
 // order so equal states always serialize byte-equal).
@@ -4229,6 +4232,9 @@ export const DEED_STAT_KEYS: readonly DeedStatKey[] = [
   'thunzharrKills',
   'bloatCleanKills',
   'hubCraftsPerformed',
+  'attunementsCompleted',
+  'masterworksCrafted',
+  'salvagesPerformed',
 ];
 
 // Numeric readings computed from already-persisted PlayerMeta state (never new

@@ -77,7 +77,6 @@ export const table: DeedLocaleTable = {
   },
   prog_master_gatherer: {
     name: 'Meistersammler',
-    desc: 'Erreiche eine Fertigkeit von 100 in Bergbau, Holzfällerei und Kräuterkunde.',
   },
   prog_first_craft: {
     name: 'Handarbeit',

@@ -1,5 +1,26 @@
 # Phase 15: Deeds, tuning, and polish
 
+> **2026-07-22 as-executed process amendment (maintainer-directed, recorded by the
+> Phase 15 session):** Phase 15 and Phase 15 QA execute in ONE session on ONE
+> branch (`feature/professions-2-phase-15-deeds-polish`) and ship as ONE PR,
+> auto-merged when CI is green per the standing merge mechanics; there is no
+> separate QA session. The full `phase-15-qa.md` audit (three packet audits, the
+> dispatch-matrix reviewers, the whole-feature qa-checklist matrix with fresh
+> evidence) runs against the branch BEFORE the PR opens. The maintainer further
+> directed a QA fix pass beyond the original phase scope: rework ALL 14
+> `LEGACY_GOLD_POSITIVE_RECIPE_IDS` members under a delegated-counts policy
+> (input must price above output, thematic, tier-appropriate; counts delegated,
+> PR-visible for veto), deny vendor-sell for bound (`boundTo`) instance copies
+> (closing the buyback-plain wash; the 14b vendor-sell-allowed pin re-pins
+> deliberately), land Steam achievement mappings for the three new marquee deeds,
+> land the letter-to-Haldren hint row (option a), and land the two #2285
+> hardenings (tier-mail known-key restrict, cadence serialize prune). The
+> gathering-100 and fishing-200 time-to-master misses are ACCEPTED for this
+> release (fast direction; data-only levers later). SFX and art slots ship as
+> re-filed placeholders per the maintainer's audio-will-come-later sign-off
+> (recorded on issue #2208). No new GitHub issues for any of this; #2285 and
+> #2156 close by hand at merge as addressed.
+
 This phase closes the Professions 2.0 packet. It registers the basic universal profession deeds
 (cosmetic only, per the locked decision in `state.md`), replaces the placeholder tuning targets
 with the maintainer's final numbers in named constants, rewrites the `/wiki` professions page so

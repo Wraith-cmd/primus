@@ -17,8 +17,18 @@ PR #2246, 12d PR #2264, 12d QA PR #2267 = 682df1b7b; this pointer had
 gone stale at "12c BUILT" and was corrected by the Phase 13 session).
 Phase 13 is MERGED (PR #2269 = 90e502786 into release/v0.29.0,
 2026-07-21; as-landed surfaces below) and Phase 13 QA is COMPLETE
-(2026-07-21, PASS; the QA entry below the as-landed block). Next:
-Phase 14.
+(2026-07-21, PASS; the QA entry below the as-landed block). Phase 14
+(PR #2280), Phase 14 QA (PR #2286), Phase 14b (PR #2293), and Phase
+14b QA (PR #2295 = 560972962) are all MERGED into release/v0.29.0
+(2026-07-21). Phase 15 AND Phase 15 QA executed as ONE session on ONE
+branch shipping ONE PR (the 2026-07-22 maintainer-directed process
+amendment recorded atop both phase-15 files): deeds, tuning
+verification with the faucet-vs-sink evidence review
+(phase-15-tuning-evidence.md), the FULL legacy burn-down (the
+exception list is EMPTY), the maintainer-directed QA fixes (buyback
+wash closed, 2285 hardenings, Haldren hint row, Steam mappings), and
+the RuneScape-bar wiki rewrite. PACKET COMPLETE pending the single
+PR's merge; the merge hash is recorded in session memory at merge.
 
 ## Locked design decisions
 
@@ -1728,7 +1738,57 @@ tables, i18n key namespaces, files created)
   scope; flagged as a Phase 15 tuning-evidence input (the fee ladder
   gives the zero-cost wash fresh economic value).
 
-## Tuning targets (placeholders until Phase 15 tunes against live data)
+### Phase 15 + Phase 15 QA (2026-07-22, one session, one branch, one PR)
+
+- Deeds: 26 appended (catalog 219, renown 2710, titles 30, digest
+  re-baselined): prog_guildsworn, prog_masterwright (marquee 25 + titles;
+  Guildsworn has an attunedPairs retro-heal arm), prog_fishing_100,
+  prog_master_angler, eight prog_<craft>_50, eight
+  prog_grandmaster_<craft>, col_pristine_vein / col_ancient_heartwood /
+  col_moonlit_bloom / col_perfect_specimen (renown 0), soc_first_salvage,
+  soc_salvage_50. New DeedStatKeys attunementsCompleted /
+  masterworksCrafted / salvagesPerformed with bump sites in
+  attunement_events.ts, crafting.ts, salvage.ts; the perfect-specimen
+  markVisited hook in interaction.ts; the gather_event namespace ADDED to
+  VISITED_MARK_NAMESPACES (a real pre-existing load-drop bug). Scripted
+  playthrough: tests/professions_deeds_playthrough.test.ts (seed 4242).
+  Steam: ACH_GUILDSWORN / ACH_MASTERWRIGHT / ACH_MASTER_ANGLER (75/100).
+- Tuning: TRAINING_FEE_BY_TIER 5-entry extension (training.ts);
+  WORK_ORDER_CADENCE_TICKS literal pin; evidence review committed as
+  docs/professions-2/phase-15-tuning-evidence.md.
+- Burn-down: LEGACY_GOLD_POSITIVE_RECIPE_IDS EMPTY; wolf_fang two
+  consumers, quality common; four paired sellValue re-prices (80/72/84/
+  105) with vendor buyValue preserved.
+- Directed fixes: sellItem bound-copy deny (error.sellBound matcher row);
+  tier_mail known-craft load restrict; cadence serialize prune
+  (isCadenceElapsed shared predicate); prof_intro_hint_core hint row.
+- Wiki: build_content.mjs professions data model (GUIDE_PROF_* exports),
+  parameterized professions_craft/gathering pages + economy + FAQ +
+  overview rewrite, 14 detail routes in sitemap/head/search, accuracy
+  guards in tests/guide.test.ts; export-only seams MARKET_CUT,
+  MATERIAL_RARITY_SHARE, DISENCHANT_MATERIAL_BY_QUALITY,
+  ARMOR_SECONDARY_BY_TYPE + TIMBER_WEAPON_TYPES,
+  SALVAGE_MATERIAL_BY_QUALITY. asset-manifest.json final (29 deed-crest
+  slots resolving to real deed ids, audio note to #2208).
+- SFX sweep: all open slots re-filed on #2208 with the maintainer's
+  audio-later sign-off (no new placeholder rows authored).
+
+## Tuning targets (FINAL, Phase 15 verified 2026-07-22)
+
+> Phase 15 disposition: every row below verified as-landed and literally
+> pinned (the pin-coverage audit table lives in
+> docs/professions-2/phase-15-tuning-evidence.md). Deltas landed by
+> Phase 15: TRAINING_FEE_BY_TIER extended to [0, 2500, 10000, 40000,
+> 160000] (the resolved 4x geometric step; behavior-neutral for shipped
+> content); WORK_ORDER_CADENCE_TICKS gained its missing literal pin; the
+> craft fee and throttle (2 per budget point, 10 per 60s) stay unchanged
+> until live data per the maintainer. The legacy gold-positive exception
+> list is EMPTY (all 14 members burned down; the last four via the
+> approved paired input-plus-sellValue arm). The vendor buyback-plain
+> wash is CLOSED (sellItem denies bound copies). ACCEPTED for v0.29.0:
+> gathering-100 and fishing-200 pace faster than their time-to-master
+> targets (data-only levers, post-release tuning with live data; the
+> arithmetic is in the evidence file).
 
 - Masterwork proc, FINAL (2026-07-20 mastery amendments): base 3 percent at
   recipe tier parity, +1 percent per tier of skill above, +2 percent with
@@ -1856,7 +1916,9 @@ tables, i18n key namespaces, files created)
 - RESOLVED (2026-07-20 mastery amendments): the staves/wands typed-reagent
   bucket is the WEAPON bucket; no cloth special case (they are weapons in
   the sim taxonomy and the special case buys nothing).
-- The letter-to-Haldren dead-end (Phase 7 QA): an unattuned player who
-  follows the Guild letter before q_prof_intro is available hits a dialog
-  dead-end; options recorded in progress.md Notes; the fix naturally rides
-  Phase 14's master quest work. Still open.
+- RESOLVED (2026-07-22, Phase 15 QA directed): the letter-to-Haldren
+  dead-end closed via option (a), a locked-quest hint row on the shared
+  gossip builder (Haldren plus all six masters) pointing at the
+  q_prof_intro giver until the quest completes
+  (src/ui/hud/quest/prof_intro_hint_core.ts; the other two options stay
+  recorded in progress.md Notes for history).

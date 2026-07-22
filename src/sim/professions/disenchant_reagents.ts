@@ -20,7 +20,7 @@ import type { ItemDef } from '../types';
 // Armor class -> its resonant weave. Only cloth/leather/mail armor pieces carry
 // an armorType; jewelry (neck/ring, no armor class) falls through to no
 // secondary.
-const ARMOR_SECONDARY_BY_TYPE: Readonly<Record<string, string>> = {
+export const ARMOR_SECONDARY_BY_TYPE: Readonly<Record<string, string>> = {
   cloth: 'resonant_thread',
   leather: 'resonant_hide',
   mail: 'resonant_links',
@@ -32,7 +32,12 @@ const ARMOR_SECONDARY_BY_TYPE: Readonly<Record<string, string>> = {
 // resonant steel (the melee default). Staves and wands sitting in the WEAPON
 // (timber) bucket is a maintainer-resolved decision: timber is a weapon bucket,
 // not the cloth armor line.
-const TIMBER_WEAPON_TYPES: ReadonlySet<string> = new Set(['staff', 'wand', 'bow', 'crossbow']);
+export const TIMBER_WEAPON_TYPES: ReadonlySet<string> = new Set([
+  'staff',
+  'wand',
+  'bow',
+  'crossbow',
+]);
 
 /** The typed secondary material one disenchant of `def` yields, or null when
  *  the piece is below `rare` (sub-rare disenchants stay byte-identical to today,

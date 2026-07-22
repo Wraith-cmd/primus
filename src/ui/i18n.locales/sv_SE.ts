@@ -658,42 +658,11 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'Att förklara en arketyp kommer att bli ett berättelseögonblick: ett uppdrag som formellt tar upp dig i den identiteten. Den vägen håller fortfarande på att byggas, så för tillfället vandrar varje karaktär genom världen med valet framför sig, och varje hantverk avancerar under tiden till kvalitetsnivån Sällsynt.',
   'guide.professions.archetypeChooseTitle': 'Att välja arketyp',
-  'guide.professions.archetypeIdentityBody':
-    'Din aktiva arketyp är ett uttalande om vem din karaktär är i världen, och den märks i hur andra och världen tilltalar dig. Exakt vilka belöningar och vilket erkännande som följer med håller ännu på att färdigställas; titta in igen allteftersom systemet fylls på.',
-  'guide.professions.archetypeIdentityTitle': 'Vad din arketyp betyder',
-  'guide.professions.archetypeIntro':
-    'Vart och ett av de tio hantverken står också för en arketyp, en bredare identitet du kan anta bortom att bara utöva yrket. Din aktiva arketyp är ett enda val i taget, inte en checklista: du bär en, och kan byta senare om du vill.',
   'guide.professions.archetypeSwitchBody':
     'Inte heller kommer en förklaring att bli ett livstidsstraff. Planen är en upprepningsbar gottgörelse till ditt gamla yrke innan du tar upp ett nytt, där gottgörelsen blir brantare för varje gång du byter, så att valet förblir meningsfullt i stället för kostnadsfritt. Liksom själva förklaringen är den fortfarande på väg.',
-  'guide.professions.archetypeSwitchTitle': 'Att ändra sig',
-  'guide.professions.archetypeTitle': 'De tio arketyperna',
-  'guide.professions.craftComboBody':
-    'Utöver ett enskilt hantverks egen receptlista stöder hjulet också kombinationsrecept som kräver två angränsande hantverk på en gång, vilket belönar en karaktär som har satsat på närliggande yrken på ringen snarare än ett i isolering. Hantverkaren måste själv behärska båda yrkena; en partners skicklighet kan inte träda in för någondera halvan.',
-  'guide.professions.craftComboTitle': 'Kombinationsrecept',
-  'guide.professions.craftIntro':
-    'Tio hantverksyrken förvandlar insamlade material till färdig utrustning och varor: Rustningssmide, Vapensmide och Juvelerarkonst formar råmaterial till bärbar utrustning; Alkemi och Ingenjörskonst drivs av försök och misstag; Matlagning, Skrivkonst och Förtrollning arbetar var och en med andra hantverks produkter; Skrädderi och Garvning arbetar efter exakta mönster. Tillsammans bildar de ett hjul, där varje hantverk sitter bredvid två grannar och mittemot ett annat.',
   'guide.professions.craftMasteryBody':
     'Lyckade hantverk bygger skicklighet i det yrket, och skicklighet låser aldrig bort ett hantverks recept: kan du ett recept och har dess material, kan du försöka dig på det. Vad skicklighet i stället köper dig är kvalitet, en övad hand gör finare arbete. Det enda undantaget är kombinationsrecept, som ber dig ha bevisat dig i båda sina hantverk innan de öppnas.',
   'guide.professions.craftMasteryTitle': 'Skicklighet och mästerskap',
-  'guide.professions.craftRecipesBody':
-    'Varje recept kräver särskilda reagenser du samlar eller köper. De enklaste recepten ber inte om annat än vanliga material och kan tillverkas från allra första början, så du kan börja utöva ett yrke i samma stund du tar upp det. Receptlistorna fylls fortfarande på: några yrken väntar på sina första recept, och fler kommer i takt med att hantverken växer.',
-  'guide.professions.craftRecipesTitle': 'Recept och reagenser',
-  'guide.professions.craftRingBody':
-    'De tio hantverken är ordnade i en fast ring, och var ett hantverk sitter på ringen spelar roll: hantverk bredvid varandra på hjulet har mer gemensamt än hantverk på motsatta sidor. Att satsa på ett hantverk ska kännas som att gå med i en familj av besläktade yrken, inte som att välja en isolerad färdighet.',
-  'guide.professions.craftRingTitle': 'Ett hjul av specialiteter',
-  'guide.professions.craftTitle': 'De tio hantverken',
-  'guide.professions.gatherIntro':
-    'Tre insamlingsyrken låter dig hämta råmaterial direkt ur världen: Gruvdrift bryter malm och sten ur ådror, Skogsavverkning fäller timmer ur träddungar, och Örtkunskap samlar örter och växter som växer vilt. Vart och ett spåras separat, så att arbeta med ett saktar aldrig ner dina framsteg i ett annat. Ny på alltihop? Foreman Odell i Östbäck har ett kort ärende, Ett yrke för varje hand, som lotsar dig genom din första skörd.',
-  'guide.professions.gatherProficiencyBody':
-    'Varje lyckad skörd bygger din färdighet i det insamlingsyrket, och ditt karaktärsblad spårar varje yrke för sig. Mer övning skadar aldrig dina framsteg, den bara lägger till dem.',
-  'guide.professions.gatherProficiencyTitle': 'Färdighet',
-  'guide.professions.gatherTitle': 'Insamling: Gruvdrift, Skogsavverkning och Örtkunskap',
-  'guide.professions.gatherToolsBody':
-    'Handlare säljer grundverktyg för varje insamlingsyrke, och bättre kan tillverkas. Inget verktyg krävs för att arbeta en fyndplats i dag: verktygen är grundarbete för rikare fyndplatser som kommer, där hackor, yxor och skäror av högre klass blir vägen in.',
-  'guide.professions.gatherToolsTitle': 'Yrkets verktyg',
-  'guide.professions.gatherWhatBody':
-    'Malmådror, träddungar och örtsnår ligger utplacerade i Dalen och träsket som synliga fasta punkter utan ägare. Gå fram till en och interagera med den för att skörda vad den rymmer. När du har skördat en fyndplats behöver den tid att återhämta sig innan just du kan skörda den igen, men den blockerar aldrig någon annan: en annan spelare kan skörda samma fyndplats under tiden.',
-  'guide.professions.gatherWhatTitle': 'Resursfyndplatser',
   'guide.professions.intro':
     'Bortom strider och uppdrag belönar världen dig för att bruka jorden och smedjan: samla råmaterial, förvandla dem till utrustning och varor genom tio hantverksyrken, och slå dig till ro i en identitet som en av de tio arketyper yrkena representerar.',
   'guide.valeCupPage.heading': 'Dalcupen',
@@ -8281,8 +8250,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
     'Om du byter svårighetsgrad medan gruppen fortfarande har hävdade rundor ligger de gamla anspråken kvar en stund. Gruppledaren kan släppa dem direkt genom att välja Återställ alla instanser i menyn på sitt eget porträtt eller skriva /dungeon reset. Svårighetsgraden måste faktiskt ha ändrats, ingen levande eller fallen får vara kvar inuti och en kort väntetid skiljer återställningarna åt. Vid dörren på fel svårighetsgrad varnar spelet innan starten. Raiden återställs aldrig så här; dess egna låsningsregler gäller.',
   'guide.gear.itemLevelBody':
     'Slå på Visa föremålsnivå i alternativen för att snabbt jämföra två delar. Utrustning med känd källa, från fiender, uppdrag och hantverksyrken, visar då en föremålsnivå: ett enda tal som ungefär anger styrkan utifrån ursprunget och gör förbättringar jämförbara även mellan olika platser. Delar utan sådan källa, som enkla handelsvaror och startutrustning, visar ingen nivå; ett saknat tal är normalt.',
-  'guide.professions.craftHowBody':
-    'Öppna hantverksfönstret (standardtangent T) för att se alla recept du kan, vad de kräver och vad du har; när materialen finns räcker ett klick. Vanliga recept kan tillverkas var som helst. Några avancerade recept, däribland verktyg på hög nivå och sällsynta rustningar för besvärjare, kräver hantverksnavet i Highwatch.',
   'hudChrome.auraEffect.battleStance': 'Stridsställning: 10% mer raserigenerering',
   'hudChrome.auraEffect.berserkerStance':
     'Bärsärkaställning: kritiska träffar sker 3% oftare och slår 3% hårdare',

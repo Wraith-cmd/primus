@@ -80,6 +80,7 @@ describe('craft quest objectives', () => {
 
     sim.addItem('linen_scrap', 1, pid);
     sim.addItem('spider_leg', 1, pid);
+    sim.addItem('silverleaf_herb', 2, pid); // Phase 15 reagent addition
     sim.craftItem('recipe_minor_healing_potion', false, pid);
 
     expect(sim.meta(pid)!.lastCraftResult?.ok).toBe(true);

@@ -1,6 +1,7 @@
 import { archetypeTitleText, craftNameText } from './char_window';
 import { esc } from './esc';
 import { formatNumber, t } from './i18n';
+import { archetypeImageUrl } from './profession_art';
 import type { ProfessionIdentityModel } from './profession_identity_view';
 
 function ceilingText(ceiling: 'unlimited' | 'rare' | 'common'): string {
@@ -43,6 +44,11 @@ export function renderProfessionIdentityCard(
 
   const summary = identity.summary;
   const attuned = identity.state !== 'unattuned' && summary.majors !== null;
+  const crestUrl = attuned ? archetypeImageUrl(summary.pairId) : null;
+  const headingHtml =
+    `<div class="profession-identity-heading">` +
+    `${crestUrl ? `<img class="profession-archetype-crest" src="${esc(crestUrl)}" alt="" draggable="false">` : ''}` +
+    `<h3>${esc(title)}</h3></div>`;
   const summaryHtml =
     identity.state === 'unattuned' || !summary.majors
       ? `<p>${esc(t('hudChrome.crafting.identity.unattuned'))}</p>`
@@ -86,6 +92,6 @@ export function renderProfessionIdentityCard(
     )
     .join('');
 
-  card.innerHTML = `<h3>${esc(title)}</h3>${summaryHtml}${returnCostHtml}${tutorial}<ul class="profession-skill-list" role="list">${skillHeader}${skillRows}</ul>${nudges ? `<ul class="profession-identity-nudges" role="list">${nudges}</ul>` : ''}`;
+  card.innerHTML = `${headingHtml}${summaryHtml}${returnCostHtml}${tutorial}<ul class="profession-skill-list" role="list">${skillHeader}${skillRows}</ul>${nudges ? `<ul class="profession-identity-nudges" role="list">${nudges}</ul>` : ''}`;
   parent.appendChild(card);
 }

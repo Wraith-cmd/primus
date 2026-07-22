@@ -15,9 +15,12 @@ export function claimDifficultyForDungeon(
   return selected === 'heroic' && HEROIC_DUNGEON_IDS.has(dungeonId) ? 'heroic' : 'normal';
 }
 
-// Boss-summoned add waves (spawnBossAdds passes { summonedAdd: true }) swing at
-// the tuning table's softer addDamageMultiplier; everything else, including the
-// spawn-list guards flanking a boss, uses the dungeon-wide damageMultiplier.
+// Boss-summoned add waves (spawnBossAdds passes { summonedAdd: true }) swing
+// at the tuning table's addDamageMultiplier, which is LARGER than the trash
+// value where a boss summons (summoned adds are non-elite, so landing the
+// same per-swing floor needs a bigger factor); everything else, including the
+// spawn-list guards flanking a boss, uses the dungeon-wide damageMultiplier
+// unless the mob has a damageMultiplierByMob override.
 export interface HeroicSpawnRole {
   summonedAdd?: boolean;
 }
@@ -31,6 +34,11 @@ export function mobTemplateForDungeonDifficulty(
   if (difficulty !== 'heroic') {
     // Normal retunes are per mob (see NORMAL_DUNGEON_TUNING); a dungeon with
     // no record, or a mob with no factor, spawns from the raw base template.
+    // NOTE for the next normal-tuning author: a mob absent from the per-mob
+    // map still gets the health multiplier here but NO mechanic stamping in
+    // applyDungeonMobTuning below, so every mechanic-bearing or healing mob
+    // the dungeon can spawn must be listed (the coverage tests in
+    // tests/gravewyrm_normal_tuning.test.ts pin this for the Sanctum).
     const normal = NORMAL_DUNGEON_TUNING[dungeonId];
     if (!normal) return template;
     const dmgMult = normal.damageMultiplierByMob[template.id] ?? 1;

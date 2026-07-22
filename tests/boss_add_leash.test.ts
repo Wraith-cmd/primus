@@ -136,9 +136,12 @@ describe('heroic boss adds swing at addDamageMultiplier', () => {
       // Fire-time mechanic scaling rides the add multiplier too.
       expect(add.mechanicDamageMult).toBe(tuning.addDamageMultiplier);
     }
-    // The summoner himself keeps the dungeon-wide multiplier.
-    expect(boss.mechanicDamageMult).toBe(tuning.damageMultiplier);
-    expect(tuning.addDamageMultiplier).toBeLessThan(tuning.damageMultiplier);
+    // The summoner himself carries the Sanctum boss override (see
+    // damageMultiplierByMob), not the trash-wide multiplier.
+    expect(boss.mechanicDamageMult).toBe(tuning.damageMultiplierByMob?.grand_necromancer_velkhar);
+    // Non-elite adds need a LARGER multiplier than elite trash to land the
+    // same 500 per-swing floor (no 1.5x elite swing multiplier).
+    expect(tuning.addDamageMultiplier).toBeGreaterThan(tuning.damageMultiplier);
   });
 
   it('normal-difficulty adds use the normal per-mob retune, not the heroic add multiplier', () => {

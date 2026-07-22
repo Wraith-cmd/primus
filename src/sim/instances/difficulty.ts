@@ -44,7 +44,9 @@ export function mobTemplateForDungeonDifficulty(
   }
   const tuning = HEROIC_DUNGEON_TUNING[dungeonId];
   if (!tuning) return template;
-  const dmgMult = role?.summonedAdd ? tuning.addDamageMultiplier : tuning.damageMultiplier;
+  const dmgMult =
+    tuning.damageMultiplierByMob?.[template.id] ??
+    (role?.summonedAdd ? tuning.addDamageMultiplier : tuning.damageMultiplier);
   return {
     ...template,
     minLevel: tuning.level,
@@ -98,7 +100,9 @@ export function applyDungeonMobTuning(
   }
   const tuning = HEROIC_DUNGEON_TUNING[dungeonId];
   if (!tuning) return;
-  mob.mechanicDamageMult = role?.summonedAdd ? tuning.addDamageMultiplier : tuning.damageMultiplier;
+  mob.mechanicDamageMult =
+    tuning.damageMultiplierByMob?.[mob.templateId] ??
+    (role?.summonedAdd ? tuning.addDamageMultiplier : tuning.damageMultiplier);
   mob.mechanicHealMult = tuning.healthMultiplier;
   if (MOBS[mob.templateId]?.boss) {
     mob.ccImmune = true;

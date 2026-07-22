@@ -2,9 +2,10 @@
 // printing up to 6 gold per clear, so normal Sanctum doubles every mob's
 // health and raises melee so a swing lands for at least 300 (trash) / 600
 // (bosses) on the maximum-mitigation reference warrior, with boss mechanics
-// scaled by the same per-mob factor. Heroic reads the same base templates, so
-// this file also pins the heroic transform to its pre-retune literals: the
-// normal retune must never leak into heroic.
+// scaled by the same per-mob factor. Heroic reads the same base templates on
+// its OWN calibration (tests/heroic_difficulty_floors.test.ts), so this file
+// also pins the heroic transform literals: a base-template edit cannot slip
+// through either difficulty unnoticed.
 //
 // Reference warrior (the "fully geared" mitigation ceiling): level-20 prot
 // warrior in the max-armor kit (full heroic plate + shield, prot mastery),
@@ -159,10 +160,12 @@ describe('normal Gravewyrm Sanctum mechanic scaling', () => {
   });
 });
 
-describe('heroic Gravewyrm Sanctum is unchanged by the normal retune', () => {
-  // Pre-retune heroic literals: base template x heroic tuning (health 2.0,
-  // damage 4.05, adds 2.0, armor 1.2, level 22). If a base template is edited
-  // instead of the normal tuning table, these redden.
+describe('heroic Gravewyrm Sanctum transform stays on its own calibration', () => {
+  // Deliberate heroic literals: base template x heroic tuning (health 4.0,
+  // trash damage 15.5, bosses 19 via damageMultiplierByMob, adds 29, armor
+  // 1.2, level 22; see tests/heroic_difficulty_floors.test.ts for the
+  // floors). If a base template is edited instead of a tuning table, these
+  // redden.
   const HEROIC_PINS: Record<
     string,
     {
@@ -174,43 +177,43 @@ describe('heroic Gravewyrm Sanctum is unchanged by the normal retune', () => {
     }
   > = {
     sanctum_boneguard: {
-      dmgBase: 48.6,
-      dmgPerLevel: 10.935,
-      hpBase: 128,
-      hpPerLevel: 46,
+      dmgBase: 186,
+      dmgPerLevel: 41.85,
+      hpBase: 256,
+      hpPerLevel: 92,
       armorPerLevel: 26.4,
     },
     sanctum_drakonid: {
-      dmgBase: 52.65,
-      dmgPerLevel: 11.34,
-      hpBase: 136,
-      hpPerLevel: 48,
+      dmgBase: 201.5,
+      dmgPerLevel: 43.4,
+      hpBase: 272,
+      hpPerLevel: 96,
       armorPerLevel: 31.2,
     },
     korgath_the_bound: {
-      dmgBase: 56.7,
-      dmgPerLevel: 11.745,
-      hpBase: 520,
-      hpPerLevel: 72,
+      dmgBase: 266,
+      dmgPerLevel: 55.1,
+      hpBase: 1040,
+      hpPerLevel: 144,
       armorPerLevel: 36,
     },
     grand_necromancer_velkhar: {
-      dmgBase: 52.65,
-      dmgPerLevel: 11.34,
-      hpBase: 460,
-      hpPerLevel: 66,
+      dmgBase: 247,
+      dmgPerLevel: 53.2,
+      hpBase: 920,
+      hpPerLevel: 132,
       armorPerLevel: 24,
     },
     korzul_the_gravewyrm: {
-      dmgBase: 60.75,
-      dmgPerLevel: 12.15,
-      hpBase: 840,
-      hpPerLevel: 96,
+      dmgBase: 285,
+      dmgPerLevel: 57,
+      hpBase: 1680,
+      hpPerLevel: 192,
       armorPerLevel: 40.8,
     },
   };
 
-  it('pins every heroic spawn-list transform to its pre-retune literals', () => {
+  it('pins every heroic spawn-list transform to its calibration literals', () => {
     for (const [id, pins] of Object.entries(HEROIC_PINS)) {
       const heroic = mobTemplateForDungeonDifficulty(MOBS[id], SANCTUM, 'heroic');
       expect(heroic.minLevel, id).toBe(22);
@@ -224,20 +227,20 @@ describe('heroic Gravewyrm Sanctum is unchanged by the normal retune', () => {
     }
   });
 
-  it('pins the heroic summoned bonewalker to its pre-retune literals', () => {
+  it('pins the heroic summoned bonewalker to its calibration literals', () => {
     const add = mobTemplateForDungeonDifficulty(MOBS.raised_bonewalker, SANCTUM, 'heroic', {
       summonedAdd: true,
     });
-    expect(add.dmgBase).toBeCloseTo(18, 10);
-    expect(add.dmgPerLevel).toBeCloseTo(4.4, 10);
-    expect(add.hpBase).toBeCloseTo(84, 10);
-    expect(add.hpPerLevel).toBeCloseTo(30, 10);
+    expect(add.dmgBase).toBeCloseTo(261, 10);
+    expect(add.dmgPerLevel).toBeCloseTo(63.8, 10);
+    expect(add.hpBase).toBeCloseTo(168, 10);
+    expect(add.hpPerLevel).toBeCloseTo(60, 10);
     expect(add.armorPerLevel).toBeCloseTo(14.4, 10);
   });
 
-  it('keeps the heroic mechanic multiplier on the dungeon-wide 4.05', () => {
+  it('stamps the heroic boss mechanic multiplier from the per-mob override', () => {
     const boss = createMob(1, MOBS.korzul_the_gravewyrm, 22, { x: 0, y: 0, z: 0 });
     applyDungeonMobTuning(boss, SANCTUM, 'heroic');
-    expect(boss.mechanicDamageMult).toBe(4.05);
+    expect(boss.mechanicDamageMult).toBe(19);
   });
 });

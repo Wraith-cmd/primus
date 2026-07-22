@@ -226,6 +226,10 @@ import {
 } from './frame_pos_reset';
 import { gatherDeniedLineKey, gatherDowngradeLineKey } from './gathering_view';
 import { isSelfOnlyAbility } from './hud/action_bar/ability_self_only';
+import {
+  handleShiftClearContextMenu,
+  handleShiftClearKeydown,
+} from './hud/action_bar/action_bar_clear';
 import { ActionBarController } from './hud/action_bar/action_bar_controller';
 import {
   ACTION_BAR_ABILITY_SLOTS,
@@ -5726,15 +5730,10 @@ export class Hud {
           this.hideTooltip();
         };
         btn.addEventListener('contextmenu', (e) => {
-          if (!e.shiftKey) return;
-          e.preventDefault();
-          clearSlot();
+          handleShiftClearContextMenu(e, clearSlot);
         });
         btn.addEventListener('keydown', (e) => {
-          if (!e.shiftKey || (e.key !== 'Delete' && e.key !== 'Backspace')) return;
-          e.preventDefault();
-          e.stopPropagation();
-          clearSlot();
+          handleShiftClearKeydown(e, clearSlot);
         });
         btn.addEventListener('dragstart', (e) => {
           const action = this.actionForSlot(slot);
@@ -5803,29 +5802,29 @@ export class Hud {
           this.clearActionDropTargets();
         });
         this.bindMobileActionDrag(btn, slot);
-        // right-click clears the slot so a full bar can make room for new spells
-        btn.addEventListener('contextmenu', (e) => {
-          e.preventDefault();
-          if (this.hotbarActions[slot - 1] === null) return;
-          this.hotbarActions = clearHotbarSlot(this.hotbarActions, slot - 1);
-          this.saveSlotMap();
-          this.hideTooltip();
-        });
       } else {
         // Slot 0 (Attack). Right-click removes the Attack toggle from the bar
         // (Interface option showAttackButton -> off), freeing the slot and its key
-        // for a normal action; right-click again clears whatever was dropped in.
-        // The Options toggle restores Attack at any time.
+        // for a normal action. The Options toggle restores Attack at any time.
         btn.draggable = true;
-        btn.addEventListener('contextmenu', (e) => {
-          e.preventDefault();
-          if (this.attackSlotIsAttack()) {
-            this.optionsHooks?.settings.set('showAttackButton', false);
-          } else if (this.attackSlotAction !== null) {
-            this.attackSlotAction = null;
-            this.saveAttackSlotAction();
-          }
+        const clearAttackSlotAction = () => {
+          if (this.attackSlotAction === null) return;
+          this.attackSlotAction = null;
+          this.saveAttackSlotAction();
           this.hideTooltip();
+        };
+        btn.addEventListener('contextmenu', (e) => {
+          if (this.attackSlotIsAttack()) {
+            e.preventDefault();
+            this.optionsHooks?.settings.set('showAttackButton', false);
+            this.hideTooltip();
+            return;
+          }
+          handleShiftClearContextMenu(e, clearAttackSlotAction);
+        });
+        btn.addEventListener('keydown', (e) => {
+          if (this.attackSlotIsAttack()) return;
+          handleShiftClearKeydown(e, clearAttackSlotAction);
         });
         btn.addEventListener('dragstart', (e) => {
           const action = this.actionForSlot(0);

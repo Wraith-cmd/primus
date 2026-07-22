@@ -13,8 +13,8 @@
     "Final Stand enrage at 5% + grantNythraxisLockout (raidLockouts) + onBossDeath death dialogue",
     "class:warrior"
   ],
-  "draws": 3282,
-  "drawDigest": "15a1a241",
+  "draws": 3249,
+  "drawDigest": "519a0f5e",
   "frames": [
     {
       "tick": 0,
@@ -34,8 +34,8 @@
       "tick": 1,
       "time": 0.05,
       "nextId": 425,
-      "state": "745ee46c",
-      "events": "9bdb1cce",
+      "state": "eb5038e7",
+      "events": "b909e878",
       "rng": {
         "draws": 4,
         "digest": "9c74b095"
@@ -57,12 +57,14 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 352
+            "damageTaken": 1759,
+            "deaths": 1
           },
           "craftSkills": {},
           "craftThrottle": {},
           "deedStats": {
             "counters": {
+              "deaths": 1,
               "partiesJoined": 1
             },
             "dungeonClears": {},
@@ -74,6 +76,10 @@
             ]
           },
           "deedsEarned": [
+            [
+              "cmb_first_fall",
+              ""
+            ],
             [
               "feat_era_cap",
               ""
@@ -131,7 +137,7 @@
             "q_nythraxis_bound_guardian"
           ],
           "recipesGrandfathered": true,
-          "renown": 70,
+          "renown": 75,
           "talents": {
             "rows": {},
             "spec": "prot"
@@ -499,17 +505,6 @@
         {
           "aiState": "idle",
           "attackPower": 122,
-          "auras": [
-            {
-              "duration": 3600,
-              "id": "battle_stance",
-              "kind": "battle_stance",
-              "name": "Battle Stance",
-              "remaining": 3599.95,
-              "school": "physical",
-              "sourceId": 415
-            }
-          ],
           "blockChance": 0.05,
           "blockValue": 6,
           "comboUntil": -1,
@@ -535,7 +530,7 @@
             "z": -1160
           },
           "potionCooldownUntil": -1,
-          "resource": 19.36,
+          "resource": 96.745,
           "resourceType": "rage",
           "spawnPos": {
             "x": 2,
@@ -751,7 +746,6 @@
           }
         },
         {
-          "aggroTargetId": 415,
           "aiState": "attack",
           "comboUntil": -1,
           "critChance": 0.05,
@@ -760,13 +754,15 @@
           "facing": 3.141593,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 60000,
+          "hp": 120000,
           "id": 420,
           "inCombat": true,
           "kind": "mob",
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 60000,
+          "maxHp": 120000,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10.5,
           "nythraxis": {
             "deathlessTimer": 45,
@@ -795,15 +791,9 @@
           },
           "swingTimer": 2.6,
           "templateId": "nythraxis_scourge_of_thornpeak",
-          "threat": [
-            [
-              415,
-              1000
-            ]
-          ],
           "weapon": {
-            "max": 507,
-            "min": 325,
+            "max": 2537,
+            "min": 1624,
             "speed": 2.6
           }
         }
@@ -813,8 +803,8 @@
       "tick": 10,
       "time": 0.5,
       "nextId": 425,
-      "state": "c3a3bbc6",
-      "events": "741638a5",
+      "state": "4d81b1d4",
+      "events": "2156c4fb",
       "rng": {
         "draws": 4,
         "digest": "9c74b095"
@@ -824,7 +814,7 @@
       "tick": 20,
       "time": 1,
       "nextId": 425,
-      "state": "0ce892d0",
+      "state": "784257f8",
       "events": "d25ba3b3",
       "rng": {
         "draws": 4,
@@ -835,8 +825,8 @@
       "tick": 30,
       "time": 1.5,
       "nextId": 425,
-      "state": "9f3b4aa0",
-      "events": "ddfaecb0",
+      "state": "deede8ad",
+      "events": "7a9b2d92",
       "rng": {
         "draws": 5,
         "digest": "8541dce9"
@@ -846,8 +836,8 @@
       "tick": 40,
       "time": 2,
       "nextId": 425,
-      "state": "05a5d8a2",
-      "events": "741638a5",
+      "state": "0b252d9b",
+      "events": "2156c4fb",
       "rng": {
         "draws": 5,
         "digest": "8541dce9"
@@ -857,7 +847,7 @@
       "tick": 42,
       "time": 2.1,
       "nextId": 427,
-      "state": "28fdb7e3",
+      "state": "0db69561",
       "events": "a47b3d27",
       "rng": {
         "draws": 11,
@@ -880,12 +870,14 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 681
+            "damageTaken": 3406,
+            "deaths": 2
           },
           "craftSkills": {},
           "craftThrottle": {},
           "deedStats": {
             "counters": {
+              "deaths": 2,
               "partiesJoined": 1
             },
             "dungeonClears": {},
@@ -897,6 +889,10 @@
             ]
           },
           "deedsEarned": [
+            [
+              "cmb_first_fall",
+              ""
+            ],
             [
               "feat_era_cap",
               ""
@@ -954,7 +950,7 @@
             "q_nythraxis_bound_guardian"
           ],
           "recipesGrandfathered": true,
-          "renown": 70,
+          "renown": 75,
           "talents": {
             "rows": {},
             "spec": "prot"
@@ -1328,7 +1324,7 @@
               "id": "battle_stance",
               "kind": "battle_stance",
               "name": "Battle Stance",
-              "remaining": 3597.9,
+              "remaining": 3599.4,
               "school": "physical",
               "sourceId": 415
             }
@@ -1359,7 +1355,7 @@
             "z": -1160
           },
           "potionCooldownUntil": -1,
-          "resource": 37.455,
+          "resource": 100,
           "resourceType": "rage",
           "spawnPos": {
             "x": 2,
@@ -1585,13 +1581,15 @@
           "facing": 3.141593,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 60000,
+          "hp": 120000,
           "id": 420,
           "inCombat": true,
           "kind": "mob",
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 60000,
+          "maxHp": 120000,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10.5,
           "nythraxis": {
             "deathlessTimer": 45,
@@ -1609,7 +1607,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 3900,
-            "z": -1155.575
+            "z": -1155.5225
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -1623,17 +1621,11 @@
             425,
             426
           ],
-          "swingTimer": 0.55,
+          "swingTimer": 0.6,
           "templateId": "nythraxis_scourge_of_thornpeak",
-          "threat": [
-            [
-              415,
-              1000
-            ]
-          ],
           "weapon": {
-            "max": 507,
-            "min": 325,
+            "max": 2537,
+            "min": 1624,
             "speed": 2.6
           }
         },
@@ -1648,7 +1640,7 @@
           "facing": 2.642246,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 1569,
+          "hp": 3137,
           "id": 425,
           "inCombat": true,
           "kind": "mob",
@@ -1658,7 +1650,9 @@
           },
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 1569,
+          "maxHp": 3137,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10,
           "onGround": true,
           "overpowerUntil": -1,
@@ -1683,8 +1677,8 @@
             ]
           ],
           "weapon": {
-            "max": 248,
-            "min": 159,
+            "max": 1241,
+            "min": 794,
             "speed": 2.2
           }
         },
@@ -1699,7 +1693,7 @@
           "facing": -2.642246,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 1569,
+          "hp": 3137,
           "id": 426,
           "inCombat": true,
           "kind": "mob",
@@ -1709,7 +1703,9 @@
           },
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 1569,
+          "maxHp": 3137,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10,
           "onGround": true,
           "overpowerUntil": -1,
@@ -1734,8 +1730,8 @@
             ]
           ],
           "weapon": {
-            "max": 248,
-            "min": 159,
+            "max": 1241,
+            "min": 794,
             "speed": 2.2
           }
         }
@@ -1745,7 +1741,7 @@
       "tick": 43,
       "time": 2.15,
       "nextId": 428,
-      "state": "85bafa1f",
+      "state": "9ed11301",
       "events": "e5643833",
       "rng": {
         "draws": 15,
@@ -1768,12 +1764,14 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 681
+            "damageTaken": 3406,
+            "deaths": 2
           },
           "craftSkills": {},
           "craftThrottle": {},
           "deedStats": {
             "counters": {
+              "deaths": 2,
               "partiesJoined": 1
             },
             "dungeonClears": {},
@@ -1785,6 +1783,10 @@
             ]
           },
           "deedsEarned": [
+            [
+              "cmb_first_fall",
+              ""
+            ],
             [
               "feat_era_cap",
               ""
@@ -1842,7 +1844,7 @@
             "q_nythraxis_bound_guardian"
           ],
           "recipesGrandfathered": true,
-          "renown": 70,
+          "renown": 75,
           "talents": {
             "rows": {},
             "spec": "prot"
@@ -2216,7 +2218,7 @@
               "id": "battle_stance",
               "kind": "battle_stance",
               "name": "Battle Stance",
-              "remaining": 3597.85,
+              "remaining": 3599.35,
               "school": "physical",
               "sourceId": 415
             },
@@ -2257,7 +2259,7 @@
             "z": -1160
           },
           "potionCooldownUntil": -1,
-          "resource": 37.455,
+          "resource": 100,
           "resourceType": "rage",
           "spawnPos": {
             "x": 2,
@@ -2542,13 +2544,15 @@
           "facing": 3.141593,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 41400,
+          "hp": 82800,
           "id": 420,
           "inCombat": true,
           "kind": "mob",
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 60000,
+          "maxHp": 120000,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10.5,
           "nythraxis": {
             "deathlessTimer": 45,
@@ -2568,7 +2572,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 3900,
-            "z": -1155.575
+            "z": -1155.5225
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -2582,17 +2586,11 @@
             425,
             426
           ],
-          "swingTimer": 0.55,
+          "swingTimer": 0.6,
           "templateId": "nythraxis_scourge_of_thornpeak",
-          "threat": [
-            [
-              415,
-              1000
-            ]
-          ],
           "weapon": {
-            "max": 507,
-            "min": 325,
+            "max": 2537,
+            "min": 1624,
             "speed": 2.6
           }
         },
@@ -2766,7 +2764,7 @@
           "facing": 2.642246,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 1569,
+          "hp": 3137,
           "id": 425,
           "inCombat": true,
           "kind": "mob",
@@ -2776,7 +2774,9 @@
           },
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 1569,
+          "maxHp": 3137,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10,
           "onGround": true,
           "overpowerUntil": -1,
@@ -2801,8 +2801,8 @@
             ]
           ],
           "weapon": {
-            "max": 248,
-            "min": 159,
+            "max": 1241,
+            "min": 794,
             "speed": 2.2
           }
         },
@@ -2829,7 +2829,7 @@
           "facing": -2.642246,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 1569,
+          "hp": 3137,
           "id": 426,
           "inCombat": true,
           "kind": "mob",
@@ -2839,7 +2839,9 @@
           },
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 1569,
+          "maxHp": 3137,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10,
           "onGround": true,
           "overpowerUntil": -1,
@@ -2864,8 +2866,8 @@
             ]
           ],
           "weapon": {
-            "max": 248,
-            "min": 159,
+            "max": 1241,
+            "min": 794,
             "speed": 2.2
           }
         },
@@ -2913,7 +2915,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 428,
-      "state": "f9c00c8e",
+      "state": "58a2691e",
       "events": "741638a5",
       "rng": {
         "draws": 37,
@@ -2924,7 +2926,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 428,
-      "state": "8cace924",
+      "state": "0cf45cb9",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -2935,7 +2937,7 @@
       "tick": 70,
       "time": 3.5,
       "nextId": 428,
-      "state": "f636baac",
+      "state": "73d90c63",
       "events": "741638a5",
       "rng": {
         "draws": 113,
@@ -2946,19 +2948,19 @@
       "tick": 80,
       "time": 4,
       "nextId": 428,
-      "state": "b1e80596",
-      "events": "a345168f",
+      "state": "cea96f20",
+      "events": "0609154f",
       "rng": {
-        "draws": 166,
-        "digest": "8e452b5f"
+        "draws": 165,
+        "digest": "df076fcb"
       }
     },
     {
       "tick": 90,
       "time": 4.5,
       "nextId": 428,
-      "state": "f1dd6570",
-      "events": "b0ac8dd8",
+      "state": "6abee341",
+      "events": "1bb30021",
       "rng": {
         "draws": 226,
         "digest": "c663a24d"
@@ -2968,29 +2970,29 @@
       "tick": 100,
       "time": 5,
       "nextId": 428,
-      "state": "bfbb0b82",
+      "state": "3c2fd1b8",
       "events": "741638a5",
       "rng": {
-        "draws": 285,
-        "digest": "73dbc0f3"
+        "draws": 283,
+        "digest": "79720497"
       }
     },
     {
       "tick": 110,
       "time": 5.5,
       "nextId": 428,
-      "state": "ca2be4ab",
+      "state": "f48b2530",
       "events": "741638a5",
       "rng": {
-        "draws": 338,
-        "digest": "d5a520a2"
+        "draws": 341,
+        "digest": "f1568182"
       }
     },
     {
       "tick": 120,
       "time": 6,
       "nextId": 428,
-      "state": "57fe2dfb",
+      "state": "4367f07d",
       "events": "741638a5",
       "rng": {
         "draws": 388,
@@ -3001,99 +3003,99 @@
       "tick": 130,
       "time": 6.5,
       "nextId": 428,
-      "state": "4c007a8e",
-      "events": "12375b2d",
+      "state": "135c7403",
+      "events": "dfa85617",
       "rng": {
-        "draws": 447,
-        "digest": "4fd1ba22"
+        "draws": 453,
+        "digest": "188f2739"
       }
     },
     {
       "tick": 140,
       "time": 7,
       "nextId": 428,
-      "state": "b3932dd7",
-      "events": "69a169bc",
+      "state": "3737c9ed",
+      "events": "059cc341",
       "rng": {
-        "draws": 513,
-        "digest": "7c3686f7"
+        "draws": 520,
+        "digest": "27e42216"
       }
     },
     {
       "tick": 150,
       "time": 7.5,
       "nextId": 428,
-      "state": "8fc2f633",
+      "state": "8065fbd7",
       "events": "741638a5",
       "rng": {
-        "draws": 552,
-        "digest": "9545c895"
+        "draws": 556,
+        "digest": "70d7f277"
       }
     },
     {
       "tick": 160,
       "time": 8,
       "nextId": 428,
-      "state": "1ee0ed20",
+      "state": "49b27473",
       "events": "741638a5",
       "rng": {
-        "draws": 610,
-        "digest": "a6414f54"
+        "draws": 607,
+        "digest": "a8f3e24b"
       }
     },
     {
       "tick": 170,
       "time": 8.5,
       "nextId": 428,
-      "state": "d9a6a4ce",
-      "events": "55761966",
+      "state": "07a7a570",
+      "events": "fc1a7726",
       "rng": {
-        "draws": 682,
-        "digest": "650af8fd"
+        "draws": 678,
+        "digest": "0071391a"
       }
     },
     {
       "tick": 180,
       "time": 9,
       "nextId": 428,
-      "state": "9b58446a",
-      "events": "326be908",
+      "state": "6252b34c",
+      "events": "741638a5",
       "rng": {
-        "draws": 785,
-        "digest": "d4618c5a"
+        "draws": 771,
+        "digest": "ba209b07"
       }
     },
     {
       "tick": 190,
       "time": 9.5,
       "nextId": 428,
-      "state": "dee59505",
-      "events": "343b8c44",
+      "state": "4224d51c",
+      "events": "4d131abf",
       "rng": {
-        "draws": 863,
-        "digest": "9f41ba53"
+        "draws": 841,
+        "digest": "101cecfd"
       }
     },
     {
       "tick": 200,
       "time": 10,
       "nextId": 428,
-      "state": "a92f9ecf",
+      "state": "9ece34b4",
       "events": "741638a5",
       "rng": {
-        "draws": 926,
-        "digest": "ab2b657e"
+        "draws": 904,
+        "digest": "43f41b17"
       }
     },
     {
       "tick": 203,
       "time": 10.15,
       "nextId": 428,
-      "state": "d42ced3c",
+      "state": "a50dcfb5",
       "events": "741638a5",
       "rng": {
-        "draws": 938,
-        "digest": "0a7fbdf9"
+        "draws": 919,
+        "digest": "746342f8"
       },
       "label": "phase2",
       "players": [
@@ -3112,12 +3114,14 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 2562
+            "damageTaken": 9295,
+            "deaths": 5
           },
           "craftSkills": {},
           "craftThrottle": {},
           "deedStats": {
             "counters": {
+              "deaths": 5,
               "partiesJoined": 1
             },
             "dungeonClears": {},
@@ -3129,6 +3133,10 @@
             ]
           },
           "deedsEarned": [
+            [
+              "cmb_first_fall",
+              ""
+            ],
             [
               "feat_era_cap",
               ""
@@ -3186,7 +3194,7 @@
             "q_nythraxis_bound_guardian"
           ],
           "recipesGrandfathered": true,
-          "renown": 70,
+          "renown": 75,
           "talents": {
             "rows": {},
             "spec": "prot"
@@ -3560,23 +3568,14 @@
               "id": "battle_stance",
               "kind": "battle_stance",
               "name": "Battle Stance",
-              "remaining": 3589.85,
-              "school": "physical",
-              "sourceId": 415
-            },
-            {
-              "duration": 10,
-              "id": "revenge_free",
-              "kind": "revenge_free",
-              "name": "Revenge!",
-              "remaining": 6.45,
+              "remaining": 3599,
               "school": "physical",
               "sourceId": 415
             }
           ],
           "blockChance": 0.05,
           "blockValue": 6,
-          "combatTimer": 1.1,
+          "combatTimer": 1,
           "comboUntil": -1,
           "critChance": 0.0695,
           "detonateTimer": "Infinity",
@@ -3685,17 +3684,6 @@
         {
           "aiState": "idle",
           "attackPower": 10,
-          "auras": [
-            {
-              "duration": 8,
-              "id": "nythraxis_soul_rend",
-              "kind": "vulnerability",
-              "name": "Soul Rend",
-              "remaining": 6.05,
-              "school": "shadow",
-              "sourceId": 420
-            }
-          ],
           "combatTimer": 109.15,
           "comboUntil": -1,
           "critChance": 0.056,
@@ -3744,6 +3732,17 @@
         {
           "aiState": "idle",
           "attackPower": 10,
+          "auras": [
+            {
+              "duration": 8,
+              "id": "nythraxis_soul_rend",
+              "kind": "vulnerability",
+              "name": "Soul Rend",
+              "remaining": 6.05,
+              "school": "shadow",
+              "sourceId": 420
+            }
+          ],
           "combatTimer": 109.15,
           "comboUntil": -1,
           "critChance": 0.056,
@@ -3851,7 +3850,7 @@
         {
           "aggroTargetId": 415,
           "aiState": "attack",
-          "combatTimer": 1.1,
+          "combatTimer": 1,
           "comboUntil": -1,
           "critChance": 0.05,
           "detonateTimer": "Infinity",
@@ -3859,13 +3858,15 @@
           "facing": 3.141593,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 41400,
+          "hp": 82800,
           "id": 420,
           "inCombat": true,
           "kind": "mob",
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 60000,
+          "maxHp": 120000,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10.5,
           "nythraxis": {
             "deathlessTimer": 999,
@@ -3882,11 +3883,11 @@
                 "remaining": 6.05
               },
               {
-                "playerId": 416,
+                "playerId": 418,
                 "remaining": 6.05
               },
               {
-                "playerId": 417,
+                "playerId": 416,
                 "remaining": 6.05
               }
             ],
@@ -3899,7 +3900,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 3900,
-            "z": -1155.575
+            "z": -1155.47
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -3913,17 +3914,11 @@
             425,
             426
           ],
-          "swingTimer": 1.5,
+          "swingTimer": 1.6,
           "templateId": "nythraxis_scourge_of_thornpeak",
-          "threat": [
-            [
-              415,
-              1000
-            ]
-          ],
           "weapon": {
-            "max": 507,
-            "min": 325,
+            "max": 2537,
+            "min": 1624,
             "speed": 2.6
           }
         },
@@ -4075,19 +4070,17 @@
           }
         },
         {
-          "aggroTargetId": 415,
-          "aiState": "attack",
-          "combatTimer": 1.35,
+          "aiState": "idle",
+          "combatTimer": 5.75,
           "comboUntil": -1,
           "critChance": 0.05,
+          "despawnTimer": 6.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": 2.642246,
           "fiveSecondRule": 99,
-          "hostile": true,
-          "hp": 1569,
+          "hp": 3137,
           "id": 425,
-          "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
             "x": 3888,
@@ -4095,7 +4088,9 @@
           },
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 1569,
+          "maxHp": 3137,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10,
           "onGround": true,
           "overpowerUntil": -1,
@@ -4112,34 +4107,26 @@
           "stats": {
             "armor": 456
           },
-          "swingTimer": 0.85,
+          "swingTimer": 0.45,
           "templateId": "nythraxis_skeleton_warrior",
-          "threat": [
-            [
-              415,
-              1
-            ]
-          ],
           "weapon": {
-            "max": 248,
-            "min": 159,
+            "max": 1241,
+            "min": 794,
             "speed": 2.2
           }
         },
         {
-          "aggroTargetId": 415,
-          "aiState": "attack",
-          "combatTimer": 1.35,
+          "aiState": "idle",
+          "combatTimer": 107.1,
           "comboUntil": -1,
           "critChance": 0.05,
+          "despawnTimer": 6.05,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": -2.642246,
           "fiveSecondRule": 99,
-          "hostile": true,
-          "hp": 1569,
+          "hp": 3137,
           "id": 426,
-          "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
             "x": 3912,
@@ -4147,7 +4134,9 @@
           },
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 1569,
+          "maxHp": 3137,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10,
           "onGround": true,
           "overpowerUntil": -1,
@@ -4164,17 +4153,11 @@
           "stats": {
             "armor": 456
           },
-          "swingTimer": 0.85,
+          "swingTimer": 0.45,
           "templateId": "nythraxis_skeleton_warrior",
-          "threat": [
-            [
-              415,
-              1
-            ]
-          ],
           "weapon": {
-            "max": 248,
-            "min": 159,
+            "max": 1241,
+            "min": 794,
             "speed": 2.2
           }
         },
@@ -4222,11 +4205,11 @@
       "tick": 204,
       "time": 10.2,
       "nextId": 428,
-      "state": "9d986cfd",
-      "events": "5b56469a",
+      "state": "d81e26be",
+      "events": "fc1a7726",
       "rng": {
-        "draws": 943,
-        "digest": "aa57b11a"
+        "draws": 924,
+        "digest": "91a42f8b"
       },
       "label": "soulrend",
       "players": [
@@ -4245,12 +4228,14 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 2562
+            "damageTaken": 9295,
+            "deaths": 5
           },
           "craftSkills": {},
           "craftThrottle": {},
           "deedStats": {
             "counters": {
+              "deaths": 5,
               "partiesJoined": 1
             },
             "dungeonClears": {},
@@ -4262,6 +4247,10 @@
             ]
           },
           "deedsEarned": [
+            [
+              "cmb_first_fall",
+              ""
+            ],
             [
               "feat_era_cap",
               ""
@@ -4319,7 +4308,7 @@
             "q_nythraxis_bound_guardian"
           ],
           "recipesGrandfathered": true,
-          "renown": 70,
+          "renown": 75,
           "talents": {
             "rows": {},
             "spec": "prot"
@@ -4693,23 +4682,14 @@
               "id": "battle_stance",
               "kind": "battle_stance",
               "name": "Battle Stance",
-              "remaining": 3589.8,
-              "school": "physical",
-              "sourceId": 415
-            },
-            {
-              "duration": 10,
-              "id": "revenge_free",
-              "kind": "revenge_free",
-              "name": "Revenge!",
-              "remaining": 6.4,
+              "remaining": 3598.95,
               "school": "physical",
               "sourceId": 415
             }
           ],
           "blockChance": 0.05,
           "blockValue": 6,
-          "combatTimer": 1.15,
+          "combatTimer": 1.05,
           "comboUntil": -1,
           "critChance": 0.0695,
           "detonateTimer": "Infinity",
@@ -4765,7 +4745,7 @@
               "id": "nythraxis_soul_rend",
               "kind": "vulnerability",
               "name": "Soul Rend",
-              "remaining": 6,
+              "remaining": 8,
               "school": "shadow",
               "sourceId": 420
             }
@@ -4818,17 +4798,6 @@
         {
           "aiState": "idle",
           "attackPower": 10,
-          "auras": [
-            {
-              "duration": 8,
-              "id": "nythraxis_soul_rend",
-              "kind": "vulnerability",
-              "name": "Soul Rend",
-              "remaining": 8,
-              "school": "shadow",
-              "sourceId": 420
-            }
-          ],
           "combatTimer": 109.2,
           "comboUntil": -1,
           "critChance": 0.056,
@@ -4995,7 +4964,7 @@
         {
           "aggroTargetId": 415,
           "aiState": "attack",
-          "combatTimer": 1.15,
+          "combatTimer": 1.05,
           "comboUntil": -1,
           "critChance": 0.05,
           "detonateTimer": "Infinity",
@@ -5003,13 +4972,15 @@
           "facing": 3.141593,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 41400,
+          "hp": 82800,
           "id": 420,
           "inCombat": true,
           "kind": "mob",
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 60000,
+          "maxHp": 120000,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10.5,
           "nythraxis": {
             "deathlessTimer": 998.95,
@@ -5022,15 +4993,15 @@
             "raiseFallenTimer": 30,
             "soulRendMarks": [
               {
-                "playerId": 417,
-                "remaining": 8
-              },
-              {
                 "playerId": 419,
                 "remaining": 8
               },
               {
                 "playerId": 418,
+                "remaining": 8
+              },
+              {
+                "playerId": 416,
                 "remaining": 8
               }
             ],
@@ -5043,7 +5014,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 3900,
-            "z": -1155.575
+            "z": -1155.47
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -5057,17 +5028,11 @@
             425,
             426
           ],
-          "swingTimer": 1.45,
+          "swingTimer": 1.55,
           "templateId": "nythraxis_scourge_of_thornpeak",
-          "threat": [
-            [
-              415,
-              1000
-            ]
-          ],
           "weapon": {
-            "max": 507,
-            "min": 325,
+            "max": 2537,
+            "min": 1624,
             "speed": 2.6
           }
         },
@@ -5219,19 +5184,17 @@
           }
         },
         {
-          "aggroTargetId": 415,
-          "aiState": "attack",
-          "combatTimer": 1.4,
+          "aiState": "idle",
+          "combatTimer": 5.8,
           "comboUntil": -1,
           "critChance": 0.05,
+          "despawnTimer": 6,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": 2.642246,
           "fiveSecondRule": 99,
-          "hostile": true,
-          "hp": 1569,
+          "hp": 3137,
           "id": 425,
-          "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
             "x": 3888,
@@ -5239,7 +5202,9 @@
           },
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 1569,
+          "maxHp": 3137,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10,
           "onGround": true,
           "overpowerUntil": -1,
@@ -5256,34 +5221,26 @@
           "stats": {
             "armor": 456
           },
-          "swingTimer": 0.8,
+          "swingTimer": 0.45,
           "templateId": "nythraxis_skeleton_warrior",
-          "threat": [
-            [
-              415,
-              1
-            ]
-          ],
           "weapon": {
-            "max": 248,
-            "min": 159,
+            "max": 1241,
+            "min": 794,
             "speed": 2.2
           }
         },
         {
-          "aggroTargetId": 415,
-          "aiState": "attack",
-          "combatTimer": 1.4,
+          "aiState": "idle",
+          "combatTimer": 107.15,
           "comboUntil": -1,
           "critChance": 0.05,
+          "despawnTimer": 6,
           "detonateTimer": "Infinity",
           "dodgeChance": 0.05,
           "facing": -2.642246,
           "fiveSecondRule": 99,
-          "hostile": true,
-          "hp": 1569,
+          "hp": 3137,
           "id": 426,
-          "inCombat": true,
           "kind": "mob",
           "leashAnchor": {
             "x": 3912,
@@ -5291,7 +5248,9 @@
           },
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 1569,
+          "maxHp": 3137,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10,
           "onGround": true,
           "overpowerUntil": -1,
@@ -5308,17 +5267,11 @@
           "stats": {
             "armor": 456
           },
-          "swingTimer": 0.8,
+          "swingTimer": 0.45,
           "templateId": "nythraxis_skeleton_warrior",
-          "threat": [
-            [
-              415,
-              1
-            ]
-          ],
           "weapon": {
-            "max": 248,
-            "min": 159,
+            "max": 1241,
+            "min": 794,
             "speed": 2.2
           }
         },
@@ -5366,209 +5319,209 @@
       "tick": 210,
       "time": 10.5,
       "nextId": 428,
-      "state": "793ef04f",
+      "state": "3dea16de",
       "events": "741638a5",
       "rng": {
-        "draws": 959,
-        "digest": "9730532e"
+        "draws": 945,
+        "digest": "1c3b5caa"
       }
     },
     {
       "tick": 220,
       "time": 11,
       "nextId": 428,
-      "state": "daa9631a",
-      "events": "a3e073b6",
+      "state": "7d3e4697",
+      "events": "741638a5",
       "rng": {
-        "draws": 1015,
-        "digest": "78f3ed25"
+        "draws": 985,
+        "digest": "246ed027"
       }
     },
     {
       "tick": 230,
       "time": 11.5,
       "nextId": 428,
-      "state": "81b63c13",
+      "state": "fe8a75e3",
       "events": "741638a5",
       "rng": {
-        "draws": 1057,
-        "digest": "b8b60dd0"
+        "draws": 1036,
+        "digest": "57b21823"
       }
     },
     {
       "tick": 240,
       "time": 12,
       "nextId": 428,
-      "state": "4b733974",
-      "events": "79bbd80b",
+      "state": "d17db1af",
+      "events": "a997b2b6",
       "rng": {
-        "draws": 1106,
-        "digest": "60b97ab0"
+        "draws": 1085,
+        "digest": "7ff750fa"
       }
     },
     {
       "tick": 250,
       "time": 12.5,
       "nextId": 428,
-      "state": "d7039919",
+      "state": "6ee319c5",
       "events": "741638a5",
       "rng": {
-        "draws": 1146,
-        "digest": "57123ef7"
+        "draws": 1117,
+        "digest": "3574d592"
       }
     },
     {
       "tick": 260,
       "time": 13,
       "nextId": 428,
-      "state": "08a265c8",
+      "state": "992da4d9",
       "events": "741638a5",
       "rng": {
-        "draws": 1196,
-        "digest": "004f6dbe"
+        "draws": 1159,
+        "digest": "84f5dfcd"
       }
     },
     {
       "tick": 270,
       "time": 13.5,
       "nextId": 428,
-      "state": "84600d97",
-      "events": "141aa000",
+      "state": "00772112",
+      "events": "741638a5",
       "rng": {
-        "draws": 1240,
-        "digest": "6d07c849"
+        "draws": 1193,
+        "digest": "4320ec24"
       }
     },
     {
       "tick": 280,
       "time": 14,
       "nextId": 428,
-      "state": "85cdf3f7",
+      "state": "80c98d32",
       "events": "741638a5",
       "rng": {
-        "draws": 1300,
-        "digest": "0bac6dcf"
+        "draws": 1236,
+        "digest": "39e1658d"
       }
     },
     {
       "tick": 290,
       "time": 14.5,
       "nextId": 428,
-      "state": "49ee6e7a",
-      "events": "f9357431",
+      "state": "3fb95d32",
+      "events": "a8c89680",
       "rng": {
-        "draws": 1349,
-        "digest": "89123ade"
+        "draws": 1303,
+        "digest": "888b7933"
       }
     },
     {
       "tick": 300,
       "time": 15,
       "nextId": 428,
-      "state": "c8855b61",
+      "state": "f7425307",
       "events": "741638a5",
       "rng": {
-        "draws": 1393,
-        "digest": "21317228"
+        "draws": 1348,
+        "digest": "c6399320"
       }
     },
     {
       "tick": 310,
       "time": 15.5,
       "nextId": 428,
-      "state": "577f642e",
-      "events": "4f3d9e30",
+      "state": "47abab4a",
+      "events": "741638a5",
       "rng": {
-        "draws": 1455,
-        "digest": "ad5b2043"
+        "draws": 1401,
+        "digest": "3252a812"
       }
     },
     {
       "tick": 320,
       "time": 16,
       "nextId": 428,
-      "state": "7179c977",
+      "state": "de89eb91",
       "events": "741638a5",
       "rng": {
-        "draws": 1502,
-        "digest": "141111b0"
+        "draws": 1466,
+        "digest": "868baf8d"
       }
     },
     {
       "tick": 330,
       "time": 16.5,
       "nextId": 428,
-      "state": "3fe3aac0",
-      "events": "1f984f0b",
+      "state": "d3d343da",
+      "events": "741638a5",
       "rng": {
-        "draws": 1557,
-        "digest": "988490ec"
+        "draws": 1509,
+        "digest": "bfea01d6"
       }
     },
     {
       "tick": 340,
       "time": 17,
       "nextId": 428,
-      "state": "e9f628ae",
-      "events": "55f1c694",
+      "state": "ecb89809",
+      "events": "741638a5",
       "rng": {
-        "draws": 1601,
-        "digest": "962299ea"
+        "draws": 1561,
+        "digest": "d95318f5"
       }
     },
     {
       "tick": 350,
       "time": 17.5,
       "nextId": 428,
-      "state": "712d3586",
-      "events": "741638a5",
+      "state": "6545e319",
+      "events": "d45d436a",
       "rng": {
-        "draws": 1650,
-        "digest": "2814e266"
+        "draws": 1617,
+        "digest": "89fcc917"
       }
     },
     {
       "tick": 360,
       "time": 18,
       "nextId": 428,
-      "state": "e14b0c13",
-      "events": "b0c8c5c9",
+      "state": "f0957883",
+      "events": "741638a5",
       "rng": {
-        "draws": 1697,
-        "digest": "2c420b65"
+        "draws": 1675,
+        "digest": "f2038626"
       }
     },
     {
       "tick": 370,
       "time": 18.5,
       "nextId": 428,
-      "state": "29b1a551",
-      "events": "f34e0a21",
+      "state": "48f9e653",
+      "events": "3e2119ed",
       "rng": {
-        "draws": 1742,
-        "digest": "fbcbd9b8"
+        "draws": 1716,
+        "digest": "bdd0a739"
       }
     },
     {
       "tick": 380,
       "time": 19,
       "nextId": 428,
-      "state": "23045828",
+      "state": "e4f6f1b0",
       "events": "741638a5",
       "rng": {
-        "draws": 1785,
-        "digest": "3ae2f918"
+        "draws": 1775,
+        "digest": "894fb172"
       }
     },
     {
       "tick": 386,
       "time": 19.3,
       "nextId": 428,
-      "state": "18ad7b0c",
-      "events": "47281941",
+      "state": "c2ce6794",
+      "events": "e8f055bd",
       "rng": {
-        "draws": 1812,
-        "digest": "a1b236a0"
+        "draws": 1806,
+        "digest": "39b8a41d"
       },
       "label": "deathless-start",
       "players": [
@@ -5587,8 +5540,9 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 3140,
-            "damageTaken": 5105,
+            "damageDealt": 6276,
+            "damageTaken": 16206,
+            "deaths": 9,
             "kills": 2,
             "xpGained": 166
           },
@@ -5596,7 +5550,8 @@
           "craftThrottle": {},
           "deedStats": {
             "counters": {
-              "damageDealt": 3140,
+              "damageDealt": 6276,
+              "deaths": 9,
               "kills": 2,
               "partiesJoined": 1
             },
@@ -5611,6 +5566,10 @@
           "deedsEarned": [
             [
               "cmb_first_blood",
+              ""
+            ],
+            [
+              "cmb_first_fall",
               ""
             ],
             [
@@ -5670,7 +5629,7 @@
             "q_nythraxis_bound_guardian"
           ],
           "recipesGrandfathered": true,
-          "renown": 75,
+          "renown": 80,
           "talents": {
             "rows": {},
             "spec": "prot"
@@ -5692,6 +5651,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
+            "damageTaken": 140,
             "xpGained": 166
           },
           "craftSkills": {},
@@ -5783,7 +5743,6 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 140,
             "xpGained": 166
           },
           "craftSkills": {},
@@ -6055,7 +6014,7 @@
               "id": "battle_stance",
               "kind": "battle_stance",
               "name": "Battle Stance",
-              "remaining": 3580.7,
+              "remaining": 3598.9,
               "school": "physical",
               "sourceId": 415
             }
@@ -6112,7 +6071,7 @@
         {
           "aiState": "idle",
           "attackPower": 10,
-          "combatTimer": 118.3,
+          "combatTimer": 1.05,
           "comboUntil": -1,
           "critChance": 0.056,
           "detonateTimer": "Infinity",
@@ -6120,6 +6079,7 @@
           "fiveSecondRule": 118.3,
           "hp": 418,
           "id": 416,
+          "inCombat": true,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -6160,7 +6120,7 @@
         {
           "aiState": "idle",
           "attackPower": 10,
-          "combatTimer": 1.05,
+          "combatTimer": 118.3,
           "comboUntil": -1,
           "critChance": 0.056,
           "detonateTimer": "Infinity",
@@ -6168,7 +6128,6 @@
           "fiveSecondRule": 118.3,
           "hp": 418,
           "id": 417,
-          "inCombat": true,
           "kind": "player",
           "level": 20,
           "lootFfaTimer": "Infinity",
@@ -6318,13 +6277,15 @@
           "facing": 3.141593,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 41400,
+          "hp": 82800,
           "id": 420,
           "inCombat": true,
           "kind": "mob",
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 60000,
+          "maxHp": 120000,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10.5,
           "nythraxis": {
             "deathlessCastRemaining": 10,
@@ -6360,7 +6321,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 3900,
-            "z": -1155.575
+            "z": -1155.4175
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -6374,17 +6335,11 @@
             425,
             426
           ],
-          "swingTimer": 0.35,
+          "swingTimer": 0.5,
           "templateId": "nythraxis_scourge_of_thornpeak",
-          "threat": [
-            [
-              415,
-              1000
-            ]
-          ],
           "weapon": {
-            "max": 507,
-            "min": 325,
+            "max": 2537,
+            "min": 1624,
             "speed": 2.6
           }
         },
@@ -6536,114 +6491,6 @@
           }
         },
         {
-          "aiState": "dead",
-          "comboUntil": -1,
-          "corpseTimer": 59.9,
-          "critChance": 0.05,
-          "dead": true,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "facing": 2.642246,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "id": 425,
-          "inCombat": true,
-          "kind": "mob",
-          "leashAnchor": {
-            "x": 3898.067866,
-            "z": -1156.457754
-          },
-          "level": 20,
-          "lootFfaTimer": "Infinity",
-          "lootRecipientIds": [
-            415,
-            416,
-            417,
-            418,
-            419
-          ],
-          "maxHp": 1569,
-          "moveSpeed": 10,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": 3898.067866,
-            "z": -1156.457754
-          },
-          "potionCooldownUntil": -1,
-          "respawnTimer": 24.9,
-          "spawnPos": {
-            "x": 3900,
-            "z": -1154
-          },
-          "stats": {
-            "armor": 456
-          },
-          "swingTimer": 0.6,
-          "tappedById": 415,
-          "templateId": "nythraxis_skeleton_warrior",
-          "weapon": {
-            "max": 248,
-            "min": 159,
-            "speed": 2.2
-          }
-        },
-        {
-          "aiState": "dead",
-          "comboUntil": -1,
-          "corpseTimer": 59.9,
-          "critChance": 0.05,
-          "dead": true,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "facing": -2.642246,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "id": 426,
-          "inCombat": true,
-          "kind": "mob",
-          "leashAnchor": {
-            "x": 3901.932134,
-            "z": -1156.457754
-          },
-          "level": 20,
-          "lootFfaTimer": "Infinity",
-          "lootRecipientIds": [
-            415,
-            416,
-            417,
-            418,
-            419
-          ],
-          "maxHp": 1569,
-          "moveSpeed": 10,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": 3901.932134,
-            "z": -1156.457754
-          },
-          "potionCooldownUntil": -1,
-          "respawnTimer": 24.9,
-          "spawnPos": {
-            "x": 3900,
-            "z": -1154
-          },
-          "stats": {
-            "armor": 456
-          },
-          "swingTimer": 0.6,
-          "tappedById": 415,
-          "templateId": "nythraxis_skeleton_warrior",
-          "weapon": {
-            "max": 248,
-            "min": 159,
-            "speed": 2.2
-          }
-        },
-        {
           "aiState": "idle",
           "combatTimer": 99,
           "comboUntil": -1,
@@ -6687,143 +6534,143 @@
       "tick": 390,
       "time": 19.5,
       "nextId": 428,
-      "state": "1a6e2c3d",
+      "state": "8ef0ce77",
       "events": "9ee00894",
       "rng": {
-        "draws": 1832,
-        "digest": "7f4895c0"
+        "draws": 1828,
+        "digest": "72b50b12"
       }
     },
     {
       "tick": 400,
       "time": 20,
       "nextId": 428,
-      "state": "9f96dcc1",
+      "state": "2f21ec6b",
       "events": "59aacef7",
       "rng": {
-        "draws": 1891,
-        "digest": "775b0266"
+        "draws": 1896,
+        "digest": "92b92c02"
       }
     },
     {
       "tick": 410,
       "time": 20.5,
       "nextId": 428,
-      "state": "a7dda1ce",
+      "state": "3c813ced",
       "events": "59aacef7",
       "rng": {
-        "draws": 1949,
-        "digest": "eed62b45"
+        "draws": 1929,
+        "digest": "4e66ce4b"
       }
     },
     {
       "tick": 420,
       "time": 21,
       "nextId": 428,
-      "state": "09d1a52e",
+      "state": "7425d637",
       "events": "59aacef7",
       "rng": {
-        "draws": 2003,
-        "digest": "cd3df0c5"
+        "draws": 1967,
+        "digest": "08464dce"
       }
     },
     {
       "tick": 430,
       "time": 21.5,
       "nextId": 428,
-      "state": "2344f8dc",
+      "state": "1ee6c6c5",
       "events": "59aacef7",
       "rng": {
-        "draws": 2053,
-        "digest": "0d243e05"
+        "draws": 2010,
+        "digest": "b646bbed"
       }
     },
     {
       "tick": 440,
       "time": 22,
       "nextId": 428,
-      "state": "18589c40",
+      "state": "e4eb7add",
       "events": "59aacef7",
       "rng": {
-        "draws": 2105,
-        "digest": "160bc8e4"
+        "draws": 2065,
+        "digest": "06e0c4ca"
       }
     },
     {
       "tick": 450,
       "time": 22.5,
       "nextId": 428,
-      "state": "3e2a1a2e",
+      "state": "5fc78973",
       "events": "59aacef7",
       "rng": {
-        "draws": 2146,
-        "digest": "17dd92cd"
+        "draws": 2100,
+        "digest": "c071cb98"
       }
     },
     {
       "tick": 460,
       "time": 23,
       "nextId": 428,
-      "state": "cd1c18f6",
+      "state": "94211edb",
       "events": "59aacef7",
       "rng": {
-        "draws": 2191,
-        "digest": "818f2302"
+        "draws": 2148,
+        "digest": "2cf8f953"
       }
     },
     {
       "tick": 470,
       "time": 23.5,
       "nextId": 428,
-      "state": "7485a99f",
+      "state": "2ef43312",
       "events": "59aacef7",
       "rng": {
-        "draws": 2250,
-        "digest": "3979604c"
+        "draws": 2196,
+        "digest": "86492ddd"
       }
     },
     {
       "tick": 480,
       "time": 24,
       "nextId": 428,
-      "state": "5ec10f6f",
+      "state": "ef91cc9a",
       "events": "59aacef7",
       "rng": {
-        "draws": 2284,
-        "digest": "8b282fc7"
+        "draws": 2233,
+        "digest": "83911fff"
       }
     },
     {
       "tick": 490,
       "time": 24.5,
       "nextId": 428,
-      "state": "a68f205a",
+      "state": "0934bfe7",
       "events": "89d01f58",
       "rng": {
-        "draws": 2328,
-        "digest": "f894357a"
+        "draws": 2281,
+        "digest": "58665dde"
       }
     },
     {
       "tick": 500,
       "time": 25,
       "nextId": 428,
-      "state": "9f2fb5e3",
+      "state": "4a39e3f8",
       "events": "741638a5",
       "rng": {
-        "draws": 2389,
-        "digest": "6e20b473"
+        "draws": 2332,
+        "digest": "3d9db69e"
       }
     },
     {
       "tick": 506,
       "time": 25.3,
       "nextId": 428,
-      "state": "4f0acfdc",
+      "state": "70adae5f",
       "events": "741638a5",
       "rng": {
-        "draws": 2413,
-        "digest": "05f051f9"
+        "draws": 2366,
+        "digest": "a4a78159"
       },
       "label": "deathless-interrupt",
       "players": [
@@ -6842,8 +6689,9 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 3140,
-            "damageTaken": 5105,
+            "damageDealt": 6276,
+            "damageTaken": 16206,
+            "deaths": 9,
             "kills": 2,
             "xpGained": 166
           },
@@ -6851,7 +6699,8 @@
           "craftThrottle": {},
           "deedStats": {
             "counters": {
-              "damageDealt": 3140,
+              "damageDealt": 6276,
+              "deaths": 9,
               "kills": 2,
               "partiesJoined": 1
             },
@@ -6866,6 +6715,10 @@
           "deedsEarned": [
             [
               "cmb_first_blood",
+              ""
+            ],
+            [
+              "cmb_first_fall",
               ""
             ],
             [
@@ -6925,7 +6778,7 @@
             "q_nythraxis_bound_guardian"
           ],
           "recipesGrandfathered": true,
-          "renown": 75,
+          "renown": 80,
           "talents": {
             "rows": {},
             "spec": "prot"
@@ -6947,6 +6800,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
+            "damageTaken": 140,
             "xpGained": 166
           },
           "craftSkills": {},
@@ -7038,7 +6892,6 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 140,
             "xpGained": 166
           },
           "craftSkills": {},
@@ -7310,7 +7163,7 @@
               "id": "battle_stance",
               "kind": "battle_stance",
               "name": "Battle Stance",
-              "remaining": 3574.7,
+              "remaining": 3592.9,
               "school": "physical",
               "sourceId": 415
             }
@@ -7368,7 +7221,7 @@
           "aiState": "idle",
           "attackPower": 10,
           "channelTickTimer": -5.05,
-          "combatTimer": 124.3,
+          "combatTimer": 7.05,
           "comboUntil": -1,
           "critChance": 0.056,
           "detonateTimer": "Infinity",
@@ -7417,7 +7270,7 @@
           "aiState": "idle",
           "attackPower": 10,
           "channelTickTimer": -5.05,
-          "combatTimer": 7.05,
+          "combatTimer": 124.3,
           "comboUntil": -1,
           "critChance": 0.056,
           "detonateTimer": "Infinity",
@@ -7581,13 +7434,15 @@
           "facing": 3.141593,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 41400,
+          "hp": 82800,
           "id": 420,
           "inCombat": true,
           "kind": "mob",
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 60000,
+          "maxHp": 120000,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10.5,
           "nythraxis": {
             "deathlessStunRemaining": 4.05,
@@ -7626,7 +7481,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 3900,
-            "z": -1155.575
+            "z": -1155.4175
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -7640,17 +7495,11 @@
             425,
             426
           ],
-          "swingTimer": 0.35,
+          "swingTimer": 0.5,
           "templateId": "nythraxis_scourge_of_thornpeak",
-          "threat": [
-            [
-              415,
-              1000
-            ]
-          ],
           "weapon": {
-            "max": 507,
-            "min": 325,
+            "max": 2537,
+            "min": 1624,
             "speed": 2.6
           }
         },
@@ -7802,114 +7651,6 @@
           }
         },
         {
-          "aiState": "dead",
-          "comboUntil": -1,
-          "corpseTimer": 53.9,
-          "critChance": 0.05,
-          "dead": true,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "facing": 2.642246,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "id": 425,
-          "inCombat": true,
-          "kind": "mob",
-          "leashAnchor": {
-            "x": 3898.067866,
-            "z": -1156.457754
-          },
-          "level": 20,
-          "lootFfaTimer": "Infinity",
-          "lootRecipientIds": [
-            415,
-            416,
-            417,
-            418,
-            419
-          ],
-          "maxHp": 1569,
-          "moveSpeed": 10,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": 3898.067866,
-            "z": -1156.457754
-          },
-          "potionCooldownUntil": -1,
-          "respawnTimer": 18.9,
-          "spawnPos": {
-            "x": 3900,
-            "z": -1154
-          },
-          "stats": {
-            "armor": 456
-          },
-          "swingTimer": 0.6,
-          "tappedById": 415,
-          "templateId": "nythraxis_skeleton_warrior",
-          "weapon": {
-            "max": 248,
-            "min": 159,
-            "speed": 2.2
-          }
-        },
-        {
-          "aiState": "dead",
-          "comboUntil": -1,
-          "corpseTimer": 53.9,
-          "critChance": 0.05,
-          "dead": true,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "facing": -2.642246,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "id": 426,
-          "inCombat": true,
-          "kind": "mob",
-          "leashAnchor": {
-            "x": 3901.932134,
-            "z": -1156.457754
-          },
-          "level": 20,
-          "lootFfaTimer": "Infinity",
-          "lootRecipientIds": [
-            415,
-            416,
-            417,
-            418,
-            419
-          ],
-          "maxHp": 1569,
-          "moveSpeed": 10,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": 3901.932134,
-            "z": -1156.457754
-          },
-          "potionCooldownUntil": -1,
-          "respawnTimer": 18.9,
-          "spawnPos": {
-            "x": 3900,
-            "z": -1154
-          },
-          "stats": {
-            "armor": 456
-          },
-          "swingTimer": 0.6,
-          "tappedById": 415,
-          "templateId": "nythraxis_skeleton_warrior",
-          "weapon": {
-            "max": 248,
-            "min": 159,
-            "speed": 2.2
-          }
-        },
-        {
           "aiState": "idle",
           "combatTimer": 99,
           "comboUntil": -1,
@@ -7953,117 +7694,128 @@
       "tick": 510,
       "time": 25.5,
       "nextId": 428,
-      "state": "0d4aed33",
+      "state": "20ec86e2",
       "events": "741638a5",
       "rng": {
-        "draws": 2428,
-        "digest": "b80aaba8"
+        "draws": 2389,
+        "digest": "6e20b473"
       }
     },
     {
       "tick": 520,
       "time": 26,
       "nextId": 428,
-      "state": "05994c5e",
+      "state": "33f56fb1",
       "events": "741638a5",
       "rng": {
-        "draws": 2466,
-        "digest": "d5ee115f"
+        "draws": 2440,
+        "digest": "b59314bf"
       }
     },
     {
       "tick": 530,
       "time": 26.5,
       "nextId": 428,
-      "state": "24630f80",
+      "state": "268a6985",
       "events": "741638a5",
       "rng": {
-        "draws": 2512,
-        "digest": "9b6b460b"
+        "draws": 2484,
+        "digest": "9eb21937"
       }
     },
     {
       "tick": 540,
       "time": 27,
       "nextId": 428,
-      "state": "ba59265d",
+      "state": "fd36b30a",
       "events": "741638a5",
       "rng": {
-        "draws": 2549,
-        "digest": "4bdf6421"
+        "draws": 2537,
+        "digest": "c0b791e2"
       }
     },
     {
       "tick": 550,
       "time": 27.5,
       "nextId": 428,
-      "state": "b79bf9d9",
+      "state": "c8716480",
       "events": "741638a5",
       "rng": {
-        "draws": 2588,
-        "digest": "abb33bc5"
+        "draws": 2590,
+        "digest": "e6b960bc"
       }
     },
     {
       "tick": 560,
       "time": 28,
       "nextId": 428,
-      "state": "7125c150",
+      "state": "d2c46b0b",
       "events": "741638a5",
       "rng": {
-        "draws": 2640,
-        "digest": "4a40e164"
+        "draws": 2622,
+        "digest": "7aaa1190"
       }
     },
     {
       "tick": 570,
       "time": 28.5,
       "nextId": 428,
-      "state": "97e46ccc",
+      "state": "3e1fc418",
       "events": "741638a5",
       "rng": {
-        "draws": 2684,
-        "digest": "d6b714ef"
+        "draws": 2675,
+        "digest": "b4afdab3"
       }
     },
     {
       "tick": 580,
       "time": 29,
       "nextId": 428,
-      "state": "3e34df03",
+      "state": "61f824ad",
       "events": "741638a5",
       "rng": {
-        "draws": 2735,
-        "digest": "6818d25d"
+        "draws": 2720,
+        "digest": "2510a677"
       }
     },
     {
       "tick": 590,
       "time": 29.5,
       "nextId": 428,
-      "state": "8d754989",
+      "state": "e68a4423",
       "events": "aad79240",
       "rng": {
-        "draws": 2786,
-        "digest": "76a7eeba"
+        "draws": 2767,
+        "digest": "f206762b"
       }
     },
     {
       "tick": 600,
       "time": 30,
       "nextId": 428,
-      "state": "804d6641",
-      "events": "f61ed32d",
+      "state": "3d287a1f",
+      "events": "79bbd80b",
       "rng": {
-        "draws": 2836,
-        "digest": "5a53c578"
+        "draws": 2816,
+        "digest": "2bf3782d"
       }
     },
     {
       "tick": 610,
       "time": 30.5,
       "nextId": 428,
-      "state": "d10a3b5e",
+      "state": "6e435bcc",
+      "events": "741638a5",
+      "rng": {
+        "draws": 2852,
+        "digest": "c41fd4d8"
+      }
+    },
+    {
+      "tick": 620,
+      "time": 31,
+      "nextId": 428,
+      "state": "aa8b2826",
       "events": "741638a5",
       "rng": {
         "draws": 2897,
@@ -8071,25 +7823,14 @@
       }
     },
     {
-      "tick": 620,
-      "time": 31,
-      "nextId": 428,
-      "state": "9204d111",
-      "events": "741638a5",
-      "rng": {
-        "draws": 2959,
-        "digest": "f4d55619"
-      }
-    },
-    {
       "tick": 627,
       "time": 31.35,
       "nextId": 428,
-      "state": "3d9f9bb3",
+      "state": "7459f751",
       "events": "51248d9b",
       "rng": {
-        "draws": 2986,
-        "digest": "58ae2efc"
+        "draws": 2936,
+        "digest": "1efae065"
       },
       "label": "finalstand",
       "players": [
@@ -8108,8 +7849,9 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 3140,
-            "damageTaken": 5402,
+            "damageDealt": 6276,
+            "damageTaken": 16206,
+            "deaths": 9,
             "kills": 2,
             "xpGained": 166
           },
@@ -8117,7 +7859,8 @@
           "craftThrottle": {},
           "deedStats": {
             "counters": {
-              "damageDealt": 3140,
+              "damageDealt": 6276,
+              "deaths": 9,
               "kills": 2,
               "partiesJoined": 1
             },
@@ -8132,6 +7875,10 @@
           "deedsEarned": [
             [
               "cmb_first_blood",
+              ""
+            ],
+            [
+              "cmb_first_fall",
               ""
             ],
             [
@@ -8191,7 +7938,7 @@
             "q_nythraxis_bound_guardian"
           ],
           "recipesGrandfathered": true,
-          "renown": 75,
+          "renown": 80,
           "talents": {
             "rows": {},
             "spec": "prot"
@@ -8213,6 +7960,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
+            "damageTaken": 140,
             "xpGained": 166
           },
           "craftSkills": {},
@@ -8304,7 +8052,6 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 140,
             "xpGained": 166
           },
           "craftSkills": {},
@@ -8576,14 +8323,14 @@
               "id": "battle_stance",
               "kind": "battle_stance",
               "name": "Battle Stance",
-              "remaining": 3568.65,
+              "remaining": 3586.85,
               "school": "physical",
               "sourceId": 415
             }
           ],
           "blockChance": 0.05,
           "blockValue": 6,
-          "combatTimer": 1.55,
+          "combatTimer": 12.15,
           "comboUntil": -1,
           "critChance": 0.0695,
           "detonateTimer": "Infinity",
@@ -8634,7 +8381,7 @@
           "aiState": "idle",
           "attackPower": 10,
           "channelTickTimer": -5.05,
-          "combatTimer": 130.35,
+          "combatTimer": 13.1,
           "comboUntil": -1,
           "critChance": 0.056,
           "detonateTimer": "Infinity",
@@ -8683,7 +8430,7 @@
           "aiState": "idle",
           "attackPower": 10,
           "channelTickTimer": -5.05,
-          "combatTimer": 13.1,
+          "combatTimer": 130.35,
           "comboUntil": -1,
           "critChance": 0.056,
           "detonateTimer": "Infinity",
@@ -8840,7 +8587,7 @@
               "value": 1.45
             }
           ],
-          "combatTimer": 1.55,
+          "combatTimer": 13.1,
           "comboUntil": -1,
           "critChance": 0.05,
           "detonateTimer": "Infinity",
@@ -8849,13 +8596,15 @@
           "facing": 3.141593,
           "fiveSecondRule": 99,
           "hostile": true,
-          "hp": 2400,
+          "hp": 4800,
           "id": 420,
           "inCombat": true,
           "kind": "mob",
           "level": 20,
           "lootFfaTimer": "Infinity",
-          "maxHp": 60000,
+          "maxHp": 120000,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10.5,
           "nythraxis": {
             "deathlessTimer": 43.05,
@@ -8894,7 +8643,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 3900,
-            "z": -1155.575
+            "z": -1155.4175
           },
           "potionCooldownUntil": -1,
           "spawnPos": {
@@ -8908,17 +8657,11 @@
             425,
             426
           ],
-          "swingTimer": 1.05,
+          "swingTimer": 1.2,
           "templateId": "nythraxis_scourge_of_thornpeak",
-          "threat": [
-            [
-              415,
-              1000
-            ]
-          ],
           "weapon": {
-            "max": 507,
-            "min": 325,
+            "max": 2537,
+            "min": 1624,
             "speed": 2.6
           }
         },
@@ -9070,114 +8813,6 @@
           }
         },
         {
-          "aiState": "dead",
-          "comboUntil": -1,
-          "corpseTimer": 47.85,
-          "critChance": 0.05,
-          "dead": true,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "facing": 2.642246,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "id": 425,
-          "inCombat": true,
-          "kind": "mob",
-          "leashAnchor": {
-            "x": 3898.067866,
-            "z": -1156.457754
-          },
-          "level": 20,
-          "lootFfaTimer": "Infinity",
-          "lootRecipientIds": [
-            415,
-            416,
-            417,
-            418,
-            419
-          ],
-          "maxHp": 1569,
-          "moveSpeed": 10,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": 3898.067866,
-            "z": -1156.457754
-          },
-          "potionCooldownUntil": -1,
-          "respawnTimer": 12.85,
-          "spawnPos": {
-            "x": 3900,
-            "z": -1154
-          },
-          "stats": {
-            "armor": 456
-          },
-          "swingTimer": 0.6,
-          "tappedById": 415,
-          "templateId": "nythraxis_skeleton_warrior",
-          "weapon": {
-            "max": 248,
-            "min": 159,
-            "speed": 2.2
-          }
-        },
-        {
-          "aiState": "dead",
-          "comboUntil": -1,
-          "corpseTimer": 47.85,
-          "critChance": 0.05,
-          "dead": true,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "facing": -2.642246,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "id": 426,
-          "inCombat": true,
-          "kind": "mob",
-          "leashAnchor": {
-            "x": 3901.932134,
-            "z": -1156.457754
-          },
-          "level": 20,
-          "lootFfaTimer": "Infinity",
-          "lootRecipientIds": [
-            415,
-            416,
-            417,
-            418,
-            419
-          ],
-          "maxHp": 1569,
-          "moveSpeed": 10,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": 3901.932134,
-            "z": -1156.457754
-          },
-          "potionCooldownUntil": -1,
-          "respawnTimer": 12.85,
-          "spawnPos": {
-            "x": 3900,
-            "z": -1154
-          },
-          "stats": {
-            "armor": 456
-          },
-          "swingTimer": 0.6,
-          "tappedById": 415,
-          "templateId": "nythraxis_skeleton_warrior",
-          "weapon": {
-            "max": 248,
-            "min": 159,
-            "speed": 2.2
-          }
-        },
-        {
           "aiState": "idle",
           "combatTimer": 99,
           "comboUntil": -1,
@@ -9221,11 +8856,11 @@
       "tick": 628,
       "time": 31.4,
       "nextId": 428,
-      "state": "4f644566",
-      "events": "0625d00c",
+      "state": "e55bfbf5",
+      "events": "90b86b6a",
       "rng": {
-        "draws": 2995,
-        "digest": "8c3bfd15"
+        "draws": 2949,
+        "digest": "52d84edb"
       },
       "label": "death",
       "players": [
@@ -9244,8 +8879,9 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 5540,
-            "damageTaken": 5402,
+            "damageDealt": 11076,
+            "damageTaken": 16206,
+            "deaths": 9,
             "kills": 3,
             "xpGained": 249
           },
@@ -9253,7 +8889,8 @@
           "craftThrottle": {},
           "deedStats": {
             "counters": {
-              "damageDealt": 5540,
+              "damageDealt": 11076,
+              "deaths": 9,
               "dungeonFinalBossKills": 1,
               "kills": 3,
               "partiesJoined": 1
@@ -9271,6 +8908,10 @@
           "deedsEarned": [
             [
               "cmb_first_blood",
+              ""
+            ],
+            [
+              "cmb_first_fall",
               ""
             ],
             [
@@ -9348,7 +8989,7 @@
             ]
           ],
           "recipesGrandfathered": true,
-          "renown": 135,
+          "renown": 140,
           "talents": {
             "rows": {},
             "spec": "prot"
@@ -9370,6 +9011,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
+            "damageTaken": 140,
             "xpGained": 249
           },
           "craftSkills": {},
@@ -9482,7 +9124,6 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 140,
             "xpGained": 249
           },
           "craftSkills": {},
@@ -9817,7 +9458,7 @@
               "id": "battle_stance",
               "kind": "battle_stance",
               "name": "Battle Stance",
-              "remaining": 3568.6,
+              "remaining": 3586.8,
               "school": "physical",
               "sourceId": 415
             }
@@ -9875,7 +9516,7 @@
           "aiState": "idle",
           "attackPower": 10,
           "channelTickTimer": -5.05,
-          "combatTimer": 130.4,
+          "combatTimer": 13.15,
           "comboUntil": -1,
           "critChance": 0.056,
           "detonateTimer": "Infinity",
@@ -9924,7 +9565,7 @@
           "aiState": "idle",
           "attackPower": 10,
           "channelTickTimer": -5.05,
-          "combatTimer": 13.15,
+          "combatTimer": 130.4,
           "comboUntil": -1,
           "critChance": 0.056,
           "detonateTimer": "Infinity",
@@ -10083,11 +9724,11 @@
           "kind": "mob",
           "leashAnchor": {
             "x": 3900,
-            "z": -1155.575
+            "z": -1155.4175
           },
           "level": 20,
           "loot": {
-            "copper": 205491,
+            "copper": 129009,
             "items": [
               {
                 "count": 1,
@@ -10095,15 +9736,15 @@
               },
               {
                 "count": 1,
-                "itemId": "nighttalon_crown"
+                "itemId": "crownforged_warspaulders"
               },
               {
                 "count": 1,
-                "itemId": "soulflame_cowl"
+                "itemId": "stormcallers_crown"
               },
               {
                 "count": 1,
-                "itemId": "direfang_greatblade"
+                "itemId": "stormcallers_spaulders"
               }
             ]
           },
@@ -10116,7 +9757,9 @@
             419
           ],
           "lootable": true,
-          "maxHp": 60000,
+          "maxHp": 120000,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10.5,
           "nythraxis": {
             "deathSpoken": true,
@@ -10156,7 +9799,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 3900,
-            "z": -1155.575
+            "z": -1155.4175
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 24.95,
@@ -10171,12 +9814,12 @@
             425,
             426
           ],
-          "swingTimer": 1.05,
+          "swingTimer": 1.2,
           "tappedById": 415,
           "templateId": "nythraxis_scourge_of_thornpeak",
           "weapon": {
-            "max": 507,
-            "min": 325,
+            "max": 2537,
+            "min": 1624,
             "speed": 2.6
           }
         },
@@ -10328,114 +9971,6 @@
           }
         },
         {
-          "aiState": "dead",
-          "comboUntil": -1,
-          "corpseTimer": 47.8,
-          "critChance": 0.05,
-          "dead": true,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "facing": 2.642246,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "id": 425,
-          "inCombat": true,
-          "kind": "mob",
-          "leashAnchor": {
-            "x": 3898.067866,
-            "z": -1156.457754
-          },
-          "level": 20,
-          "lootFfaTimer": "Infinity",
-          "lootRecipientIds": [
-            415,
-            416,
-            417,
-            418,
-            419
-          ],
-          "maxHp": 1569,
-          "moveSpeed": 10,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": 3898.067866,
-            "z": -1156.457754
-          },
-          "potionCooldownUntil": -1,
-          "respawnTimer": 12.8,
-          "spawnPos": {
-            "x": 3900,
-            "z": -1154
-          },
-          "stats": {
-            "armor": 456
-          },
-          "swingTimer": 0.6,
-          "tappedById": 415,
-          "templateId": "nythraxis_skeleton_warrior",
-          "weapon": {
-            "max": 248,
-            "min": 159,
-            "speed": 2.2
-          }
-        },
-        {
-          "aiState": "dead",
-          "comboUntil": -1,
-          "corpseTimer": 47.8,
-          "critChance": 0.05,
-          "dead": true,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "facing": -2.642246,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "id": 426,
-          "inCombat": true,
-          "kind": "mob",
-          "leashAnchor": {
-            "x": 3901.932134,
-            "z": -1156.457754
-          },
-          "level": 20,
-          "lootFfaTimer": "Infinity",
-          "lootRecipientIds": [
-            415,
-            416,
-            417,
-            418,
-            419
-          ],
-          "maxHp": 1569,
-          "moveSpeed": 10,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": 3901.932134,
-            "z": -1156.457754
-          },
-          "potionCooldownUntil": -1,
-          "respawnTimer": 12.8,
-          "spawnPos": {
-            "x": 3900,
-            "z": -1154
-          },
-          "stats": {
-            "armor": 456
-          },
-          "swingTimer": 0.6,
-          "tappedById": 415,
-          "templateId": "nythraxis_skeleton_warrior",
-          "weapon": {
-            "max": 248,
-            "min": 159,
-            "speed": 2.2
-          }
-        },
-        {
           "aiState": "idle",
           "combatTimer": 99,
           "comboUntil": -1,
@@ -10479,77 +10014,77 @@
       "tick": 630,
       "time": 31.5,
       "nextId": 428,
-      "state": "1e8cc286",
+      "state": "0f9b7bf3",
       "events": "741638a5",
       "rng": {
-        "draws": 3001,
-        "digest": "e7e41486"
+        "draws": 2954,
+        "digest": "d62642cf"
       }
     },
     {
       "tick": 640,
       "time": 32,
       "nextId": 428,
-      "state": "bc462f9c",
+      "state": "82ee6389",
       "events": "741638a5",
       "rng": {
-        "draws": 3055,
-        "digest": "74801bda"
+        "draws": 3005,
+        "digest": "1c9ecb61"
       }
     },
     {
       "tick": 650,
       "time": 32.5,
       "nextId": 428,
-      "state": "21995170",
+      "state": "4bec25b7",
       "events": "741638a5",
       "rng": {
-        "draws": 3092,
-        "digest": "7a0601e8"
+        "draws": 3063,
+        "digest": "f898e9e0"
       }
     },
     {
       "tick": 660,
       "time": 33,
       "nextId": 428,
-      "state": "6e53a25e",
+      "state": "200b0d5d",
       "events": "741638a5",
       "rng": {
-        "draws": 3144,
-        "digest": "cf538127"
+        "draws": 3114,
+        "digest": "0bcc67a5"
       }
     },
     {
       "tick": 670,
       "time": 33.5,
       "nextId": 428,
-      "state": "f17d4a2a",
+      "state": "4534095b",
       "events": "741638a5",
       "rng": {
-        "draws": 3189,
-        "digest": "b9b4e3a2"
+        "draws": 3154,
+        "digest": "cf74137f"
       }
     },
     {
       "tick": 680,
       "time": 34,
       "nextId": 428,
-      "state": "162bcbc8",
+      "state": "5465adf1",
       "events": "741638a5",
       "rng": {
-        "draws": 3242,
-        "digest": "1ea0d65d"
+        "draws": 3201,
+        "digest": "a3f4b023"
       }
     },
     {
       "tick": 688,
       "time": 34.4,
       "nextId": 428,
-      "state": "53dea5e6",
+      "state": "fee4654d",
       "events": "e3560676",
       "rng": {
-        "draws": 3282,
-        "digest": "15a1a241"
+        "draws": 3249,
+        "digest": "519a0f5e"
       },
       "label": "final",
       "players": [
@@ -10568,8 +10103,9 @@
           "cls": "warrior",
           "companionUpgrades": {},
           "counters": {
-            "damageDealt": 5540,
-            "damageTaken": 5402,
+            "damageDealt": 11076,
+            "damageTaken": 16206,
+            "deaths": 9,
             "kills": 3,
             "xpGained": 249
           },
@@ -10577,7 +10113,8 @@
           "craftThrottle": {},
           "deedStats": {
             "counters": {
-              "damageDealt": 5540,
+              "damageDealt": 11076,
+              "deaths": 9,
               "dungeonFinalBossKills": 1,
               "kills": 3,
               "partiesJoined": 1
@@ -10595,6 +10132,10 @@
           "deedsEarned": [
             [
               "cmb_first_blood",
+              ""
+            ],
+            [
+              "cmb_first_fall",
               ""
             ],
             [
@@ -10672,7 +10213,7 @@
             ]
           ],
           "recipesGrandfathered": true,
-          "renown": 135,
+          "renown": 140,
           "talents": {
             "rows": {},
             "spec": "prot"
@@ -10694,6 +10235,7 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
+            "damageTaken": 140,
             "xpGained": 249
           },
           "craftSkills": {},
@@ -10806,7 +10348,6 @@
           "cls": "mage",
           "companionUpgrades": {},
           "counters": {
-            "damageTaken": 140,
             "xpGained": 249
           },
           "craftSkills": {},
@@ -11141,7 +10682,7 @@
               "id": "battle_stance",
               "kind": "battle_stance",
               "name": "Battle Stance",
-              "remaining": 3565.6,
+              "remaining": 3583.8,
               "school": "physical",
               "sourceId": 415
             }
@@ -11199,7 +10740,7 @@
           "aiState": "idle",
           "attackPower": 10,
           "channelTickTimer": -5.05,
-          "combatTimer": 133.4,
+          "combatTimer": 16.15,
           "comboUntil": -1,
           "critChance": 0.056,
           "detonateTimer": "Infinity",
@@ -11248,7 +10789,7 @@
           "aiState": "idle",
           "attackPower": 10,
           "channelTickTimer": -5.05,
-          "combatTimer": 16.15,
+          "combatTimer": 133.4,
           "comboUntil": -1,
           "critChance": 0.056,
           "detonateTimer": "Infinity",
@@ -11407,11 +10948,11 @@
           "kind": "mob",
           "leashAnchor": {
             "x": 3900,
-            "z": -1155.575
+            "z": -1155.4175
           },
           "level": 20,
           "loot": {
-            "copper": 205491,
+            "copper": 129009,
             "items": [
               {
                 "count": 1,
@@ -11419,15 +10960,15 @@
               },
               {
                 "count": 1,
-                "itemId": "nighttalon_crown"
+                "itemId": "crownforged_warspaulders"
               },
               {
                 "count": 1,
-                "itemId": "soulflame_cowl"
+                "itemId": "stormcallers_crown"
               },
               {
                 "count": 1,
-                "itemId": "direfang_greatblade"
+                "itemId": "stormcallers_spaulders"
               }
             ]
           },
@@ -11440,7 +10981,9 @@
             419
           ],
           "lootable": true,
-          "maxHp": 60000,
+          "maxHp": 120000,
+          "mechanicDamageMult": 5,
+          "mechanicHealMult": 2,
           "moveSpeed": 10.5,
           "nythraxis": {
             "deathSpoken": true,
@@ -11480,7 +11023,7 @@
           "petMode": "defensive",
           "pos": {
             "x": 3900,
-            "z": -1155.575
+            "z": -1155.4175
           },
           "potionCooldownUntil": -1,
           "respawnTimer": 21.95,
@@ -11495,12 +11038,12 @@
             425,
             426
           ],
-          "swingTimer": 1.05,
+          "swingTimer": 1.2,
           "tappedById": 415,
           "templateId": "nythraxis_scourge_of_thornpeak",
           "weapon": {
-            "max": 507,
-            "min": 325,
+            "max": 2537,
+            "min": 1624,
             "speed": 2.6
           }
         },
@@ -11649,114 +11192,6 @@
             "max": 2,
             "min": 1,
             "speed": 2
-          }
-        },
-        {
-          "aiState": "dead",
-          "comboUntil": -1,
-          "corpseTimer": 44.8,
-          "critChance": 0.05,
-          "dead": true,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "facing": 2.642246,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "id": 425,
-          "inCombat": true,
-          "kind": "mob",
-          "leashAnchor": {
-            "x": 3898.067866,
-            "z": -1156.457754
-          },
-          "level": 20,
-          "lootFfaTimer": "Infinity",
-          "lootRecipientIds": [
-            415,
-            416,
-            417,
-            418,
-            419
-          ],
-          "maxHp": 1569,
-          "moveSpeed": 10,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": 3898.067866,
-            "z": -1156.457754
-          },
-          "potionCooldownUntil": -1,
-          "respawnTimer": 9.8,
-          "spawnPos": {
-            "x": 3900,
-            "z": -1154
-          },
-          "stats": {
-            "armor": 456
-          },
-          "swingTimer": 0.6,
-          "tappedById": 415,
-          "templateId": "nythraxis_skeleton_warrior",
-          "weapon": {
-            "max": 248,
-            "min": 159,
-            "speed": 2.2
-          }
-        },
-        {
-          "aiState": "dead",
-          "comboUntil": -1,
-          "corpseTimer": 44.8,
-          "critChance": 0.05,
-          "dead": true,
-          "detonateTimer": "Infinity",
-          "dodgeChance": 0.05,
-          "facing": -2.642246,
-          "fiveSecondRule": 99,
-          "hostile": true,
-          "id": 426,
-          "inCombat": true,
-          "kind": "mob",
-          "leashAnchor": {
-            "x": 3901.932134,
-            "z": -1156.457754
-          },
-          "level": 20,
-          "lootFfaTimer": "Infinity",
-          "lootRecipientIds": [
-            415,
-            416,
-            417,
-            418,
-            419
-          ],
-          "maxHp": 1569,
-          "moveSpeed": 10,
-          "onGround": true,
-          "overpowerUntil": -1,
-          "petMode": "defensive",
-          "pos": {
-            "x": 3901.932134,
-            "z": -1156.457754
-          },
-          "potionCooldownUntil": -1,
-          "respawnTimer": 9.8,
-          "spawnPos": {
-            "x": 3900,
-            "z": -1154
-          },
-          "stats": {
-            "armor": 456
-          },
-          "swingTimer": 0.6,
-          "tappedById": 415,
-          "templateId": "nythraxis_skeleton_warrior",
-          "weapon": {
-            "max": 248,
-            "min": 159,
-            "speed": 2.2
           }
         },
         {

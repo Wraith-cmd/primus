@@ -1875,7 +1875,11 @@ async function startGame(
     if (key === 'reduceMotion') {
       // body.reduce-motion stays the CSS hook it already is; the applier folds the
       // same flag into the graphics-tier effect profile so the two never fight.
-      document.body.classList.toggle('reduce-motion', settings.set('reduceMotion', !!value));
+      // The renderer mirror gates the 3D camera-motion layer too (spring lag
+      // snaps tight, shake/FOV kicks/vista pans no-op).
+      const on = settings.set('reduceMotion', !!value);
+      document.body.classList.toggle('reduce-motion', on);
+      renderer.reduceMotionSetting = on;
       uiEffectsApplier.applyNow();
       return;
     }

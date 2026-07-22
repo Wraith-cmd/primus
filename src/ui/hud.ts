@@ -7535,6 +7535,11 @@ export class Hud {
             this.showBanner(currentZoneName);
             this.log(t('hud.core.enteringZone', { zone: currentZoneName }), '#ffd100');
             this.logZoneWelcome(currentZone);
+            // Zone-entry vista: a slow up-and-out camera sweep over the new
+            // zone alongside the banner. Display-only, cancelled by any
+            // camera input, skipped in combat/while dead and under reduced
+            // motion (the renderer gates the latter).
+            if (!p.dead && !p.inCombat) this.renderer.vistaPan();
           }
           this.lastZoneId = currentZone.id;
           this.prewarmMapBg(currentZone.id); // get the new zone's map bg ready before the player opens it
@@ -8834,8 +8839,14 @@ export class Hud {
               }),
               '#ff8877',
             );
-            // player-hit SFX is spatial now (see playEventSfx). Keep the Fiesta kick.
+            // player-hit SFX is spatial now (see playEventSfx). Keep the Fiesta kick;
+            // in the open world only a HEAVY hit kicks the camera (a tenth of
+            // max HP in one blow, or any crit), so routine chip damage stays
+            // still. addShake is a reduced-motion no-op.
             if (this.inFiesta()) this.renderer.addShake(ev.crit ? 0.34 : 0.14);
+            else if (tgt && (ev.crit || ev.amount >= tgt.maxHp * 0.1)) {
+              this.renderer.addShake(ev.crit ? 0.26 : 0.16);
+            }
           }
           break;
         }

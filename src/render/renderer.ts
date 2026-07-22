@@ -42,7 +42,22 @@ import { AOE_RING_LIFETIME, aoeRingAnim } from './aoe_ring';
 import { buildArtisanRowProps } from './artisan_row_props';
 import type { AmbientPointSource, SpatialAudioSink, Surface } from './audio_sink';
 import { type BirdsView, buildBirds } from './birds';
+import { createCameraBoom, stepCameraBoom } from './camera_boom_core';
 import { type CameraOcclusionState, stepCameraOcclusion } from './camera_collision';
+import {
+  cancelCameraDirective,
+  createCameraDirector,
+  startDeathDrift,
+  startVista,
+  stepCameraDirector,
+} from './camera_director_core';
+import {
+  cameraFovOffset,
+  createCameraFeel,
+  punchCameraFov,
+  stepCameraFeel,
+  stepLandingDetector,
+} from './camera_feel_core';
 import {
   characterRecklessnessActive,
   characterSanguineAuraActive,
@@ -923,6 +938,21 @@ export class Renderer {
     lensT: 1,
     fov: CAMERA_BASE_FOV,
   };
+  // AAA camera-feel layers (all display-only; see the three *_core modules):
+  // spring-arm pivot lag, look-ahead + FOV kicks + landing thump, and the
+  // directed moves (zone vista, death drift). Gated by reducedMotion().
+  private readonly camBoom = createCameraBoom();
+  private readonly camFeel = createCameraFeel();
+  private readonly camDirector = createCameraDirector();
+  // Player-pose mirror from last frame: any change while a directive runs is
+  // manual camera input (or the follow system), which cancels the directive.
+  private readonly camMirror = { yaw: Number.NaN, pitch: Number.NaN, dist: Number.NaN };
+  // One death drift per death: once the player cancels it, stay hands-off.
+  private deathDriftPlayed = false;
+  // settings-backed in-game "Reduce motion" switch; OR-ed with the OS
+  // prefers-reduced-motion query in reducedMotion(). Initialized from Settings
+  // and kept live by main.ts's applySetting dispatcher (mirrors showDevBadges).
+  reduceMotionSetting = false;
   showNameplates = true;
   // settings-backed developer-badge display toggle (nameplate glyph + outline);
   // initialized from Settings and kept live by main.ts's applySetting dispatcher.
@@ -3590,6 +3620,8 @@ export class Renderer {
       }
       case 'levelup':
         this.vfx.levelUpPillar(this.sim.playerId);
+        // A brief FOV widen sells the surge (no-op under reduced motion).
+        this.punchFov(3);
         break;
       case 'deedUnlocked': {
         // Book of Deeds earned moment: one festival-gold shell just above the
@@ -3788,9 +3820,25 @@ export class Renderer {
   // ---- 2v2 Fiesta juice (driven by the HUD's event handler) --------------
 
   // Add camera trauma (0..1). Squared on apply, so small adds barely register
-  // and big hits (kills, ring closes) really kick.
+  // and big hits (kills, ring closes) really kick. A no-op for
+  // reduced-motion players (OS query or the in-game switch).
   addShake(amount: number): void {
+    if (this.reducedMotion()) return;
     this.shakeTrauma = Math.min(1, this.shakeTrauma + amount);
+  }
+
+  // Zone-entry vista sweep (hud.ts fires it on the zone-banner edge): the
+  // camera eases up and out and pans slowly over the new zone, then settles
+  // home. Any manual camera input cancels it; reduced motion skips it.
+  vistaPan(): void {
+    if (this.reducedMotion()) return;
+    startVista(this.camDirector);
+  }
+
+  // Transient FOV impulse in degrees (negative = a dip); decays on its own.
+  punchFov(degrees: number): void {
+    if (this.reducedMotion()) return;
+    punchCameraFov(this.camFeel, degrees);
   }
 
   // A golden pillar bursts up off a fighter who just locked in an augment.
@@ -5931,7 +5979,7 @@ export class Renderer {
   }
 
   private reducedMotion(): boolean {
-    return this.reduceMotionMql?.matches ?? false;
+    return this.reduceMotionSetting || (this.reduceMotionMql?.matches ?? false);
   }
 
   // Grab a JPEG screenshot of the live scene for a bug report. The main
@@ -6257,13 +6305,74 @@ export class Renderer {
     }
     const p = this.sim.player;
     const seed = this.sim.cfg.seed;
-    const px = selfPos.x;
-    const py = selfPos.y;
-    const pz = selfPos.z;
+    const reduce = this.reducedMotion();
+
+    // Spring-arm lag: the look pivot trails the avatar on a critically damped
+    // spring (vertical softer), so runs, jumps, mantles, and landings carry
+    // weight. Reduced motion stiffens it to near-rigid instead of branching.
+    stepCameraBoom(this.camBoom, selfPos.x, selfPos.y, selfPos.z, dt, reduce ? 4 : 1);
+
+    // Landing thump, detected from the display trajectory alone (works in
+    // both hosts): a short FOV dip plus a touch of trauma, scaled by fall
+    // speed. addShake/punchFov are reduced-motion no-ops already.
+    const thump = stepLandingDetector(this.camFeel, selfPos.y, dt);
+    if (thump > 0) {
+      this.punchFov(-3.5 * thump);
+      this.addShake(0.1 + 0.3 * thump);
+    }
+
+    // Look-ahead lead + speed FOV, fed by the horizontal display velocity.
+    let velX = 0;
+    let velZ = 0;
+    if (this.lastLocalPos && dt > 1e-4) {
+      velX = (selfPos.x - this.lastLocalPos.x) / dt;
+      velZ = (selfPos.z - this.lastLocalPos.z) / dt;
+      // A teleport is not velocity.
+      if (velX * velX + velZ * velZ > 30 * 30) {
+        velX = 0;
+        velZ = 0;
+      }
+    }
+    stepCameraFeel(this.camFeel, velX, velZ, dt, !reduce);
+
+    // Death drift: one slow elevated drift per death while the body lies
+    // unreleased; releasing/resurrecting (or any camera input) blends it out.
+    if (p.dead && !p.ghost) {
+      if (!this.deathDriftPlayed && !reduce) {
+        startDeathDrift(this.camDirector);
+        this.deathDriftPlayed = true;
+      }
+    } else {
+      this.deathDriftPlayed = false;
+      if (this.camDirector.kind === 'deathDrift') cancelCameraDirective(this.camDirector);
+    }
+
+    // Directed moves blend OVER the live player pose; any change to that pose
+    // since last frame is manual input (or the follow system) and cancels.
+    const mirror = this.camMirror;
+    const disturbed =
+      this.camDirector.kind !== null &&
+      !Number.isNaN(mirror.yaw) &&
+      (Math.abs(this.camYaw - mirror.yaw) > 1e-4 ||
+        Math.abs(this.camPitch - mirror.pitch) > 1e-4 ||
+        Math.abs(this.camDist - mirror.dist) > 1e-4);
+    const pose = stepCameraDirector(
+      this.camDirector,
+      { yaw: this.camYaw, pitch: this.camPitch, dist: this.camDist },
+      dt,
+      disturbed,
+    );
+    mirror.yaw = this.camYaw;
+    mirror.pitch = this.camPitch;
+    mirror.dist = this.camDist;
+
+    const px = this.camBoom.x + this.camFeel.leadX;
+    const py = this.camBoom.y;
+    const pz = this.camBoom.z + this.camFeel.leadZ;
     const eyeY = py + 2.0;
-    let cx = px - Math.sin(this.camYaw) * Math.cos(this.camPitch) * this.camDist;
-    let cy = eyeY + Math.sin(this.camPitch) * this.camDist;
-    let cz = pz - Math.cos(this.camYaw) * Math.cos(this.camPitch) * this.camDist;
+    let cx = px - Math.sin(pose.yaw) * Math.cos(pose.pitch) * pose.dist;
+    let cy = eyeY + Math.sin(pose.pitch) * pose.dist;
+    let cz = pz - Math.cos(pose.yaw) * Math.cos(pose.pitch) * pose.dist;
     if (isArenaPos(p.pos.x)) {
       // Arena walls hide from the camera like buildings, so the chase camera
       // stays at the player's requested zoom instead of clamping inside the pit.
@@ -6312,8 +6421,14 @@ export class Renderer {
     cz = pz + (cz - pz) * ct;
     const groundY = groundHeight(cx, cz, seed) + 0.6;
     this.camera.position.set(cx, Math.max(cy, groundY), cz);
-    if (Math.abs(this.camera.fov - this.camOcclusion.fov) > 0.01) {
-      this.camera.fov = this.camOcclusion.fov;
+    // Occlusion-compensated FOV plus the feel kicks (speed widen, landing
+    // dip, level-up punch); the offset is 0 under reduced motion.
+    const fovTarget = Math.min(
+      100,
+      Math.max(50, this.camOcclusion.fov + cameraFovOffset(this.camFeel)),
+    );
+    if (Math.abs(this.camera.fov - fovTarget) > 0.01) {
+      this.camera.fov = fovTarget;
       this.camera.updateProjectionMatrix();
     }
     this.cameraLookAt.set(px, eyeY, pz);

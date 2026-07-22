@@ -118,6 +118,11 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     family: 'undead',
     elite: true,
     boss: true,
+    // Endgame-instance bosses can be neither controlled nor kited on EITHER
+    // difficulty (the heroic entity stamp in instances/difficulty.ts stays as
+    // belt and braces): the normal-difficulty economy retune assumes swings land.
+    ccImmune: true,
+    slowImmune: true,
     hpBase: 230,
     hpPerLevel: 32,
     dmgBase: 11,
@@ -268,6 +273,9 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     family: 'humanoid',
     elite: true,
     boss: true,
+    // Boss rule: CC- and snare-immune on both difficulties (see morthen).
+    ccImmune: true,
+    slowImmune: true,
     hpBase: 240,
     hpPerLevel: 34,
     dmgBase: 12,
@@ -458,6 +466,9 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     family: 'dragonkin',
     elite: true,
     boss: true,
+    // Boss rule: CC- and snare-immune on both difficulties (see morthen).
+    ccImmune: true,
+    slowImmune: true,
     hpBase: 420,
     hpPerLevel: 48,
     dmgBase: 15,
@@ -616,6 +627,9 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     elite: true,
     boss: true,
     ccImmune: true,
+    // Boss rule: snare-immune on both difficulties too (the raid boss was
+    // ccImmune from day one but still slowable on normal; see morthen).
+    slowImmune: true,
     // 60k on normal (createMob applies the 2.3x elite factor); heroic scales
     // this via the nythraxis_boss_arena healthMultiplier.
     hpBase: 60000 / 2.3,

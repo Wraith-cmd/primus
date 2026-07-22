@@ -872,12 +872,16 @@ describe('dungeons: heroic difficulty', () => {
     expect(heroicMorthen.weapon.min).toBeGreaterThan(normalMorthen.weapon.min);
     expect(normalMorthen.mechanicDamageMult).toBeUndefined();
     expect(normalMorthen.mechanicHealMult).toBeUndefined();
-    // Normal Morthen keeps his template speed and stays controllable.
+    // Normal Morthen keeps his template speed. He is still CC- and snare-immune,
+    // but through the TEMPLATE flags (bosses are immune on both difficulties,
+    // tests/dungeon_difficulty.test.ts): the heroic entity stamp stays heroic-only.
     expect(normalMorthen.moveSpeed).toBe(7);
+    expect(normalMorthen.ccImmune).toBeUndefined();
+    expect(normalMorthen.slowImmune).toBeUndefined();
     (normal as any).applyAura(normalMorthen, stunAura(normalPid));
     (normal as any).applyAura(normalMorthen, slowAura(normalPid));
-    expect(normalMorthen.auras.some((a: any) => a.id === 'test_stun')).toBe(true);
-    expect(normalMorthen.auras.some((a: any) => a.id === 'test_slow')).toBe(true);
+    expect(normalMorthen.auras.some((a: any) => a.id === 'test_stun')).toBe(false);
+    expect(normalMorthen.auras.some((a: any) => a.id === 'test_slow')).toBe(false);
   });
 
   it('supports heroic mode across the four five-player dungeons only', () => {

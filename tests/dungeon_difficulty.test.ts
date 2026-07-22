@@ -6,6 +6,8 @@
 
 import { describe, expect, it } from 'vitest';
 import { HEROIC_DUNGEON_TUNING, HEROIC_MARK_ITEM_ID } from '../src/sim/content/dungeon_difficulty';
+import { DUNGEON_MOBS } from '../src/sim/content/dungeons';
+import { TEMPLE_DUNGEON_MOBS } from '../src/sim/content/temple';
 import { ITEMS, MOBS } from '../src/sim/data';
 import {
   applyDungeonMobTuning,
@@ -200,7 +202,10 @@ describe('applyDungeonMobTuning', () => {
     expect(normalMob.mechanicDamageMult).toBeUndefined();
   });
 
-  it('grants CC and snare immunity to boss-flagged heroic spawns only', () => {
+  it('stamps entity-level CC and snare immunity on boss-flagged heroic spawns only', () => {
+    // The heroic entity stamp is belt and braces on top of the template flags
+    // below: it stays boss-only and heroic-only (the applyAura gates check
+    // template OR entity, so a normal boss is covered by its template).
     const boss = { templateId: 'morthen' } as Entity;
     applyDungeonMobTuning(boss, 'hollow_crypt', 'heroic');
     expect(boss.ccImmune).toBe(true);
@@ -215,5 +220,44 @@ describe('applyDungeonMobTuning', () => {
     applyDungeonMobTuning(normalBoss, 'hollow_crypt', 'normal');
     expect(normalBoss.ccImmune).toBeUndefined();
     expect(normalBoss.slowImmune).toBeUndefined();
+  });
+});
+
+describe('boss templates are CC and snare immune on BOTH difficulties', () => {
+  it('every boss-flagged template of the five endgame instances carries both flags', () => {
+    // The complete boss enumeration of the four five-mans plus the raid: these
+    // are the ONLY boss: true templates in dungeons.ts + temple.ts (Korgath,
+    // Velkhar, Sexton Marrow, Olen, Selthe, and the Nythraxis adds are
+    // deliberately NOT boss-flagged). Template-level flags cover normal spawns
+    // too: the applyAura gates read MOBS[templateId] at fire time, so a normal
+    // Korzul can no longer be stunned or kited on a snare (the economy retune
+    // assumes boss swings actually land).
+    const bossIds = [
+      'morthen',
+      'vael_the_mistcaller',
+      'ysolei',
+      'korzul_the_gravewyrm',
+      'nythraxis_scourge_of_thornpeak',
+    ].sort();
+    const instanceTemplates = [
+      ...Object.values(DUNGEON_MOBS),
+      ...Object.values(TEMPLE_DUNGEON_MOBS),
+    ];
+    expect(
+      instanceTemplates
+        .filter((t) => t.boss)
+        .map((t) => t.id)
+        .sort(),
+    ).toEqual(bossIds);
+    for (const id of bossIds) {
+      expect(MOBS[id]?.ccImmune, `${id} template ccImmune`).toBe(true);
+      expect(MOBS[id]?.slowImmune, `${id} template slowImmune`).toBe(true);
+    }
+    // The encounter-design CC targets stay CC-able (pinned in depth by
+    // tests/nythraxis_priest_heal.test.ts).
+    expect(MOBS.nythraxis_heroic_priest_add.ccImmune).toBe(false);
+    expect(MOBS.nythraxis_heroic_rogue_add.ccImmune).toBe(false);
+    expect(MOBS.nythraxis_heroic_priest_add.slowImmune).toBeUndefined();
+    expect(MOBS.nythraxis_heroic_rogue_add.slowImmune).toBeUndefined();
   });
 });

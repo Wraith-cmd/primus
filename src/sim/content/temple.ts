@@ -272,6 +272,10 @@ export const TEMPLE_DUNGEON_MOBS: Record<string, MobTemplate> = {
     family: 'dragonkin',
     elite: true,
     boss: true,
+    // Boss rule: CC- and snare-immune on both difficulties (matches the other
+    // endgame-instance bosses; the heroic entity stamp stays as belt and braces).
+    ccImmune: true,
+    slowImmune: true,
     hpBase: 300,
     hpPerLevel: 38,
     dmgBase: 14,

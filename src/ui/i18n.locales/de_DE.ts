@@ -46,8 +46,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.blizzard.description':
     'Ruft 6 Sek. lang einen Eissturm auf das Zielgebiet, der pro Sekunde {damage} Frostschaden verursacht und Feinde um 40% verlangsamt. Jeder getroffene Feind verkürzt Frozen Orb um 0,5 Sek., bis zu 3 Sek. pro Einsatz. (Frost)',
   'entities.abilities.blizzard.name': 'Blizzard',
-  'entities.abilities.brain_freeze.description':
-    'Rimelance hat eine 20% Chance, deinen nächsten Winterlash sofort, 30% stärker und ohne Abklingzeit werden zu lassen. (Frost)',
   'entities.abilities.brain_freeze.name': 'Brain Freeze',
   'entities.abilities.dragons_breath.description':
     'Halte gedrückt, um einen sich ausbreitenden Flammenodem aufzuladen, und lass ihn dann als Kegel los. Längere Aufladungen reichen weiter und verursachen mehr Schaden. Getroffene Feinde werden desorientiert, und Schaden bricht den Effekt; maximale Aufladung trifft immer kritisch und zählt einmal für Heiße Serie. (Feuer)',
@@ -58,11 +56,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.fireball_form.description':
     'Verwandelt dich in eine lodernde Glut und erhöht die Bewegungsgeschwindigkeit um {buff}%. Während der Verwandlung kannst du weder angreifen noch Zauber wirken. Erneut wirken, um zur normalen Gestalt zurückzukehren.',
   'entities.abilities.fireball_form.name': 'Glutgestalt',
-  'entities.abilities.flurry.description':
-    'Schießt drei eisige Geschosse ab, die jeweils {damage} Frostschaden verursachen, und legt Winterskälte auf das Ziel: dessen nächste 2 eintreffende kompatible Zauber behandeln es als eingefroren. Brain Freeze macht Winterlash sofort, 30% stärker und lässt seine Abklingzeit entfallen. (Frost)',
   'entities.abilities.flurry.name': 'Winterlash',
-  'entities.abilities.frozen_orb.description':
-    'Entfesselt eine Kugel wirbelnden Frosts, die 8 Sek. lang vorwärtsdriftet, nahegelegenen Feinden pro Sekunde {damage} Frostschaden zufügt und sie um 30% verlangsamt. Ihre Treffer erzeugen Fingers of Frost. (Frost)',
   'entities.abilities.frozen_orb.name': 'Frozen Orb',
   'entities.abilities.glacial_front.description':
     'Halte gedrückt, um eine sich ausbreitende Frostfront aufzuladen, und lass sie dann als Kegel los. Längere Aufladungen reichen weiter und verursachen mehr Schaden. Alle getroffenen Feinde werden 4 Sek. lang um 50% verlangsamt; maximale Aufladung verwurzelt sie zusätzlich 1 Sek. lang. (Frost)',
@@ -76,8 +70,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.perfect_moment.description':
     'Nutze deinen perfekten Moment: Gewinne sofort 4 Arkane Ladungen, und für 10 Sek. verbraucht Aether-Pfeile diese nicht. (Chronomantie)',
   'entities.abilities.perfect_moment.name': 'Perfect Moment',
-  'entities.abilities.shatter.description':
-    'Deine Zauber erhalten 50% kritische Trefferchance gegen eingefrorene Ziele, und diese kritischen Treffer verursachen 20% mehr Schaden. Fingers of Frost und Winterskälte zählen als eingefroren. (Frost)',
   'entities.abilities.shatter.name': 'Brittle Ruin',
   'entities.abilities.temporal_acceleration.description':
     'Beschleunigt den Zeitfluss für deine Gruppe oder deinen Schlachtzug und erhöht Angriffs-, Zauber- und Kanalisierungsgeschwindigkeit 15 Sek. lang um 30%. Verbündete, die kürzlich von Temporaler Beschleunigung oder Kriegstrommeln betroffen waren, sind zu erschöpft, um davon zu profitieren. (Chronomantie)',
@@ -107,11 +99,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Lust auf einen Kartenkampf? Wer zwei von drei Runden gewinnt, darf sich brüsten.',
   'entities.npcs.card_master.name': 'Kartenmeister',
   'entities.npcs.card_master.title': 'Händler des Zufalls',
-  'entities.quests.q_archetype_acceptance.completion':
-    'Das Versprechen gilt. Diese beiden Handwerke sind nun deine Hauptberufe, und das Wissen auf der anderen Seite wird zu deinem Hobby.',
-  'entities.quests.q_archetype_acceptance.objectives.0.label': 'Erzader abgebaut',
-  'entities.quests.q_archetype_acceptance.text':
-    'Können ist Wissen, {playerName}, doch Abstimmung ist ein Versprechen. Wähle zwei benachbarte Handwerke, deren Methoden du als deine Hauptberufe trägst, und bring mir dann Erz, das du im Tal mit eigenen Händen bearbeitet hast.',
   'entities.quests.q_prof_hobby_switch.completion':
     'Eine leichtere Wahl, aber eine nützliche. Folge dieser Neugier, so weit sie seltene Arbeit trägt.',
   'entities.quests.q_prof_hobby_switch.objectives.0.label': 'Kräuterpflanze geerntet',
@@ -123,10 +110,90 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_prof_intro.objectives.0.label': 'Erzader abgebaut',
   'entities.quests.q_prof_intro.text':
     'Jede Seele in Eastbrook betreibt neben dem Schwert noch ein Handwerk, {playerName}. Im Gestein rund um die Kupferschürfe südwestlich der Stadt gibt es Erzadern. Geh selbst mit der Spitzhacke ran und bearbeite 5 davon; ich werde den Unterschied merken.',
-  'entities.quests.q_prof_make_amends.completion':
-    'Der alte Rhythmus kehrt zurück. Dein früheres Paar ist wieder aktiv.',
-  'entities.quests.q_prof_make_amends.text':
-    'Du hast dieses Paar bereits getragen, {playerName}. Zurückzukehren ist kein neues Gelöbnis. Hilf, den Weg durch das Tal freizuhalten, und die Arbeit wird deinen Händen in Erinnerung rufen, was sie einst kannten.',
+  'entities.quests.q_prof_amends_apothecary.completion':
+    'Da ist der alte Geschmack. Alchemie und Kochen sind wieder als Hauptberufe auf deinem Herd. Bleib diesmal eine Weile.',
+  'entities.quests.q_prof_amends_apothecary.objectives.0.label': 'Wildschwein gejagt',
+  'entities.quests.q_prof_amends_apothecary.text':
+    'Schau an, wer wieder an meinem Herd steht. Keine harten Gefühle, {playerName}, eine Küche hat immer Platz, aber du weißt, dass die Rechnung bei jeder Rückkehr länger wird. Geh, lichte die Wildschweine auf der östlichen Wiese, denn ehrlicher Schweiß ist die erste Zutat, und es wird deinen Händen die Arbeit wieder in Erinnerung rufen.',
+  'entities.quests.q_prof_amends_apothecary.title': 'Zurück am Herd',
+  'entities.quests.q_prof_amends_bombardier.completion':
+    'DA ist es, das Kribbeln ist wieder in deinen Händen. Ingenieurskunst und Alchemie, wieder Hauptberufe, los, geh und mach einen Knall. Versuch diesmal zu bleiben, ja?',
+  'entities.quests.q_prof_amends_bombardier.objectives.0.label': 'Tunnelratte ausgerottet',
+  'entities.quests.q_prof_amends_bombardier.text':
+    'Du bist ZURÜCK, ha, sie kommen immer zurück, der laute Kram hat eine Anziehungskraft, oder? Kein Schmollen von mir, {playerName}, aber das Hauptbuch, oh das Hauptbuch, es wächst jedes Mal wenn du abhandenkommst, mehr bei jeder Rückkehr, das ist nur fair. Geh und räum die Tunnelratten aus dem Schacht für mich, zuerst schwitzen, dann zündeln, das ist die Regel, die ich gerade erfunden habe.',
+  'entities.quests.q_prof_amends_bombardier.title': 'Das Hauptbuch wächst',
+  'entities.quests.q_prof_amends_outfitter.completion':
+    'Wieder stabil. Lederverarbeitung und Schneiderei kehren als Hauptberufe in deine Hände zurück. Miss zweimal ab, bevor du das nächste Mal wanderst.',
+  'entities.quests.q_prof_amends_outfitter.objectives.0.label': 'Webholz-Spinne erlegt',
+  'entities.quests.q_prof_amends_outfitter.text':
+    'Doch wieder an meinem Webstuhl. Ich hege keinen Groll, {playerName}, aber der Faden erinnert sich an eine Hand, die ihn losgelassen hat, und die Kosten, ihn wieder aufzunehmen, werden jedesmal länger bemessen. Lichte die Webholz-Spinnen, die den westlichen Wald bevölkern, und die Mühe wird deine Hände beruhigen, bevor sie wieder gute Seide berühren.',
+  'entities.quests.q_prof_amends_outfitter.title': 'Fäden wiederverknüpft',
+  'entities.quests.q_prof_amends_smith.completion':
+    'Der Rhythmus ist wieder in deinen Händen. Waffenherstellung und Rüstungsherstellung sind wieder deine Hauptberufe. Mach es dir nicht zur Gewohnheit zu gehen.',
+  'entities.quests.q_prof_amends_smith.objectives.0.label': 'Waldwolf getötet',
+  'entities.quests.q_prof_amends_smith.text':
+    'Du bist also zur Schmiede zurückgekehrt. Ich werde nicht so tun, als würde es nicht schmerzen, {playerName}, aber ich bin gerecht und die Arbeit ist es auch. Du kennst den Preis der Rückkehr: Arbeit, und bei jedem Mal mehr, das du ferngeblieben bist. Lege die Wölfe nieder, die die Nordstraße bedrängen, und das Schwingen wird deinen Armen in Erinnerung rufen, was dieses Paar einst von ihnen verlangte.',
+  'entities.quests.q_prof_amends_smith.title': 'Zurück zur Schmiede',
+  'entities.quests.q_prof_attune_apothecary.completion':
+    'Das ist ein Anfang mit Substanz. Alchemie und Kochen gehören dir, um sie so weit zu köcheln, wie du möchtest. Komm hungrig zurück.',
+  'entities.quests.q_prof_attune_apothecary.objectives.0.label': 'Wildschwein gejagt',
+  'entities.quests.q_prof_attune_apothecary.text':
+    'Jedes gute Gericht besteht aus zwei Geschmacksrichtungen, die zusammenpassen, und so ist es auch mit einem guten Handwerk, {playerName}. Setz dich zu mir und Alchemie und Kochen werden deine zwei Hauptberufe, die zwei, die du über seltene Arbeit hinaus köcheln kannst; das Handwerk auf der gegenüberliegenden Seite des Rades ist dein Hobby, bis auf selten erhitzt und nicht heißer. Der Rest deiner Gewerbe bleibt in der Speisekammer, ruhend, nicht verdorben, bereit, wann immer du sie wieder hervorholst. Klare Warnung, solange der Topf noch kalt ist: Wechselst du zu einem anderen Paar und willst nach Hause, ist der Heimweg eine Mühe, die wächst: fünf Tiere beim ersten Mal, acht beim nächsten, elf danach, schwerer mit jeder Portion. Noch Hunger darauf? Dann jage mir vier Wildschweine, denn eine Küche, die ihr Salz wert ist, beginnt mit gutem Fleisch.',
+  'entities.quests.q_prof_attune_apothecary.title': 'Ein Rezept, das sich lohnt',
+  'entities.quests.q_prof_attune_bombardier.completion':
+    'HA. Reagenzien, echte, und alle Finger noch dran, gut, gut. Ingenieurskunst und Alchemie, dein, geh und mach etwas, das es bereut. Los gehts.',
+  'entities.quests.q_prof_attune_bombardier.objectives.0.label': 'Kräuterpflanze geerntet',
+  'entities.quests.q_prof_attune_bombardier.text':
+    'Oh, oh, du willst das gute Zeug, das laute Zeug, ja? Hör zu, hör zu, bevor du irgendetwas anfasst, das tickt: Sag das Wort und Ingenieurskunst und Alchemie werden deine zwei Hauptberufe, die einzigen zwei, die du über seltene Arbeit hinaus treiben darfst (da wird es WITZIG, glaub mir). Das gegenüberliegende Handwerk kommt als Hobby in deine Tasche, selten und nicht weiter, nicht schmollen. Deine anderen Gewerbe? Nicht weg, {playerName}, sie schlafen nur, weck sie auf, wann immer du magst. Aber (es gibt immer ein Aber, halte die Zündschnur) lass dieses Paar fallen und watschel später zurück und es kostet dich Schweiß, der sich ansammelt: fünf Sachen beim ersten Mal, acht beim nächsten, elf danach, mehr, mehr, jedes einzelne Mal, wenn du kalte Füße bekommst. Ja? JA? Dann geh und pflücke mir drei Kräuterflecken, die flüchtigen, frag nicht welche, sie sind alle ein bisschen flüchtig, wenn man fest genug glaubt.',
+  'entities.quests.q_prof_attune_bombardier.title': 'Eine brisante Vereinbarung',
+  'entities.quests.q_prof_attune_outfitter.completion':
+    'Gleichmäßiger Faden, gleichmäßige Hand. Lederverarbeitung und Schneiderei gehören dir, so weit dein Können reicht. Miss zweimal ab, und sie werden dich nicht enttäuschen.',
+  'entities.quests.q_prof_attune_outfitter.objectives.0.label': 'Webholz-Spinne erlegt',
+  'entities.quests.q_prof_attune_outfitter.text':
+    'Bemiss die Kosten, bevor du schneidest, das ist die erste Regel an meinem Webstuhl. Wähle mich und Lederverarbeitung und Schneiderei werden deine zwei Hauptberufe, das Paar, das du über seltene Arbeit hinaustragen kannst; das ihnen gegenüberliegende Handwerk setzt sich als dein Hobby fest, auf selten gebracht und dort belassen. Die Gewerbe, die du zur Seite legst, werden nicht aufgetrennt, {playerName}, nur gefaltet, ruhend bis du sie wieder aufnimmst. Sei sicher: solltest du dieses Paar verlassen und es später zurückwollen, ist der Heimweg mit Arbeit bezahlt, die sich jedes Mal verlängert: fünf Erlegte beim ersten Mal, dann acht, dann elf, immer etwas mehr. Wenn dein Sinn gemacht ist, leg vier Webholz-Spinnen nieder und bring ihre Seide zum Webstuhl, denn guter Faden beginnt jedes gute Kleidungsstück.',
+  'entities.quests.q_prof_attune_outfitter.title': 'Das Maß des Ausrüsters',
+  'entities.quests.q_prof_attune_smith.completion':
+    'Gutes Erz und gute Hände, um es zu bearbeiten. Waffenherstellung und Rüstungsherstellung gehören dir jetzt zur Meisterschaft. Verdiene dir den Rest.',
+  'entities.quests.q_prof_attune_smith.objectives.0.label': 'Erzader abgebaut',
+  'entities.quests.q_prof_attune_smith.text':
+    'Stahl verzeiht keiner wandernden Hand, also sage ich dir offen, bevor du irgendetwas schwörst. Binde dich an meine Schmiede und Waffenherstellung und Rüstungsherstellung werden deine zwei Hauptberufe, die einzigen Handwerke, die du über seltene Arbeit hinaus tragen kannst. Das Handwerk gegenüber von ihnen auf dem Rad setzt sich als dein Hobby fest, bis auf selten gearbeitet und nicht weiter. Deine anderen Gewerbe verbrennen nicht, {playerName}: sie werden nur still, ruhend bis du sie zurückrufst. Und wisse das, bevor der Hammer fällt: Verlasse dieses Paar für ein anderes und du wirst durch ehrliche Arbeit zurückkriechen müssen, fünf Feinde niedergestreckt beim ersten Mal, acht beim nächsten, elf danach, mehr bei jedem Mal, das du abirrst. Stehst du noch hier? Dann bring mir drei Erzadern, aus dem Tal mit deinen eigenen Händen gearbeitet, und wir nennen das Versprechen besiegelt.',
+  'entities.quests.q_prof_attune_smith.title': 'Das Versprechen des Schmieds',
+  'entities.quests.q_prof_workorder_apothecary.completion':
+    'Annehmbar. Wirkungsvoll und ordnungsgemäß behandelt. Deine Bezahlung, auf den Pfennig gezählt. Lass es dir nicht zu Kopf steigen, das ist ein anderes Reagenz.',
+  'entities.quests.q_prof_workorder_apothecary.objectives.0.label': 'Goldblatt-Kraut geliefert',
+  'entities.quests.q_prof_workorder_apothecary.text':
+    'Meine Regale benötigen Goldblatt, und der Vorrat des Marktes ist, wie vorhersehbar, verfälscht. Bring mir sechs Goldblatt-Kräuter, unzerquetscht, und du wirst genau entschädigt. Zerquetschte Blätter werden abgelehnt, also achte auf deine Satteltasche.',
+  'entities.quests.q_prof_workorder_apothecary.title': 'Apothekenauftrag',
+  'entities.quests.q_prof_workorder_forge.completion':
+    'Gutes Gewicht, keine Schlacke. Hier ist dein Anteil. Die Schmiede wird bald wieder hungrig sein.',
+  'entities.quests.q_prof_workorder_forge.objectives.0.label': 'Kupfererz geliefert',
+  'entities.quests.q_prof_workorder_forge.text':
+    'Die Schmiede will immer gefüttert werden, {playerName}. Bring mir acht Brocken Kupfererz und ich werde dich für die Fuhre entlohnen. Kein Tamtam, nur Erz und Münzen.',
+  'entities.quests.q_prof_workorder_forge.title': 'Schmiedeauftrag',
+  'entities.quests.q_prof_workorder_kitchens.completion':
+    'Das nenne ich eine volle Speisekammer. Hier ist dein Lohn. Komm wieder, wenn deine Taschen schwer sind.',
+  'entities.quests.q_prof_workorder_kitchens.objectives.0.label': 'Wildfleisch geliefert',
+  'entities.quests.q_prof_workorder_kitchens.text':
+    'Meine Vorratskammer sieht mager aus, {playerName}, und magere Vorratskammern machen griesgrämige Köche. Hol mir acht Stücke Wildfleisch und da ist Geld für dich drin, plus meine unsterbliche Dankbarkeit, die weniger wert ist, aber besser schmeckt.',
+  'entities.quests.q_prof_workorder_kitchens.title': 'Küchenauftrag',
+  'entities.quests.q_prof_workorder_loom.completion':
+    'Feine Seide, gleichmäßig gesponnen. Deine Münzen, genau abgemessen. Der Webstuhl dankt dir, und ich auch.',
+  'entities.quests.q_prof_workorder_loom.objectives.0.label': 'Spinnenseide geliefert',
+  'entities.quests.q_prof_workorder_loom.text':
+    'Der Webstuhl läuft leer und untätige Hände verschwenden das Tageslicht, {playerName}. Bring mir sechs Knäuel Spinnenseide und ich zahle dir einen fairen Satz, auf den Kupferpfennig genau.',
+  'entities.quests.q_prof_workorder_loom.title': 'Webstuhauftrag',
+  'entities.quests.q_prof_workorder_tannery.completion':
+    'Gute Häute. Faire Bezahlung. Wieder, wenn du mehr hast.',
+  'entities.quests.q_prof_workorder_tannery.objectives.0.label': 'Rohhaut geliefert',
+  'entities.quests.q_prof_workorder_tannery.text':
+    'Die Bottiche sind leer. Bring acht Rohhäute. Münzen, wenn du es tust.',
+  'entities.quests.q_prof_workorder_tannery.title': 'Gerbereiauftrag',
+  'entities.quests.q_prof_workorder_toolworks.completion':
+    'Perfekt, perfekt, gerade Maserung, keine Fäulnis. Hier, deine Münzen, siehst du, ich halte mein Wort (meistens). Bring mehr, wenn du über einen Baum stolperst.',
+  'entities.quests.q_prof_workorder_toolworks.objectives.0.label': 'Eisenrinden-Stamm geliefert',
+  'entities.quests.q_prof_workorder_toolworks.text':
+    'Schäfte, Griffe, Schäfte, ich verbrauche Holz, als ginge es aus der Mode, was es NICHT tut, Holz ist ewig, {playerName}. Schlepp mir acht Eisenrinden-Stämme und ich zahle dich, Münzen, echte Münzen, kein Gefallen, ich verspreche es, meistens.',
+  'entities.quests.q_prof_workorder_toolworks.title': 'Werkzeugmachereiauftrag',
   'gpuNotice.bodyDesktop':
     'Das Spiel läuft ohne GPU-Beschleunigung und wird langsam sein. Aktualisiere deine Grafiktreiber und starte das Spiel neu. Unter Windows stelle das Spiel außerdem unter Einstellungen > System > Anzeige > Grafik auf Hohe Leistung ein.',
   'gpuNotice.bodyWeb':
@@ -136,16 +203,12 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Teleportiert dich eine kurze Strecke vorwärts und bricht dabei Verwurzelungen.',
   'guide.abilityHook.blizzard':
     'Bedeckt ein Gebiet mit Eis, um eine ganze Gruppe zu schwächen und zu verlangsamen.',
-  'guide.abilityHook.brain_freeze':
-    'Deine Frostgeschosse lassen das nächste Winterlash manchmal sofort und stärker zuschlagen.',
   'guide.abilityHook.fingers_of_frost':
     'Deine Frostgeschosse stärken manchmal ein Ice Lance, als ob das Ziel eingefroren wäre.',
   'guide.abilityHook.fireball_form':
     'Werde zu einer lebendigen Glut und überquere offenes Gelände mit hoher Geschwindigkeit.',
   'guide.abilityHook.flurry':
     'Drei schnelle Geschosse, die das Ziel kühlen, sodass deine nächsten Frosttreffer landen, als wäre es eingefroren.',
-  'guide.abilityHook.frozen_orb':
-    'Rollt eine langsame Kugel durch die Gruppe, die alles kühlt und deine Frostprocs füttert.',
   'guide.abilityHook.ice_lance':
     'Ein sofortiger Splitter zum Verbrauchen von Frostprocs; trifft eingefrorene Ziele weit stärker.',
   'guide.abilityHook.shatter': 'Deine Zauber treffen eingefrorene Ziele weit öfter kritisch.',
@@ -652,42 +715,11 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'Einen Archetyp zu erklären wird ein Story-Moment sein: eine Quest, die dich förmlich in diese Identität aufnimmt. Dieser Weg wird noch gebaut, daher zieht vorerst jeder Charakter mit der noch offenen Wahl durch die Welt, und jedes Handwerk steigt in der Zwischenzeit bis zur Qualitätsstufe Selten auf.',
   'guide.professions.archetypeChooseTitle': 'Deinen Archetyp wählen',
-  'guide.professions.archetypeIdentityBody':
-    'Dein aktiver Archetyp ist eine Aussage darüber, wer dein Charakter in der Welt ist, und spiegelt sich darin, wie andere und die Welt dich ansprechen. Die genauen Belohnungen und die Anerkennung, die damit einhergehen, werden noch ausgearbeitet; schau wieder vorbei, während das System Gestalt annimmt.',
-  'guide.professions.archetypeIdentityTitle': 'Was dein Archetyp bedeutet',
-  'guide.professions.archetypeIntro':
-    'Jedes der zehn Handwerke steht zugleich für einen Archetyp, eine umfassendere Identität, die du über das bloße Ausüben des Gewerbes hinaus annehmen kannst. Dein aktiver Archetyp ist eine einzelne Wahl, keine Checkliste: Du trägst einen und kannst später wechseln, wenn du möchtest.',
   'guide.professions.archetypeSwitchBody':
     'Eine Erklärung wird auch keine lebenslange Bindung sein. Der Plan ist ein wiederholbarer Akt der Wiedergutmachung gegenüber deinem alten Gewerbe, bevor du ein neues aufnimmst, wobei die Wiedergutmachung mit jedem Wechsel steiler ausfällt, damit die Wahl bedeutsam bleibt statt kostenlos. Wie die Erklärung selbst ist auch er noch unterwegs.',
-  'guide.professions.archetypeSwitchTitle': 'Es dir anders überlegen',
-  'guide.professions.archetypeTitle': 'Die zehn Archetypen',
-  'guide.professions.craftComboBody':
-    'Über die eigene Rezeptliste eines einzelnen Handwerks hinaus unterstützt das Rad auch Kombinationsrezepte, die zwei benachbarte Handwerke zugleich fordern, und belohnt damit einen Charakter, der in benachbarte Gewerbe auf dem Ring investiert hat statt in eines allein. Der Handwerker muss beide Gewerbe selbst beherrschen; die Fertigkeit eines Partners kann für keine der beiden Hälften einspringen.',
-  'guide.professions.craftComboTitle': 'Kombinationsrezepte',
-  'guide.professions.craftIntro':
-    'Zehn Handwerksgewerbe verwandeln gesammelte Materialien in fertige Ausrüstung und Waren: Rüstungsschmieden, Waffenschmieden und Juwelierskunst formen rohen Stoff zu tragbarer Ausrüstung; Alchemie und Ingenieurskunst leben von Versuch und Irrtum; Kochkunst, Inschriftenkunde und Verzauberungskunst greifen jeweils auf die Erzeugnisse anderer Handwerke zurück; Schneiderei und Gerberei arbeiten nach exakten Schnittmustern. Zusammen bilden sie ein Rad, auf dem jedes Handwerk neben zwei Nachbarn und einem anderen genau gegenüber sitzt.',
   'guide.professions.craftMasteryBody':
     'Erfolgreiches Herstellen steigert deine Fertigkeit in diesem Gewerbe, und Fertigkeit sperrt niemals die Rezepte eines Handwerks weg: Kennst du ein Rezept und hältst seine Materialien, kannst du es versuchen. Was Fertigkeit dir stattdessen einbringt, ist Güte, eine geübte Hand liefert feinere Arbeit. Die eine Ausnahme sind Kombinationsrezepte, die verlangen, dass du dich in beiden ihrer Handwerke bewährt hast, bevor sie sich öffnen.',
   'guide.professions.craftMasteryTitle': 'Fertigkeit und Meisterschaft',
-  'guide.professions.craftRecipesBody':
-    'Jedes Rezept verlangt bestimmte Reagenzien, die du sammelst oder kaufst. Die einfachsten Rezepte brauchen nichts als gewöhnliche Materialien und lassen sich von Anfang an herstellen, sodass du ein Gewerbe in dem Moment aufnehmen kannst, in dem du es erlernst. Die Rezeptlisten füllen sich noch: Ein paar Gewerbe warten noch auf ihre ersten Rezepte, und weitere kommen hinzu, während die Handwerke wachsen.',
-  'guide.professions.craftRecipesTitle': 'Rezepte und Reagenzien',
-  'guide.professions.craftRingBody':
-    'Die zehn Handwerke sind in einem festen Ring angeordnet, und wo ein Handwerk auf diesem Ring sitzt, spielt eine Rolle: Nebeneinanderliegende Handwerke haben mehr miteinander gemein als solche auf gegenüberliegenden Seiten. Sich einem Handwerk zu verschreiben soll sich anfühlen, als träte man einer Familie verwandter Gewerbe bei, nicht wie das Wählen einer isolierten Fertigkeit.',
-  'guide.professions.craftRingTitle': 'Ein Rad der Spezialitäten',
-  'guide.professions.craftTitle': 'Die zehn Handwerke',
-  'guide.professions.gatherIntro':
-    'Drei Sammelgewerbe lassen dich Rohstoffe direkt aus der Welt ziehen: Bergbau schlägt Erz und Stein aus Adern, Holzfällen fällt Nutzholz aus Baumbeständen, und Kräuterkunde sammelt wild wachsende Kräuter und Pflanzen. Jedes wird getrennt gezählt, sodass die Arbeit an einem nie deinen Fortschritt in einem anderen bremst. Ganz neu darin? Vorarbeiter Odell in Eastbrook hält einen kurzen Botengang bereit, Ein Handwerk für jede Hand, der dich durch deine erste Ernte führt.',
-  'guide.professions.gatherProficiencyBody':
-    'Jede erfolgreiche Ernte steigert deine Fertigkeit in diesem Sammelgewerbe, und dein Charakterbogen führt jedes Gewerbe für sich. Mehr Übung schadet deinem Fortschritt nie, sie fügt ihm immer nur hinzu.',
-  'guide.professions.gatherProficiencyTitle': 'Fertigkeit',
-  'guide.professions.gatherTitle': 'Sammeln: Bergbau, Holzfällen und Kräuterkunde',
-  'guide.professions.gatherToolsBody':
-    'Händler verkaufen einfache Werkzeuge für jedes Sammelgewerbe, und bessere lassen sich herstellen. Für die Arbeit an einem Vorkommen ist heute kein Werkzeug erforderlich: Werkzeuge sind die Grundlage für reichere Vorkommen, die noch kommen, wo Spitzhacken, Äxte und Sicheln höherer Stufe der Zugang sein werden.',
-  'guide.professions.gatherToolsTitle': 'Das Werkzeug des Handwerks',
-  'guide.professions.gatherWhatBody':
-    'Erzadern, Baumbestände und Kräuterflecken stehen als sichtbare, herrenlose Fixpunkte draußen im Tal und im Moor. Geh auf eines zu und interagiere damit, um zu ernten, was es enthält. Hast du ein Vorkommen abgeerntet, braucht es Zeit, um sich zu erholen, bevor du persönlich es erneut ernten kannst; andere blockiert es aber nie: Ein anderer Spieler kann dasselbe Vorkommen in der Zwischenzeit ernten.',
-  'guide.professions.gatherWhatTitle': 'Rohstoffvorkommen',
   'guide.professions.intro':
     'Jenseits von Kampf und Quests belohnt dich die Welt für die Arbeit an Land und Esse: Rohstoffe sammeln, sie über zehn Handwerksgewerbe hinweg zu Ausrüstung und Waren verarbeiten und in eine Identität als einer der zehn Archetypen hineinwachsen, für die diese Gewerbe stehen.',
   'guide.valeCupPage.heading': 'Der Talpokal',
@@ -935,6 +967,52 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.yumis_keepsake_locket.name': 'Yumis Andenken-Medaillon',
   'entities.items.zense_meridian.name': 'Zense-Meridian',
   'entities.items.zyzzs_deathless_signet.name': "Zyzz' Todloser Siegelring",
+  'entities.items.acolyte_chain_grips.name': 'Kettengriffe des Akolythen',
+  'entities.items.briarroot_staff.name': 'Dornenwurzel-Stab',
+  'entities.items.cragprowl_belt.name': 'Felspirsch-Gürtel',
+  'entities.items.cragthorn_greatstaff.name': 'Felsendorn-Großstab',
+  'entities.items.cragward_pauldrons.name': 'Felswacht-Schultern',
+  'entities.items.cryptbloom_shoulderguards.name': 'Gruftblüten-Schulterplatten',
+  'entities.items.dreamroot_boots.name': 'Traumwurzel-Stiefel',
+  'entities.items.duskthorn_mantle.name': 'Dornendämmer-Umhang',
+  'entities.items.fenbark_leggings.name': 'Moorrinden-Beinkleider',
+  'entities.items.fenshadow_maul.name': 'Moorschatten-Streitkolben',
+  'entities.items.fenwarden_sabatons.name': 'Moorwächter-Sabatons',
+  'entities.items.gravewyrm_thornmaul.name': 'Grabwyrm-Dornstreitkolben',
+  'entities.items.grovewardens_grips.name': 'Griffe des Hainhüters',
+  'entities.items.lunarward_cinch.name': 'Mondwacht-Gürtel',
+  'entities.items.marshlight_hauberk.name': 'Sumpflicht-Kettenhemd',
+  'entities.items.maul_of_the_scourged_wilds.name': 'Streitkolben der gegeißelten Wildnis',
+  'entities.items.mirebloom_treads.name': 'Moorblüten-Schritte',
+  'entities.items.moonbark_vestments.name': 'Mondrinden-Gewänder',
+  'entities.items.mosshide_vest.name': 'Moosfell-Weste',
+  'entities.items.nightfangs_greatstaff.name': 'Nachtfangs Großstab',
+  'entities.items.peaksong_helm.name': 'Gipfelgesang-Helm',
+  'entities.items.pearlward_aegis.name': 'Perlenwacht-Aegis',
+  'entities.items.resonant_hide.name': 'Resonantes Fell',
+  'entities.items.resonant_links.name': 'Resonante Kettenglieder',
+  'entities.items.resonant_steel.name': 'Resonanter Stahl',
+  'entities.items.resonant_thread.name': 'Resonanter Faden',
+  'entities.items.resonant_timber.name': 'Resonantes Holz',
+  'entities.items.revenantstep_treads.name': 'Geistschritt-Sohlen',
+  'entities.items.shardfang_grips.name': 'Splitterfang-Griffe',
+  'entities.items.shardsong_mantle.name': 'Splittersang-Umhang',
+  'entities.items.stormbark_mantle.name': 'Sturmrinden-Umhang',
+  'entities.items.stormchant_gauntlets.name': 'Sturmgesang-Handschuhe',
+  'entities.items.stormroot_cowl.name': 'Sturmwurzel-Kapuze',
+  'entities.items.stormvotive_hauberk.name': 'Sturmweih-Kettenhemd',
+  'entities.items.thornling_grips.name': 'Dörnlinggriffe',
+  'entities.items.thornpeak_wildwraps.name': 'Dorngipfel-Wildwickel',
+  'entities.items.thunderward_legguards.name': 'Donnerwacht-Beinschienen',
+  'entities.items.tidehymn_slippers.name': 'Fluthymnen-Schuhe',
+  'entities.items.valefire_lantern.name': 'Talfeuer-Laterne',
+  'entities.items.verdant_walkers.name': 'Grünende Wanderer',
+  'entities.items.vestments_of_the_waking_grove.name': 'Gewänder des erwachenden Hains',
+  'entities.items.votive_chain_belt.name': 'Weih-Kettengürtel',
+  'entities.items.wildgrove_cinch.name': 'Wildhain-Gürtel',
+  'entities.items.wildgrowth_leggings.name': 'Wildwuchs-Beinkleider',
+  'entities.items.wildsoul_maul.name': 'Wildseelen-Streitkolben',
+  'entities.items.wyrmcult_spellgrips.name': 'Wyrmkult-Zaubergriffe',
   'entities.npcs.heroic_quartermaster.greeting':
     'Ein Beweis aus den heroischen Tiefen kauft die feinsten Ringe und Anhänger in Highwatch. Zeig mir deine Marken.',
   'entities.npcs.heroic_quartermaster.name': 'Quartiermeister Vex',
@@ -2191,6 +2269,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'nav.donate': 'Spenden',
   'stats.title': 'Weltstatus',
   'stats.accountsCreated': 'Spieler',
+  'stats.charactersCreated': 'Erstellte Charaktere',
   'stats.playersOnline': 'Spieler online',
   'stats.realmName': 'Weltname',
   'footer.copyright': '2026 World of ClaudeCraft',
@@ -2933,6 +3012,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hud.errors.arenaQueueTrading': 'Beendet Euren Handel, bevor Ihr Euch anmeldet.',
   'hud.errors.arenaQueueInstance': 'Aus einer Instanz heraus könnt Ihr Euch nicht anmelden.',
   'hud.errors.tradeInProgress': 'Es läuft bereits ein Handel.',
+  'hud.errors.tradeBound': 'Dieser Gegenstand ist gebunden und kann nicht gehandelt werden.',
   'hud.errors.tradeTooFar': 'Das Ziel ist zu weit entfernt zum Handeln.',
   'hud.errors.tradeExpired': 'Die Handelsanfrage ist abgelaufen.',
   'hud.errors.tradeFailed':
@@ -3045,6 +3125,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hud.social.guildInvited': 'Ihr habt {name} in Eure Gilde eingeladen.',
   'hud.social.levelClass': 'St. {level} {className}',
   'hud.social.status.online': 'Online',
+  'hud.social.status.afk': 'Abwesend',
   'hud.social.status.offline': 'Offline',
   'hud.social.status.combat': 'Im Kampf',
   'hud.social.status.dungeon': 'Im Dungeon',
@@ -3137,6 +3218,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'abilityUi.forms.bear': 'Bären',
   'abilityUi.forms.cat': 'Wolfs',
   'abilityUi.cast.fishing': 'Angeln',
+  'abilityUi.cast.gathering': 'Sammeln',
   'abilityUi.cast.thunzharrStormcall': 'Sturmruf',
   'abilityUi.cast.demonHeal': 'Dämonenheilung',
   'questUi.tracker.title': 'Quests',
@@ -3239,7 +3321,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'itemUi.tooltip.ifYouEquip': 'Wenn Ihr dies anlegt',
   'itemUi.tooltip.damageSpeed': '{min} - {max} Schaden Tempo {speed}',
   'itemUi.tooltip.dps': '({dps} Schaden pro Sekunde)',
-  'itemUi.tooltip.dagger': 'Dolch',
   'itemUi.tooltip.armorStat': '{value} Rüstung',
   'itemUi.tooltip.stat': '+{value} {stat}',
   'itemUi.tooltip.useFood':
@@ -4981,6 +5062,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'entities.items.conjured_bread3.name': 'Herbeigezauberter Honigkuchen',
   'entities.items.conjured_bread4.name': 'Herbeigezauberter Festschmauslaib',
   'entities.items.glimmerfin_koi.name': 'Schimmerflossen-Koi',
+  'entities.items.ironreel_fishing_rod.name': 'Eisenrollen-Angelrute',
+  'entities.items.silverstream_fishing_rod.name': 'Silberbach-Angelrute',
   'entities.items.raw_bog_eel.name': 'Roher Mooraal',
   'entities.items.raw_frostgill_trout.name': 'Rohe Frostkiemen-Forelle',
   'entities.items.raw_marsh_pike.name': 'Roher Sumpfhecht',
@@ -7305,9 +7388,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.mobile.targetCycleShort': 'Ziel',
   'hudChrome.options.mobileCameraJoystick': 'Kamera-Joystick',
   'hudChrome.options.mobileLeftHanded': 'Linkshänder-Layout',
-  'entities.quests.q_archetype_acceptance.title': 'Ein Handwerk, das Sie Ihr Eigen nennen können',
-  'entities.quests.q_prof_make_amends.title': 'Wiedergutmachung leisten',
-  'entities.quests.q_prof_make_amends.objectives.0.label': 'Waldwolf getötet',
   'entities.npcs.bursar_aldous_crane.greeting':
     'Jede Kiste, jede Truhe und jedes Kleinod ist bei der Vergoldeten Schatulle sicher.',
   'entities.npcs.bursar_aldous_crane.name': 'Kämmerer Aldous Crane',
@@ -7588,6 +7668,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.keybinds.petTaunt': 'Begleiter: Verspotten',
   'hudChrome.mailbox.parcelQtyDecreaseAria': 'Ein Stück weniger von {item} senden',
   'hudChrome.mailbox.parcelQtyIncreaseAria': 'Ein Stück mehr von {item} senden',
+  'hudChrome.mailbox.parcelQtyAria': 'Anzahl von {item} zum Versenden',
   'hudChrome.readyCheck.notReady': 'Nicht bereit',
   'hudChrome.readyCheck.prompt': '{name} hat einen Bereitschaftscheck gestartet. Bist du bereit?',
   'hudChrome.readyCheck.ready': 'Bereit',
@@ -7871,11 +7952,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.claudium.unavailable':
     'Der Claudium-Shop ist derzeit nicht verfügbar. Dein Guthaben und deine Käufe bleiben davon unberührt. Bitte versuche es gleich noch einmal.',
   'hudChrome.claudium.wocBalance': 'WOC: {amount}',
-  'hudChrome.corpseHarvest.harvestButtonTooltip':
-    'Verwerten: Sammle Handwerksmaterialien aus diesem Kadaver (Haut, Fangzahn, Seide und ähnliche Komponenten), unabhängig von der Beute. Jeder kann Kadaver verwerten, aber einen bestimmten Kadaver darf nur ein Spieler verwerten.',
   'hudChrome.deeds.openBookHint': 'Buch der Taten öffnen',
-  'hudChrome.loot.takeAllTooltip':
-    'Alles nehmen: Sammle alle Münzen und Gegenstände in diesem Beutefenster.',
   'hudChrome.statInfo.desc.warfare':
     'Erhöht den Spielern zugefügten Schaden um {increase}% und verringert von Spielern erlittenen Schaden um {reduction}%.',
   'hudChrome.statInfo.names.warfare': 'Kriegsführung',
@@ -8106,6 +8183,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.wocStore.wtype.staff': 'Stab',
   'hudChrome.wocStore.wtype.sword': 'Schwert',
   'hudChrome.wocStore.wtype.wand': 'Zauberstab',
+  'hudChrome.wocStore.wtype.polearm': 'Stangenwaffe',
   'guide.abilityHook.revenge':
     'Trifft Gegner vor Euch und kann nach einem Ausweichen oder Parieren kostenlos werden.',
   'guide.abilityHook.hamstring':
@@ -8330,21 +8408,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.partyFrames.styleRaid': 'Schlachtzugsrahmen',
   'hudChrome.partyFrames.unlock': 'Gruppen- und Schlachtzugsrahmen verschieben',
   'hudChrome.partyFrames.width': 'Rahmenbreite',
-  'apiError.welcome.invalid_input': 'Ungültige Eingabe.',
-  'welcome.back': 'Willkommen zurück, {name}',
-  'welcome.level': 'Stufe {level}',
-  'welcome.lastPlayed': 'Zuletzt gespielt: {when}',
-  'welcome.continue': 'Welt betreten',
-  'welcome.continueHint': 'Enter zum Fortfahren, Esc zum Überspringen',
-  'welcome.continueHintTouch': 'Tippe, um fortzufahren',
-  'welcome.discord.title': 'Die Gemeinschaft lebt auf Discord',
-  'welcome.discord.sub':
-    'Patch-Vorschauen, Events, Entwicklerchat und 2 Bonusfächer in der Bank, wenn du dein Discord-Konto verknüpfst.',
-  'welcome.discord.join': 'Tritt unserem Discord bei',
-  'welcome.chest.ready': 'Truhe der täglichen Belohnungen ist bereit',
-  'welcome.armory.cta': 'Welt betreten und die Waffenkammer durchstöbern',
-  'welcome.news.new': 'Neu',
-  'welcome.news.viewAll': 'Alle Updates auf GitHub ansehen',
+  'news.new': 'Neu',
+  'news.viewAll': 'Alle Updates auf GitHub ansehen',
   'entities.letters.heroic_marks_reward.sender': 'Heroischer Quartiermeister',
   'entities.letters.heroic_marks_reward.subject': 'Deine heroischen Marken',
   'entities.letters.heroic_marks_reward.body':
@@ -8354,8 +8419,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Wenn ihr die Schwierigkeit wechselt, während eure Gruppe noch beanspruchte Läufe hält, bleiben die alten Ansprüche eine Weile bestehen. Der Gruppenleiter kann sie sofort aufgeben: Wählt im Menü des eigenen Porträts Alle Instanzen zurücksetzen oder gebt /dungeon reset ein. Das funktioniert erst nach einem tatsächlichen Schwierigkeitswechsel, nur wenn niemand, ob lebend oder gefallen, drinnen ist, und zwischen Rücksetzungen gilt eine kurze Abklingzeit. Bei falscher Schwierigkeit warnt euch das Spiel vor dem Start. Der Schlachtzug wird so niemals zurückgesetzt; seine eigenen Bindungsregeln bleiben bestehen.',
   'guide.gear.itemLevelBody':
     'Aktiviere Gegenstandsstufe anzeigen in den Optionen, um zwei Ausrüstungsteile schnell zu vergleichen. Ausrüstung bekannter Herkunft, von Gegnern, Quests und Handwerksberufen, zeigt dann eine Gegenstandsstufe: eine einzelne Zahl, die ihre Stärke anhand der Quelle grob angibt und Verbesserungen auch über verschiedene Plätze hinweg vergleichbar macht. Teile ohne solche Herkunft, etwa einfache Händlerware und Startausrüstung, zeigen keine Gegenstandsstufe; eine fehlende Zahl ist normal.',
-  'guide.professions.craftHowBody':
-    'Öffne das Handwerksfenster (Standardtaste T), um alle bekannten Rezepte, ihre Zutaten und deinen Vorrat zu sehen; sind die Materialien vorhanden, genügt ein Klick. Gewöhnliche Rezepte lassen sich überall herstellen. Einige fortgeschrittene Rezepte, darunter höherstufige Werkzeuge und seltene Zaubererrüstung, erfordern dagegen das Handwerkszentrum in Highwatch.',
   'hudChrome.auraEffect.battleStance': 'Kampfhaltung: 10% mehr Wuterzeugung',
   'hudChrome.auraEffect.berserkerStance':
     'Berserkerhaltung: Kritische Treffer gelingen 3% öfter und treffen 3% härter',
@@ -8380,4 +8443,530 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.mouseoverCast': 'Mouseover-Wirken auf Gruppenfenstern',
   'hudChrome.options.showTargetOfTarget': 'Ziel des Ziels anzeigen',
   'hudChrome.unitFrame.targetOfTargetLabel': 'Ziel des Ziels',
+  'itemUi.market.rarityLegendary': 'Legendär',
+  'loading.reconnectingAttempt':
+    'Verbindung verloren. Verbindung wird wiederhergestellt... (Versuch {attempt}/{maxAttempts}, erneuter Versuch in {seconds}s)',
+  'loading.reconnectingNow':
+    'Verbindung verloren. Jetzt wird die Verbindung wiederhergestellt... (Versuch {attempt}/{maxAttempts})',
+  'loading.slowConnection':
+    'Das dauert länger als gewöhnlich. Überprüfen Sie Ihre Internetverbindung.',
+  'delveUi.shop.buyConfirmAccept': 'Kaufen',
+  'delveUi.shop.buyConfirmBody':
+    '{item} für {marks} Tiefgang-Marken kaufen? Käufe mit Marken können nicht erstattet werden.',
+  'delveUi.shop.buyConfirmCancel': 'Abbrechen',
+  'delveUi.shop.buyConfirmTitle': 'Kauf bestätigen',
+  'entities.abilities.brain_freeze.description':
+    'Rimelance hat eine Chance von 20 %, dein nächstes Winterlash sofort und ohne Abklingzeit wirken zu lassen. (Frost)',
+  'entities.abilities.flurry.description':
+    'Feuert drei Eisbolzen ab, die jeweils {damage} Frostschaden verursachen, und belegt das Ziel mit Winterkälte: Die nächsten 2 kompatiblen Zauber gegen das Ziel behandeln es als eingefroren. Brain Freeze lässt Winterlash sofort wirken und überspringt seine Abklingzeit. (Frost)',
+  'entities.abilities.frozen_orb.description':
+    'Entfesselt eine Kugel aus wirbelndem Frost, die 8 Sek. lang vorwärtsschwebt, Gegnern in der Nähe jede Sekunde {damage} Frostschaden zufügt und sie um 30 % verlangsamt. Jeder Trefferimpuls erzeugt einen Eiszapfen. (Frost)',
+  'entities.abilities.shatter.description':
+    'Deine Zauber erhöhen die Chance auf einen kritischen Treffer gegen eingefrorene Ziele um 50 %. Fingers of Frost und Winterkälte gelten als eingefroren. (Frost)',
+  'entities.items.anglers_feast_platter.name': 'Anglers Festmahlschale',
+  'entities.items.arcanite_war_axe.name': 'Arkanitische Kriegsaxt',
+  'entities.items.ashwood_smoked_eel.name': 'Eschenholz-Räucheraal',
+  'entities.items.cooking_salt.name': 'Kochsalz',
+  'entities.items.copper_bearded_axe.name': 'Kupfer-Bartaxt',
+  'entities.items.copper_flanged_mace.name': 'Streitkolben mit Kupferflansch',
+  'entities.items.copper_ore.name': 'Kupfererz',
+  'entities.items.coppermail_gauntlets.name': 'Kupferpanzerhandschuhe',
+  'entities.items.coppermail_sabatons.name': 'Kupferpanzerstiefel',
+  'entities.items.elderwood_battle_staff.name': 'Altholz-Kampfstab',
+  'entities.items.elixir_of_the_boar.name': 'Elixier des Ebers',
+  'entities.items.elixir_of_the_serpent.name': 'Elixier der Schlange',
+  'entities.items.fenbridge_hide_belt.name': 'Fenbridge-Hautgürtel',
+  'entities.items.fenbridge_hide_boots.name': 'Fenbridge-Lederstiefel',
+  'entities.items.fenbridge_hide_leggings.name': 'Fenbridge-Lederbeinkleider',
+  'entities.items.frostgill_chowder.name': 'Frostkiemensuppe',
+  'entities.items.game_meat.name': 'Wildfleisch',
+  'entities.items.glass_vial.name': 'Glasfläschchen',
+  'entities.items.goldleaf_game_stew.name': 'Goldblatt-Wildeintopf',
+  'entities.items.goldleaf_healing_draught.name': 'Goldblatt-Heiltrank',
+  'entities.items.goldleaf_mana_draught.name': 'Goldblatt-Manatrank',
+  'entities.items.goldweave_leggings.name': 'Goldgewebte Beinkleider',
+  'entities.items.goldweave_robe.name': 'Goldgewebte Robe',
+  'entities.items.herbed_marsh_pike.name': 'Kräuter-Sumpfhecht',
+  'entities.items.homespun_cloth.name': 'Selbstgesponnener Stoff',
+  'entities.items.homespun_hood.name': 'Selbstgesponnene Kapuze',
+  'entities.items.homespun_mitts.name': 'Selbstgesponnene Handschuhe',
+  'entities.items.hunters_game_skewer.name': 'Jägers Wildspieß',
+  'entities.items.iron_ore.name': 'Eisenerz',
+  'entities.items.ironbark_boar_spear.name': 'Eisenborken-Eberspeer',
+  'entities.items.ironbark_log.name': 'Eisenrindenholz',
+  'entities.items.ironedge_longsword.name': 'Eisenkanten-Langschwert',
+  'entities.items.ironlink_hauberk.name': 'Eisenglieder-Halsberge',
+  'entities.items.ironlink_legguards.name': 'Eisenglieder-Beinschützer',
+  'entities.items.ironlink_spaulders.name': 'Eisenglieder-Schulterstücke',
+  'entities.items.ironshod_maul.name': 'Eisenbeschlagener Kriegshammer',
+  'entities.items.marlows_grand_roast.name': 'Marlows Festtagsbraten',
+  'entities.items.marshstalker_hood.name': 'Marschpirschkapuze',
+  'entities.items.marshstalker_jerkin.name': 'Marschpirscherwams',
+  'entities.items.marshstalker_spaulders.name': 'Marschpirscher-Schultern',
+  'entities.items.mirewarden_jerkin.name': 'Sumpfwächterwams',
+  'entities.items.mirewarden_leggings.name': 'Sumpfwächtergamaschen',
+  'entities.items.mirewarden_treads.name': 'Sumpfwächterstiefel',
+  'entities.items.pan_seared_perch.name': 'In der Pfanne gebratener Flussbarsch',
+  'entities.items.prime_cut.name': 'Erstklassiges Stück',
+  'entities.items.pristine_hide.name': 'Unberührtes Fell',
+  'entities.items.pristine_silk.name': 'Unberührte Seide',
+  'entities.items.pristine_venom_gland.name': 'Unberührte Giftdrüse',
+  'entities.items.riveted_copper_girdle.name': 'Genieteter Kupfergürtel',
+  'entities.items.rough_hide.name': 'Raues Fell',
+  'entities.items.silkbinders_raiment.name': 'Gewandung des Seidenbinders',
+  'entities.items.silkspun_satchel.name': 'Seidengesponnene Umhängetasche',
+  'entities.items.silvered_carp_supper.name': 'Abendmahl vom Silberkarpfen',
+  'entities.items.silverleaf_healing_draught.name': 'Silberblatt-Heiltrank',
+  'entities.items.silverleaf_herb.name': 'Silberblattkraut',
+  'entities.items.silverleaf_mana_draught.name': 'Silberblatt-Manatrank',
+  'entities.items.silverthread_slippers.name': 'Silberfaden-Hausschuhe',
+  'entities.items.smithing_flux.name': 'Schmiedefluss',
+  'entities.items.spider_silk.name': 'Spinnenseide',
+  'entities.items.spool_of_thread.name': 'Garnrolle',
+  'entities.items.sunpetal_healing_draught.name': 'Sonnenblüten-Heiltrank',
+  'entities.items.sunpetal_mana_draught.name': 'Sonnenblüten-Manatrank',
+  'entities.items.sunweave_mantle.name': 'Sonnengewebter Mantel',
+  'entities.items.sunweave_treads.name': 'Sonnengewebte Stiefel',
+  'entities.items.tanning_agent.name': 'Gerbmittel',
+  'entities.items.thorium_warblade.name': 'Thorium-Kriegsklinge',
+  'entities.items.thoriumscale_cuirass.name': 'Thoriumschuppenkürass',
+  'entities.items.thoriumscale_greathelm.name': 'Thoriumschuppen-Großhelm',
+  'entities.items.thoriumscale_leggings.name': 'Thoriumschuppengamaschen',
+  'entities.items.venom_gland.name': 'Giftdrüse',
+  'entities.items.venomfire_elixir.name': 'Giftfeuer-Elixier',
+  'entities.items.whetted_iron_dirk.name': 'Geschärfter Eisendolch',
+  'entities.letters.guild_trend_alchemy_cooking.body':
+    'Handwerker,\n\nDie Nachricht erreicht die Gilde von Ihrer Arbeit in der Alchemie und im Kochen: Tränke köcheln und Gerichte gewürzt, wobei sich die beiden Handwerke gegenseitig befruchten. Benachbarte Handwerke, die zusammengearbeitet wurden, kennzeichnen eine Hand, die zur Einstimmung bereit ist. Diejenigen, die dieses Paar binden, verdienen sich mit der Zeit den Namen Apotheker. Suchen Sie Schmied Haldren auf, den Rüstungsschmied von Eastbrook: Er spricht vorerst für die Meister. Beweisen Sie ihm Ihr Können mit der Arbeit Ihrer eigenen Hände, und er wird dafür sorgen, dass Ihre beiden Hauptfächer aufeinander abgestimmt sind.\n\nIn gutem Ansehen,\nDie Handwerksgilde',
+  'entities.letters.guild_trend_alchemy_cooking.sender': 'Die Handwerksgilde',
+  'entities.letters.guild_trend_alchemy_cooking.subject': 'Ihre Arbeit in Alchemie und Kochen',
+  'entities.letters.guild_trend_armorcrafting_engineering.body':
+    'Handwerker,\n\nDie Nachricht erreicht die Gilde von eurer Arbeit im Rüstungsbau und im Ingenieurswesen: Platten vernietet und Zahnräder bearbeitet, die beiden Handwerke ergänzen sich gegenseitig. Benachbarte Handwerke, die zusammengearbeitet wurden, kennzeichnen eine Hand, die zur Einstimmung bereit ist. Suchen Sie Schmied Haldren auf, den Rüstungsschmied von Eastbrook: Er spricht vorerst für die Meister. Beweisen Sie ihm Ihr Können mit der Arbeit Ihrer eigenen Hände, und er wird dafür sorgen, dass Ihre beiden Hauptfächer aufeinander abgestimmt sind.\n\nIn gutem Ansehen,\nDie Handwerksgilde',
+  'entities.letters.guild_trend_armorcrafting_engineering.sender': 'Die Handwerksgilde',
+  'entities.letters.guild_trend_armorcrafting_engineering.subject':
+    'Ihre Arbeit im Rüstungsbau und im Ingenieurwesen',
+  'entities.letters.guild_trend_cooking_leatherworking.body':
+    'Handwerker,\n\nDie Nachricht erreicht die Gilde von Ihrer Arbeit in der Koch- und Lederverarbeitung: Mahlzeiten werden angerichtet und Häute gepökelt, wobei sich die beiden Handwerke gegenseitig ergänzen. Benachbarte Handwerke, die zusammengearbeitet wurden, kennzeichnen eine Hand, die zur Einstimmung bereit ist. Suchen Sie Schmied Haldren auf, den Rüstungsschmied von Eastbrook: Er spricht vorerst für die Meister. Beweisen Sie ihm Ihr Können mit der Arbeit Ihrer eigenen Hände, und er wird dafür sorgen, dass Ihre beiden Hauptfächer aufeinander abgestimmt sind.\n\nIn gutem Ansehen,\nDie Handwerksgilde',
+  'entities.letters.guild_trend_cooking_leatherworking.sender': 'Die Handwerksgilde',
+  'entities.letters.guild_trend_cooking_leatherworking.subject':
+    'Ihre Arbeit in der Küche und Lederverarbeitung',
+  'entities.letters.guild_trend_enchanting_jewelcrafting.body':
+    'Handwerker,\n\nDie Nachricht erreicht die Gilde von Ihrer Arbeit im Verzaubern und Juwelieren: Amulette gebunden und Steine poliert, die beiden Handwerke ergänzen sich gegenseitig. Benachbarte Handwerke, die zusammengearbeitet wurden, kennzeichnen eine Hand, die zur Einstimmung bereit ist. Suchen Sie Schmied Haldren auf, den Rüstungsschmied von Eastbrook: Er spricht vorerst für die Meister. Beweisen Sie ihm Ihr Können mit der Arbeit Ihrer eigenen Hände, und er wird dafür sorgen, dass Ihre beiden Hauptfächer aufeinander abgestimmt sind.\n\nIn gutem Ansehen,\nDie Handwerksgilde',
+  'entities.letters.guild_trend_enchanting_jewelcrafting.sender': 'Die Handwerksgilde',
+  'entities.letters.guild_trend_enchanting_jewelcrafting.subject':
+    'Ihre Arbeit im Verzaubern und Juwelieren',
+  'entities.letters.guild_trend_engineering_alchemy.body':
+    'Handwerker,\n\nDie Nachricht erreicht die Gilde von Ihrer Arbeit in Ingenieurwesen und Alchemie: Ladungen werden gemessen und Reagenzien abgewogen, wobei sich die beiden Handwerke gegenseitig versorgen. Benachbarte Handwerke, die zusammengearbeitet wurden, kennzeichnen eine Hand, die zur Einstimmung bereit ist. Wer dieses Paar bindet, verdient sich mit der Zeit den Namen Bombardier. Suchen Sie Schmied Haldren auf, den Rüstungsschmied von Eastbrook: Er spricht vorerst für die Meister. Beweisen Sie ihm Ihr Können mit der Arbeit Ihrer eigenen Hände, und er wird dafür sorgen, dass Ihre beiden Hauptfächer aufeinander abgestimmt sind.\n\nIn gutem Ansehen,\nDie Handwerksgilde',
+  'entities.letters.guild_trend_engineering_alchemy.sender': 'Die Handwerksgilde',
+  'entities.letters.guild_trend_engineering_alchemy.subject':
+    'Ihre Arbeit in Ingenieurwesen und Alchemie',
+  'entities.letters.guild_trend_inscription_enchanting.body':
+    'Handwerker,\n\nDie Nachricht erreicht die Gilde von Ihrer Arbeit im Bereich Inschrift und Verzauberung: Schriftrollen beschriftet und Amulette gewebt, die beiden Handwerke ergänzen sich gegenseitig. Benachbarte Handwerke, die zusammengearbeitet wurden, kennzeichnen eine Hand, die zur Einstimmung bereit ist. Suchen Sie Schmied Haldren auf, den Rüstungsschmied von Eastbrook: Er spricht vorerst für die Meister. Beweisen Sie ihm Ihr Können mit der Arbeit Ihrer eigenen Hände, und er wird dafür sorgen, dass Ihre beiden Hauptfächer aufeinander abgestimmt sind.\n\nIn gutem Ansehen,\nDie Handwerksgilde',
+  'entities.letters.guild_trend_inscription_enchanting.sender': 'Die Handwerksgilde',
+  'entities.letters.guild_trend_inscription_enchanting.subject':
+    'Ihre Arbeit im Bereich Inschrift und Verzauberung',
+  'entities.letters.guild_trend_jewelcrafting_weaponcrafting.body':
+    'Handwerker,\n\nDie Nachricht erreicht die Gilde von eurer Arbeit im Juwelen- und Waffenhandwerk: Edelsteine gesetzt und Kanten geschliffen, die beiden Handwerke ergänzen sich gegenseitig. Benachbarte Handwerke, die zusammengearbeitet wurden, kennzeichnen eine Hand, die zur Einstimmung bereit ist. Suchen Sie Schmied Haldren auf, den Rüstungsschmied von Eastbrook: Er spricht vorerst für die Meister. Beweisen Sie ihm Ihr Können mit der Arbeit Ihrer eigenen Hände, und er wird dafür sorgen, dass Ihre beiden Hauptfächer aufeinander abgestimmt sind.\n\nIn gutem Ansehen,\nDie Handwerksgilde',
+  'entities.letters.guild_trend_jewelcrafting_weaponcrafting.sender': 'Die Handwerksgilde',
+  'entities.letters.guild_trend_jewelcrafting_weaponcrafting.subject':
+    'Ihre Arbeit im Juwelen- und Waffenhandwerk',
+  'entities.letters.guild_trend_leatherworking_tailoring.body':
+    'Handwerker,\n\nDie Nachricht erreicht die Gilde von Ihrer Arbeit in der Lederverarbeitung und Schneiderei: Leder schneiden und Stoff säumen, die beiden Handwerke ergänzen sich gegenseitig. Benachbarte Handwerke, die zusammengearbeitet wurden, kennzeichnen eine Hand, die zur Einstimmung bereit ist. Wer dieses Paar bindet, verdient sich mit der Zeit den Namen Ausstatter. Suchen Sie Schmied Haldren auf, den Rüstungsschmied von Eastbrook: Er spricht vorerst für die Meister. Beweisen Sie ihm Ihr Können mit der Arbeit Ihrer eigenen Hände, und er wird dafür sorgen, dass Ihre beiden Hauptfächer aufeinander abgestimmt sind.\n\nIn gutem Ansehen,\nDie Handwerksgilde',
+  'entities.letters.guild_trend_leatherworking_tailoring.sender': 'Die Handwerksgilde',
+  'entities.letters.guild_trend_leatherworking_tailoring.subject':
+    'Ihre Arbeit in der Lederverarbeitung und Schneiderei',
+  'entities.letters.guild_trend_tailoring_inscription.body':
+    'Handwerker,\n\nDie Nachricht erreicht die Gilde von Ihrer Arbeit in der Schneiderei und Beschriftung: Nähte genäht und Glyphen eingefärbt, die beiden Handwerke ergänzen sich gegenseitig. Benachbarte Handwerke, die zusammengearbeitet wurden, kennzeichnen eine Hand, die zur Einstimmung bereit ist. Suchen Sie Schmied Haldren auf, den Rüstungsschmied von Eastbrook: Er spricht vorerst für die Meister. Beweisen Sie ihm Ihr Können mit der Arbeit Ihrer eigenen Hände, und er wird dafür sorgen, dass Ihre beiden Hauptfächer aufeinander abgestimmt sind.\n\nIn gutem Ansehen,\nDie Handwerksgilde',
+  'entities.letters.guild_trend_tailoring_inscription.sender': 'Die Handwerksgilde',
+  'entities.letters.guild_trend_tailoring_inscription.subject':
+    'Ihre Arbeit im Bereich Schneiderei und Beschriftung',
+  'entities.letters.guild_trend_weaponcrafting_armorcrafting.body':
+    'Handwerker,\n\nDie Nachricht erreicht die Gilde von Ihrer Arbeit im Waffen- und Rüstungsbau: Klingen gehärtet und Platten montiert, wobei die beiden Handwerke einander ergänzen. Benachbarte Handwerke, die zusammengearbeitet wurden, kennzeichnen eine Hand, die zur Einstimmung bereit ist. Diejenigen, die dieses Paar binden, verdienen sich mit der Zeit den Namen Schmied. Suchen Sie Schmied Haldren auf, den Rüstungsschmied von Eastbrook: Er spricht vorerst für die Meister. Beweisen Sie ihm Ihr Können mit der Arbeit Ihrer eigenen Hände, und er wird dafür sorgen, dass Ihre beiden Hauptfächer aufeinander abgestimmt sind.\n\nIn gutem Ansehen,\nDie Handwerksgilde',
+  'entities.letters.guild_trend_weaponcrafting_armorcrafting.sender': 'Die Handwerksgilde',
+  'entities.letters.guild_trend_weaponcrafting_armorcrafting.subject':
+    'Ihre Arbeit im Waffen- und Rüstungsbau',
+  'entities.letters.mastery_reset_notice.body':
+    'Gildengenosse,\n\nDie Gilde hat eine neue Berechnung der Meisterschaft angenommen. Jede Hand beginnt den Aufstieg von vorn: deine Handwerkskünste und deine Sammelberufe wurden auf null gesetzt.\n\nAlles andere gehört dir, unberührt: deine Rezepte, deine Werkzeuge und Materialien, dein Bank und Gold, deine Abstimmungen und Titel, deine Taten und dein Ansehen, deine Quests und Post.\n\nDer Aufstieg ist jetzt ehrlich. Billige Arbeit trägt dich nicht. Suche nach schwierigeren Rezepten, reichhaltigeren Adern und tieferen Gewässern.\n\nMit Achtung,\nDie Gildenhalle',
+  'entities.letters.mastery_reset_notice.sender': 'Die Gildenhalle',
+  'entities.letters.mastery_reset_notice.subject': 'Dein Handwerk, ehrlich gemacht',
+  'entities.letters.prof_tier_alchemy_cooking_1.body':
+    'Kunde von eurer Küche sagt mir, dass einer eurer Hauptberufe ungewöhnliche Arbeit erreicht hat. Es ist ein erster Vorgeschmack, nicht mehr, aber ein vielversprechender. Haltet den Topf in Bewegung.',
+  'entities.letters.prof_tier_alchemy_cooking_1.sender': 'Koch Marlow',
+  'entities.letters.prof_tier_alchemy_cooking_1.subject': 'Ein Vorgeschmack auf das, was kommt',
+  'entities.letters.prof_tier_alchemy_cooking_2.body':
+    'Man sagt mir, ein Hauptberuf von euch hat sich zu seltener Arbeit hochgekocht. Das ist die Hitze, bei der die meisten Köche das Gericht anbrennen lassen, und ihr habt es nicht getan. Setzt euch, aber nicht lang.',
+  'entities.letters.prof_tier_alchemy_cooking_2.sender': 'Koch Marlow',
+  'entities.letters.prof_tier_alchemy_cooking_2.subject':
+    'Seltene Arbeit, und keine angebrannten Stellen',
+  'entities.letters.prof_tier_alchemy_cooking_3.body':
+    'Einer eurer Hauptberufe hat sich über das Seltene hinaus in echte Tiefe geköchelt. Jetzt kocht ihr, wie man sagt. Würzt mutig und probiert weiter.',
+  'entities.letters.prof_tier_alchemy_cooking_3.sender': 'Koch Marlow',
+  'entities.letters.prof_tier_alchemy_cooking_3.subject': 'Jetzt kocht ihr',
+  'entities.letters.prof_tier_alchemy_cooking_4.body':
+    'Ein Hauptberuf von euch ist nur noch ein Gang von der Meisterschaft entfernt. Der letzte ist immer der reichhaltigste und am leichtesten zu übertreiben. Ruhige Hände am Schöpflöffel.',
+  'entities.letters.prof_tier_alchemy_cooking_4.sender': 'Koch Marlow',
+  'entities.letters.prof_tier_alchemy_cooking_4.subject': 'Ein Gang vom Festmahl',
+  'entities.letters.prof_tier_alchemy_cooking_5.body':
+    'Ein Hauptberuf von euch hat die Meisterschaft erreicht, das oberste Regal der ganzen Speisekammer. Ich ernähre alle, aber nur wenige kochen sich so weit nach oben. Stolz auf euch, wirklich. Geht jetzt und macht etwas, das sie am Tisch weinen lässt.',
+  'entities.letters.prof_tier_alchemy_cooking_5.sender': 'Koch Marlow',
+  'entities.letters.prof_tier_alchemy_cooking_5.subject': 'Meisterschaft, heiß serviert',
+  'entities.letters.prof_tier_engineering_alchemy_1.body':
+    'Oi, die Zahlen sagen mir, einer eurer Hauptberufe hat gerade ungewöhnliche Arbeit erreicht, kleine Kartoffeln, winzig, aber es KNALLTE, ja? Der erste Funke ist immer der süßeste. Mehr Funken. Los.',
+  'entities.letters.prof_tier_engineering_alchemy_1.sender': 'Tüftler Gizzel',
+  'entities.letters.prof_tier_engineering_alchemy_1.subject': 'Der ERSTE Funke, ha',
+  'entities.letters.prof_tier_engineering_alchemy_2.body':
+    'Man sagt mir, ein Hauptberuf von euch ist zu seltener Arbeit aufgestiegen, und dort fängt es an, richtig gefährlich zu werden (die gute Art). Die meisten Hände hören auf, bevor der Spaß beginnt. Ihr nicht. HA.',
+  'entities.letters.prof_tier_engineering_alchemy_2.sender': 'Tüftler Gizzel',
+  'entities.letters.prof_tier_engineering_alchemy_2.subject': 'Selten, oh, SELTEN',
+  'entities.letters.prof_tier_engineering_alchemy_3.body':
+    'Einer eurer Hauptberufe hat das Seltene hinter sich gelassen und ist beim ernsthaften Zeug angelangt, oh, hier wird es LAUT. Hört jetzt nicht auf, was auch immer ihr tut, Schwung ist alles, Zündschnüre auch.',
+  'entities.letters.prof_tier_engineering_alchemy_3.sender': 'Tüftler Gizzel',
+  'entities.letters.prof_tier_engineering_alchemy_3.subject': 'Jetzt wird es laut',
+  'entities.letters.prof_tier_engineering_alchemy_4.body':
+    'Ein Hauptberuf von euch ist EINE Sprosse unter der Meisterschaft, eine, einzeln, spürt ihr es summen? Der letzte Schritt ist der größte Knall. Nicht blinzeln.',
+  'entities.letters.prof_tier_engineering_alchemy_4.sender': 'Tüftler Gizzel',
+  'entities.letters.prof_tier_engineering_alchemy_4.subject': 'Eine Sprosse, EINE, von der Spitze',
+  'entities.letters.prof_tier_engineering_alchemy_5.body':
+    'Ein Hauptberuf von euch hat die Meisterschaft erreicht, die alleroberste SPITZE, kabumm, die ganze Leiter, erledigt. Ich verteile kein Lob, ich verteile Zündschnüre, aber hier, nehmt beides: ihr seid brilliant und leicht einschüchternd. Geht und macht die Berge nervös.',
+  'entities.letters.prof_tier_engineering_alchemy_5.sender': 'Tüftler Gizzel',
+  'entities.letters.prof_tier_engineering_alchemy_5.subject': 'MEISTERSCHAFT, kabumm',
+  'entities.letters.prof_tier_leatherworking_tailoring_1.body':
+    'Die Gilde vermerkt, dass einer eurer Hauptberufe ungewöhnliche Arbeit erreicht hat. Es ist nur die erste Reihe von vielen, aber sie ist gerade und wahrhaftig. Messt die nächste genauso sorgfältig ab.',
+  'entities.letters.prof_tier_leatherworking_tailoring_1.sender': 'Weberin Ottilie',
+  'entities.letters.prof_tier_leatherworking_tailoring_1.subject': 'Eine gerade erste Reihe',
+  'entities.letters.prof_tier_leatherworking_tailoring_2.body':
+    'Ein Hauptberuf von euch hat sich zu seltener Arbeit hochgearbeitet. Da zeigt eine nachlässige Hand jeden fallen gelassenen Stich, und eure hat es nicht. Ich bin leise zufrieden.',
+  'entities.letters.prof_tier_leatherworking_tailoring_2.sender': 'Weberin Ottilie',
+  'entities.letters.prof_tier_leatherworking_tailoring_2.subject': 'Seltene Arbeit, gut abgemessen',
+  'entities.letters.prof_tier_leatherworking_tailoring_3.body':
+    'Einer eurer Hauptberufe ist über das Seltene hinaus in feinere Arbeit vorgedrungen. Das Muster tritt einer Hand auf dieser Ebene klar hervor, kein Raten mehr. Bleibt dabei, zweimal abzumessen.',
+  'entities.letters.prof_tier_leatherworking_tailoring_3.sender': 'Weberin Ottilie',
+  'entities.letters.prof_tier_leatherworking_tailoring_3.subject': 'Das Muster tritt klar hervor',
+  'entities.letters.prof_tier_leatherworking_tailoring_4.body':
+    'Ein Hauptberuf von euch sitzt eine Reihe unter der Meisterschaft. Die letzte Reihe ist immer am schwersten gerade zu halten. Beeilt euch jetzt nicht.',
+  'entities.letters.prof_tier_leatherworking_tailoring_4.sender': 'Weberin Ottilie',
+  'entities.letters.prof_tier_leatherworking_tailoring_4.subject': 'Eine Reihe von der Spitze',
+  'entities.letters.prof_tier_leatherworking_tailoring_5.body':
+    'Ein Hauptberuf von euch hat die Meisterschaft erreicht. Ich habe eure Arbeit zweimal gemessen, wie ich alles messe, und sie hält stand. Nur wenige Hände setzen den letzten Stich so sauber. Ich bin stolz, und das sage ich nicht leichtfertig.',
+  'entities.letters.prof_tier_leatherworking_tailoring_5.sender': 'Weberin Ottilie',
+  'entities.letters.prof_tier_leatherworking_tailoring_5.subject': 'Der letzte Stich',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_1.body':
+    'Nachricht erreicht meine Schmiede, dass einer eurer Hauptberufe nun ungewöhnliche Arbeit hält. Es ist die kleinste Sprosse einer langen Leiter, aber ihr habt sie am Amboss verdient, nicht durch Bitten. Haltet das Feuer heiß.',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_1.sender': 'Schmiedemeisterin Darva',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_1.subject':
+    'Ein Funken, den es zu bemerken gilt',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_2.body':
+    'Man sagt mir, ein Hauptberuf von euch hat seltene Arbeit erreicht. Das ist die Sprosse, wo nachlässige Hände abfallen und die wahren Schmiede stehen bleiben. Ihr steht noch. Gut.',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_2.sender': 'Schmiedemeisterin Darva',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_2.subject':
+    'Seltene Arbeit, und verdient',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_3.body':
+    'Ein Hauptberuf von euch hat das Seltene überstiegen und ernsthafte Arbeit erreicht. Das Metall antwortet einer solchen Hand, kämpft nicht mehr dagegen an. Lasst das Lob eure Arme nicht weichmachen.',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_3.sender': 'Schmiedemeisterin Darva',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_3.subject':
+    'Das Metall antwortet euch jetzt',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_4.body':
+    'Einer eurer Hauptberufe steht eine einzige Sprosse unter der Meisterschaft. Wenige Hände, die ich kenne, erreichen diese Höhe, und noch weniger behalten ihre Schärfe hier. Beendet den Aufstieg.',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_4.sender': 'Schmiedemeisterin Darva',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_4.subject': 'Nahe der Spitze der Leiter',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_5.body':
+    'Ein Hauptberuf von euch hat die Meisterschaft erreicht, die höchste Stufe, die eine Hand erklimmen kann. Ich gebe Lob nicht frei, also hört das einmal: Die Schmiede ist stolz auf euch. Geht jetzt und lehrt das Feuer etwas Neues.',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_5.sender': 'Schmiedemeisterin Darva',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_5.subject': 'Meisterschaft, endlich',
+  'entities.npcs.alchemist_verane.greeting':
+    'Zweimal messen, einmal gießen, {className}. In der Apotheke hat niemand Geduld mit verschütteten Reagenzien.',
+  'entities.npcs.alchemist_verane.name': 'Alchemist Verane',
+  'entities.npcs.alchemist_verane.title': 'Meister der Apotheke',
+  'entities.npcs.cook_marlow.greeting':
+    'Nichts verlässt meine Küche halbgar, {className}. Setz dich, iss und dann wieder hinaus mit dir.',
+  'entities.npcs.cook_marlow.name': 'Koch Marlow',
+  'entities.npcs.cook_marlow.title': 'Meister der Küchen',
+  'entities.npcs.forgemistress_darva.greeting':
+    'Die Schmiede antwortet mir: {className}. Bringt gutes Erz mit und es wird auch euch antworten.',
+  'entities.npcs.forgemistress_darva.name': 'Schmiedemeisterin Darva',
+  'entities.npcs.forgemistress_darva.title': 'Meister der Schmiede',
+  'entities.npcs.tanner_hesk.greeting':
+    'Eine Haut ist nur so gut wie ihre Gerbung, {className}. Die Bottiche sind bereit, wenn du es bist.',
+  'entities.npcs.tanner_hesk.name': 'Gerber Hesk',
+  'entities.npcs.tanner_hesk.title': 'Meister der Gerberei',
+  'entities.npcs.tinker_gizzel.greeting':
+    'Federn, Zahnräder und scharfe Kanten, {className}: Die Werkzeugmacherei hat alles, was deinen Händen fehlt.',
+  'entities.npcs.tinker_gizzel.name': 'Tüftler Gizzel',
+  'entities.npcs.tinker_gizzel.title': 'Meister der Werkzeugmacherei',
+  'entities.npcs.weaver_ottilie.greeting':
+    'Achte auf die Fäden, {className}. Eine ruhige Hand am Webstuhl ist mehr wert als eine starke.',
+  'entities.npcs.weaver_ottilie.name': 'Weberin Ottilie',
+  'entities.npcs.weaver_ottilie.title': 'Meister des Webstuhls',
+  'gatherEvent.ancientHeartwood': '{finder} hat ein uraltes Kernholz gefällt!',
+  'gatherEvent.moonlitBloom': '{finder} hat eine mondbeschienene Blüte entdeckt!',
+  'gatherEvent.pristineVein': '{finder} hat eine makellose Ader getroffen!',
+  'guide.abilityHook.brain_freeze':
+    'Deine Frostblitze lassen das nächste Winterlash manchmal sofort wirken und seine Abklingzeit überspringen.',
+  'guide.abilityHook.frozen_orb':
+    'Rollt eine langsame Kugel durch die Gegnergruppe, die Feinde unterkühlt und Eiszapfen speichert.',
+  'heroicShop.buyConfirmAccept': 'Kaufen',
+  'heroicShop.buyConfirmBody':
+    '{item} für {marks} Heroische Marken kaufen? Käufe mit Marken können nicht erstattet werden.',
+  'heroicShop.buyConfirmCancel': 'Abbrechen',
+  'heroicShop.buyConfirmTitle': 'Kauf bestätigen',
+  'hudChrome.crafting.comboTierUnmetNamed': 'Erhöhe {crafts} auf Stufe {tier}.',
+  'hudChrome.crafting.difficultyFull': 'Voller Fähigkeitsgewinn',
+  'hudChrome.crafting.difficultyNone': 'Kein Fähigkeitsgewinn',
+  'hudChrome.crafting.difficultyReduced': 'Reduzierter Fähigkeitsgewinn',
+  'hudChrome.crafting.enchantedLine': 'Verzaubert',
+  'hudChrome.crafting.makersMark': 'Hergestellt von {name}',
+  'hudChrome.crafting.masterworkSeal': 'Meisterwerk',
+  'hudChrome.crafting.masterworkToast': 'Meisterwerk! {name}',
+  'hudChrome.crafting.masterworkZoneLine': '{crafter} hat das Meisterwerk {name} hergestellt!',
+  'hudChrome.crafting.skillReqLine': 'Erfordert {craft} {skill}',
+  'hudChrome.crafting.stationBadge': 'Station',
+  'hudChrome.crafting.stationName.apothecary': 'Apotheke',
+  'hudChrome.crafting.stationName.forge': 'Schmiede',
+  'hudChrome.crafting.stationName.kitchens': 'Küchen',
+  'hudChrome.crafting.stationName.loom': 'Webstuhl',
+  'hudChrome.crafting.stationName.tannery': 'Gerberei',
+  'hudChrome.crafting.stationName.toolworks': 'Werkzeugmacherei',
+  'hudChrome.crafting.stationOutOfRangeNamed': 'Begib dich zur {station}, um dies herzustellen.',
+  'hudChrome.crafting.stationRequired':
+    'Du musst dich an der {station} befinden, um das herzustellen.',
+  'hudChrome.crafting.tierUpToast': '{craft} auf Stufe {tier} aufgestiegen!',
+  'hudChrome.death.healerConfirmAccept': 'Belebe mich wieder',
+  'hudChrome.death.healerConfirmBody':
+    'Der Bleiche Hüter belebt dich hier wieder, doch der Hüterzoll verringert alle deine Attribute um 75 %, auf höheren Stufen bis zu 10 Minuten lang. Kehrst du als Geist zu deinem Leichnam zurück, wirst du ohne Strafe wiederbelebt.',
+  'hudChrome.death.healerConfirmCancel': 'Abbrechen',
+  'hudChrome.death.healerConfirmTitle': 'Den Hüterzoll annehmen?',
+  'hudChrome.gathering.gatherLine': 'Sie sammeln: {name}.',
+  'hudChrome.gathering.gatherLineQty': 'Sie sammeln: {name} x{qty}.',
+  'hudChrome.mobile.professions': 'Berufe',
+  'hudChrome.options.showThirdActionBar': 'Dritte Aktionsleiste anzeigen',
+  'hudChrome.playerMenu.streamerBadgeTitle': 'Verifizierter Streamer',
+  'hudChrome.professions.ceilingCommon': 'Gewöhnliche Grenze',
+  'hudChrome.professions.ceilingRare': 'Seltene Grenze',
+  'hudChrome.professions.ceilingUnlimited': 'Keine Verbesserungsgrenze',
+  'hudChrome.professions.close': 'Berufe schließen',
+  'hudChrome.professions.ctaHeader': 'Nächster Schritt',
+  'hudChrome.professions.ctaRaise':
+    'Erhöhe weiter {craft}: {points} weitere Punkte für die nächste Stufe.',
+  'hudChrome.professions.ctaStart':
+    'Stelle mit einem beliebigen Beruf etwas her oder sammle etwas, um zu beginnen.',
+  'hudChrome.professions.gatheringHeader': 'Sammelberufe',
+  'hudChrome.professions.hobbyLabel': 'Hobby: {craft}',
+  'hudChrome.professions.identityHeader': 'Identität',
+  'hudChrome.professions.majorsLabel': 'Hauptfächer: {a} und {b}',
+  'hudChrome.professions.nextUnlockSpecialized':
+    'Noch {points} Punkte bis zur Spezialisierung: Materialkosten sinken',
+  'hudChrome.professions.nextUnlockTier':
+    'Noch {points} Punkte bis zur nächsten Stufe: Meisterwerkchance steigt',
+  'hudChrome.professions.nudgeDormant': 'Ihr {craft}-Wissen ruht',
+  'hudChrome.professions.nudgeNearTier': '{craft}: noch {points} Punkte bis zur nächsten Stufe',
+  'hudChrome.professions.pairsHeld': 'Gehaltene Paare: {count}',
+  'hudChrome.professions.perkSpecializedAt': 'Spezialisiert auf die Fertigkeit {threshold}',
+  'hudChrome.professions.perkSpecializedLine': '{craft}: Spezialisiert, Materialkosten -{pct}%',
+  'hudChrome.professions.perksHeader': 'Vorteile',
+  'hudChrome.professions.returnsLabel': 'Rückgabe: {count}',
+  'hudChrome.professions.ringAria': 'Handwerksrad',
+  'hudChrome.professions.roleDormant': 'Inaktive Kenntnisse',
+  'hudChrome.professions.roleHobby': 'Hobby',
+  'hudChrome.professions.roleMajor': 'Hauptberuf',
+  'hudChrome.professions.roleUnattuned': 'Nicht abgestimmt',
+  'hudChrome.professions.skillValue': '{skill} / {max}',
+  'hudChrome.professions.skillsHeader': 'Handwerkliche Fähigkeiten',
+  'hudChrome.professions.switchCost': 'Der nächste Archetypwechsel kostet {cost} Sühnepunkte',
+  'hudChrome.professions.syncing': 'Warte auf deine Berufsdaten aus dem Realm.',
+  'hudChrome.professions.tierPipAria': 'Stufe {tier}',
+  'hudChrome.professions.title': 'Berufe',
+  'hudChrome.professions.tutorialLine':
+    'Erreiche die Fertigkeit {target} in einem beliebigen Handwerk, um deine erste Stufe freizuschalten.',
+  'hudChrome.professions.unattunedIdentity':
+    'Du bist noch auf keinen Archetyp abgestimmt. Steigere deine Handwerksberufe und schließe eine Abstimmung ab, um dein Paar zu wählen.',
+  'hudChrome.training.alreadyKnown': 'Das Rezept kennen Sie bereits.',
+  'hudChrome.training.cannotAfford': 'Sie können sich diese Ausbildung nicht leisten.',
+  'hudChrome.training.close': 'Ausbildung schließen',
+  'hudChrome.training.dialogOption': 'Ausbildung',
+  'hudChrome.training.dialogOptionAria': 'Ausbildung bei {name} ansehen',
+  'hudChrome.training.empty': 'Dieser Meister hat nichts zu lehren.',
+  'hudChrome.training.free': 'Frei',
+  'hudChrome.training.learned': 'Rezept gelernt: {recipe}',
+  'hudChrome.training.notTaughtHere': 'Dieses Rezept wird hier nicht gelehrt.',
+  'hudChrome.training.outOfRange':
+    'Du musst dich an der Handwerksstation befinden, um etwas zu lernen.',
+  'hudChrome.training.requirement': 'Wird ab {craft} {skill} gelehrt',
+  'hudChrome.training.stateKnown': 'Bekannt',
+  'hudChrome.training.stateLocked': 'Gesperrt',
+  'hudChrome.training.stateTeachable': 'Verfügbar',
+  'hudChrome.training.tierUnmet': 'Sie benötigen {craft} {skill}, um dieses Rezept zu lernen.',
+  'hudChrome.training.title': 'Ausbildung: {name}',
+  'hudChrome.training.trainAria': 'Lernen Sie {name} für {fee}',
+  'hudChrome.bags.itemAriaInstanced': '{item}, Menge {count}, herstellermarkierte Kopie',
+  'hudChrome.charSheet.defense': 'Verteidigung',
+  'hudChrome.charSheet.offense': 'Angriff',
+  'hudChrome.corpseHarvest.harvestTooltip':
+    'Verwirft die markierten Komponenten. Jeder Kadaver kann einmal verwertet werden, wer zuerst kommt. Nimmt nicht die Beute.',
+  'hudChrome.crafting.attunedBanner': 'Abgestimmt: {title}',
+  'hudChrome.crafting.attunedZoneLine': '{name} hat sich als {archetype} abgestimmt!',
+  'hudChrome.crafting.attunementReturnCost':
+    'Wenn du dieses Paar verlässt, kostet die spätere Rückkehr {cost} Sühneaufgaben.',
+  'hudChrome.crafting.commissionBound': 'Auftragsarbeit: gebunden an den Empfänger',
+  'hudChrome.crafting.commissionToggle': 'Auftragsarbeit',
+  'hudChrome.crafting.commissionToggleHint':
+    'Bindet sich an den ersten Charakter, der es im Handel erhält.',
+  'hudChrome.crafting.commissionUnbound': 'Auftragsarbeit: bindet sich an den ersten Empfänger',
+  'hudChrome.crafting.difficultyMinimal': 'Minimaler Fertigkeitszuwachs',
+  'hudChrome.crafting.gatheredBy': 'Gesammelt von {name}',
+  'hudChrome.crafting.learnMoreAtStation':
+    '{master} an der {station} kann dir weitere {craft}-Rezepte beibringen.',
+  'hudChrome.crafting.tierTutorial.dismiss': 'Verstanden',
+  'hudChrome.crafting.tierTutorial.masters':
+    'Handwerksmeister in den Städten bieten Abstimmungsquests an. Besuche einen, um dein Paar zu wählen, wann immer du bereit bist. Nichts, was du gelernt hast, geht je verloren.',
+  'hudChrome.crafting.tierTutorial.radar':
+    'Deine Berufe bilden ein Rad. Stimme dich auf ein benachbartes Paar ab und diese zwei Handwerke werden unbegrenzte Hauptberufe, ein Handwerk gegenüber auf dem Rad wird ein auf Selten begrenztes Hobby, und der Rest liegt ruhend: ihr Wissen bewahrt, aber auf Gewöhnlich begrenzt, bis du sie wieder aufnimmst.',
+  'hudChrome.crafting.tierTutorial.tierCap':
+    'Ein Handwerk erreicht seine erste Stufe bei {skill} Fertigkeit, und jede Stufe verbessert, was es herstellen kann. Aber ein Handwerk steigt nur über seltene Arbeit hinaus, wenn es einer deiner zwei Hauptberufe ist.',
+  'hudChrome.crafting.tierTutorial.title': 'Deine erste Stufe',
+  'hudChrome.crafting.trendNudge':
+    'Deine Hände neigen zum {archetype}. Seine Abstimmung wartet bei {master}.',
+  'hudChrome.crafting.trendNudgeNoMaster':
+    'Deine Hände neigen zum {archetype}. Suche einen Handwerksmeister, um es aufzunehmen.',
+  'hudChrome.discord.roleTagChatTitle': 'Verifizierte Serverrolle: {role}',
+  'hudChrome.enchantName.enchant_chest_armor': 'Brust verzaubern - Verstärkung',
+  'hudChrome.enchantName.enchant_chest_greater_stamina': 'Brust verzaubern - Große Ausdauer',
+  'hudChrome.enchantName.enchant_chest_runeweave': 'Brust verzaubern - Runenweberei',
+  'hudChrome.enchantName.enchant_chest_spirit': 'Brust verzaubern - Geist',
+  'hudChrome.enchantName.enchant_chest_stamina': 'Brust verzaubern - Ausdauer',
+  'hudChrome.enchantName.enchant_feet_agility': 'Stiefel verzaubern - Beweglichkeit',
+  'hudChrome.enchantName.enchant_feet_stamina': 'Stiefel verzaubern - Ausdauer',
+  'hudChrome.enchantName.enchant_feet_strength': 'Stiefel verzaubern - Stärke',
+  'hudChrome.enchantName.enchant_gloves_agility': 'Handschuhe verzaubern - Beweglichkeit',
+  'hudChrome.enchantName.enchant_gloves_greater_agility':
+    'Handschuhe verzaubern - Große Beweglichkeit',
+  'hudChrome.enchantName.enchant_gloves_intellect': 'Handschuhe verzaubern - Zaubermacht',
+  'hudChrome.enchantName.enchant_gloves_strength': 'Handschuhe verzaubern - Stärke',
+  'hudChrome.enchantName.enchant_helmet_armor': 'Helm verzaubern - Verstärkung',
+  'hudChrome.enchantName.enchant_helmet_fortitude': 'Helm verzaubern - Ausdauerkraft',
+  'hudChrome.enchantName.enchant_helmet_greater_fortitude': 'Helm verzaubern - Große Ausdauerkraft',
+  'hudChrome.enchantName.enchant_helmet_intellect': 'Helm verzaubern - Intellekt',
+  'hudChrome.enchantName.enchant_helmet_runed_links': 'Helm verzaubern - Runenkette',
+  'hudChrome.enchantName.enchant_legs_greater_stamina': 'Hose verzaubern - Große Ausdauer',
+  'hudChrome.enchantName.enchant_legs_intellect': 'Hose verzaubern - Intellekt',
+  'hudChrome.enchantName.enchant_legs_runed_hide': 'Hose verzaubern - Runenfell',
+  'hudChrome.enchantName.enchant_legs_stamina': 'Hose verzaubern - Ausdauer',
+  'hudChrome.enchantName.enchant_neck_agility': 'Amulett verzaubern - Beweglichkeit',
+  'hudChrome.enchantName.enchant_neck_intellect': 'Amulett verzaubern - Intellekt',
+  'hudChrome.enchantName.enchant_neck_spirit': 'Amulett verzaubern - Geist',
+  'hudChrome.enchantName.enchant_ring_agility': 'Ring verzaubern - Beweglichkeit',
+  'hudChrome.enchantName.enchant_ring_intellect': 'Ring verzaubern - Intellekt',
+  'hudChrome.enchantName.enchant_ring_spirit': 'Ring verzaubern - Geist',
+  'hudChrome.enchantName.enchant_ring_strength': 'Ring verzaubern - Stärke',
+  'hudChrome.enchantName.enchant_shoulder_agility': 'Schultern verzaubern - Beweglichkeit',
+  'hudChrome.enchantName.enchant_shoulder_intellect': 'Schultern verzaubern - Intellekt',
+  'hudChrome.enchantName.enchant_shoulder_strength': 'Schultern verzaubern - Stärke',
+  'hudChrome.enchantName.enchant_waist_agility': 'Gürtel verzaubern - Beweglichkeit',
+  'hudChrome.enchantName.enchant_waist_stamina': 'Gürtel verzaubern - Ausdauer',
+  'hudChrome.enchantName.enchant_waist_strength': 'Gürtel verzaubern - Stärke',
+  'hudChrome.enchantName.enchant_weapon_agility': 'Waffe verzaubern - Beweglichkeit',
+  'hudChrome.enchantName.enchant_weapon_greater_might': 'Waffe verzaubern - Große Macht',
+  'hudChrome.enchantName.enchant_weapon_greater_spellpower': 'Waffe verzaubern - Große Zaubermacht',
+  'hudChrome.enchantName.enchant_weapon_intellect': 'Waffe verzaubern - Zaubermacht',
+  'hudChrome.enchantName.enchant_weapon_might': 'Waffe verzaubern - Macht',
+  'hudChrome.enchantName.enchant_weapon_runed_edge': 'Waffe verzaubern - Runenschneide',
+  'hudChrome.enchantName.enchant_weapon_runed_focus': 'Waffe verzaubern - Runenfokus',
+  'hudChrome.enchanting.disenchantConfirmBody':
+    'Dies zerstört {item} und ergibt arkane Materialien. Dies kann nicht rückgängig gemacht werden.',
+  'hudChrome.enchanting.disenchantConfirmBodySpecial':
+    'Dies zerstört eine besondere Kopie von {item} (signiert, Meisterwerk oder verzaubert) und ergibt arkane Materialien. Dies kann nicht rückgängig gemacht werden.',
+  'hudChrome.enchanting.disenchantConfirmTitle': '{item} entzaubern?',
+  'hudChrome.enchanting.disenchantThrottled':
+    'Du entzauberst zu schnell. Warte einen Moment und versuche es erneut.',
+  'hudChrome.enchanting.disenchantedLine': 'Du entzauberst {item}.',
+  'hudChrome.enchanting.enchantAppliedLine': 'Du verzauberst {item} mit {enchant}.',
+  'hudChrome.enchanting.enchantInsufficient':
+    'Du hast nicht die Materialien für diese Verzauberung.',
+  'hudChrome.enchanting.enchantThrottled':
+    'Du verzauberst zu schnell. Warte einen Moment und versuche es erneut.',
+  'hudChrome.enchanting.enchantUnknown': 'Diese Verzauberung existiert nicht.',
+  'hudChrome.enchanting.enchantWrongSlot':
+    'Diese Verzauberung kann nicht auf diesen Gegenstand angewendet werden.',
+  'hudChrome.enchanting.noEnchants': 'Keine Verzauberung verwendet dieses Reagenz.',
+  'hudChrome.enchanting.noTargets': 'Kein geeigneter Gegenstand zum Verzaubern.',
+  'hudChrome.enchanting.notDisenchantable': 'Du kannst das nicht entzaubern.',
+  'hudChrome.enchanting.notHeld': 'Du hast diesen Gegenstand nicht.',
+  'hudChrome.enchanting.notSalvageable': 'Du kannst das nicht zerlegen.',
+  'hudChrome.enchanting.pickerTitle': 'Verzauberung anwenden',
+  'hudChrome.enchanting.salvageConfirmBody':
+    'Dies zerstört {item} und ergibt Handwerksmaterialien. Dies kann nicht rückgängig gemacht werden.',
+  'hudChrome.enchanting.salvageConfirmBodySpecial':
+    'Dies zerstört eine besondere Kopie von {item} (signiert, Meisterwerk oder verzaubert) und ergibt Handwerksmaterialien. Dies kann nicht rückgängig gemacht werden.',
+  'hudChrome.enchanting.salvageConfirmTitle': '{item} zerlegen?',
+  'hudChrome.enchanting.salvageThrottled':
+    'Du zerlegst zu schnell. Warte einen Moment und versuche es erneut.',
+  'hudChrome.enchanting.salvagedLine': 'Du zerlegst {item}.',
+  'hudChrome.enchanting.targetTitle': 'Wähle einen Gegenstand zum Verzaubern',
+  'hudChrome.gathering.biteLine': 'Etwas nimmt den Köder!',
+  'hudChrome.gathering.catchLine': 'Du holst ein: {name}',
+  'hudChrome.gathering.downgradeFind': 'Taschen voll: ein makelloser Fund ist entkommen.',
+  'hudChrome.gathering.downgradeMark':
+    'Taschen voll: der Fund wurde ohne Sammelzeichen gespeichert.',
+  'hudChrome.gathering.fishing': 'Angeln',
+  'hudChrome.gathering.gotAwayLine': 'Es ist entkommen.',
+  'hudChrome.gathering.nodeName.herb': 'Kräuterpflanze',
+  'hudChrome.gathering.nodeName.ore': 'Erzader',
+  'hudChrome.gathering.nodeName.wood': 'Holzstand',
+  'hudChrome.gathering.stateCooldown': 'Nachwachsen',
+  'hudChrome.gathering.stateReady': 'Bereit',
+  'hudChrome.gathering.tierRequired.herbalism':
+    'Erfordert eine Kräuterkunde-Sichel der Stufe {tier}',
+  'hudChrome.gathering.tierRequired.logging': 'Erfordert eine Holzfäller-Axt der Stufe {tier}',
+  'hudChrome.gathering.tierRequired.mining': 'Erfordert eine Bergbau-Spitzhacke der Stufe {tier}',
+  'hudChrome.gathering.toolTierUnmet.herbalism':
+    'Du brauchst eine Kräuterkunde-Sichel der Stufe {tier}, um diese Pflanze zu sammeln.',
+  'hudChrome.gathering.toolTierUnmet.logging':
+    'Du brauchst eine Holzfäller-Axt der Stufe {tier}, um diesen Stand zu fällen.',
+  'hudChrome.gathering.toolTierUnmet.mining':
+    'Du brauchst eine Bergbau-Spitzhacke der Stufe {tier}, um diese Ader abzubauen.',
+  'hudChrome.gathering.toolTierUnmetCorpse':
+    'Du brauchst ein Sammelwerkzeug der Stufe {tier}, um die feinsten Materialien zu gewinnen.',
+  'hudChrome.interfaceTabs.chat': 'Chat',
+  'hudChrome.interfaceTabs.combat': 'Kampf',
+  'hudChrome.interfaceTabs.frames': 'Rahmen',
+  'hudChrome.interfaceTabs.general': 'Allgemein',
+  'hudChrome.itemMenu.applyEnchant': 'Verzauberung anwenden',
+  'hudChrome.itemMenu.disenchant': 'Entzaubern',
+  'hudChrome.itemMenu.equip': 'Anlegen',
+  'hudChrome.itemMenu.salvage': 'Zerlegen',
+  'hudChrome.itemMenu.use': 'Verwenden',
+  'hudChrome.loot.takeLootButton': 'Beute nehmen',
+  'hudChrome.loot.takeLootTooltip':
+    'Nimmt die Münzen und fallen gelassenen Gegenstände. Nutzt nicht die Verwertung auf.',
+  'hudChrome.loot.unifiedPressHint':
+    'Die Interaktionstaste plündert und verwertet in einem Druck, mit deinem Stadtfokus.',
+  'hudChrome.nameplate.afkTag': 'AFK',
+  'hudChrome.options.showPlayerNameplates': 'Spieler-Namensplaketten anzeigen',
+  'hudChrome.professions.nextUnlockMastered': 'Gemeistert, vorerst',
+  'hudChrome.social.hideOffline': 'Offline ausblenden',
+  'hudChrome.social.hideOfflineTitle': 'Offline-Gildenmitglieder ausblenden',
+  'hudChrome.social.offlineHeader': 'Offline ({n})',
+  'hudChrome.social.onlineHeader': 'Online ({n})',
+  'hudChrome.townFocus.tierHint':
+    'Alle {points} Punkte auf einer Komponente erhöhen ihre Sammelstufe um einen Schritt, bis zu {steps} Schritte; weniger als {points} Punkte steigern trotzdem den Ertrag.',
+  'hudChrome.townFocus.townOnlyHint':
+    'Fokus kann nur geändert werden, während du in der Stadt bist.',
+  'hudChrome.unbind.cannotAfford': 'Du kannst die Entbindungsgebühr nicht bezahlen.',
+  'hudChrome.unbind.close': 'Entbindung schließen',
+  'hudChrome.unbind.confirmBody': '{name} für {fee} entbinden?',
+  'hudChrome.unbind.confirmCancel': 'Abbrechen',
+  'hudChrome.unbind.confirmOk': 'Entbinden',
+  'hudChrome.unbind.confirmTitle': 'Auftragsarbeit entbinden',
+  'hudChrome.unbind.dialogOption': 'Entbindung',
+  'hudChrome.unbind.dialogOptionAria': 'Eine Auftragsarbeit mit {name} entbinden',
+  'hudChrome.unbind.empty': 'Du trägst keine gebundenen Auftragsarbeiten.',
+  'hudChrome.unbind.intro':
+    'Der Meister kann eine Auftragsarbeit gegen eine Gebühr aus ihrer Bindung lösen.',
+  'hudChrome.unbind.notBound': 'Dieser Gegenstand ist nicht gebunden.',
+  'hudChrome.unbind.notEligible': 'Dieser Gegenstand kann nicht entbunden werden.',
+  'hudChrome.unbind.outOfRange':
+    'Du musst dich an einer Handwerksstation befinden, um zu entbinden.',
+  'hudChrome.unbind.rowSub': 'Löst die Bindung; das Stück bindet sich beim nächsten Handel erneut.',
+  'hudChrome.unbind.title': 'Entbindung: {name}',
+  'hudChrome.unbind.unbindAria': '{name} für {fee} entbinden',
+  'hudChrome.unbind.unbound':
+    '{name} für {fee} entbunden. Es bindet sich beim nächsten Handel erneut.',
 };

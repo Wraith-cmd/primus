@@ -79,7 +79,6 @@ export const table: DeedLocaleTable = {
   prog_herbalism_100: { name: 'Mistrz Łąk', desc: 'Osiągnij 100 biegłości w Zielarstwie.' },
   prog_master_gatherer: {
     name: 'Mistrz Zbieractwa',
-    desc: 'Osiągnij 100 biegłości w Górnictwie, Drwalnictwie i Zielarstwie.',
   },
   prog_first_craft: { name: 'Własnoręczna Robota', desc: 'Ukończ swój pierwszy udany wyrób.' },
   prog_craft_specialist: {
@@ -674,6 +673,7 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: 'Narzędzia Fachu',
+    desc: 'Ukończ wytwarzanie przy stacji rzemieślniczej.',
   },
   dgn_nythraxis_crypt: {
     name: 'Co Kryła Krypta',

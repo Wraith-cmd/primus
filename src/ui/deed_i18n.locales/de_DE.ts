@@ -77,7 +77,6 @@ export const table: DeedLocaleTable = {
   },
   prog_master_gatherer: {
     name: 'Meistersammler',
-    desc: 'Erreiche eine Fertigkeit von 100 in Bergbau, Holzfällerei und Kräuterkunde.',
   },
   prog_first_craft: {
     name: 'Handarbeit',
@@ -678,6 +677,7 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: 'Werkzeuge des Handwerks',
+    desc: 'Schließe eine Herstellung an einer Handwerksstation ab.',
   },
   dgn_nythraxis_crypt: {
     name: 'Was die Krypta hütete',

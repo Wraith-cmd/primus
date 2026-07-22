@@ -1,12 +1,21 @@
 import { describe, expect, it } from 'vitest';
+import { ALL_RECIPES } from '../src/sim/content/recipes';
 import { archetypeCeilingFor } from '../src/sim/professions/archetype';
 import type { StationType } from '../src/sim/professions/stations';
-import { tierCapability, tierForSkill, tierProgressMultiplier } from '../src/sim/professions/wheel';
+import { stationTypeForCraft } from '../src/sim/professions/stations';
+import {
+  MINIMAL_TIER_MULTIPLIER,
+  REDUCED_TIER_MULTIPLIER,
+  tierCapability,
+  tierForSkill,
+  tierProgressMultiplier,
+} from '../src/sim/professions/wheel';
 import type { InvSlot, ItemDef } from '../src/sim/types';
 import {
   buildCraftingView,
   type CraftDifficulty,
   type CraftingIdentityLike,
+  craftLearnHints,
   type RecipeDefLike,
 } from '../src/ui/crafting_view';
 
@@ -227,15 +236,37 @@ describe('buildCraftingView difficulty and skillReq', () => {
     expect(difficultyFor(100, { cooking: 50 })).toBe('full');
   });
 
-  it('reduced one tier below capability, none two or more below', () => {
+  it('reduced one tier below, minimal two below, none three or more below (Phase 12c)', () => {
     expect(difficultyFor(75, { cooking: 100 })).toBe('reduced');
-    expect(difficultyFor(50, { cooking: 100 })).toBe('none');
+    // Two below is the green minimal state (MINIMAL_TIER_MULTIPLIER), its own
+    // four-state label since the Stage 5 split (was bucketed into 'reduced').
+    expect(difficultyFor(50, { cooking: 100 })).toBe('minimal');
     expect(difficultyFor(25, { cooking: 100 })).toBe('none');
   });
 
-  it('the common tier is a free floor: full regardless of capability', () => {
-    expect(difficultyFor(0, { cooking: 300 })).toBe('full');
-    expect(difficultyFor(24, { cooking: 300 })).toBe('full');
+  it('the tier-0 free floor is retired (Phase 12c): common recipes ride the curve', () => {
+    expect(difficultyFor(0, { cooking: 0 })).toBe('full');
+    expect(difficultyFor(0, { cooking: 25 })).toBe('reduced');
+    expect(difficultyFor(0, { cooking: 50 })).toBe('minimal');
+    expect(difficultyFor(0, { cooking: 300 })).toBe('none'); // was 'full' pre-12c
+    expect(difficultyFor(24, { cooking: 300 })).toBe('none');
+  });
+
+  it('pins the multiplier constants and their four-state difficulty mapping', () => {
+    // Constant identity: the view compares against the SAME exported wheel.ts
+    // constants the sim gain site consumes, so a curve retune moves the label
+    // and the grant together, never one without the other.
+    expect(REDUCED_TIER_MULTIPLIER).toBe(0.5);
+    expect(MINIMAL_TIER_MULTIPLIER).toBe(0.25);
+    expect(tierProgressMultiplier(5, 4)).toBe(REDUCED_TIER_MULTIPLIER);
+    expect(tierProgressMultiplier(5, 3)).toBe(MINIMAL_TIER_MULTIPLIER);
+    // Each multiplier value drives its own state through a real skills/recipe
+    // fixture: cooking 100 is tier-4 capability against recipe tiers 4/3/2/1,
+    // multipliers 1 / 0.5 / 0.25 / 0.
+    expect(difficultyFor(100, { cooking: 100 })).toBe('full');
+    expect(difficultyFor(75, { cooking: 100 })).toBe('reduced');
+    expect(difficultyFor(50, { cooking: 100 })).toBe('minimal');
+    expect(difficultyFor(25, { cooking: 100 })).toBe('none');
   });
 
   it('a recipe tier above the ARCHETYPE ceiling is none even when the curve says full', () => {
@@ -271,9 +302,11 @@ describe('buildCraftingView difficulty and skillReq', () => {
   it('difficulty never gates craftable: a none recipe with reagents stays craftable', () => {
     // There is NO skillReq admission gate on crafting (crafting.ts documents
     // that resolveCraft does not read skillReq); difficulty is informational.
+    // skillReq 25 (tier 1) at cooking 100 (tier-4 capability) is three tiers
+    // below: gray on the Phase 12c curve, so the row reads 'none'.
     const items = table(item('bone_fragments'), item('recipe_none_result'));
     const view = buildCraftingView(
-      [{ ...recipe('recipe_none', [{ itemId: 'bone_fragments', count: 1 }]), skillReq: 50 }],
+      [{ ...recipe('recipe_none', [{ itemId: 'bone_fragments', count: 1 }]), skillReq: 25 }],
       [{ itemId: 'bone_fragments', count: 1 }],
       items,
       { cooking: 100 },
@@ -305,15 +338,18 @@ describe('buildCraftingView difficulty and skillReq', () => {
       { skillReq: 100, skills: { cooking: 100 }, identity: majorIdentity, expected: 'full' },
       // One below capability.
       { skillReq: 75, skills: { cooking: 100 }, identity: majorIdentity, expected: 'reduced' },
-      // Two below capability.
-      { skillReq: 50, skills: { cooking: 100 }, identity: majorIdentity, expected: 'none' },
+      // Two below capability: the Phase 12c green minimal state
+      // (MINIMAL_TIER_MULTIPLIER), its own label since the Stage 5 split.
+      { skillReq: 50, skills: { cooking: 100 }, identity: majorIdentity, expected: 'minimal' },
       // Recipe above raw capability: the ordinary climb, full.
       { skillReq: 100, skills: { cooking: 25 }, identity: majorIdentity, expected: 'full' },
-      // Recipe tier 0 free floor, however high the capability.
-      { skillReq: 0, skills: { cooking: 300 }, identity: majorIdentity, expected: 'full' },
+      // Recipe tier 0 at a towering capability: the free floor is retired
+      // (Phase 12c), so this is gray (was 'full' pre-12c).
+      { skillReq: 0, skills: { cooking: 300 }, identity: majorIdentity, expected: 'none' },
       // Ceiling-clamped: curve alone would say full, common ceiling zeroes it.
       { skillReq: 25, skills: { cooking: 25 }, identity: otherIdentity, expected: 'none' },
-      // Ceiling-clamped free floor stays full (tier 0 is never above tier 0).
+      // A tier-0 recipe at tier-0 capability stays full under any ceiling
+      // (tier 0 is never above tier 0, and zero tiers below is orange).
       { skillReq: 0, skills: {}, identity: otherIdentity, expected: 'full' },
     ];
     for (const c of cases) {
@@ -330,7 +366,13 @@ describe('buildCraftingView difficulty and skillReq', () => {
           ? 0
           : tierProgressMultiplier(tierCapability(c.skills, 'cooking'), recipeTier);
       const simDerived: CraftDifficulty =
-        multiplier === 0 ? 'none' : multiplier === 1 ? 'full' : 'reduced';
+        multiplier === 0
+          ? 'none'
+          : multiplier === REDUCED_TIER_MULTIPLIER
+            ? 'reduced'
+            : multiplier === MINIMAL_TIER_MULTIPLIER
+              ? 'minimal'
+              : 'full';
       const viewDerived = difficultyFor(c.skillReq, c.skills, c.identity);
       expect(viewDerived, `skillReq ${c.skillReq} skills ${JSON.stringify(c.skills)}`).toBe(
         simDerived,
@@ -484,5 +526,42 @@ describe('buildCraftingView station gate (Phase 8, formerly the #1297 hub boolea
     );
     const after = [inventory, recipes, items, craftSkills, identity].map((v) => JSON.stringify(v));
     expect(after).toEqual(snapshots);
+  });
+});
+
+describe('craftLearnHints (Phase 14 discoverability)', () => {
+  const trainerRecipeIdsFor = (craft: string): string[] =>
+    ALL_RECIPES.filter((r) => r.professionId === craft && r.acquisition?.includes('trainer')).map(
+      (r) => r.id,
+    );
+
+  it('hints a craft with unlearned trainer recipes at its station and master (positive)', () => {
+    // Nothing learned: every stationed craft with a trainer recipe is hinted,
+    // naming its station type and resident master.
+    const hints = craftLearnHints([]);
+    expect(trainerRecipeIdsFor('weaponcrafting').length).toBeGreaterThan(0);
+    expect(hints.get('weaponcrafting')).toEqual({
+      stationType: 'forge',
+      masterNpcId: 'forgemistress_darva',
+    });
+  });
+
+  it('drops the hint once every trainer recipe of the craft is known (fully-trained negative)', () => {
+    const known = trainerRecipeIdsFor('weaponcrafting');
+    expect(known.length).toBeGreaterThan(0);
+    expect(craftLearnHints(known).has('weaponcrafting')).toBe(false);
+  });
+
+  it('never hints a craft with no physical station, and stays safe for unknown crafts', () => {
+    const hints = craftLearnHints([]);
+    // Every hinted craft resolves to the station type it was paired with.
+    for (const [craft, hint] of hints) {
+      expect(stationTypeForCraft(craft)).toBe(hint.stationType);
+      expect(hint.masterNpcId).toBeTruthy();
+    }
+    // jewelcrafting has no station master, so it is never hinted even unlearned;
+    // a bogus craft id is simply absent (no crash, no entry).
+    expect(hints.has('jewelcrafting')).toBe(false);
+    expect(hints.has('not-a-craft')).toBe(false);
   });
 });

@@ -68,25 +68,40 @@ describe('craft quest objectives', () => {
     ]);
 
     // A denied matching attempt has no quest side effect.
-    sim.craftItem('recipe_minor_healing_potion', pid);
+    sim.craftItem('recipe_minor_healing_potion', false, pid);
     expect(sim.meta(pid)!.lastCraftResult?.reason).toBe('insufficient_materials');
     expect(qp.counts).toEqual([0]);
 
     // A successful but different recipe does not count.
     sim.addItem('spider_leg', 1, pid);
-    sim.craftItem('recipe_tough_jerky', pid);
+    sim.craftItem('recipe_tough_jerky', false, pid);
     expect(sim.meta(pid)!.lastCraftResult?.ok).toBe(true);
     expect(qp.counts).toEqual([0]);
 
     sim.addItem('linen_scrap', 1, pid);
     sim.addItem('spider_leg', 1, pid);
-    sim.craftItem('recipe_minor_healing_potion', pid);
+    sim.addItem('silverleaf_herb', 2, pid); // Phase 15 reagent addition
+    sim.craftItem('recipe_minor_healing_potion', false, pid);
 
     expect(sim.meta(pid)!.lastCraftResult?.ok).toBe(true);
     expect(qp.counts).toEqual([1]);
     expect(qp.state).toBe('ready');
   });
 });
+
+// Phase 12b: harvestNode STARTS a gather cast; quest credit lands at
+// completion. Mirror the lifecycle completion arm synchronously (the
+// gather_rare_events.test.ts completeCastNow idiom) so these seed-stable
+// drives stay free of world-tick noise. Only called after a GRANTED start
+// (a denied attempt starts no cast).
+function completeCastNow(sim: Sim, pid: number): void {
+  const p = sim.entities.get(pid);
+  const meta = sim.players.get(pid);
+  if (!p || !meta) throw new Error('missing player');
+  p.castingAbility = null;
+  p.castRemaining = 0;
+  sim.ctx.completeGatherCast(p, meta);
+}
 
 describe('gather quest objectives', () => {
   it('matches node type and gathered material only after a granted harvest', () => {
@@ -109,10 +124,12 @@ describe('gather quest objectives', () => {
     // A successful nonmatching gather still does not count.
     teleportOntoNode(sim, pid, wood.id);
     sim.harvestNode(wood.id, pid);
+    completeCastNow(sim, pid);
     expect(qp.counts).toEqual([0, 0]);
 
     teleportOntoNode(sim, pid, ore.id);
     sim.harvestNode(ore.id, pid);
+    completeCastNow(sim, pid);
     expect(qp.counts).toEqual([1, 1]);
     expect(qp.state).toBe('ready');
 

@@ -1,5 +1,15 @@
 # Phase 15 QA: Verify Deeds, tuning, and polish
 
+> **2026-07-22 as-executed process amendment (maintainer-directed):** this QA
+> phase executes INSIDE the Phase 15 session, on the same branch, shipping as
+> one combined PR (see the matching amendment atop `phase-15-deeds-polish.md`
+> for the directed fix list). STEP 2's audits and the dispatch-matrix reviewers
+> run against the BRANCH diff (phase-start 560972962 to the branch head) before
+> the PR opens; `migration-safety` joins the dispatch because the directed
+> cadence-serialize prune touches the `characters.state` serialize path. The
+> qa-checklist matrix evidence, the teardown offer, and the memory update all
+> still happen exactly as specified below.
+
 Audit the Phase 15 diff and run the whole-feature integration matrix: this QA session is the
 final audit of the entire Professions 2.0 packet, ending with the teardown offer.
 
@@ -15,6 +25,25 @@ final audit of the entire Professions 2.0 packet, ending with the teardown offer
 - Spot-check the rewritten wiki professions page against the real sim code: every claim the
   page makes must be true of the shipped system, and the teardown offer must follow the house
   rule exactly.
+- The 2026-07-20 additions: the SFX completion sweep is accountable (scan the sfx catalogs
+  for PLACEHOLDER rows; each one found must be listed on issue #2208 with a recorded
+  maintainer sign-off; each replaced clip must pass npm run sfx:check, with a CREDITS.md
+  licensing row when it is an original recording, matching the phase file's
+  recordings-only licensing scope); the rare-fish deed unlocks through the REAL
+  bite-and-reel flow in the scripted playthrough; the legacy burn-down disposition
+  (LEGACY_GOLD_POSITIVE_RECIPE_IDS) is recorded per member with the typed-reagent
+  cross-check applied first.
+- The second 2026-07-20 block (mastery and provenance): the deed additions landed
+  (fishing's deed, prog_master_gatherer counting fishing, mastery deeds at the RESOLVED
+  caps with the approved titles; grep the catalog for any 300 threshold: one hit is a
+  finding); every FINAL-marked tuning row (masterwork constants, specialization,
+  rare-event shared knob) is byte-unchanged from its recorded value; deed triggers no-op
+  on re-crossings after the 12c reset (extend the 12c suite, do not trust it); the wiki
+  hits the per-skill detail bar with generated tables (spot-check three generated numbers
+  against src/sim/ content AND three prose claims against real behavior), publishes exact
+  numbers per the transparency policy, and every new guide.* key is English-only with the
+  guide-scoped M16 exemption in place and the release-tier gate still hard-failing
+  pending rows; the faucet review's three named rows carry real evidence.
 
 ## QA Starter Prompt
 
@@ -46,7 +75,9 @@ the state.md targets; the guide page's generated-data feeds; the validation comm
 phase; and any deferral or open item the implementation session left.
 
 STEP 2 - QA AUDIT:
-Fan out three parallel audit agents; each gets ONLY the Explore summary. Prompt every agent for
+Fan out three parallel audit agents; each gets ONLY the Explore summary (which must include
+every row of the "Phase-specific QA emphasis" section at the top of this file; those rows are
+audit obligations, not commentary). Prompt every agent for
 COVERAGE, not filtering: report every gap with confidence and severity; filtering happens in
 the fix pass. If any agent's output comes back truncated, re-prompt that agent to resume and
 finish its report before acting on it.

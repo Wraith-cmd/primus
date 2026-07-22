@@ -36,7 +36,7 @@ export const table: DeedLocaleTable = {
   prog_mining_100: { name: '血中礦脈', desc: '採礦熟練度達到100。' },
   prog_logging_100: { name: '心材伐手', desc: '伐木熟練度達到100。' },
   prog_herbalism_100: { name: '百草宗師', desc: '草藥學熟練度達到100。' },
-  prog_master_gatherer: { name: '採集大師', desc: '採礦、伐木與草藥學的熟練度皆達到100。' },
+  prog_master_gatherer: { name: '採集大師' },
   prog_first_craft: { name: '親手打造', desc: '完成你的第一次成功製作。' },
   prog_craft_specialist: { name: '不傳之秘', desc: '任一工藝技能達到75，並解鎖其專精特長。' },
   prog_around_the_ring: { name: '環座巡禮', desc: '五種不同工藝的技能各達到25。' },
@@ -372,6 +372,7 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: '吃飯的傢伙',
+    desc: '在製作站完成一次製作。',
   },
   dgn_nythraxis_crypt: {
     name: '墓穴深藏之物',

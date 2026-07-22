@@ -82,7 +82,6 @@ export const table: DeedLocaleTable = {
   prog_herbalism_100: { name: 'Хозяин луга', desc: 'Доведите навык травничества до 100.' },
   prog_master_gatherer: {
     name: 'Мастер-собиратель',
-    desc: 'Доведите до 100 навыки горного дела, лесозаготовки и травничества.',
   },
   prog_first_craft: { name: 'Ручная работа', desc: 'Успешно создайте своё первое изделие.' },
   prog_craft_specialist: {
@@ -671,6 +670,7 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: 'Орудия ремесла',
+    desc: 'Завершите изготовление на ремесленной станции.',
   },
   dgn_nythraxis_crypt: {
     name: 'Что хранил склеп',

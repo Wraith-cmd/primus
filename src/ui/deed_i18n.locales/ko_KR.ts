@@ -47,7 +47,6 @@ export const table: DeedLocaleTable = {
   prog_herbalism_100: { name: '초원의 달인', desc: '약초 채집 숙련도 100을 달성하십시오.' },
   prog_master_gatherer: {
     name: '채집의 대가',
-    desc: '채광, 벌목, 약초 채집 숙련도를 모두 100까지 올리십시오.',
   },
   prog_first_craft: { name: '손수 만든 물건', desc: '첫 제작을 성공적으로 완료하십시오.' },
   prog_craft_specialist: {
@@ -597,6 +596,7 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: '장인의 연장',
+    desc: '제작 거점에서 제작을 한 번 완료하십시오.',
   },
   dgn_nythraxis_crypt: {
     name: '납골당이 지켜 온 것',

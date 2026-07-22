@@ -16,7 +16,7 @@
 // shared `ctx.rng` stream, drawn in the exact pre-move order.
 
 import { isDebuffAura, isDispellableAura } from '../aura_classify';
-import { ABILITIES, isDelvePos } from '../data';
+import { ABILITIES, isDelvePos, MOBS } from '../data';
 import { logCascadeCast, recordCascadeInitial } from '../dev/cascade_playtest';
 import { recalcPlayerStats } from '../entity';
 import type { GroundAoE } from '../entity_roster';
@@ -40,7 +40,7 @@ import {
   armorReduction,
   DT,
   ENRAGE_DMG_DONE,
-  FISHING_CAST_ID,
+  isNonSpellCast,
   MELEE_ARC,
   MELEE_CLASSES,
   normAngle,
@@ -55,7 +55,12 @@ import {
   hasSweepingStrikes,
   sweepStrikeDamage,
 } from './area_echo';
-import { damageBreakThreshold, isRootedOrChilled } from './cc';
+import {
+  damageBreakThreshold,
+  hasUnbreakableMovementLock,
+  isRootedOrChilled,
+  isUnbreakableControlAura,
+} from './cc';
 import {
   ARCANE_SURGE_ID,
   aetherSurgeAddStack,
@@ -76,7 +81,6 @@ import {
   frostMageChannelStart,
   resolveFrozenCast,
   SHATTER_CRIT_BONUS,
-  SHATTER_CRIT_DMG_BONUS,
 } from './frost_mage';
 import { spawnFrozenOrb } from './frozen_orb';
 import { glacialFrontContains } from './glacial_front';
@@ -135,7 +139,7 @@ function exclusiveGroupOfAura(id: string): string | undefined {
 function removeRootAuras(ctx: SimContext, entity: Entity): void {
   for (let index = entity.auras.length - 1; index >= 0; index--) {
     const aura = entity.auras[index];
-    if (aura.kind !== 'root') continue;
+    if (aura.kind !== 'root' || isUnbreakableControlAura(aura)) continue;
     entity.auras.splice(index, 1);
     ctx.emit({ type: 'aura', targetId: entity.id, name: aura.name, gained: false });
   }
@@ -255,25 +259,15 @@ export function runEffects(
   if (ctx.playerMods(meta).global.battleRhythm > 0) {
     meta.abilityRhythm = (meta.abilityRhythm + 1) % 3;
     if (meta.abilityRhythm === 0) {
-      const blink = {
-        remaining: DT,
-        duration: DT,
-        sourceId: p.id,
-        school: ability.school,
-      };
-      ctx.applyAura(p, {
-        id: 'battle_rhythm',
-        name: 'Battle Rhythm',
-        kind: 'buff_dmg_done',
-        value: 0.05,
-        ...blink,
-      });
       ctx.applyAura(p, {
         id: 'battle_rhythm_rage',
         name: 'Battle Rhythm',
         kind: 'buff_rage_gen',
         value: 0.2,
-        ...blink,
+        remaining: DT,
+        duration: DT,
+        sourceId: p.id,
+        school: ability.school,
       });
     }
   }
@@ -399,12 +393,7 @@ export function runEffects(
           // execute override the OUTCOME; the roll above is still drawn.
           fireGuaranteedCrit(ctx, p, ability.id, ability.school, target);
         if (sureCrit) sureCritRolled = true;
-        if (crit)
-          dmg *=
-            (isSpell ? 1.5 : 2) +
-            (isSpell ? p.critDmgSpellBonus : p.critDmgPhysBonus) +
-            // Shatter: crits against a frozen-counting target hit harder.
-            (isSpell && frozen.treatAsFrozen ? SHATTER_CRIT_DMG_BONUS : 0);
+        if (crit) dmg *= (isSpell ? 1.5 : 2) + (isSpell ? p.critDmgSpellBonus : p.critDmgPhysBonus);
         if (isSpell) dmg *= spellDamageMultFromAuras(p);
         if (!isSpell) dmg *= 1 - armorReduction(ctx.effectiveArmor(target), p.level);
         // Aether Surge (Chronomancy Phase 3): each held Arcane Charge scales the
@@ -866,7 +855,9 @@ export function runEffects(
         break;
       }
       case 'interrupt': {
-        if (!target || target.castingAbility === null || target.castingAbility === FISHING_CAST_ID)
+        // Non-spell casts (fishing/gather) are interrupt-immune. The Demon
+        // Heal channel is deliberately NOT folded in: it stays interruptible.
+        if (!target || target.castingAbility === null || isNonSpellCast(target.castingAbility))
           break;
         if (p.kind === 'player' && target.kind === 'player' && !ctx.isHostileTo(p, target)) break;
         // Resolve per-player when possible (rank/mods), but fall back to the
@@ -1013,12 +1004,13 @@ export function runEffects(
         break;
       }
       case 'cleanseSelf': {
-        // Ice Block: strip EVERY debuff off the caster (control, DoTs, stat saps, ...),
-        // broader than breakControl. Uses the shared classifier so the split matches
-        // the buff/debuff frame exactly. Emits the aura-lost event so client bars clear.
+        // Ice Block strips every player-removable debuff off the caster (control,
+        // DoTs, stat saps, ...), broader than breakRoots and breakControl.
+        // Encounter-authored unbreakable control stays until its owning script
+        // releases it.
         for (let i = p.auras.length - 1; i >= 0; i--) {
           const aura = p.auras[i];
-          if (isDebuffAura(aura.kind, aura.value)) {
+          if (isDebuffAura(aura.kind, aura.value) && !isUnbreakableControlAura(aura)) {
             p.auras.splice(i, 1);
             ctx.emit({ type: 'aura', targetId: p.id, name: aura.name, gained: false });
           }
@@ -2152,16 +2144,31 @@ export function runEffects(
         }
         break;
       }
+      case 'breakRoots': {
+        removeRootAuras(ctx, p);
+        break;
+      }
       case 'breakControl': {
         for (let i = p.auras.length - 1; i >= 0; i--) {
           const aura = p.auras[i];
           if (
-            ctx.isControlAura(aura.kind) ||
-            aura.kind === 'silence' ||
-            aura.kind === 'blind' ||
-            aura.kind === 'disarm' ||
-            aura.kind === 'slow'
+            !isUnbreakableControlAura(aura) &&
+            (ctx.isControlAura(aura.kind) ||
+              aura.kind === 'silence' ||
+              aura.kind === 'blind' ||
+              aura.kind === 'disarm' ||
+              aura.kind === 'slow')
           ) {
+            // Product ruling (Avatar, the sole breakControl user): the break
+            // removes control from any source EXCEPT the caster itself and
+            // mobs whose template carries boss: true (final-boss templates).
+            // Encounter mobs without the flag are breakable; a source that
+            // cannot be resolved (despawned, since ctx.entities is the full
+            // authoritative roster here) defaults to breakable, the common
+            // case.
+            if (aura.sourceId === p.id) continue;
+            const source = ctx.entities.get(aura.sourceId);
+            if (source && MOBS[source.templateId]?.boss) continue;
             p.auras.splice(i, 1);
             ctx.emit({ type: 'aura', targetId: p.id, name: aura.name, gained: false });
           }
@@ -2169,11 +2176,12 @@ export function runEffects(
         break;
       }
       case 'repositionToAim': {
-        if (!eff.landingAoe) break;
+        if (!eff.landingAoe || hasUnbreakableMovementLock(p)) break;
         armHeroicLeap(ctx, p, p.castAim ?? p.pos, eff.landingAoe, ability);
         break;
       }
       case 'blinkForward': {
+        if (hasUnbreakableMovementLock(p)) break;
         if (eff.breakRoots) removeRootAuras(ctx, p);
         let distance = eff.distance;
         let facing = p.facing;
@@ -2447,7 +2455,7 @@ export function runEffects(
         break;
       }
       case 'charge': {
-        if (!target) break;
+        if (!target || hasUnbreakableMovementLock(p)) break;
         // the stun effect in the same ability lands this tick; the player
         // then runs the route at charge speed instead of teleporting
         p.chargeTargetId = target.id;

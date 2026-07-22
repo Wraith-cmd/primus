@@ -30,6 +30,7 @@ import {
 } from '../src/sim/data';
 import { devTierIndexForMergedPrs } from '../src/sim/dev_tier';
 import { parseRelayCommand } from '../src/sim/discord_relay';
+import { specialRoleChatTag } from '../src/sim/discord_roles';
 import {
   isInJailCage,
   JAIL_CENTER,
@@ -59,11 +60,11 @@ import {
 } from '../src/sim/talent_allocation_input';
 import { stealthDetectionRadius, threatEntries } from '../src/sim/threat';
 import {
+  ALL_EQUIP_SLOTS,
   type Aura,
   DT,
   dist2d,
   type Entity,
-  EQUIP_SLOTS,
   type EquipSlot,
   emptyMoveInput,
   isDungeonDifficulty,
@@ -79,10 +80,14 @@ import { isAtSowfield } from '../src/sim/vale_cup_layout';
 import {
   type BankBonusSource,
   type CommandName,
+  type DungeonFinderBoard,
   isOverheadEmoteId,
   STABLE_TIMER_WIRE_VERSION,
   type StableTimerWireVersion,
+  type VcSharedCupInfo,
+  type VcViewerReadout,
 } from '../src/world_api';
+import { type ActionBarLayout, sanitizeActionBarLayout } from '../src/world_api/action_bar';
 import { recordOnlineSample } from './admin_db';
 import { offensiveName } from './auth';
 import { recordBankOp } from './bank_ledger';
@@ -127,6 +132,7 @@ import {
   saveMailState,
   saveMarketState,
   setAccountWeaponSkinLoadout,
+  setCharacterHotbarLayout,
   touchCharacterLogin,
   walletForAccount,
 } from './db';
@@ -142,10 +148,12 @@ import { enqueueActivity } from './discord_activity';
 import { discordFlairForAccount, grantRewardPoints } from './discord_db';
 import { enqueueRelay } from './discord_relay';
 import { formatDuration } from './duration';
+import { assembleEventsFrame, serializeEventFragments } from './event_frame';
 import { mergedPrsForLogin } from './github_contributors';
 import { githubForAccount } from './github_db';
 import { forEachGuarded, runGuarded } from './guarded_iter';
 import { gameMetricsCounters } from './http/game_signals';
+import { buildSharedInterestCandidates } from './interest_candidates';
 import { IpBlockList } from './ip_block';
 import { loadActiveBlockedIps } from './ip_block_db';
 import { keepaliveSweepDelayed } from './keepalive_sweep';
@@ -172,6 +180,7 @@ import { consumeMsgToken, createMsgRateBucket, type MsgRateBucketState } from '.
 import { PartyFrameProjectionCache } from './party_frame_projection';
 import { nextRaidResetMs } from './raid_reset';
 import { REALM, REALM_PUBLIC_ORIGIN, REALM_RESET_TIME_ZONE } from './realm';
+import { createRealmReadoutMemo, realmReadoutJson, realmReadoutObject } from './realm_readout_memo';
 import { createSerialWriter } from './serial_writer';
 import {
   jsonWithField,
@@ -560,6 +569,12 @@ const HEAVY_SELF_EVENTS = new Set<string>([
   'summonPet',
   'dismissPet',
   'summonDemon',
+  // Maker's Bond unbind (Professions 2.0 Phase 14b): a successful unbind can
+  // clear boundTo IN PLACE (the single-copy arm emits no loot event), so the
+  // result event itself must re-diff the heavy self keys or the holder's inv
+  // mirror goes stale until the staggered refresh. Also refreshes the purse
+  // for the fee debit.
+  'unbindResult',
 ]);
 
 // How often to re-broadcast online players' $WOC holder-tier flair. Each wallet
@@ -651,8 +666,6 @@ export interface ClientSession {
   timerWireCache: StableSelfTimerWireCache;
   // arena readout is reconciled at UI cadence instead of snapshot cadence
   lastArenaWireTick: number;
-  // Vale Cup readout, same idea at its own cadence (VC_WIRE_HZ)
-  lastVcupWireTick: number;
   // Dungeon Finder readout, same idea at its own cadence (DF_WIRE_HZ)
   lastDfWireTick: number;
   // set when a command or sim event that can change a heavy self field (bags,
@@ -713,6 +726,12 @@ export interface ClientSession {
     priorGm: boolean;
     stowedPet: PetState | null;
   } | null;
+  // The character's stored action-bar layout as loaded at join (already
+  // bounds-validated), or null when the character has never saved one. Sent to
+  // the owning client exactly once via the `hbl` self field (self-scoped: never
+  // an entity/broadcast field), then frozen; subsequent client saves persist to
+  // the DB and never re-echo here. null wires as an explicit "seed from local".
+  initialHotbarLayout: ActionBarLayout | null;
 }
 
 interface SentEntityVersions {
@@ -826,6 +845,8 @@ interface WireAura {
   // per-viewer), so the per-entity dyn cache keeps eliding; an old client ignores it and
   // an old server's omission decodes to 0, which matches no player id.
   src?: number;
+  // Encounter-owned control marker. Omitted for ordinary auras.
+  ub?: 1;
 }
 
 interface WhoRosterRow {
@@ -865,8 +886,11 @@ function identityFields(e: Entity): Record<string, unknown> {
     // payload, riding the identity record (wireCacheFor diffs the identity
     // JSON, so an equip/unequip of an instanced piece re-emits automatically).
     // Data minimization: only the cosmetic inspect fields (signer, enchant,
-    // rolled) leave the server; boundTo and charges are gameplay state no
-    // inspecting client needs and never ride this key.
+    // rolled) leave the server; boundTo, charges, and the Phase 13 bindOnTrade
+    // arm are gameplay state no inspecting client needs and never ride this key.
+    // The pub allowlist below (signer/enchant/rolled ONLY) is what enforces this,
+    // so a new non-cosmetic ItemInstancePayload field is excluded by construction;
+    // the owner still sees their own payload in full via the self `inv` mirror.
     let eqi: Record<string, unknown> | undefined;
     for (const [slot, inst] of Object.entries(e.equippedInstances)) {
       if (!inst) continue;
@@ -961,6 +985,7 @@ function wireAura(a: Aura): WireAura {
   // The caster's entity id, for the client's own-aura prominence on the target strip
   // (auras_view ownFirst). Omitted for the rare 0/absent source, which decodes to 0.
   if (a.sourceId) w.src = a.sourceId;
+  if (a.unbreakableControl) w.ub = 1;
   return w;
 }
 
@@ -979,6 +1004,7 @@ function dynamicFields(e: Entity, includeAuras = true): Record<string, unknown> 
   if (e.ghost) out.gh = 1; // released spirit (ghost form); renders translucent
   if (e.lootable) out.loot = 1;
   if (e.hostile) out.h = 1;
+  if (e.afk) out.ak = 1; // /afk display bit: other clients tag the nameplate + presence dot
   // The target frame's resource bar: type + current/max, sent only for entities
   // that HAVE a resource (players and caster mobs; a resource-less wolf omits all
   // three and the frame hides its bar). The rounded res keeps an idle entity's
@@ -1111,6 +1137,21 @@ interface EntityWireView {
   liteAuraJson: string;
 }
 
+// One session's resolved interest anchor for a broadcast pass: the entity whose
+// position seeds the interest scan (self, or the spectated target), plus the
+// meta/session the self payload is built from. Resolved once up front so a
+// single padded grid query per occupied cell can be shared across every session
+// anchored in that cell. sessionId keys the shared candidate lookup and equals
+// session.pid (unique per session), so it also satisfies the module's AnchorRef.
+interface SnapshotAnchor {
+  sessionId: number;
+  session: ClientSession;
+  anchor: Entity;
+  anchorMeta: PlayerMeta;
+  anchorSession: ClientSession;
+  stableTimerWire: boolean;
+}
+
 function round2(v: number): number {
   return Math.round(v * 100) / 100;
 }
@@ -1215,6 +1256,24 @@ export class GameServer {
     aggroTargets: ReturnType<typeof partyFrameAggroTargets>;
     incomingHeals: ReturnType<typeof partyFrameIncomingHeals>;
   } | null = null;
+  // Realm-wide Vale Cup readout, built and stringified once per broadcast pass and
+  // shared across every viewer (keyed on sim.tickCount inside selfWireJson), the
+  // same once-per-tick memo shape as wireCache / partyFrameGlobalsCache.
+  private readonly realmReadout = createRealmReadoutMemo<VcSharedCupInfo>();
+  // Realm-wide dungeon-finder board (`dfb`), the memo's second tenant: the board
+  // is viewer-independent (dungeonFinderBoardView takes no pid), so sessions whose
+  // per-session cadence gates open on the same tick share one build + stringify
+  // instead of each re-stringifying the same listings. Unlike the Vale Cup memo
+  // above there is no realm-global dueness tracker: each session keeps its own
+  // lastDfWireTick gate, and the memo only collapses same-tick evaluations.
+  private readonly dfBoardReadout = createRealmReadoutMemo<DungeonFinderBoard>();
+  // When the realm-wide Vale Cup readout is next due, tracked realm-global (not
+  // per session) so every viewer still gates together in one pass and the memo
+  // above builds once. `>=` against this, never `tickCount % interval`:
+  // broadcastSnapshots runs once per callback OUTSIDE the catch-up loop, so
+  // tickCount can stride past an interval multiple under load and a modulo gate
+  // would skip the aligned pass. Init a full interval back so the first pass is due.
+  private lastVcupWireTick = -VC_WIRE_INTERVAL_TICKS;
   private readonly partyFrameProjectionCache = new PartyFrameProjectionCache();
   private lastWireSweepTick = 0;
   private interval: NodeJS.Timeout | null = null;
@@ -1243,6 +1302,10 @@ export class GameServer {
   // state row. Keep one FIFO per account so rapid apply/detach commands cannot
   // commit on separate pool clients in reverse order and resurrect stale state.
   private readonly weaponSkinLoadoutSaveQueues = new Map<number, Promise<void>>();
+  // Action-bar layout is a whole-record replacement in its own character column.
+  // One FIFO per character so a burst of debounced client saves cannot commit on
+  // separate pool clients in reverse order and persist a stale layout.
+  private readonly hotbarLayoutSaveQueues = new Map<number, Promise<void>>();
   // Serializes every write of the single global Market blob (the 30s autosave
   // and the leave-path combined save). Both serialize the whole market; without
   // a queue their transactions could commit out of capture order and persist an
@@ -1493,9 +1556,13 @@ export class GameServer {
 
     moderator.lastSent = {};
     moderator.lastArenaWireTick = -ARENA_WIRE_INTERVAL_TICKS;
-    moderator.lastVcupWireTick = -VC_WIRE_INTERVAL_TICKS;
     moderator.lastDfWireTick = -DF_WIRE_INTERVAL_TICKS;
     moderator.sentEnts.clear();
+    // force the heavy self block (tal/inv/equip/bags/...) to re-run next
+    // snapshot: it is gated on meta.wireRev vs session.lastWireRev, and that
+    // comparison is keyed to whichever entity's meta is being wired, so
+    // without this the target's heavy fields can silently fail to resend.
+    moderator.selfHeavyDirty = true;
     this.send(moderator, { t: 'spectate', name: target.name });
     this.sendSystemNotice(moderator, `Now spectating ${target.name}.`);
   }
@@ -1518,9 +1585,12 @@ export class GameServer {
     moderator.spectating = null;
     moderator.lastSent = {};
     moderator.lastArenaWireTick = -ARENA_WIRE_INTERVAL_TICKS;
-    moderator.lastVcupWireTick = -VC_WIRE_INTERVAL_TICKS;
     moderator.lastDfWireTick = -DF_WIRE_INTERVAL_TICKS;
     moderator.sentEnts.clear();
+    // same as enterSpectate: force the heavy self block to re-run so the
+    // moderator's OWN talents/inventory/equip/etc. resend immediately
+    // instead of staying stuck on the spectated target's last-sent values.
+    moderator.selfHeavyDirty = true;
     this.send(moderator, { t: 'spectate', name: null });
     if (announce) this.sendSystemNotice(moderator, 'Stopped spectating.');
   }
@@ -1690,6 +1760,9 @@ export class GameServer {
     if (e.dead) status = 'dead';
     else if (instanceZone != null) status = 'dungeon';
     else if (e.inCombat) status = 'combat';
+    // AFK is the lowest-priority active state: a dead/instanced/in-combat player
+    // reports that first, but an idle /afk player shows 'afk' over plain 'online'.
+    else if (this.sim.meta(session.pid)?.away?.mode === 'afk') status = 'afk';
     // The Sowfield is overworld ground (no instance band, no status change),
     // but the stadium is the presence players expect on match days: fighters
     // and walk-up spectators inside the footprint report the venue, not the
@@ -2535,6 +2608,23 @@ export class GameServer {
     });
   }
 
+  private enqueueHotbarLayoutSave(characterId: number, layout: ActionBarLayout): void {
+    const previous = this.hotbarLayoutSaveQueues.get(characterId);
+    const run = (previous ? previous.catch(() => {}) : Promise.resolve()).then(async () => {
+      await setCharacterHotbarLayout(characterId, layout);
+    });
+    this.hotbarLayoutSaveQueues.set(characterId, run);
+    const cleanup = (): void => {
+      if (this.hotbarLayoutSaveQueues.get(characterId) === run) {
+        this.hotbarLayoutSaveQueues.delete(characterId);
+      }
+    };
+    void run.then(cleanup, (err) => {
+      console.error('failed to save hotbar layout:', err);
+      cleanup();
+    });
+  }
+
   join(
     ws: WebSocket,
     accountId: number,
@@ -2559,6 +2649,10 @@ export class GameServer {
         // the character state via addPlayer. Absent on a resume and for callers that
         // pass no meta (tests, the bot-detector overlay), which keep the saved value.
         bankBonus?: { bonusSlots: number; sources: BankBonusSource[] };
+        // The character's stored action-bar layout (characters.hotbar_layout),
+        // passed through from the join handler's DB read. Untrusted at rest, so
+        // it is re-validated here before it reaches the client.
+        hotbarLayout?: ActionBarLayout | null;
       } = {},
   ): ClientSession | { error: string } {
     // Anti-bot: cap simultaneous online characters per account. Accounts can
@@ -2664,7 +2758,6 @@ export class GameServer {
         meta.timerWireVersion === STABLE_TIMER_WIRE_VERSION ? STABLE_TIMER_WIRE_VERSION : 1,
       timerWireCache: new StableSelfTimerWireCache(),
       lastArenaWireTick: -ARENA_WIRE_INTERVAL_TICKS,
-      lastVcupWireTick: -VC_WIRE_INTERVAL_TICKS,
       lastDfWireTick: -DF_WIRE_INTERVAL_TICKS,
       selfHeavyDirty: true,
       lastWireRev: -1,
@@ -2687,6 +2780,8 @@ export class GameServer {
       spectating: null,
       jailed: state?.jail ?? null,
       jailVisit: null,
+      // Re-validate the stored layout (untrusted at rest) before it can wire out.
+      initialHotbarLayout: sanitizeActionBarLayout(meta.hotbarLayout),
     };
     if (session.jailed) this.teleportJailedSession(session);
     this.ipSessionCounts.set(sessionIp, (this.ipSessionCounts.get(sessionIp) ?? 0) + 1);
@@ -4012,7 +4107,8 @@ export class GameServer {
           // sim's own resolver rather than trusting the client. The sim then
           // re-validates the slot against the item itself.
           const aimed =
-            typeof msg.slot === 'string' && (EQUIP_SLOTS as readonly string[]).includes(msg.slot)
+            typeof msg.slot === 'string' &&
+            (ALL_EQUIP_SLOTS as readonly string[]).includes(msg.slot)
               ? (msg.slot as EquipSlot)
               : undefined;
           if (aimed) sim.equipItemToSlot(msg.item, aimed, pid);
@@ -4027,7 +4123,12 @@ export class GameServer {
         }
         break;
       case 'unequip_item':
-        if (typeof msg.slot === 'string' && (EQUIP_SLOTS as readonly string[]).includes(msg.slot)) {
+        // ALL_EQUIP_SLOTS, not the frozen EQUIP_SLOTS: the latter omits the
+        // additive 'offhand' slot, so any offhand unequip was silently dropped here.
+        if (
+          typeof msg.slot === 'string' &&
+          (ALL_EQUIP_SLOTS as readonly string[]).includes(msg.slot)
+        ) {
           sim.unequipItem(msg.slot as EquipSlot, pid);
         }
         break;
@@ -4062,7 +4163,37 @@ export class GameServer {
         );
         break;
       case 'craft_item':
-        if (typeof msg.recipe === 'string') sim.craftItem(msg.recipe, pid);
+        // `commission` (Professions 2.0 Phase 14b): a strict boolean-true
+        // check (the dispatch type-guard rule); anything else reads as false.
+        // The sim honors it only for eligible equipment outputs and mints the
+        // bindOnTrade arm itself, so nothing here trusts client data.
+        if (typeof msg.recipe === 'string') sim.craftItem(msg.recipe, msg.commission === true, pid);
+        break;
+      // Enchanting profession commands (Professions 2.0 Phase 13): the sim
+      // resolvers re-validate ownership/eligibility/throttle (nothing trusted
+      // from the client); the outcome reaches this client as the pid-scoped
+      // disenchantResult/enchantResult/salvageResult event plus the denc/ench/salv
+      // self-delta. A successful action emits a `loot` event (a HEAVY_SELF_EVENTS
+      // member) via the inventory hub, so the self inventory refreshes exactly like
+      // a craft; no explicit dirty-marking is needed here.
+      case 'disenchant_item':
+        if (typeof msg.item === 'string') sim.disenchantItem(msg.item, pid);
+        break;
+      case 'apply_enchant':
+        if (typeof msg.item === 'string' && typeof msg.enchant === 'string')
+          sim.applyEnchant(msg.item, msg.enchant, pid);
+        break;
+      case 'salvage_item':
+        if (typeof msg.item === 'string') sim.salvageItem(msg.item, pid);
+        break;
+      case 'unbind_item':
+        // Maker's Bond unbind service (Professions 2.0 Phase 14b): the sim
+        // resolver re-validates eligibility/bound-ness/station range/fee
+        // (nothing trusted from the client); the outcome reaches this client
+        // as the pid-scoped text-free unbindResult event, a HEAVY_SELF_EVENTS
+        // member so the cleared payload and the fee debit re-diff the self
+        // inv/purse mirrors on the next snapshot.
+        if (typeof msg.item === 'string') sim.unbindItem(msg.item, pid);
         break;
       case 'place_mobile_station':
         if (typeof msg.craft === 'string') sim.placeMobileStation(msg.craft, pid);
@@ -4120,6 +4251,15 @@ export class GameServer {
       case 'stow_weapon':
         sim.toggleWeaponStow(pid);
         break;
+      // Per-character action-bar layout upload (untrusted client input). Validate
+      // + bound the payload; a malformed/oversized layout is dropped silently
+      // (never crashes the session). A clean layout is persisted to the
+      // character's own JSONB column via the per-character FIFO save queue.
+      case 'save_hotbar_layout': {
+        const layout = sanitizeActionBarLayout(msg.layout);
+        if (layout) this.enqueueHotbarLayoutSave(session.characterId, layout);
+        break;
+      }
       // Skin-select event lock-in. The Sim re-validates the skin against the
       // rank it rolled and consumes the event token; a forged claim no-ops.
       case 'claim_event_skin':
@@ -5016,6 +5156,15 @@ export class GameServer {
     this.partyFrameGlobalsCache = null;
     this.partyFrameProjectionCache.beginBroadcast();
     const tick = this.sim.tickCount;
+    // Vale Cup wire dueness, decided ONCE per broadcast pass and realm-global so the
+    // shared readout memo still builds a single time this pass, then threaded into
+    // every session's selfWireJson. `>=` a per-pass tracker, never a modulo of
+    // tickCount: this pass runs once per callback outside the catch-up loop, so
+    // tickCount can jump past a VC_WIRE_INTERVAL_TICKS multiple under load and a
+    // modulo gate would skip the aligned pass and stall the readout (the arena,
+    // Dungeon Finder, and wire-cache sibling gates all use `>=` for this reason).
+    const vcupDue = tick - this.lastVcupWireTick >= VC_WIRE_INTERVAL_TICKS;
+    if (vcupDue) this.lastVcupWireTick = tick;
     // tickHz rides the head at ~2 Hz, not on every snapshot: it is omitted while
     // the meter warms up (first ~1s, so a fresh server never shows a bogus
     // reading), and between-emissions the client holds the last value. A warmed
@@ -5036,8 +5185,21 @@ export class GameServer {
     const head = `{"t":"snap","tick":${tick},"time":${round2(this.sim.time)}${tickHzJson}`;
     const activeFrostRings = this.sim.activeFrostRings;
     const activeTemporalHourglasses = this.sim.activeTemporalHourglasses;
-    // Guard each session: a throw while building one player's snapshot must not
-    // starve every other session of its snapshot this tick (server/CLAUDE.md).
+    // Resolve every live session's interest anchor up front, each inside its own
+    // guard so a throw building one anchor cannot starve every other session's
+    // snapshot this tick (server/CLAUDE.md, guarded_iter.ts). Positions are read
+    // fresh here, off the live Entity.pos, never cached across passes: the shared
+    // per-cell query below is a strict superset of every per-viewer query ONLY
+    // because Sim.tick's end-of-tick grid.refresh leaves buckets fresh, so an
+    // anchor's CURRENT cell is the right one to query. The one mutation reachable
+    // here is the vanished-spectate exitSpectate fallback, which re-buckets the
+    // moderator back to savedPos; hoisting it ahead of the shared-candidate build
+    // makes every co-located session see the moderator at savedPos this pass, a
+    // tick earlier than the old inline ordering (gameplay-neutral: a moderator
+    // leaving spectate limbo becomes visible to co-located viewers one tick
+    // sooner, never later, and it never changes combat, loot, interest, or what
+    // the spectated players see).
+    const anchors: SnapshotAnchor[] = [];
     forEachGuarded(
       this.clients.values(),
       (session) => {
@@ -5065,75 +5227,118 @@ export class GameServer {
             anchorSession = target;
           }
         }
+        anchors.push({
+          sessionId: session.pid,
+          session,
+          anchor: anchorEntity,
+          anchorMeta,
+          anchorSession,
+          stableTimerWire,
+        });
+      },
+      (err, session) =>
+        console.error(`[snap] failed to resolve anchor for pid ${session.pid}, skipping:`, err),
+    );
+
+    // One padded grid query per occupied anchor cell, shared by every session
+    // anchored there, replacing the old one-query-per-viewer interest scan. The
+    // pad (half the cell diagonal) makes a query from the cell center a strict
+    // superset of every viewer-exact INTEREST_QUERY_RADIUS query for any viewer
+    // in that cell; each session below re-applies its exact viewer-relative
+    // cutoff. Timed into bcastGridNs (the shared build once), the same counter
+    // that brackets the per-session lookup+filter work below.
+    const sharedStart = this.perfDetailActive ? process.hrtime.bigint() : 0n;
+    const candidates = buildSharedInterestCandidates(this.sim.grid, anchors, INTEREST_QUERY_RADIUS);
+    if (this.perfDetailActive) this.bcastGridNs += process.hrtime.bigint() - sharedStart;
+    const queryLimitSq = INTEREST_QUERY_RADIUS * INTEREST_QUERY_RADIUS;
+
+    // Build each session's snapshot from its shared candidate list, still guarded
+    // per session so one throw cannot starve the rest.
+    forEachGuarded(
+      anchors,
+      ({ session, anchor: anchorEntity, anchorMeta, anchorSession, stableTimerWire }) => {
         const ents: string[] = [];
         const keep: number[] = [];
         const present = new Set<number>();
         const gridStart = this.perfDetailActive ? process.hrtime.bigint() : 0n;
-        this.sim.grid.forEachInRadius(
-          anchorEntity.pos.x,
-          anchorEntity.pos.z,
-          INTEREST_QUERY_RADIUS,
-          (e, d2) => {
-            if (this.perfDetailActive) this.bcVisits++;
-            if (e.id === anchorEntity.id) return;
-            if (!this.canObserveEntity(anchorEntity, e, d2)) return;
-            const known = session.sentEnts.get(e.id);
-            // the viewer's current target stays in interest to the widest drop
-            // radius so its unit frame doesn't vanish mid-chase
-            const limitSq =
-              anchorEntity.targetId === e.id
-                ? NPC_DROP_RADIUS * NPC_DROP_RADIUS
-                : interestLimitSq(e, known !== undefined);
-            if (d2 > limitSq) return;
-            present.add(e.id);
-            const cache = this.wireCacheFor(e, stableTimerWire);
-            if (known === undefined) {
-              // first sight carries the at-rest state exactly, so no settle
-              // record is owed until it moves again
-              ents.push(stableTimerWire ? cache.fullAuraJson : cache.fullJson);
-              session.sentEnts.set(e.id, {
-                idVer: cache.idVer,
-                dynVer: cache.dynVer,
-                auraVer: cache.auraVer,
-                sentAtTick: tick,
-                settled: true,
-              });
-              return;
-            }
-            const auraChanged = stableTimerWire && known.auraVer !== cache.auraVer;
-            if (known.idVer !== cache.idVer) {
-              ents.push(auraChanged ? cache.fullAuraJson : cache.fullJson);
-              known.idVer = cache.idVer;
-              known.dynVer = cache.dynVer;
-              known.auraVer = cache.auraVer;
-              known.sentAtTick = tick;
-              known.settled = false;
-              return;
-            }
-            if (
-              !isUpdateDue(tick, e, d2, anchorEntity, known.sentAtTick) ||
-              (known.dynVer === cache.dynVer && !auraChanged && known.settled)
-            ) {
-              // not due at this distance tier yet, or unchanged and already
-              // settled: a bare id keeps it alive on the client
-              keep.push(e.id);
-              return;
-            }
-            // due, and either changed or owing its one settle record
-            known.settled = known.dynVer === cache.dynVer;
+        for (const e of candidates.forSession(session.pid)) {
+          // Re-apply the exact viewer-relative cutoff the single grid query used
+          // to apply for us: the shared candidate list is padded and larger, and
+          // its own callback d2 was cell-center-relative, so recompute d2 here
+          // from this anchor's live position. Every downstream filter stays
+          // viewer-relative (canObserveEntity, interestLimitSq, isUpdateDue).
+          const dx = e.pos.x - anchorEntity.pos.x;
+          const dz = e.pos.z - anchorEntity.pos.z;
+          const d2 = dx * dx + dz * dz;
+          if (d2 > queryLimitSq) continue;
+          // bcVisits counts the exact per-viewer in-range set (self included),
+          // byte-identical to the old scan: increment only AFTER the exact-d2
+          // cutoff, never on the padded per-cell candidate list.
+          if (this.perfDetailActive) this.bcVisits++;
+          if (e.id === anchorEntity.id) continue;
+          if (!this.canObserveEntity(anchorEntity, e, d2)) continue;
+          const known = session.sentEnts.get(e.id);
+          // the viewer's current target stays in interest to the widest drop
+          // radius so its unit frame doesn't vanish mid-chase
+          const limitSq =
+            anchorEntity.targetId === e.id
+              ? NPC_DROP_RADIUS * NPC_DROP_RADIUS
+              : interestLimitSq(e, known !== undefined);
+          if (d2 > limitSq) continue;
+          present.add(e.id);
+          const cache = this.wireCacheFor(e, stableTimerWire);
+          if (known === undefined) {
+            // first sight carries the at-rest state exactly, so no settle
+            // record is owed until it moves again
+            ents.push(stableTimerWire ? cache.fullAuraJson : cache.fullJson);
+            session.sentEnts.set(e.id, {
+              idVer: cache.idVer,
+              dynVer: cache.dynVer,
+              auraVer: cache.auraVer,
+              sentAtTick: tick,
+              settled: true,
+            });
+            continue;
+          }
+          const auraChanged = stableTimerWire && known.auraVer !== cache.auraVer;
+          if (known.idVer !== cache.idVer) {
+            ents.push(auraChanged ? cache.fullAuraJson : cache.fullJson);
+            known.idVer = cache.idVer;
             known.dynVer = cache.dynVer;
             known.auraVer = cache.auraVer;
             known.sentAtTick = tick;
-            ents.push(auraChanged ? cache.liteAuraJson : cache.liteJson);
-          },
-        );
+            known.settled = false;
+            continue;
+          }
+          if (
+            !isUpdateDue(tick, e, d2, anchorEntity, known.sentAtTick) ||
+            (known.dynVer === cache.dynVer && !auraChanged && known.settled)
+          ) {
+            // not due at this distance tier yet, or unchanged and already
+            // settled: a bare id keeps it alive on the client
+            keep.push(e.id);
+            continue;
+          }
+          // due, and either changed or owing its one settle record
+          known.settled = known.dynVer === cache.dynVer;
+          known.dynVer = cache.dynVer;
+          known.auraVer = cache.auraVer;
+          known.sentAtTick = tick;
+          ents.push(auraChanged ? cache.liteAuraJson : cache.liteJson);
+        }
         // forget entities that left interest, so a re-entry sends identity again
         for (const id of session.sentEnts.keys()) {
           if (!present.has(id)) session.sentEnts.delete(id);
         }
         const selfStart = this.perfDetailActive ? process.hrtime.bigint() : 0n;
         if (this.perfDetailActive) this.bcastGridNs += selfStart - gridStart;
-        const selfJson = this.selfWireJson(session, anchorEntity, anchorMeta, anchorSession);
+        const selfJson = this.selfWireJson(
+          session,
+          anchorEntity,
+          anchorMeta,
+          anchorSession,
+          vcupDue,
+        );
         if (this.perfDetailActive) this.bcastSelfNs += process.hrtime.bigint() - selfStart;
         const keepJson = keep.length > 0 ? `,"keep":[${keep.join(',')}]` : '';
         const frostRings = activeFrostRings
@@ -5167,8 +5372,11 @@ export class GameServer {
           `${head}${timerWireJson},"self":${selfJson},"ents":[${ents.join(',')}]${frostRingsJson}${temporalHourglassesJson}${keepJson}}`,
         );
       },
-      (err, session) =>
-        console.error(`[snap] failed to build snapshot for pid ${session.pid}, skipping:`, err),
+      (err, resolved) =>
+        console.error(
+          `[snap] failed to build snapshot for pid ${resolved.session.pid}, skipping:`,
+          err,
+        ),
     );
     // >= rather than a modulo check: catch-up broadcasts can skip ticks
     if (tick - this.lastWireSweepTick >= WIRE_CACHE_SWEEP_TICKS) {
@@ -5296,6 +5504,7 @@ export class GameServer {
     p: Entity,
     meta: PlayerMeta,
     anchorSession: ClientSession = session,
+    vcupDue = false,
   ): string {
     const stableTimerWire = session.timerWireVersion === STABLE_TIMER_WIRE_VERSION;
     const self = wireEntity(p, !stableTimerWire);
@@ -5339,6 +5548,17 @@ export class GameServer {
       if (sent[key] !== s) {
         sent[key] = s;
         extra += `,"${key}":${s}`;
+      }
+    };
+    // Like `maybe`, but for a value already serialized once (the realm-wide Vale
+    // Cup fragment and the dungeon-finder board are each JSON.stringify'd a single
+    // time per tick by their realm-readout memos): skip the per-session
+    // re-stringify and only diff the pre-serialized string against what this
+    // session last received.
+    const maybeRaw = (key: string, serialized: string): void => {
+      if (sent[key] !== serialized) {
+        sent[key] = serialized;
+        extra += `,"${key}":${serialized}`;
       }
     };
     const maybe = (key: string, value: unknown): void => {
@@ -5406,11 +5626,35 @@ export class GameServer {
         'achg',
         session.timerWireCache.encodeCharges(anchorSession.pid, p.abilityCharges).json,
       );
+      // The companion recharge timers ({abilityId: [deadline, length]}), so the
+      // bar can show the thin recharge sweep while the pool still holds a use
+      // (the empty-pool timer keeps riding `cds` unchanged). Additive key: an
+      // older client simply ignores it.
+      maybeSerialized(
+        'achr',
+        session.timerWireCache.encodeChargeRecharges(
+          anchorSession.pid,
+          p.abilityCharges,
+          this.sim.time,
+        ).json,
+      );
     } else {
       maybe(
         'achg',
         p.abilityCharges
           ? Object.fromEntries(Object.entries(p.abilityCharges).map(([k, v]) => [k, v.charges]))
+          : {},
+      );
+      // Legacy arm: raw remaining seconds ({abilityId: [remaining, length]}),
+      // resent per snapshot like every legacy timer.
+      maybe(
+        'achr',
+        p.abilityCharges
+          ? Object.fromEntries(
+              Object.entries(p.abilityCharges)
+                .filter(([, v]) => v.recharge > 0 && Number.isFinite(v.recharge))
+                .map(([k, v]) => [k, [v.recharge, v.rechargeLength]]),
+            )
           : {},
       );
     }
@@ -5429,23 +5673,78 @@ export class GameServer {
       session.lastArenaWireTick = this.sim.tickCount;
       maybe('arena', this.sim.arenaInfoFor(anchorSession.pid));
     }
-    // Vale Cup readout at its own UI cadence (VC_WIRE_HZ): CupInfo carries
-    // whole-second clocks and queue sizes, so re-evaluating every tick would
-    // re-serialize the rosters 20 times per wire-visible change. Instant
-    // queue/match transitions ride the pid-scoped vcup* events instead.
-    if (this.sim.tickCount - session.lastVcupWireTick >= VC_WIRE_INTERVAL_TICKS) {
-      session.lastVcupWireTick = this.sim.tickCount;
-      maybe('vcup', this.sim.cupInfoFor(anchorSession.pid));
+    // Vale Cup readout at its own UI cadence (VC_WIRE_HZ). Dueness (`vcupDue`) is
+    // decided once per broadcast pass in broadcastSnapshots and realm-global, so the
+    // shared bundle is built once per due pass rather than on each session's own
+    // offset gate. The per-viewer remainder (standing, queue slot, my match/spectate
+    // view, my bets, my guild line) rides `vcup`; the realm-wide fragment (queue
+    // sizes, the live strip, the winners and guild boards, who is practicing) rides
+    // `vcupb`, serialized ONCE per broadcast pass by the realm-readout memo and
+    // reused across every viewer. A fresh join or a spectate enter/exit clears
+    // lastSent, so the `sent['vcup'] === undefined` arm re-ships both keys
+    // immediately even between due passes (the old per-session negative-init did
+    // this; the dueness gate alone would not, so keep this arm).
+    if (vcupDue || sent['vcup'] === undefined) {
+      const shared = realmReadoutObject(this.realmReadout, this.sim.tickCount, () =>
+        this.sim.cupSharedInfoFor(),
+      );
+      const full = this.sim.cupInfoFor(anchorSession.pid, shared);
+      if (full) {
+        // liveHidden: this viewer is off in a private practice instance, so the
+        // Sowfield live strip carried in the shared fragment must be suppressed for
+        // them. Derived from the two values we already hold (the raw shared live is
+        // non-null but this viewer's effective live is null), so VcMatchInfo need
+        // not carry a practice flag; the client reapplies it on recompose and never
+        // surfaces liveHidden on CupInfo. The raw strip still rides vcupb to every
+        // viewer (it is public match state, no PII), so a practicer receives the
+        // bytes but this per-viewer flag keeps their client from ever rendering it.
+        const liveHidden = shared.live !== null && full.live === null;
+        // Typed as VcViewerReadout so a future CupInfo per-viewer field addition
+        // fails compile here rather than silently dropping from the wire remainder.
+        const viewerReadout: VcViewerReadout = {
+          standing: full.standing,
+          queued: full.queued,
+          bracket: full.bracket,
+          nation: full.nation,
+          role: full.role,
+          position: full.position,
+          deserterFor: full.deserterFor,
+          match: full.match,
+          spectate: full.spectate,
+          betRecord: full.betRecord,
+          myGuild: full.myGuild,
+          guildStanding: full.guildStanding,
+          liveHidden,
+        };
+        maybe('vcup', viewerReadout);
+        maybeRaw(
+          'vcupb',
+          realmReadoutJson(this.realmReadout, this.sim.tickCount, () =>
+            this.sim.cupSharedInfoFor(),
+          ),
+        );
+      } else {
+        maybe('vcup', null);
+      }
     }
     // Dungeon Finder at its own UI cadence (DF_WIRE_HZ): the personal `df`
     // blob carries whole-second clocks (queue wait, proposal countdown), so
     // re-evaluating every tick would re-serialize it 20 times per visible
     // change. The shared `dfb` board is a separate key so a live countdown
-    // never re-sends the listings.
+    // never re-sends the listings; it is viewer-independent, so its JSON rides
+    // the realm-readout memo (built + stringified at most once per tick, reused
+    // by every session whose gate opens on that tick) and ships via `maybeRaw`.
+    // The per-session `>=` gate itself is unchanged: sessions keep their own
+    // offsets, and the memo only collapses same-tick evaluations.
     if (this.sim.tickCount - session.lastDfWireTick >= DF_WIRE_INTERVAL_TICKS) {
       session.lastDfWireTick = this.sim.tickCount;
       maybe('df', this.sim.dungeonFinderInfoFor(anchorSession.pid));
-      maybe('dfb', this.sim.dungeonFinderBoardView());
+      maybeRaw(
+        'dfb',
+        realmReadoutJson(this.dfBoardReadout, this.sim.tickCount, () =>
+          this.sim.dungeonFinderBoardView(),
+        ),
+      );
     }
     // market info is null unless the player is standing at the Merchant, so it
     // only rides the wire for players actually browsing the World Market
@@ -5486,6 +5785,15 @@ export class GameServer {
     // naturally flips to null the tick a station lapses and the client never
     // reasons about tick domains. Small scalar, diffed per tick like atitle.
     maybe('mst', this.sim.activeMobileStationCraftFor(anchorSession.pid));
+    // The viewer's own most recent enchanting-action outcomes (Professions 2.0
+    // Phase 13), or null. Small per-player reads diffed per tick like the other
+    // scalars above (a successful action already refreshed the self inventory via
+    // its loot event); the convergence arm for lastDisenchantResult/lastEnchantResult/
+    // lastSalvageResult, alongside the pid-scoped disenchantResult/enchantResult/
+    // salvageResult event. See TERSE_TO_IWORLD/ALL_DELTA_KEYS in tests/snapshots.test.ts.
+    maybe('denc', this.sim.lastDisenchantResultFor(anchorSession.pid));
+    maybe('ench', this.sim.lastEnchantResultFor(anchorSession.pid));
+    maybe('salv', this.sim.lastSalvageResultFor(anchorSession.pid));
     maybe('tfocus', this.sim.townFocusFor(anchorSession.pid));
     // Raw gathering-profession proficiency map (IWorld `gatheringProficiency`,
     // #1119), a second small read alongside `prof` for the ORIGINAL flat-map
@@ -5540,6 +5848,12 @@ export class GameServer {
         loadouts: meta.loadouts,
         activeLoadout: meta.activeLoadout,
       });
+      // IWorldActionBar login restore (self-scoped, never a broadcast/entity
+      // field): the VIEWER's own stored layout, or an explicit null meaning "the
+      // server has no copy, seed from this device". Bound to the frozen join-time
+      // value, so lastSent-diffing sends it exactly once and a later client save
+      // never round-trips back to clobber an in-flight edit.
+      maybe('hbl', session.initialHotbarLayout);
       // Vale Cup sport-kit flag ({ role } | null): while set, the client's
       // action bar rebuilds the role kit instead of the class kit. Rides the
       // wireRev-gated block because the sim bumps wireRev on BOTH the kickoff
@@ -5929,12 +6243,35 @@ export class GameServer {
     for (const ev of events) {
       if (ev.type !== 'chat') continue;
       const flair = this.chatFlairForPid(ev.fromPid);
-      if (flair) ev.flair = flair;
+      // The sender's top STAFF Discord role (the anti-impersonation chat tag)
+      // is composed here from the SENDER's entity rather than folded into the
+      // cached session.chatFlair: e.discordRole is written by the bot's
+      // members-meta push on its own cadence, so reading it live at fan-out
+      // cannot go stale. Gated on the catalog's chatTag flag so community
+      // roles (Artist, Content Creator, LEGEND, SHILL) stay nameplate-only
+      // and the chat tag remains a pure authority signal. Allocates only for
+      // staff senders.
+      const role = this.sim.entities.get(ev.fromPid)?.discordRole;
+      // `flair` may be undefined here; spreading undefined is a spec-defined
+      // no-op, so a role-only sender yields a clean { role } object.
+      if (role && specialRoleChatTag(role)) ev.flair = { ...flair, role };
+      else if (flair) ev.flair = flair;
     }
     // ignore list: social invites from blocked senders are resolved once per
     // batch (dropped for every session and declined in the sim), not per
     // receiving session, so spectators of the target never see them either.
     const suppressedInvites = this.suppressBlockedSocialInvites(events);
+    // Serialize each event exactly once for the whole batch (after the flair stamp
+    // above, so the fragment carries the final wire shape). Every recipient's frame is
+    // then assembled by joining the fragments it selects, index-aligned with `events`,
+    // instead of re-stringifying a per-session { t:'events', list } object. Byte-for-byte
+    // identical to the old per-session JSON.stringify; only the fan-out cost changes.
+    // INVARIANT: nothing in the per-session loop below may mutate a SimEvent after this
+    // point, or a recipient's fragment would stop matching its event. The one in-loop
+    // visitor that takes `ev` is botDetector.observeEvent, an observer that writes the
+    // tracking context and never the event; the once-per-batch flair stamp above is the
+    // only event mutation and correctly precedes this serialization.
+    const fragments = serializeEventFragments(events);
     // Guard each session: a throw while routing events to one player must not
     // drop this tick's events for every other session (server/CLAUDE.md).
     forEachGuarded(
@@ -5951,8 +6288,9 @@ export class GameServer {
           anchorPid = target.pid;
           anchorPos = targetEntity.pos;
         }
-        const mine: SimEvent[] = [];
-        for (const ev of events) {
+        const mine: string[] = [];
+        for (let i = 0; i < events.length; i++) {
+          const ev = events[i];
           if (suppressedInvites?.has(ev)) continue;
           // ignore list: drop chat originating from a character this player has
           // blocked, before it ever reaches their client
@@ -5982,7 +6320,7 @@ export class GameServer {
               ev.channel !== 'yell'
             ) {
               if (this.isBlockedSender(session, ev.fromPid)) continue;
-              mine.push(ev);
+              mine.push(fragments[i]);
               if (ev.channel === 'whisper' && ev.to === undefined && ev.fromPid !== session.pid) {
                 session.lastWhisperFrom = ev.from;
               }
@@ -5998,7 +6336,7 @@ export class GameServer {
               ) {
                 continue;
               }
-              mine.push(ev);
+              mine.push(fragments[i]);
               // a sim-driven change to a heavy self field (loot, level-up, quest
               // credit, ...) refreshes those fields on the next snapshot
               if (HEAVY_SELF_EVENTS.has(ev.type)) session.selfHeavyDirty = true;
@@ -6022,10 +6360,12 @@ export class GameServer {
           // world events: only those near this player
           const anchor = this.eventAnchor(ev);
           if (anchor === null || dist2d(anchorPos, anchor) <= EVENT_RADIUS) {
-            mine.push(ev);
+            mine.push(fragments[i]);
           }
         }
-        if (mine.length > 0) this.send(session, { t: 'events', list: mine });
+        // sendRaw (not send) so the pre-serialized fragments are not re-stringified;
+        // the assembled string is byte-identical to send({ t:'events', list: events }).
+        if (mine.length > 0) this.sendRaw(session, assembleEventsFrame(mine));
       },
       (err, session) =>
         console.error(`[events] failed to route events for pid ${session.pid}, skipping:`, err),

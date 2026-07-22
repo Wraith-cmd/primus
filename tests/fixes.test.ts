@@ -1112,7 +1112,9 @@ describe('boss loot and encounter resets', () => {
     sim.lootCorpse(mob.id, b);
     expect(sim.countItem('boar_hide', b)).toBe(1);
     expect(mob.loot).toBeNull();
-    expect(mob.lootable).toBe(false);
+    // Phase 12d: the emptied boar corpse stays lootable through its
+    // unclaimed-harvest grace window instead of collapsing immediately.
+    expect(mob.lootable).toBe(true);
   });
 
   it('personal loot remains claimable after party rights are gone without granting shared loot', () => {
@@ -1689,6 +1691,54 @@ describe('warrior charge', () => {
     wolf.dead = true;
     sim.tick();
     expect(p.chargeTargetId).toBe(null);
+  });
+
+  it('does not bill or arm charge through unbreakable encounter control', () => {
+    const { sim, p, wolf } = chargeSetup();
+    const rageBefore = p.resource;
+    p.auras.push({
+      id: 'scripted_root',
+      name: 'Scripted Root',
+      kind: 'root',
+      remaining: 10,
+      duration: 10,
+      value: 0,
+      sourceId: 9000,
+      school: 'shadow',
+      unbreakableControl: true,
+    });
+
+    sim.castAbility('charge');
+
+    expect(p.chargeTargetId).toBe(null);
+    expect(p.resource).toBe(rageBefore);
+    expect(p.cooldowns.has('charge')).toBe(false);
+    expect(wolf.auras.some((a) => a.kind === 'stun')).toBe(false);
+  });
+
+  it('stops an in-flight charge when unbreakable encounter control lands', () => {
+    const { sim, p } = chargeSetup();
+    sim.castAbility('charge');
+    sim.tick();
+    expect(p.chargeTargetId).not.toBe(null);
+    const heldAt = { ...p.pos };
+    p.auras.push({
+      id: 'scripted_stun',
+      name: 'Scripted Stun',
+      kind: 'stun',
+      remaining: 10,
+      duration: 10,
+      value: 0,
+      sourceId: 9000,
+      school: 'shadow',
+      unbreakableControl: true,
+    });
+
+    sim.tick();
+
+    expect(p.chargeTargetId).toBe(null);
+    expect(p.pos.x).toBeCloseTo(heldAt.x, 5);
+    expect(p.pos.z).toBeCloseTo(heldAt.z, 5);
   });
 });
 

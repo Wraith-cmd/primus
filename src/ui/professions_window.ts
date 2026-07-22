@@ -16,6 +16,7 @@ import { esc } from './esc';
 import { formatNumber, type TranslationKey, t } from './i18n';
 import { professionIconUrl } from './icons';
 import type { PainterHostPresentation } from './painter_host';
+import { archetypeImageUrl } from './profession_art';
 import type { EmpowermentCeiling, ProfessionRole } from './profession_identity_view';
 import {
   buildProfessionsView,
@@ -51,12 +52,14 @@ const CEILING_LABEL_KEYS: Record<EmpowermentCeiling, TranslationKey> = {
 };
 
 // Gathering display-name keys (the char-window gathering section family).
-// Phase 11's fishing row must add its id here alongside its catalog key; an
-// id with no key renders no row (the view core passes every row through).
+// Every GATHERING_PROFESSION_IDS id adds its id here alongside its catalog
+// key (fishing landed with Phase 11); an id with no key renders no row (the
+// view core passes every row through).
 const GATHERING_NAME_KEYS: Record<string, TranslationKey> = {
   mining: 'hudChrome.gathering.mining',
   logging: 'hudChrome.gathering.logging',
   herbalism: 'hudChrome.gathering.herbalism',
+  fishing: 'hudChrome.gathering.fishing',
 };
 
 /**
@@ -225,9 +228,12 @@ export class ProfessionsWindow {
 
   private identityHtml(model: ProfessionsViewModel): string {
     const summary = model.identity.summary;
+    const crestUrl = archetypeImageUrl(summary.pairId);
     const lines =
       model.identity.state === 'attuned' && summary.majors !== null
-        ? `<div class="prof-pair-title">${esc(archetypeTitleText(summary.pairId))}</div>` +
+        ? `<div class="prof-archetype-summary">` +
+          `${crestUrl ? `<img class="prof-archetype-crest" src="${esc(crestUrl)}" alt="" draggable="false">` : ''}` +
+          `<div class="prof-archetype-copy"><div class="prof-pair-title">${esc(archetypeTitleText(summary.pairId))}</div>` +
           `<div class="prof-identity-line">${esc(
             t('hudChrome.professions.majorsLabel', {
               a: craftNameText(summary.majors[0]),
@@ -242,7 +248,7 @@ export class ProfessionsWindow {
           )}</div>` +
           `<div class="prof-identity-line">${esc(
             t('hudChrome.professions.returnsLabel', { count: this.fmt(summary.returnCount) }),
-          )}</div>`
+          )}</div></div></div>`
         : `<p class="prof-identity-paragraph">${esc(t('hudChrome.professions.unattunedIdentity'))}</p>`;
     const switchCost = `<div class="prof-switch-cost">${esc(
       t('hudChrome.professions.switchCost', { cost: this.fmt(model.switchCost.nextSwitchCost) }),
@@ -332,7 +338,7 @@ export class ProfessionsWindow {
   }
 
   private nextUnlockText(unlock: CraftNextUnlock): string {
-    if (unlock.kind === 'max') return t('hudChrome.professions.nextUnlockMax');
+    if (unlock.kind === 'mastered') return t('hudChrome.professions.nextUnlockMastered');
     if (unlock.kind === 'specialized')
       return t('hudChrome.professions.nextUnlockSpecialized', {
         points: this.fmt(unlock.pointsRemaining),

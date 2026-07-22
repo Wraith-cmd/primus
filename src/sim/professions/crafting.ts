@@ -68,20 +68,19 @@
 // game/net imports, no Math.random/Date.now, host-agnostic so it runs
 // offline, on the server, and in the headless RL env unchanged.
 
-import {
-  CRAFT_GOLD_SINK_COPPER_PER_BUDGET,
-  CRAFT_THROTTLE_MAX_PER_WINDOW,
-  CRAFT_THROTTLE_WINDOW_SECONDS,
-} from '../content/professions';
+import { CRAFT_GOLD_SINK_COPPER_PER_BUDGET } from '../content/professions';
 import { recipeById } from '../content/recipes';
 import { ITEMS } from '../data';
 import type { PlayerMeta } from '../sim';
 import type { SimContext } from '../sim_context';
-import type { ItemDef } from '../types';
+import type { ItemDef, ItemInstancePayload } from '../types';
+import { recordAction, withinActionThrottle } from './action_throttle';
 import { archetypeCeilingFor, craftSkillGainMultiplier } from './archetype';
 import { comboEligibility } from './combo_eligibility';
+import { isCommissionEligible } from './commission';
 import { isSignableMaterialRarity, type MaterialRarity } from './gathering';
 import { masterworkBonusStats, masterworkBumpedQuality, masterworkProcChance } from './masterwork';
+import { materialTierBonusForReagents } from './material_tier';
 import { isStationActive } from './mobile_station';
 import { craftActionXp } from './profession_xp';
 import { isAtStation, stationTypeForCraft } from './stations';
@@ -96,9 +95,12 @@ import {
   tierForSkill,
 } from './wheel';
 
-// One flat craft-skill point per successful common-tier craft (the free-floor
-// rule: common-tier crafting itself never costs anything, but skill still
-// accrues so later tiers have something to build a gate against).
+// The BASE craft-skill amount per successful craft, scaled by the Phase 12c
+// four-state mastery curve at the gain site below (CRAFT_SKILL_GAIN *
+// craftSkillGainMultiplier): full 1, reduced 0.5, minimal 0.25, gray 0. The
+// old tier-0 free-floor GAIN rule (skill always accrues on the cheapest
+// recipe) is retired; the free-floor COST rule (common-tier crafting never
+// costs anything) lives on in recipes.ts/types.ts.
 const CRAFT_SKILL_GAIN = 1;
 
 export interface CraftResult {
@@ -119,6 +121,15 @@ export interface CraftResult {
   // instance (signer === the crafting player's own name) counted toward it,
   // reducing that reagent's required quantity by one for this craft.
   selfSignedBonusApplied?: boolean;
+  // Commissions (Professions 2.0 Phase 14b): true only when the opt-in flag
+  // was honored, i.e. the output is an eligible equipment kind and every
+  // granted copy was minted armed with bindOnTrade (commission.ts). Absent
+  // when the flag was not set AND when it was silently ignored for an
+  // ineligible output kind. Sim-internal: this field is NOT projected into
+  // CraftResultView (world_api/professions.ts) or the craftResult SimEvent,
+  // so no UI may consume it (the honored-vs-ignored pins are its consumer);
+  // the player-visible commission fact is the payload's bindOnTrade arm.
+  commission?: boolean;
   // Present only when !ok: a stable reason code, not player-facing prose (the
   // caller renders/localizes the denial).
   reason?:
@@ -191,20 +202,6 @@ export function acquireRecipeForRecipe(
   }
   meta.knownRecipes.add(recipeId);
   return { ok: true, recipeId };
-}
-
-/** Whether `meta`'s rolling craft-output window (issue #1301) still has room
- *  for one more successful craft, advancing/resetting the window against
- *  `now` (sim time, deterministic) as a side effect exactly like a real
- *  rolling window would. A maxed specialist is capped at
- *  `CRAFT_THROTTLE_MAX_PER_WINDOW` successful crafts per
- *  `CRAFT_THROTTLE_WINDOW_SECONDS`, regardless of skill or material supply. */
-function withinCraftThrottle(meta: PlayerMeta, now: number): boolean {
-  if (now - meta.craftThrottle.windowStart >= CRAFT_THROTTLE_WINDOW_SECONDS) {
-    meta.craftThrottle.windowStart = now;
-    meta.craftThrottle.count = 0;
-  }
-  return meta.craftThrottle.count < CRAFT_THROTTLE_MAX_PER_WINDOW;
 }
 
 /** Whether `meta` holds an inventory slot for `itemId` carrying a signed
@@ -315,6 +312,7 @@ export function resolveCraftForRecipe(
   ctx: SimContext,
   pid: number,
   recipe: ProfessionRecipeRecord,
+  commission = false,
 ): CraftResult {
   const meta = ctx.players.get(pid);
   // Phase 8 station gate (supersedes #1297's hub gate; the level arm retired
@@ -351,10 +349,11 @@ export function resolveCraftForRecipe(
   if (!hasRecipeMaterials(ctx, recipe, pid)) {
     return { ok: false, recipeId: recipe.id, reason: 'insufficient_materials' };
   }
-  // #1301 output throttle: a flat cap on successful crafts per rolling
-  // window, checked (never side-effected on denial beyond the window's own
-  // natural rollover) before any reagent is consumed.
-  if (meta && !withinCraftThrottle(meta, ctx.time)) {
+  // #1301 output throttle, Phase 12c shared: one action window paced across
+  // crafting, disenchant, enchant-apply, and salvage (action_throttle.ts),
+  // checked (never side-effected on denial beyond the window's own natural
+  // rollover) before any reagent is consumed.
+  if (meta && !withinActionThrottle(meta, ctx.time)) {
     return { ok: false, recipeId: recipe.id, reason: 'throttled' };
   }
   // #1301 gold sink: a fee proportional to the recipe's item-level budget,
@@ -421,6 +420,10 @@ export function resolveCraftForRecipe(
       tierCapability(craftSkills, recipe.professionId) - tierForSkill(recipe.skillReq),
     signedReagent: signedReagentUsed,
     specialized: isSpecialized(craftSkills, recipe.professionId),
+    // Phase 10: higher-tier materials raise the proc odds. Pure def-level
+    // lookup over the recipe's declared reagent list (material_tier.ts), so
+    // it draws nothing and cannot move the single procRoll draw above.
+    materialTierBonus: materialTierBonusForReagents(recipe.reagents),
   });
   // Effect gate (gates the EFFECT, never the draw): the def must bake a
   // non-null bonus record, and the bumped quality tier must not exceed the
@@ -434,6 +437,13 @@ export function resolveCraftForRecipe(
     bumped !== null &&
     bumped.tier <= ceilingTier;
   const outputQuality = defOutputQuality(def);
+  // Commissions (Professions 2.0 Phase 14b): the opt-in flag arms every
+  // granted copy with the Phase 13 bind-on-trade primitive, but ONLY for the
+  // ruled-in equipment kinds (commission.ts isCommissionEligible). For any
+  // other output kind the flag is silently ignored (server authority: a
+  // tampered flag can never arm a potion), and a non-commission craft is
+  // byte-identical to the pre-phase behavior below.
+  const commissioned = commission && !!meta && isCommissionEligible(def);
   // Deterministic grant: every successful craft yields recipe.resultItemId.
   // #1149 signing rule preserved on the DEF quality: a single-copy output
   // whose def is rare-or-better is a signed instance so it carries an
@@ -443,18 +453,37 @@ export function resolveCraftForRecipe(
   // is always minted as ONE signed instance carrying the baked bonus stats;
   // a resultCount > 1 recipe grants the remainder plain, exactly as the
   // plain arm would. NEW crafts never write rolled.quality (retired for new
-  // writes; legacy payloads keep loading).
+  // writes; legacy payloads keep loading). A commissioned craft arms every
+  // copy (the player opted the CRAFT in, so a multi-copy output mints each
+  // remainder copy as its own armed instance; they stack byte-equal), and a
+  // commissioned sub-rare output forces the instance path a plain grant
+  // would skip. Commission never adds signer: the #1149 signing rule is
+  // untouched (the bond composes with the maker's mark, it does not extend
+  // it).
   if (meta && masterwork && bonusStats) {
-    ctx.addItemInstance(
-      recipe.resultItemId,
-      { signer: meta.name, rolled: { masterwork: true, stats: bonusStats } },
-      pid,
-    );
+    const payload: ItemInstancePayload = {
+      signer: meta.name,
+      rolled: { masterwork: true, stats: bonusStats },
+    };
+    if (commissioned) payload.bindOnTrade = true;
+    ctx.addItemInstance(recipe.resultItemId, payload, pid);
     if (recipe.resultCount > 1) {
-      ctx.addItem(recipe.resultItemId, recipe.resultCount - 1, pid);
+      if (commissioned) {
+        for (let i = 1; i < recipe.resultCount; i++) {
+          ctx.addItemInstance(recipe.resultItemId, { bindOnTrade: true }, pid);
+        }
+      } else {
+        ctx.addItem(recipe.resultItemId, recipe.resultCount - 1, pid);
+      }
     }
   } else if (meta && recipe.resultCount === 1 && isSignableMaterialRarity(outputQuality)) {
-    ctx.addItemInstance(recipe.resultItemId, { signer: meta.name }, pid);
+    const payload: ItemInstancePayload = { signer: meta.name };
+    if (commissioned) payload.bindOnTrade = true;
+    ctx.addItemInstance(recipe.resultItemId, payload, pid);
+  } else if (commissioned) {
+    for (let i = 0; i < recipe.resultCount; i++) {
+      ctx.addItemInstance(recipe.resultItemId, { bindOnTrade: true }, pid);
+    }
   } else {
     ctx.addItem(recipe.resultItemId, recipe.resultCount, pid);
   }
@@ -472,7 +501,7 @@ export function resolveCraftForRecipe(
       recipe.skillReq,
     );
     gainCraftSkill(meta.craftSkills, recipe.professionId, CRAFT_SKILL_GAIN * multiplier);
-    meta.craftThrottle.count += 1;
+    recordAction(meta);
     // Character XP for the craft (profession_xp.ts), tier-scaled and
     // level-gated the same way gathering/kill XP are: a max-level player
     // spamming a trivial (gray) recipe gets zero.
@@ -488,6 +517,7 @@ export function resolveCraftForRecipe(
     selfSignedBonusApplied,
   };
   if (masterwork) result.masterwork = true;
+  if (commissioned) result.commission = true;
   return result;
 }
 
@@ -505,10 +535,15 @@ function defOutputQuality(def: ItemDef | undefined): MaterialRarity {
 /** Pure resolution of one craft attempt against one recipe id, given an
  *  already-resolved player entity id: denies with `unknown_recipe` if the id
  *  does not resolve, otherwise delegates to `resolveCraftForRecipe`. */
-export function resolveCraft(ctx: SimContext, pid: number, recipeId: string): CraftResult {
+export function resolveCraft(
+  ctx: SimContext,
+  pid: number,
+  recipeId: string,
+  commission = false,
+): CraftResult {
   const recipe = recipeById(recipeId);
   if (!recipe) return { ok: false, recipeId, reason: 'unknown_recipe' };
-  return resolveCraftForRecipe(ctx, pid, recipe);
+  return resolveCraftForRecipe(ctx, pid, recipe, commission);
 }
 
 // Command entry point (behind the SimContext seam): resolves one player's
@@ -519,10 +554,17 @@ export function resolveCraft(ctx: SimContext, pid: number, recipeId: string): Cr
 // hudChrome.crafting.* catalog keys; this must not also emit a ctx.error
 // toast, or a denied craft prints twice and the second copy is unlocalized.
 // Runs on the deterministic tick the wire command arrives on, never off-tick.
-export function craftItem(ctx: SimContext, recipeId: string, pid?: number): CraftResult {
+// `commission` (Phase 14b) is the opt-in boolean off the craft command; the
+// resolve honors it only for eligible equipment outputs (commission.ts).
+export function craftItem(
+  ctx: SimContext,
+  recipeId: string,
+  commission = false,
+  pid?: number,
+): CraftResult {
   const r = ctx.resolve(pid);
   if (!r) return { ok: false, recipeId, reason: 'unknown_recipe' };
-  const result = resolveCraft(ctx, r.meta.entityId, recipeId);
+  const result = resolveCraft(ctx, r.meta.entityId, recipeId, commission);
   if (result.ok) {
     ctx.bumpDeedStat(r.meta, 'craftsPerformed', 1);
     // A station-bound success already proved station presence in the
@@ -531,6 +573,14 @@ export function craftItem(ctx: SimContext, recipeId: string, pid?: number): Craf
     // now means station-bound crafts (Phase 8 renamed the gate, not the key).
     if (recipeById(recipeId)?.stationType) {
       ctx.bumpDeedStat(r.meta, 'hubCraftsPerformed', 1);
+    }
+    // Phase 15: a masterwork proc feeds the Masterwright counter
+    // (prog_masterwright). Resolved strictly AFTER the resolve's single
+    // output-side proc draw; this bump draws nothing. Deliberately NO retro
+    // arm: masterworking is repeatable, so a veteran whose procs predate the
+    // counter simply earns it on the next proc.
+    if (result.masterwork) {
+      ctx.bumpDeedStat(r.meta, 'masterworksCrafted', 1);
     }
     // The dirty mark also covers the craft-skill gain the resolve applied.
     ctx.markDeedsDirty(r.meta.entityId);

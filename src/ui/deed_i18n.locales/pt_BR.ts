@@ -82,7 +82,6 @@ export const table: DeedLocaleTable = {
   },
   prog_master_gatherer: {
     name: 'Mestre Coletor',
-    desc: 'Alcance 100 de proficiência em Mineração, Lenharia e Herborismo.',
   },
   prog_first_craft: { name: 'Feito à Mão', desc: 'Conclua sua primeira criação bem-sucedida.' },
   prog_craft_specialist: {
@@ -686,6 +685,7 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: 'Ferramentas do Ofício',
+    desc: 'Conclua uma criação em uma estação de artesanato.',
   },
   dgn_nythraxis_crypt: {
     name: 'O Que a Cripta Guardava',

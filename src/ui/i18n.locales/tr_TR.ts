@@ -33,8 +33,6 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.blizzard.description':
     "Hedef alana 6 saniye boyunca buz fırtınası çağırır, her saniye {damage} Don hasarı verir ve düşmanları %40 yavaşlatır. Vurulan her düşman Donmuş Küre'nin süresini 0,5 saniye azaltır (kullanım başına en fazla 3 saniye). (Don)",
   'entities.abilities.blizzard.name': 'Blizzard',
-  'entities.abilities.brain_freeze.description':
-    "Ayaz Mızrağı'nın bir sonraki Winterlash'i anlık, %30 daha sert ve bekleme süresiz yapma ihtimali %20'dir. (Don)",
   'entities.abilities.brain_freeze.name': 'Brain Freeze',
   'entities.abilities.dragons_breath.description':
     'Genişleyen bir alev nefesi biriktirmek için basılı tut, ardından bir koni şeklinde bırak. Daha uzun şarjlar daha uzağa ulaşır ve daha fazla hasar verir. Vurulan düşmanlar yönelim kaybeder; hasar bu etkiyi bozar. Azami şarj her zaman kritik vurur ve Sıcak Seri için bir kez sayılır. (Ateş)',
@@ -45,11 +43,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.fireball_form.description':
     'Alev saçan bir köze dönüşerek hareket hızını {buff}% artır. Dönüşüm sırasında saldıramazsın veya büyü kullanamazsın. Normal formuna dönmek için yeniden kullan.',
   'entities.abilities.fireball_form.name': 'Kor Formu',
-  'entities.abilities.flurry.description':
-    "Her biri {damage} Don hasarı veren üç buz oku fırlat ve hedefe Kışın Üşümesi'ni uygula: bir sonraki 2 uyumlu büyü onu donmuş gibi değerlendirir. Brain Freeze, Winterlash'i anlık, %30 daha sert yapar ve bekleme süresini atlatır. (Don)",
   'entities.abilities.flurry.name': 'Winterlash',
-  'entities.abilities.frozen_orb.description':
-    'Yakındaki düşmanlara her saniye {damage} Don hasarı vererek ve onları %30 yavaşlatarak 8 saniye ileri süzülen dönen bir buz küre bırak. Vuruşları Donmuş Parmaklar üretir. (Don)',
   'entities.abilities.frozen_orb.name': 'Frozen Orb',
   'entities.abilities.glacial_front.description':
     'Genişleyen bir don cephesi biriktirmek için basılı tut, ardından bir koni şeklinde bırak. Daha uzun şarjlar daha uzağa ulaşır ve daha fazla hasar verir. Vurulan tüm düşmanlar 4 saniye boyunca %50 yavaşlar. Azami şarj ayrıca onları 1 saniye kökler. (Don)',
@@ -63,8 +57,6 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.perfect_moment.description':
     'Mükemmel anını yakala: anında 4 Gizemli Yük kazan ve 10 saniye boyunca Aether Okları onları tüketmez. (Kronomansi)',
   'entities.abilities.perfect_moment.name': 'Mükemmel An',
-  'entities.abilities.shatter.description':
-    'Büyülerin donmuş hedeflere karşı %50 kritik vuruş şansı kazanır ve bu kritik vuruşlar %20 daha fazla hasar verir. Donmuş Parmaklar ve Kışın Üşümesi donmuş sayılır. (Don)',
   'entities.abilities.shatter.name': 'Brittle Ruin',
   'entities.abilities.temporal_acceleration.description':
     "Grubunuz veya akınınız için zamanın akışını hızlandırarak saldırı, büyü atma ve kanalize hızını 15 saniye boyunca %30 artırır. Yakın zamanda Zamansal Hızlanma veya Savaş Davulları'ndan etkilenen müttefikler bu etkiden yararlanamayacak kadar tükenmiştir. (Kronomansi)",
@@ -94,11 +86,6 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     'Kart Düellosu ister misin? Üçte iki galip gelen övünme hakkını kazanır.',
   'entities.npcs.card_master.name': 'Kart Ustası',
   'entities.npcs.card_master.title': 'Şans Dağıtıcısı',
-  'entities.quests.q_archetype_acceptance.completion':
-    'Söz yerini buldu. Bu iki zanaat artık ana dallarındır; karşısındaki bilgi ise hobine dönüşür.',
-  'entities.quests.q_archetype_acceptance.objectives.0.label': 'Maden damarı işlendi',
-  'entities.quests.q_archetype_acceptance.text':
-    "Beceri bilgidir, {playerName}, ama uyum bir sözdür. Yöntemlerini ana dal olarak taşıyacağın iki komşu zanaatı seç, ardından Vadi'den kendi ellerinle işlediğin cevheri bana getir.",
   'entities.quests.q_prof_hobby_switch.completion':
     'Daha hafif bir tercih ama işe yarar bir tercih. O merakı nadir işlerin götüreceği yere kadar takip et.',
   'entities.quests.q_prof_hobby_switch.objectives.0.label': 'Ot tarlası toplandı',
@@ -110,10 +97,6 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.quests.q_prof_intro.objectives.0.label': 'Maden damarı işlendi',
   'entities.quests.q_prof_intro.text':
     "Eastbrook'taki her ruh kılıcın yanı sıra bir zanaat da icra eder, {playerName}. Kasabanın güneybatısındaki Bakır Kazısı'nın çevresindeki kayalarda maden damarları var. Git bir kazma salla ve bunlardan 5'ini kendin işle; dikkat et, farkı anlayabilirim.",
-  'entities.quests.q_prof_make_amends.completion':
-    'Eski ritim geri döndü. Eski çiftin bir kez daha etkin.',
-  'entities.quests.q_prof_make_amends.text':
-    'O çifti daha önce taşıdın, {playerName}. Geri dönmek yeni bir yemin değil. Vadi yolunu temiz tutmaya yardım et; iş, ellerinin bir zamanlar ne bildiğini hatırlatacak.',
   'gpuNotice.bodyDesktop':
     "Oyun GPU hızlandırması olmadan çalışıyor ve yavaş olacak. Grafik sürücülerini güncelleyip oyunu yeniden başlat. Windows'ta ayrıca Ayarlar > Sistem > Ekran > Grafikler altında oyunu Yüksek performans olarak ayarla.",
   'gpuNotice.bodyWeb':
@@ -121,16 +104,12 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'gpuNotice.dismiss': 'Kapat',
   'guide.abilityHook.blink': 'Sizi kısa bir mesafe ileriye ışınlayarak kökleri koparır.',
   'guide.abilityHook.blizzard': 'Tüm bir grubu yıpratmak ve yavaşlatmak için alanı buzla kaplar.',
-  'guide.abilityHook.brain_freeze':
-    "Buz okların zaman zaman bir sonraki Winterlash'i anlık ve daha sert yapar.",
   'guide.abilityHook.fingers_of_frost':
     "Buz okların zaman zaman bir Ice Lance'e hedef donmuş gibi vurma gücü verir.",
   'guide.abilityHook.fireball_form':
     'Açık arazide yüksek hızda hareket etmek için yaşayan bir kora dönüş.',
   'guide.abilityHook.flurry':
     'Hedefi soğutan ve bir sonraki don vuruşlarının donmuşmuş gibi isabet etmesini sağlayan üç hızlı ok.',
-  'guide.abilityHook.frozen_orb':
-    'Grubun içinden yavaş bir küre geçirerek her şeyi soğutur ve don tetiklemelerini besler.',
   'guide.abilityHook.ice_lance':
     'Don tetiklemeleri harcamaya yarayan anlık bir kıymık; donmuş hedefe çok daha sert vurur.',
   'guide.abilityHook.shatter': 'Büyülerin donmuş hedeflere karşı çok daha sık kritik vurur.',
@@ -169,6 +148,8 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     'Bir sonraki doğrudan büyün aynı hedef üzerinde {pct}% güçle tekrarlanır',
   'hudChrome.auraEffect.temporalHourglass':
     'Bağışık ve eylem yapamaz; canı yeniler ve bekleme süresi iyileşmesini hızlandırır. İptal etmek için sağ tıkla.',
+  'hudChrome.charSheet.defense': 'Savunma',
+  'hudChrome.charSheet.offense': 'Saldırı',
   'hudChrome.craftName.alchemy': 'Simya',
   'hudChrome.craftName.armorcrafting': 'Zırh Yapımı',
   'hudChrome.craftName.cooking': 'Yemek Pişirme',
@@ -224,6 +205,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     "Hesaplar ömür boyu kazandıkları Ün'e göre sıralanır. Her yiğitlik bir hesaptaki tüm karakterlerde bir kez sayılır.",
   'hudChrome.deeds.lbSelfAccount': 'Hesabın: {rank}. sıra, ilk {percent} yüzde, {renown} Ün',
   'hudChrome.deeds.lbSelfRank': 'Hesabın: {rank}. sıra, ilk {percent} yüzde',
+  'hudChrome.nameplate.afkTag': 'UZAKTA',
   'hudChrome.nameplate.mobEliteLevel': '{level}+',
   'hudChrome.nameplate.mobLevel': '{level}',
   'hudChrome.specPanel.specUnlockBanner': 'Uzmanlık Kilidi Açıldı!',
@@ -295,6 +277,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.bags.dragEquipHint': 'Kuşanmak için karakterinin üzerine sürükle',
   'hudChrome.bags.reorderNeedsRecent':
     'Çantalarını yeniden düzenlemek için filtreyi temizle ve Son Eklenen sıralama seçeneğini kullan',
+  'hudChrome.bags.itemAriaInstanced': '{item}, adet {count}, ustaişareti kopyası',
   'hudChrome.bags.rightClickDestroy': 'Yok etmek için sağ tıkla',
   'hudChrome.cameraPrompt.changeLater':
     'Bunu daha sonra Esc, Tuş Atamaları menüsünden değiştirebilirsin.',
@@ -311,6 +294,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.discord.roleTag.legend': 'EFSANE',
   'hudChrome.discord.roleTag.seniormods': 'Kıdemli Moderatör',
   'hudChrome.discord.roleTag.shill': 'SAVUNUCU',
+  'hudChrome.discord.roleTagChatTitle': 'Doğrulanmış sunucu rolü: {role}',
   'hudChrome.finder.accept': 'Kabul Et',
   'hudChrome.finder.acceptApplicantAria': '{name} adlı başvuruyu kabul et',
   'hudChrome.finder.accepted': '{size} kişiden {accepted} tanesi onaylandı',
@@ -609,6 +593,92 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'loading.tips.talents':
     'İpucu: savaş dışında olduğun sürece yeteneklerini istediğin zaman sıfırlayabilirsin, bu yüzden erken bir seçim asla tuzak değildir.',
   'entities.items.chunk_of_ore.name': 'Maden Parçası',
+  'entities.quests.q_prof_amends_apothecary.completion':
+    'Eski lezzet geri geldi. Simya ve Aşçılık yeniden ana dalın olarak ocağında. Bu sefer kal bir süre.',
+  'entities.quests.q_prof_amends_apothecary.objectives.0.label': 'Yaban Domuzu avlandı',
+  'entities.quests.q_prof_amends_apothecary.text':
+    'Bak bak, kim geldi mutfağıma. Kırgınlık yok, {playerName}, bir mutfağın her zaman yeri vardır, ama bilirsin ki her defasında dışarı çıkıp geri dönersen hesap birikir. Git doğu çayırındaki yaban domuzlarını azalt, çünkü dürüst ter ilk malzemedir ve bu, ellerini işe alıştırır.',
+  'entities.quests.q_prof_amends_apothecary.title': 'Yeniden Ocakta',
+  'entities.quests.q_prof_amends_bombardier.completion':
+    'İşte bu, ellerindeki kaşıntı geri döndü. Mühendislik ve Simya yeniden ana dalın, hadi git bir patlama yap. Bu sefer kal, tamam mı?',
+  'entities.quests.q_prof_amends_bombardier.objectives.0.label': 'Tünel Sıçanı temizlendi',
+  'entities.quests.q_prof_amends_bombardier.text':
+    'GERİ GELDİN, ha, hep dönerler, gürültülü şeylerin çekiciliği var, değil mi? Sızlanma yok benden, {playerName}, ama defter, ah defter, her defasında büyüyor, her geri dönüşte biraz daha, bu sadece adil. Git kazmadaki tünel sıçanlarını temizle, önce ter sonra kıvılcım, az önce uydurduğum kural bu.',
+  'entities.quests.q_prof_amends_bombardier.title': 'Defter Büyüyor',
+  'entities.quests.q_prof_amends_outfitter.completion':
+    'Yeniden sabit. Deri İşleme ve Terzilik yeniden ellerinde ana dal olarak. Başıboş dolaşmadan önce bu sefer iki kez düşün.',
+  'entities.quests.q_prof_amends_outfitter.objectives.0.label': 'Ağ Ağacı Örümceği imha edildi',
+  'entities.quests.q_prof_amends_outfitter.text':
+    'Demek tezgahıma döndün sonunda. Kırgınlık beslemem, {playerName}, ama iplik bırakıp giden eli hatırlar ve onu yeniden almak her seferinde daha uzun ölçülür. Batı ormanlarını sıkan ağ ağacı örümceklerini imha et; bu emek, ellerin iyi ipliğe değmeden önce onları yerli yerine oturtur.',
+  'entities.quests.q_prof_amends_outfitter.title': 'Yeniden Bağlanan İplikler',
+  'entities.quests.q_prof_amends_smith.completion':
+    'Ritim ellerine geri döndü. Silah Yapımı ve Zırh Yapımı yeniden ana daların. Gitme alışkanlığı edinme.',
+  'entities.quests.q_prof_amends_smith.objectives.0.label': 'Orman Kurdu öldürüldü',
+  'entities.quests.q_prof_amends_smith.text':
+    'Demek fırına geri döndün. Acımadığımı söylesem yalan olur, {playerName}, ama ben adil bir ustayım ve iş de adildir. Geri dönmenin bedelini biliyorsun: emek, ve her savruldukça daha fazlası. Kuzey yolunu taciz eden kurtları bertaraf et; vuruş ritminde, bu çiftin bir zamanlar senden ne istediğini kollarına hatırlatır.',
+  'entities.quests.q_prof_amends_smith.title': 'Fırına Geri Dön',
+  'entities.quests.q_prof_attune_apothecary.completion':
+    'Şimdi gerçekten bir başlangıç. Simya ve Aşçılık istediğin kadar yüksek yükseltmen için senindir. Aç geri gel.',
+  'entities.quests.q_prof_attune_apothecary.objectives.0.label': 'Yaban Domuzu avlandı',
+  'entities.quests.q_prof_attune_apothecary.text':
+    'İyi bir yemek iki uyumlu lezzetten oluşur, tıpkı iyi bir zanaat gibi, {playerName}. Benimle otur ve Simya ile Aşçılık iki ana dalin olur, nadirden daha ileri gotürebileceğin ikili; tekerin karşısındaki zanaat ise hobine dönüşür, nadire kadar çıkar, daha fazla değil. Bıraktığın diğer meslekler bozulmaz, yalnızca rafta bekler, hazır, istediğinde geri alırsın. Bu ikiliyi bırakıp başka birine geçersen eve dönmenin bir bedeli var: ilk seferinde beş av, sonra sekiz, sonra on bir, her dönüşte biraz daha ağır. Hâlâ iştahlı mısın? O zaman dört yaban domuzu avla, çünkü değerli bir mutfak iyi etle başlar.',
+  'entities.quests.q_prof_attune_apothecary.title': 'Saklamaya Değer Bir Tarif',
+  'entities.quests.q_prof_attune_bombardier.completion':
+    'HA. Gerçek reaktifler, ve parmakların hâlâ tamam, güzel, güzel. Mühendislik ve Simya, senindir, git pişman edecek bir şey yap. Haydi git.',
+  'entities.quests.q_prof_attune_bombardier.objectives.0.label': 'Ot tarlası toplandı',
+  'entities.quests.q_prof_attune_bombardier.text':
+    'Oh, iyi olanı, gürültülü olanı istiyorsun, değil mi? Dinle, dinle, tik eden bir şeye dokunmadan önce: söyle ve Mühendislik ile Simya iki ana dalin olur, nadir ötesi ilerleyebileceğin ikili (işte orada gerçekten EĞLENCELİ oluyor, inan bana). Karşı zanaat cebine girer hobi olarak, nadire kadar, daha fazla değil, somurma. Diğer mesleklerin mi? Gitmedi, {playerName}, sadece uyuyor, istediğinde uyan. Ama (her zaman bir ama vardır, fitili beklet) bu ikiliyi terk edip dönen için emek yığılır: ilk seferinde beş, sonra sekiz, sonra on bir, her soğuk ayakta biraz daha. Evet? EVET? O zaman git bana üç ot tarlası topla, patlayıcı olanları, hangisi diye sorma, yeterince inanırsın hepsi biraz patlayıcıdır.',
+  'entities.quests.q_prof_attune_bombardier.title': 'Patlayıcı Bir Düzenleme',
+  'entities.quests.q_prof_attune_outfitter.completion':
+    'Düzgün iplik, düzgün el. Deri İşleme ve Terzilik becerina ulaşabileceğin kadar ileri taşıman için senindir. İki kez ölç, seni hayal kırıklığına uğratmaz.',
+  'entities.quests.q_prof_attune_outfitter.objectives.0.label': 'Ağ Ağacı Örümceği imha edildi',
+  'entities.quests.q_prof_attune_outfitter.text':
+    'Tezgahımda biçmeden önce maliyeti ölç, bu benim ilk kuralım. Beni seç ve Deri İşleme ile Terzilik iki ana dalin olur, nadir ötesine taşıyabileceğin ikili; karşılarındaki zanaat hobi olarak yerleşir, nadire dek, orada kalır. Bir kenara koyduğun meslekler çözülmez, {playerName}, yalnızca katlanır, dormant bekler geri alana kadar. Ama emin ol: bu ikiliyi bırakıp geri istersen yol emekle ödenir ve her seferinde uzar, ilk seferinde dört imha, sonra sekiz, sonra on bir, her dönüşte biraz daha. Kararın verdiysen dört ağ ağacı örümceği imha et ve ipliklerini tezgaha getir, çünkü iyi iplik her iyi elbiseye başlar.',
+  'entities.quests.q_prof_attune_outfitter.title': 'Teçhizatçının Ölçüsü',
+  'entities.quests.q_prof_attune_smith.completion':
+    'İyi cevher ve işleyecek iyi eller. Silah Yapımı ve Zırh Yapımı artık ustalaşman için senindir. Gerisini kazan.',
+  'entities.quests.q_prof_attune_smith.objectives.0.label': 'Maden damarı işlendi',
+  'entities.quests.q_prof_attune_smith.text':
+    "Çelik gezgin eli bağışlamaz, bu yüzden yemin etmeden açıkça söyleyeyim. Benim fırınıma bağlan ve Silah Yapımı ile Zırh Yapımı iki ana dalin olur, nadir ötesine taşıyabileceğin tek zanaat. Tekerin karşısındaki zanaat hobine dönüşür, nadire kadar çalışır, daha fazla değil. Diğer mesleklerin yanmaz, {playerName}: yalnızca sessizleşir, geri çağırana kadar dormant kalır. Ve çekiç inmeden şunu bil: bu ikiliyi bırakıp başkasına geçersen dürüst emekle geri döneceksin, ilk eve dönüşünde beş düşman, sonra sekiz, sonra on bir, her savrulduğunda daha fazla. Hâlâ burada mısın? O zaman kendi ellerinle Vadi'den işlenmiş üç damar cevher getir, ve sözü verilmiş sayalım.",
+  'entities.quests.q_prof_attune_smith.title': 'Demircinin Sözü',
+  'entities.quests.q_prof_workorder_apothecary.completion':
+    'Kabul edilir. Etkili, ve doğru şekilde işlenmiş. Ödemen, kuruşu kuruşuna sayıldı. Buna kapılma, bu farklı bir reaktif.',
+  'entities.quests.q_prof_workorder_apothecary.objectives.0.label':
+    'Altın Yaprak Otu teslim edildi',
+  'entities.quests.q_prof_workorder_apothecary.text':
+    'Raflarım altın yaprak istiyor ve piyasanın stoğu, tahmin edilebileceği üzere, katışıktır. Bana altı altın yaprak otu getir, çürümemiş; tam karşılığını alacaksın. Çürük yapraklar reddedilir, bu yüzden çantana dikkat et.',
+  'entities.quests.q_prof_workorder_apothecary.title': 'Eczacı İş Siparişi',
+  'entities.quests.q_prof_workorder_forge.completion':
+    'İyi ağırlık, cüruf yok. İşte hakkın. Fırın yakında yeniden aç olacak.',
+  'entities.quests.q_prof_workorder_forge.objectives.0.label': 'Bakır Cevheri teslim edildi',
+  'entities.quests.q_prof_workorder_forge.text':
+    'Fırın her zaman beslenmek ister, {playerName}. Bana sekiz parça bakır cevheri getir, yük için ödeyeyim. Tören yok, sadece cevher ve altın.',
+  'entities.quests.q_prof_workorder_forge.title': 'Fırın İş Siparişi',
+  'entities.quests.q_prof_workorder_kitchens.completion':
+    'İşte dolgun bir kiler. İşte paran. Çantaların yeniden ağırlaşınca geri gel.',
+  'entities.quests.q_prof_workorder_kitchens.objectives.0.label': 'Av Eti teslim edildi',
+  'entities.quests.q_prof_workorder_kitchens.text':
+    'Kilerim inceldi, {playerName}, ve ince kilerler somurtkan aşçılar yapar. Bana sekiz parça av eti getir, karşılığı altın olur, artı sonsuz şükranım, değeri az ama tadı daha güzel.',
+  'entities.quests.q_prof_workorder_kitchens.title': 'Mutfak İş Siparişi',
+  'entities.quests.q_prof_workorder_loom.completion':
+    'İnce ipek, eşit eğrilmiş. Altının, tam ölçüldü. Tezgah sana teşekkür eder, ben de.',
+  'entities.quests.q_prof_workorder_loom.objectives.0.label': 'Örümcek İpeği teslim edildi',
+  'entities.quests.q_prof_workorder_loom.text':
+    'Tezgah kuruyor ve boş eller gün ışığını boşa harcıyor, {playerName}. Bana altı örümcek ipeği yumağı getir, bakırına kadar sayılan adil bir ücret öderim.',
+  'entities.quests.q_prof_workorder_loom.title': 'Tezgah İş Siparişi',
+  'entities.quests.q_prof_workorder_tannery.completion':
+    'İyi deriler. Adil ödeme. Daha fazlasıyla yeniden gel.',
+  'entities.quests.q_prof_workorder_tannery.objectives.0.label': 'Kaba Post teslim edildi',
+  'entities.quests.q_prof_workorder_tannery.text':
+    'Fıçılar boş. Sekiz kaba post getir. Ödeyeceğim.',
+  'entities.quests.q_prof_workorder_tannery.title': 'Tabakhane İş Siparişi',
+  'entities.quests.q_prof_workorder_toolworks.completion':
+    'Mükemmel, mükemmel, düz tahıl, çürük yok. İşte paranız, bakın, sözümü tutarım (çoğunlukla). Bir ağaca takıldığınızda daha fazlasını getirin.',
+  'entities.quests.q_prof_workorder_toolworks.objectives.0.label':
+    'Demir Kabuğu Tomruğu teslim edildi',
+  'entities.quests.q_prof_workorder_toolworks.text':
+    'Sap, tutacak, kundak, moda geçiyor olsa da GEÇMEZ tarzda ahşap tüketiyorum, ahşap sonsuzdur, {playerName}. Bana sekiz demir kabuğu tomruğu taşı, seni öderim, altın, gerçek altın, bir iyilik değil, söz veriyorum, çoğunlukla.',
+  'entities.quests.q_prof_workorder_toolworks.title': 'Alet İşleri İş Siparişi',
   'entities.quests.q_prof_intro.title': 'Her Ele Bir Zanaat',
   'hudChrome.auth.appleChoiceExpired':
     'Bu Apple oturum açma işleminin süresi doldu. Lütfen Apple ile yeniden oturum aç.',
@@ -618,6 +688,15 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auth.appleLoginCta': 'Apple ile Devam Et',
   'hudChrome.dailyRewards.reason.banned': 'Günlük Ödüllerden yasaklandın. Gerekçe: {reason}',
   'hudChrome.itemHeroicTag': '[KAHRAMANCA]',
+  'hudChrome.interfaceTabs.chat': 'Sohbet',
+  'hudChrome.interfaceTabs.combat': 'Savaş',
+  'hudChrome.interfaceTabs.frames': 'Çerçeveler',
+  'hudChrome.interfaceTabs.general': 'Genel',
+  'hudChrome.itemMenu.applyEnchant': 'Büyü Uygula',
+  'hudChrome.itemMenu.disenchant': 'Büyüyü Boz',
+  'hudChrome.itemMenu.equip': 'Kuşan',
+  'hudChrome.itemMenu.salvage': 'Kurtar',
+  'hudChrome.itemMenu.use': 'Kullan',
   'hudChrome.itemSoulbound': 'Ruha Bağlı',
   'hudChrome.keybinds.categoryPet': 'Yoldaş',
   'hudChrome.keybinds.petAggressive': 'Yoldaş: Saldırgan',
@@ -627,6 +706,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.keybinds.petTaunt': 'Yoldaş: Kışkırt',
   'hudChrome.mailbox.parcelQtyDecreaseAria': 'Bir adet daha az {item} gönder',
   'hudChrome.mailbox.parcelQtyIncreaseAria': 'Bir adet daha fazla {item} gönder',
+  'hudChrome.mailbox.parcelQtyAria': 'Gönderilecek {item} miktarı',
   'hudChrome.readyCheck.notReady': 'Hazır Değil',
   'hudChrome.readyCheck.prompt': '{name} bir hazır kontrolü başlattı. Hazır mısın?',
   'hudChrome.readyCheck.ready': 'Hazır',
@@ -674,42 +754,11 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'guide.professions.archetypeChooseBody':
     'Bir arketip ilan etmek bir hikaye anı olacak: seni o kimliğe resmen kabul eden bir görev. Ama o yol henüz inşa ediliyor, bu yüzden şimdilik her karakter bu seçim önünde dururken dünyayı dolaşır ve bu arada her zanaat Ender kalite kademesine dek ilerler.',
   'guide.professions.archetypeChooseTitle': 'Arketipini seçmek',
-  'guide.professions.archetypeIdentityBody':
-    'Etkin arketipin, karakterinin bu dünyada kim olduğuna dair bir beyandır ve başkalarının ve dünyanın sana nasıl hitap ettiğine yansır. Beraberinde gelen ödüller ve tanınırlık hâlâ son haline getiriliyor; sistem tamamlandıkça yeniden göz at.',
-  'guide.professions.archetypeIdentityTitle': 'Arketipin ne anlama gelir',
-  'guide.professions.archetypeIntro':
-    'On zanaatın her biri aynı zamanda bir arketipi, yani o işi yapmanın ötesinde benimseyebileceğin daha geniş bir kimliği temsil eder. Etkin arketipin bir kontrol listesi değil, her seferinde tek bir seçimdir: bir tane taşırsın ve istersen daha sonra hangisini taşıdığını değiştirebilirsin.',
   'guide.professions.archetypeSwitchBody':
     'Bir ilan aynı zamanda ömür boyu bir hüküm de olmayacak. Plan şu: yeni bir zanaata başlamadan önce eski zanaatının gönlünü almak için tekrarlanabilir bir görevi yerine getirmek; her geçişte bu gönül alma biraz daha ağırlaşır, böylece seçim bedelsiz değil, anlamlı kalır. Tıpkı ilanın kendisi gibi, bu da hâlâ yolda.',
-  'guide.professions.archetypeSwitchTitle': 'Fikir değiştirmek',
-  'guide.professions.archetypeTitle': 'On arketip',
-  'guide.professions.craftComboBody':
-    'Tek bir zanaatın kendi tarif listesinin ötesinde, çark aynı anda iki komşu zanaata başvuran birleşim tariflerini de destekler; bu, tek başına bir zanaata değil, halkadaki komşu işlere yatırım yapmış bir karakteri ödüllendirir. Zanaatçının her iki zanaatı da kendisi bilmesi gerekir; bir ortağın becerisi iki yarıdan birinin yerini tutamaz.',
-  'guide.professions.craftComboTitle': 'Birleşim tarifleri',
-  'guide.professions.craftIntro':
-    'On zanaat kolu, toplanan malzemeleri bitmiş teçhizata ve mala dönüştürür: Zırhçılık, Silah Ustalığı ve Kuyumculuk ham maddeyi giyilebilir teçhizata şekillendirir; Simya ve Mühendislik deneme yanılmayla ilerler; Aşçılık, Kâtiplik ve Efsunculuk diğer zanaatların ürünlerine dokunur; Terzilik ve Dericilik ise kesin kalıplarla çalışır. Hep birlikte bir çark oluştururlar: her zanaat iki komşusunun yanında ve bir diğerinin karşısında yer alır.',
   'guide.professions.craftMasteryBody':
     'Başarılı her üretim o zanaattaki becerini geliştirir ve beceri bir zanaatın tariflerini asla kilit altında tutmaz: bir tarifi biliyor ve malzemelerine sahipsen onu deneyebilirsin. Becerinin sana kazandırdığı şey bunun yerine kalitedir; usta bir el daha iyi işler çıkarır. Tek istisna birleşim tarifleridir; bunlar açılmadan önce her iki zanaatta da kendini kanıtlamış olmanı ister.',
   'guide.professions.craftMasteryTitle': 'Beceri ve ustalık',
-  'guide.professions.craftRecipesBody':
-    'Her tarif, topladığın ya da satın aldığın belirli malzemeleri ister. En basit tarifler sıradan malzemeden başkasını istemez ve en baştan üretilebilir; böylece bir zanaatı edindiğin an işlemeye başlayabilirsin. Tarif listeleri hala doluyor: birkaç zanaat henüz ilk tariflerini bekliyor ve zanaatlar geliştikçe daha fazlası ekleniyor.',
-  'guide.professions.craftRecipesTitle': 'Tarifler ve malzemeler',
-  'guide.professions.craftRingBody':
-    'On zanaat sabit bir halkaya dizilmiştir ve bir zanaatın o halkadaki yeri önemlidir: çark üzerinde yan yana duran zanaatlar, karşı taraftakilere kıyasla birbirleriyle daha çok ortaklık taşır. Bir zanaata bağlanmak, yalıtılmış bir beceri seçmek gibi değil, akraba işlerden oluşan bir aileye katılmak gibi hissettirmelidir.',
-  'guide.professions.craftRingTitle': 'Uzmanlıklar çarkı',
-  'guide.professions.craftTitle': 'On zanaat',
-  'guide.professions.gatherIntro':
-    "Üç toplayıcılık kolu ham maddeyi doğrudan dünyadan çekip almanı sağlar: Madencilik damarlardan cevher ve taş çıkarır, Ağaç Kesme ağaç kümelerinden kereste devirir, Bitkicilik ise yabani büyüyen ot ve bitkileri toplar. Her biri ayrı ayrı izlenir; birinde çalışmak diğerindeki ilerlemeni asla yavaşlatmaz. Hepsine yeni misin? Doğudere'deki Ustabaşı Odell, ilk hasadında sana yol gösteren kısa bir iş tutar: Her Ele Bir Zanaat.",
-  'guide.professions.gatherProficiencyBody':
-    'Başarılı her hasat o toplayıcılık kolundaki yetkinliğini artırır ve karakter sayfan her kolu ayrı ayrı izler. Daha çok pratik ilerlemene asla zarar vermez, yalnızca ona ekler.',
-  'guide.professions.gatherProficiencyTitle': 'Yetkinlik',
-  'guide.professions.gatherTitle': 'Toplayıcılık: Madencilik, Ağaç kesme ve Bitkicilik',
-  'guide.professions.gatherToolsBody':
-    'Satıcılar her toplayıcılık kolu için temel aletler satar ve daha iyileri üretilebilir. Bugün bir kaynak noktasında çalışmak için hiçbir alet gerekmez: aletler, gelecek daha zengin kaynaklar için bir zemin hazırlar; orada daha yüksek kademe kazmalar, baltalar ve oraklar giriş yolu olacak.',
-  'guide.professions.gatherToolsTitle': 'Zanaatın aletleri',
-  'guide.professions.gatherWhatBody':
-    "Cevher damarları, ağaç kümeleri ve ot öbekleri Vadi'ye ve bataklığa görünür, sahipsiz nesneler olarak yerleştirilmiştir. Birine yaklaş ve içindekini toplamak için onunla etkileşime geç. Bir kaynağı topladıktan sonra, senin onu yeniden toplayabilmen için toparlanmaya ihtiyaç duyar; ama bu başkasını asla engellemez: bu arada başka bir oyuncu aynı kaynağı toplayabilir.",
-  'guide.professions.gatherWhatTitle': 'Kaynak noktaları',
   'guide.professions.intro':
     'Dünya seni savaşın ve görevlerin ötesinde, toprağı ve ocağı işlediğin için de ödüllendirir: ham madde toplamak, on ayrı zanaat kolunda onları teçhizata ve mallara dönüştürmek ve bu zanaatların temsil ettiği on arketipten birinin kimliğine yerleşmek.',
   'guide.valeCupPage.heading': 'Vadi Kupası',
@@ -762,6 +811,9 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     'Odak puanları her bileşenin temel getirisinin üzerine bir bonus ekler. Odaklanılmayan bileşenler temel düzeyde kalır.',
   'hudChrome.townFocus.increaseAria': '{component} odağını artır',
   'hudChrome.townFocus.notInTownHint': 'Odağını ayarlamak için kasabada olmalısın.',
+  'hudChrome.townFocus.tierHint':
+    'Bir bileşene her {points} puan, hasat kademesini bir adım yükseltir, {steps} adıma kadar; {points} altı puanlar hâlâ verimi artırır.',
+  'hudChrome.townFocus.townOnlyHint': 'Odak yalnızca kasabadayken değiştirilebilir.',
   'hudChrome.townFocus.saveButton': 'Odağı Kaydet',
   'hudChrome.townFocus.title': 'Kasaba Odağı',
   'hudChrome.vcup.awayNote':
@@ -1612,6 +1664,8 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.corpseHarvest.concentrateHint':
     'Ne kadar az parça seçersen, her biri o kadar yüksek kademede olur.',
   'hudChrome.corpseHarvest.harvestButton': 'Topla',
+  'hudChrome.corpseHarvest.harvestTooltip':
+    'İşaretlenmiş bileşenleri toplar. Her leş yalnızca bir kez toplanabilir, ilk gelen alır. Yağmayı almaz.',
   'hudChrome.corpseHarvest.title': 'Toplama',
   'hudChrome.dailyRewards.disclaimer':
     'WOC fiyatı hızla değişebilir. Olağan fiyat dalgalanmalarının seni dışarıda bırakmaması için 20 USD asgarisinden fazlasını tutmanı öneririz. Bu bir yatırım tavsiyesi değildir.',
@@ -1785,6 +1839,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     'Ganimet Ayarları: Yönetilen Ganimet, Ganimet Yöneticisi {name}, eşik {threshold}.',
   'hudChrome.masterLoot.thresholdSet': 'Ganimet eşiği {threshold} olarak ayarlandı.',
   'hudChrome.options.showDevBadges': 'Geliştirici Rozetlerini Göster',
+  'hudChrome.options.showPlayerNameplates': 'Oyuncu İsim Etiketlerini Göster',
   'hudChrome.options.groundReticle': 'Yer hedefleme halkası',
   'hudChrome.options.startAttackOnAbility': 'Yetenek Kullanımında Otomatik Saldırı',
   'hudChrome.playerMenu.info': 'Oyuncu bilgisi',
@@ -1798,12 +1853,16 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.playerMenu.watchX': "X'te görüntüle",
   'hudChrome.playerMenu.watchKick': "Kick'te izle",
   'hudChrome.playerMenu.watchYouTube': "YouTube'da izle",
+  'hudChrome.social.hideOffline': 'Çevrimdışıları gizle',
+  'hudChrome.social.hideOfflineTitle': 'Çevrimdışı lonca üyelerini gizle',
   'hudChrome.social.ignoredTab': 'Yok sayılanlar',
   'hudChrome.social.ignoredEmpty': 'Kimseyi yok saymıyorsun.',
   'hudChrome.social.blockedEmpty': 'Kimseyi engellemedin.',
   'hudChrome.social.blockSearchPlaceholder': 'Oyuncu adı',
   'hudChrome.social.blockAction': 'Engelle',
   'hudChrome.social.nowBlocking': '{name} engellendi.',
+  'hudChrome.social.offlineHeader': 'Çevrimdışı ({n})',
+  'hudChrome.social.onlineHeader': 'Çevrimiçi ({n})',
   'hudChrome.social.blockedTab': 'Engellenenler',
   'hudChrome.social.stopBlockingTitle': '{name} engelini kaldır',
   'hudChrome.party.promoteLeader': 'Lider Yap',
@@ -1844,6 +1903,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'abilityUi.actionBar.slotAria': 'Eylem yuvası {slot}: {ability}',
   'abilityUi.cast.demonHeal': 'Şeytan İyileştirmesi',
   'abilityUi.cast.fishing': 'Balık Tutma',
+  'abilityUi.cast.gathering': 'Toplama',
   'abilityUi.cast.thunzharrStormcall': 'Fırtına Çağrısı',
   'abilityUi.forms.bear': 'Ayı',
   'abilityUi.forms.cat': 'Kurt',
@@ -2808,6 +2868,8 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'entities.items.ghostly_essence.name': 'Hayalet Özü',
   'entities.items.glacier_melt.name': 'Buzul Suyu',
   'entities.items.glimmerfin_koi.name': 'Pırıltıyüzgeç Koi',
+  'entities.items.ironreel_fishing_rod.name': 'Demir makaralı olta',
+  'entities.items.silverstream_fishing_rod.name': 'Gümüş dere oltası',
   'entities.items.glowing_wax.name': 'Parlayan Balmumu',
   'entities.items.gnarled_staff.name': 'Bataklık Meşesi Asası',
   'entities.items.gorraks_cleaver.name': "Gorrak'ın Satırı",
@@ -5211,6 +5273,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hud.errors.tooClose': 'Çok yakın!',
   'hud.errors.tradeExpired': 'Takas isteğinin süresi doldu.',
   'hud.errors.tradeFailed': 'Takas başarısız: eşyalar ya da para artık mevcut değil.',
+  'hud.errors.tradeBound': 'O eşya bağlı ve takas edilemez.',
   'hud.errors.tradeInProgress': 'Zaten devam eden bir takas var.',
   'hud.errors.tradeTooFar': 'Hedef takas için çok uzakta.',
   'hud.errors.travel': 'Fleet',
@@ -5484,6 +5547,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hud.social.removeFriendTitle': '{name} oyuncusunu arkadaşlardan çıkar',
   'hud.social.removeGuildTitle': '{name} oyuncusunu loncadan çıkar',
   'hud.social.selfNotice': 'O sensin!',
+  'hud.social.status.afk': 'Uzakta',
   'hud.social.status.combat': 'Çatışmada',
   'hud.social.status.dead': 'Ölü',
   'hud.social.status.dungeon': 'Zindanda',
@@ -5733,6 +5797,10 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     'Yüksek kontrastlı arka planı aç/kapat: hareketli tanıtımı devre dışı bırakır, böylece başlangıç ekranı metni okunaklı kalır',
   'hudChrome.leaderboard.close': 'Kapat',
   'hudChrome.loot.chestTitle': 'Sandık',
+  'hudChrome.loot.takeLootButton': 'Yağmayı Al',
+  'hudChrome.loot.takeLootTooltip': 'Altınları ve düşen eşyaları alır. Toplama hakkını kullanmaz.',
+  'hudChrome.loot.unifiedPressHint':
+    'Etkileşim tuşu, kasaba odağınızı kullanarak tek tuşla yağmalar ve toplar.',
   'hudChrome.meters.minutesSeconds': '{m}dk {s}sn',
   'hudChrome.meters.perSecond': '{value}/sn',
   'hudChrome.meters.perSecondRow': '{total} ({rate})',
@@ -6130,7 +6198,6 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'itemUi.tooltip.clickUse': 'Kullanmak için tıkla',
   'itemUi.tooltip.clickUseInstant': 'Savaşta anında kullanmak için tıkla',
   'itemUi.tooltip.currentlyEquipped': 'Şu anda kuşanılmış',
-  'itemUi.tooltip.dagger': 'Hançer',
   'itemUi.tooltip.damageSpeed': '{min} - {max} Hasar Hız {speed}',
   'itemUi.tooltip.dps': '(saniyede {dps} hasar)',
   'itemUi.tooltip.ifYouEquip': 'Bunu kuşanırsan',
@@ -6524,6 +6591,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'stats.accountsCreated': 'Oyuncular',
   'stats.playersOnline': 'Çevrimiçi Oyuncular',
   'stats.realmName': 'Dünya Adı',
+  'stats.charactersCreated': 'Oluşturulan Karakterler',
   'stats.title': 'Dünya Durumu',
   'wallet.appConnected': 'Uygulama Bağlandı',
   'wallet.balanceAmount': '{amount} $WOC',
@@ -7160,9 +7228,6 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.mobile.targetCycleShort': 'Hedef',
   'hudChrome.options.mobileCameraJoystick': "Kamera joystick'i",
   'hudChrome.options.mobileLeftHanded': 'Solak düzen',
-  'entities.quests.q_archetype_acceptance.title': 'Kendinize Ait Bir Zanaat',
-  'entities.quests.q_prof_make_amends.title': 'Değişiklikler Yapmak',
-  'entities.quests.q_prof_make_amends.objectives.0.label': 'Orman kurdu öldürüldü',
   'entities.npcs.bursar_aldous_crane.greeting':
     "Her sandık, her çekmece, her biblo Yaldızlı Kasa'da güvendedir.",
   'entities.npcs.bursar_aldous_crane.name': 'Veznedar Aldous Crane',
@@ -7670,11 +7735,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.claudium.unavailable':
     'Claudium mağazası şu anda kullanılamıyor. Bakiyeniz ve satın alımlarınız etkilenmez; lütfen kısa süre sonra tekrar kontrol edin.',
   'hudChrome.claudium.wocBalance': 'WOC: {amount}',
-  'hudChrome.corpseHarvest.harvestButtonTooltip':
-    'Hasat: Bu cesetten işçilik malzemelerini (deri, diş, ipek ve benzeri bileşenler) herhangi bir ganimetten ayrı olarak toplayın. Herkes hasat yapabilir; belirli bir cesedi yalnızca bir oyuncu toplayabilir.',
   'hudChrome.deeds.openBookHint': "Yiğitlikler Kitabı'nı açın",
-  'hudChrome.loot.takeAllTooltip':
-    "Tümü'yi alın: bu ganimet penceresindeki tüm paraları ve eşyaları toplayın.",
   'hudChrome.statInfo.desc.warfare':
     'Oyunculara verilen hasarı {increase}% artırır ve oyunculardan alınan hasarı {reduction}% azaltır.',
   'hudChrome.statInfo.names.warfare': 'Harp',
@@ -7904,6 +7965,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.wocStore.wtype.staff': 'Asa',
   'hudChrome.wocStore.wtype.sword': 'Kılıç',
   'hudChrome.wocStore.wtype.wand': 'Değnek',
+  'hudChrome.wocStore.wtype.polearm': 'Uzun saplı silah',
   'guide.abilityHook.revenge':
     'Önündeki düşmanları biçer ve bir kaçınma veya savuşturmadan sonra ücretsiz olabilir.',
   'guide.abilityHook.hamstring': 'Bir düşmanın hareketini sakatlayarak kaçmasını engeller.',
@@ -8161,21 +8223,8 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.partyFrames.styleRaid': 'Akın Çerçeveleri',
   'hudChrome.partyFrames.unlock': 'Grup ve akın çerçevelerini taşı',
   'hudChrome.partyFrames.width': 'Çerçeve Genişliği',
-  'apiError.welcome.invalid_input': 'Geçersiz girdi.',
-  'welcome.back': 'Tekrar hoş geldin, {name}',
-  'welcome.level': 'Seviye {level}',
-  'welcome.lastPlayed': 'Son oynama tarihi: {when}',
-  'welcome.continue': 'Dünyaya Gir',
-  'welcome.continueHint': "Devam etmek için Enter'a, atlamak için Esc'ye bas",
-  'welcome.continueHintTouch': 'Devam etmek için dokun',
-  'welcome.discord.title': "Topluluk Discord'da yaşıyor",
-  'welcome.discord.sub':
-    'Yama ön izlemeleri, etkinlikler, geliştirici sohbeti ve Discord hesabını bağlayınca 2 bonus banka yuvası.',
-  'welcome.discord.join': 'Discord topluluğumuza katıl',
-  'welcome.chest.ready': 'Günlük sandık hazır',
-  'welcome.armory.cta': 'Dünyaya gir ve Cephaneliğe göz at',
-  'welcome.news.new': 'Yeni',
-  'welcome.news.viewAll': "GitHub'daki tüm güncellemeleri görüntüle",
+  'news.new': 'Yeni',
+  'news.viewAll': "GitHub'daki tüm güncellemeleri görüntüle",
   'entities.letters.heroic_marks_reward.sender': 'Kahraman levazım subayı',
   'entities.letters.heroic_marks_reward.subject': 'Kahramanlık Nişanların',
   'entities.letters.heroic_marks_reward.body':
@@ -8185,8 +8234,6 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     'Grubun sahiplenilmiş koşuları tutarken zorluğu değiştirirsen eski haklar kendiliğinden silinmeden önce bir süre kalır. Grup lideri kendi portre menüsünden Tüm Örnekleri Sıfırla seçeneğini seçerek veya /dungeon reset yazarak bunları hemen bırakabilir. Zorluk gerçekten değiştirilmiş olmalı, içeride canlı ya da düşmüş hiç kimse kalmamalı ve sıfırlamalar arasında kısa bir bekleme süresi vardır. Kapıya yanlış zorlukta gelirsen oyun başlamadan önce uyarır. Baskın bu şekilde asla sıfırlanmaz; kendi kilit kuralları geçerlidir.',
   'guide.gear.itemLevelBody':
     'İki parçayı hızlıca karşılaştırmak için seçeneklerden Eşya Seviyesini Göster’i aç. Düşmanlardan, görevlerden ve üretim mesleklerinden gelen, kaynağı bilinen teçhizat bir eşya seviyesi gösterir: kaynağına göre gücünü yaklaşık belirten tek bir sayı, farklı yuvalar arasında bile hangi yükseltmenin daha etkili olduğunu gösterir. Basit satıcı eşyaları ve başlangıç teçhizatı gibi böyle bir kaynağı olmayan parçalarda seviye görünmez; sayının olmaması normaldir.',
-  'guide.professions.craftHowBody':
-    'Bildiğin tüm tarifleri, gerekenleri ve elindeki malzemeleri görmek için Üretim penceresini (varsayılan T tuşu) aç; malzemeler hazırsa tek tıklama yeter. Yaygın tarifler dünyanın her yerinde üretilebilir. Yüksek seviye aletler ve nadir büyücü zırhları gibi bazı gelişmiş tarifler ise Highwatch üretim merkezinde bulunmanı ister.',
   'guide.professions.craftHowTitle': 'Üretim penceresi',
   'hudChrome.auraEffect.battleStance': 'Savaş Duruşu: %10 daha fazla öfke üretimi',
   'hudChrome.auraEffect.berserkerStance':
@@ -8211,4 +8258,534 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.mouseoverCast': 'Grup Çerçevelerinde İmleçle Büyü Yapma',
   'hudChrome.options.showTargetOfTarget': 'Hedefin Hedefini Göster',
   'hudChrome.unitFrame.targetOfTargetLabel': 'Hedefin Hedefi',
+  'itemUi.market.rarityLegendary': 'Efsanevi',
+  'loading.reconnectingAttempt':
+    'Bağlantı kesildi. Yeniden bağlanılıyor... (deneme {attempt}/{maxAttempts}, {seconds} sn. içinde yeniden denenecek)',
+  'loading.reconnectingNow':
+    "Bağlantı kesildi. Şimdi yeniden bağlanılıyor... ({attempt}/{maxAttempts}'yi deneyin)",
+  'loading.slowConnection': 'Bu normalden daha uzun sürüyor. İnternet bağlantınızı kontrol edin.',
+  'delveUi.shop.buyConfirmAccept': 'Satın almak',
+  'delveUi.shop.buyConfirmBody':
+    '{item}, {marks} Mağara Nişanı karşılığında satın alınsın mı? Nişan satın alımları iade edilemez.',
+  'delveUi.shop.buyConfirmCancel': 'İptal etmek',
+  'delveUi.shop.buyConfirmTitle': 'Satın Alma İşlemini Onayla',
+  'entities.abilities.brain_freeze.description':
+    "Ayaz Mızrağı'nin bir sonraki Winterlash'nizi anında ve bekleme süresinden kurtulması için %20 şansı vardır. (Don)",
+  'entities.abilities.flurry.description':
+    "Her biri {damage} Frost hasarı veren üç buz mermisi fırlatın ve hedefe Winter's Chill'i uygulayın: sonraki 2 uyumlu büyü hedefi donmuş sayar. Brain Freeze, Winterlash'yi anında yapar ve bekleme süresini atlar. (Don)",
+  'entities.abilities.frozen_orb.description':
+    '8 saniye boyunca ileri doğru sürüklenen, dönen bir buz küresi salarak yakındaki düşmanlara her saniye {damage} Frost hasarı verir ve onları %30 yavaşlatır. Her çarpan darbe bir Buz Saçağı üretir. (Don)',
+  'entities.abilities.shatter.description':
+    'Büyüleriniz donmuş hedeflere karşı %50 kritik vuruş şansı kazanır. Fingers of Frost ve Kış Soğuğu donmuş sayılır. (Don)',
+  'entities.items.anglers_feast_platter.name': 'Balıkçının Ziyafet Tabağı',
+  'entities.items.arcanite_war_axe.name': 'Arcanite Savaş Baltası',
+  'entities.items.ashwood_smoked_eel.name': 'Ashwood Füme Yılan Balığı',
+  'entities.items.cooking_salt.name': 'Pişirme Tuzu',
+  'entities.items.copper_bearded_axe.name': 'Bakır Sakallı Balta',
+  'entities.items.copper_flanged_mace.name': 'Bakır Flanşlı Topuz',
+  'entities.items.copper_ore.name': 'Bakır Cevheri',
+  'entities.items.coppermail_gauntlets.name': 'Bakır Zırh Eldivenleri',
+  'entities.items.coppermail_sabatons.name': 'Bakır Zırh Sabatonları',
+  'entities.items.elderwood_battle_staff.name': 'Elderwood Savaş Asası',
+  'entities.items.elixir_of_the_boar.name': 'Domuz İksiri',
+  'entities.items.elixir_of_the_serpent.name': 'Yılan İksiri',
+  'entities.items.fenbridge_hide_belt.name': 'Fenbridge Deri Kemeri',
+  'entities.items.fenbridge_hide_boots.name': 'Fenbridge Deri Çizmeleri',
+  'entities.items.fenbridge_hide_leggings.name': 'Fenbridge Deri Tozlukları',
+  'entities.items.frostgill_chowder.name': 'Donma Çorbası',
+  'entities.items.game_meat.name': 'Av Eti',
+  'entities.items.glass_vial.name': 'Cam Flakon',
+  'entities.items.goldleaf_game_stew.name': 'Goldleaf Oyun Yahnisi',
+  'entities.items.goldleaf_healing_draught.name': 'Altınyaprak Şifa İksiri',
+  'entities.items.goldleaf_mana_draught.name': 'Altınyaprak Mana İksiri',
+  'entities.items.goldweave_leggings.name': 'Goldweave Tayt',
+  'entities.items.goldweave_robe.name': 'Altın Dokuma Elbise',
+  'entities.items.herbed_marsh_pike.name': 'Otlu Bataklık Pike',
+  'entities.items.homespun_cloth.name': 'Ev Dokumasız Kumaş',
+  'entities.items.homespun_hood.name': 'Ev Yapımı Başlık',
+  'entities.items.homespun_mitts.name': 'Evde dokunmuş eldivenler',
+  'entities.items.hunters_game_skewer.name': "Avcı'nin Oyun Şişi",
+  'entities.items.iron_ore.name': 'Demir cevheri',
+  'entities.items.ironbark_boar_spear.name': 'Demir Kabuğu Domuzu Mızrağı',
+  'entities.items.ironbark_log.name': 'Demirkabuk Kütüğü',
+  'entities.items.ironedge_longsword.name': 'Demir Kenarlı Uzun Kılıç',
+  'entities.items.ironlink_hauberk.name': 'Demir Bağlantı Hauberk',
+  'entities.items.ironlink_legguards.name': 'Ironlink Bacak Korumaları',
+  'entities.items.ironlink_spaulders.name': 'Demir Bağlantı Spaulders',
+  'entities.items.ironshod_maul.name': 'Demir Kaplı Savaş Çekici',
+  'entities.items.marlows_grand_roast.name': "Marlow'un Büyük Kızartması",
+  'entities.items.marshstalker_hood.name': 'Bataklık Avcısı Başlığı',
+  'entities.items.marshstalker_jerkin.name': 'Bataklık Avcısı Yeleği',
+  'entities.items.marshstalker_spaulders.name': 'Bataklık Avcısı Omuzlukları',
+  'entities.items.mirewarden_jerkin.name': 'Bataklık Muhafızı Yeleği',
+  'entities.items.mirewarden_leggings.name': 'Mirewarden Tayt',
+  'entities.items.mirewarden_treads.name': 'Mirewarden Adımları',
+  'entities.items.pan_seared_perch.name': 'Tavada Pişmiş Nehir Levreği',
+  'entities.items.prime_cut.name': 'Başbakan Kesim',
+  'entities.items.pristine_hide.name': 'Bozulmamış Post',
+  'entities.items.pristine_silk.name': 'Bozulmamış İpek',
+  'entities.items.pristine_venom_gland.name': 'Bozulmamış Zehir Bezi',
+  'entities.items.riveted_copper_girdle.name': 'Perçinli Bakır Kuşak',
+  'entities.items.rough_hide.name': 'Kaba Post',
+  'entities.items.silkbinders_raiment.name': "Silkbinder'ın Elbisesi",
+  'entities.items.silkspun_satchel.name': 'İpek ipli çanta',
+  'entities.items.silvered_carp_supper.name': 'Gümüş Sazan Yemeği',
+  'entities.items.silverleaf_healing_draught.name': 'Gümüşyaprak Şifa İksiri',
+  'entities.items.silverleaf_herb.name': 'Gümüşyaprak Otu',
+  'entities.items.silverleaf_mana_draught.name': 'Gümüşyaprak Mana İksiri',
+  'entities.items.silverthread_slippers.name': 'Gümüş İplik Terlik',
+  'entities.items.smithing_flux.name': 'Demircilik Akısı',
+  'entities.items.spider_silk.name': 'Örümcek İpeği',
+  'entities.items.spool_of_thread.name': 'İplik Makarası',
+  'entities.items.sunpetal_healing_draught.name': 'Güneşyaprağı Şifa İksiri',
+  'entities.items.sunpetal_mana_draught.name': 'Güneşyaprağı Mana İksiri',
+  'entities.items.sunweave_mantle.name': 'Güneş Dokuma Manto',
+  'entities.items.sunweave_treads.name': 'Güneş Dokuma Basamakları',
+  'entities.items.tanning_agent.name': 'Tabaklama Maddesi',
+  'entities.items.thorium_warblade.name': 'Toryum Savaş Kılıcı',
+  'entities.items.thoriumscale_cuirass.name': 'Toryum ölçekli Zırh',
+  'entities.items.thoriumscale_greathelm.name': 'Toryumpulu Büyük Miğfer',
+  'entities.items.thoriumscale_leggings.name': 'Toryum Ölçekli Tayt',
+  'entities.items.venom_gland.name': 'Zehir Bezi',
+  'entities.items.venomfire_elixir.name': 'Zehirateşi İksiri',
+  'entities.items.acolyte_chain_grips.name': 'Acemi Zincir Eldivenleri',
+  'entities.items.briarroot_staff.name': 'Dikenkök Asası',
+  'entities.items.cragprowl_belt.name': 'Kayalıksızı Kemeri',
+  'entities.items.cragthorn_greatstaff.name': 'Kayadikenin Büyük Asası',
+  'entities.items.cragward_pauldrons.name': 'Kayamuhafız Omuzlukları',
+  'entities.items.cryptbloom_shoulderguards.name': 'Mezarçiçeği Omuz Korumaları',
+  'entities.items.dreamroot_boots.name': 'Rüyakök Çizmeleri',
+  'entities.items.duskthorn_mantle.name': 'Alacadiken Pelerini',
+  'entities.items.fenbark_leggings.name': 'Bataklık Kabuğu Tozlukları',
+  'entities.items.fenshadow_maul.name': 'Bataklık Gölgesi Balyozu',
+  'entities.items.fenwarden_sabatons.name': 'Bataklık Bekçisi Sabatonu',
+  'entities.items.gravewyrm_thornmaul.name': 'Mezarejderi Diken Balyozu',
+  'entities.items.grovewardens_grips.name': 'Koruluk Bekçisinin Eldivenleri',
+  'entities.items.lunarward_cinch.name': 'Ay Korumalı Kemer',
+  'entities.items.marshlight_hauberk.name': 'Bataklık Işığı Zırh Gömleği',
+  'entities.items.maul_of_the_scourged_wilds.name': 'Mahvedilmiş Vahşetin Balyozu',
+  'entities.items.mirebloom_treads.name': 'Çamur Çiçeği Basamakları',
+  'entities.items.moonbark_vestments.name': 'Ay Kabuğu Kıyafetleri',
+  'entities.items.mosshide_vest.name': 'Yosun Derisi Yeleği',
+  'entities.items.nightfangs_greatstaff.name': "Geceişi'nin Büyük Asası",
+  'entities.items.peaksong_helm.name': 'Zirve Şarkısı Miğferi',
+  'entities.items.pearlward_aegis.name': 'İnci Korumalı Kalkan',
+  'entities.items.resonant_hide.name': 'Tınıtlı Post',
+  'entities.items.resonant_links.name': 'Tınıtlı Halkalar',
+  'entities.items.resonant_steel.name': 'Tınıtlı Çelik',
+  'entities.items.resonant_thread.name': 'Tınıtlı İplik',
+  'entities.items.resonant_timber.name': 'Tınıtlı Kereste',
+  'entities.items.revenantstep_treads.name': 'Hortlak Adımı Basamakları',
+  'entities.items.shardfang_grips.name': 'Kırık Diş Eldivenleri',
+  'entities.items.shardsong_mantle.name': 'Kırık Şarkı Pelerini',
+  'entities.items.stormbark_mantle.name': 'Fırtına Kabuğu Pelerini',
+  'entities.items.stormchant_gauntlets.name': 'Fırtına Ezgisi Eldivenler',
+  'entities.items.stormroot_cowl.name': 'Fırtınakök Başlığı',
+  'entities.items.stormvotive_hauberk.name': 'Fırtına Adağı Zırh Gömleği',
+  'entities.items.thornling_grips.name': 'Dikenbocuğu Eldivenleri',
+  'entities.items.thornpeak_wildwraps.name': 'Dikentepe Vahşi Sarmaları',
+  'entities.items.thunderward_legguards.name': 'Gök Korumalı Bacak Muhafızları',
+  'entities.items.tidehymn_slippers.name': 'Gelgit İlahisi Terlikleri',
+  'entities.items.valefire_lantern.name': 'Vadi Ateşi Feneri',
+  'entities.items.verdant_walkers.name': 'Yemyeşil Yürüyücüler',
+  'entities.items.vestments_of_the_waking_grove.name': 'Uyanık Koruluk Kıyafetleri',
+  'entities.items.votive_chain_belt.name': 'Adak Zincir Kemeri',
+  'entities.items.whetted_iron_dirk.name': 'Bilenmiş Demir Hançer',
+  'entities.items.wildgrove_cinch.name': 'Vahşi Koruluk Kemeri',
+  'entities.items.wildgrowth_leggings.name': 'Vahşi Büyüme Tozlukları',
+  'entities.items.wildsoul_maul.name': 'Vahşi Ruh Balyozu',
+  'entities.items.wyrmcult_spellgrips.name': 'Ejdertarikatı Büyü Eldivenleri',
+  'entities.letters.mastery_reset_notice.body':
+    'Lonca üyesi,\n\nLonca, ustalığın yeni bir hesaplamasını benimsedi. Her el tırmanışa yeniden başlar: zanaat becerileriniz ve toplayıcılık yetkinlikleriniz sıfırlandı.\n\nDiğer her şey dokunulmadan sizindir: tarifleriniz, aletleriniz ve malzemeleriniz, bankınız ve altınınız, uyumlarınız ve unvanlarınız, belgeleriniz ve şöhretiniz, görevleriniz ve postanız.\n\nTırmanış artık dürüst. Ucuz iş sizi götürmez. Daha zor tarifler, daha zengin damarlar ve daha derin sular arayın.\n\nSaygılarımızla,\nLonca Salonu',
+  'entities.letters.mastery_reset_notice.sender': 'Lonca Salonu',
+  'entities.letters.mastery_reset_notice.subject': 'Zanaatın, artık dürüst',
+  'entities.letters.prof_tier_alchemy_cooking_1.body':
+    'Mutfağıma sizin bir ana dalınızın sıradan ötesine geçtiği haberi ulaştı. Bu bir başlangıç tadı, başka bir şey değil, ama umut verici. Kazanı hareket ettirmeye devam edin.',
+  'entities.letters.prof_tier_alchemy_cooking_1.sender': 'Aşçı Marlow',
+  'entities.letters.prof_tier_alchemy_cooking_1.subject': 'Gelecekten bir tat',
+  'entities.letters.prof_tier_alchemy_cooking_2.body':
+    'Bir ana dalınızın nadir işe kadar yükseldiğini söylüyorlar. Çoğu aşçının yemeği yaktığı ısı orası, siz yakmadınız. Oturun, ama uzun süre değil.',
+  'entities.letters.prof_tier_alchemy_cooking_2.sender': 'Aşçı Marlow',
+  'entities.letters.prof_tier_alchemy_cooking_2.subject': 'Nadir iş, yanmış kenarsız',
+  'entities.letters.prof_tier_alchemy_cooking_3.body':
+    'Ana dallarınızdan biri nadirden gerçek derinliğe kaynamış. Şimdi, dedikleri gibi, gerçekten pişiriyorsunuz. Cesurca baharatlayın ve tatmaya devam edin.',
+  'entities.letters.prof_tier_alchemy_cooking_3.sender': 'Aşçı Marlow',
+  'entities.letters.prof_tier_alchemy_cooking_3.subject': 'Şimdi gerçekten pişiriyorsunuz',
+  'entities.letters.prof_tier_alchemy_cooking_4.body':
+    'Ana dallarınızdan biri ustalıktan tek bir kademe eksik. Sonuncusu her zaman en zengin ve en kolay abartılanıdır. Kepçede sakin eller.',
+  'entities.letters.prof_tier_alchemy_cooking_4.sender': 'Aşçı Marlow',
+  'entities.letters.prof_tier_alchemy_cooking_4.subject': 'Ziyafetten bir kademe',
+  'entities.letters.prof_tier_alchemy_cooking_5.body':
+    'Ana dallarınızdan biri ustalığa ulaştı, tüm kilerın en üst rafı. Herkesi beslerim ama buraya kadar kaynayan pek azı olur. Gerçekten gurur duyuyorum. Şimdi gidin onları sofralarında ağlatacak bir şey pişirin.',
+  'entities.letters.prof_tier_alchemy_cooking_5.sender': 'Aşçı Marlow',
+  'entities.letters.prof_tier_alchemy_cooking_5.subject': 'Ustalık, sıcak servis',
+  'entities.letters.prof_tier_engineering_alchemy_1.body':
+    'Sayılar, ana dallarınızdan birinin sıradan ötesine geçtiğini söylüyor. Küçük patates, minicik ama PATLADı, evet? İlk kıvılcım her zaman en şirindir. Daha fazla kıvılcım. Gidin.',
+  'entities.letters.prof_tier_engineering_alchemy_1.sender': 'Tamirci Gizzel',
+  'entities.letters.prof_tier_engineering_alchemy_1.subject': 'İLK kıvılcım, ha',
+  'entities.letters.prof_tier_engineering_alchemy_2.body':
+    'Bir ana dalınızın nadir işe tırmandığını söylüyorlar ve nadir, gerçekten tehlikeli olmaya başladığı yerdir (iyi tür). Çoğu el eğlence başlamadan bırakır. Siz değil. HA.',
+  'entities.letters.prof_tier_engineering_alchemy_2.sender': 'Tamirci Gizzel',
+  'entities.letters.prof_tier_engineering_alchemy_2.subject': 'Nadir, oh, NADİR',
+  'entities.letters.prof_tier_engineering_alchemy_3.body':
+    'Ana dallarınızdan biri nadirden ciddi işe patladı, ah bu YÜKSEK SESLE olmaya başladığı yer. Şimdi durma, her ne olursa olsun, momentum her şeydir, sigorta da.',
+  'entities.letters.prof_tier_engineering_alchemy_3.sender': 'Tamirci Gizzel',
+  'entities.letters.prof_tier_engineering_alchemy_3.subject': 'Şimdi yüksek sesli oluyor',
+  'entities.letters.prof_tier_engineering_alchemy_4.body':
+    'Ana dallarınızdan biri ustalığın TEK basamak altında, bir, tekil, vızıltısını hissediyor musunuz? Son adım en büyük patlamadır. Gözlerinizi kırpmayın.',
+  'entities.letters.prof_tier_engineering_alchemy_4.sender': 'Tamirci Gizzel',
+  'entities.letters.prof_tier_engineering_alchemy_4.subject': 'Tepeden bir basamak, BİR',
+  'entities.letters.prof_tier_engineering_alchemy_5.body':
+    'Ana dallarınızdan biri ustalığa ulaştı, en TEPE, kaboom, tüm merdiven, bitti. Övgü dağıtmam, fitil dağıtırım, ama işte alın ikisini de: dahisiniz ve hafifçe dehşet vericisiniz. Gidin dağları gerginleştirin.',
+  'entities.letters.prof_tier_engineering_alchemy_5.sender': 'Tamirci Gizzel',
+  'entities.letters.prof_tier_engineering_alchemy_5.subject': 'USTALIK, kaboom',
+  'entities.letters.prof_tier_leatherworking_tailoring_1.body':
+    'Lonca, ana dallarınızdan birinin sıradan ötesine geçtiğini not ediyor. Çok sayıda satırın yalnızca ilkidir, ama düz ve doğru. Bir sonrakini de bu titizlikle ölçün.',
+  'entities.letters.prof_tier_leatherworking_tailoring_1.sender': 'Dokumacı Ottilie',
+  'entities.letters.prof_tier_leatherworking_tailoring_1.subject': 'Düzgün bir ilk sıra',
+  'entities.letters.prof_tier_leatherworking_tailoring_2.body':
+    'Ana dallarınızdan biri nadir işe tırmandı. Dikkatsiz elin her düşen ilmeği gösterdiği yer orası ve sizinkinde görünmüyor. Sessizce memnunum.',
+  'entities.letters.prof_tier_leatherworking_tailoring_2.sender': 'Dokumacı Ottilie',
+  'entities.letters.prof_tier_leatherworking_tailoring_2.subject': 'Nadir iş, iyi ölçülmüş',
+  'entities.letters.prof_tier_leatherworking_tailoring_3.body':
+    'Ana dallarınızdan biri nadirden daha ince işe geçti. Desen, bu seviyedeki bir ele netleşiyor, artık tahmin yok. İki kez ölçmeye devam edin.',
+  'entities.letters.prof_tier_leatherworking_tailoring_3.sender': 'Dokumacı Ottilie',
+  'entities.letters.prof_tier_leatherworking_tailoring_3.subject': 'Desen netleşiyor',
+  'entities.letters.prof_tier_leatherworking_tailoring_4.body':
+    'Ana dallarınızdan biri ustalıktan bir sıra eksik. Son sıra her zaman düz tutulması en zor olanıdır. Şimdi acele etmeyin.',
+  'entities.letters.prof_tier_leatherworking_tailoring_4.sender': 'Dokumacı Ottilie',
+  'entities.letters.prof_tier_leatherworking_tailoring_4.subject': 'Tepeden bir sıra',
+  'entities.letters.prof_tier_leatherworking_tailoring_5.body':
+    'Ana dallarınızdan biri ustalığa ulaştı. Her şeyi iki kez ölçtüm, her şeyi ölçtüğüm gibi, ve tutuyor. Pek az el son ilmeği bu kadar temiz bağlar. Gururluyum ve bunu hafife söylemiyorum.',
+  'entities.letters.prof_tier_leatherworking_tailoring_5.sender': 'Dokumacı Ottilie',
+  'entities.letters.prof_tier_leatherworking_tailoring_5.subject': 'Son ilmek',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_1.body':
+    'Fırınıma, ana dallarınızdan birinin sıradan ötesinde olduğu haberi ulaştı. Uzun bir tırmanışın en küçük basamağıdır, ama örsde kazandınız, sormakla değil. Ateşi sıcak tutun.',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_1.sender': 'Dövme Ustası Darva',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_1.subject': 'Kayda değer bir kıvılcım',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_2.body':
+    'Bir ana dalınızın nadir işe ulaştığını söylüyorlar. Dikkatsiz ellerin devrildiği ve gerçek demircilerin ayakta kaldığı basamak orası. Siz hâlâ ayaktasınız. İyi.',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_2.sender': 'Dövme Ustası Darva',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_2.subject': 'Nadir iş, kazanılmış',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_3.body':
+    'Ana dallarınızdan biri nadirden ciddi işe tırmandı. Metal bu seviyede bir ele cevap veriyor, artık onunla savaşmıyor. Övgünün kolunuzu yumuşatmasına izin vermeyin.',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_3.sender': 'Dövme Ustası Darva',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_3.subject':
+    'Metal artık size cevap veriyor',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_4.body':
+    'Ana dallarınızdan biri ustalığın tek basamak altında duruyor. Tanıdığım pek az el bu yüksekliğe ulaştı ve daha azı burada keskinliğini korudu. Tırmanışı bitirin.',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_4.sender': 'Dövme Ustası Darva',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_4.subject': 'Merdivenin tepesine yakın',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_5.body':
+    'Ana dallarınızdan biri ustalığa ulaştı, bir elin tırmanabileceği en yüksek yer. Övgüyü serbestçe dağıtmam, bu yüzden bunu bir kez duyun: fırın size gurur duyuyor. Şimdi gidin ateşe yeni bir şey öğretin.',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_5.sender': 'Dövme Ustası Darva',
+  'entities.letters.prof_tier_weaponcrafting_armorcrafting_5.subject': 'Ustalık, sonunda',
+  'entities.letters.guild_trend_alchemy_cooking.body':
+    "Zanaatkâr,\n\nSimya ve Aşçılık alanındaki çalışmalarınızın haberi Lonca'ya ulaşır: İksirler kaynatılır ve yemekler baharatlanır, iki zanaat birbirini besler. Birlikte çalışan komşu el sanatları, uyumlanmaya hazır bir elin işaretidir. Bu ikiliyi birbirine bağlayanlar zamanla Eczacı adını kazanırlar. Eastbrook'un zırhçısı Demirci Haldren'i arayın: şimdilik ustalar adına konuşuyor. Kendi ellerinizle zanaatınızı ona kanıtlayın, o da iki dalınızın uyumlu olduğunu görecektir.\n\nSaygılarımızla,\nÜretim Loncası",
+  'entities.letters.guild_trend_alchemy_cooking.sender': 'Üretim Loncası',
+  'entities.letters.guild_trend_alchemy_cooking.subject':
+    'Simya ve Aşçılık alanındaki çalışmalarınız',
+  'entities.letters.guild_trend_armorcrafting_engineering.body':
+    "Esnaf,\n\nZırh Üretimi ve Mühendislik alanındaki çalışmalarınızın Lonca'ya ulaştığı haberi: plakalar perçinlendi ve dişliler doğrulandı, iki zanaat birbirini besliyor. Birlikte çalışan komşu el sanatları, uyumlanmaya hazır bir elin işaretidir. Eastbrook'un zırhçısı Demirci Haldren'i arayın: şimdilik ustalar adına konuşuyor. Kendi ellerinizle zanaatınızı ona kanıtlayın, o da iki dalınızın uyumlu olduğunu görecektir.\n\nSaygılarımızla,\nÜretim Loncası",
+  'entities.letters.guild_trend_armorcrafting_engineering.sender': 'Üretim Loncası',
+  'entities.letters.guild_trend_armorcrafting_engineering.subject':
+    'Zırh Üretimi ve Mühendislik alanındaki çalışmalarınız',
+  'entities.letters.guild_trend_cooking_leatherworking.body':
+    "Esnaf,\n\nAşçılık ve Deri İşçiliği alanındaki çalışmalarınızın Lonca'ya ulaştığı haberi: Tabaklanmış yemekler ve kurutulmuş deriler, iki zanaat birbirini besliyor. Birlikte çalışan komşu el sanatları, uyumlanmaya hazır bir elin işaretidir. Eastbrook'un zırhçısı Demirci Haldren'i arayın: şimdilik ustalar adına konuşuyor. Kendi ellerinizle zanaatınızı ona kanıtlayın, o da iki dalınızın uyumlu olduğunu görecektir.\n\nSaygılarımızla,\nÜretim Loncası",
+  'entities.letters.guild_trend_cooking_leatherworking.sender': 'Üretim Loncası',
+  'entities.letters.guild_trend_cooking_leatherworking.subject':
+    'Aşçılık ve Deri İşleme alanındaki çalışmalarınız',
+  'entities.letters.guild_trend_enchanting_jewelcrafting.body':
+    "Esnaf,\n\nBüyücülük ve Mücevher İşçiliği alanındaki çalışmalarınızın Lonca'ya ulaştığı haberi: muskalar bağlandı ve taşlar cilalandı, iki zanaat birbirini besliyor. Birlikte çalışan komşu el sanatları, uyumlanmaya hazır bir elin işaretidir. Eastbrook'un zırhçısı Demirci Haldren'i arayın: şimdilik ustalar adına konuşuyor. Kendi ellerinizle zanaatınızı ona kanıtlayın, o da iki dalınızın uyumlu olduğunu görecektir.\n\nSaygılarımızla,\nÜretim Loncası",
+  'entities.letters.guild_trend_enchanting_jewelcrafting.sender': 'Üretim Loncası',
+  'entities.letters.guild_trend_enchanting_jewelcrafting.subject':
+    'Büyüleme ve Mücevher İşçiliği alanındaki çalışmalarınız',
+  'entities.letters.guild_trend_engineering_alchemy.body':
+    "Esnaf,\n\nMühendislik ve Simya'daki çalışmalarınızın Lonca'ya ulaştığı haberi: Yükler ölçülmüş ve reaktifler tartılmış, iki zanaat birbirini besliyor. Birlikte çalışan komşu el sanatları, uyumlanmaya hazır bir elin işaretidir. Bu ikiliyi birbirine bağlayanlar zamanla Bombacı adını kazanırlar. Eastbrook'un zırhçısı Demirci Haldren'i arayın: şimdilik ustalar adına konuşuyor. Kendi ellerinizle zanaatınızı ona kanıtlayın, o da iki dalınızın uyumlu olduğunu görecektir.\n\nSaygılarımızla,\nÜretim Loncası",
+  'entities.letters.guild_trend_engineering_alchemy.sender': 'Üretim Loncası',
+  'entities.letters.guild_trend_engineering_alchemy.subject':
+    'Mühendislik ve Simya alanındaki çalışmalarınız',
+  'entities.letters.guild_trend_inscription_enchanting.body':
+    "Esnaf,\n\nYazıt ve Büyücülük'deki çalışmalarınızın haberi Lonca'ya ulaşır: harfli parşömenler ve tılsımlar dokunur, iki zanaat birbirini besler. Birlikte çalışan komşu el sanatları, uyumlanmaya hazır bir elin işaretidir. Eastbrook'un zırhçısı Demirci Haldren'i arayın: şimdilik ustalar adına konuşuyor. Kendi ellerinizle zanaatınızı ona kanıtlayın, o da iki dalınızın uyumlu olduğunu görecektir.\n\nSaygılarımızla,\nÜretim Loncası",
+  'entities.letters.guild_trend_inscription_enchanting.sender': 'Üretim Loncası',
+  'entities.letters.guild_trend_inscription_enchanting.subject':
+    'Yazıtçılık ve Büyücülükteki çalışmanız',
+  'entities.letters.guild_trend_jewelcrafting_weaponcrafting.body':
+    "Esnaf,\n\nMücevher İşçiliği ve Silah İşçiliği alanındaki çalışmalarınızın Lonca'ya ulaştığı haberi: mücevherler yerleştirilmiş ve kenarları taşlanmış, iki zanaat birbirini besliyor. Birlikte çalışan komşu el sanatları, uyumlanmaya hazır bir elin işaretidir. Eastbrook'un zırhçısı Demirci Haldren'i arayın: şimdilik ustalar adına konuşuyor. Kendi ellerinizle zanaatınızı ona kanıtlayın, o da iki dalınızın uyumlu olduğunu görecektir.\n\nSaygılarımızla,\nÜretim Loncası",
+  'entities.letters.guild_trend_jewelcrafting_weaponcrafting.sender': 'Üretim Loncası',
+  'entities.letters.guild_trend_jewelcrafting_weaponcrafting.subject':
+    'Mücevher İşçiliği ve Silah İşçiliği alanındaki çalışmalarınız',
+  'entities.letters.guild_trend_leatherworking_tailoring.body':
+    "Esnaf,\n\nDeri işleme ve terzilik alanındaki çalışmalarınızın Lonca'ya ulaştığı haberi: deri kesimi ve kumaş kenar kesimi, iki zanaat birbirini besliyor. Birlikte çalışan komşu el sanatları, uyumlanmaya hazır bir elin işaretidir. Bu ikiliyi birbirine bağlayanlar zamanla Donatımcı adını kazanırlar. Eastbrook'un zırhçısı Demirci Haldren'i arayın: şimdilik ustalar adına konuşuyor. Kendi ellerinizle zanaatınızı ona kanıtlayın, o da iki dalınızın uyumlu olduğunu görecektir.\n\nSaygılarımızla,\nÜretim Loncası",
+  'entities.letters.guild_trend_leatherworking_tailoring.sender': 'Üretim Loncası',
+  'entities.letters.guild_trend_leatherworking_tailoring.subject':
+    'Deri İşleme ve Terzilik alanındaki çalışmalarınız',
+  'entities.letters.guild_trend_tailoring_inscription.body':
+    "Esnaf,\n\nTerzilik ve Yazıttaki çalışmalarınızın haberi Lonca'ya ulaşıyor: dikilmiş dikişler ve mürekkepli glifler, iki zanaat birbirini besliyor. Birlikte çalışan komşu el sanatları, uyumlanmaya hazır bir elin işaretidir. Eastbrook'un zırhçısı Demirci Haldren'i arayın: şimdilik ustalar adına konuşuyor. Kendi ellerinizle zanaatınızı ona kanıtlayın, o da iki dalınızın uyumlu olduğunu görecektir.\n\nSaygılarımızla,\nÜretim Loncası",
+  'entities.letters.guild_trend_tailoring_inscription.sender': 'Üretim Loncası',
+  'entities.letters.guild_trend_tailoring_inscription.subject':
+    'Terzilik ve Yazıt alanındaki çalışmalarınız',
+  'entities.letters.guild_trend_weaponcrafting_armorcrafting.body':
+    "Esnaf,\n\nSilah Üretimi ve Zırh Üretimi alanındaki çalışmalarınızın Lonca'ya ulaştığı haberi: bıçaklar sertleştirildi ve plakalar takıldı, iki zanaat birbirini besliyor. Birlikte çalışan komşu el sanatları, uyumlanmaya hazır bir elin işaretidir. Bu ikiliyi birbirine bağlayanlar zamanla Demirci adını kazanırlar. Eastbrook'un zırhçısı Demirci Haldren'i arayın: şimdilik ustalar adına konuşuyor. Kendi ellerinizle zanaatınızı ona kanıtlayın, o da iki dalınızın uyumlu olduğunu görecektir.\n\nSaygılarımızla,\nÜretim Loncası",
+  'entities.letters.guild_trend_weaponcrafting_armorcrafting.sender': 'Üretim Loncası',
+  'entities.letters.guild_trend_weaponcrafting_armorcrafting.subject':
+    'Silah Üretimi ve Zırh Üretimi alanındaki çalışmalarınız',
+  'entities.npcs.alchemist_verane.greeting':
+    'İki kez ölçün ve bir kez dökün, {className}. Eczacının dökülen reaktiflere karşı sabrı yoktur.',
+  'entities.npcs.alchemist_verane.name': 'Simyacı Verane',
+  'entities.npcs.alchemist_verane.title': 'Eczacı Ustası',
+  'entities.npcs.cook_marlow.greeting':
+    'Hiçbir şey mutfaklarımı yarı pişmiş bırakmıyor, {className}. Otur, yemek ye, sonra oraya geri dön.',
+  'entities.npcs.cook_marlow.name': "Marlow'u pişir",
+  'entities.npcs.cook_marlow.title': 'Mutfakların Efendisi',
+  'entities.npcs.forgemistress_darva.greeting':
+    'Demirhane bana cevap veriyor: {className}. İyi cevher getir, o da sana cevap verecektir.',
+  'entities.npcs.forgemistress_darva.name': 'Dövme Ustası Darva',
+  'entities.npcs.forgemistress_darva.title': 'Demirci Ustası',
+  'entities.npcs.tanner_hesk.greeting':
+    'Bir deri yalnızca bronzlaşması kadar iyidir, {className}. Siz hazır olduğunuzda fıçılar hazırdır.',
+  'entities.npcs.tanner_hesk.name': 'Sepici Hesk',
+  'entities.npcs.tanner_hesk.title': 'Tabakhane Ustası',
+  'entities.npcs.tinker_gizzel.greeting':
+    'Yaylar, dişliler ve keskin kenarlar, {className}: Ellerinizde eksik olan her şey takım tezgahında mevcuttur.',
+  'entities.npcs.tinker_gizzel.name': 'Tamirci Gizzel',
+  'entities.npcs.tinker_gizzel.title': 'Alet İşlerinin Ustası',
+  'entities.npcs.weaver_ottilie.greeting':
+    'Konulara dikkat edin, {className}. Tezgahtaki sağlam bir el, güçlü olanı yener.',
+  'entities.npcs.weaver_ottilie.name': 'Dokumacı Ottilie',
+  'entities.npcs.weaver_ottilie.title': 'Tezgahın Efendisi',
+  'gatherEvent.ancientHeartwood': '{finder} eski bir öz odunu kesti!',
+  'gatherEvent.moonlitBloom': '{finder} ay ışığının aydınlattığı bir çiçek keşfetti!',
+  'gatherEvent.pristineVein': '{finder} bozulmamış bir damara çarptı!',
+  'guide.abilityHook.brain_freeze':
+    "Donma oklarınız bazen bir sonraki Flurry'yi anında yapar ve bekleme süresini atlar.",
+  'guide.abilityHook.frozen_orb':
+    'Düşmanları soğutan ve buz sarkıtlarını savuşturan, sürünün içinde yavaş bir küre yuvarlar.',
+  'heroicShop.buyConfirmAccept': 'Satın almak',
+  'heroicShop.buyConfirmBody':
+    '{marks} Heroic Marks için {item} satın mı alacaksınız? Mark satın alımları iade edilemez.',
+  'heroicShop.buyConfirmCancel': 'İptal etmek',
+  'heroicShop.buyConfirmTitle': 'Satın Alma İşlemini Onayla',
+  'hudChrome.crafting.comboTierUnmetNamed': "{crafts}'yi {tier} kademesine yükseltin.",
+  'hudChrome.crafting.difficultyFull': 'Tam beceri kazanımı',
+  'hudChrome.crafting.difficultyNone': 'Beceri kazanımı yok',
+  'hudChrome.crafting.difficultyReduced': 'Azaltılmış beceri kazanımı',
+  'hudChrome.crafting.enchantedLine': 'Büyülü',
+  'hudChrome.crafting.makersMark': '{name} tarafından hazırlanmıştır',
+  'hudChrome.crafting.masterworkSeal': 'Şaheser',
+  'hudChrome.crafting.masterworkToast': 'Şaheser! {name}',
+  'hudChrome.crafting.masterworkZoneLine': '{crafter} bir şaheser {name} yarattı!',
+  'hudChrome.crafting.skillReqLine': '{craft} {skill} gerektirir',
+  'hudChrome.crafting.stationBadge': 'Üretim Tezgâhı',
+  'hudChrome.crafting.stationName.apothecary': 'Eczacı',
+  'hudChrome.crafting.stationName.forge': 'Demirhane',
+  'hudChrome.crafting.stationName.kitchens': 'Mutfaklar',
+  'hudChrome.crafting.stationName.loom': 'Tezgah',
+  'hudChrome.crafting.stationName.tannery': 'Tabakhane',
+  'hudChrome.crafting.stationName.toolworks': 'Alet Atölyesi',
+  'hudChrome.crafting.stationOutOfRangeNamed': "Bunu yapmak için {station}'ye gidin.",
+  'hudChrome.crafting.stationRequired': "Bunu yapmak için {station}'de olmanız gerekir.",
+  'hudChrome.crafting.attunedBanner': 'Uyumlu: {title}',
+  'hudChrome.crafting.attunedZoneLine': '{name}, {archetype} olarak uyumlandı!',
+  'hudChrome.crafting.attunementReturnCost':
+    'Bu ikiliyi terk ederseniz, geri dönmek {cost} barış tesis görevi gerektirir.',
+  'hudChrome.crafting.commissionBound': 'Sipariş parçası: alıcısına bağlı',
+  'hudChrome.crafting.commissionToggle': 'Sipariş parçası',
+  'hudChrome.crafting.commissionToggleHint': 'Ticaret yoluyla alan ilk karaktere bağlanır.',
+  'hudChrome.crafting.commissionUnbound': 'Sipariş parçası: ilk alıcıya bağlanır',
+  'hudChrome.crafting.difficultyMinimal': 'Minimum beceri kazanımı',
+  'hudChrome.crafting.gatheredBy': '{name} tarafından toplandı',
+  'hudChrome.crafting.learnMoreAtStation':
+    '{master}, {station} içinde size daha fazla {craft} tarifi öğretebilir.',
+  'hudChrome.crafting.tierTutorial.dismiss': 'Anladım',
+  'hudChrome.crafting.tierTutorial.masters':
+    'Kasabalardaki zanaat ustaları uyum görevleri sunar. Hazır olduğunuzda çiftinizi seçmek için birini ziyaret edin. Öğrendiğiniz hiçbir şey asla kaybolmaz.',
+  'hudChrome.crafting.tierTutorial.radar':
+    'Meslekleriniz bir tekerlek oluşturur. Bitişik bir çifte uyumlanın ve bu iki zanaat sınırsız ana dal olur; tekerin karşısındaki bir zanaat nadir sınırlı hobi olur ve gerisini dormant bırakır: bilgileri korunur ama yeniden alana kadar sıradan seviyede sınırlı kalır.',
+  'hudChrome.crafting.tierTutorial.tierCap':
+    'Bir zanaat ilk kademesine {skill} beceride ulaşır ve her kademe yapabileceklerini geliştirir. Ama bir zanaat, yalnızca iki ana dalınızdan biri olduğunda nadir işin ötesine geçer.',
+  'hudChrome.crafting.tierTutorial.title': 'İlk Kademenz',
+  'hudChrome.crafting.tierUpToast': '{craft}, {tier} seviyesine yükseldi!',
+  'hudChrome.crafting.trendNudge':
+    'Elleriniz {archetype} yönüne eğiliyor. Uyumu {master} ile bekliyor.',
+  'hudChrome.crafting.trendNudgeNoMaster':
+    'Elleriniz {archetype} yönüne eğiliyor. Onu benimsemek için bir zanaat ustası arayın.',
+  'hudChrome.death.healerConfirmAccept': 'Beni Canlandır',
+  'hudChrome.death.healerConfirmBody':
+    'Solgun Bekçi sizi burada canlandıracak, ancak Bekçinin Bedeli, daha yüksek seviyelerde 10 dakikaya kadar tüm niteliklerinizi %75 azaltır. Ruhunuzu cesedinize geri götürmek sizi hiçbir ceza almadan canlandırır.',
+  'hudChrome.death.healerConfirmCancel': 'İptal etmek',
+  'hudChrome.death.healerConfirmTitle': 'Bekçinin Bedelini kabul ediyor musunuz?',
+  'hudChrome.gathering.gatherLine': 'Topladığınız şey: {name}.',
+  'hudChrome.gathering.biteLine': 'Bir şey yemi aldı!',
+  'hudChrome.gathering.catchLine': 'Çekiyorsunuz: {name}',
+  'hudChrome.gathering.downgradeFind': 'Çantalar dolu: pırıl pırıl bir bulgu kayboldu gitti.',
+  'hudChrome.gathering.downgradeMark': 'Çantalar dolu: bulgu, toplayıcı işareti olmadan saklandı.',
+  'hudChrome.gathering.fishing': 'Balıkçılık',
+  'hudChrome.gathering.gatherLineQty': 'Şunu toplarsınız: {name} x{qty}.',
+  'hudChrome.gathering.gotAwayLine': 'Kaçtı gitti.',
+  'hudChrome.gathering.nodeName.herb': 'Ot Tarlası',
+  'hudChrome.gathering.nodeName.ore': 'Maden Damarı',
+  'hudChrome.gathering.nodeName.wood': 'Kereste Koruluğu',
+  'hudChrome.gathering.stateCooldown': 'Yeniden Oluşuyor',
+  'hudChrome.gathering.stateReady': 'Hazır',
+  'hudChrome.gathering.tierRequired.herbalism': '{tier}. kademe bitkicilik orakı gerektirir',
+  'hudChrome.gathering.tierRequired.logging': '{tier}. kademe odun kesme baltası gerektirir',
+  'hudChrome.gathering.tierRequired.mining': '{tier}. kademe madenci kazması gerektirir',
+  'hudChrome.gathering.toolTierUnmet.herbalism':
+    'Bu tarlayı toplamak için {tier}. kademe bitkicilik orakına ihtiyacınız var.',
+  'hudChrome.gathering.toolTierUnmet.logging':
+    'Bu korulugu devirmek için {tier}. kademe odun kesme baltasına ihtiyacınız var.',
+  'hudChrome.gathering.toolTierUnmet.mining':
+    'Bu damarı işlemek için {tier}. kademe madenci kazmasına ihtiyacınız var.',
+  'hudChrome.gathering.toolTierUnmetCorpse':
+    'En iyi malzemeleri kurtarmak için {tier}. kademe toplama aracına ihtiyacınız var.',
+  'hudChrome.mobile.professions': 'Meslekler',
+  'hudChrome.options.showThirdActionBar': 'Üçüncü Eylem Çubuğunu Göster',
+  'hudChrome.playerMenu.streamerBadgeTitle': 'Doğrulanmış yayıncı',
+  'hudChrome.professions.ceilingCommon': 'Ortak sınır',
+  'hudChrome.professions.ceilingRare': 'Nadir kapak',
+  'hudChrome.professions.ceilingUnlimited': 'Yetki sınırı yok',
+  'hudChrome.professions.close': 'Meslekleri kapat',
+  'hudChrome.professions.ctaHeader': 'Sonraki adım',
+  'hudChrome.professions.ctaRaise':
+    "{craft}'yi yükseltmeye devam edin: {points} bir sonraki aşamaya daha fazla puan kazandırır.",
+  'hudChrome.professions.ctaStart':
+    'Başlamak için herhangi bir meslekle zanaat yapın veya toplayın.',
+  'hudChrome.professions.gatheringHeader': 'Toplama',
+  'hudChrome.professions.hobbyLabel': 'Hobi: {craft}',
+  'hudChrome.professions.identityHeader': 'Kimlik',
+  'hudChrome.professions.majorsLabel': 'Ana dallar: {a} ve {b}',
+  'hudChrome.professions.nextUnlockMastered': 'Ustalaşıldı, şimdilik',
+  'hudChrome.professions.nextUnlockSpecialized':
+    "{points} Uzmanlaşmış'a işaret ediyor: malzeme maliyetlerinde düşüş",
+  'hudChrome.professions.nextUnlockTier':
+    '{points} bir sonraki aşamaya işaret ediyor: şaheser olma ihtimali artıyor',
+  'hudChrome.professions.nudgeDormant': '{craft} bilginiz uykuda',
+  'hudChrome.professions.nudgeNearTier': '{craft}: {points} sonraki seviyeden puanlar',
+  'hudChrome.professions.pairsHeld': 'Düzenlenen çiftler: {count}',
+  'hudChrome.professions.perkSpecializedAt': '{threshold} becerisinde uzmanlaşmıştır',
+  'hudChrome.professions.perkSpecializedLine': '{craft}: Uzmanlaşmış, malzeme maliyetleri -{pct}%',
+  'hudChrome.professions.perksHeader': 'Avantajlar',
+  'hudChrome.professions.returnsLabel': 'İade: {count}',
+  'hudChrome.professions.ringAria': 'Zanaat tekerleği',
+  'hudChrome.professions.roleDormant': 'uykuda',
+  'hudChrome.professions.roleHobby': 'Hobi',
+  'hudChrome.professions.roleMajor': 'Ana',
+  'hudChrome.professions.roleUnattuned': 'Uyumsuz',
+  'hudChrome.professions.skillValue': '{skill} / {max}',
+  'hudChrome.professions.skillsHeader': 'Zanaat becerileri',
+  'hudChrome.professions.switchCost':
+    'Bir sonraki arketip değişikliği {cost} kefaret puanına mal olur',
+  'hudChrome.professions.syncing': 'Diyardan meslek bilgilerinizi bekliyorum.',
+  'hudChrome.professions.tierPipAria': 'Seviye {tier}',
+  'hudChrome.professions.title': 'Meslekler',
+  'hudChrome.professions.tutorialLine':
+    'İlk seviyenizin kilidini açmak için herhangi bir zanaatta {target} becerisine ulaşın.',
+  'hudChrome.professions.unattunedIdentity':
+    'Henüz bir arketipe uyum sağlamadınız. El sanatlarınızı yükseltin ve çiftinizi seçmek için bir uyumlamayı tamamlayın.',
+  'hudChrome.training.alreadyKnown': 'Bu tarifi zaten biliyorsunuz.',
+  'hudChrome.training.cannotAfford': 'Bu eğitime paranız yetmiyor.',
+  'hudChrome.training.close': 'Eğitimi kapat',
+  'hudChrome.training.dialogOption': 'Eğitim',
+  'hudChrome.training.dialogOptionAria': "{name}'deki eğitime göz atın",
+  'hudChrome.training.empty': 'Bu ustanın öğretecek hiçbir şeyi yok.',
+  'hudChrome.training.free': 'Özgür',
+  'hudChrome.training.learned': 'Öğrenilen tarif: {recipe}',
+  'hudChrome.training.notTaughtHere': 'O tarif burada öğretilmiyor.',
+  'hudChrome.training.outOfRange': 'Antrenman yapmak için istasyonda olmanız gerekmektedir.',
+  'hudChrome.training.requirement': "{craft} {skill}'da okudu",
+  'hudChrome.training.stateKnown': 'Bilinen',
+  'hudChrome.training.stateLocked': 'Kilitli',
+  'hudChrome.training.stateTeachable': 'Mevcut',
+  'hudChrome.training.tierUnmet': "Bu tarifi öğrenmek için {craft} {skill}'ye ihtiyacınız var.",
+  'hudChrome.training.title': 'Eğitim: {name}',
+  'hudChrome.training.trainAria': "{fee} için {name}'yi öğrenin",
+  'hudChrome.enchantName.enchant_chest_armor': 'Göğüs Büyüsü - Takviye',
+  'hudChrome.enchantName.enchant_chest_greater_stamina': 'Göğüs Büyüsü - Yüksek Dayanıklılık',
+  'hudChrome.enchantName.enchant_chest_runeweave': 'Göğüs Büyüsü - Rün Dokuma',
+  'hudChrome.enchantName.enchant_chest_spirit': 'Göğüs Büyüsü - Ruh',
+  'hudChrome.enchantName.enchant_chest_stamina': 'Göğüs Büyüsü - Dayanıklılık',
+  'hudChrome.enchantName.enchant_feet_agility': 'Bot Büyüsü - Çeviklik',
+  'hudChrome.enchantName.enchant_feet_stamina': 'Bot Büyüsü - Dayanıklılık',
+  'hudChrome.enchantName.enchant_feet_strength': 'Bot Büyüsü - Güç',
+  'hudChrome.enchantName.enchant_gloves_agility': 'Eldiven Büyüsü - Çeviklik',
+  'hudChrome.enchantName.enchant_gloves_greater_agility': 'Eldiven Büyüsü - Yüksek Çeviklik',
+  'hudChrome.enchantName.enchant_gloves_intellect': 'Eldiven Büyüsü - Büyü Gücü',
+  'hudChrome.enchantName.enchant_gloves_strength': 'Eldiven Büyüsü - Güç',
+  'hudChrome.enchantName.enchant_helmet_armor': 'Miğfer Büyüsü - Takviye',
+  'hudChrome.enchantName.enchant_helmet_fortitude': 'Miğfer Büyüsü - Metanet',
+  'hudChrome.enchantName.enchant_helmet_greater_fortitude': 'Miğfer Büyüsü - Yüksek Metanet',
+  'hudChrome.enchantName.enchant_helmet_intellect': 'Miğfer Büyüsü - Zeka',
+  'hudChrome.enchantName.enchant_helmet_runed_links': 'Miğfer Büyüsü - Rünlü Halkalar',
+  'hudChrome.enchantName.enchant_legs_greater_stamina': 'Bacak Büyüsü - Yüksek Dayanıklılık',
+  'hudChrome.enchantName.enchant_legs_intellect': 'Bacak Büyüsü - Zeka',
+  'hudChrome.enchantName.enchant_legs_runed_hide': 'Bacak Büyüsü - Rünlü Post',
+  'hudChrome.enchantName.enchant_legs_stamina': 'Bacak Büyüsü - Dayanıklılık',
+  'hudChrome.enchantName.enchant_neck_agility': 'Kolye Büyüsü - Çeviklik',
+  'hudChrome.enchantName.enchant_neck_intellect': 'Kolye Büyüsü - Zeka',
+  'hudChrome.enchantName.enchant_neck_spirit': 'Kolye Büyüsü - Ruh',
+  'hudChrome.enchantName.enchant_ring_agility': 'Yüzük Büyüsü - Çeviklik',
+  'hudChrome.enchantName.enchant_ring_intellect': 'Yüzük Büyüsü - Zeka',
+  'hudChrome.enchantName.enchant_ring_spirit': 'Yüzük Büyüsü - Ruh',
+  'hudChrome.enchantName.enchant_ring_strength': 'Yüzük Büyüsü - Güç',
+  'hudChrome.enchantName.enchant_shoulder_agility': 'Omuzluk Büyüsü - Çeviklik',
+  'hudChrome.enchantName.enchant_shoulder_intellect': 'Omuzluk Büyüsü - Zeka',
+  'hudChrome.enchantName.enchant_shoulder_strength': 'Omuzluk Büyüsü - Güç',
+  'hudChrome.enchantName.enchant_waist_agility': 'Kemer Büyüsü - Çeviklik',
+  'hudChrome.enchantName.enchant_waist_stamina': 'Kemer Büyüsü - Dayanıklılık',
+  'hudChrome.enchantName.enchant_waist_strength': 'Kemer Büyüsü - Güç',
+  'hudChrome.enchantName.enchant_weapon_agility': 'Silah Büyüsü - Çeviklik',
+  'hudChrome.enchantName.enchant_weapon_greater_might': 'Silah Büyüsü - Yüksek Güç',
+  'hudChrome.enchantName.enchant_weapon_greater_spellpower': 'Silah Büyüsü - Yüksek Büyü Gücü',
+  'hudChrome.enchantName.enchant_weapon_intellect': 'Silah Büyüsü - Büyü Gücü',
+  'hudChrome.enchantName.enchant_weapon_might': 'Silah Büyüsü - Güç',
+  'hudChrome.enchantName.enchant_weapon_runed_edge': 'Silah Büyüsü - Rünlü Ağız',
+  'hudChrome.enchantName.enchant_weapon_runed_focus': 'Silah Büyüsü - Rünlü Odak',
+  'hudChrome.enchanting.disenchantConfirmBody':
+    '{item} yok edilir ve arkanik malzeme verir. Bu geri alınamaz.',
+  'hudChrome.enchanting.disenchantConfirmBodySpecial':
+    "{item}'nin özel bir kopyası (imzalı, şaheser veya büyülü) yok edilir ve arkanik malzeme verir. Bu geri alınamaz.",
+  'hudChrome.enchanting.disenchantConfirmTitle': '{item} büyüsü bozulsun mu?',
+  'hudChrome.enchanting.disenchantThrottled':
+    'Çok hızlı büyü bozuyorsunuz. Bir an bekleyin ve tekrar deneyin.',
+  'hudChrome.enchanting.disenchantedLine': '{item} büyüsünü bozdunuz.',
+  'hudChrome.enchanting.enchantAppliedLine': '{item} üzerine {enchant} büyüsü uyguladınız.',
+  'hudChrome.enchanting.enchantInsufficient': 'O büyü için malzemeniz yok.',
+  'hudChrome.enchanting.enchantThrottled':
+    'Çok hızlı büyü yapıyorsunuz. Bir an bekleyin ve tekrar deneyin.',
+  'hudChrome.enchanting.enchantUnknown': 'O büyü mevcut değil.',
+  'hudChrome.enchanting.enchantWrongSlot': 'Bu büyü o eşyaya uygulanamaz.',
+  'hudChrome.enchanting.noEnchants': 'Hiçbir büyü bu malzemeyi kullanmıyor.',
+  'hudChrome.enchanting.noTargets': 'Büyülenecek uygun eşya yok.',
+  'hudChrome.enchanting.notDisenchantable': 'Bunun büyüsünü bozamazsınız.',
+  'hudChrome.enchanting.notHeld': 'O eşya elinizde yok.',
+  'hudChrome.enchanting.notSalvageable': 'Bunu parçalayamazsınız.',
+  'hudChrome.enchanting.pickerTitle': 'Büyü Uygula',
+  'hudChrome.enchanting.salvageConfirmBody':
+    '{item} yok edilir ve zanaat malzemesi verir. Bu geri alınamaz.',
+  'hudChrome.enchanting.salvageConfirmBodySpecial':
+    "{item}'nin özel bir kopyası (imzalı, şaheser veya büyülü) yok edilir ve zanaat malzemesi verir. Bu geri alınamaz.",
+  'hudChrome.enchanting.salvageConfirmTitle': '{item} parçalansın mı?',
+  'hudChrome.enchanting.salvageThrottled':
+    'Çok hızlı parçalıyorsunuz. Bir an bekleyin ve tekrar deneyin.',
+  'hudChrome.enchanting.salvagedLine': '{item} parçaladınız.',
+  'hudChrome.enchanting.targetTitle': 'Büyülenecek eşya seçin',
+  'hudChrome.unbind.cannotAfford': 'Çözüm ücretini karşılayamazsınız.',
+  'hudChrome.unbind.close': 'Bağı çözmeyi kapat',
+  'hudChrome.unbind.confirmBody': '{name} için {fee} karşılığında bağı çözülsün mü?',
+  'hudChrome.unbind.confirmCancel': 'İptal',
+  'hudChrome.unbind.confirmOk': 'Bağı Çöz',
+  'hudChrome.unbind.confirmTitle': 'Sipariş Parçasının Bağını Çöz',
+  'hudChrome.unbind.dialogOption': 'Bağ Çözme',
+  'hudChrome.unbind.dialogOptionAria': '{name} ile bağ çözme işlemi',
+  'hudChrome.unbind.empty': 'Üzerinizde bağlı sipariş parçası yok.',
+  'hudChrome.unbind.intro': 'Usta, sipariş parçasının bağını bir ücret karşılığında çözebilir.',
+  'hudChrome.unbind.notBound': 'O eşya bağlı değil.',
+  'hudChrome.unbind.notEligible': 'O eşyanın bağı çözülemez.',
+  'hudChrome.unbind.outOfRange': 'Bağ çözmek için bir zanaat tezgahında olmanız gerekir.',
+  'hudChrome.unbind.rowSub': 'Bağı çözer; parça bir sonraki takasında yeniden bağlanır.',
+  'hudChrome.unbind.title': 'Bağ Çözme: {name}',
+  'hudChrome.unbind.unbindAria': '{name} için {fee} karşılığında bağı çöz',
+  'hudChrome.unbind.unbound':
+    '{name} için {fee} karşılığında bağ çözüldü. Bir sonraki takasında yeniden bağlanacak.',
 };

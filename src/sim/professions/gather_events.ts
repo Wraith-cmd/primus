@@ -78,8 +78,8 @@ export function announceGatherRareEvent(
     nodeType: node.type,
     itemId,
   }));
-  // Dormant deed-mark hook: Phase 15 registers the per-flavor gather-event
-  // deeds; markVisited tolerates mark ids no deed reads yet.
+  // Deed-mark hook (live since Phase 15): each flavor mark feeds its rare-find
+  // deed (col_pristine_vein / col_ancient_heartwood / col_moonlit_bloom).
   ctx.markVisited(finder, 'gather_event:' + flavor);
 }
 

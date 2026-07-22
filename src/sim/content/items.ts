@@ -5,6 +5,21 @@ import type { ItemDef, PlayerClass } from '../types';
 const WAR: PlayerClass[] = ['warrior', 'paladin', 'shaman'];
 const MAG: PlayerClass[] = ['mage', 'priest', 'warlock', 'druid'];
 const ROG: PlayerClass[] = ['rogue', 'hunter'];
+// Feral druid weapons. A bespoke, druid-only lock: it is NOT one of the three
+// weapon-proficiency groups, so weaponArchetypeForItem returns null and
+// canEquipItem falls through to this literal list (see src/sim/equipment_rules.ts).
+// Bear form swings with the equipped weapon, so these carry real 2H dps + str/agi/sta.
+export const FERAL: PlayerClass[] = ['druid'];
+// Every caster class, for held-offhand stat sticks (no armor class / weapon
+// proficiency: the literal requiredClass list is the whole rule for held_offhand).
+export const CASTER_ALL: PlayerClass[] = [
+  'mage',
+  'priest',
+  'warlock',
+  'shaman',
+  'paladin',
+  'druid',
+];
 
 // ---------------------------------------------------------------------------
 // Items
@@ -460,6 +475,30 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     sellValue: 4,
     buyValue: 20,
   },
+  // Tiered fishing rods (Professions 2.0 Phase 12): gatherTool items like the
+  // picks/axes/sickles below, same tier pricing ladder. Their use still routes
+  // to startFishing (src/sim/items.ts useItem), so a rod casts exactly like
+  // the simple pole; the tier caps which catch rarity band the cast can land
+  // (band b needs tier b + 1, professions/fishing.ts). The simple pole stays
+  // `use: { type: 'fishing' }`: effective tier 1 via the bare-hands floor.
+  ironreel_fishing_rod: {
+    id: 'ironreel_fishing_rod',
+    name: 'Ironreel Fishing Rod',
+    kind: 'tool',
+    quality: 'common',
+    use: { type: 'gatherTool', professionId: 'fishing', tier: 2 },
+    sellValue: 10,
+    buyValue: 60,
+  },
+  silverstream_fishing_rod: {
+    id: 'silverstream_fishing_rod',
+    name: 'Silverstream Fishing Rod',
+    kind: 'tool',
+    quality: 'uncommon',
+    use: { type: 'gatherTool', professionId: 'fishing', tier: 3 },
+    sellValue: 25,
+    buyValue: 150,
+  },
   // Base gathering tools (#1123). Each is infinite-durability (this repo has
   // no durability field on ItemDef) and tiered: `use.tier` gates which
   // node/material tiers it can gather (see src/sim/professions/tools.ts).
@@ -792,7 +831,7 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     quality: 'poor',
     sellValue: 1,
   },
-  // The prized rare catch, reelable from any water — a lucky hook.
+  // The prized rare catch, reelable from any water, a lucky hook.
   glimmerfin_koi: {
     id: 'glimmerfin_koi',
     name: 'Glimmerfin Koi',
@@ -1043,7 +1082,11 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     slot: 'chest',
     quality: 'common',
     stats: { armor: 40 },
-    sellValue: 160,
+    // Phase 15 QA directed burn-down (paired arm): sellValue re-priced below
+    // the reworked craft input (88); buyValue is the armorer's shop price and
+    // deliberately keeps the old 10x-of-160 figure so the vendor catalog is
+    // untouched by the economy fix.
+    sellValue: 80,
     buyValue: 1600,
   },
   hobnail_boots: {
@@ -1080,7 +1123,11 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     slot: 'chest',
     quality: 'uncommon',
     stats: { armor: 30, int: 2, spi: 1 },
-    sellValue: 210,
+    // Phase 15 QA directed burn-down (paired arm): re-priced below the
+    // reworked craft input (85); this also retires the piece as the cheapest
+    // disenchant fodder (the evidence review's dust-mill row). Not vendored,
+    // so buyValue is inert and keeps its historical figure.
+    sellValue: 72,
     buyValue: 2100,
   },
   eastbrook_druids_hide: {
@@ -1091,7 +1138,9 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     slot: 'chest',
     quality: 'uncommon',
     stats: { armor: 52, int: 2, spi: 1 },
-    sellValue: 230,
+    // Phase 15 QA directed burn-down (paired arm): re-priced below the
+    // reworked craft input (93). Not vendored; buyValue inert, kept.
+    sellValue: 84,
     buyValue: 2300,
   },
   eastbrook_warded_leggings: {
@@ -1102,7 +1151,9 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     slot: 'legs',
     quality: 'uncommon',
     stats: { armor: 50, int: 2, spi: 1 },
-    sellValue: 220,
+    // Phase 15 QA directed burn-down (paired arm): re-priced below the
+    // reworked craft input (117). Not vendored; buyValue inert, kept.
+    sellValue: 105,
     buyValue: 2200,
   },
   // Hub-tier (level-20, crafting-hub-gated) caster pieces, one per craft,
@@ -1322,6 +1373,84 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     stats: { int: 4, spi: 3 },
     sellValue: 850,
   },
+  // --- Class/spec gap fill (uncommon/green leveling pieces) ---
+  // Budgeted via primaryStatBudget(item level, uncommon, slot); see
+  // src/sim/item_budget.ts. The leather int/spi pieces open the druid caster
+  // line, the mail int/spi pieces the shaman/paladin caster line, and the
+  // FERAL-locked two-handers start the bear-form weapon ladder (bear form
+  // swings the equipped weapon, src/sim/combat/form_swing.ts).
+  mosshide_vest: {
+    id: 'mosshide_vest',
+    name: 'Mosshide Vest',
+    kind: 'armor',
+    armorType: 'leather',
+    slot: 'chest',
+    quality: 'uncommon',
+    // Sableweb Lurkers (level 4) -> item level 5, chest budget 2.
+    stats: { armor: 40, int: 1, spi: 1 },
+    sellValue: 130,
+  },
+  thornling_grips: {
+    id: 'thornling_grips',
+    name: 'Thornling Grips',
+    kind: 'armor',
+    armorType: 'leather',
+    slot: 'gloves',
+    quality: 'uncommon',
+    // Deeprock Diggers (level 6) -> item level 7, gloves budget 2.
+    stats: { armor: 24, int: 1, spi: 1 },
+    sellValue: 140,
+  },
+  acolyte_chain_grips: {
+    id: 'acolyte_chain_grips',
+    name: 'Acolyte Chain Grips',
+    kind: 'armor',
+    armorType: 'mail',
+    slot: 'gloves',
+    quality: 'uncommon',
+    // Old Greyjaw (level 4 rare) -> item level 5, gloves budget 1.
+    stats: { armor: 22, int: 1 },
+    sellValue: 120,
+  },
+  votive_chain_belt: {
+    id: 'votive_chain_belt',
+    name: 'Votive Chain Belt',
+    kind: 'armor',
+    armorType: 'mail',
+    slot: 'waist',
+    quality: 'uncommon',
+    // Gorrak (level 6 boss) -> item level 7, waist budget 2.
+    stats: { armor: 28, int: 1, spi: 1 },
+    sellValue: 150,
+  },
+  briarroot_staff: {
+    id: 'briarroot_staff',
+    name: 'Briarroot Staff',
+    kind: 'weapon',
+    slot: 'mainhand',
+    hand: 'twohand',
+    quality: 'uncommon',
+    // Grix the Tunnelking (level 7 rare elite) -> item level 8: the 2H stat
+    // budget round(primaryStatBudget(8, uncommon, mainhand) = 3 x
+    // TWOHAND_STAT_MULT) = 4, dps on the weaponDpsBudget(8) x TWOHAND_DPS_MULT
+    // curve (~10.47 at speed 3.3).
+    weapon: { min: 29, max: 40, speed: 3.3 },
+    stats: { str: 2, sta: 2 },
+    sellValue: 320,
+    requiredClass: FERAL,
+  },
+  valefire_lantern: {
+    id: 'valefire_lantern',
+    name: 'Valefire Lantern',
+    kind: 'held_offhand',
+    slot: 'offhand',
+    quality: 'uncommon',
+    // Mogger (level 6 rare elite) -> item level 7, offhand budget 2. The first
+    // low-level held offhand; equips by the literal CASTER_ALL list.
+    stats: { int: 1, spi: 1 },
+    sellValue: 160,
+    requiredClass: CASTER_ALL,
+  },
   // --- quest items ---
   boar_hide: {
     id: 'boar_hide',
@@ -1442,11 +1571,16 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     sellValue: 320,
   },
   // --- junk (gray) ---
+  // Phase 15 QA directed burn-down: wolf_fang became a crafting reagent
+  // (recipe_eastbrook_arming_sword, recipe_ironbound_warplate_helm), so it
+  // follows the same convention as spider_leg/bone_fragments/linen_scrap
+  // below: common (white), NOT 'poor', or sellAllJunk would sweep it. Its
+  // sellValue is unchanged. See tests/crafting_materials_quality.test.ts.
   wolf_fang: {
     id: 'wolf_fang',
     name: 'Cracked Wolf Fang',
     kind: 'junk',
-    quality: 'poor',
+    quality: 'common',
     sellValue: 4,
   },
   bandit_bandana: {
@@ -1534,6 +1668,52 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
     kind: 'junk',
     quality: 'rare',
     sellValue: 55,
+  },
+
+  // --- Typed disenchant secondaries (Professions 2.0 Phase 13) -------------
+  // A rare-or-better disenchant yields, alongside the universal ladder material
+  // above, exactly one typed secondary keyed by the salvaged piece's material
+  // (src/sim/professions/disenchant_reagents.ts): armor by its armor class,
+  // weapons by family. Each is the sole reagent of one always-known ENCHANTS
+  // row (content/enchants.ts), so none is a dead-end currency. They are granted
+  // bind-on-trade (ItemInstancePayload.bindOnTrade), so a disenchant windfall
+  // stays with the disenchanter rather than being freely resold. Same 'junk'
+  // reuse as the arcane materials (this repo has no dedicated material kind);
+  // all quality 'rare', so sellAllJunk (poor-only) never sweeps them.
+  resonant_thread: {
+    id: 'resonant_thread',
+    name: 'Resonant Thread',
+    kind: 'junk',
+    quality: 'rare',
+    sellValue: 40,
+  },
+  resonant_hide: {
+    id: 'resonant_hide',
+    name: 'Resonant Hide',
+    kind: 'junk',
+    quality: 'rare',
+    sellValue: 40,
+  },
+  resonant_links: {
+    id: 'resonant_links',
+    name: 'Resonant Links',
+    kind: 'junk',
+    quality: 'rare',
+    sellValue: 40,
+  },
+  resonant_steel: {
+    id: 'resonant_steel',
+    name: 'Resonant Steel',
+    kind: 'junk',
+    quality: 'rare',
+    sellValue: 40,
+  },
+  resonant_timber: {
+    id: 'resonant_timber',
+    name: 'Resonant Timber',
+    kind: 'junk',
+    quality: 'rare',
+    sellValue: 40,
   },
 
   // --- Quartermaster's Consignment ---------------------------------------
@@ -1807,37 +1987,110 @@ export const BASE_ITEMS: Record<string, ItemDef> = {
 // --- Zone-aware fishing loot ----------------------------------------------
 // A cast resolves to one weighted draw from the table for the zone the angler
 // is standing in. `itemId: null` means "no fish are biting" (an empty hook).
-// The engine (Sim.completeFishing) rolls a single this.rng draw against the
-// running weight total, so catches stay replay-deterministic.
+// The engine (completeFishing, src/sim/professions/fishing.ts) rolls a single
+// rng draw against the running weight total, so catches stay
+// replay-deterministic.
 export interface FishingEntry {
   itemId: string | null;
   weight: number;
 }
 
-export const FISHING_TABLES: Record<string, FishingEntry[]> = {
-  eastbrook_vale: [
-    { itemId: 'raw_mirror_trout', weight: 45 },
-    { itemId: 'raw_river_perch', weight: 30 },
-    { itemId: 'tangled_weed', weight: 12 },
-    { itemId: 'glimmerfin_koi', weight: 3 },
-    { itemId: null, weight: 10 },
-  ],
-  mirefen_marsh: [
-    { itemId: 'raw_marsh_pike', weight: 40 },
-    { itemId: 'raw_bog_eel', weight: 30 },
-    { itemId: 'soggy_boot', weight: 8 },
-    { itemId: 'tangled_weed', weight: 9 },
-    { itemId: 'glimmerfin_koi', weight: 3 },
-    { itemId: null, weight: 10 },
-  ],
-  thornpeak_heights: [
-    { itemId: 'raw_frostgill_trout', weight: 40 },
-    { itemId: 'raw_stonescale_carp', weight: 30 },
-    { itemId: 'tangled_weed', weight: 14 },
-    { itemId: 'glimmerfin_koi', weight: 4 },
-    { itemId: null, weight: 12 },
-  ],
-};
+// Catch rarity ladder (Professions 2.0 Phase 11): fishing proficiency selects
+// one of three per-zone tables (bands). As proficiency rises the weight shifts
+// out of the junk rows (tangled_weed / soggy_boot) and the empty-hook null row
+// and into the zone's food-fish rows (the cooking inputs). The moves are
+// strictly monotonic per band step (each food fish non-decreasing, each junk /
+// null row non-increasing), the rare glimmerfin_koi weight is deliberately flat
+// across every band (its odds never scale with skill), every band still sums to
+// exactly 100, and the empty-hook null row is always present with weight >= 1.
+// Band boundaries and selection live in src/sim/professions/fishing.ts
+// (fishingBandFor); FISHING_TABLES_BY_BAND[band][zoneId] is the resolved table,
+// with the eastbrook_vale row as the fallback for any zone without its own.
+export const FISHING_TABLES_BY_BAND: Record<string, FishingEntry[]>[] = [
+  // Band 0 (proficiency 0-99): byte-identical to the shipped starter tables, so
+  // every pre-Phase-11 seed reproduces the exact same catch sequence.
+  {
+    eastbrook_vale: [
+      { itemId: 'raw_mirror_trout', weight: 45 },
+      { itemId: 'raw_river_perch', weight: 30 },
+      { itemId: 'tangled_weed', weight: 12 },
+      { itemId: 'glimmerfin_koi', weight: 3 },
+      { itemId: null, weight: 10 },
+    ],
+    mirefen_marsh: [
+      { itemId: 'raw_marsh_pike', weight: 40 },
+      { itemId: 'raw_bog_eel', weight: 30 },
+      { itemId: 'soggy_boot', weight: 8 },
+      { itemId: 'tangled_weed', weight: 9 },
+      { itemId: 'glimmerfin_koi', weight: 3 },
+      { itemId: null, weight: 10 },
+    ],
+    thornpeak_heights: [
+      { itemId: 'raw_frostgill_trout', weight: 40 },
+      { itemId: 'raw_stonescale_carp', weight: 30 },
+      { itemId: 'tangled_weed', weight: 14 },
+      { itemId: 'glimmerfin_koi', weight: 4 },
+      { itemId: null, weight: 12 },
+    ],
+  },
+  // Band 1 (proficiency 100-199): junk and empty hooks give way to more food fish.
+  {
+    eastbrook_vale: [
+      { itemId: 'raw_mirror_trout', weight: 48 },
+      { itemId: 'raw_river_perch', weight: 33 },
+      { itemId: 'tangled_weed', weight: 8 },
+      { itemId: 'glimmerfin_koi', weight: 3 },
+      { itemId: null, weight: 8 },
+    ],
+    mirefen_marsh: [
+      { itemId: 'raw_marsh_pike', weight: 43 },
+      { itemId: 'raw_bog_eel', weight: 33 },
+      { itemId: 'soggy_boot', weight: 6 },
+      { itemId: 'tangled_weed', weight: 7 },
+      { itemId: 'glimmerfin_koi', weight: 3 },
+      { itemId: null, weight: 8 },
+    ],
+    thornpeak_heights: [
+      { itemId: 'raw_frostgill_trout', weight: 43 },
+      { itemId: 'raw_stonescale_carp', weight: 33 },
+      { itemId: 'tangled_weed', weight: 10 },
+      { itemId: 'glimmerfin_koi', weight: 4 },
+      { itemId: null, weight: 10 },
+    ],
+  },
+  // Band 2 (proficiency 200+): a seasoned angler; food fish dominate, an empty
+  // hook is rare but never impossible.
+  {
+    eastbrook_vale: [
+      { itemId: 'raw_mirror_trout', weight: 51 },
+      { itemId: 'raw_river_perch', weight: 36 },
+      { itemId: 'tangled_weed', weight: 4 },
+      { itemId: 'glimmerfin_koi', weight: 3 },
+      { itemId: null, weight: 6 },
+    ],
+    mirefen_marsh: [
+      { itemId: 'raw_marsh_pike', weight: 46 },
+      { itemId: 'raw_bog_eel', weight: 36 },
+      { itemId: 'soggy_boot', weight: 4 },
+      { itemId: 'tangled_weed', weight: 5 },
+      { itemId: 'glimmerfin_koi', weight: 3 },
+      { itemId: null, weight: 6 },
+    ],
+    thornpeak_heights: [
+      { itemId: 'raw_frostgill_trout', weight: 46 },
+      { itemId: 'raw_stonescale_carp', weight: 36 },
+      { itemId: 'tangled_weed', weight: 6 },
+      { itemId: 'glimmerfin_koi', weight: 4 },
+      { itemId: null, weight: 8 },
+    ],
+  },
+];
+
+// The band-0 tables, kept under the original export name so pre-Phase-11
+// consumers (the deeds zone-key guard in tests/deeds_content.test.ts) resolve
+// unchanged. Identical object as FISHING_TABLES_BY_BAND[0], so its rows are the
+// shipped rows byte for byte.
+export const FISHING_TABLES: Record<string, FishingEntry[]> = FISHING_TABLES_BY_BAND[0];
 
 // The rare catch worth a celebratory shout in the combat log.
 export const FISHING_RARE_ID = 'glimmerfin_koi';

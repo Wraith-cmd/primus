@@ -22,6 +22,12 @@ describe('classifyDiff', () => {
     expect(plan.generic).toHaveLength(0);
   });
 
+  it('maps the player tooltip view to its focused hover target', () => {
+    const plan = classifyDiff(['src/ui/player_tooltip_view.ts']);
+    expect(plan.isVisual).toBe(true);
+    expect(plan.specific.map((t: { key: string }) => t.key)).toEqual(['player-tooltip']);
+  });
+
   it('maps the tank cooldown regression suite to its focused visual target', () => {
     const plan = classifyDiff(['tests/tank_defensive_cds.test.ts']);
     expect(plan.isVisual).toBe(true);
@@ -70,6 +76,13 @@ describe('classifyDiff', () => {
     );
     expect(keys).toEqual(['inventory', 'world-map']);
   });
+
+  it('stages a complete profession identity for refresh-aware captures', () => {
+    const target = resolveTargets(['src/ui/professions_window.ts']).find(
+      (candidate: { key: string }) => candidate.key === 'professions',
+    );
+    expect(target?.capture.toString()).toContain('knownRecipes: []');
+  });
 });
 
 describe('diffChangedPaths', () => {
@@ -94,9 +107,12 @@ describe('diffChangedPaths', () => {
   });
 
   it('a DELETED visual file still classifies as a visual change', () => {
+    // src/game/mobile_controls.ts is visual (VISUAL_PREFIXES) and mobile (isMobilePath)
+    // but maps to no specific window target's `when` list, so this stays a pure
+    // generic-fallback probe.
     const diff = section(
-      'a/src/styles/hud.mobile.css b/src/styles/hud.mobile.css',
-      'a/src/styles/hud.mobile.css',
+      'a/src/game/mobile_controls.ts b/src/game/mobile_controls.ts',
+      'a/src/game/mobile_controls.ts',
       '/dev/null',
     );
     const plan = classifyDiff(diffChangedPaths(diff));

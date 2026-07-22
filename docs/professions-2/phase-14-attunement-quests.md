@@ -5,7 +5,11 @@ all four wave-one archetypes, honest switching costs through repeatable make-ame
 masters' recurring pull (cadence-capped work-order quests and tier-crossing congratulation
 mail, the 2026-07-17 amendment), and
 the legibility layer (trend nudges that complete #1295, a pre-commit preview that explains
-everything, and the attunement celebration). It is its own slice because it is the first phase
+everything, and the attunement celebration). The 2026-07-20 amendments add one more legibility
+row: the crafting window gains a "learnable at a master" discoverability hint, because the
+Phase 9 known-recipes-only filter made the untrained ladders invisible from the window players
+actually live in, and the phase that makes masters prominent is the right one to route players
+to them. It is its own slice because it is the first phase
 where the PR 2039 quest machinery, the Phase 7 trend classifier, and the Phase 8 masters meet in
 player-facing content: every hook it fills already exists, and nothing later depends on it except
 the Phase 15 deed pass.
@@ -99,11 +103,20 @@ Agent content deliverables:
 - One repeatable work-order quest per master (six total; the 2026-07-17 amendment): a
   cadence-capped craft-objective turn-in ("the master needs N of X") on QuestDef.repeatable
   plus the 2039 craft objective, consuming that master's craft materials: a recurring
-  material sink with a face on it. Rewards use the state.md work-order tuning target
-  (MAINTAINER numbers; stop and ask if they are still absent; never gold-positive against
-  the input vendor value) and the cadence cap reuses the nudge cadence pattern so the loop
-  can never become an unbounded XP or gold faucet (the q_prof_hobby_switch lesson in
-  state.md OPEN items).
+  material sink with a face on it. Rewards use the RESOLVED formula in state.md Tuning
+  targets (the 2026-07-20 mastery amendments: coin = floor(0.5 * summed input vendor SELL
+  value) plus standard repeatable-quest XP for the level band; vendoring always pays more
+  gold by construction, so the loop is never gold-optimal) and the cadence cap reuses the
+  nudge cadence pattern so the loop can never become an unbounded XP or gold faucet (the
+  q_prof_hobby_switch lesson, resolved to 0 XP in Phase 12c).
+- Master voices (the 2026-07-20 mastery amendments; approved sketches, maintainer vetoes
+  wording in the PR review). Every quest, work order, and letter this phase writes speaks
+  in its master's voice: forgemistress_darva, a stern forge veteran, warm underneath,
+  praise earned not given; cook_marlow, jovial, feeds everyone, thinks in food metaphors;
+  weaver_ottilie, precise and quietly proud, measures twice; tinker_gizzel, manic
+  enthusiasm, tangents mid-sentence, loves volatile things slightly too much;
+  tanner_hesk, taciturn, few words, judges by hands not talk; alchemist_verane, an aloof
+  scholar with dry wit and exact warnings.
 
 Agent sim deliverables:
 - Switch cost wiring: the escalation formula resolves in the sim through the make-amends
@@ -125,6 +138,15 @@ Agent ui deliverables:
   picture (majors, hobby, dormancy, return cost) is visible pre-commit in both hosts.
 - Attunement celebration: banner plus title grant plus an id-based zone broadcast that
   re-localizes through the sim_i18n matcher; the deed hook is left for Phase 15.
+- The "learnable at a master" hint row (the 2026-07-20 amendment): the crafting window,
+  which lists known recipes only since Phase 9, gains one discoverability line per craft
+  section telling the player MORE recipes are taught at that craft's master (resolve
+  knownness via the shared train_view.ts viewer predicates and the station via the
+  sim-side stationTypeForCraft in src/sim/professions/stations.ts; never a second
+  knownness rule). Untrained ladders exist but are
+  invisible today; this row routes players to them. Today's tokens, English-only t() key,
+  both hosts, graphics-preset-identical; render it only when the viewer actually has
+  unlearned trainer recipes for that craft (no noise for a fully-trained craft).
 
 Agent tests deliverables:
 - Extend tests/profession_attunement_quests.test.ts and tests/prof_intro_quest.test.ts:
@@ -206,6 +228,9 @@ STEP 5 - ACCEPTANCE CRITERIA (do not mark complete until all check):
 - [ ] Crossing a major-craft tier delivers exactly one congratulation mail from the
       archetype's master; re-crossings, hobby crossings, and unattuned characters deliver
       none.
+- [ ] The crafting window shows the "learnable at a master" hint exactly when the viewer
+      has unlearned trainer recipes for that craft, naming the right master or station, in
+      both hosts, through the shared viewer predicates.
 - [ ] q_archetype_acceptance and q_prof_make_amends are fully retired: no content rows,
       i18n keys, locale fills, tests, or questIds references remain.
 - [ ] Players attuned via 2039's intro quest keep their state; mid-quest placeholder

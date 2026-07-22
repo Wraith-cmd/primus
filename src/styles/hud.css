@@ -91,23 +91,43 @@
   .np-ai.ai-tag {
     display: inline-block;
   }
-  /* $WOC holder-tier flair badge, inline to the left of a player's name */
+  /* $WOC holder-tier flair badge, inline to the left of a player's name. The
+     legibility outline is layered with a static per-tier halo (the "stand out"
+     knob): the glow hue comes from the painter via --holder-glow, the blur
+     strength from the named --holder-halo tunable in tokens.css. No animation, so
+     it is reduced-motion safe. Falls back to transparent (no halo) when unset. */
   .np-tier {
     display: inline-block;
     width: 15px;
     height: 15px;
     vertical-align: middle;
     margin-right: 3px;
-    filter: drop-shadow(0 1px 1px #000);
+    filter: drop-shadow(0 1px 1px #000)
+      drop-shadow(0 0 var(--holder-halo) var(--holder-glow, transparent));
   }
-  /* developer-badge flair, inline to the left of a player's name */
+  /* Band IV regalia (Worldbearer, Sovereign): a moderately stronger halo. */
+  .np-tier.np-tier-regalia {
+    filter: drop-shadow(0 1px 1px #000)
+      drop-shadow(0 0 var(--holder-halo-strong) var(--holder-glow, transparent));
+  }
+  /* developer-badge flair, inline to the left of a player's name. Mirrors the
+     holder badge: a legibility outline plus a static per-tier halo, the hue from
+     the painter via --dev-glow and the blur strength from the shared --holder-halo
+     tunable (tokens.css). No animation, so it is reduced-motion safe. Falls back to
+     transparent (no halo) when unset. */
   .np-dev-tier {
     display: inline-block;
     width: 15px;
     height: 15px;
     vertical-align: middle;
     margin-right: 3px;
-    filter: drop-shadow(0 1px 1px #000);
+    filter: drop-shadow(0 1px 1px #000)
+      drop-shadow(0 0 var(--holder-halo) var(--dev-glow, transparent));
+  }
+  /* Significant-contributor rungs (Architect, Worldwright): a stronger halo. */
+  .np-dev-tier.np-dev-tier-strong {
+    filter: drop-shadow(0 1px 1px #000)
+      drop-shadow(0 0 var(--holder-halo-strong) var(--dev-glow, transparent));
   }
   /* significant-contributor name outline: a steady halo layered over whatever
      name color applies (Discord staff or default). The colour is supplied by the
@@ -602,7 +622,14 @@
     left: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    /* Each icon's duration text hangs 13px BELOW it, out of flow (.buff .dur,
+       bottom: -13px), so the wrap row gap reserves that height (13px + the 4px
+       visual gap) or a wrapped row paints over the previous row's timers, and
+       the bottom padding folds the LAST row's timers into the strip's own box,
+       so the measured below-target bottom (party_below_target_painter.ts)
+       covers them too. */
+    gap: 17px 4px;
+    padding-bottom: 13px;
     max-width: 100%;
     pointer-events: auto;
   }
@@ -1328,7 +1355,7 @@
     background: #14101e;
     border: 1px solid #000;
     outline: 1px solid #3a3148;
-    margin: 0 auto 4px;
+    margin: 4px auto 0;
     position: relative;
     border-radius: 2px;
     overflow: hidden;
@@ -1389,8 +1416,9 @@
     align-items: flex-end;
     gap: 8px;
   }
-  /* xp bar stacks directly on the action bar; the taller side-button
-     column must not push it up (it used to float ~150px above the bar) */
+  /* xp bar sits UNDER the action bar as the stack's last row, pinned to the
+     bottom of the screen; the taller side-button column must not push the
+     stack up (it used to float ~150px above the bar) */
   #actionbar-stack {
     display: flex;
     flex-direction: column;
@@ -1655,6 +1683,39 @@
     height: 0%;
     border-radius: 0 0 4px 4px;
   }
+  /* The recharge veil on a charge-pool ability (Twinstrike, Double Charge): a
+     spent charge regenerating while the button stays pressable. Same bottom-up
+     curtain language as .cd-overlay so it reads as "cooldown", but far more
+     transparent so the icon stays bright and clearly usable; the full-strength
+     curtain still runs on an empty pool. Height driven by rechargePercent. */
+  .action-btn .recharge-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 0%;
+    background: #0008;
+    border-radius: 0 0 4px 4px;
+    pointer-events: none;
+  }
+  /* A charge count reads as CHARGES, not an item stack: gold, a step larger
+     than the 10px stack count it replaces on these buttons, laid directly on
+     the icon with a heavy dark outline for contrast (no plate), and lifted
+     ABOVE the cooldown curtain and recharge veil (which follow it in the DOM)
+     so the stored-uses number never disappears under a sweep. */
+  .action-btn .item-count.charge-count {
+    right: 3px;
+    bottom: 2px;
+    font-size: 13px;
+    color: var(--gold);
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000,
+      0 0 3px #000;
+    z-index: 1;
+  }
   .action-btn.unusable .icon-label {
     filter: grayscale(1) brightness(0.5);
   }
@@ -1726,16 +1787,42 @@
     box-shadow: 0 0 8px #7fd1ff88;
   }
   /* micro-menu: bottom-right, stacked upward, sitting just above the
-     Discord/GitHub buttons (both right-aligned to the same edge). */
+     Discord/GitHub buttons (both right-aligned to the same edge). Two adjacent
+     columns instead of one long rail: col-b (the launchers used most in
+     combat/travel, plus the Daily Rewards chest) hugs the same right edge the
+     single rail used to anchor to; col-a sits right next to it with a small
+     gap, never spread across the HUD. Splitting the rail in two roughly halves
+     its height, which is what used to force the short-viewport compaction
+     below onto a maximized 1366x768 laptop. */
   #side-buttons {
     position: absolute;
     right: 16px;
     bottom: 74px;
     display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 2px;
+    z-index: 19;
+  }
+  .side-buttons-col {
+    display: flex;
     flex-direction: column;
     align-items: flex-end;
+    /* Explicit, not content-sized: #daily-rewards-button is 50px wide against
+       the 34px .micro-btn, and flex-end would otherwise right-align it inside
+       a 50px-wide column, opening a dead gutter between the two columns. */
+    width: 34px;
     gap: 4px;
-    z-index: 19;
+  }
+  /* col-b hugs the screen edge, so its hover flyouts grow leftward ACROSS
+     col-a. The flyout ::before is z-index: -1 (tucked under its own button),
+     which in the shared #side-buttons stacking context also painted it under
+     col-a's buttons, clipping the label. Lift col-b into its own stacking
+     context above col-a: the flyout still paints under its own column's
+     buttons but over the neighbor column's. */
+  #side-buttons-col-b {
+    position: relative;
+    z-index: 1;
   }
   .micro-btn {
     width: 34px;
@@ -1845,13 +1932,18 @@
     pointer-events: none;
   }
   /* Short-viewport rescue: #side-buttons is bottom-anchored and grows upward,
-     so on a maximized 1366x768 laptop (about 660px usable height) the topmost
-     button (the Daily Rewards chest) is pushed off the top of the screen and
-     becomes unclickable. Compact the rail (shorter buttons, tighter gap) so
-     every launcher, including the chest, stays on screen. Pinned by the
-     rail-height budget test in tests/crafting_launcher.test.ts. */
-  @media (max-height: 720px) {
-    #side-buttons {
+     so on a very short viewport the topmost button in the taller column (the
+     Daily Rewards chest, at the top of col-b) could still be pushed off the
+     top of the screen. Compact each column (shorter buttons, tighter gap) so
+     every launcher, including the chest, stays on screen. The two-column
+     split already keeps each column well under budget at 1366x768, but the
+     rescue stays as a floor for shorter viewports still. Pinned by the
+     rail-height budget test in tests/crafting_launcher.test.ts. Threshold is
+     600px, not 720px: uncompacted col-b (128 + 10 * (30 + 4) = 468) already
+     fits the 660px maximized-1366x768 budget, so the rescue only needs to
+     fire below that. */
+  @media (max-height: 600px) {
+    .side-buttons-col {
       gap: 1px;
     }
     #side-buttons .micro-btn {
@@ -1936,6 +2028,17 @@
     overflow: hidden;
     border-radius: 0 6px 6px 6px;
     position: relative;
+  }
+  /* The project-owned masterwork seal decorates zone celebration lines. Its
+     empty alt plus aria-hidden keep #chat-live's relayed text exactly the
+     localized line while sighted players get the authored visual cue. */
+  #chatlog .chat-masterwork-seal {
+    width: 15px;
+    height: 15px;
+    margin: 0 4px 0 1px;
+    object-fit: contain;
+    vertical-align: -3px;
+    pointer-events: none;
   }
   /* the empty area of the tab strip is a move handle (the tab buttons sit above it) */
   #chatlog-tabs {
@@ -2280,6 +2383,14 @@
     flex-direction: column;
     gap: 14px;
     pointer-events: none;
+    /* Above #side-buttons (z-index: 19): the two-column rail split moved its
+       icon strip taller on short viewports, into the tracker's vertical span.
+       Text stays readable over the icons instead of the rail painting over it.
+       The clickable rows inside the stack are shrunk to their own content
+       width (qt-header, qt-title, dt-header, dt-affix-row below) so this
+       z-index bump changes paint order only: it never lets a full-width
+       tracker row steal a click or hover meant for a rail button under it. */
+    z-index: 20;
   }
   /* ---------- quest tracker ---------- */
   #quest-tracker {
@@ -2293,11 +2404,19 @@
      click-through overlay and toggles the tracker's collapsed state. Native button
      chrome is reset so it keeps the plain gold-title look. The bottom border uses a
      themeable gold mix so it tracks the active UI theme. */
+  /* width: fit-content (not 100%): the header sits inside #right-tracker-stack,
+     which paints above the side-button rail on short viewports (z-index: 20
+     above). A full-width button would steal clicks and hover from any rail
+     icon its box happened to cross; shrinking the hitbox to the label's own
+     content keeps the click on whichever element is actually under the
+     pointer. The border-bottom underline shrinks to match: an accepted
+     tradeoff over the rail eating the tracker's clicks. */
   #quest-tracker .qt-header {
     display: flex;
     align-items: center;
     gap: 6px;
-    width: 100%;
+    width: fit-content;
+    max-width: 100%;
     font-family: var(--title-font);
     font-size: 14px;
     color: var(--color-text-overlay);
@@ -2336,10 +2455,15 @@
   }
   /* Quest rows are clickable: they re-enable pointer events like the header
      and jump to that quest's detail in the quest log (L). */
+  /* width: fit-content, same rail click-steal rationale as .qt-header above:
+     the block would otherwise span the tracker's full 240px, far past the
+     visible title text, and win clicks meant for a rail button underneath. */
   #quest-tracker .qt-title {
     font-weight: bold;
     margin-top: 8px;
     font-family: var(--title-font);
+    width: fit-content;
+    max-width: 100%;
     pointer-events: auto;
     cursor: pointer;
   }
@@ -2393,11 +2517,14 @@
     text-shadow: 1px 1px 2px #000;
     pointer-events: none;
   }
+  /* width: fit-content, same rail click-steal rationale as #quest-tracker
+     .qt-header above (both trackers share #right-tracker-stack). */
   #deed-tracker .dt-header {
     display: flex;
     align-items: center;
     gap: 6px;
-    width: 100%;
+    width: fit-content;
+    max-width: 100%;
     font-family: var(--title-font);
     font-size: 14px;
     color: var(--color-text-overlay);
@@ -2500,6 +2627,9 @@
   #delve-tracker .dt-obj.done {
     color: var(--color-text-success);
   }
+  /* width: fit-content, same rail click-steal rationale as the quest/deed
+     tracker headers above: a block flex row otherwise fills the tracker's
+     full width and wins hover/click meant for a rail button underneath. */
   #delve-tracker .dt-affix-row {
     pointer-events: auto;
     margin: 4px 0 0 8px;
@@ -2507,6 +2637,8 @@
     align-items: center;
     gap: 4px;
     flex-wrap: wrap;
+    width: fit-content;
+    max-width: calc(100% - 8px);
   }
   #delve-tracker .dt-affix-label {
     color: #c9b27a;
@@ -2636,7 +2768,6 @@
   #minimap {
     border-radius: 50%;
     border: 4px solid var(--border);
-    outline: 1px solid #000;
     box-shadow:
       0 0 14px #000c,
       inset 0 0 20px #0008;
@@ -2794,6 +2925,65 @@
     position: relative;
     display: inline-block;
     line-height: 0;
+  }
+  /* Hand-gilded ring around the round minimap disc, reusing the Performance
+     Overlay's gilt-gradient technique (#2196, perf_ornament_svg.ts /
+     applyMinimapOrnamentVars, called once at boot). A circular disc needs no
+     mask geometry the way that window's straight edges/corners did: the ring
+     is simply a same-shape ::before sized a few px larger than the canvas,
+     painted BEHIND it (negative z-index), so the canvas's own fully opaque
+     pixels cover the center and only the extra outer band reads as the ring.
+     No layout change: the ring lives outside #minimap-disc's own box (which
+     stays exactly canvas-sized), so the rim badges below keep their existing
+     positions and z-index: 3 stacks safely above this ring. */
+  #minimap-disc::before {
+    content: "";
+    position: absolute;
+    /* Thin: matches a real gold ring's proportions (and this element's own
+       pre-ornament width), not a thick painted band. An earlier pass widened
+       this to make the texture easier to see and overshot into "thick single
+       color border" territory; the fix was better texture, not more width.
+       -6px (not the -5px this narrowly missed) also gives the dark tarnish
+       speckles (minimap_gilded_ornament.ts) enough visible band width to
+       render as more than sub-pixel dots. */
+    inset: -6px;
+    z-index: -1;
+    border-radius: 50%;
+    /* Not a stack of discrete color BANDS (an earlier pass read as a
+       striped/layered ring once actually compared against the reference):
+       real hand-gilded gold reads as textured because of slight dark
+       tarnish spotting across the surface, not because the metal is
+       painted in rings. Three layers, each a real axis of variation:
+       1) `--minimap-gilt` (#2196's perfGiltGradientBackground(), reused
+          as-is): hand-applied, uneven tone BY ANGLE around the ring;
+       2) `--minimap-speckle` (minimap_gilded_ornament.ts,
+          minimapGiltSpeckleBackground(), reusing that same file's seeded
+          mulberry32 PRNG): a sparse field of small dark tarnish spots
+          (weighted heavily toward the dark end of the gold ramp, matching
+          the reference's brass-with-dark-spotting look, not bright
+          flecks). `hard-light` (not `overlay`) blends it into (1):
+          hard-light's multiply-vs-screen choice is decided by the SOURCE
+          (this speckle layer), so a dark spot consistently darkens
+          wherever it sits; overlay decides by the BACKDROP instead, which
+          read as washed out against the gilt gradient's own swings. The
+          spots read as tarnish IN the metal, not decals on top of it;
+       3) a soft directional sheen on top (normal blend; the same
+          `radial-gradient(circle at 50% 30%, ...)` fake-3D highlight
+          convention this file already uses on #minimap-clock/#raid-lockout/
+          #minimap-zoom). */
+    background:
+      radial-gradient(circle at 50% 20%, #fff8df50, transparent 55%), var(--minimap-speckle),
+      var(--minimap-gilt);
+    background-size:
+      auto,
+      100% 100%,
+      auto;
+    background-blend-mode: normal, hard-light, normal;
+    box-shadow:
+      inset 0 0 0 1px #fff2c440,
+      inset 0 0 2px 1px #00000060,
+      0 1px 3px #000a;
+    pointer-events: none;
   }
   /* raid-lockout badge: a small satellite button hugging the bottom-left rim of
      the round minimap (classic tracking-button placement). Dim when every
@@ -3078,6 +3268,36 @@
     color: var(--color-text-muted);
     font-size: 11px;
   }
+  #tooltip .tt-masterwork-seal,
+  #tooltip .tt-makers-mark {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  #tooltip .tt-masterwork-seal-icon {
+    flex: 0 0 auto;
+    width: calc(20px * var(--tooltip-scale, 1));
+    height: calc(20px * var(--tooltip-scale, 1));
+    object-fit: contain;
+  }
+  #tooltip .tt-makers-mark-icon {
+    flex: 0 0 auto;
+    width: calc(16px * var(--tooltip-scale, 1));
+    height: calc(16px * var(--tooltip-scale, 1));
+  }
+  #tooltip .tt-profession-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--color-text-light);
+    font-family: var(--title-font);
+  }
+  #tooltip .tt-profession-header img {
+    flex: 0 0 auto;
+    width: calc(40px * var(--tooltip-scale, 1));
+    height: calc(40px * var(--tooltip-scale, 1));
+    object-fit: contain;
+  }
   /* World mob-hover tooltip (mob_tooltip_view.ts): a bit roomier than the default
      item/ability tooltip box, since it is read at a glance while moving. The
      compound selector (higher specificity than the plain #tooltip .tt-title/
@@ -3143,6 +3363,13 @@
   }
   #tooltip .tt-row .tt-armor.tt-armor-bad {
     color: #ff5040;
+  }
+  /* Weapon type (Sword/Dagger/Mace/...): its own plain line under the quality/kind
+     line, above the slot. Keeps the muted tt-sub color, deliberately NOT brightened
+     or class-colored like armor weight: any class can equip most weapon types, so
+     this is an at-a-glance identity cue, not a can-I-use-it warning. */
+  #tooltip .tt-weapon-type {
+    color: var(--color-text-muted);
   }
   /* One-line aura effect summary under the tooltip title (buff/debuff hover). */
   #tooltip .tt-effect {
@@ -3934,7 +4161,7 @@
     display: grid;
     place-items: center;
     border-radius: 9px;
-    background: #0006;
+    background: #0008;
     box-shadow: inset 0 0 0 1px #ffffff22;
   }
   .fa-card .fa-icon svg {
@@ -4172,6 +4399,19 @@
     letter-spacing: 1px;
     white-space: nowrap;
   }
+  #banner.banner-with-art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+  }
+  #banner .banner-art {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+    filter: drop-shadow(var(--art-shadow-lg));
+  }
   /* Reduced-motion celebrations (hud.ts showBanner motion=false): the banner
      appears and clears instantly, same text and duration, no fade. */
   #banner.banner-no-motion {
@@ -4388,7 +4628,51 @@
     zoom: var(--party-frame-scale, 1);
   }
   #party-frames.below-target {
-    top: 96px;
+    /* Below the target frame's MEASURED bottom: party_below_target_painter.ts
+       writes the author-space bottom of the target frame INCLUDING its
+       #tf-debuffs strip into --party-below-target-bottom, so the frames clear
+       the buff strip at any buff count, UI scale, or dragged frame position.
+       (The strip's own padding folds its hanging timer text into that box, so
+       a plain 8px gap suffices.) The var fallback reproduces the old
+       hand-tuned 96px (88px + the gap) before the first measure lands. */
+    top: calc(var(--party-below-target-bottom, 88px) + 8px);
+  }
+  #party-frames.below-target .party-rows {
+    /* A long roster below a tall stack must not run off screen (a 10-raid
+       against a heavily debuffed target did, on a 720px-tall window): the
+       painter's sensors (the rows' measured top and, on desktop, the viewport
+       bottom as the limit) bound the rows 12px above the limit, one 40px row
+       minimum, and overflow members scroll. The whole calc divides by the
+       Party Frame Scale zoom this element carries, which multiplies author
+       lengths back at used-value time (the mobile tier pins zoom: 1 and has
+       its own rule). Unset sensors (no push) fall back to no bound.
+       The grid column is EXACTLY one frame wide, so a bare scroll container
+       would clip everything a .party-frame paints outside its border box: the
+       .panel keyline (outline: 1px) and the 5px :focus-visible ring, on every
+       frame, whenever a target is selected and regardless of whether anything
+       actually overflows. The padding gives that paint room inside the scroll
+       container and the equal negative margin cancels it, so the frames land
+       in exactly the same place. --party-rows-frame-pad is the ONE constant
+       both facts derive from: the negative margin lifts the measured rows top
+       by exactly the pad, so the max-height calcs here and in the mobile tier
+       add the pad back and state their intended gaps (12px here, 8px mobile)
+       literally, staying correct if the pad is ever retuned. */
+    --party-rows-frame-pad: 6px;
+    padding: var(--party-rows-frame-pad);
+    margin: calc(-1 * var(--party-rows-frame-pad));
+    max-height: max(
+      40px,
+      calc(
+        (
+          var(--party-rows-limit, 100dvh) -
+          var(--party-rows-top, 0px) -
+          12px +
+          var(--party-rows-frame-pad)
+        ) /
+        var(--party-frame-scale, 1)
+      )
+    );
+    overflow: auto;
   }
   .party-frame {
     --cls: #7fb8ff;
@@ -4772,6 +5056,39 @@
     background-repeat: no-repeat;
     background-position: center;
   }
+  /* Bag-item action menu (Professions 2.0 Phase 13): the Apply Enchant picker
+     rows carry a dim meta sub-line (target slot + reagent affordability), and an
+     unaffordable enchant row is shown but not selectable (aria-disabled), so the
+     player can see what a reagent unlocks before they have it. */
+  #ctx-menu .ctx-item-meta {
+    display: block;
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--color-text-muted);
+  }
+  #ctx-menu .ctx-item[aria-disabled="true"] {
+    color: var(--color-text-muted);
+    cursor: default;
+  }
+  #ctx-menu .ctx-item[aria-disabled="true"]:hover {
+    background: none;
+    color: var(--color-text-muted);
+  }
+  /* Apply Enchant picker sizing (Phase 13 QA, maintainer direction): the full
+     enchant list plus per-row meta sub-lines outgrew the shared popup's natural
+     size and ran nearly the whole viewport. The picker states alone (the
+     painter-managed ctx-menu-picker modifier) take a wider, height-capped,
+     scrolling box; the shared base block above, and with it the player/chat
+     menus, keeps its exact sizing. placePopupAt reserves the capped box and
+     keepPopupOnScreen still clamps it fully on-screen. */
+  #ctx-menu.ctx-menu-picker {
+    box-sizing: border-box;
+    min-width: 280px;
+    max-width: 400px;
+    max-height: min(60vh, 560px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
 
   /* ---------- ai account tag ---------- */
   /* ONE class for all three surfaces the operator-set AI mark lands on: the chat
@@ -4815,6 +5132,16 @@
      sender name, so the breathing room is added here and nowhere else. */
   #chatlog .ai-tag {
     margin-right: 3px;
+  }
+  /* Staff/special-role chat tag ([Levy St], [Core Dev], ...): the color comes
+     inline from the shared role catalog (chat matches the nameplate tint), so
+     this rule only sets weight, spacing, and the legibility halo.
+     GAMEPLAY-NEUTRAL like .ai-tag above: identity disclosure, never actionable
+     state, so no tier or setting may hide it. */
+  #chatlog .chat-role-tag {
+    font-weight: 700;
+    margin-right: 3px;
+    text-shadow: 1px 1px 2px #000;
   }
   /* Player-menu header. The tag is nested INSIDE .ctx-title-name (the header is a
      flex row with a 9px gap, so a sibling would drift away from the name it

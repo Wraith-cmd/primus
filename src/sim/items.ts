@@ -37,12 +37,13 @@ import type { SimContext } from './sim_context';
 import {
   CONSUME_DURATION,
   CONSUME_TICKS,
+  cloneItemInstancePayload,
   dist2d,
   type Entity,
   type EquipSlot,
-  FISHING_CAST_ID,
   INTERACT_RANGE,
   type ItemInstancePayload,
+  isNonSpellCast,
   POTION_COOLDOWN,
 } from './types';
 import { vendorStackSize } from './vendor_stack';
@@ -93,18 +94,50 @@ function desiredEquipSlot(meta: PlayerMeta, itemId: string): EquipSlot | null {
 // ctx.removeItem there would eat the enchanted copy first when both exist.
 // sellItem/discardItem below and trade.ts's drop arm route through this instead
 // so "sell/discard/trade one" prefers the plain copy a player almost always means.
+// The optional `skip` predicate (Professions 2.0 Phase 13) spares any instanced
+// copy it matches from removal: the trade swap passes it to never consume a
+// trade-locked (boundTo-set) copy. Absent, the function is byte-identical to
+// before: fungible first, then ctx.removeItem for the remainder. Only the
+// skip-aware path walks the inventory itself (removeItem cannot skip), and it
+// mirrors removeItem's highest-index-first order and clone-on-survival return
+// contract exactly, so a caller mutating a returned payload (the trade
+// bind-on-trade stamp) never aliases a surviving stack's shared payload.
 export function removePreferFungible(
   ctx: SimContext,
   itemId: string,
   count: number,
   pid?: number,
+  skip?: (instance: ItemInstancePayload) => boolean,
 ): ItemInstancePayload[] {
   const fungibleAvailable = ctx.countFungibleItem(itemId, pid);
   const fungibleTake = Math.min(fungibleAvailable, count);
   if (fungibleTake > 0) ctx.removeFungibleItem(itemId, fungibleTake, pid);
   const remaining = count - fungibleTake;
   if (remaining <= 0) return [];
-  return ctx.removeItem(itemId, remaining, pid);
+  if (!skip) return ctx.removeItem(itemId, remaining, pid);
+  const r = ctx.resolve(pid);
+  if (!r) return [];
+  const { meta } = r;
+  const consumed: ItemInstancePayload[] = [];
+  let left = remaining;
+  for (let i = meta.inventory.length - 1; i >= 0 && left > 0; i--) {
+    const s = meta.inventory[i];
+    if (s.itemId !== itemId || !s.instance || skip(s.instance)) continue;
+    const take = Math.min(s.count, left);
+    for (let unit = 0; unit < take; unit++) {
+      const finalUnitOfSlot = take >= s.count && unit === take - 1;
+      consumed.push(finalUnitOfSlot ? s.instance : cloneItemInstancePayload(s.instance));
+    }
+    s.count -= take;
+    left -= take;
+    if (s.count <= 0) meta.inventory.splice(i, 1);
+  }
+  // Same post-removal hook the inventory hub's removeItem fires. Optional-called
+  // so a decoupled test ctx that models inventory but omits the hook (its own
+  // removeItem does the same) is not forced to stub it; the live SimContext
+  // always provides it.
+  ctx.onInventoryChangedForQuests?.(meta);
+  return consumed;
 }
 
 export function discardItem(ctx: SimContext, itemId: string, count = 1, pid?: number): void {
@@ -224,8 +257,10 @@ export function equipItem(
   const consumed = ctx.removeItem(itemId, 1, meta.entityId);
   if (old) {
     // Return the piece that was worn: if it carried an enchant, give it back
-    // its own instanced slot (never merge it into a plain stack, which would
-    // silently drop the enchant), same non-merge rule addItemInstance follows.
+    // its own instanced slot (never merged into a plain stack, which would
+    // silently drop the enchant; worn kinds are 1-per-slot, so the
+    // identical-payload merge arm addItemInstance grew in Phase 12d could
+    // never apply here anyway).
     if (oldInstance) meta.inventory.push({ itemId: old, count: 1, instance: oldInstance });
     else addItemSilent(old, 1, meta);
   }
@@ -327,6 +362,16 @@ export function useItem(ctx: SimContext, itemId: string, pid?: number): ItemUseR
     ctx.startFishing(p, meta);
     return;
   }
+  // Phase 12: the tiered fishing rods are gatherTool items (their tier caps
+  // the catch band, professions/fishing.ts) but must still CAST like the
+  // simple pole, so a fishing-profession gatherTool use routes to the same
+  // startFishing (which owns the dead/combat/busy/water gates, exactly as the
+  // arm above). Every OTHER gatherTool use (picks, axes, sickles) stays a safe
+  // no-op exactly as today: node gating scans bags, never an item use.
+  if (def.use?.type === 'gatherTool' && def.use.professionId === 'fishing') {
+    ctx.startFishing(p, meta);
+    return;
+  }
   if (def.use?.type === 'mechChroma') {
     return ctx.unlockMechChromaFromItem(meta, itemId, def.use.chromaId);
   }
@@ -334,7 +379,10 @@ export function useItem(ctx: SimContext, itemId: string, pid?: number): ItemUseR
     ctx.openSkinSelect(meta, def.use.catalog ?? 'class', itemId);
     return;
   }
-  if (p.castingAbility === FISHING_CAST_ID) {
+  // A running non-spell cast (fishing/gather) blocks other item use. The
+  // Demon Heal channel is deliberately NOT folded in: items stay usable
+  // during it, as today.
+  if (isNonSpellCast(p.castingAbility)) {
     ctx.error(meta.entityId, 'You are busy.');
     return;
   }
@@ -552,15 +600,44 @@ export function sellItem(ctx: SimContext, itemId: string, count = 1, pid?: numbe
     ctx.error(meta.entityId, 'You cannot sell quest items.');
     return;
   }
-  removePreferFungible(ctx, itemId, sellCount, meta.entityId);
-  recordVendorBuyback(meta, itemId, sellCount);
-  const payout = def.sellValue * sellCount;
+  // Phase 15 QA directed fix (maintainer-approved 2026-07-22): a bound copy
+  // (instance payload carrying boundTo, the Maker's Bond trade lock) is never
+  // vendor-sellable. Selling one recorded a PLAIN buyback row, so sell + buyback
+  // laundered the piece into an unbound copy for a 0 copper spread, bypassing
+  // the unbind fee ladder (professions/commission.ts) and permanently stripping
+  // bindOnTrade. Mirror the trade gate (social/trade.ts offerableCount): clamp
+  // the request to the unbound copies and refuse only when none covers it.
+  // `?? []`: same contract as social/trade.ts boundCount, a decoupled test ctx
+  // may model counts elsewhere and carry no inventory array; its bound count
+  // is simply zero and every copy stays sellable.
+  let boundHeld = 0;
+  for (const s of meta.inventory ?? []) {
+    if (s.itemId === itemId && s.instance?.boundTo !== undefined) boundHeld += s.count;
+  }
+  const sellableCount = Math.min(sellCount, available - boundHeld);
+  if (sellableCount <= 0) {
+    ctx.error(meta.entityId, 'That item is bound and cannot be sold.');
+    return;
+  }
+  // The skip predicate is defence in depth (same as the trade swap): the clamp
+  // above already guarantees enough unbound copies, but removePreferFungible's
+  // highest-index-first instanced walk must still spare a bound copy sitting
+  // above an unbound instanced one.
+  removePreferFungible(
+    ctx,
+    itemId,
+    sellableCount,
+    meta.entityId,
+    (instance) => instance.boundTo !== undefined,
+  );
+  recordVendorBuyback(meta, itemId, sellableCount);
+  const payout = def.sellValue * sellableCount;
   meta.copper += payout;
   ctx.emit({ type: 'vendor', action: 'sell', itemId, pid: meta.entityId });
   ctx.emit({
     type: 'loot',
     // biome-ignore lint/style/useTemplate: keep this scanner-friendly shape for i18n extraction.
-    text: `Sold ${def.name}${sellCount > 1 ? ' x' + sellCount : ''} for ${formatMoney(payout)}.`,
+    text: `Sold ${def.name}${sellableCount > 1 ? ' x' + sellableCount : ''} for ${formatMoney(payout)}.`,
     pid: meta.entityId,
   });
 }

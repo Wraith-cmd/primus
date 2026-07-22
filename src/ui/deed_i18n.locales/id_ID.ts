@@ -79,7 +79,6 @@ export const table: DeedLocaleTable = {
   prog_herbalism_100: { name: 'Penguasa Padang Rumput', desc: 'Capai 100 kecakapan Herbalisme.' },
   prog_master_gatherer: {
     name: 'Pengumpul Ulung',
-    desc: 'Capai 100 kecakapan dalam Penambangan, Penebangan Kayu, dan Herbalisme.',
   },
   prog_first_craft: { name: 'Buatan Tangan', desc: 'Selesaikan hasil kerajinan sukses pertamamu.' },
   prog_craft_specialist: {
@@ -680,6 +679,7 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: 'Perkakas Sang Tukang',
+    desc: 'Selesaikan proses pembuatan di stasiun kerajinan.',
   },
   dgn_nythraxis_crypt: {
     name: 'Yang Disimpan Kripta',

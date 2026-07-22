@@ -263,6 +263,7 @@ export const en = {
   stats: {
     title: 'World Status',
     accountsCreated: 'Players',
+    charactersCreated: 'Characters Created',
     playersOnline: 'Players Online',
     realmName: 'World Name',
   },
@@ -297,6 +298,8 @@ export const en = {
     empty: 'No updates yet — check back soon.',
     prerelease: 'Pre-release',
     viewOnGithub: 'View on GitHub',
+    new: 'New',
+    viewAll: 'View all updates on GitHub',
   },
   download: {
     title: 'Download Desktop Launcher',
@@ -783,6 +786,12 @@ export const en = {
     // delve-shop keys; only the marks-specific strings live here.
     balance: 'Heroic Marks: {count}',
     buyAria: 'Buy {item} for {marks} Heroic Marks',
+    // Confirm dialog gating each purchase: marks purchases record no buyback,
+    // so a mis-tap would be unrefundable without it.
+    buyConfirmTitle: 'Confirm Purchase',
+    buyConfirmBody: 'Buy {item} for {marks} Heroic Marks? Marks purchases cannot be refunded.',
+    buyConfirmAccept: 'Buy',
+    buyConfirmCancel: 'Cancel',
   },
   // The Card Master window (Card Duel minigame): queue join/leave affordance
   // plus the in-match hand strip + round-score panel.
@@ -838,6 +847,12 @@ export const en = {
       reqHeroic: 'Requires a Heroic clear',
       reqClears: 'Requires {count} clears',
       empty: 'Nothing in stock.',
+      // Confirm dialog gating each purchase: marks purchases record no buyback,
+      // so a mis-tap would be unrefundable without it.
+      buyConfirmTitle: 'Confirm Purchase',
+      buyConfirmBody: 'Buy {item} for {marks} Delve Marks? Marks purchases cannot be refunded.',
+      buyConfirmAccept: 'Buy',
+      buyConfirmCancel: 'Cancel',
     },
     tracker: {
       title: 'Delve',

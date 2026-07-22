@@ -290,17 +290,26 @@ describe('Nythraxis raid encounter', () => {
     const loot = MOBS.nythraxis_scourge_of_thornpeak.loot.filter((entry) => entry.itemId);
     const groups = new Map<string, typeof loot>();
     for (const entry of loot) {
-      expect(entry.rollGroup).toMatch(/^nythraxis_drop_[1-4]$/);
+      expect(entry.rollGroup).toMatch(/^nythraxis_drop_[1-5]$/);
       const group = entry.rollGroup!;
       groups.set(group, [...(groups.get(group) ?? []), entry]);
       expect(ITEMS[entry.itemId!], entry.itemId).toBeTruthy();
     }
 
-    expect(groups.size).toBe(4);
-    for (const entries of groups.values()) {
+    expect(groups.size).toBe(5);
+    for (const [name, entries] of groups) {
       const total = entries.reduce((sum, entry) => sum + entry.chance, 0);
-      expect(total).toBeCloseTo(1, 5);
+      // nythraxis_drop_5 is the feral ladder's bonus draw (maul_of_the_scourged_wilds):
+      // a single independent 25% roll on top of the four guaranteed equipment
+      // groups, which keep their exact 1.00 partitions untouched.
+      if (name === 'nythraxis_drop_5') {
+        expect(entries.map((entry) => entry.itemId)).toEqual(['maul_of_the_scourged_wilds']);
+        expect(total).toBe(0.25);
+      } else {
+        expect(total).toBeCloseTo(1, 5);
+      }
     }
+    expect(ITEMS.maul_of_the_scourged_wilds.requiredClass).toEqual(['druid']);
 
     for (const itemId of ['deathless_heartwood', 'kingsbane_last_oath']) {
       const item = ITEMS[itemId];
@@ -1741,6 +1750,27 @@ describe('Nythraxis raid encounter', () => {
       add.swingTimer = 0;
       add.threat.set(tank.id, 1000);
     }
+    adds[0].auras.push({
+      id: 'fear_incap',
+      name: 'Fear',
+      kind: 'incapacitate',
+      remaining: 30,
+      duration: 30,
+      value: 0,
+      sourceId: tank.id,
+      school: 'shadow',
+    });
+    adds[1].auras.push({
+      id: 'polymorph',
+      name: 'Polymorph',
+      kind: 'polymorph',
+      remaining: 30,
+      duration: 30,
+      value: 0,
+      sourceId: tank.id,
+      school: 'arcane',
+    });
+    const transitionAddPositions = adds.map((add) => ({ ...add.pos }));
 
     boss.hp = Math.floor(boss.maxHp * 0.69);
     sim.tick();
@@ -1760,6 +1790,9 @@ describe('Nythraxis raid encounter', () => {
     ).toBe(false);
     expect(tank.hp).toBe(transitionHp);
     expect(boss.nythraxis?.phase).toBe('transition');
+    expect(adds.map((add, index) => dist2d(add.pos, transitionAddPositions[index]))).toEqual([
+      0, 0,
+    ]);
   });
 
   it('stuns active pets during the Aldric transition so they cannot keep attacking', () => {

@@ -17,15 +17,18 @@ or screenshot path), not vibes.
 
 ## Determinism
 - [ ] All new randomness (masterwork proc, rare gather events, node rarity,
-      fishing catches) draws through `Rng` with pinned draw-order tests; no
+      fishing catches, the Phase 12b hidden bite delay) draws through `Rng`
+      with pinned draw-order tests; no
       `Math.random` / `Date.now` / `performance.now` anywhere in `src/sim/`.
 - [ ] `npx vitest run tests/architecture.test.ts` green.
 - [ ] Same-seed determinism test covers a full gather-craft-masterwork sequence.
 
 ## Server authority
 - [ ] Every new command (train recipe, disenchant, enchant apply, salvage,
-      quest advance) validates server-side; the client never decides craft
-      outcomes, masterwork procs, harvest rewards, or quest credit.
+      quest advance, the Phase 14b commission opt-in and master unbind)
+      validates server-side; the client never decides craft
+      outcomes, masterwork procs, harvest rewards, quest credit, the
+      Phase 12b bite deadline, or a bind-on-trade stamp.
 - [ ] Invalid or replayed commands cannot duplicate rewards, recipes, or skill.
 
 ## Persistence
@@ -35,6 +38,25 @@ or screenshot path), not vibes.
 - [ ] Save/load round-trip tests cover archetype history, fishing proficiency,
       known recipes, and masterwork instances.
 - [ ] All DDL (if any) is additive and idempotent under the boot advisory lock.
+- [ ] The Phase 12c one-time reset: fires exactly once per character (relog,
+      reconnect, restart, second deploy); the keep/reset ledger is fully
+      pinned; the blob-diff rehearsal evidence is on record; re-crossing any
+      threshold after reset double-grants no deed, renown, or letter.
+
+## Pacing (the Mastery Curve, Phase 12c)
+- [ ] The free floor is gone: no recipe tier grants full gain forever; the
+      four-state curve (1 / 0.5 / 0.25 / 0) is pinned at every boundary for
+      crafting, gathering, fishing, and enchanting.
+- [ ] Every per-profession cap (crafts and enchanting 125,
+      mining/logging/herbalism 100, fishing 200) is enforced at gain time and
+      load time; at cap, crafting still procs masterwork and harvests still
+      yield.
+- [ ] Crafting, disenchant, enchant-apply, and salvage share ONE throttle
+      window; no action type has a parallel budget.
+- [ ] The enchanting soft ceiling holds: rarer input never grants less skill,
+      and never zero above a pre-archetype ceiling.
+- [ ] A real playthrough spot-check lands inside the state.md time-to-master
+      target ranges (arithmetic recorded, not vibes).
 
 ## Economy invariants
 - [ ] Pinned test: no recipe's output vendors for more than its inputs.
@@ -48,6 +70,12 @@ or screenshot path), not vibes.
       is recorded with evidence.
 - [ ] The masterwork signed-reagent term counts ANY player's signature
       (buying a gatherer's signed materials works; the count-1 case works).
+- [ ] The market ruling holds: gold buys materials, never skill directly; no
+      gathered or monster material carries a vendor buyValue; fungible
+      materials remain market-listable.
+- [ ] Storage is honest (Phase 12d): identical-payload material stacks merge
+      in bags and bank; mail attachments expire per the model with system
+      mail exempt; the bank expansion ladder is the standing storage sink.
 
 ## i18n completeness
 - [ ] Every new player-visible string (window chrome, recipe rows, station

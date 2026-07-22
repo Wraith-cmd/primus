@@ -43,6 +43,18 @@ describe('coverage: each scenario fires its subsystem', () => {
     expect((rec.allEvents as Ev[]).some((e) => e.type === 'castStart')).toBe(true);
   });
 
+  it('frost_proc_orb: committed Frost reaches proc draws and Frozen Orb pulses', () => {
+    const rec = run('frost_proc_orb');
+    const notes = rec.notes as Record<string, unknown>;
+    expect(notes.sawFingersOfFrost).toBe(true);
+    expect(notes.sawBrainFreeze).toBe(true);
+    expect(
+      (rec.allEvents as Ev[]).some(
+        (event) => event.type === 'damage' && event.ability === 'Frozen Orb',
+      ),
+    ).toBe(true);
+  });
+
   it('solo_rogue: weaponStrike via sinister_strike fires', () => {
     const rec = run('solo_rogue');
     const pid = (rec.sim as any).playerId;
@@ -1029,6 +1041,11 @@ describe('coverage: each scenario fires its subsystem', () => {
     const signed = meta.inventory.filter(
       (s: any) => s.itemId === rare!.itemId && s.instance?.signer === meta.name,
     );
-    expect(signed.length).toBeGreaterThanOrEqual(rareGather!.qty);
+    // Identical-payload stacking (Phase 12d): the same-signer units merge into
+    // signed stacks, so count UNITS and pin that the merge actually collapsed
+    // them into far fewer slots than units (stack cap 20).
+    const signedUnits = signed.reduce((n: number, s: any) => n + s.count, 0);
+    expect(signedUnits).toBeGreaterThanOrEqual(rareGather!.qty);
+    expect(signed.length).toBeLessThanOrEqual(Math.ceil(signedUnits / 20));
   });
 });

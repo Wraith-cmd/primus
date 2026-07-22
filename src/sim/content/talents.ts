@@ -1,5 +1,6 @@
 import type { AbilityEffect, AuraKind, ResourceType } from '../types';
 import { ALL_CLASSES, MAX_LEVEL, type PlayerClass } from '../types';
+import { specBaselineFor } from './spec_baselines';
 import {
   isTalentRowLevel,
   ROW_LEVELS,
@@ -128,10 +129,6 @@ export interface GlobalModEffect {
   // Warded: fraction less damage taken while the caster's own personal barrier
   // (an ice_barrier absorb aura) is up. Folded target-side in combat/damage.ts.
   barrierDrPct?: number;
-  // Temporal Rift: 1 when picked. Every 20 sec the next stun/root/silence to
-  // land on the wearer is cleansed instantly (the applyAura funnel in sim.ts,
-  // ICD carried by a 'temporal_rift_cd' aura). Draws no rng.
-  temporalRift?: number;
   // Overflowing Power: seconds shaved off the mage defensive cooldowns per 10%
   // of maximum mana spent, capped at 10 sec per 30 sec (casting_lifecycle's
   // spendAbilityCost, the Colossal Might pattern on mana).
@@ -178,13 +175,26 @@ export type ProcResponse =
   // The pct-of-max-health variants (phase-2 defensive pass) override the flat
   // number when present. Most scale with the wearer; source scaling is for
   // shields whose proc owner can differ from the protected ally.
+  // target: the recipient defaults to the trigger subject (the heal target,
+  // the hit-taker, or the triggering cast's target). 'self' pins it to the
+  // proc owner instead; REQUIRED for any proc whose triggering casts are
+  // hostile (Hellglass Ward), or the response lands on the enemy. Explicit by
+  // design: the engine never infers the recipient from hostility.
   | {
       kind: 'heal';
       amount?: number;
       amountPctMaxHp?: number;
       amountPctSourceMaxHp?: number;
+      target?: 'self';
     }
-  | { kind: 'absorb'; amount?: number; amountPctMaxHp?: number; duration: number; name: string }
+  | {
+      kind: 'absorb';
+      amount?: number;
+      amountPctMaxHp?: number;
+      duration: number;
+      name: string;
+      target?: 'self';
+    }
   | {
       kind: 'echo';
       belowFrac: number;
@@ -521,7 +531,6 @@ function zeroGlobal(): Required<GlobalModEffect> {
     masteryTwoHandDmgPct: 0,
     cheatDeathIcd: 0,
     barrierDrPct: 0,
-    temporalRift: 0,
     manaDefCdrPer10: 0,
     blinkCast: 0,
     convergence: 0,
@@ -624,7 +633,6 @@ export function accumulateTalentEffect(
     target.masteryTwoHandDmgPct += (source.masteryTwoHandDmgPct ?? 0) * multiplier;
     target.cheatDeathIcd = Math.max(target.cheatDeathIcd, source.cheatDeathIcd ?? 0);
     target.barrierDrPct += (source.barrierDrPct ?? 0) * multiplier;
-    target.temporalRift += (source.temporalRift ?? 0) * multiplier;
     target.manaDefCdrPer10 += (source.manaDefCdrPer10 ?? 0) * multiplier;
     target.blinkCast += (source.blinkCast ?? 0) * multiplier;
     target.convergence += (source.convergence ?? 0) * multiplier;
@@ -692,6 +700,7 @@ export function computeTalentModifiers(
     modifiers.role = spec.role;
     modifiers.grants.push({ ability: spec.signature, rank: 1 });
     accumulateTalentEffect(modifiers, spec.mastery.effect, Math.min(1, Math.max(0, level) / 20));
+    accumulateTalentEffect(modifiers, specBaselineFor(cls, spec.id));
   }
 
   for (const row of tree) {

@@ -10,6 +10,25 @@ over finished sim surfaces, independent of the content phases around it. Salvage
 2026-07-17 amendment: this phase builds the exact machinery it needs, so obsolete crafted gear
 gets a wave-one destination instead of waiting for wave 2.
 
+The 2026-07-20 timing and economy amendments (state.md is the authority) grow the phase by a
+content half: TYPED disenchant reagents on a hybrid model (the universal rarity ladder stays;
+rare and above ALSO yield a type-keyed secondary material), every typed material shipping WITH
+at least one consumer recipe in the same phase (the wolf_fang no-dead-materials rule), and the
+bind-on-trade PRIMITIVE, landed here applied to those typed reagents as its first live consumer
+(never a dormant stub, the 2033 lesson) so Phase 14b can extend it to commissioned gear.
+
+The SECOND 2026-07-20 block (mastery and provenance; state.md is the authority) then settles
+this phase's pacing and its one flagged decision, and inserts Phases 12c and 12d ahead of it:
+- Phase 12c MUST land first: this phase inherits the shared action throttle (crafting,
+  disenchant, enchant-apply, and salvage draw from one 10-per-60s window) and the
+  quality-tiered soft-ceiling enchanting gain model already wired in the sim; this phase makes
+  the actions reachable, never re-invents their pacing.
+- The staves/wands typed-reagent bucket is RESOLVED: the WEAPON bucket, no cloth special case.
+- The typed-reagent yields are APPROVED numbers in state.md Tuning targets (dust 1 to 2,
+  essence 1 plus a secondary, exactly 1 shard per epic mapping the heroic faucet one to one).
+- Community draft PR #2134 (which wires disenchant end to end) is OUT of consideration by
+  maintainer ruling: do not absorb, rebase, or reconcile it; build on the packet's own seam.
+
 ## Context pointers
 
 - `docs/professions-2/state.md`: locked decisions, the validation matrix, and the key-surfaces row
@@ -33,6 +52,17 @@ gets a wave-one destination instead of waiting for wave 2.
   toasts, i18n rules; the Phase 5 professions wheel window module for skill visibility.
 - Pins: `tests/world_api_parity.test.ts`, `tests/snapshots.test.ts` (`ALL_DELTA_KEYS` +
   `TERSE_TO_IWORLD`), `tests/professions_enchanting.test.ts`.
+- Typed-reagent anchors (the 2026-07-20 amendments): the universal ladder is
+  `DISENCHANT_MATERIAL_BY_QUALITY` in `src/sim/professions/enchanting.ts` (arcane_dust at
+  common/uncommon, arcane_essence at rare, arcane_shard at epic/legendary; note the shipped
+  two-tier enchant table with the shard-consuming Greater tier, #1950); the armor type key is
+  `ArmorType` (`'cloth' | 'leather' | 'mail'`, `src/sim/types.ts`); the weapon kind key is the
+  sim-side `WEAPON_TYPE_BY_ITEM` map (`src/sim/content/weapon_skin_rules.ts`,
+  `ItemWeaponType`). `ItemInstancePayload.boundTo` (`src/sim/types.ts`) persists and rides
+  trade payloads but NOTHING enforces it before this phase; the trade gate to extend is
+  `tradeSetOffer` in `src/sim/social/trade.ts` (today it drops only def-level
+  quest/soulbound slots). The heroic epic faucet for sink sizing is
+  `src/sim/content/heroic_loot.ts` (every heroic final boss drops TWO tradeable epics).
 
 ## Starter Prompt
 
@@ -41,7 +71,8 @@ This is Phase 13 of the Professions 2.0 feature: Enchanting reachable.
 Model: Opus 4.8, xhigh effort. Harness: Claude Code.
 Goal: make the finished enchanting and salvage sims (disenchant, enchant application, salvage)
 reachable by players in both hosts, from the bags UI through IWorld, the wire, and server
-dispatch.
+dispatch; and land the 2026-07-20 content half: typed disenchant reagents (hybrid model) with
+same-phase consumer recipes, plus the bind-on-trade primitive applied to those reagents.
 
 STEP 0 - PRE-FLIGHT:
 Sync with the LATEST release branch FIRST: git fetch origin "+refs/heads/release/*:refs/remotes/origin/release/*"; pick
@@ -49,6 +80,9 @@ the newest by version sort (git branch -r --list "origin/release/*" | sort -V | 
 starts a fresh branch or worktree, base it on that branch; if the feature branch already exists, merge
 that release branch into it NOW, resolve conflicts, and run the release-merge-audit skill on the merge
 before proceeding. Never base work on main or an older release branch than the newest.
+Phases 12c and 12d must be LANDED first (the second 2026-07-20 block): verify the shared
+action throttle seam and the enchanting soft-ceiling gain arm exist in the sim (grep the
+constants state.md's Phase 12c surfaces entry records); if absent, stop.
 Then run git status; the tree must be clean (a concurrent session may share this
 checkout); if it is dirty with work you did not create, stop and ask. Scan Claude Code memory
 (the MEMORY.md index) for: the node25 gate rule (run npm run gate under Node 24), combo recipes
@@ -92,6 +126,34 @@ Agent seam deliverables:
 - Update the parity pin in tests/world_api_parity.test.ts and the ALL_DELTA_KEYS +
   TERSE_TO_IWORLD pins in tests/snapshots.test.ts in the same change.
 
+Agent content deliverables (the 2026-07-20 typed-reagent amendments):
+- The HYBRID reagent model: the universal rarity ladder
+  (DISENCHANT_MATERIAL_BY_QUALITY: dust/essence/shard) stays exactly as shipped for every
+  quality; disenchanting a RARE OR ABOVE piece ADDITIONALLY yields one type-keyed secondary
+  material. Armor keys off the existing ArmorType (cloth/leather/mail: three materials);
+  weapons key off the sim-side weapon-kind taxonomy (WEAPON_TYPE_BY_ITEM /
+  ItemWeaponType), bucketed to a small material set (exact bucketing is yours; the
+  staves/wands assignment is RESOLVED per the 2026-07-20 mastery amendments: the WEAPON
+  bucket, no cloth special case). Cooking and alchemy are deliberately excluded from the
+  typed family on both sides: their outputs never disenchant and their recipes are not the
+  sanctioned consumers. Yields use the APPROVED numbers in state.md Tuning targets.
+- NO DEAD MATERIALS (the wolf_fang rule): every typed material ships WITH at least one
+  consumer recipe in this same phase (enchanting recipes or deep-craft recipes consuming
+  it); a typed material with zero consumers is a blocking review finding, not a follow-up.
+- The bind-on-trade PRIMITIVE: the trade-gate enforcement arm that refuses to trade an
+  instance whose boundTo is already set (beside the def-level soulbound drop in
+  tradeSetOffer, with a localized deny id), plus the stamp-on-first-trade mechanism,
+  applied HERE to the typed rare+ reagents (they are minted as instances that bind to the
+  first trade recipient). This is the primitive's first LIVE consumer (never a dormant
+  stub, the 2033 lesson); Phase 14b extends the same primitive to commissioned gear, so
+  keep the enforcement arm and the stamp generic over the instance payload, never
+  reagent-specific.
+- Sink-sizing tuning note for state.md: the epic glut this phase drains has a measured
+  faucet: every heroic final boss drops TWO tradeable epics
+  (src/sim/content/heroic_loot.ts). Size the typed-reagent yields and the Greater-tier
+  shard costs against that faucet in the tuning targets; final numbers stay maintainer
+  calls.
+
 Agent ui deliverables:
 - Bags context action Disenchant, shown on eligible items only, behind a confirm dialog (this is
   destructive). A masterwork or signed instance gets an explicit stronger warning before
@@ -117,6 +179,11 @@ Agent tests deliverables:
 - UI tests: context-action eligibility, the confirm path, and the signed/masterwork warning
   path; pure view logic lands DOM-free and Node-tested per the UI pure-core rules.
 - Keep tests/professions_enchanting.test.ts green without weakening existing pins.
+- Typed-reagent arms (the 2026-07-20 amendments): the hybrid yield split at the rare
+  boundary (rare yields the secondary, uncommon does not), the ArmorType and weapon-kind
+  keying per bucket, the no-dead-materials referential pin (every typed material id has a
+  consumer recipe), and the bind-on-trade arms (first trade stamps, second trade refused,
+  deny id localized) offline and over a live GameServer.
 
 INVARIANTS THIS PHASE MUST KEEP:
 - Determinism: all sim randomness goes through Rng; never Math.random, Date.now, or
@@ -132,8 +199,11 @@ INVARIANTS THIS PHASE MUST KEEP:
 
 Out of scope (do NOT do in this phase):
 - Batch or salvage-all UI (wave 2 polish; single-item salvage only this phase).
-- Enchanting recipe or content depth.
+- Enchanting content depth BEYOND the typed reagents and their same-phase consumer recipes
+  (the 2026-07-20 amendment scopes those IN; anything past no-dead-materials stays out).
 - Tool-enchant reframing (wave 2+).
+- Commission binding of crafted gear (Phase 14b extends the primitive; this phase only
+  lands it against the typed reagents).
 
 STEP 3 - VALIDATION + MULTI-AGENT REVIEW:
 - Run the state.md net/wire row: npx vitest run tests/snapshots.test.ts
@@ -169,6 +239,16 @@ STEP 5 - ACCEPTANCE CRITERIA (do not mark complete until all check):
 - [ ] The new IWorld members are live in BOTH worlds; parity and snapshot pins updated in the
       same change.
 - [ ] The enchanting skill shows in the wheel window.
+- [ ] Rare+ disenchants yield the type-keyed secondary material beside the unchanged
+      universal ladder; sub-rare disenchants are byte-identical to today.
+- [ ] Every typed material has at least one consumer recipe in this phase, pinned by a
+      referential test (the wolf_fang rule).
+- [ ] Staves and wands disenchant in the WEAPON bucket per the resolved decision.
+- [ ] Disenchant, enchant-apply, and salvage draw from the Phase 12c shared throttle
+      window, and their gains run the quality-tiered soft-ceiling model (verify inherited
+      behavior end to end; do not re-implement it).
+- [ ] The bind-on-trade primitive is LIVE against the typed rare+ reagents: first trade
+      stamps boundTo, a second trade is refused with a localized deny id, both hosts.
 - [ ] All validation rows above are green; the mobile screenshot is committed.
 
 STEP 6 - DOC UPDATES + MEMORY: update docs/professions-2/progress.md (phase 13 checklist, status,

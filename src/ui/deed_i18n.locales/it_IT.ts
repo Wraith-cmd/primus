@@ -91,7 +91,6 @@ export const table: DeedLocaleTable = {
   },
   prog_master_gatherer: {
     name: 'Maestro Raccoglitore',
-    desc: 'Raggiungi 100 di competenza in Estrazione, Disboscamento ed Erboristeria.',
   },
   prog_first_craft: {
     name: 'Fatto a Mano',
@@ -716,6 +715,7 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: 'Gli Attrezzi del Mestiere',
+    desc: 'Completa una creazione presso una postazione di artigianato.',
   },
   dgn_nythraxis_crypt: {
     name: 'Ciò che la Cripta Custodiva',

@@ -13,8 +13,8 @@
     "Final Stand enrage at 5% + grantNythraxisLockout (raidLockouts) + onBossDeath death dialogue",
     "class:warrior"
   ],
-  "draws": 3278,
-  "drawDigest": "86acfab0",
+  "draws": 3282,
+  "drawDigest": "15a1a241",
   "frames": [
     {
       "tick": 0,
@@ -1745,7 +1745,7 @@
       "tick": 43,
       "time": 2.15,
       "nextId": 428,
-      "state": "e6107e09",
+      "state": "85bafa1f",
       "events": "e5643833",
       "rng": {
         "draws": 15,
@@ -2221,13 +2221,14 @@
               "sourceId": 415
             },
             {
-              "duration": 21.5,
+              "duration": 26,
               "id": "nythraxis_transition_stun",
               "kind": "stun",
               "name": "Shuddering Stomp",
-              "remaining": 21.5,
+              "remaining": 26,
               "school": "physical",
-              "sourceId": 420
+              "sourceId": 420,
+              "unbreakableControl": true
             }
           ],
           "blockChance": 0.05,
@@ -2284,13 +2285,14 @@
           "attackPower": 10,
           "auras": [
             {
-              "duration": 21.5,
+              "duration": 26,
               "id": "nythraxis_transition_stun",
               "kind": "stun",
               "name": "Shuddering Stomp",
-              "remaining": 21.5,
+              "remaining": 26,
               "school": "physical",
-              "sourceId": 420
+              "sourceId": 420,
+              "unbreakableControl": true
             }
           ],
           "combatTimer": 101.15,
@@ -2343,13 +2345,14 @@
           "attackPower": 10,
           "auras": [
             {
-              "duration": 21.5,
+              "duration": 26,
               "id": "nythraxis_transition_stun",
               "kind": "stun",
               "name": "Shuddering Stomp",
-              "remaining": 21.5,
+              "remaining": 26,
               "school": "physical",
-              "sourceId": 420
+              "sourceId": 420,
+              "unbreakableControl": true
             }
           ],
           "combatTimer": 101.15,
@@ -2402,13 +2405,14 @@
           "attackPower": 10,
           "auras": [
             {
-              "duration": 21.5,
+              "duration": 26,
               "id": "nythraxis_transition_stun",
               "kind": "stun",
               "name": "Shuddering Stomp",
-              "remaining": 21.5,
+              "remaining": 26,
               "school": "physical",
-              "sourceId": 420
+              "sourceId": 420,
+              "unbreakableControl": true
             }
           ],
           "combatTimer": 101.15,
@@ -2461,13 +2465,14 @@
           "attackPower": 10,
           "auras": [
             {
-              "duration": 21.5,
+              "duration": 26,
               "id": "nythraxis_transition_stun",
               "kind": "stun",
               "name": "Shuddering Stomp",
-              "remaining": 21.5,
+              "remaining": 26,
               "school": "physical",
-              "sourceId": 420
+              "sourceId": 420,
+              "unbreakableControl": true
             }
           ],
           "combatTimer": 101.15,
@@ -2520,11 +2525,11 @@
           "aiState": "attack",
           "auras": [
             {
-              "duration": 21.5,
+              "duration": 26,
               "id": "nythraxis_transition_pause",
               "kind": "stun",
               "name": "Shuddering Stomp",
-              "remaining": 21.45,
+              "remaining": 25.95,
               "school": "physical",
               "sourceId": 420
             }
@@ -2743,13 +2748,14 @@
           "aiState": "chase",
           "auras": [
             {
-              "duration": 21.5,
+              "duration": 26,
               "id": "nythraxis_transition_stun",
               "kind": "stun",
               "name": "Shuddering Stomp",
-              "remaining": 21.45,
+              "remaining": 25.95,
               "school": "physical",
-              "sourceId": 420
+              "sourceId": 420,
+              "unbreakableControl": true
             }
           ],
           "combatTimer": 99.1,
@@ -2805,13 +2811,14 @@
           "aiState": "chase",
           "auras": [
             {
-              "duration": 21.5,
+              "duration": 26,
               "id": "nythraxis_transition_stun",
               "kind": "stun",
               "name": "Shuddering Stomp",
-              "remaining": 21.45,
+              "remaining": 25.95,
               "school": "physical",
-              "sourceId": 420
+              "sourceId": 420,
+              "unbreakableControl": true
             }
           ],
           "combatTimer": 99.1,
@@ -2906,7 +2913,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 428,
-      "state": "5487c851",
+      "state": "f9c00c8e",
       "events": "741638a5",
       "rng": {
         "draws": 37,
@@ -2917,7 +2924,7 @@
       "tick": 60,
       "time": 3,
       "nextId": 428,
-      "state": "00fa0b73",
+      "state": "8cace924",
       "events": "741638a5",
       "rng": {
         "draws": 76,
@@ -9217,8 +9224,8 @@
       "state": "4f644566",
       "events": "0625d00c",
       "rng": {
-        "draws": 2994,
-        "digest": "8e396817"
+        "draws": 2995,
+        "digest": "8c3bfd15"
       },
       "label": "death",
       "players": [
@@ -10475,8 +10482,8 @@
       "state": "1e8cc286",
       "events": "741638a5",
       "rng": {
-        "draws": 3000,
-        "digest": "222f9bff"
+        "draws": 3001,
+        "digest": "e7e41486"
       }
     },
     {
@@ -10497,8 +10504,8 @@
       "state": "21995170",
       "events": "741638a5",
       "rng": {
-        "draws": 3091,
-        "digest": "4bf686b1"
+        "draws": 3092,
+        "digest": "7a0601e8"
       }
     },
     {
@@ -10508,8 +10515,8 @@
       "state": "6e53a25e",
       "events": "741638a5",
       "rng": {
-        "draws": 3140,
-        "digest": "22366283"
+        "draws": 3144,
+        "digest": "cf538127"
       }
     },
     {
@@ -10519,8 +10526,8 @@
       "state": "f17d4a2a",
       "events": "741638a5",
       "rng": {
-        "draws": 3184,
-        "digest": "0611e161"
+        "draws": 3189,
+        "digest": "b9b4e3a2"
       }
     },
     {
@@ -10530,8 +10537,8 @@
       "state": "162bcbc8",
       "events": "741638a5",
       "rng": {
-        "draws": 3243,
-        "digest": "94bb30fb"
+        "draws": 3242,
+        "digest": "1ea0d65d"
       }
     },
     {
@@ -10541,8 +10548,8 @@
       "state": "53dea5e6",
       "events": "e3560676",
       "rng": {
-        "draws": 3278,
-        "digest": "86acfab0"
+        "draws": 3282,
+        "digest": "15a1a241"
       },
       "label": "final",
       "players": [

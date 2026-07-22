@@ -93,7 +93,7 @@ describe('main-loop frame pacing contract', () => {
     expect(launchEnd).toBeGreaterThan(launchStart);
     expect(frameLoop.match(/loadingHandoff\.markFirstRenderedFrame\(\);/g)).toHaveLength(2);
     expect(launchBlock).toMatch(
-      /loadingHandoff\.start\(\s*\(\) => \{\s*hideLoadingScreen\(\);[\s\S]*?intro\.startedAt = performance\.now\(\);[\s\S]*?},\s*hideLoadingScreen,?\s*\);/,
+      /loadingHandoff\.start\(\s*\(\) => \{\s*entryDiagnostics\.checkpoint\('first-paint'\);\s*hideLoadingScreen\(\);[\s\S]*?intro\.startedAt = performance\.now\(\);[\s\S]*?},\s*hideLoadingScreen,?\s*\);/,
     );
     expect(calibrationStart).toBeGreaterThan(-1);
     expect(frameRequest).toBeGreaterThan(calibrationStart);

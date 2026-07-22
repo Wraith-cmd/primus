@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import * as path from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import { renderCraftingWindow } from '../src/ui/crafting_window';
+import { GOLD_ACCENT_COLOR } from '../src/ui/icons';
 import { renderProfessionIdentityCard } from '../src/ui/profession_identity_card';
 import { buildProfessionIdentityView } from '../src/ui/profession_identity_view';
 
@@ -38,10 +39,18 @@ describe('profession identity card painter contract', () => {
     expect(card?.getAttribute('role')).toBe('region');
     expect(card?.getAttribute('aria-label')).toBeTruthy();
     expect(card?.querySelectorAll('.profession-skill-row')).toHaveLength(10);
+    const crest = card?.querySelector<HTMLImageElement>('.profession-archetype-crest');
+    expect(crest?.getAttribute('src')).toBe('/ui/professions/archetype_smith.webp');
+    expect(crest?.getAttribute('alt')).toBe('');
     // The title line renders the PAIR archetype name (weaponcrafting +
     // armorcrafting is the Smith pair); the skill rows render craft names.
     expect(card?.textContent).toContain('Smith');
     expect(card?.textContent).toContain('Armorcrafting');
+    // Phase 14: the attuned card surfaces the make-amends return cost
+    // (requiredAmendsProgress(1) = 8, the switch-cost-at-rest figure).
+    const returnCost = card?.querySelector('.profession-identity-returncost');
+    expect(returnCost?.textContent).toContain('make-amends');
+    expect(returnCost?.textContent).toContain('8');
     // One visual column-header row over the skill list, hidden from the
     // accessibility tree (each row reads as the full skillAria sentence).
     const header = card?.querySelectorAll<HTMLElement>('.profession-skill-header');
@@ -60,10 +69,38 @@ describe('profession identity card painter contract', () => {
     expect(parent.textContent).toContain('Waiting for your crafting identity');
     // The syncing card has no skill rows, so no floating header row either.
     expect(parent.querySelectorAll('.profession-skill-header')).toHaveLength(0);
+    // No return-cost line while syncing or unattuned (only shown once attuned).
+    expect(parent.querySelectorAll('.profession-identity-returncost')).toHaveLength(0);
+    expect(parent.querySelector('.profession-archetype-crest')).toBeNull();
+  });
+
+  it('renders a synced but unattuned identity without an archetype crest', () => {
+    const parent = document.createElement('div');
+    const identity = {
+      version: 1 as const,
+      synced: true,
+      craftSkills: { cooking: 10 },
+      activeArchetype: null,
+      pairedMajor: null,
+      hobbyCraft: null,
+      attunedPairs: [],
+      switchCount: 0,
+      amendsProgress: 0,
+      amendsRequired: 5,
+      knownRecipes: [],
+    };
+
+    renderProfessionIdentityCard(parent, buildProfessionIdentityView(identity));
+
+    expect(parent.querySelector('.profession-identity-card')).not.toBeNull();
+    expect(parent.querySelectorAll('.profession-skill-row')).toHaveLength(10);
+    expect(parent.querySelector('.profession-archetype-crest')).toBeNull();
+    expect(parent.querySelector('.profession-identity-returncost')).toBeNull();
   });
 
   it('renders combo guidance outside the faded disabled craft button', () => {
     const parent = document.createElement('div');
+    const attachTooltip = vi.fn();
     renderCraftingWindow(
       parent,
       {
@@ -78,6 +115,7 @@ describe('profession identity card painter contract', () => {
             difficulty: 'reduced',
             station: null,
             craftable: false,
+            commissionEligible: false,
             comboRequirement: {
               craftA: 'armorcrafting',
               craftB: 'weaponcrafting',
@@ -96,12 +134,27 @@ describe('profession identity card painter contract', () => {
         itemIcon: vi.fn(() => ''),
         moneyHtml: vi.fn(() => ''),
         itemTooltip: vi.fn(() => ''),
-        attachTooltip: vi.fn(),
+        attachTooltip,
+        commissionChecked: () => false,
+        onToggleCommission: vi.fn(),
       },
     );
 
     const button = parent.querySelector<HTMLButtonElement>('button.vendor-item');
     const note = parent.querySelector<HTMLElement>('.crafting-combo-requirement');
+    const sectionIcon = parent.querySelector<HTMLImageElement>('.crafting-section-icon');
+    expect(sectionIcon?.getAttribute('src')).toBe('/ui/professions/prof_armorcrafting.webp');
+    expect(sectionIcon?.getAttribute('alt')).toBe('');
+    const section = parent.querySelector<HTMLElement>('.crafting-section-title');
+    expect(section?.getAttribute('role')).toBe('heading');
+    expect(section?.getAttribute('aria-level')).toBe('3');
+    expect(section?.tabIndex).toBe(-1);
+    expect(attachTooltip.mock.calls.some(([target]) => target === section)).toBe(false);
+    const recipeTooltip = attachTooltip.mock.calls.find(([target]) => target === button)?.[1] as
+      | (() => string)
+      | undefined;
+    expect(recipeTooltip?.()).toContain('/ui/professions/prof_armorcrafting.webp');
+    expect(recipeTooltip?.()).toContain('Armorcrafting');
     expect(button?.disabled).toBe(true);
     // The rendered guidance is the localized copy for the given reason
     // (not_attuned), so a wrong or empty reason string reddens here.
@@ -141,6 +194,7 @@ describe('profession identity card painter contract', () => {
             difficulty: 'full',
             station: { required: true, type: 'toolworks', inRange: false },
             craftable: false,
+            commissionEligible: false,
           },
         ],
       },
@@ -152,6 +206,8 @@ describe('profession identity card painter contract', () => {
         moneyHtml: vi.fn(() => ''),
         itemTooltip: vi.fn(() => ''),
         attachTooltip: vi.fn(),
+        commissionChecked: () => false,
+        onToggleCommission: vi.fn(),
       },
     );
 
@@ -170,6 +226,65 @@ describe('profession identity card painter contract', () => {
     expect(button?.getAttribute('aria-label')).toContain('Move to the Toolworks to craft this.');
     // Full-gain difficulty still renders its text label (never color-only).
     expect(button?.querySelector('.crafting-difficulty')?.textContent).toBe('Full skill gain');
+  });
+
+  it('renders the Phase 14 learn-at-master hint under a hinted craft section only', () => {
+    const parent = document.createElement('div');
+    renderCraftingWindow(
+      parent,
+      {
+        recipes: [
+          {
+            recipeId: 'known_weapon',
+            professionId: 'weaponcrafting',
+            resultItemId: 'known_weapon_result',
+            resultCount: 1,
+            reagents: [],
+            skillReq: 0,
+            difficulty: 'full',
+            station: null,
+            craftable: true,
+            commissionEligible: false,
+          },
+          {
+            recipeId: 'known_armor',
+            professionId: 'armorcrafting',
+            resultItemId: 'known_armor_result',
+            resultCount: 1,
+            reagents: [],
+            skillReq: 0,
+            difficulty: 'full',
+            station: null,
+            craftable: true,
+            commissionEligible: false,
+          },
+        ],
+      },
+      {
+        hideTooltip: vi.fn(),
+        onCraft: vi.fn(),
+        onClose: vi.fn(),
+        itemIcon: vi.fn(() => ''),
+        moneyHtml: vi.fn(() => ''),
+        itemTooltip: vi.fn(() => ''),
+        attachTooltip: vi.fn(),
+        commissionChecked: () => false,
+        onToggleCommission: vi.fn(),
+      },
+      undefined,
+      // Only weaponcrafting is hinted; armorcrafting is not in the map.
+      new Map([
+        ['weaponcrafting', { stationType: 'forge' as const, masterNpcId: 'forgemistress_darva' }],
+      ]),
+    );
+
+    const hints = parent.querySelectorAll<HTMLElement>('.crafting-learn-hint');
+    // Exactly one hint, and it names the master (entity i18n), the station, and
+    // the craft.
+    expect(hints).toHaveLength(1);
+    expect(hints[0].textContent).toBe(
+      'Forgemistress Darva at the Forge can teach you more Weaponcrafting recipes.',
+    );
   });
 
   it('renders localized visible identity, cap, tutorial, and nudge text', () => {
@@ -214,6 +329,8 @@ describe('crafting window Phase 6 QA pins', () => {
     moneyHtml: vi.fn(() => ''),
     itemTooltip: vi.fn(() => ''),
     attachTooltip: vi.fn(),
+    commissionChecked: () => false,
+    onToggleCommission: vi.fn(),
   });
   const comboRow = (unmetCrafts: string[]) => ({
     recipes: [
@@ -227,6 +344,7 @@ describe('crafting window Phase 6 QA pins', () => {
         difficulty: 'reduced' as const,
         station: null,
         craftable: false,
+        commissionEligible: false,
         comboRequirement: {
           craftA: 'armorcrafting',
           craftB: 'weaponcrafting',
@@ -281,6 +399,7 @@ describe('crafting window Phase 6 QA pins', () => {
             difficulty: 'none' as const,
             station: null,
             craftable: true,
+            commissionEligible: false,
           },
         ],
       },
@@ -289,6 +408,49 @@ describe('crafting window Phase 6 QA pins', () => {
     const difficulty = parent.querySelector<HTMLElement>('.crafting-difficulty');
     expect(difficulty?.getAttribute('data-difficulty')).toBe('none');
     expect(difficulty?.textContent).toBe('No skill gain');
+  });
+
+  it('maps the four difficulty states to the classic tints with their labels (Phase 12c)', () => {
+    // The classic four-color read: orange (QUALITY_COLOR.legendary), the
+    // house gold yellow (--gold in styles/tokens.css, the masterwork seal
+    // idiom), green (QUALITY_COLOR.uncommon), gray (QUALITY_COLOR.poor).
+    const rows = [
+      { difficulty: 'full' as const, tint: '#ff8000', label: 'Full skill gain' },
+      { difficulty: 'reduced' as const, tint: '#ffd100', label: 'Reduced skill gain' },
+      { difficulty: 'minimal' as const, tint: '#1eff00', label: 'Minimal skill gain' },
+      { difficulty: 'none' as const, tint: '#9d9d9d', label: 'No skill gain' },
+    ];
+    for (const { difficulty, tint, label } of rows) {
+      const parent = document.createElement('div');
+      renderCraftingWindow(
+        parent,
+        {
+          recipes: [
+            {
+              recipeId: `tint_${difficulty}`,
+              professionId: 'cooking',
+              resultItemId: 'tint_result',
+              resultCount: 1,
+              reagents: [],
+              skillReq: 25,
+              difficulty,
+              station: null,
+              craftable: true,
+              commissionEligible: false,
+            },
+          ],
+        },
+        deps(),
+      );
+      const el = parent.querySelector<HTMLElement>('.crafting-difficulty');
+      expect(el?.getAttribute('data-difficulty'), difficulty).toBe(difficulty);
+      expect(el?.getAttribute('style'), difficulty).toContain(tint);
+      // Never color-only: the localized label rides inside the tinted span.
+      expect(el?.textContent, difficulty).toBe(label);
+    }
+    // The minimal state binds the NEW catalog key, full-literal for the
+    // key scanner, alongside its three siblings.
+    expect(craftingWindow).toContain("minimal: 'hudChrome.crafting.difficultyMinimal'");
   });
 
   it('an IN-RANGE station row keeps the badge, drops the dashed style and the note', () => {
@@ -307,6 +469,7 @@ describe('crafting window Phase 6 QA pins', () => {
             difficulty: 'full' as const,
             station: { required: true, type: 'forge' as const, inRange: true },
             craftable: true,
+            commissionEligible: false,
           },
         ],
       },
@@ -335,16 +498,35 @@ describe('crafting window Phase 6 QA pins', () => {
             difficulty: 'full' as const,
             station: { required: true, type: 'forge' as const, inRange: false },
             craftable: false,
+            commissionEligible: false,
           },
         ],
       },
       d,
     );
-    const build = d.attachTooltip.mock.calls[0]?.[1] as () => string;
+    const build = d.attachTooltip.mock.calls.find(([target]) =>
+      (target as HTMLElement).matches('button.vendor-item'),
+    )?.[1] as () => string;
     const html = build();
     expect(html).toContain('Requires Armorcrafting 25');
     expect(html).toContain('Full skill gain');
     expect(html).toContain('Move to the Forge to craft this.');
+  });
+});
+
+describe('GOLD_ACCENT_COLOR lockstep (Phase 12c QA)', () => {
+  it('the TS twin, the CSS --gold token, and the literal agree', () => {
+    // icons.ts GOLD_ACCENT_COLOR exists because inline-styling painters cannot
+    // read the CSS custom property; the comment promises lockstep with --gold
+    // in src/styles/tokens.css. This pin is the promise's teeth: a retheme
+    // that moves either side without the other reds here. The literal arm
+    // keeps the pair from drifting together unnoticed (the reduced-difficulty
+    // tint pin above expects the same hex).
+    const tokens = readFileSync(path.resolve(process.cwd(), 'src/styles/tokens.css'), 'utf8');
+    const match = tokens.match(/--gold:\s*(#[0-9a-fA-F]{6})\s*;/);
+    expect(match, 'tokens.css should declare --gold as a 6-digit hex').not.toBeNull();
+    expect(match?.[1]).toBe(GOLD_ACCENT_COLOR);
+    expect(GOLD_ACCENT_COLOR).toBe('#ffd100');
   });
 });
 

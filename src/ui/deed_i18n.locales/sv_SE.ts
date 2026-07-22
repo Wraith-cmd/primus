@@ -64,7 +64,6 @@ export const table: DeedLocaleTable = {
   prog_herbalism_100: { name: 'Ängens mästare', desc: 'Nå 100 i färdigheten Örtkunskap.' },
   prog_master_gatherer: {
     name: 'Mästersamlare',
-    desc: 'Nå 100 i färdigheterna Gruvdrift, Timmerhuggning och Örtkunskap.',
   },
   prog_first_craft: { name: 'Handgjort', desc: 'Slutför ditt första lyckade hantverk.' },
   prog_craft_specialist: {
@@ -617,6 +616,7 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: 'Yrkets verktyg',
+    desc: 'Slutför ett hantverk vid en hantverksstation.',
   },
   dgn_nythraxis_crypt: {
     name: 'Vad kryptan gömde',

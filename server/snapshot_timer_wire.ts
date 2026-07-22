@@ -27,6 +27,7 @@ interface StableAuraRecord {
   charges: number | undefined;
   empowerAbilities: readonly string[] | undefined;
   sourceId: number;
+  unbreakableControl: boolean;
   paused: boolean;
   deadline: number;
 }
@@ -47,6 +48,7 @@ interface StableAuraWire {
   charges?: number;
   emp?: readonly string[];
   src?: number;
+  ub?: 1;
 }
 
 function round2(value: number): number {
@@ -86,6 +88,7 @@ function auraMatches(
     record.charges === aura.charges &&
     sameStringList(record.empowerAbilities, aura.empowerAbilities) &&
     record.sourceId === aura.sourceId &&
+    record.unbreakableControl === (aura.unbreakableControl === true) &&
     record.paused === paused &&
     record.deadline === deadline
   );
@@ -106,6 +109,7 @@ function auraRecord(aura: Aura, simTime: number, paused: boolean): StableAuraRec
     charges: aura.charges,
     empowerAbilities: aura.empowerAbilities ? [...aura.empowerAbilities] : undefined,
     sourceId: aura.sourceId,
+    unbreakableControl: aura.unbreakableControl === true,
     paused,
     deadline: round2(paused ? aura.remaining : simTime + aura.remaining),
   };
@@ -129,6 +133,7 @@ function auraWire(record: StableAuraRecord): StableAuraWire {
   if (record.charges !== undefined) wire.charges = record.charges;
   if (record.empowerAbilities !== undefined) wire.emp = record.empowerAbilities;
   if (record.sourceId) wire.src = record.sourceId;
+  if (record.unbreakableControl) wire.ub = 1;
   return wire;
 }
 
@@ -226,9 +231,12 @@ export class StableSelfTimerWireCache {
   private nodeResult: SerializedTimerWire | null = null;
   private charges = new Map<string, number>();
   private chargeResult: SerializedTimerWire | null = null;
+  private chargeRecharges = new Map<string, readonly [number, number]>();
+  private chargeRechargeResult: SerializedTimerWire | null = null;
   cooldownRebuilds = 0;
   nodeCooldownRebuilds = 0;
   chargeRebuilds = 0;
+  chargeRechargeRebuilds = 0;
 
   private setOwner(ownerId: number): void {
     if (this.ownerId === ownerId) return;
@@ -239,6 +247,8 @@ export class StableSelfTimerWireCache {
     this.nodeResult = null;
     this.charges.clear();
     this.chargeResult = null;
+    this.chargeRecharges.clear();
+    this.chargeRechargeResult = null;
   }
 
   encodeCooldowns(
@@ -338,5 +348,62 @@ export class StableSelfTimerWireCache {
       revision: this.chargeRebuilds,
     };
     return this.chargeResult;
+  }
+
+  /** The `achr` companion to `achg`: per ability, the SOONEST running recharge
+   *  timer as a stable [deadline, length] pair (deadline = simTime + remaining,
+   *  fixed while that timer runs, so the JSON only rebuilds on charge events:
+   *  a spend, a refund, or a length change). Entries exist only while a charge
+   *  is actually regenerating; a full pool serializes as {}. Recharge timers
+   *  ARE hourglass-accelerated (auras.ts ticks them via
+   *  temporalHourglassCooldownDelta), which shifts the deadline each tick of an
+   *  hourglass window: the cache then rebuilds per tick (bandwidth only, the
+   *  re-sent deadline keeps the client exact at snapshot cadence). The
+   *  encodeCooldowns [deadline, rate, until] tuple is deliberately NOT
+   *  replicated here for that rare dev/chronomancy window, and neither is the
+   *  aura encoder's paused branch: nothing in the sim pauses a charge-pool
+   *  recharge today, so a plain deadline is always live. If a pause mechanic
+   *  ever reaches recharges, this encoder needs the aura treatment. */
+  encodeChargeRecharges(
+    ownerId: number,
+    abilityCharges: Entity['abilityCharges'],
+    simTime: number,
+  ): SerializedTimerWire {
+    this.setOwner(ownerId);
+    let count = 0;
+    let changed = false;
+    if (abilityCharges) {
+      for (const key in abilityCharges) {
+        const state = abilityCharges[key];
+        if (!(state.recharge > 0) || !Number.isFinite(state.recharge)) continue;
+        count++;
+        const prior = this.chargeRecharges.get(key);
+        if (
+          !prior ||
+          prior[0] !== round2(simTime + state.recharge) ||
+          prior[1] !== round2(state.rechargeLength)
+        ) {
+          changed = true;
+        }
+      }
+    }
+    if (count !== this.chargeRecharges.size) changed = true;
+    if (!changed && this.chargeRechargeResult) return this.chargeRechargeResult;
+
+    const next = new Map<string, readonly [number, number]>();
+    if (abilityCharges) {
+      for (const key in abilityCharges) {
+        const state = abilityCharges[key];
+        if (!(state.recharge > 0) || !Number.isFinite(state.recharge)) continue;
+        next.set(key, [round2(simTime + state.recharge), round2(state.rechargeLength)]);
+      }
+    }
+    this.chargeRecharges = next;
+    this.chargeRechargeRebuilds++;
+    this.chargeRechargeResult = {
+      json: JSON.stringify(Object.fromEntries(next)),
+      revision: this.chargeRechargeRebuilds,
+    };
+    return this.chargeRechargeResult;
   }
 }

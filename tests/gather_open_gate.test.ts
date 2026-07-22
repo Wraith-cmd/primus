@@ -134,11 +134,13 @@ describe('shouldApproachPickedEntity default arm', () => {
 describe('tryNearbyInteraction default arm', () => {
   function nearbyRig(e: Entity) {
     const lootCorpse = vi.fn(() => true as const);
+    const harvestCorpse = vi.fn();
     const world = {
       player: playerAt(0),
       playerId: 1,
       entities: new Map([[e.id, e]]),
       lootCorpse,
+      harvestCorpse,
       delveInteract: () => false as const,
       enterDungeon: () => false as const,
       leaveDungeon: () => false as const,
@@ -155,24 +157,25 @@ describe('tryNearbyInteraction default arm', () => {
     } as unknown as Parameters<typeof tryNearbyInteraction>[1] & {
       showError: ReturnType<typeof vi.fn>;
     };
-    return { world, hud, lootCorpse };
+    return { world, hud, lootCorpse, harvestCorpse };
   }
 
   it('dispatches a lootable corpse without any harvest-state argument (the default arm)', () => {
     const withLoot = corpse({ loot: { copper: 5, items: [] } });
     const { world, hud, lootCorpse } = nearbyRig(withLoot);
-    expect(tryNearbyInteraction(world, hud, [], 'far', 'notReady', 'nothing')).toBe(true);
+    expect(tryNearbyInteraction(world, hud, [], null, 'far', 'notReady', 'nothing')).toBe(true);
     expect(lootCorpse).toHaveBeenCalledWith(2);
   });
 
-  it('a harvest-only corpse does not capture the interact key (loot-first contract, unchanged by the flip)', () => {
-    // The nearby-interact corpse pick keys off hasLoot, not canOpen: harvest
-    // opens through the click path (handlePickedEntity above). Pinned so a
-    // future change to that contract is deliberate.
-    const { world, hud, lootCorpse } = nearbyRig(corpse({}));
-    expect(tryNearbyInteraction(world, hud, [], 'far', 'notReady', 'nothing')).toBe(false);
+  it('a harvest-only corpse now captures the interact key (unified press, Phase 12d)', () => {
+    // The nearby-interact corpse pick keys off canOpen since the unified
+    // press: a harvest-only corpse is a target, and only its harvest half is
+    // dispatched (no loot command, so no denial toast on an empty table).
+    const { world, hud, lootCorpse, harvestCorpse } = nearbyRig(corpse({}));
+    expect(tryNearbyInteraction(world, hud, [], null, 'far', 'notReady', 'nothing')).toBe(true);
+    expect(harvestCorpse).toHaveBeenCalledWith(2);
     expect(lootCorpse).not.toHaveBeenCalled();
-    expect(hud.showError).toHaveBeenCalledWith('nothing');
+    expect(hud.showError).not.toHaveBeenCalled();
   });
 });
 

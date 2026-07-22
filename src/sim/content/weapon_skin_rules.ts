@@ -18,6 +18,8 @@ export type ItemWeaponType = WeaponSkinType | 'polearm';
 export const WEAPON_TYPE_BY_ITEM: Record<string, ItemWeaponType> = {
   // Swords
   worn_sword: 'sword',
+  ironedge_longsword: 'sword',
+  thorium_warblade: 'sword',
   redbrook_blade: 'sword',
   valeborn_spellblade: 'sword',
   eastbrook_arming_sword: 'sword',
@@ -40,6 +42,7 @@ export const WEAPON_TYPE_BY_ITEM: Record<string, ItemWeaponType> = {
   direfang_greatblade: 'sword',
   // Daggers
   rusty_dagger: 'dagger',
+  whetted_iron_dirk: 'dagger',
   keen_dirk: 'dagger',
   moggers_shiv: 'dagger',
   vale_carving_knife: 'dagger',
@@ -66,6 +69,8 @@ export const WEAPON_TYPE_BY_ITEM: Record<string, ItemWeaponType> = {
   first_blood_razor: 'dagger',
   // Maces
   training_mace: 'mace',
+  copper_flanged_mace: 'mace',
+  ironshod_maul: 'mace',
   bristleback_maul: 'mace',
   moggers_copper_cudgel: 'mace',
   bronzework_mace: 'mace',
@@ -75,8 +80,14 @@ export const WEAPON_TYPE_BY_ITEM: Record<string, ItemWeaponType> = {
   crag_warden_cudgel: 'mace',
   drownedmoon_maul: 'mace',
   nhalias_bell_maul: 'mace',
+  fenshadow_maul: 'mace',
+  gravewyrm_thornmaul: 'mace',
+  maul_of_the_scourged_wilds: 'mace',
+  wildsoul_maul: 'mace',
   // Axes
   rusty_hatchet: 'axe',
+  copper_bearded_axe: 'axe',
+  arcanite_war_axe: 'axe',
   gorraks_cruel_chopper: 'axe',
   tunnelkings_spade: 'axe',
   gorraks_cleaver: 'axe',
@@ -86,6 +97,7 @@ export const WEAPON_TYPE_BY_ITEM: Record<string, ItemWeaponType> = {
   gravewyrm_cleaver: 'axe',
   // Staves
   gnarled_staff: 'staff',
+  elderwood_battle_staff: 'staff',
   apprentice_staff: 'staff',
   hickory_shortstaff: 'staff',
   gravecaller_staff: 'staff',
@@ -104,6 +116,9 @@ export const WEAPON_TYPE_BY_ITEM: Record<string, ItemWeaponType> = {
   craghorn_staff: 'staff',
   lunar_tide_greatstaff: 'staff',
   emberglass_warstaff: 'staff',
+  briarroot_staff: 'staff',
+  cragthorn_greatstaff: 'staff',
+  nightfangs_greatstaff: 'staff',
   // Wands
   drowned_tide_scepter: 'wand',
   palecoil_rod: 'wand',
@@ -114,6 +129,7 @@ export const WEAPON_TYPE_BY_ITEM: Record<string, ItemWeaponType> = {
   stormcallers_focus: 'wand',
   // Polearms (no skins target these)
   tidereaver_gaff: 'polearm',
+  ironbark_boar_spear: 'polearm',
   fen_reaver_glaive: 'polearm',
 };
 
@@ -167,6 +183,28 @@ export function resolveActiveWeaponSkin(
     if (skinId && WEAPON_SKINS[skinId]?.weaponType === t) return skinId;
   }
   return null;
+}
+
+/**
+ * True when the active weapon skin should also render on the offhand: the
+ * offhand holds a WEAPON whose type matches the skin's weaponType (a rogue
+ * with two daggers and a dagger skin shows both blades skinned). Shields
+ * (armor, no weapon type), held offhands (orbs/tomes, no weapon type), and any
+ * offhand weapon of a DIFFERENT type resolve to a non-matching weapon type and
+ * are excluded, so the equality check is the whole rule. Hand is deliberately
+ * NOT consulted: a Fury warrior (equipment_rules.canDualWieldTwoHand) can
+ * offhand a two-hander, and the mainhand rule already skins a matching-type
+ * two-hander, so the mirror treats both hands the same. Pure and
+ * account-cosmetic-only; the offhand keeps its own equipped item id on the wire
+ * and the mirror is derived locally from that id plus the resolved skin.
+ */
+export function offhandMirrorsWeaponSkin(
+  skinId: string | null | undefined,
+  offhandItemId: string | null | undefined,
+): boolean {
+  const def = skinId ? WEAPON_SKINS[skinId] : null;
+  if (!def) return false;
+  return weaponTypeForItem(offhandItemId) === def.weaponType;
 }
 
 /** True when `skinType` may be applied with the given class and mainhand item. */

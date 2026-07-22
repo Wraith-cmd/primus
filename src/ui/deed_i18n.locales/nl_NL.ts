@@ -85,7 +85,6 @@ export const table: DeedLocaleTable = {
   },
   prog_master_gatherer: {
     name: 'Meesterverzamelaar',
-    desc: 'Bereik 100 vaardigheid in Mijnbouw, Houthakken en Kruidenkunde.',
   },
   prog_first_craft: { name: 'Handwerk', desc: 'Voltooi je eerste geslaagde ambachtswerk.' },
   prog_craft_specialist: {
@@ -686,6 +685,7 @@ export const table: DeedLocaleTable = {
   },
   prog_tools_of_the_trade: {
     name: 'Gereedschap van het Vak',
+    desc: 'Voltooi een ambachtswerk bij een ambachtsstation.',
   },
   dgn_nythraxis_crypt: {
     name: 'Wat de Crypte Bewaarde',

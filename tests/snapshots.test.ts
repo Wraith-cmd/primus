@@ -108,6 +108,8 @@ function bareClient(pid: number, playerClass: PlayerClass = 'warrior'): ClientWo
   c.ownPlayerClass = playerClass;
   c.spectating = null;
   c.cupInfo = null;
+  c.lastVcupRemainder = null;
+  c.lastVcupShared = null;
   c.sportRole = null;
   c.moveInput = {};
   c.inventory = [];
@@ -612,7 +614,8 @@ describe('delta snapshots', () => {
     const snap = lastSnap(fc.sent);
     expect(snap).not.toBeNull();
     // a fresh session has an empty lastSent, so EVERY maybe() delta key rides the
-    // first snapshot (even the null-valued ones like party/trade/bank); all 44 of them
+    // first snapshot (even the null-valued ones like party/trade/bank); every
+    // key in ALL_DELTA_KEYS
     for (const key of ALL_DELTA_KEYS) {
       expect(snap.self, `self.${key} missing from first snapshot`).toHaveProperty(key);
     }
@@ -999,6 +1002,29 @@ describe('delta snapshots', () => {
       client.inventory.find((s) => s.itemId === 'eastbrook_ritual_vestments')?.instance,
     ).toEqual(masterwork);
     expect(client.inventory.find((s) => s.itemId === 'apprentice_staff')?.instance).toEqual(legacy);
+  });
+
+  it('a counted identical-payload stack (Phase 12d) rides the inv snapshot as one slot', () => {
+    // Three byte-equal signed grants merge server-side into a single count-3
+    // slot; the wire sends the inventory wholesale, so the client mirror must
+    // show the same one slot with the count AND the payload intact (a mirror
+    // that re-split or dropped either would red here).
+    const signed = { signer: 'Testa' };
+    for (let i = 0; i < 3; i++) server.sim.addItemInstance('wolf_fang', signed, session.pid);
+
+    broadcast(server);
+    const snap = lastSnap(fc.sent);
+    const wireSlots = snap.self.inv.filter((s: any) => s.itemId === 'wolf_fang');
+    expect(wireSlots).toHaveLength(1);
+    expect(wireSlots[0].count).toBe(3);
+    expect(wireSlots[0].instance).toEqual(signed);
+
+    const client = bareClient(session.pid);
+    (client as any).applySnapshot(snap);
+    const mirrored = client.inventory.filter((s) => s.itemId === 'wolf_fang');
+    expect(mirrored).toHaveLength(1);
+    expect(mirrored[0].count).toBe(3);
+    expect(mirrored[0].instance).toEqual(signed);
   });
 
   it('mirrors vendor buyback deltas to the client', () => {
@@ -2593,18 +2619,20 @@ describe('equipped instance wire (eqi)', () => {
         rolled: { masterwork: true, stats: { int: 3 } },
         boundTo: pid,
         charges: { mend: 2 },
+        bindOnTrade: true,
       },
       pid,
     );
     sim.equipItem('eastbrook_ritual_vestments', pid);
     const wired = wireEntity(e).eqi as Record<string, Record<string, unknown>>;
     // Only the cosmetic inspect fields (signer, enchant, rolled) leave the
-    // server; boundTo and charges are gameplay state no inspecting client
-    // needs and must never ride the identity wire.
+    // server; boundTo, charges, and the Phase 13 bindOnTrade arm are gameplay
+    // state no inspecting client needs and must never ride the identity wire.
     expect(wired.chest.signer).toBe('Aldric');
     expect(wired.chest.rolled).toEqual({ masterwork: true, stats: { int: 3 } });
     expect(wired.chest.boundTo).toBeUndefined();
     expect(wired.chest.charges).toBeUndefined();
+    expect(wired.chest.bindOnTrade).toBeUndefined();
     expect(Object.keys(wired.chest).sort()).toEqual(['rolled', 'signer']);
   });
 
@@ -2877,11 +2905,15 @@ describe('lockpick view rebuilds from events on the online client', () => {
 // while the prior decoded value is preserved.
 // ---------------------------------------------------------------------------
 
-// The pinned set of the 49 `maybe(...)` delta keys, sorted. Cross-checked below
-// against the live `maybe(...)` calls scraped from server/game.ts source, so a
-// 49th unregistered delta key reddens this gate.
+// The pinned set of delta keys, sorted. Cross-checked below against the
+// live `maybe(...)` (and `maybeRaw(...)`) calls scraped from server/game.ts
+// source, so a 51st unregistered delta key reddens this gate. All but two ride
+// via `maybe(...)`; `vcupb` and `dfb` are written with `maybeRaw(...)` (realm-wide
+// fragments, each serialized at most once per tick by a realm-readout memo and
+// shared across viewers), not plain `maybe(...)`.
 const ALL_DELTA_KEYS = [
   'achg',
+  'achr',
   'arena',
   'atitle',
   'bags',
@@ -2897,14 +2929,17 @@ const ALL_DELTA_KEYS = [
   'dcompanion',
   'deeds',
   'delveDaily',
+  'denc',
   'df',
   'dfb',
   'dmarks',
   'drun',
   'dstats',
   'duel',
+  'ench',
   'equip',
   'gprof',
+  'hbl',
   'honor',
   'inv',
   'lhonor',
@@ -2923,12 +2958,14 @@ const ALL_DELTA_KEYS = [
   'qdone',
   'qlog',
   'renown',
+  'salv',
   'sport',
   'stats',
   'tal',
   'tfocus',
   'trade',
   'vcup',
+  'vcupb',
   'weapon',
 ] as const;
 
@@ -2939,6 +2976,9 @@ const ALL_DELTA_KEYS = [
 // carries the always-present self scalars (res/mres/rtype/lxp/rxp/prk) plus every
 // delta key whose IWorld name differs from its terse key (stats/weapon/delveDaily
 // keep their name; tal fans out to several members and is asserted directly).
+// vcup/vcupb are likewise excluded and asserted directly in the round-trip test:
+// they merge into one `cupInfo` (per-viewer remainder on vcup, realm-wide fragment
+// on vcupb), so neither key alone equals the full CupInfo target.
 const TERSE_TO_IWORLD: Record<string, string> = {
   achg: 'abilityCharges',
   arena: 'arenaInfo',
@@ -2953,12 +2993,14 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   dcomp: 'companionUpgrades',
   dcompanion: 'companionState',
   deeds: 'deedsEarned',
+  denc: 'lastDisenchantResult',
   df: 'dungeonFinderInfo',
   dfb: 'dungeonFinderBoard',
   dmarks: 'delveMarks',
   drun: 'delveRun',
   dstats: 'deedStats',
   duel: 'duelInfo',
+  ench: 'lastEnchantResult',
   equip: 'equipment',
   gprof: 'gatheringProficiency',
   inv: 'inventory',
@@ -2982,9 +3024,9 @@ const TERSE_TO_IWORLD: Record<string, string> = {
   res: 'resource',
   rtype: 'resourceType',
   rxp: 'restedXp',
+  salv: 'lastSalvageResult',
   sport: 'sportRole',
   tfocus: 'townFocus',
-  vcup: 'cupInfo',
 };
 
 // Year ~2223 in epoch ms. Beats selfWireJson's `until > Date.now()` lockout
@@ -3067,7 +3109,7 @@ function dirtyEveryDeltaField(): {
   meta.delveMarks = 7;
   meta.delveClears = { 'collapsed_reliquary:heroic': 1 };
   meta.companionUpgrades = { companion_tessa: 2 };
-  meta.gatheringProficiency = { mining: 6, logging: 0, herbalism: 0 };
+  meta.gatheringProficiency = { mining: 6, logging: 0, herbalism: 0, fishing: 0 };
   meta.craftSkills.armorcrafting = 31;
   meta.craftSkills.weaponcrafting = 29;
   meta.archetype = {
@@ -3120,6 +3162,12 @@ function dirtyEveryDeltaField(): {
     weaponSkinIds: [],
     weaponSkinLoadout: {},
   };
+  // Session-scoped stored action-bar layout (`hbl`, self-only): set the frozen
+  // join-time copy so the heavy self block wires it once.
+  leader.initialHotbarLayout = {
+    v: 1,
+    forms: { normal: { bar: [{ type: 'ability', id: 'heroic_strike' }], attack: null } },
+  };
 
   // Player Entity fields.
   p.cooldowns.set('heroic_strike', 5);
@@ -3155,6 +3203,33 @@ function dirtyEveryDeltaField(): {
     choices: new Map(),
   });
 
+  // Enchanting-action outcomes (Professions 2.0 Phase 13): poke the exact
+  // PlayerMeta fields the denc/ench/salv encoders read
+  // (lastDisenchantResultFor/lastEnchantResultFor/lastSalvageResultFor), each a
+  // distinguishable non-null value so the round-trip and first-snapshot pins are
+  // meaningful. The disenchant carries the typed bind-on-trade secondary; the
+  // enchant is a deny arm (reason survives).
+  meta.lastDisenchantResult = {
+    ok: true,
+    itemId: 'zealotsbane_blade',
+    materialItemId: 'arcane_essence',
+    count: 1,
+    secondaryItemId: 'wolf_fang',
+    secondaryCount: 1,
+  };
+  meta.lastEnchantResult = {
+    ok: false,
+    itemId: 'apprentice_staff',
+    enchantId: 'ench_test_flat_stamina',
+    reason: 'insufficient_materials',
+  };
+  meta.lastSalvageResult = {
+    ok: true,
+    itemId: 'zealotsbane_blade',
+    materialItemId: 'spider_leg',
+    count: 2,
+  };
+
   return { server, fc, leader, memberPid: mp };
 }
 
@@ -3174,9 +3249,12 @@ describe('full self-state snapshot delta fixture', () => {
       switchCount: 0,
       amendsProgress: 0,
     };
+    // Phase 15 QA directed burn-down reagents for the warplate helm.
     meta.inventory = [
-      { itemId: 'bone_fragments', count: 4 },
-      { itemId: 'linen_scrap', count: 2 },
+      { itemId: 'arcanite_bar', count: 1 },
+      { itemId: 'thorium_ore', count: 5 },
+      { itemId: 'wolf_fang', count: 4 },
+      { itemId: 'smithing_flux', count: 2 },
     ];
     // Phase 9 acquisition switch: combo recipes are trainer-taught now, so a
     // fresh test player must learn this one explicitly before crafting it.
@@ -3272,6 +3350,11 @@ describe('full self-state snapshot delta fixture', () => {
     // --- fields that decode onto the player ENTITY (client.player), not the client ---
     expect(client.player.cooldowns.get('heroic_strike')).toBe(5); // cds -> e.cooldowns
     expect(client.player.abilityCharges?.ice_block?.charges).toBe(1); // achg -> e.abilityCharges
+    // achr -> the same records' recharge timer (legacy wire: raw [remaining, length]);
+    // like vcup/vcupb it is hand-decoded inside the achg block, so it has no
+    // TERSE_TO_IWORLD rename entry.
+    expect(client.player.abilityCharges?.ice_block?.recharge).toBe(10);
+    expect(client.player.abilityCharges?.ice_block?.rechargeLength).toBe(240);
     expect(client.player.stats).toMatchObject({
       str: 12345,
       pvpOffense: 0.17,
@@ -3333,16 +3416,24 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.companionState?.companionId).toBe('companion_tessa'); // dcompanion -> companionState
     expect(client.delveMarks).toBe(7); // dmarks -> delveMarks
     expect(client.companionUpgrades).toEqual({ companion_tessa: 2 }); // dcomp -> companionUpgrades
-    expect(client.gatheringProficiency).toEqual({ mining: 6, logging: 0, herbalism: 0 }); // gprof -> gatheringProficiency
+    expect(client.gatheringProficiency).toEqual({
+      mining: 6,
+      logging: 0,
+      herbalism: 0,
+      fishing: 0,
+    }); // gprof -> gatheringProficiency
     // ncd -> nodeHarvestableByMe: the cooling-down node reads not-ready, an
     // untouched node (never in the map) still reads ready.
     expect(client.nodeHarvestableByMe(GATHER_NODES[0].id)).toBe(false);
     expect(client.nodeHarvestableByMe('not_a_real_node')).toBe(true);
+    // Phase 12c stage 2 appendix re-pin: the enforced per-profession caps
+    // (mining/logging/herbalism 100, fishing 200) replace the old uniform 300.
     expect(client.professionsState).toEqual({
       skills: [
-        { professionId: 'mining', skill: 6, maxSkill: 300 },
-        { professionId: 'logging', skill: 0, maxSkill: 300 },
-        { professionId: 'herbalism', skill: 0, maxSkill: 300 },
+        { professionId: 'mining', skill: 6, maxSkill: 100 },
+        { professionId: 'logging', skill: 0, maxSkill: 100 },
+        { professionId: 'herbalism', skill: 0, maxSkill: 100 },
+        { professionId: 'fishing', skill: 0, maxSkill: 200 },
       ],
     }); // prof -> professionsState
     expect(client.craftingIdentity).toMatchObject({
@@ -3364,6 +3455,30 @@ describe('full self-state snapshot delta fixture', () => {
     // mst -> activeMobileStationCraft: the server-computed ACTIVE craft id
     // (expiry resolved server-side against the sim's own tickCount).
     expect(client.activeMobileStationCraft).toBe('armorcrafting');
+    // denc/ench/salv -> lastDisenchantResult/lastEnchantResult/lastSalvageResult
+    // (Professions 2.0 Phase 13): the delta arm mirrors the exact stash. JSON drops
+    // undefined fields, so each decoded object carries no undefined keys; the
+    // disenchant secondary and the enchant deny reason both survive.
+    expect(client.lastDisenchantResult).toEqual({
+      ok: true,
+      itemId: 'zealotsbane_blade',
+      materialItemId: 'arcane_essence',
+      count: 1,
+      secondaryItemId: 'wolf_fang',
+      secondaryCount: 1,
+    });
+    expect(client.lastEnchantResult).toEqual({
+      ok: false,
+      itemId: 'apprentice_staff',
+      enchantId: 'ench_test_flat_stamina',
+      reason: 'insufficient_materials',
+    });
+    expect(client.lastSalvageResult).toEqual({
+      ok: true,
+      itemId: 'zealotsbane_blade',
+      materialItemId: 'spider_leg',
+      count: 2,
+    });
     expect(client.delveClears).toEqual({ 'collapsed_reliquary:heroic': 1 }); // dclears -> delveClears
     expect(client.delveDaily).toMatchObject({ markClears: 4 }); // delveDaily
     // deeds -> deedsEarned: the Map rebuilds from the plain wire object with
@@ -3384,6 +3499,25 @@ describe('full self-state snapshot delta fixture', () => {
     expect(client.talentSpec).toBe('arms');
     expect(client.loadouts).toEqual([{ name: 'PvP', alloc: { spec: 'arms', rows: {} }, bar: [] }]);
     expect(client.activeLoadout).toBe(0);
+    // hbl -> the login action-bar restore (self-only, resolved once on the first
+    // self payload). A stored server layout arrives as a 'server' win; like tal
+    // it is asserted directly (no TERSE_TO_IWORLD rename entry).
+    expect(client.takeActionBarLayoutRestore()).toEqual({
+      source: 'server',
+      layout: {
+        v: 1,
+        forms: { normal: { bar: [{ type: 'ability', id: 'heroic_strike' }], attack: null } },
+      },
+    });
+
+    // vcup + vcupb -> cupInfo (merged from both fragments; neither key alone
+    // equals the full CupInfo, so both are excluded from TERSE_TO_IWORLD and
+    // asserted directly here, the same way tal is above). The reassembled client
+    // mirror must deep-equal exactly what the server computes for this viewer.
+    expect(client.cupInfo).toEqual(server.sim.cupInfoFor(leader.pid));
+    expect(client.cupInfo?.role).toBe('keeper'); // per-viewer field, arrived on vcup
+    expect(Object.keys(client.cupInfo?.queueSizes ?? {}).sort()).toEqual(['1', '2', '3', '4', '5']); // realm-wide field, arrived on vcupb
+    expect(client.cupInfo?.live).toBeNull(); // no live match in the fixture
   });
 
   it('flips mst to null when the mobile station expires (server-side tick-domain check)', () => {
@@ -3480,21 +3614,28 @@ describe('gather node cooldown wire round trip (ncd)', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 49 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(49);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(49);
+  it('ALL_DELTA_KEYS contains exactly 55 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(55);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(55);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
   it('ALL_DELTA_KEYS equals the maybe(...) keys scraped from server/game.ts (multi-line lockouts incl.)', () => {
-    const src = readFileSync(resolve(process.cwd(), 'server/game.ts'), 'utf8');
+    const raw = readFileSync(resolve(process.cwd(), 'server/game.ts'), 'utf8');
+    // Strip comments before scraping so a commented-out call cannot keep its key
+    // in the scraped set (the `(^|[^:])` guard keeps protocol `://` intact).
+    const src = raw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
     // tolerate whitespace/newline between `(` and the quote so the multi-line
-    // maybe('lockouts', ...) call (game.ts ~2166-2169) is captured, not undercounted
-    const re = /\bmaybe\(\s*['"](\w+)['"]/g;
+    // maybe('lockouts', ...) call (game.ts ~2166-2169) is captured, not undercounted;
+    // the optional `(?:Raw)?` also captures the maybeRaw realm-wide calls
+    // ('vcupb' and the multi-line 'dfb')
+    const re = /\bmaybe(?:Raw)?\(\s*['"](\w+)['"]/g;
     const scraped = new Set<string>();
     for (let m = re.exec(src); m !== null; m = re.exec(src)) scraped.add(m[1]);
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
-    expect(scraped.size).toBe(49);
+    expect(scraped.has('vcupb')).toBe(true); // the maybeRaw calls ARE captured by the widened regex
+    expect(scraped.has('dfb')).toBe(true); // incl. the multi-line maybeRaw('dfb', ...) form
+    expect(scraped.size).toBe(55);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -3523,6 +3664,12 @@ describe('delta-key contract pins (anti-drift)', () => {
     // renown keeps the same name on both sides, so it must NEVER grow a rename
     // entry (one would imply a wire key the decoder does not read)
     expect('renown' in TERSE_TO_IWORLD).toBe(false);
+    // vcup/vcupb merge into one `cupInfo` on the client (hand-written in
+    // applySnapshot, not via this table), so neither may ever grow a rename entry.
+    // Both ARE in ALL_DELTA_KEYS, so a stale re-add of `vcup: 'cupInfo'` would slip
+    // past the sorted-membership and delta-key-or-scalar checks; pin it out here.
+    expect('vcup' in TERSE_TO_IWORLD).toBe(false);
+    expect('vcupb' in TERSE_TO_IWORLD).toBe(false);
     // sorted-membership pin: adding or renaming an entry must be a deliberate,
     // reviewable change landing in alphabetical order
     expect(Object.keys(TERSE_TO_IWORLD)).toEqual([...Object.keys(TERSE_TO_IWORLD)].sort());
@@ -3534,6 +3681,155 @@ describe('delta-key contract pins (anti-drift)', () => {
         `${terse} is neither a delta key nor a known self scalar`,
       ).toBe(true);
     }
+  });
+});
+
+// The realm-wide dungeon-finder board (`dfb`) is viewer-independent
+// (dungeonFinderBoardView takes no pid), so selfWireJson ships it via `maybeRaw`
+// plus a realm-readout memo: the board is built and JSON.stringify'd at most once
+// per tick and reused by every session whose per-session lastDfWireTick gate opens
+// on that tick. These pins prove the memo collapses the same-tick work WITHOUT
+// changing a single wire byte or any session's cadence: the shipped string equals
+// what plain `maybe()` produced before, an unchanged board still delta-elides,
+// and a changed board still reaches every session within its own gate interval.
+describe('dfb realm-readout memo (shared board bytes, per-session cadence)', () => {
+  const DF_WIRE_INTERVAL_TICKS = 10; // DF_WIRE_HZ = 2 at DT = 1/20
+
+  function boardServer(): {
+    server: GameServer;
+    fcA: FakeClient;
+    fcB: FakeClient;
+    sa: ClientSession;
+    sb: ClientSession;
+  } {
+    const server = new GameServer();
+    const fcA = fakeWs();
+    const fcB = fakeWs();
+    const sa = joinServer(server, fcA, 61, 'BoardOne');
+    const sb = joinServer(server, fcB, 62, 'BoardTwo');
+    // A real premade listing so the shared board is non-empty and its bytes are
+    // meaningful (hollow_crypt_normal accepts a solo level-8 leader).
+    server.sim.setPlayerLevel(8, sa.pid);
+    server.sim.dungeonFinderListingCreate('hollow_crypt_normal', ['first_run'], sa.pid);
+    return { server, fcA, fcB, sa, sb };
+  }
+
+  it('builds and stringifies the shared board once for two sessions gating on the same tick', () => {
+    const { server, fcA, fcB } = boardServer();
+    const memo = (server as any).dfBoardReadout;
+    expect(memo.objectBuilds).toBe(0);
+    expect(memo.stringifies).toBe(0);
+    // Both sessions join with lastDfWireTick a full interval back, so the first
+    // broadcast pass is due for both at the same sim tick: one build, one
+    // stringify, shared. A per-session build/stringify would count 2 here.
+    broadcast(server);
+    expect(memo.objectBuilds).toBe(1);
+    expect(memo.stringifies).toBe(1);
+    const a = lastSnap(fcA.sent).self.dfb;
+    const b = lastSnap(fcB.sent).self.dfb;
+    expect(a).toHaveLength(1); // the listing is on the board both viewers received
+    expect(JSON.stringify(a)).toBe(JSON.stringify(b)); // identical shared payload
+    expect(JSON.stringify(a)).toBe(memo.json); // and it is exactly the memoized string
+  });
+
+  it('ships byte-for-byte what plain maybe() shipped: the memo string equals a direct stringify', () => {
+    // A raw-capturing socket so the wire assertion reads the UNPARSED payload: a
+    // JSON.parse/re-stringify round trip could mask a non-canonical formatting
+    // difference in the raw bytes; the substring check below cannot.
+    const raw: string[] = [];
+    const server = new GameServer();
+    const fcRaw = { sent: [] as any[], ws: { readyState: 1, send: (p: string) => raw.push(p) } };
+    const sa = joinServer(server, fcRaw as any, 61, 'BoardOne');
+    server.sim.setPlayerLevel(8, sa.pid);
+    server.sim.dungeonFinderListingCreate('hollow_crypt_normal', ['first_run'], sa.pid);
+    broadcast(server);
+    const memo = (server as any).dfBoardReadout;
+    // Same tick, so the finder's own boardRev/tickBucket cache is untouched: the
+    // memoized string must equal the JSON.stringify(value ?? null) plain maybe()
+    // would have produced. The view returns a bare array, never null/undefined
+    // (buildBoard always returns a listing array), so `?? null` is inert and the
+    // direct stringify IS the plain-maybe oracle.
+    expect(memo.json).toBe(JSON.stringify(server.sim.dungeonFinderBoardView()));
+    expect(JSON.parse(memo.json)).toHaveLength(1); // real payload, not an empty fixture
+    // The raw snap frame embeds the memoized string verbatim (maybeRaw splices
+    // `,"dfb":<serialized>` into the self JSON with no re-stringify).
+    expect(raw.some((p) => p.includes('"t":"snap"') && p.includes(`"dfb":${memo.json}`))).toBe(
+      true,
+    );
+  });
+
+  it('keeps delta-elision on an unchanged board and still ships a changed board to every session', () => {
+    const { server, fcA, fcB, sb } = boardServer();
+    broadcast(server); // both sessions receive the initial one-listing board
+    const idleA = fcA.sent.length;
+    const idleB = fcB.sent.length;
+    // Two full DF wire intervals with no board change: each session's gate opens
+    // (due), the memo re-keys on the new ticks, but the serialized bytes are
+    // unchanged, so maybeRaw elides the key for every session in the window.
+    // The window deliberately crosses tick 20, where the finder's tickBucket
+    // cache rebuilds the same content: same bytes, still elided.
+    for (let pass = 0; pass < 2; pass++) {
+      for (let i = 0; i < DF_WIRE_INTERVAL_TICKS; i++) server.sim.tick();
+      broadcast(server);
+    }
+    const dfbSnaps = (sent: any[], from: number): any[] =>
+      sent.slice(from).filter((m) => m.t === 'snap' && m.self && 'dfb' in m.self);
+    expect(dfbSnaps(fcA.sent, idleA)).toHaveLength(0);
+    expect(dfbSnaps(fcB.sent, idleB)).toHaveLength(0);
+    // A real board change (a second listing) still reaches both sessions on
+    // their next due pass: the memo re-keys on the pass tick and re-stringifies
+    // the grown board. A memo that never invalidated (a constant tick key)
+    // would keep serving the stale one-listing string and red the length pin.
+    server.sim.setPlayerLevel(8, sb.pid);
+    server.sim.dungeonFinderListingCreate('hollow_crypt_normal', [], sb.pid);
+    const changedA = fcA.sent.length;
+    const changedB = fcB.sent.length;
+    for (let i = 0; i < DF_WIRE_INTERVAL_TICKS; i++) server.sim.tick();
+    broadcast(server);
+    const grownA = dfbSnaps(fcA.sent, changedA);
+    const grownB = dfbSnaps(fcB.sent, changedB);
+    expect(grownA).toHaveLength(1);
+    expect(grownB).toHaveLength(1);
+    expect(grownA[0].self.dfb).toHaveLength(2);
+    expect(JSON.stringify(grownA[0].self.dfb)).toBe(JSON.stringify(grownB[0].self.dfb));
+  });
+
+  it('keeps the cadence gate per-session: staggered sessions receive a change at their OWN ticks', () => {
+    // The dfb gate is per-session state (session.lastDfWireTick), NOT a
+    // realm-global dueness tracker like vcup's: two sessions with offset gates
+    // receive a board change at DIFFERENT broadcast passes, each at its own
+    // next due tick. A realm-global gate would deliver the change to both
+    // sessions in the SAME pass and red the not-yet-delivered assertion below.
+    const server = new GameServer();
+    const fcA = fakeWs();
+    const sa = joinServer(server, fcA, 63, 'StagOne');
+    server.sim.setPlayerLevel(8, sa.pid);
+    server.sim.dungeonFinderListingCreate('hollow_crypt_normal', ['first_run'], sa.pid);
+    broadcast(server); // tick 0: A ships the one-listing board; A's gate anchors at 0
+    // five ticks later a SECOND session joins: its fresh-join pass anchors its
+    // gate at tick 5, so the two sessions stay offset by 5 ticks forever
+    for (let i = 0; i < 5; i++) server.sim.tick();
+    const fcB = fakeWs();
+    const sb = joinServer(server, fcB, 64, 'StagTwo');
+    broadcast(server); // tick 5: B (fresh) ships the board; A is mid-interval, elided
+    expect(lastSnap(fcB.sent).self.dfb).toHaveLength(1);
+    // the board changes while BOTH gates are closed
+    server.sim.setPlayerLevel(8, sb.pid);
+    server.sim.dungeonFinderListingCreate('hollow_crypt_normal', [], sb.pid);
+    const dfbSnaps = (sent: any[], from: number): any[] =>
+      sent.slice(from).filter((m) => m.t === 'snap' && m.self && 'dfb' in m.self);
+    const aFrom = fcA.sent.length;
+    const bFrom = fcB.sent.length;
+    for (let i = 0; i < 5; i++) server.sim.tick();
+    broadcast(server); // tick 10: A's gate opens (10 - 0), B's does not (10 - 5)
+    expect(dfbSnaps(fcA.sent, aFrom)).toHaveLength(1);
+    expect(dfbSnaps(fcA.sent, aFrom)[0].self.dfb).toHaveLength(2);
+    expect(dfbSnaps(fcB.sent, bFrom)).toHaveLength(0); // B must NOT see it yet
+    for (let i = 0; i < 5; i++) server.sim.tick();
+    broadcast(server); // tick 15: B's own gate opens (15 - 5)
+    const bGrown = dfbSnaps(fcB.sent, bFrom);
+    expect(bGrown).toHaveLength(1);
+    expect(bGrown[0].self.dfb).toHaveLength(2);
   });
 });
 
@@ -3691,6 +3987,24 @@ describe('aura magnitude over the wire (buff/debuff tooltip parity)', () => {
     expect(desc?.nums?.value).toBe(15);
     expect(desc?.nums?.interval).toBe(3);
     expect(desc?.school).toBe('shadow');
+  });
+
+  it('round-trips unbreakable control so the client never offers cancellation', () => {
+    const scriptedStasis: Aura = {
+      id: 'scripted_stasis',
+      name: 'Scripted Stasis',
+      kind: 'stasis',
+      remaining: 10,
+      duration: 10,
+      value: 0,
+      sourceId: 0,
+      school: 'arcane',
+      unbreakableControl: true,
+    };
+
+    const { wire, mirror } = roundTrip(scriptedStasis);
+    expect(wireAura(wire, 'scripted_stasis').ub).toBe(1);
+    expect(mirror.unbreakableControl).toBe(true);
   });
 
   it('round-trips the imbue judgement range (value2/value3), value omitted when 0', () => {
@@ -4239,12 +4553,15 @@ describe('negotiated stable timer wire v2', () => {
     expect(first.self.auras[0]).not.toHaveProperty('rem');
     expect(first.self.cds.stable_cast).toBe(5);
     expect(first.self.achg.stable_cast).toBe(1);
+    expect(first.self.achr.stable_cast).toEqual([5, 5]);
     expect(first.self.ncd.stable_node).toBe(30);
 
     const client = bareClient(session.pid);
     (client as any).applySnapshot(first);
     expect(client.player.auras[0].remaining).toBe(10);
     expect(client.player.cooldowns.get('stable_cast')).toBe(5);
+    expect(client.player.abilityCharges?.stable_cast?.recharge).toBe(5);
+    expect(client.player.abilityCharges?.stable_cast?.rechargeLength).toBe(5);
     expect(client.nodeHarvestableByMe('stable_node')).toBe(false);
 
     fc.sent.length = 0;
@@ -4255,16 +4572,41 @@ describe('negotiated stable timer wire v2', () => {
     expect(later.self).not.toHaveProperty('auras');
     expect(later.self).not.toHaveProperty('cds');
     expect(later.self).not.toHaveProperty('achg');
+    expect(later.self).not.toHaveProperty('achr');
     expect(later.self).not.toHaveProperty('ncd');
 
     (client as any).applySnapshot(later);
     expect(client.player.auras[0].remaining).toBeCloseTo(9.75, 5);
     expect(client.player.cooldowns.get('stable_cast')).toBeCloseTo(4.75, 5);
+    // the retained achr deadline ages the recharge strip across omitted snapshots
+    expect(client.player.abilityCharges?.stable_cast?.recharge).toBeCloseTo(4.75, 5);
     expect(client.nodeHarvestableByMe('stable_node')).toBe(false);
+
+    // A Temporal Hourglass window re-ships achr every tick while the unchanged
+    // counts stay delta-omitted: the accelerated deadline must land even with
+    // NO achg in the snapshot (the decode is deliberately not gated on achg;
+    // a nested decode silently dropped these and froze the strip at 1x).
+    const accelerated = {
+      ...later,
+      tick: later.tick + 1,
+      time: later.time + 0.05,
+      self: { id: session.pid, achr: { stable_cast: [3, 5] } },
+    };
+    (client as any).applySnapshot(accelerated);
+    expect(client.player.abilityCharges?.stable_cast?.recharge).toBeCloseTo(
+      3 - accelerated.time,
+      5,
+    );
+    expect(client.player.abilityCharges?.stable_cast?.charges).toBe(1);
 
     player.auras.length = 0;
     player.cooldowns.clear();
     player.abilityCharges.stable_cast.charges = 2;
+    player.abilityCharges.stable_cast.recharge = 0;
+    // recharges[] mirrors the real refill invariant (auras.ts empties the
+    // per-charge timers when the pool fills); the encoder only reads
+    // `recharge`, but the fixture should never model a state the sim cannot be in.
+    player.abilityCharges.stable_cast.recharges = [];
     meta.nodeHarvestReadyAt.stable_node = server.sim.time - 1;
     fc.sent.length = 0;
     broadcast(server);
@@ -4272,12 +4614,14 @@ describe('negotiated stable timer wire v2', () => {
     expect(cleared.self.auras).toEqual([]);
     expect(cleared.self.cds).toEqual({});
     expect(cleared.self.achg).toEqual({ stable_cast: 2 });
+    expect(cleared.self.achr).toEqual({});
     expect(cleared.self.ncd).toEqual({});
 
     (client as any).applySnapshot(cleared);
     expect(client.player.auras).toEqual([]);
     expect(client.player.cooldowns.size).toBe(0);
     expect(client.player.abilityCharges?.stable_cast?.charges).toBe(2);
+    expect(client.player.abilityCharges?.stable_cast?.recharge).toBe(0);
     expect(client.nodeHarvestableByMe('stable_node')).toBe(true);
   });
 

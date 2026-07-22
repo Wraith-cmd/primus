@@ -119,7 +119,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'deep_wounds',
       'enrage_passive',
     ],
-    color: 0xc79c6e,
+    color: 0xd67a54,
   },
   mage: {
     id: 'mage',
@@ -207,7 +207,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'perfect_moment',
       'fireball_form',
     ],
-    color: 0x69ccf0,
+    color: 0x33c1f1,
   },
   rogue: {
     id: 'rogue',
@@ -247,7 +247,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'stealth',
       'kick',
     ],
-    color: 0xfff569,
+    color: 0xfcee58,
   },
   paladin: {
     id: 'paladin',
@@ -280,7 +280,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'rebuke',
       'sacred_bulwark',
     ],
-    color: 0xf58cba,
+    color: 0xf58ca0,
   },
   hunter: {
     id: 'hunter',
@@ -314,7 +314,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'volley',
       'counter_shot',
     ],
-    color: 0xabd473,
+    color: 0xa6d84f,
   },
   priest: {
     id: 'priest',
@@ -342,7 +342,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'mind_flay',
       'flash_heal',
     ],
-    color: 0xfffff0,
+    color: 0xc6d4f0,
   },
   shaman: {
     id: 'shaman',
@@ -370,7 +370,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'ghost_wolf',
       'earthquake',
     ],
-    color: 0x0070de,
+    color: 0x4e8aea,
   },
   warlock: {
     id: 'warlock',
@@ -407,7 +407,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'rain_of_fire',
       'spell_lock',
     ],
-    color: 0x9482c9,
+    color: 0xa785e6,
   },
   druid: {
     id: 'druid',
@@ -463,7 +463,7 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'skull_bash',
       'primal_reflexes',
     ],
-    color: 0xff7d0a,
+    color: 0xff8c1a,
   },
 };
 
@@ -1487,7 +1487,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
   // Winterlash: the Winter's Chill planter. Its three bolts resolve on one
   // projectile arrival; the debuff rider lands in frostMageAfterCast so the
   // bolts themselves can never eat the charges they just applied. Brain
-  // Freeze's instant/harder/no-cooldown override is applyBrainFreezeOverride.
+  // Freeze's instant/no-cooldown override is applyBrainFreezeOverride.
   flurry: {
     id: 'flurry',
     name: 'Winterlash',
@@ -1518,12 +1518,12 @@ export const ABILITIES: Record<string, AbilityDef> = {
       },
     ],
     description:
-      "Loose three icy bolts for $d Frost damage each and plant Winter's Chill on the target: its next 2 incoming compatible spells treat it as frozen. Brain Freeze makes Winterlash instant, 30% harder, and skips its cooldown. (Frost)",
+      "Loose three icy bolts for $d Frost damage each and plant Winter's Chill on the target: its next 2 incoming compatible spells treat it as frozen. Brain Freeze makes Winterlash instant and skips its cooldown. (Frost)",
   },
-  // Frozen Orb: the roaming proc generator (combat/frozen_orb.ts). Instant,
+  // Frozen Orb: the roaming Icicle generator (combat/frozen_orb.ts). Instant,
   // 45s cooldown; the orb drifts forward pulsing frost damage + a 30% snare
-  // once per second for 8s. First strike guarantees a Fingers of Frost stack,
-  // then 20% per striking pulse. Blizzard shortens its cooldown (below).
+  // once per second for 8s. Each striking pulse banks one Icicle. Blizzard
+  // shortens its cooldown (below).
   frozen_orb: {
     id: 'frozen_orb',
     name: 'Frozen Orb',
@@ -1546,7 +1546,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
       },
     ],
     description:
-      'Release an orb of swirling frost that drifts forward for 8 sec, dealing $d Frost damage each second to nearby enemies and slowing them by 30%. Its strikes generate Fingers of Frost. (Frost)',
+      'Release an orb of swirling frost that drifts forward for 8 sec, dealing $d Frost damage each second to nearby enemies and slowing them by 30%. Each striking pulse generates one Icicle. (Frost)',
   },
   // Glacial Spike: the frost spec's slow, heavy spender. Gated on a FULL Icicles
   // stack (requiresAuraStacks 5), which the cast consumes; it lands a big frost
@@ -1731,7 +1731,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     requiresTarget: false,
     effects: [],
     description:
-      'Rimelance has a 20% chance to make your next Winterlash instant, 30% harder, and free of its cooldown. (Frost)',
+      'Rimelance has a 20% chance to make your next Winterlash instant and free of its cooldown. (Frost)',
   },
   shatter: {
     id: 'shatter',
@@ -1748,7 +1748,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     requiresTarget: false,
     effects: [],
     description:
-      "Your spells gain 50% critical strike chance against frozen targets, and those critical strikes deal 20% more damage. Fingers of Frost and Winter's Chill count as frozen. (Frost)",
+      "Your spells gain 50% critical strike chance against frozen targets. Fingers of Frost and Winter's Chill count as frozen. (Frost)",
   },
   conjure_water: {
     id: 'conjure_water',
@@ -5252,6 +5252,10 @@ export const ABILITIES: Record<string, AbilityDef> = {
     school: 'physical',
     requiresTarget: false,
     offGcd: true,
+    // The whole point of the break is escaping fear/stun, so the cast must be
+    // pressable while controlled (like Ice Block); the stun gate would
+    // otherwise make breakControl unreachable exactly when it matters.
+    usableWhileControlled: true,
     effects: [
       { type: 'breakControl' },
       // ONE aura for both halves (value = damage amp; the body scale is the
@@ -5260,7 +5264,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
       { type: 'selfBuff', kind: 'buff_avatar', value: 0.2, duration: 20 },
     ],
     description:
-      'Transform into a colossus for 20 sec, breaking all control on you and increasing your damage dealt by 20%.',
+      'Transform into a colossus for 20 sec, breaking enemy control effects on you (boss control is unaffected) and increasing your damage dealt by 20%.',
   },
   sanguine_aura: {
     id: 'sanguine_aura',

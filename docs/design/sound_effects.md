@@ -287,7 +287,10 @@ non-dummy, unmuted mob within `MOB_IDLE_SCAN_RADIUS` of the player and rolls
 each one independently
 against `MOB_IDLE_BASE_CHANCE`, damped by how many same-family mobs are
 clustered nearby (`idleDensityFactor`, `src/ui/mob_idle_sfx.ts`) so a dense
-pack does not all bark in the same sweep. A per-entity cooldown
+pack does not all bark in the same sweep. If several rolls succeed, exactly
+one is selected uniformly for an attempt. That fixed invariant bounds cold
+audio fetch/decode fan-out to one attempt per sweep on every client. A
+per-entity cooldown
 (`MOB_IDLE_PER_ENTITY_COOLDOWN_MS`) additionally rate-limits one mob's own
 repeats, stamped only when `sfx.playAt` reports the sound actually played
 (not merely attempted), so losing the shared per-key playback cooldown
@@ -343,6 +346,12 @@ Fiesta) and every world/spatial sound ignore the toggle.
 | `ui_card_play`, `ui_card_reveal` | Card Duel minigame (`src/sim/social/card_duel.ts`): a card played, and every round's simultaneous reveal. High-frequency (once per round each), multi-take. |
 | `ui_card_round_push` | Card Duel: layers on top of the reveal cue when a round ties (nobody scores), never a replacement for it |
 | `ui_card_shuffle` | Card Duel: the initial deal at match start AND a mid-match reshuffle (discard pile shuffled back into the deck once it empties), same cue for both moments |
+| `ui_gather_cast` | PLACEHOLDER (deterministic synth, issue #2208): the gather cast starting (Professions 2.0 Phase 12b), a soft tool wind-up |
+| `ui_gather_strike` | PLACEHOLDER (deterministic synth, issue #2208): the completed gather strike landing with the harvest |
+| `ui_gather_rare` | PLACEHOLDER (deterministic synth, issue #2208): rare-strike variant of `ui_gather_strike`, keyed off `gatherResult` rarity rare+ or a rare event |
+| `ui_fish_cast` | PLACEHOLDER (deterministic synth, issue #2208): the fishing line cast whoosh and plop |
+| `ui_fish_bite` | PLACEHOLDER (deterministic synth, issue #2208): the bite signal opening the reel window; the one gameplay-timing cue of this family, so it ignores the Interface & Feedback Sounds toggle (rides `play()`, never `playFeedback()`) |
+| `ui_fish_reel` | PLACEHOLDER (deterministic synth, issue #2208): the landed reel crank and splash |
 
 ---
 

@@ -359,17 +359,21 @@ describe('items vendor: buy / sell / sellAllJunk / buyBack', () => {
     const { pid, meta } = vendorPlayer(sim);
     const ctx = ctxOf(sim);
     meta.copper = 0;
-    sim.addItem('wolf_fang', 2, pid); // poor, sellValue 4 -> 8
+    // Phase 15: wolf_fang is a crafting reagent now (quality common, never
+    // swept), so this sweep uses mudfin_scale as its gray fodder.
+    sim.addItem('mudfin_scale', 2, pid); // poor, sellValue 5 -> 10
     sim.addItem('bandit_bandana', 1, pid); // poor, sellValue 6
+    sim.addItem('wolf_fang', 1, pid); // reagent (common, white) -> kept
     sim.addItem('apprentice_staff', 1, pid); // not poor -> kept
     sim.drainEvents();
 
     items.sellAllJunk(ctx, pid);
-    expect(sim.countItem('wolf_fang', pid)).toBe(0);
+    expect(sim.countItem('mudfin_scale', pid)).toBe(0);
     expect(sim.countItem('bandit_bandana', pid)).toBe(0);
+    expect(sim.countItem('wolf_fang', pid)).toBe(1);
     expect(sim.countItem('apprentice_staff', pid)).toBe(1);
-    expect(meta.copper).toBe(2 * 4 + 6); // 14
-    expect(meta.vendorBuyback.some((s) => s.itemId === 'wolf_fang' && s.count === 2)).toBe(true);
+    expect(meta.copper).toBe(2 * 5 + 6); // 16
+    expect(meta.vendorBuyback.some((s) => s.itemId === 'mudfin_scale' && s.count === 2)).toBe(true);
     const summary = sim
       .drainEvents()
       .filter((e) => e.type === 'loot' && /^Sold \d+ junk item/.test((e as { text: string }).text));

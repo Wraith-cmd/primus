@@ -7,31 +7,36 @@
 
 import type { StationType } from '../sim/professions/stations';
 import { craftNameText } from './char_window';
-import type { CraftDifficulty, CraftingView } from './crafting_view';
-import { itemDisplayName } from './entity_i18n';
+import type { CraftDifficulty, CraftingView, CraftLearnHint } from './crafting_view';
+import { itemDisplayName, tEntity } from './entity_i18n';
 import { esc } from './esc';
 import { formatNumber, type TranslationKey, t } from './i18n';
-import { QUALITY_COLOR } from './icons';
+import { GOLD_ACCENT_COLOR, QUALITY_COLOR } from './icons';
 import type { PainterHostPresentation } from './painter_host';
+import { professionImageUrl } from './profession_art';
 import { renderProfessionIdentityCard } from './profession_identity_card';
 import type { ProfessionIdentityModel } from './profession_identity_view';
 import { svgIcon } from './ui_icons';
 
-// Skill-gain difficulty tint, reusing the static quality palette the HUD's
-// item surfaces already share (icons.ts): the classic recipe-color intuition
-// (orange = full gains, green = some, gray = none). A tint is only ever a
-// HINT here: the adjacent difficulty LABEL and the aria text carry the same
-// information, and both are identical on every graphics preset/tier
-// (docs/design/graphics-settings-fairness.md).
+// Skill-gain difficulty tint, the classic four-color recipe intuition
+// (Phase 12c): orange = full gains, yellow = reduced, green = minimal,
+// gray = none. Orange/green/gray reuse the static quality palette the HUD's
+// item surfaces already share (icons.ts); yellow is the house gold
+// (--gold in src/styles/tokens.css, the masterwork seal idiom). A tint is
+// only ever a HINT here: the adjacent difficulty LABEL and the aria text
+// carry the same information, and both are identical on every graphics
+// preset/tier (docs/design/graphics-settings-fairness.md).
 const DIFFICULTY_TINT: Record<CraftDifficulty, string> = {
   full: QUALITY_COLOR.legendary,
-  reduced: QUALITY_COLOR.uncommon,
+  reduced: GOLD_ACCENT_COLOR,
+  minimal: QUALITY_COLOR.uncommon,
   none: QUALITY_COLOR.poor,
 };
 
-const DIFFICULTY_LABEL_KEY = {
+const DIFFICULTY_LABEL_KEY: Record<CraftDifficulty, TranslationKey> = {
   full: 'hudChrome.crafting.difficultyFull',
   reduced: 'hudChrome.crafting.difficultyReduced',
+  minimal: 'hudChrome.crafting.difficultyMinimal',
   none: 'hudChrome.crafting.difficultyNone',
 } as const;
 
@@ -57,14 +62,24 @@ export interface CraftingWindowDeps extends PainterHostPresentation {
   hideTooltip(): void;
   onCraft(recipeId: string): void;
   onClose(): void;
+  /** Commission opt-in state (Professions 2.0 Phase 14b), held by the HUD so
+   *  it survives the window's staleness repaints: whether `recipeId` is
+   *  currently opted in, and the toggle callback the per-row checkbox fires.
+   *  The painter renders the control only on commissionEligible rows. */
+  commissionChecked(recipeId: string): boolean;
+  onToggleCommission(recipeId: string, on: boolean): void;
 }
 
-/** Paint the crafting panel from a prepared view. */
+/** Paint the crafting panel from a prepared view. `learnHints` (Phase 14) maps a
+ *  craft id to the station + master where the viewer can learn recipes they have
+ *  not learned; a section renders its "learnable at a master" hint iff its craft
+ *  is present. */
 export function renderCraftingWindow(
   el: HTMLElement,
   view: CraftingView,
   deps: CraftingWindowDeps,
   identity?: ProfessionIdentityModel,
+  learnHints: ReadonlyMap<string, CraftLearnHint> = new Map(),
 ): void {
   deps.hideTooltip();
   const scrollTop = el.scrollTop;
@@ -99,9 +114,39 @@ export function renderCraftingWindow(
 
   for (const [professionId, rows] of sections) {
     const section = document.createElement('div');
-    section.className = 'vendor-section-title';
-    section.textContent = craftNameText(professionId);
+    section.className = 'vendor-section-title crafting-section-title';
+    section.setAttribute('role', 'heading');
+    section.setAttribute('aria-level', '3');
+    const sectionName = craftNameText(professionId);
+    const sectionImageUrl = professionImageUrl(`prof_${professionId}`);
+    if (sectionImageUrl) {
+      const icon = document.createElement('img');
+      icon.className = 'crafting-section-icon';
+      icon.src = sectionImageUrl;
+      icon.alt = '';
+      icon.draggable = false;
+      section.appendChild(icon);
+    }
+    const sectionLabel = document.createElement('span');
+    sectionLabel.textContent = sectionName;
+    section.appendChild(sectionLabel);
     el.appendChild(section);
+
+    // Phase 14 "learnable at a master" hint: shown once under the section when
+    // the viewer has unlearned trainer recipes for this craft, naming the
+    // resident master (entity i18n) and their station. Informational text (no
+    // tap target), identical on every graphics preset (never tier-gated).
+    const learnHint = learnHints.get(professionId);
+    if (learnHint) {
+      const hint = document.createElement('div');
+      hint.className = 'crafting-learn-hint';
+      hint.textContent = t('hudChrome.crafting.learnMoreAtStation', {
+        master: tEntity({ kind: 'npc', id: learnHint.masterNpcId, field: 'name' }),
+        station: stationNameText(learnHint.stationType),
+        craft: craftNameText(professionId),
+      });
+      el.appendChild(hint);
+    }
 
     for (const row of rows) {
       const item = document.createElement('div');
@@ -198,9 +243,34 @@ export function renderCraftingWindow(
       deps.attachTooltip(
         craftBtn,
         () =>
-          `${row.result ? deps.itemTooltip(row.result) : ''}<div class="tt-sub">${esc(t('hudChrome.crafting.reagentsNeeded'))} ${esc(reagentLines)}</div><div class="tt-sub">${esc(skillLine)} ${esc(difficultyLabel)}</div>${row.station ? `<div class="tt-sub">${esc(stationLabel)}${stationOutOfRange ? ` ${esc(stationOutOfRange)}` : ''}</div>` : ''}${comboLine ? `<div class="tt-sub">${esc(comboLine)} ${esc(comboStatus)}</div>` : ''}`,
+          `<div class="tt-profession-header">${sectionImageUrl ? `<img src="${esc(sectionImageUrl)}" alt="" draggable="false">` : ''}<span>${esc(sectionName)}</span></div>${row.result ? deps.itemTooltip(row.result) : ''}<div class="tt-sub">${esc(t('hudChrome.crafting.reagentsNeeded'))} ${esc(reagentLines)}</div><div class="tt-sub">${esc(skillLine)} ${esc(difficultyLabel)}</div>${row.station ? `<div class="tt-sub">${esc(stationLabel)}${stationOutOfRange ? ` ${esc(stationOutOfRange)}` : ''}</div>` : ''}${comboLine ? `<div class="tt-sub">${esc(comboLine)} ${esc(comboStatus)}</div>` : ''}`,
       );
       item.appendChild(craftBtn);
+      // Commission opt-in (Professions 2.0 Phase 14b): a per-craft checkbox,
+      // off by default, rendered ONLY for the ruled-in equipment output kinds
+      // (crafting_view.ts commissionEligible, the sim's own predicate). A
+      // real <label>-wrapped <input> so the accessible name is free and the
+      // whole line is the tap target; checked state lives with the HUD
+      // (deps.commissionChecked) so a staleness repaint never unticks it.
+      if (row.commissionEligible) {
+        const commissionLabel = document.createElement('label');
+        commissionLabel.className = 'crafting-commission-row';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = deps.commissionChecked(row.recipeId);
+        checkbox.addEventListener('change', () =>
+          deps.onToggleCommission(row.recipeId, checkbox.checked),
+        );
+        commissionLabel.appendChild(checkbox);
+        commissionLabel.appendChild(
+          document.createTextNode(` ${t('hudChrome.crafting.commissionToggle')}`),
+        );
+        deps.attachTooltip(
+          commissionLabel,
+          () => `<div class="tt-sub">${esc(t('hudChrome.crafting.commissionToggleHint'))}</div>`,
+        );
+        item.appendChild(commissionLabel);
+      }
       if (comboLine) {
         // Keep the reason outside the disabled button's whole-element opacity so
         // unattuned/wrong-pair/tier guidance retains readable contrast.

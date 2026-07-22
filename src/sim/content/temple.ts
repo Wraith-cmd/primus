@@ -230,6 +230,10 @@ export const TEMPLE_DUNGEON_MOBS: Record<string, MobTemplate> = {
     maxLevel: 18,
     family: 'humanoid',
     elite: true,
+    // Named mid-boss: CC- and snare-immune on both difficulties (see morthen,
+    // src/sim/content/dungeons.ts).
+    ccImmune: true,
+    slowImmune: true,
     hpBase: 150,
     hpPerLevel: 26,
     dmgBase: 12,

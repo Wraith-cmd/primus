@@ -260,4 +260,24 @@ describe('boss templates are CC and snare immune on BOTH difficulties', () => {
     expect(MOBS.nythraxis_heroic_priest_add.slowImmune).toBeUndefined();
     expect(MOBS.nythraxis_heroic_rogue_add.slowImmune).toBeUndefined();
   });
+
+  it('every named mid-boss carries both flags without gaining the boss flag', () => {
+    // The named uniques of the four five-mans are bosses from the player's
+    // side ("all the bosses can't be slowed or CC'd"), so they get the same
+    // template immunity, but they deliberately do NOT gain boss: true: that
+    // flag also drives the Avatar control-break boundary
+    // (tests/avatar_break_control.test.ts) and boss loot, which must not move.
+    const midBossIds = [
+      'sexton_marrow',
+      'knight_commander_olen',
+      'choirmother_selthe',
+      'korgath_the_bound',
+      'grand_necromancer_velkhar',
+    ];
+    for (const id of midBossIds) {
+      expect(MOBS[id]?.ccImmune, `${id} template ccImmune`).toBe(true);
+      expect(MOBS[id]?.slowImmune, `${id} template slowImmune`).toBe(true);
+      expect(MOBS[id]?.boss, `${id} must stay un-boss-flagged`).toBeFalsy();
+    }
+  });
 });

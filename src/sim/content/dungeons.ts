@@ -86,6 +86,10 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     maxLevel: 9,
     family: 'undead',
     elite: true,
+    // Named mid-boss: the boss CC/snare immunity rule applies on both
+    // difficulties even without the boss: true flag (see morthen).
+    ccImmune: true,
+    slowImmune: true,
     hpBase: 110,
     hpPerLevel: 24,
     dmgBase: 9,
@@ -236,6 +240,9 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     maxLevel: 13,
     family: 'undead',
     elite: true,
+    // Named mid-boss: CC- and snare-immune on both difficulties (see morthen).
+    ccImmune: true,
+    slowImmune: true,
     hpBase: 120,
     hpPerLevel: 26,
     dmgBase: 11,
@@ -396,6 +403,9 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     maxLevel: 20,
     family: 'ogre',
     elite: true,
+    // Named mid-boss: CC- and snare-immune on both difficulties (see morthen).
+    ccImmune: true,
+    slowImmune: true,
     hpBase: 260,
     hpPerLevel: 36,
     dmgBase: 14,
@@ -432,6 +442,9 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
     maxLevel: 20,
     family: 'humanoid',
     elite: true,
+    // Named mid-boss: CC- and snare-immune on both difficulties (see morthen).
+    ccImmune: true,
+    slowImmune: true,
     hpBase: 230,
     hpPerLevel: 33,
     dmgBase: 13,

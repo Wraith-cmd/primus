@@ -323,9 +323,13 @@ describe('charge module semantics (direct SimContext calls)', () => {
     updateMobChargeDash(sim.ctx, mob);
     expect(mob.mobChargeTargetId).toBe(victim.id); // still in flight
     mob.auras.push(testStun(victim.id));
+    const posAtStun = { ...mob.pos };
     updateMobChargeDash(sim.ctx, mob); // detects the lockout and ends the dash
     expect(mob.mobChargeTargetId ?? null).toBeNull();
     expect(updateMobChargeDash(sim.ctx, mob)).toBe(false); // no longer owns movement
+    // Position evidence, not just the ownership flag: the mob stopped
+    // advancing on the cancel tick and on the tick after it.
+    expect(mob.pos).toEqual(posAtStun);
   });
 
   it('a full charge (trigger + dash to arrival) draws ZERO rng', () => {

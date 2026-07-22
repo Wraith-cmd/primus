@@ -2015,6 +2015,68 @@ describe('MobileControls pointer lifecycle', () => {
     );
     expect(lookActive).toEqual([true, false, false]);
   });
+
+  it('window blur mid-pinch clears the pinch tracking so a later single-finger swipe still works (Android app pinch-stuck bug)', () => {
+    const { canvas, windowTarget } = installMobileControlDom();
+    const lookActive: boolean[] = [];
+    const input = {
+      setTouchMove: () => {},
+      clearTouchMove: () => {},
+      setTouchLook: (active: boolean) => lookActive.push(active),
+      setTouchLookVector: () => {},
+      applyTouchLookDelta: () => {},
+      zoomBy: () => {},
+    } as unknown as Input;
+
+    new MobileControls(input, mobileCallbacks()).start();
+
+    // Two fingers land on the canvas: a pinch-zoom gesture starts.
+    canvas.dispatchEvent(
+      pointerEvent('pointerdown', {
+        pointerId: 61,
+        pointerType: 'touch',
+        clientX: 100,
+        clientY: 100,
+      }),
+    );
+    canvas.dispatchEvent(
+      pointerEvent('pointerdown', {
+        pointerId: 62,
+        pointerType: 'touch',
+        clientX: 200,
+        clientY: 100,
+      }),
+    );
+
+    // The app loses focus mid-gesture (e.g. a native Android sheet/dialog
+    // triggered by the interact/loot button) without ever delivering
+    // pointerup/pointercancel for either finger.
+    (windowTarget as unknown as EventTarget).dispatchEvent(new Event('blur'));
+
+    // A fresh single-finger swipe afterward must work normally: the stale
+    // two-finger pinch state must not still be guarding swipe-look.
+    canvas.dispatchEvent(
+      pointerEvent('pointerdown', {
+        pointerId: 63,
+        pointerType: 'touch',
+        clientX: 150,
+        clientY: 150,
+      }),
+    );
+    canvas.dispatchEvent(
+      pointerEvent('pointermove', {
+        pointerId: 63,
+        pointerType: 'touch',
+        clientX: 166,
+        clientY: 150,
+      }),
+    );
+
+    // releaseCamera's unconditional setTouchLook(false) fires first (existing
+    // blur behavior); the fix under test is that the third finger's swipe
+    // still activates afterward instead of being blocked by stale pinch state.
+    expect(lookActive).toEqual([false, true]);
+  });
 });
 
 describe('MobileControls chrome idle-fade lifecycle', () => {

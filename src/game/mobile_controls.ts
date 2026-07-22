@@ -412,14 +412,14 @@ export class MobileControls {
     window.addEventListener('blur', () => {
       this.releaseMove();
       this.releaseCamera();
-      this.releaseSwipeLook();
+      this.releasePinch();
       this.touchOwners.releaseAll();
     });
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
         this.releaseMove();
         this.releaseCamera();
-        this.releaseSwipeLook();
+        this.releasePinch();
         this.touchOwners.releaseAll();
       }
     });

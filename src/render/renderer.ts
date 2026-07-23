@@ -1387,8 +1387,7 @@ export class Renderer {
     const sunCanvas = (core: boolean): THREE.CanvasTexture => {
       const c = document.createElement('canvas');
       c.width = c.height = 128;
-      const ctx = c.getContext('2d');
-      if (ctx === null) throw new Error('2D canvas context is unavailable.');
+      const ctx = c.getContext('2d')!;
       const g = ctx.createRadialGradient(64, 64, 2, 64, 64, 64);
       if (core) {
         g.addColorStop(0, 'rgba(255,252,238,1)');
@@ -1432,8 +1431,7 @@ export class Renderer {
       const shaft = document.createElement('canvas');
       shaft.width = 64;
       shaft.height = 256;
-      const sctx = shaft.getContext('2d');
-      if (sctx === null) throw new Error('2D canvas context is unavailable.');
+      const sctx = shaft.getContext('2d')!;
       const gh = sctx.createLinearGradient(0, 0, 0, 256);
       gh.addColorStop(0, 'rgba(255,240,200,0)');
       gh.addColorStop(0.45, 'rgba(255,240,200,0.55)');
@@ -3989,14 +3987,14 @@ export class Renderer {
       body = built.body;
       portal = built.portal;
       height = 4.6;
-      objectMesh = body;
+      objectMesh = body!;
     } else if (e.kind === 'object' && e.templateId === 'mailbox') {
       // Ravenpost pillar: bespoke procedural prop (no sparkle; the unread-mail
       // votive in the group is the per-viewer beacon, toggled in sync()).
       const built = buildMailboxPillar(e.id);
       body = built.group;
       height = built.height;
-      objectMesh = body;
+      objectMesh = body!;
     } else if (e.kind === 'object' && e.templateId?.startsWith('delve_')) {
       // Delve interactables: skip the object pool (each is unique/stateful) and
       // build a dedicated procedural mesh that matches the crypt aesthetic.
@@ -4004,7 +4002,7 @@ export class Renderer {
       const built = buildDelveInteractable(e.templateId, e.id);
       body = built.group;
       height = built.height;
-      objectMesh = body;
+      objectMesh = body!;
       // Pressure plates are flush to the floor, no sparkle clutter overhead.
       if (
         e.templateId !== 'delve_pressure_plate' &&
@@ -4044,7 +4042,7 @@ export class Renderer {
         height = built.height;
         objectPoolKey = null;
       }
-      objectMesh = body;
+      objectMesh = body!;
       if (!this.sparkleMat) {
         this.sparkleMat = new THREE.SpriteMaterial({
           map: sparkleTexture(),
@@ -4126,12 +4124,11 @@ export class Renderer {
       if (!isQuestVision) visual.clickProxy.userData.entityId = e.id;
       clickTarget = visual.clickProxy;
     } else {
-      if (body === null) return;
-      group.add(body);
-      body.traverse((o) => {
+      group.add(body!);
+      body?.traverse((o) => {
         o.userData.entityId = e.id;
       });
-      clickTarget = body;
+      clickTarget = body!;
     }
     group.scale.setScalar(e.scale);
     group.position.set(e.pos.x, e.pos.y, e.pos.z);
@@ -5548,16 +5545,13 @@ export class Renderer {
       }
 
       if (st.casting) {
-        const castingAbility = e.castingAbility;
         this.vfx.castSparkle(
           e.id,
           waterJetVisualChannel
             ? 'frost'
             : e.castingAbility === 'demon_heal'
               ? 'shadow'
-              : castingAbility !== null
-                ? (ABILITIES[castingAbility]?.school ?? 'arcane')
-                : 'arcane',
+              : (ABILITIES[e.castingAbility!]?.school ?? 'arcane'),
           dt,
         );
       }

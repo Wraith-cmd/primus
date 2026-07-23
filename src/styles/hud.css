@@ -634,29 +634,44 @@
     pointer-events: auto;
   }
   /* Target of Target (showTargetOfTarget option): a smaller twin of the target
-     frame, a #target-frame child anchored under the frame's RIGHT edge so it clears
-     the debuff strip that hangs below-left. Shrunk with zoom (compounding the
-     target frame's children-zoom, so it stays proportional), and shown by its own
-     unit_frame painter only when the target-of-target is known. Portrait + name +
-     hp bar only: no resource rail, cast bar, elite tag, or level chip. */
-  #totarget-frame {
+     frame, a #target-frame child anchored BESIDE the frame's right edge, top
+     aligned, so the whole below-frame band belongs to the #tf-debuffs strip (the
+     old below-right anchor shared that band and collided with the strip's first
+     wrapped row at real aura counts). The gap clears the unscaled 24px
+     .tf-move-btn that overhangs the frame corner by 14px. The extra #target-frame
+     id in the selector outranks the children-zoom rule above so the mini zoom
+     actually applies; it compounds --target-frame-scale explicitly to stay
+     proportional at any scale. Percentage offsets resolve against the unzoomed
+     containing block but px lengths are multiplied by the element's zoom, so the
+     gap divides by the same factor to stay a true 18px (clear of the button) at
+     every scale. Shown by its own unit_frame painter only when the
+     target-of-target is known. Portrait + name + hp bar only: no resource rail,
+     cast bar, elite tag, or level chip. A far-right-dragged target frame can push
+     the mini offscreen, the same clipping the debuff strip accepts in extreme
+     drag positions. */
+  #target-frame > #totarget-frame {
     position: absolute;
-    right: -6px;
-    top: calc(100% + 6px);
+    left: calc(100% + 18px / (0.74 * var(--target-frame-scale, 1)));
+    top: 0;
     z-index: 7;
-    zoom: 0.74;
+    zoom: calc(0.74 * var(--target-frame-scale, 1));
     display: none;
   }
-  #totarget-frame .uf-bars {
+  /* Standard portrait-left orientation: the old right-edge hug flipped the mini
+     bars-first; beside the frame it reads like every other unit frame. The
+     #target-frame prefix outranks the LATER #target-frame .portrait-wrap /
+     .uf-bars mirror rules below, which otherwise win the same-specificity tie
+     on source order and mirror the mini too. */
+  #target-frame > #totarget-frame .portrait-wrap {
     order: 1;
-    width: 132px;
-    margin-left: 0;
-    margin-right: -16px;
-    border-radius: 6px 11px 11px 6px;
-    padding: 4px 22px 4px 8px;
   }
-  #totarget-frame .portrait-wrap {
+  #target-frame > #totarget-frame .uf-bars {
     order: 2;
+    width: 132px;
+    margin-left: -16px;
+    margin-right: 0;
+    border-radius: 11px 6px 6px 11px;
+    padding: 4px 8px 4px 22px;
   }
   #totarget-frame .level-chip {
     display: none;

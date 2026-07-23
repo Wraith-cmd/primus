@@ -1709,6 +1709,18 @@
     transform: scale(calc(0.82 * var(--mobile-chrome-scale, 1)));
     transform-origin: left top;
   }
+  /* Target of Target on mobile: a DELIBERATE placement, not fallthrough.
+     showTargetOfTarget is a user-chosen HUD option (reachable from the mobile
+     options sheet; graphics-settings fairness does not apply to user options),
+     so the mini stays visible and keeps the desktop beside-the-frame anchor,
+     inheriting the target frame's 0.82 mobile transform. Verified at 844x390
+     landscape: the band right of the target frame is free (the chip row ends
+     above it, the aura strip wraps below the frame, party frames stack under
+     the strip), so the mini fits without contesting any touch surface. */
+  body.mobile-touch #target-frame > #totarget-frame {
+    left: calc(100% + 18px / (0.74 * var(--target-frame-scale, 1)));
+    top: 0;
+  }
   /* Issue 1577 (1): party frames used to stack in a single column no matter the
      size, so a full party ate more vertical space than a landscape phone can
      spare. The adaptive double-stack now lives on the .party-rows WRAPPER (below),

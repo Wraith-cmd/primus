@@ -2,6 +2,7 @@
 // index.html and play.html both bootstrap through this module, so this one import
 // styles both game entries; admin/guide use their own entries and inline CSS.
 import './styles/index.css';
+import { startDiscordLogin } from './discord_login_start';
 import { syncAppViewport as syncAppViewportShared } from './game/app_viewport';
 import { audio } from './game/audio';
 import { AutoLoot } from './game/autoloot';
@@ -8730,12 +8731,22 @@ function wireStartScreens(): void {
       // off-origin and the navigation guard blocks it. Route it to the external browser via
       // the preload bridge; the /desktop-login page finishes OAuth and deep-links a one-time
       // code back in (onLoginCode -> completeDesktopAppLogin). The web build redirects in place.
-      const bridge = DESKTOP_APP ? desktopBridge() : null;
-      if (bridge) {
-        void bridge.openBrowserLogin();
-        return;
-      }
-      startDiscordOAuth('login');
+      // openBrowserLogin() can reject, and a desktop shell with no bridge would otherwise fall
+      // into an in-app redirect the nav guard drops, so both paths surface a localized error
+      // instead of a silent dead button (issue #1988).
+      startDiscordLogin({
+        desktopApp: DESKTOP_APP,
+        bridge: DESKTOP_APP ? desktopBridge() : null,
+        startWebOAuth: () => startDiscordOAuth('login'),
+        openBrowserFailed: (error) => {
+          console.error('[discord] could not open browser login', error);
+          flashDiscordError();
+        },
+        bridgeUnavailable: () => {
+          console.error('[discord] desktop login bridge unavailable');
+          flashDiscordError();
+        },
+      });
     });
   }
   if (discordOrDivider && NATIVE_APP && isNativeIos()) discordOrDivider.hidden = false;

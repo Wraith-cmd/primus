@@ -6523,9 +6523,13 @@ export class Renderer {
     for (const [id, b] of this.chatBubbles) {
       const e = this.sim.entities.get(id);
       const v = e ? this.views.get(id) : undefined;
-      if (!e || !v || now >= b.until) {
+      if (now >= b.until) {
         b.el.remove();
         this.chatBubbles.delete(id);
+        continue;
+      }
+      if (!e || !v) {
+        b.el.style.display = 'none';
         continue;
       }
       // culled rigs (beyond ENTITY_DRAW_RANGE) stop updating group.position,

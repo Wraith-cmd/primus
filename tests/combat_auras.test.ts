@@ -131,6 +131,35 @@ describe('auras: updateAuras DoT tick', () => {
     updateAuras(sim.ctx, mob);
     expect(mob.dead).toBe(true);
   });
+
+  // Re-entrancy repro: a DoT tick calls ctx.dealDamage, which runs its own
+  // backward sweeps over this SAME e.auras array and can splice a breaksOnDamage
+  // control aura (Fear and friends) or a depleted absorb shield out mid-walk.
+  // With that aura at a LOWER index than the DoT (pushed first, so the backward
+  // walk reaches the DoT before it), the removal shifts the array and a
+  // live-indexed walk lands the just-processed DoT back under the cursor: its
+  // remaining/tickTimer are decremented twice and it deals a SECOND tick of
+  // damage in the same sim tick.
+  it('a DoT tick that breaks a lower-indexed breaksOnDamage aura ages and ticks exactly once', () => {
+    const sim = makeSim();
+    const mob = spawnMob(sim, 1000);
+    const fear = aura('incapacitate', 0, { breaksOnDamage: true, remaining: 10, duration: 10 });
+    const dot = aura('dot', 50, { tickInterval: DT, remaining: 60, duration: 60 });
+    mob.auras.push(fear, dot);
+
+    const hp0 = mob.hp;
+    updateAuras(sim.ctx, mob);
+
+    // Exactly one tick: the double-tick this guards against would take 100.
+    expect(hp0 - mob.hp).toBe(50);
+    // The DoT's own damage still breaks the fear, as it should.
+    expect(mob.auras.some((a) => a.kind === 'incapacitate')).toBe(false);
+    // ...and the DoT aged by exactly one DT, not two.
+    const survivingDot = mob.auras.find((a) => a.kind === 'dot');
+    expect(survivingDot).toBeTruthy();
+    expect(survivingDot?.remaining).toBeCloseTo(60 - DT, 9);
+    expect(mob.auras.length).toBe(1);
+  });
 });
 
 describe('auras: updateAuras expiry / HoT / top guard', () => {

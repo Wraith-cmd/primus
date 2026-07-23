@@ -611,19 +611,6 @@ function selfSnapshotAlpha(alpha: number, lead: number): number {
   return Math.min(1.25, alpha + Math.max(0, lead));
 }
 
-export interface FramePacingInfo {
-  intentional: boolean;
-  targetFps: number;
-  previousWorkMs: number;
-}
-
-export interface RendererSyncOptions {
-  renderFacingOverride?: number | null;
-  selfAlphaLead?: number;
-  selfMotion?: SelfMotionFrame | null;
-  framePacing?: FramePacingInfo;
-}
-
 export interface EntityView {
   group: THREE.Group;
   /** rigged glTF visual for characters; null for object views (doors/crates) */
@@ -1401,7 +1388,7 @@ export class Renderer {
       const c = document.createElement('canvas');
       c.width = c.height = 128;
       const ctx = c.getContext('2d');
-      if (ctx === null) throw new Error('2D canvas context unavailable for sun texture');
+      if (ctx === null) throw new Error('2D canvas context is unavailable.');
       const g = ctx.createRadialGradient(64, 64, 2, 64, 64, 64);
       if (core) {
         g.addColorStop(0, 'rgba(255,252,238,1)');
@@ -1446,7 +1433,7 @@ export class Renderer {
       shaft.width = 64;
       shaft.height = 256;
       const sctx = shaft.getContext('2d');
-      if (sctx === null) throw new Error('2D canvas context unavailable for sun shaft texture');
+      if (sctx === null) throw new Error('2D canvas context is unavailable.');
       const gh = sctx.createLinearGradient(0, 0, 0, 256);
       gh.addColorStop(0, 'rgba(255,240,200,0)');
       gh.addColorStop(0.45, 'rgba(255,240,200,0.55)');
@@ -2264,12 +2251,7 @@ export class Renderer {
     return this.renderDiagnosticsSnapshot;
   }
 
-  private updateAdaptiveResolution(
-    dt: number,
-    intentionalFramePacing: boolean,
-    pacedTargetFps: number,
-    previousFrameWorkMs: number,
-  ): void {
+  private updateAdaptiveResolution(dt: number): void {
     if (!Number.isFinite(dt) || dt <= 0) return;
     const frameMs = Math.min(250, dt * 1000);
     const previousSubmitMs = this.lastFrameStats.phaseMs.submit;
@@ -2294,9 +2276,6 @@ export class Renderer {
       createdViews: this.lastFrameStats.createdViews,
       minRenderScale: lockedRenderScale,
       maxRenderScale: lockedRenderScale,
-      intentionalFramePacing,
-      pacedTargetFps,
-      workMs: previousFrameWorkMs > 0 ? previousFrameWorkMs : previousTotalMs,
     });
     this.frameMsEma = state.frameMsEma;
     this.adaptiveCooldown = state.cooldownSeconds;
@@ -4946,14 +4925,13 @@ export class Renderer {
     };
   }
 
-  sync(alpha: number, dt: number, options: RendererSyncOptions | null = null): void {
-    const renderFacingOverride = options?.renderFacingOverride ?? null;
-    const selfAlphaLead = options?.selfAlphaLead ?? 0;
-    const selfMotion = options?.selfMotion ?? null;
-    const framePacing = options?.framePacing;
-    const intentionalFramePacing = framePacing?.intentional ?? false;
-    const pacedTargetFps = framePacing?.targetFps ?? GFX.budget.targetFps;
-    const previousFrameWorkMs = framePacing?.previousWorkMs ?? 0;
+  sync(
+    alpha: number,
+    dt: number,
+    renderFacingOverride: number | null,
+    selfAlphaLead = 0,
+    selfMotion: SelfMotionFrame | null = null,
+  ): void {
     const totalStart = performance.now();
     let phaseStart = totalStart;
     const framePhaseMs = emptyFramePhaseMs();
@@ -4974,7 +4952,7 @@ export class Renderer {
       return t;
     };
 
-    this.updateAdaptiveResolution(dt, intentionalFramePacing, pacedTargetFps, previousFrameWorkMs);
+    this.updateAdaptiveResolution(dt);
     this.viewportPollTimer += dt;
     if (this.viewportPollTimer >= 0.25) {
       this.viewportPollTimer = 0;

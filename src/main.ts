@@ -41,11 +41,6 @@ import {
   createEntryDiagnosticsController,
   stopActiveEntryDiagnostics,
 } from './game/entry_diagnostics';
-import {
-  FRAME_PACER_CALIBRATION_CALLBACKS,
-  FramePacer,
-  MOBILE_FRAME_RATE_CEILING_FPS,
-} from './game/frame_pacer';
 import { GamepadManager } from './game/gamepad';
 import { GamepadBindings } from './game/gamepad_bindings';
 import { handleGatherNodeInteract } from './game/gather_node_interact';
@@ -67,7 +62,6 @@ import { newKeyboardTurnState, stepKeyboardTurnFacing } from './game/keyboard_tu
 import { applyMobileKeyboardViewport } from './game/keyboard_viewport_applier';
 import { shouldUseStaticBackdrop } from './game/landing_backdrop';
 import { createLandingThemeAudio } from './game/landing_theme';
-import { createLoadingHandoff } from './game/loading_handoff';
 import {
   interfaceModeFromSetting,
   isPhoneTouchDevice,
@@ -167,7 +161,7 @@ import { skinCount } from './render/characters/manifest';
 import { onPortraitsReady, playerPortraitDataUrl } from './render/characters/portrait';
 import { installWebGLContextRelease } from './render/context_release';
 import { firstRunGraphicsPreset, GFX, graphicsPresetLabel } from './render/gfx';
-import { type FramePacingInfo, Renderer, type RendererSyncOptions } from './render/renderer';
+import { Renderer } from './render/renderer';
 import type { SelfMotionFrame } from './render/self_motion';
 import { navigatorSaveData } from './render/sky';
 import { desktopBridge } from './runtime';
@@ -304,12 +298,6 @@ import {
 import { buildWalletConnectionView } from './ui/wallet_connection_view';
 import { formatXp } from './ui/xp_bar';
 import type { IWorld, LeaderboardEntry } from './world_api';
-
-declare global {
-  interface Window {
-    __game?: unknown;
-  }
-}
 
 const WORLD_SEED = 20061; // fixed: World of ClaudeCraft is a persistent place
 const CLICK_MOVE_TURN_RATE = 4.2; // rad/sec; responsive turning while the camera stays decoupled from click spam
@@ -2698,16 +2686,17 @@ async function startGame(
       }
       if (best !== null) {
         const e = world.entities.get(best);
-        if (e === undefined) return;
-        world.targetEntity(best);
-        const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
-        input.setClickMoveTarget(
-          target,
-          ATTACK_MOVE_MELEE_STOP,
-          best,
-          clickMovePathTo(target),
-          true,
-        );
+        if (e !== undefined) {
+          world.targetEntity(best);
+          const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
+          input.setClickMoveTarget(
+            target,
+            ATTACK_MOVE_MELEE_STOP,
+            best,
+            clickMovePathTo(target),
+            true,
+          );
+        }
       }
     }
     // Chasing a target: once inside melee, start the auto-attack (once per target).
@@ -2819,26 +2808,6 @@ async function startGame(
 
   let last = performance.now();
   let acc = 0;
-  const framePacer = new FramePacer({
-    enabled: NATIVE_APP,
-    maxFps: MOBILE_FRAME_RATE_CEILING_FPS,
-  });
-  let previousFrameWorkMs = 0;
-  const framePacingInfo: FramePacingInfo = {
-    intentional: false,
-    targetFps: MOBILE_FRAME_RATE_CEILING_FPS,
-    previousWorkMs: 0,
-  };
-  const rendererSyncOptions: RendererSyncOptions = {
-    framePacing: framePacingInfo,
-  };
-  const loadingHandoff = createLoadingHandoff({
-    requestAnimationFrame: (callback) => {
-      requestAnimationFrame(callback);
-    },
-    setTimeout: (callback, timeoutMs) => window.setTimeout(callback, timeoutMs),
-    clearTimeout: (handle) => window.clearTimeout(handle),
-  });
   let onlineInputEchoMs = 0;
   let playerWasDead = world.player.dead;
   // Smoothed input-echo jitter (mean absolute deviation of RTT samples) for the
@@ -3108,12 +3077,6 @@ async function startGame(
 
   function frame(now: number): void {
     requestAnimationFrame(frame);
-    const pacing = framePacer.step(now, previousFrameWorkMs);
-    if (!pacing.shouldRun) return;
-    framePacingInfo.intentional = pacing.intentionallyPaced;
-    framePacingInfo.targetFps = pacing.targetFps;
-    framePacingInfo.previousWorkMs = previousFrameWorkMs;
-    const frameWorkStartMs = performance.now();
     let frameDt = (now - last) / 1000;
     last = now;
     if (frameDt > 0.25) frameDt = 0.25;
@@ -3228,21 +3191,22 @@ async function startGame(
       const offlineRenderFacing =
         visualFacingFor(input.readMoveInput(), movementFacing ?? offlineSim.player.facing) ??
         movementFacing;
-      rendererSyncOptions.renderFacingOverride = offlineRenderFacing;
       perf.time('renderer', () =>
-        perf.trace('renderer.sync', () => renderer.sync(acc / DT, frameDt, rendererSyncOptions), {
-          mode: 'offline',
-          views: renderer.views.size,
-          alpha: acc / DT,
-        }),
+        perf.trace(
+          'renderer.sync',
+          () => renderer.sync(acc / DT, frameDt, offlineRenderFacing, 0, null),
+          {
+            mode: 'offline',
+            views: renderer.views.size,
+            alpha: acc / DT,
+          },
+        ),
       );
       perf.trace('ui.clickMoveMarker', () => updateClickMoveMarker());
       perf.markInputVisible(performance.now());
       if (settings.get('walkByAutoloot')) autoLoot.run(world, now);
       perf.time('hud', () => perf.trace('hud.update', () => hud.update(), { mode: 'offline' }));
       perf.tick(now);
-      previousFrameWorkMs = performance.now() - frameWorkStartMs;
-      loadingHandoff.markFirstRenderedFrame();
       entryDiagnostics.renderedFrame(now);
       return;
     }
@@ -3370,22 +3334,28 @@ async function startGame(
     renderer.camPitch = input.camPitch;
     renderer.camDist = input.camDist;
     syncGroundAimReticle();
-    // netFacing is applied server-side as soon as it arrives, so the model can
-    // show it without waiting for the predicted position's round trip.
-    rendererSyncOptions.renderFacingOverride = net.spectating === null ? onlineRenderFacing : null;
-    rendererSyncOptions.selfAlphaLead = adaptiveSelfAlphaLead(
-      onlineInputEchoMs,
-      onlineJitterMs,
-      net.snapInterval,
-    );
-    rendererSyncOptions.selfMotion = selfMotion;
     perf.time('renderer', () =>
-      perf.trace('renderer.sync', () => renderer.sync(alpha, frameDt, rendererSyncOptions), {
-        mode: 'online',
-        views: renderer.views.size,
-        alpha,
-        frameDtMs: frameDt * 1000,
-      }),
+      perf.trace(
+        'renderer.sync',
+        () =>
+          renderer.sync(
+            alpha,
+            frameDt,
+            // netFacing (mouselook, keyboard turn, click-move, release latch)
+            // is applied server-side the moment it arrives, so the model may
+            // show it immediately; without it the click-move yaw would lag
+            // the predicted position by a round trip and corners would slide.
+            net.spectating === null ? onlineRenderFacing : null,
+            adaptiveSelfAlphaLead(onlineInputEchoMs, onlineJitterMs, net.snapInterval),
+            selfMotion,
+          ),
+        {
+          mode: 'online',
+          views: renderer.views.size,
+          alpha,
+          frameDtMs: frameDt * 1000,
+        },
+      ),
     );
     perf.trace('ui.clickMoveMarker', () => updateClickMoveMarker());
     maybeShowImmobileNote(now);
@@ -3393,14 +3363,11 @@ async function startGame(
     if (settings.get('walkByAutoloot')) autoLoot.run(world, now);
     perf.time('hud', () => perf.trace('hud.update', () => hud.update(), { mode: 'online' }));
     perf.tick(now);
-    previousFrameWorkMs = performance.now() - frameWorkStartMs;
-    loadingHandoff.markFirstRenderedFrame();
     entryDiagnostics.renderedFrame(now);
   }
   const controller = {
-    move(...args: [unknown] | [unknown, unknown]) {
-      if (args.length > 1) input.setControllerMoveInput(args[0], args[1]);
-      else input.setControllerMoveInput(args[0]);
+    move(moveInput: unknown, facing?: unknown) {
+      input.setControllerMoveInput(moveInput, facing);
     },
     face(facing: unknown) {
       input.setControllerFacing(facing);
@@ -3555,67 +3522,58 @@ async function startGame(
     console.warn('Renderer prewarm failed', err);
   }
   await nextPaint();
-  // Cut to the game only after an accepted frame has completed and reached paint.
-  loadingHandoff.start(() => {
-    entryDiagnostics.checkpoint('first-paint');
-    hideLoadingScreen();
-    // Start the intro clock as the loading screen begins to fade: the camera
-    // holds the opening pose until now, so the fade doubles as the cut in.
-    if (intro) intro.startedAt = performance.now();
-    window.setTimeout(() => {
-      gameInputReady = true;
-      perf.reset();
-      startPerfReporter({
-        perf,
-        settings,
-        tokenProvider: () => api.token,
-        characterIdProvider: () => online?.characterId ?? null,
-      });
-      // Warm the procedural icon cache during idle time so the first
-      // bags/vendor/loot open never pays the compose burst synchronously
-      // (icon_prewarm.ts). Re-entry is a fast no-op: the cache is module-global.
-      prewarmIconCache(defaultIconPrewarmEntries());
-      // First-run camera-mode prompt (issue #1727): show once per browser on a
-      // mouse-driven interface, after any spawn cinematic has finished. Applies
-      // the choice through the same applySetting path as the Key Bindings toggle.
-      maybeShowFirstRunCameraPrompt({
-        applyMouseCamera: (enabled) => applySetting('mouseCamera', enabled),
-        isBlocked: () => intro !== null,
-      });
-      window.__game = {
-        sim: world,
-        world,
-        renderer,
-        input,
-        hud,
-        online,
-        controller,
-        perf,
-        gamepad,
-        music,
-        /** Opens the board and drains queued sim events. Do not call sim.lockpickEngage directly offline. */
-        lockpickEngage: (objectId: number, ante: number) =>
-          hud.submitLockpickEngage(objectId, ante as 1 | 2 | 3),
-        /** Syncs HUD col/row from sim before acting; always drains step events. Use instead of sim.lockpickAction. */
-        lockpickAction: (action: string) =>
-          hud.submitLockpickAction(action as import('./sim/lockpick').PickAction),
-        flushLockpickEvents: () => hud.flushLockpickEvents(),
-      };
-    }, LOADING_FADE_MS);
-  }, hideLoadingScreen);
-  if (NATIVE_APP) {
-    for (let i = 0; i < FRAME_PACER_CALIBRATION_CALLBACKS; i++) {
-      await new Promise<void>((resolve) => {
-        requestAnimationFrame((timestamp) => {
-          framePacer.observe(timestamp);
-          resolve();
-        });
-      });
-      if (framePacer.snapshot().estimatedRefreshFps > 0) break;
-    }
-  }
   last = performance.now();
   requestAnimationFrame(frame);
+  // cut to the game only once the first frame is actually on screen
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => {
+      entryDiagnostics.checkpoint('first-paint');
+      hideLoadingScreen();
+      // Start the intro clock as the loading screen begins to fade: the camera
+      // holds the opening pose until now, so the fade doubles as the cut in.
+      if (intro) intro.startedAt = performance.now();
+      window.setTimeout(() => {
+        gameInputReady = true;
+        perf.reset();
+        startPerfReporter({
+          perf,
+          settings,
+          tokenProvider: () => api.token,
+          characterIdProvider: () => online?.characterId ?? null,
+        });
+        // Warm the procedural icon cache during idle time so the first
+        // bags/vendor/loot open never pays the compose burst synchronously
+        // (icon_prewarm.ts). Re-entry is a fast no-op: the cache is module-global.
+        prewarmIconCache(defaultIconPrewarmEntries());
+        // First-run camera-mode prompt (issue #1727): show once per browser on a
+        // mouse-driven interface, after any spawn cinematic has finished. Applies
+        // the choice through the same applySetting path as the Key Bindings toggle.
+        maybeShowFirstRunCameraPrompt({
+          applyMouseCamera: (enabled) => applySetting('mouseCamera', enabled),
+          isBlocked: () => intro !== null,
+        });
+        (window as Window & { __game?: Record<string, unknown> }).__game = {
+          sim: world,
+          world,
+          renderer,
+          input,
+          hud,
+          online,
+          controller,
+          perf,
+          gamepad,
+          music,
+          /** Opens the board and drains queued sim events. Do not call sim.lockpickEngage directly offline. */
+          lockpickEngage: (objectId: number, ante: number) =>
+            hud.submitLockpickEngage(objectId, ante as 1 | 2 | 3),
+          /** Syncs HUD col/row from sim before acting; always drains step events. Use instead of sim.lockpickAction. */
+          lockpickAction: (action: string) =>
+            hud.submitLockpickAction(action as import('./sim/lockpick').PickAction),
+          flushLockpickEvents: () => hud.flushLockpickEvents(),
+        };
+      }, LOADING_FADE_MS);
+    }),
+  );
   // Now in-game: fade the home-page theme out (it kept playing through loading).
   fadeOutHomepageMusic();
 }
@@ -5139,7 +5097,7 @@ async function enterWorld(c: CharacterSummary, button?: HTMLButtonElement): Prom
     }
   }
   const token = api.token;
-  if (token === null) throw new Error('Cannot enter online world without an auth token');
+  if (token === null) throw new Error('Missing API token.');
   const world = new ClientWorld(token, c.id, c.class, api.base, getClientSeed());
   // Wire shareable player cards for this online session: publishing uploads the
   // composited PNG to this realm and returns an absolute public page URL, and
@@ -5805,18 +5763,13 @@ async function loadHighscores(): Promise<void> {
   }
   const esc = (s: string): string =>
     s.replace(/[&<>"]/g, (c) => {
-      switch (c) {
-        case '&':
-          return '&amp;';
-        case '<':
-          return '&lt;';
-        case '>':
-          return '&gt;';
-        case '"':
-          return '&quot;';
-        default:
-          return c;
-      }
+      const entities: Record<string, string> = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+      };
+      return entities[c] ?? c;
     });
   const rankLabel = t('game.leaderboard.rank');
   const nameLabel = t('game.leaderboard.name');

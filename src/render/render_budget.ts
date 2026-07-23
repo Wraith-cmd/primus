@@ -65,9 +65,6 @@ export interface RenderBudgetSample {
   createdViews: number;
   minRenderScale: number;
   maxRenderScale: number;
-  intentionalFramePacing?: boolean;
-  pacedTargetFps?: number;
-  workMs?: number;
 }
 
 export interface RenderBudgetGovernorOptions {
@@ -180,7 +177,6 @@ export class RenderBudgetGovernor {
   private frameMsEma = 16.7;
   private submitMsEma = 0;
   private externalFrameCap = false;
-  private intentionalFramePacing = false;
   private stallPressure = 0;
   private recentSubmitStalls = 0;
   private lastSubmitStallMs = 0;
@@ -213,7 +209,6 @@ export class RenderBudgetGovernor {
     this.frameMsEma = 16.7;
     this.submitMsEma = 0;
     this.externalFrameCap = false;
-    this.intentionalFramePacing = false;
     this.stallPressure = 0;
     this.recentSubmitStalls = 0;
     this.lastSubmitStallMs = 0;
@@ -248,34 +243,11 @@ export class RenderBudgetGovernor {
 
   update(sample: RenderBudgetSample): RenderBudgetState {
     if (!Number.isFinite(sample.dt) || sample.dt <= 0) return this.state();
-    const cadenceMs = Math.min(250, Math.max(0, sample.frameMs));
+    const frameMs = Math.min(250, Math.max(0, sample.frameMs));
     const totalMs = Math.min(250, Math.max(0, sample.totalMs));
-    const workMs = Math.min(250, Math.max(0, sample.workMs ?? totalMs));
     const rawSubmitMs = Math.max(0, sample.submitMs);
     const submitMs = Math.min(250, rawSubmitMs);
-    const intentionalFramePacing = sample.intentionalFramePacing === true;
-    const pacedTargetFps =
-      typeof sample.pacedTargetFps === 'number' &&
-      Number.isFinite(sample.pacedTargetFps) &&
-      sample.pacedTargetFps > 0
-        ? sample.pacedTargetFps
-        : this.budget.targetFps;
-    const pacedBudgetScale = intentionalFramePacing
-      ? Math.max(1, this.budget.targetFps / pacedTargetFps)
-      : 1;
-    const dropFrameMs = this.budget.dropFrameMs * pacedBudgetScale;
-    const recoverFrameMs = this.budget.recoverFrameMs * pacedBudgetScale;
-    const urgentFrameMs = this.budget.urgentFrameMs * pacedBudgetScale;
-    // Pacing stretches wall-clock intervals without adding work. Use the measured
-    // cost of the complete executed frame so non-render overruns remain visible.
-    const frameMs = intentionalFramePacing ? workMs : cadenceMs;
     const frameCost = Math.max(frameMs, totalMs);
-    if (intentionalFramePacing && !this.intentionalFramePacing && this.externalFrameCap) {
-      // Discard cadence-only history when an identified external cap is replaced
-      // by deliberate pacing. Current render and whole-frame work still apply.
-      this.frameMsEma = Math.min(this.frameMsEma, frameCost);
-    }
-    this.intentionalFramePacing = intentionalFramePacing;
     this.frameMsEma += (frameCost - this.frameMsEma) * 0.08;
     this.submitMsEma += (submitMs - this.submitMsEma) * 0.12;
     this.stallPressure = Math.max(
@@ -306,33 +278,31 @@ export class RenderBudgetGovernor {
     }
 
     const rawFramePressure = Math.max(
-      positiveRatio(this.frameMsEma, dropFrameMs),
-      positiveRatio(totalMs, dropFrameMs),
-      intentionalFramePacing ? positiveRatio(frameMs, dropFrameMs) : 0,
+      positiveRatio(this.frameMsEma, this.budget.dropFrameMs),
+      positiveRatio(totalMs, this.budget.dropFrameMs),
     );
     const submitPressure = Math.max(
-      positiveRatio(this.submitMsEma, Math.max(8, dropFrameMs * 0.58)),
-      positiveRatio(submitMs, Math.max(8, dropFrameMs * 0.58)),
+      positiveRatio(this.submitMsEma, Math.max(8, this.budget.dropFrameMs * 0.58)),
+      positiveRatio(submitMs, Math.max(8, this.budget.dropFrameMs * 0.58)),
     );
     const drawPressure = Math.max(
       positiveRatio(sample.calls, this.caps.targetCalls),
       positiveRatio(sample.triangles, this.caps.targetTriangles),
     );
     const grassPressure = positiveRatio(sample.grassVisibleTufts, this.caps.targetGrassTufts);
-    const externalCadenceMs = Math.max(cadenceMs, this.frameMsEma);
+    const cadenceMs = Math.max(frameMs, this.frameMsEma);
     const renderWorkHasHeadroom =
-      totalMs <= recoverFrameMs &&
-      submitMs <= Math.max(8, recoverFrameMs * 0.7) &&
-      this.submitMsEma <= Math.max(8, dropFrameMs * 0.58) &&
+      totalMs <= this.budget.recoverFrameMs &&
+      submitMs <= Math.max(8, this.budget.recoverFrameMs * 0.7) &&
+      this.submitMsEma <= Math.max(8, this.budget.dropFrameMs * 0.58) &&
       rawSubmitMs <= SUBMIT_STALL_RECOVERY_CEILING_MS &&
       this.stallPressure < 0.5 &&
       drawPressure < 1 &&
       grassPressure < 1;
     this.externalFrameCap =
-      !intentionalFramePacing &&
       rawFramePressure >= 1 &&
-      externalCadenceMs >= EXTERNAL_FRAME_CAP_MIN_MS &&
-      externalCadenceMs <= EXTERNAL_FRAME_CAP_MAX_MS &&
+      cadenceMs >= EXTERNAL_FRAME_CAP_MIN_MS &&
+      cadenceMs <= EXTERNAL_FRAME_CAP_MAX_MS &&
       renderWorkHasHeadroom;
     const framePressure = this.externalFrameCap ? 0 : rawFramePressure;
     this.pressure = Math.max(
@@ -359,17 +329,17 @@ export class RenderBudgetGovernor {
 
     const urgent =
       submitStall ||
-      (!this.externalFrameCap && frameMs >= urgentFrameMs) ||
-      totalMs >= urgentFrameMs ||
-      submitMs >= Math.max(12, urgentFrameMs * 0.58) ||
+      (!this.externalFrameCap && frameMs >= this.budget.urgentFrameMs) ||
+      totalMs >= this.budget.urgentFrameMs ||
+      submitMs >= Math.max(12, this.budget.urgentFrameMs * 0.58) ||
       sample.calls >= this.caps.urgentCalls ||
       sample.triangles >= this.caps.urgentTriangles ||
       sample.grassVisibleTufts >= this.caps.urgentGrassTufts;
     const overBudget =
       this.pressure >= 1 ||
-      (!this.externalFrameCap && this.frameMsEma >= dropFrameMs) ||
-      totalMs >= dropFrameMs ||
-      submitMs >= Math.max(8, dropFrameMs * 0.58);
+      (!this.externalFrameCap && this.frameMsEma >= this.budget.dropFrameMs) ||
+      totalMs >= this.budget.dropFrameMs ||
+      submitMs >= Math.max(8, this.budget.dropFrameMs * 0.58);
 
     if ((submitStall || overBudget) && (submitStall || this.cooldownSeconds <= 0)) {
       const changed = this.degrade(urgent, minRenderScale, {
@@ -410,9 +380,9 @@ export class RenderBudgetGovernor {
     }
 
     const canRecover =
-      (this.externalFrameCap || this.frameMsEma <= recoverFrameMs) &&
-      totalMs <= recoverFrameMs &&
-      submitMs <= Math.max(8, recoverFrameMs * 0.7) &&
+      (this.externalFrameCap || this.frameMsEma <= this.budget.recoverFrameMs) &&
+      totalMs <= this.budget.recoverFrameMs &&
+      submitMs <= Math.max(8, this.budget.recoverFrameMs * 0.7) &&
       rawSubmitMs <= SUBMIT_STALL_RECOVERY_CEILING_MS &&
       this.stallPressure < 0.5 &&
       sample.calls <= this.caps.targetCalls * 0.9 &&

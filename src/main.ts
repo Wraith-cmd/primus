@@ -2685,16 +2685,18 @@ async function startGame(
         }
       }
       if (best !== null) {
-        const e = world.entities.get(best)!;
-        world.targetEntity(best);
-        const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
-        input.setClickMoveTarget(
-          target,
-          ATTACK_MOVE_MELEE_STOP,
-          best,
-          clickMovePathTo(target),
-          true,
-        );
+        const e = world.entities.get(best);
+        if (e !== undefined) {
+          world.targetEntity(best);
+          const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
+          input.setClickMoveTarget(
+            target,
+            ATTACK_MOVE_MELEE_STOP,
+            best,
+            clickMovePathTo(target),
+            true,
+          );
+        }
       }
     }
     // Chasing a target: once inside melee, start the auto-attack (once per target).
@@ -3210,7 +3212,8 @@ async function startGame(
     }
 
     // online: inputs stream on a timer inside ClientWorld; here we mirror state
-    const net = online!;
+    const net = online;
+    if (net === null) return;
     spectateBadge.update(net.spectating);
     const spectateFacing = net.consumeSpectateFacing();
     if (spectateFacing !== null) input.camYaw = spectateFacing;
@@ -3363,8 +3366,9 @@ async function startGame(
     entryDiagnostics.renderedFrame(now);
   }
   const controller = {
-    move(moveInput: unknown, facing?: unknown) {
-      if (arguments.length > 1) input.setControllerMoveInput(moveInput, facing);
+    move(...args: [moveInput: unknown] | [moveInput: unknown, facing: unknown]) {
+      const [moveInput, facing] = args;
+      if (args.length > 1) input.setControllerMoveInput(moveInput, facing);
       else input.setControllerMoveInput(moveInput);
     },
     face(facing: unknown) {
@@ -3550,7 +3554,7 @@ async function startGame(
           applyMouseCamera: (enabled) => applySetting('mouseCamera', enabled),
           isBlocked: () => intro !== null,
         });
-        (window as any).__game = {
+        (window as Window & { __game?: unknown }).__game = {
           sim: world,
           world,
           renderer,
@@ -3978,12 +3982,14 @@ function show(el: string): void {
   // Reset currently rendered classes to force re-render/animation when opening a panel
   for (const key of ['offline-class-details', 'charcreate-class-details']) {
     currentlyRenderedClass[key] = null;
-    if (revertTimeouts[key] !== null && revertTimeouts[key] !== undefined) {
-      window.clearTimeout(revertTimeouts[key]!);
+    const revertTimeout = revertTimeouts[key];
+    if (revertTimeout !== null && revertTimeout !== undefined) {
+      window.clearTimeout(revertTimeout);
       revertTimeouts[key] = null;
     }
-    if (hoverTimeouts[key] !== null && hoverTimeouts[key] !== undefined) {
-      window.clearTimeout(hoverTimeouts[key]!);
+    const hoverTimeout = hoverTimeouts[key];
+    if (hoverTimeout !== null && hoverTimeout !== undefined) {
+      window.clearTimeout(hoverTimeout);
       hoverTimeouts[key] = null;
     }
   }
@@ -5092,7 +5098,9 @@ async function enterWorld(c: CharacterSummary, button?: HTMLButtonElement): Prom
       button.textContent = t('auth.enterWorld');
     }
   }
-  const world = new ClientWorld(api.token!, c.id, c.class, api.base, getClientSeed());
+  const token = api.token;
+  if (!token) return;
+  const world = new ClientWorld(token, c.id, c.class, api.base, getClientSeed());
   // Wire shareable player cards for this online session: publishing uploads the
   // composited PNG to this realm and returns an absolute public page URL, and
   // the referral provider feeds the card footer. Both are cleared on disconnect.
@@ -5756,7 +5764,12 @@ async function loadHighscores(): Promise<void> {
     return;
   }
   const esc = (s: string): string =>
-    s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+    s.replace(/[&<>"]/g, (c) => {
+      if (c === '&') return '&amp;';
+      if (c === '<') return '&lt;';
+      if (c === '>') return '&gt;';
+      return '&quot;';
+    });
   const rankLabel = t('game.leaderboard.rank');
   const nameLabel = t('game.leaderboard.name');
   const realmLabel = t('game.leaderboard.realmCol');
@@ -6769,7 +6782,7 @@ async function refreshGithubLinkStatus(): Promise<void> {
   } catch (err) {
     console.error('[github] could not load status', err);
   }
-  if (!status || status.enabled !== true) {
+  if (status?.enabled !== true) {
     group.hidden = true;
     return;
   }

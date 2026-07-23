@@ -355,6 +355,7 @@ export const fr_FR: EnTranslations = {
       "close": "Fermer les récompenses quotidiennes",
       "loading": "Chargement des récompenses quotidiennes...",
       "error": "Impossible de charger les récompenses quotidiennes.",
+      "disabled": "Les récompenses quotidiennes sont actuellement désactivées. Nous annoncerons les mises à jour de cette fonctionnalité sur le canal Discord.",
       "intro": "Détenez assez de WOC dans votre portefeuille vérifié pour débloquer les récompenses quotidiennes. Gagnez des points grâce à un tour quotidien et à des tâches en rotation, puis grimpez dans le classement quotidien pour remporter une part de la cagnotte.",
       "disclaimer": "Le cours du WOC peut varier rapidement. Nous vous recommandons de détenir plus que le minimum de 20 USD afin que les variations normales du cours ne vous bloquent pas. Ceci n'est pas un conseil financier.",
       "prize": "Cagnotte",

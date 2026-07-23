@@ -511,6 +511,8 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.close': 'Закрыть ежедневные награды',
   'hudChrome.dailyRewards.loading': 'Загрузка ежедневных наград...',
   'hudChrome.dailyRewards.error': 'Не удалось загрузить ежедневные награды.',
+  'hudChrome.dailyRewards.disabled':
+    'Ежедневные награды сейчас отключены. Мы сообщим об обновлениях этой функции в канале Discord.',
   'hudChrome.dailyRewards.intro':
     'Держите достаточно WOC в подтвержденном кошельке, чтобы открыть ежедневные награды. Зарабатывайте очки за один ежедневный спин и сменяющиеся задания, затем поднимайтесь в ежедневной таблице лидеров ради доли призового фонда.',
   'hudChrome.dailyRewards.disclaimer':

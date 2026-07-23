@@ -504,6 +504,8 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.close': '关闭每日奖励',
   'hudChrome.dailyRewards.loading': '正在加载每日奖励...',
   'hudChrome.dailyRewards.error': '无法加载每日奖励。',
+  'hudChrome.dailyRewards.disabled':
+    '每日奖励目前已停用。我们将在 Discord 频道中公布此功能的更新。',
   'hudChrome.dailyRewards.intro':
     '在已验证的钱包中持有足够的 WOC 即可解锁每日奖励。通过每日一次转盘和轮换任务赚取积分，然后攀登每日排行榜，赢取奖池分成。',
   'hudChrome.dailyRewards.disclaimer':

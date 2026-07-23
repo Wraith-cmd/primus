@@ -3802,6 +3802,8 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.oneVsOneExcluded': 'Zápasy 1 proti 1 neudělují body denních odměn.',
   'hudChrome.dailyRewards.tasks': 'Úkoly',
   'hudChrome.dailyRewards.title': 'Denní odměny',
+  'hudChrome.dailyRewards.disabled':
+    'Denní odměny jsou momentálně vypnuté. Novinky o této funkci oznámíme na kanálu Discord.',
   'hudChrome.dailyRewards.totalPlayer': '{count} hráč dnes',
   'hudChrome.dailyRewards.totalPlayers': '{count} hráčů dnes',
   'hudChrome.dailyRewards.unknown': 'Neznámé',

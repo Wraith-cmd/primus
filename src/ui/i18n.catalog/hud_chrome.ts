@@ -73,6 +73,8 @@ export const hudChromeStrings = {
     close: 'Close daily rewards',
     loading: 'Loading daily rewards...',
     error: 'Could not load daily rewards.',
+    disabled:
+      'Daily Rewards is currently disabled. We will announce updates to this feature in the Discord channel.',
     intro:
       'Hold enough WOC in your verified wallet to unlock daily rewards. Earn points with one daily spin and rotating tasks, then climb the daily leaderboard for a share of the prize pool.',
     disclaimer:

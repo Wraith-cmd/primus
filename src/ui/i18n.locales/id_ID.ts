@@ -7493,6 +7493,8 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Tampilkan Peti',
   'hudChrome.dailyRewards.hideChestButton': 'Sembunyikan Peti',
   'hudChrome.dailyRewards.title': 'Hadiah Harian',
+  'hudChrome.dailyRewards.disabled':
+    'Hadiah Harian saat ini dinonaktifkan. Kami akan mengumumkan pembaruan fitur ini di kanal Discord.',
   'hudChrome.dailyRewards.unknown': 'Tidak diketahui',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

@@ -7397,6 +7397,8 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Sandığı Göster',
   'hudChrome.dailyRewards.hideChestButton': 'Sandığı Gizle',
   'hudChrome.dailyRewards.title': 'Günlük Ödüller',
+  'hudChrome.dailyRewards.disabled':
+    'Günlük Ödüller şu anda devre dışı. Bu özellikle ilgili güncellemeleri Discord kanalında duyuracağız.',
   'hudChrome.dailyRewards.unknown': 'Bilinmiyor',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

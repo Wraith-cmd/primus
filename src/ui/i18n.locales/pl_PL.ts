@@ -7564,6 +7564,8 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Pokaż skrzynię',
   'hudChrome.dailyRewards.hideChestButton': 'Ukryj skrzynię',
   'hudChrome.dailyRewards.title': 'Codzienne nagrody',
+  'hudChrome.dailyRewards.disabled':
+    'Codzienne nagrody są obecnie wyłączone. Aktualizacje dotyczące tej funkcji ogłosimy na kanale Discord.',
   'hudChrome.dailyRewards.unknown': 'Nieznane',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

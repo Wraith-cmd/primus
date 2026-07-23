@@ -7581,6 +7581,8 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Mostra forziere',
   'hudChrome.dailyRewards.hideChestButton': 'Nascondi forziere',
   'hudChrome.dailyRewards.title': 'Ricompense giornaliere',
+  'hudChrome.dailyRewards.disabled':
+    'Le ricompense giornaliere sono attualmente disattivate. Annunceremo gli aggiornamenti di questa funzionalità nel canale Discord.',
   'hudChrome.dailyRewards.unknown': 'Sconosciuto',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

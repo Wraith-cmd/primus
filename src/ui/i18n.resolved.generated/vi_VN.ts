@@ -355,6 +355,7 @@ export const vi_VN: EnTranslations = {
       "close": "Đóng phần thưởng hằng ngày",
       "loading": "Đang tải phần thưởng hằng ngày...",
       "error": "Không thể tải phần thưởng hằng ngày.",
+      "disabled": "Phần Thưởng Hằng Ngày hiện đang bị tắt. Chúng tôi sẽ thông báo các cập nhật về tính năng này trong kênh Discord.",
       "intro": "Giữ đủ WOC trong ví đã xác minh của bạn để mở khóa phần thưởng hằng ngày. Kiếm điểm bằng một lượt quay mỗi ngày và các nhiệm vụ luân phiên, rồi leo lên bảng xếp hạng hằng ngày để nhận phần chia từ quỹ giải thưởng.",
       "disclaimer": "Giá WOC có thể biến động nhanh. Chúng tôi khuyên bạn nên giữ nhiều hơn mức tối thiểu 20 USD để những dao động giá thông thường không khóa bạn ở ngoài. Đây không phải lời khuyên tài chính.",
       "prize": "Quỹ Giải Thưởng",

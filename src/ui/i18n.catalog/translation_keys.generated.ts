@@ -5479,6 +5479,7 @@ export type TranslationKeyFlat =
   | 'hudChrome.crafting.trendNudgeNoMaster'
   | 'hudChrome.crafting.unknownRecipe'
   | 'hudChrome.dailyRewards.close'
+  | 'hudChrome.dailyRewards.disabled'
   | 'hudChrome.dailyRewards.disclaimer'
   | 'hudChrome.dailyRewards.endsIn'
   | 'hudChrome.dailyRewards.error'

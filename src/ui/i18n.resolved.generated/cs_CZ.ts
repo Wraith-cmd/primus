@@ -355,6 +355,7 @@ export const cs_CZ: EnTranslations = {
       "close": "Zavřít denní odměny",
       "loading": "Načítají se denní odměny...",
       "error": "Denní odměny se nepodařilo načíst.",
+      "disabled": "Denní odměny jsou momentálně vypnuté. Novinky o této funkci oznámíme na kanálu Discord.",
       "intro": "Drž dost WOC v ověřené peněžence a odemkni denní odměny. Získávej body jedním denním zatočením a rotujícími úkoly, potom stoupej v denním žebříčku o podíl z prize poolu.",
       "disclaimer": "Cena WOC se může rychle měnit. Doporučujeme držet víc než minimálních 20 USD, aby tě běžné cenové výkyvy neuzamkly ven. Toto není finanční rada.",
       "prize": "Prize pool",

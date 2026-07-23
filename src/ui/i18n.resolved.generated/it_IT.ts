@@ -355,6 +355,7 @@ export const it_IT: EnTranslations = {
       "close": "Chiudi ricompense giornaliere",
       "loading": "Caricamento delle ricompense giornaliere...",
       "error": "Impossibile caricare le ricompense giornaliere.",
+      "disabled": "Le ricompense giornaliere sono attualmente disattivate. Annunceremo gli aggiornamenti di questa funzionalità nel canale Discord.",
       "intro": "Detieni abbastanza WOC nel tuo portafoglio verificato per sbloccare le ricompense giornaliere. Guadagna punti con un giro giornaliero e incarichi a rotazione, poi scala la classifica giornaliera per aggiudicarti una parte del montepremi.",
       "disclaimer": "Il prezzo di WOC può muoversi rapidamente. Consigliamo di detenere più del minimo di 20 USD, così le normali oscillazioni di prezzo non ti escludono. Questo non è un consiglio finanziario.",
       "prize": "Montepremi",

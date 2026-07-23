@@ -355,6 +355,7 @@ export const de_DE: EnTranslations = {
       "close": "Tägliche Belohnungen schließen",
       "loading": "Tägliche Belohnungen werden geladen...",
       "error": "Tägliche Belohnungen konnten nicht geladen werden.",
+      "disabled": "Tägliche Belohnungen sind derzeit deaktiviert. Neuigkeiten zu dieser Funktion geben wir im Discord-Kanal bekannt.",
       "intro": "Halte genügend WOC in deiner verifizierten Wallet, um tägliche Belohnungen freizuschalten. Verdiene Punkte mit einem täglichen Dreh und wechselnden Aufgaben und klettere dann in der täglichen Rangliste nach oben, um einen Anteil am Preispool zu erhalten.",
       "disclaimer": "Der WOC-Kurs kann sich schnell bewegen. Wir empfehlen, mehr als das Minimum von 20 USD zu halten, damit gewöhnliche Kursschwankungen dich nicht aussperren. Dies ist keine Finanzberatung.",
       "prize": "Preispool",

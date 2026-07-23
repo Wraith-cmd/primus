@@ -355,6 +355,7 @@ export const tr_TR: EnTranslations = {
       "close": "Günlük ödülleri kapat",
       "loading": "Günlük ödüller yükleniyor...",
       "error": "Günlük ödüller yüklenemedi.",
+      "disabled": "Günlük Ödüller şu anda devre dışı. Bu özellikle ilgili güncellemeleri Discord kanalında duyuracağız.",
       "intro": "Günlük ödüllerin kilidini açmak için doğrulanmış cüzdanında yeterince WOC bulundur. Bir günlük çevirme ve dönüşümlü görevlerle puan kazan, ardından ödül havuzundan pay almak için günlük lider tablosunda yüksel.",
       "disclaimer": "WOC fiyatı hızla değişebilir. Olağan fiyat dalgalanmalarının seni dışarıda bırakmaması için 20 USD asgarisinden fazlasını tutmanı öneririz. Bu bir yatırım tavsiyesi değildir.",
       "prize": "Ödül Havuzu",

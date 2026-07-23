@@ -512,6 +512,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.close': 'デイリー報酬を閉じる',
   'hudChrome.dailyRewards.loading': 'デイリー報酬を読み込み中...',
   'hudChrome.dailyRewards.error': 'デイリー報酬を読み込めませんでした。',
+  'hudChrome.dailyRewards.disabled':
+    'デイリー報酬は現在無効です。この機能に関する更新は Discord チャンネルでお知らせします。',
   'hudChrome.dailyRewards.intro':
     '認証済みウォレットに十分なWOCを保有すると、デイリー報酬が解放されます。1日1回のスピンとローテーションするタスクでポイントを獲得し、デイリーランキングを駆け上がって賞金プールの分け前を狙いましょう。',
   'hudChrome.dailyRewards.disclaimer':

@@ -7327,6 +7327,8 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Visa kista',
   'hudChrome.dailyRewards.hideChestButton': 'Dölj kista',
   'hudChrome.dailyRewards.title': 'Dagliga belöningar',
+  'hudChrome.dailyRewards.disabled':
+    'Dagliga belöningar är för närvarande inaktiverade. Vi meddelar uppdateringar om den här funktionen i Discord-kanalen.',
   'hudChrome.dailyRewards.unknown': 'Okänd',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

@@ -514,6 +514,8 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.close': '일일 보상 닫기',
   'hudChrome.dailyRewards.loading': '일일 보상 불러오는 중...',
   'hudChrome.dailyRewards.error': '일일 보상을 불러올 수 없습니다.',
+  'hudChrome.dailyRewards.disabled':
+    '일일 보상은 현재 비활성화되어 있습니다. 이 기능에 대한 업데이트는 Discord 채널에서 안내하겠습니다.',
   'hudChrome.dailyRewards.intro':
     '인증된 지갑에 충분한 WOC를 보유하여 일일 보상을 잠금 해제하세요. 하루 한 번의 스핀과 교체되는 과제로 포인트를 획득한 뒤, 일일 순위표를 올라 상금 풀의 일부를 차지하세요.',
   'hudChrome.dailyRewards.disclaimer':

@@ -3410,6 +3410,7 @@ export class Sim {
   dailyRewards(): Promise<DailyRewardStatus> {
     const day = '1970-01-01';
     return Promise.resolve({
+      enabled: true,
       day,
       resetAt: '1970-01-02T00:00:00.000Z',
       prizePoolUsd: 0,

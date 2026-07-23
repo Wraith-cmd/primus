@@ -7514,6 +7514,8 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Hiện rương',
   'hudChrome.dailyRewards.hideChestButton': 'Ẩn rương',
   'hudChrome.dailyRewards.title': 'Phần Thưởng Hằng Ngày',
+  'hudChrome.dailyRewards.disabled':
+    'Phần Thưởng Hằng Ngày hiện đang bị tắt. Chúng tôi sẽ thông báo các cập nhật về tính năng này trong kênh Discord.',
   'hudChrome.dailyRewards.unknown': 'Không rõ',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

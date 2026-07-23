@@ -7015,7 +7015,8 @@ export class Hud {
   private applyDailyRewardsLauncherStatus(status: DailyRewardStatus): void {
     if (!this.dailyRewardsEnabled()) return;
     const button = this.dailyRewardsButtonEl;
-    const spinReady = !status.eligibility.eligible || !status.spin.claimed;
+    const spinReady =
+      status.enabled !== false && (!status.eligibility.eligible || !status.spin.claimed);
     this.mobileDailyRewardsButtonEl?.classList.toggle('spin-ready', spinReady);
     if (!button) return;
     if (!this.showDailyRewardsChestButton()) {
@@ -7030,9 +7031,9 @@ export class Hud {
   private refreshDailyRewardsLauncher(force = false): void {
     if (!this.dailyRewardsEnabled()) return;
     const button = this.dailyRewardsButtonEl;
-    if (!button) return;
+    const mobileButton = this.mobileDailyRewardsButtonEl;
+    if (!button && !mobileButton) return;
     this.applyDailyRewardsChestButtonVisibility();
-    if (!this.showDailyRewardsChestButton()) return;
     const now = performance.now();
     // Slow closed-window poll; the why and the arithmetic live in the core.
     if (!shouldRefreshDailyRewardsLauncher(force, now, this.lastDailyRewardsLauncherRefreshAt)) {
@@ -7048,7 +7049,8 @@ export class Hud {
       })
       .catch(() => {
         if (seq !== this.dailyRewardsLauncherSeq) return;
-        button.classList.remove('spin-ready');
+        button?.classList.remove('spin-ready');
+        mobileButton?.classList.remove('spin-ready');
       });
   }
 

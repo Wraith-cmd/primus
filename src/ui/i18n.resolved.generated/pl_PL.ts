@@ -355,6 +355,7 @@ export const pl_PL: EnTranslations = {
       "close": "Zamknij codzienne nagrody",
       "loading": "Ładowanie codziennych nagród...",
       "error": "Nie udało się załadować codziennych nagród.",
+      "disabled": "Codzienne nagrody są obecnie wyłączone. Aktualizacje dotyczące tej funkcji ogłosimy na kanale Discord.",
       "intro": "Trzymaj wystarczająco dużo WOC w zweryfikowanym portfelu, aby odblokować codzienne nagrody. Zdobywaj punkty dzięki jednemu codziennemu losowaniu i zmieniającym się zadaniom, a następnie wspinaj się w codziennej tabeli wyników, aby zdobyć udział w puli nagród.",
       "disclaimer": "Cena WOC może zmieniać się szybko. Zalecamy trzymanie więcej niż minimalne 20 USD, aby zwykłe wahania ceny nie odcięły ci dostępu. To nie jest porada finansowa.",
       "prize": "Pula nagród",

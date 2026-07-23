@@ -355,6 +355,7 @@ export const es: EnTranslations = {
       "close": "Cerrar recompensas diarias",
       "loading": "Cargando recompensas diarias...",
       "error": "No se pudieron cargar las recompensas diarias.",
+      "disabled": "Las recompensas diarias están desactivadas actualmente. Anunciaremos las novedades de esta función en el canal de Discord.",
       "intro": "Mantén suficiente WOC en tu cartera verificada para desbloquear las recompensas diarias. Gana puntos con un giro diario y tareas rotativas, y escala la clasificación diaria para llevarte una parte del fondo de premios.",
       "disclaimer": "El precio de WOC puede moverse deprisa. Recomendamos mantener más del mínimo de $20 USD para que las oscilaciones normales del precio no te bloqueen el acceso. Esto no es asesoramiento financiero.",
       "prize": "Fondo de premios",

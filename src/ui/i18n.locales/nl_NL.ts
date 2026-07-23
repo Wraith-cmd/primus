@@ -7582,6 +7582,8 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Kist tonen',
   'hudChrome.dailyRewards.hideChestButton': 'Kist verbergen',
   'hudChrome.dailyRewards.title': 'Dagelijkse beloningen',
+  'hudChrome.dailyRewards.disabled':
+    'Dagelijkse beloningen zijn momenteel uitgeschakeld. We kondigen updates voor deze functie aan in het Discord-kanaal.',
   'hudChrome.dailyRewards.unknown': 'Onbekend',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

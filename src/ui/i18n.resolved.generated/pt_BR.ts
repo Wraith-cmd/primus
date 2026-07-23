@@ -355,6 +355,7 @@ export const pt_BR: EnTranslations = {
       "close": "Fechar recompensas diárias",
       "loading": "Carregando recompensas diárias...",
       "error": "Não foi possível carregar as recompensas diárias.",
+      "disabled": "As Recompensas Diárias estão desativadas no momento. Anunciaremos atualizações sobre este recurso no canal do Discord.",
       "intro": "Mantenha WOC suficiente na sua carteira verificada para desbloquear as recompensas diárias. Ganhe pontos com um giro diário e tarefas rotativas, depois suba na classificação diária para ganhar uma parte da premiação.",
       "disclaimer": "O preço do WOC pode variar rapidamente. Recomendamos manter mais do que o mínimo de $20 USD para que oscilações normais de preço não bloqueiem seu acesso. Isto não é aconselhamento financeiro.",
       "prize": "Premiação",

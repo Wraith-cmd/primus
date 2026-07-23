@@ -2263,6 +2263,10 @@ export interface AbilityDef {
   exclusiveGroup?: string;
   requiresStealth?: boolean; // ambush
   requiresOutOfCombat?: boolean; // stealth
+  // The ability cannot be activated while physically inside a claimed dungeon or
+  // raid instance. Toggle buffs may still be cancelled there to avoid trapping the
+  // player in an action-locking form.
+  requiresOutsideInstance?: boolean;
   // Usable only while the caster wears an aura of this kind (Victory Rush's
   // on-kill window); runEffects consumes the enabling aura on a successful cast.
   requiresAuraKind?: AuraKind;

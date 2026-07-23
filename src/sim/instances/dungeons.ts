@@ -119,7 +119,7 @@ export function instanceOriginOf(inst: InstanceSlot): { x: number; z: number } {
 export function instanceClaimIdAt(ctx: SimContext, pos: Vec3): number | null {
   for (const inst of ctx.instances) {
     if (inst.partyKey === null || inst.exitId === null) continue;
-    if (instanceClaimContains(ctx, inst, pos)) return inst.exitId;
+    if (instanceClaimContains(inst, pos)) return inst.exitId;
   }
   return null;
 }
@@ -130,20 +130,26 @@ function instanceContains(origin: { x: number; z: number }, pos: Vec3): boolean 
   return Math.abs(pos.x - origin.x) < 120 && Math.abs(pos.z - origin.z) < 250;
 }
 
-function instanceClaimContains(ctx: SimContext, inst: InstanceSlot, pos: Vec3): boolean {
+function instanceClaimContains(inst: InstanceSlot, pos: Vec3): boolean {
   const origin = instanceOriginOf(inst);
   if (instanceContains(origin, pos)) return true;
   if (inst.dungeonId !== 'nythraxis_boss_arena') return false;
-  const boss = inst.mobIds
-    .map((id) => ctx.entities.get(id))
-    .find((entity) => entity?.templateId === NYTHRAXIS_BOSS_ID);
+  const bossSpawn = DUNGEONS.nythraxis_boss_arena.spawns.find(
+    (spawn) => spawn.mobId === NYTHRAXIS_BOSS_ID,
+  );
   // The raid room is wider than the generic instance footprint, so its claim
   // includes the side wings. Keep that wider circle clipped to this slot's z
-  // band or it reaches into the adjacent arena slot 500 yards away.
+  // band or it reaches into the adjacent arena slot 500 yards away. Derive the
+  // centre from content rather than the live boss entity: the room remains a
+  // raid instance after Nythraxis' corpse has despawned.
   return (
-    !!boss &&
+    !!bossSpawn &&
     Math.abs(pos.z - origin.z) < 250 &&
-    dist2d(pos, boss.spawnPos) <= NYTHRAXIS_ROOM_RADIUS
+    dist2d(pos, {
+      x: origin.x + bossSpawn.x,
+      y: pos.y,
+      z: origin.z + bossSpawn.z,
+    }) <= NYTHRAXIS_ROOM_RADIUS
   );
 }
 
@@ -431,7 +437,7 @@ function defeatedNythraxisCorpseRunClaim(
       candidate.dungeonId === 'nythraxis_boss_arena' &&
       candidate.partyKey === partyKey &&
       candidate.exitId === p.corpseInstanceId &&
-      instanceClaimContains(ctx, candidate, corpsePos),
+      instanceClaimContains(candidate, corpsePos),
   );
   if (!inst || !isDefeatedNythraxisParticipant(ctx, inst, p.id)) return undefined;
   return inst;
@@ -460,9 +466,7 @@ export function leaveDungeon(ctx: SimContext, pid?: number): boolean {
   // e.g. their pet) from every inside mob's hate table: dancing in and out of
   // the exit portal cannot be used to kite a pull to the door and back.
   // Re-entering means earning aggro from scratch.
-  const inst = ctx.instances.find(
-    (i) => i.partyKey !== null && instanceClaimContains(ctx, i, p.pos),
-  );
+  const inst = ctx.instances.find((i) => i.partyKey !== null && instanceClaimContains(i, p.pos));
   if (inst) scrubInstanceThreat(ctx, inst, p.id);
   p.pos = ctx.groundPos(dungeon.doorPos.x, dungeon.doorPos.z - 4);
   p.prevPos = { ...p.pos };
@@ -715,7 +719,7 @@ export function instanceLockoutMetas(ctx: SimContext, inst: InstanceSlot): Playe
     const matchingInstanceCorpse =
       e?.ghost && e.corpsePos && e.corpseInstanceId === inst.exitId ? e.corpsePos : null;
     const lockoutPos = matchingInstanceCorpse ?? e?.pos;
-    if (lockoutPos && instanceClaimContains(ctx, inst, lockoutPos)) out.push(meta);
+    if (lockoutPos && instanceClaimContains(inst, lockoutPos)) out.push(meta);
   }
   return out;
 }
@@ -829,7 +833,7 @@ export function instanceInfoAt(
   pos: Vec3,
 ): { slot: number; dungeonId: string } | null {
   for (const inst of ctx.instances) {
-    if (instanceContains(instanceOriginOf(inst), pos)) {
+    if (instanceClaimContains(inst, pos)) {
       return { slot: inst.slot, dungeonId: inst.dungeonId };
     }
   }

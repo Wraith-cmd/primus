@@ -20,11 +20,8 @@ import { Sim } from '../src/sim/sim';
 import type { Aura, Entity } from '../src/sim/types';
 import { DT } from '../src/sim/types';
 
-type AnyEntity = Entity & Record<string, any>;
-type AnySim = Sim & Record<string, any>;
-
-function makeSim(seed = 7373): AnySim {
-  return new Sim({ seed, playerClass: 'warrior', autoEquip: true }) as AnySim;
+function makeSim(seed = 7373): Sim {
+  return new Sim({ seed, playerClass: 'warrior', autoEquip: true });
 }
 
 function aura(kind: Aura['kind'], value: number, extra: Partial<Aura> = {}): Aura {
@@ -41,13 +38,13 @@ function aura(kind: Aura['kind'], value: number, extra: Partial<Aura> = {}): Aur
   } as Aura;
 }
 
-function spawnMob(sim: AnySim, hp = 1000): AnyEntity {
-  const p = sim.player as AnyEntity;
+function spawnMob(sim: Sim, hp = 1000): Entity {
+  const p = sim.player;
   const mob = createMob(sim.nextId++, MOBS.forest_wolf, 5, {
     x: p.pos.x + 40,
     y: p.pos.y,
     z: p.pos.z + 40,
-  }) as AnyEntity;
+  });
   mob.maxHp = hp;
   mob.hp = hp;
   sim.addEntity(mob);
@@ -94,7 +91,7 @@ describe('auras: unbreakable control replacement', () => {
 describe('auras: updateTimers', () => {
   it('decrements gcd, advances rule/combat timers, and expires cooldowns', () => {
     const sim = makeSim();
-    const p = sim.player as AnyEntity;
+    const p = sim.player;
     p.gcdRemaining = DT; // exactly one tick from 0
     p.fiveSecondRule = 0;
     p.combatTimer = 0;
@@ -193,7 +190,7 @@ describe('auras: updateAuras expiry / HoT / top guard', () => {
 describe('auras: updateRegen', () => {
   it('eat heals an out-of-combat player on the 40-tick boundary, decrementing the food', () => {
     const sim = makeSim();
-    const p = sim.player as AnyEntity;
+    const p = sim.player;
     const meta = sim.players.get(p.id) as PlayerMeta;
     p.inCombat = false;
     p.hp = Math.max(1, p.maxHp - 500);
@@ -207,7 +204,7 @@ describe('auras: updateRegen', () => {
 
   it('does nothing off the 40-tick boundary', () => {
     const sim = makeSim();
-    const p = sim.player as AnyEntity;
+    const p = sim.player;
     const meta = sim.players.get(p.id) as PlayerMeta;
     p.inCombat = false;
     p.hp = Math.max(1, p.maxHp - 500);
@@ -223,10 +220,8 @@ describe('auras: updateRegen', () => {
 describe('auras: cleanseFriendlyNpcAuras', () => {
   it('strips rejected control/debuff auras and leaves benign ones', () => {
     const sim = makeSim();
-    const npc = {
-      id: 999,
-      auras: [aura('stun', 1), aura('hot', 1), aura('root', 1)],
-    } as unknown as AnyEntity;
+    const npc = spawnMob(sim);
+    npc.auras = [aura('stun', 1), aura('hot', 1), aura('root', 1)];
     cleanseFriendlyNpcAuras(sim.ctx, npc);
     expect(npc.auras.map((a: Aura) => a.kind)).toEqual(['hot']); // stun + root stripped
   });

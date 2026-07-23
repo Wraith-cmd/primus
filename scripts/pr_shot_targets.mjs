@@ -1849,11 +1849,14 @@ export const TARGETS = [
       // Party pushed below the target: the painter measures frame + strip only,
       // so the beside-the-frame mini must no longer interact with the pushed rows.
       { key: 'desktop-party', charClass: 'paladin', charName: 'Marksman', party: true },
+      // Boss rank: the move button moves to right: -30px and the dragon emblem
+      // overhangs the portrait side, so the mini takes the widened boss gap.
+      { key: 'desktop-boss', charClass: 'warrior', charName: 'Marksman', boss: true },
       { key: 'mobile', charClass: 'mage', charName: 'Marksman', mobile: true },
     ],
     async capture(page, variant) {
       await page.evaluate(
-        ({ withParty }) => {
+        ({ withParty, asBoss }) => {
           const game = window.__game;
           const sim = game.sim;
           const me = sim.primaryId;
@@ -1900,6 +1903,9 @@ export const TARGETS = [
             }
           }
           if (!mob) return;
+          // Boss variant: re-template the mob to a boss record so the HUD's
+          // rank resolution (MOBS[templateId].boss) applies the .boss chrome.
+          if (asBoss) mob.templateId = 'mirefen_broodmother';
           mob.pos = { x: p.pos.x + 2, y: p.pos.y, z: p.pos.z + 8 };
           mob.prevPos = { ...mob.pos };
           sim.rebucket(mob);
@@ -1920,7 +1926,7 @@ export const TARGETS = [
             });
           }
         },
-        { withParty: !!variant.party },
+        { withParty: !!variant.party, asBoss: !!variant.boss },
       );
       if (variant.frameScale) {
         await page.evaluate((scale) => {

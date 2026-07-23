@@ -638,7 +638,7 @@
      aligned, so the whole below-frame band belongs to the #tf-debuffs strip (the
      old below-right anchor shared that band and collided with the strip's first
      wrapped row at real aura counts). The gap clears the unscaled 24px
-     .tf-move-btn that overhangs the frame corner by 14px. The extra #target-frame
+     .tf-move-btn that overhangs the frame corner by 10px. The extra #target-frame
      id in the selector outranks the children-zoom rule above so the mini zoom
      actually applies; it compounds --target-frame-scale explicitly to stay
      proportional at any scale. Percentage offsets resolve against the unzoomed
@@ -656,6 +656,13 @@
     z-index: 7;
     zoom: calc(0.74 * var(--target-frame-scale, 1));
     display: none;
+  }
+  /* Boss-ranked target: the boss chrome moves the move button further outside
+     the corner (top: -18px; right: -30px, below) and the dragon emblem
+     overhangs the portrait side by 15px at children-zoom, so the beside-gap
+     widens to a true 36px to clear both. */
+  #target-frame.boss > #totarget-frame {
+    left: calc(100% + 36px / (0.74 * var(--target-frame-scale, 1)));
   }
   /* Standard portrait-left orientation: the old right-edge hug flipped the mini
      bars-first; beside the frame it reads like every other unit frame. The
@@ -5377,7 +5384,11 @@
   }
 
   /* ---------- elite target frame ---------- */
-  #target-frame.elite .portrait {
+  /* Rank chrome binds to the TARGET's own portrait via the direct-child
+     .portrait-wrap: the target-of-target mini is also a #target-frame
+     descendant, and a bare descendant selector would decorate the mini's
+     portrait with the target's elite ring / boss emblem too. */
+  #target-frame.elite > .portrait-wrap .portrait {
     border-color: var(--gold);
     box-shadow:
       0 0 12px #ffd10066,
@@ -5397,7 +5408,7 @@
   /* Boss rank replaces both the creature portrait and the platform-dependent
      Unicode glyph with one generic dragon emblem. The real numeric level stays
      in the lower center chip, matching the classic fantasy target-frame read. */
-  #target-frame.boss .portrait-wrap::before {
+  #target-frame.boss > .portrait-wrap::before {
     content: "";
     position: absolute;
     inset: -15px;
@@ -5409,7 +5420,7 @@
     top: -18px;
     right: -30px;
   }
-  #target-frame.boss .portrait {
+  #target-frame.boss > .portrait-wrap .portrait {
     border-color: transparent;
     outline: 0;
     background: transparent;

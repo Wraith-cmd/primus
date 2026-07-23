@@ -63,6 +63,26 @@ describe('target-of-target frame sits BESIDE the target frame', () => {
     expect(bars).toContain('border-radius: 11px 6px 6px 11px;');
   });
 
+  it('boss-ranked target widens the gap past the boss chrome overhangs', () => {
+    // The boss move button sits at right: -30px (vs -10px normally) and the
+    // dragon emblem overhangs the portrait side by 15px at children-zoom, so
+    // the mini needs a true 36px gap to clear both.
+    const boss = rule(hudCss, '#target-frame.boss > #totarget-frame');
+    expect(boss).toContain('left: calc(100% + 36px / (0.74 * var(--target-frame-scale, 1)));');
+  });
+
+  it('rank chrome binds to the target portrait only, never the mini', () => {
+    // The mini is a #target-frame descendant, so a bare descendant selector
+    // would decorate the mini's portrait with the target's elite ring / boss
+    // emblem / boss portrait-chrome strip too.
+    expect(hudCss).toContain('#target-frame.elite > .portrait-wrap .portrait {');
+    expect(hudCss).toContain('#target-frame.boss > .portrait-wrap::before {');
+    expect(hudCss).toContain('#target-frame.boss > .portrait-wrap .portrait {');
+    expect(hudCss).not.toContain('#target-frame.elite .portrait {');
+    expect(hudCss).not.toContain('#target-frame.boss .portrait {');
+    expect(hudCss).not.toContain('#target-frame.boss .portrait-wrap::before {');
+  });
+
   it('mobile makes a deliberate placement decision (no default fallthrough)', () => {
     // The option is reachable from the mobile options sheet, so the mini keeps
     // the beside-the-frame anchor there as an EXPLICIT rule (verified to fit at

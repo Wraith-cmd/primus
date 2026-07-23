@@ -24,7 +24,6 @@ import {
 } from './game/click_move';
 import { clientEnvBits, installPageStateTracking, pageStateBits } from './game/client_env';
 import { getClientSeed } from './game/client_seed';
-import { localPartyMemberIds } from './game/corpse_loot_availability';
 import { shouldClearAutorunOnDeath } from './game/death_input_reset';
 import { initDesktopDownload } from './game/desktop_download';
 import { initDesktopShellIntegration } from './game/desktop_shell_integration';
@@ -2615,13 +2614,7 @@ async function startGame(
       // regular click handler still performs target/interact behavior.
       if (
         isClickMoveButton &&
-        shouldApproachPickedEntity(
-          world.player,
-          e,
-          didInteractImmediately,
-          true,
-          localPartyMemberIds(world.partyInfo),
-        )
+        shouldApproachPickedEntity(world.player, e, didInteractImmediately)
       ) {
         const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
         input.setClickMoveTarget(target, 3.5, e.id, clickMovePathTo(target));

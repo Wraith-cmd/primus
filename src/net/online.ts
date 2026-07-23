@@ -2463,12 +2463,6 @@ export class ClientWorld implements IWorld {
       // corpse harvest claim: unconditional so a record without hcb (unclaimed,
       // or a respawn that cleared the claim) resets any stale mirrored pid
       e.harvestClaimedBy = typeof w.hcb === 'number' ? w.hcb : null;
-      // loot owner-lock lapse: flag present means lapsed (mirror as already
-      // counted down), absent means the lock still holds or never started;
-      // unconditional so a respawned record resets any stale lapse (same
-      // contract as hcb above). The server owns the countdown; the client only
-      // ever needs the boolean.
-      e.lootFfaTimer = w.ffa ? 0 : Infinity;
       e.ownerId = w.own ?? null;
       e.petMode = w.pm ?? 'defensive';
       e.petTauntTimer = w.pt ?? 0;

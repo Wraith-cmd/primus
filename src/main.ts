@@ -231,7 +231,7 @@ import { FocusManager, type FocusTrapHandle } from './ui/focus_manager';
 import { attachGatherNodeHoverTooltip, gatherNodeToolGateFor } from './ui/gather_node_tooltip';
 import { type ClaudiumHooks, Hud } from './ui/hud';
 import { resolveActionBarVisibility } from './ui/hud/action_bar/action_bar_visibility_core';
-import { chatInputSize } from './ui/hud/chat/chat_input_autosize';
+import { autosizeChatInput } from './ui/hud/chat/chat_input_autosize';
 import { wireSkinPicker } from './ui/hud/cosmetics/skin_picker';
 import {
   absolutePublishedCardUrl,
@@ -1212,38 +1212,22 @@ async function startGame(
 
   const chatInput = $('#chat-input') as unknown as HTMLTextAreaElement;
   const clickMoveMarker = $('#click-move-marker') as HTMLDivElement;
-  // Grow the chat bar to fit what's typed (up to its CSS max-height) so a long
-  // message wraps instead of scrolling a single line. Anchored by its bottom
-  // edge, the extra height extends upward, away from the chat log beneath it.
+  // Grow the chat bar to fit what it is displaying (typed text, or the
+  // placeholder hint while empty) up to its CSS max-height, so a long message
+  // wraps instead of scrolling a single line and a wrapping placeholder is
+  // never clipped. Anchored by its bottom edge, the extra height extends
+  // upward, away from the chat log beneath it.
   const CHAT_INPUT_MIN_H = 36;
   const CHAT_INPUT_MAX_H = 110;
-  // Collapse to 'auto' and read the textarea's natural content height.
-  const measureChatInputScrollH = (): number => {
-    chatInput.style.height = 'auto';
-    return chatInput.scrollHeight;
-  };
-  const autosizeChatInput = (): void => {
+  const autosizeChat = (): void => {
     const cs = getComputedStyle(chatInput);
     const borderY =
       (Number.parseFloat(cs.borderTopWidth) || 0) + (Number.parseFloat(cs.borderBottomWidth) || 0);
-    // A textarea's scrollHeight ignores the placeholder, so an empty box would measure
-    // as zero content and clip a placeholder that wraps to more than one line. When the
-    // field is empty, momentarily mirror the placeholder into the value to measure the
-    // height it needs. This is synchronous (no paint or input event in between), so the
-    // caret and text never flicker and no listener re-fires.
-    let placeholderHeight = 0;
-    if (chatInput.value === '' && chatInput.placeholder) {
-      chatInput.value = chatInput.placeholder;
-      placeholderHeight = measureChatInputScrollH();
-      chatInput.value = '';
-    }
-    const contentHeight = measureChatInputScrollH();
-    const size = chatInputSize(
-      { contentHeight, placeholderHeight, borderY },
+    autosizeChatInput(
+      chatInput,
       { minHeight: CHAT_INPUT_MIN_H, maxHeight: CHAT_INPUT_MAX_H },
+      borderY,
     );
-    chatInput.style.height = `${size.height}px`;
-    chatInput.style.overflowY = size.overflowY;
   };
   // Re-anchor the bar just above the (possibly moved / resized / tab-wrapped)
   // chat box so it never overlaps it. Mobile keeps its own CSS placement.
@@ -1299,7 +1283,7 @@ async function startGame(
     hud.applyChatInputPresentation();
     chatInput.style.display = 'block';
     anchorChatInput();
-    autosizeChatInput();
+    autosizeChat();
     chatInput.focus();
   }
   // Mobile read view: tapping the Chat button opens the centered panel with the composer
@@ -1310,13 +1294,13 @@ async function startGame(
     hud.applyChatInputPresentation();
     chatInput.style.display = 'block';
     document.body.classList.remove('mobile-chat-reply');
-    autosizeChatInput();
+    autosizeChat();
   }
   // Fired for every open path (keybind, whisper context menu, mobile toggle)
   // since they all call focus().
   // Autocomplete dropdown for the in-game "!" community commands (!lfg etc.).
   const chatCmdMenu = new ChatCommandMenu(chatInput, () => {
-    autosizeChatInput();
+    autosizeChat();
     anchorChatInput();
   });
   chatInput.addEventListener('focus', () => {
@@ -1325,20 +1309,20 @@ async function startGame(
     // so it clears the moment the composer loses focus.
     document.body.classList.add('mobile-chat-reply');
     anchorChatInput();
-    autosizeChatInput();
+    autosizeChat();
   });
   chatInput.addEventListener('blur', () => {
     document.body.classList.remove('mobile-chat-reply');
   });
   chatInput.addEventListener('input', () => {
-    autosizeChatInput();
+    autosizeChat();
     anchorChatInput();
     chatCmdMenu.update(chatInput.value);
   });
   window.addEventListener('resize', () => {
     if (chatInput.style.display === 'block') {
       anchorChatInput();
-      autosizeChatInput();
+      autosizeChat();
     }
   });
   chatInput.addEventListener('keydown', (e) => {

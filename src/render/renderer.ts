@@ -85,7 +85,6 @@ import { shouldRetainPooledCharacterVisual } from './characters/visual_pool_poli
 import { attackAbilityId, isSpinAttackAbility } from './characters/weapon_attack_style_core';
 import { CLICK_MARKER_LIFETIME, clickMarkerAnim, clickMarkerColor } from './click_marker';
 import { trackWebGLContext } from './context_release';
-import { buildCritters, type CritterField } from './critters';
 import { animatesEveryFrame, crowdLodScaleSq, midAnimCadence } from './crowd_lod';
 import { shouldPlayDeedFirework } from './deed_fx_gate';
 import { buildDelveModule } from './delve_interiors';
@@ -1067,7 +1066,6 @@ export class Renderer {
   private placedAssetsView: PlacedAssetsView | null = null;
   private foliage: FoliageView;
   private fish: FishView;
-  private critters: CritterField;
   private motes: MotesView;
   private birds: BirdsView;
   private impactSite: ImpactSiteView;
@@ -1503,8 +1501,6 @@ export class Renderer {
     this.fish = buildFish(this.sim.cfg.seed);
     setRenderCategory(this.fish.group, 'fish');
     this.scene.add(this.fish.group);
-    this.critters = buildCritters(this.sim.cfg.seed);
-    this.scene.add(this.critters.group);
     this.motes = buildMotes(this.sim.cfg.seed);
     this.scene.add(this.motes.group);
     this.birds = buildBirds(this.sim.cfg.seed);
@@ -5818,7 +5814,6 @@ export class Renderer {
     );
     worldStart = markWorldPhase('foliage', worldStart);
     this.fish.update(p.pos.x, p.pos.z, dt);
-    this.critters.update(p.pos.x, p.pos.z, dt);
     this.motes.update(p.pos.x, p.pos.z, dt);
     this.birds.update(p.pos.x, p.pos.z, dt);
     this.impactSite.update(p.pos.x, p.pos.z, dt);

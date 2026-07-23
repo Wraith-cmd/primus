@@ -10,6 +10,7 @@
 //  - Taunt/Growl set the caster's threat to the table's top value and force
 //    the mob to attack the caster for 3 seconds
 import type { Entity } from './types';
+import { dist2d } from './types';
 
 export const MELEE_SWITCH_MULT = 1.1;
 export const RANGED_SWITCH_MULT = 1.3;
@@ -52,6 +53,15 @@ export function stealthDetectionRadius(
   baseRadius: number,
 ): number {
   return baseRadius * stealthDetectionMultiplier(observer.level, stealthed.level);
+}
+
+export function canDetectStealthedTarget(
+  observer: Entity,
+  target: Entity,
+  baseRadius: number,
+): boolean {
+  if (!target.auras.some((a) => a.kind === 'stealth')) return true;
+  return dist2d(observer.pos, target.pos) <= stealthDetectionRadius(observer, target, baseRadius);
 }
 
 export function addThreat(mob: Entity, sourceId: number, amount: number): void {

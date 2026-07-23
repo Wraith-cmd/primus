@@ -657,6 +657,19 @@ describe('hunter pets', () => {
     return { sim, wolf: pet, originalWolfId };
   }
 
+  function activePetDuel() {
+    const { sim, wolf: pet } = tamedSetup();
+    const rogueId = sim.addPlayer('rogue', 'Sneak', { autoEquip: true });
+    const rogue = sim.entities.get(rogueId)!;
+    sim.setPlayerLevel(10, rogue.id);
+    teleport(sim, rogue, sim.player.pos.x + 3, sim.player.pos.z);
+    sim.duelRequest(rogue.id, sim.playerId);
+    sim.duelAccept(rogue.id);
+    for (let i = 0; i < 20 * 5 && sim.duelFor(sim.playerId)?.state !== 'active'; i++) sim.tick();
+    expect(sim.duelFor(sim.playerId)?.state).toBe('active');
+    return { sim, pet, rogue };
+  }
+
   it('tame beast creates a loyal pet copy and temporarily despawns the wild target', () => {
     const { sim, wolf, originalWolfId } = tamedSetup();
     expect(wolf.ownerId).toBe(sim.playerId);
@@ -670,6 +683,37 @@ describe('hunter pets', () => {
         (e) => e.kind === 'mob' && e.ownerId === null && e.templateId === 'forest_wolf',
       ),
     ).toBe(true);
+  });
+
+  it('drops a stale enemy player target when that player stealths out of detection', () => {
+    const { sim, pet, rogue } = activePetDuel();
+    teleport(sim, sim.player, 0, 0);
+    teleport(sim, pet, 1, 0);
+    teleport(sim, rogue, 30, 0);
+    pet.aggroTargetId = rogue.id;
+    pet.inCombat = true;
+
+    sim.castAbility('stealth', rogue.id);
+    expect(rogue.auras.some((a) => a.kind === 'stealth')).toBe(true);
+    sim.tick();
+
+    expect(pet.aggroTargetId).toBe(null);
+    expect(pet.inCombat).toBe(false);
+  });
+
+  it('blocks hunter pet damage against an undetected stealthed enemy player', () => {
+    const { sim, pet, rogue } = activePetDuel();
+    teleport(sim, pet, 0, 0);
+    teleport(sim, rogue, 30, 0);
+    sim.castAbility('stealth', rogue.id);
+    const stealthedHp = rogue.hp;
+
+    hit(sim, pet, rogue, 100);
+    expect(rogue.hp).toBe(stealthedHp);
+
+    teleport(sim, rogue, 2, 0);
+    hit(sim, pet, rogue, 100);
+    expect(rogue.hp).toBeLessThan(stealthedHp);
   });
 
   it('friendly target spells can affect controlled pets', () => {

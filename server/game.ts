@@ -41,6 +41,7 @@ import {
   jailGateTeleport,
 } from '../src/sim/jail';
 import type { PickAction } from '../src/sim/lockpick';
+import { lootHasGoneFfa } from '../src/sim/loot/loot_ffa';
 import { sanitizeMarketQuery } from '../src/sim/market_query';
 import { parseMoveInputFrame } from '../src/sim/move_input';
 import {
@@ -1034,6 +1035,11 @@ function dynamicFields(e: Entity, includeAuras = true): Record<string, unknown> 
   // corpse harvest claim (single-use, first-come): the online corpse picker
   // must stop offering a corpse another player already harvested
   if (e.harvestClaimedBy !== null) out.hcb = e.harvestClaimedBy;
+  // loot owner-lock lapse (FFA): the online corpse picker must offer a
+  // stranger's aged-out corpse again for a deliberate manual loot, the same
+  // reliability contract hcb gives harvest claims. Flips once per corpse, so
+  // the per-entity dyn cache re-serializes exactly one changed record.
+  if (e.kind === 'mob' && e.lootable && lootHasGoneFfa(e.lootFfaTimer)) out.ffa = 1;
   if (e.ownerId !== null) out.own = e.ownerId;
   if (e.overheadEmoteId) {
     out.emo = e.overheadEmoteId;

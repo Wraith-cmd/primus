@@ -1,6 +1,12 @@
-// Fishing bobber visual: a small procedural float on the water ahead of any
-// fishing entity. Bite and sink events disturb the shared persistent surface,
-// so feedback remains visible without a per-angler transparent ring draw.
+// Fishing bobber visual (Professions 2.0): a small procedural float
+// on the water ahead of any entity whose castingAbility is the fishing
+// sentinel, so bystanders see who is fishing. The renderer composes one
+// instance and drives it per frame; the personal fishingBite SimEvent flips
+// the owning player's bobber into the bite state. Bite and sink events disturb
+// the shared persistent surface, so feedback remains visible without a
+// per-angler transparent ring draw. Graphics-preset-identical on purpose: the
+// bobber and bite state are player-actionable feedback, so nothing here reads
+// GFX tiers or the frame-budget governor.
 import * as THREE from 'three';
 import { type Entity, FISHING_CAST_ID } from '../sim/types';
 import { type BobberAnchor, bobberAnchorInto } from './fishing_bobber_core';

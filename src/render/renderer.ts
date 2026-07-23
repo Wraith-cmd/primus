@@ -1387,8 +1387,7 @@ export class Renderer {
     const sunCanvas = (core: boolean): THREE.CanvasTexture => {
       const c = document.createElement('canvas');
       c.width = c.height = 128;
-      const ctx = c.getContext('2d');
-      if (ctx === null) return new THREE.CanvasTexture(c);
+      const ctx = c.getContext('2d')!;
       const g = ctx.createRadialGradient(64, 64, 2, 64, 64, 64);
       if (core) {
         g.addColorStop(0, 'rgba(255,252,238,1)');
@@ -1432,42 +1431,40 @@ export class Renderer {
       const shaft = document.createElement('canvas');
       shaft.width = 64;
       shaft.height = 256;
-      const sctx = shaft.getContext('2d');
-      if (sctx !== null) {
-        const gh = sctx.createLinearGradient(0, 0, 0, 256);
-        gh.addColorStop(0, 'rgba(255,240,200,0)');
-        gh.addColorStop(0.45, 'rgba(255,240,200,0.55)');
-        gh.addColorStop(0.6, 'rgba(255,240,200,0.5)');
-        gh.addColorStop(1, 'rgba(255,240,200,0)');
-        sctx.fillStyle = gh;
-        sctx.fillRect(0, 0, 64, 256);
-        const gw = sctx.createLinearGradient(0, 0, 64, 0);
-        gw.addColorStop(0, 'rgba(0,0,0,1)');
-        gw.addColorStop(0.5, 'rgba(0,0,0,0)');
-        gw.addColorStop(1, 'rgba(0,0,0,1)');
-        sctx.globalCompositeOperation = 'destination-out';
-        sctx.fillStyle = gw;
-        sctx.fillRect(0, 0, 64, 256);
-        const shaftTex = new THREE.CanvasTexture(shaft);
-        for (let i = 0; i < 3; i++) {
-          const sp = new THREE.Sprite(
-            new THREE.SpriteMaterial({
-              map: shaftTex,
-              transparent: true,
-              opacity: 0,
-              fog: false,
-              depthWrite: false,
-              depthTest: false,
-              blending: THREE.AdditiveBlending,
-              rotation: 0.42 + i * 0.13,
-            }),
-          );
-          setRenderCategory(sp, 'sky');
-          sp.scale.set(26 + i * 16, 150 + i * 35, 1);
-          sp.renderOrder = -8;
-          this.godRays.push(sp);
-          this.scene.add(sp);
-        }
+      const sctx = shaft.getContext('2d')!;
+      const gh = sctx.createLinearGradient(0, 0, 0, 256);
+      gh.addColorStop(0, 'rgba(255,240,200,0)');
+      gh.addColorStop(0.45, 'rgba(255,240,200,0.55)');
+      gh.addColorStop(0.6, 'rgba(255,240,200,0.5)');
+      gh.addColorStop(1, 'rgba(255,240,200,0)');
+      sctx.fillStyle = gh;
+      sctx.fillRect(0, 0, 64, 256);
+      const gw = sctx.createLinearGradient(0, 0, 64, 0);
+      gw.addColorStop(0, 'rgba(0,0,0,1)');
+      gw.addColorStop(0.5, 'rgba(0,0,0,0)');
+      gw.addColorStop(1, 'rgba(0,0,0,1)');
+      sctx.globalCompositeOperation = 'destination-out';
+      sctx.fillStyle = gw;
+      sctx.fillRect(0, 0, 64, 256);
+      const shaftTex = new THREE.CanvasTexture(shaft);
+      for (let i = 0; i < 3; i++) {
+        const sp = new THREE.Sprite(
+          new THREE.SpriteMaterial({
+            map: shaftTex,
+            transparent: true,
+            opacity: 0,
+            fog: false,
+            depthWrite: false,
+            depthTest: false,
+            blending: THREE.AdditiveBlending,
+            rotation: 0.42 + i * 0.13,
+          }),
+        );
+        setRenderCategory(sp, 'sky');
+        sp.scale.set(26 + i * 16, 150 + i * 35, 1);
+        sp.renderOrder = -8;
+        this.godRays.push(sp);
+        this.scene.add(sp);
       }
     }
 
@@ -3990,14 +3987,14 @@ export class Renderer {
       body = built.body;
       portal = built.portal;
       height = 4.6;
-      objectMesh = body;
+      objectMesh = body!;
     } else if (e.kind === 'object' && e.templateId === 'mailbox') {
       // Ravenpost pillar: bespoke procedural prop (no sparkle; the unread-mail
       // votive in the group is the per-viewer beacon, toggled in sync()).
       const built = buildMailboxPillar(e.id);
       body = built.group;
       height = built.height;
-      objectMesh = body;
+      objectMesh = body!;
     } else if (e.kind === 'object' && e.templateId?.startsWith('delve_')) {
       // Delve interactables: skip the object pool (each is unique/stateful) and
       // build a dedicated procedural mesh that matches the crypt aesthetic.
@@ -4005,7 +4002,7 @@ export class Renderer {
       const built = buildDelveInteractable(e.templateId, e.id);
       body = built.group;
       height = built.height;
-      objectMesh = body;
+      objectMesh = body!;
       // Pressure plates are flush to the floor, no sparkle clutter overhead.
       if (
         e.templateId !== 'delve_pressure_plate' &&
@@ -4045,7 +4042,7 @@ export class Renderer {
         height = built.height;
         objectPoolKey = null;
       }
-      objectMesh = body;
+      objectMesh = body!;
       if (!this.sparkleMat) {
         this.sparkleMat = new THREE.SpriteMaterial({
           map: sparkleTexture(),
@@ -4127,12 +4124,11 @@ export class Renderer {
       if (!isQuestVision) visual.clickProxy.userData.entityId = e.id;
       clickTarget = visual.clickProxy;
     } else {
-      if (body === null) return;
-      group.add(body);
-      body.traverse((o) => {
+      group.add(body!);
+      body?.traverse((o) => {
         o.userData.entityId = e.id;
       });
-      clickTarget = body;
+      clickTarget = body!;
     }
     group.scale.setScalar(e.scale);
     group.position.set(e.pos.x, e.pos.y, e.pos.z);
@@ -5549,16 +5545,13 @@ export class Renderer {
       }
 
       if (st.casting) {
-        const castingAbility = e.castingAbility;
         this.vfx.castSparkle(
           e.id,
           waterJetVisualChannel
             ? 'frost'
             : e.castingAbility === 'demon_heal'
               ? 'shadow'
-              : castingAbility !== null
-                ? (ABILITIES[castingAbility]?.school ?? 'arcane')
-                : 'arcane',
+              : (ABILITIES[e.castingAbility!]?.school ?? 'arcane'),
           dt,
         );
       }

@@ -1147,6 +1147,31 @@
     background-position: center;
     background-repeat: no-repeat;
   }
+  /* QoL: an aura in its final seconds (auras_view isAuraExpiring) blinks so an
+     expiring DoT/buff reads at a glance on the status panels. Opacity floors at
+     0.45 so the icon identity stays readable mid-blink; under reduced motion the
+     blink becomes a steady brightened state (the same shape the low-resource
+     label uses), so the cue survives without animation. */
+  .buff.expiring {
+    animation: aura-expire-blink 0.8s ease-in-out infinite;
+  }
+  @keyframes aura-expire-blink {
+    0%,
+    100% {
+      opacity: 1;
+      filter: brightness(1);
+    }
+    50% {
+      opacity: 0.45;
+      filter: brightness(1.5);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .buff.expiring {
+      animation: none;
+      filter: brightness(1.4);
+    }
+  }
   /* A debuff reads as harmful at a glance: a thicker border (border-box, so no
      layout shift) tinted by magic school, WoW-style (physical keeps the base red). */
   .buff.debuff {

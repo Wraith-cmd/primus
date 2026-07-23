@@ -25,7 +25,7 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
       maxRange: 30,
       cooldown: 12,
       stunDuration: 0.5,
-      name: 'Charge',
+      name: 'Onrush',
       school: 'physical',
     },
     loot: [
@@ -103,7 +103,7 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
       maxRange: 30,
       cooldown: 12,
       stunDuration: 0.5,
-      name: 'Charge',
+      name: 'Onrush',
       school: 'physical',
     },
     loot: [
@@ -171,7 +171,7 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
       maxRange: 30,
       cooldown: 12,
       stunDuration: 0.5,
-      name: 'Charge',
+      name: 'Onrush',
       school: 'physical',
     },
     loot: [
@@ -226,7 +226,7 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
       maxRange: 30,
       cooldown: 12,
       stunDuration: 0.5,
-      name: 'Charge',
+      name: 'Onrush',
       school: 'physical',
     },
     loot: [], // summoned add — nothing to loot
@@ -256,7 +256,7 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
       maxRange: 30,
       cooldown: 12,
       stunDuration: 0.5,
-      name: 'Charge',
+      name: 'Onrush',
       school: 'physical',
     },
     loot: [
@@ -333,7 +333,7 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
       maxRange: 30,
       cooldown: 12,
       stunDuration: 0.5,
-      name: 'Charge',
+      name: 'Onrush',
       school: 'physical',
     },
     loot: [
@@ -389,7 +389,7 @@ export const DUNGEON_MOBS: Record<string, MobTemplate> = {
       maxRange: 30,
       cooldown: 12,
       stunDuration: 0.5,
-      name: 'Charge',
+      name: 'Onrush',
       school: 'physical',
     },
     loot: [], // summoned add — nothing to loot

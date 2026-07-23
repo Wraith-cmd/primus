@@ -234,7 +234,7 @@ const baseEnTable = {
   'mechanic.warStomp': 'Shuddering Stomp',
   // Heroic warrior-mob anti-kite charge (MobTemplate.charge, src/sim/mob/charge.ts):
   // the stun debuff on the player and the {mechanic} in the "unleashes" line.
-  'mechanic.charge': 'Charge',
+  'mechanic.charge': 'Onrush',
   'mechanic.boneCarapace': 'Bone Carapace',
   'mechanic.bansheesWail': 'Keening Wail',
   'mechanic.crushingSweep': 'Crushing Sweep',
@@ -5864,7 +5864,7 @@ const AURA_NAME_KEY: Record<string, SimMessageKey> = {
   'Caustic Spores': 'aura.causticSpores',
   // Boss / mob mechanics (the {mechanic} in "{mob} unleashes {mechanic}!").
   'Shuddering Stomp': 'mechanic.warStomp',
-  Charge: 'mechanic.charge',
+  Onrush: 'mechanic.charge',
   'Bone Carapace': 'mechanic.boneCarapace',
   'Keening Wail': 'mechanic.bansheesWail',
   'Crushing Sweep': 'mechanic.crushingSweep',

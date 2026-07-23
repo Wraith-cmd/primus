@@ -40,7 +40,7 @@ const CHARGE_RECORD = {
   maxRange: 30,
   cooldown: 12,
   stunDuration: 0.5,
-  name: 'Charge',
+  name: 'Onrush',
   school: 'physical',
 } as const;
 // Deliberately excluded: casters/acolytes, beasts/spiders/dragonkin, the ogre,
@@ -190,12 +190,12 @@ describe('heroic charge through the full sim tick', () => {
     // The stun lands the SAME tick the charge fires (Onrush pairing), 0.5s, no DR.
     const stun = chargeStunOn(player);
     expect(stun).toBeTruthy();
-    expect(stun!.name).toBe('Charge');
+    expect(stun!.name).toBe('Onrush');
     expect(stun!.duration).toBe(0.5);
     expect(stun!.kind).toBe('stun');
     // The announce mirrors the stomp "unleashes" line (localized client-side).
     expect(
-      events.some((e) => e.type === 'log' && e.text === 'Crypt Shambler unleashes Charge!'),
+      events.some((e) => e.type === 'log' && e.text === 'Crypt Shambler unleashes Onrush!'),
     ).toBe(true);
     expect(mob.mobChargeTargetId).toBe(pid);
 
@@ -262,7 +262,7 @@ describe('heroic charge through the full sim tick', () => {
       const events = sim.tick() as any[];
       expect(chargeStunOn(player)).toBeUndefined();
       expect(mob.mobChargeTargetId ?? null).toBeNull();
-      expect(events.some((e) => e.type === 'log' && String(e.text).includes('Charge'))).toBe(false);
+      expect(events.some((e) => e.type === 'log' && String(e.text).includes('Onrush'))).toBe(false);
     }
   });
 });

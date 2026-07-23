@@ -135,7 +135,7 @@ export const TEMPLE_DUNGEON_MOBS: Record<string, MobTemplate> = {
       maxRange: 30,
       cooldown: 12,
       stunDuration: 0.5,
-      name: 'Charge',
+      name: 'Onrush',
       school: 'physical',
     },
     loot: [
@@ -212,7 +212,7 @@ export const TEMPLE_DUNGEON_MOBS: Record<string, MobTemplate> = {
       maxRange: 30,
       cooldown: 12,
       stunDuration: 0.5,
-      name: 'Charge',
+      name: 'Onrush',
       school: 'physical',
     },
     loot: [

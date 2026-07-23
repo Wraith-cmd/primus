@@ -8964,7 +8964,12 @@ export class Hud {
           audio.levelUp();
           if (isTalentRowUnlockLevel(ev.level)) {
             this.showBanner(t('game.talents.rowUnlockToast'));
-            sfx.playUi('quest_ready', { gain: 4.5 });
+            // No local gain override: the manifest's resolved gain (keyTrimDb)
+            // is the single source of truth, same fix efe124264 already
+            // applied to every other quest_ready call site. This one was
+            // missed; stacking this on top of the corrected catalog gain was
+            // clipping (+3.4dBTP effective).
+            sfx.playUi('quest_ready');
           }
           if (ev.level === 5) {
             const characterId = (this.sim as unknown as { characterId?: number }).characterId;
@@ -9661,7 +9666,7 @@ export class Hud {
           break;
         }
         case 'partyInvite':
-          audio.invitePrompt();
+          audio.partyInvite();
           this.showPrompt(
             t('hud.prompts.partyInvite', { name: `<b>${esc(ev.fromName)}</b>` }),
             t('hud.prompts.joinParty'),
@@ -9710,7 +9715,7 @@ export class Hud {
           );
           break;
         case 'guildInvite':
-          audio.invitePrompt();
+          audio.levelUp();
           this.showPrompt(
             t('hud.prompts.guildInvite', {
               name: `<b>${esc(ev.fromName)}</b>`,

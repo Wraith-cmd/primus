@@ -611,6 +611,19 @@ function selfSnapshotAlpha(alpha: number, lead: number): number {
   return Math.min(1.25, alpha + Math.max(0, lead));
 }
 
+export interface FramePacingInfo {
+  intentional: boolean;
+  targetFps: number;
+  previousWorkMs: number;
+}
+
+export interface RendererSyncOptions {
+  renderFacingOverride?: number | null;
+  selfAlphaLead?: number;
+  selfMotion?: SelfMotionFrame | null;
+  framePacing?: FramePacingInfo;
+}
+
 export interface EntityView {
   group: THREE.Group;
   /** rigged glTF visual for characters; null for object views (doors/crates) */
@@ -1387,7 +1400,8 @@ export class Renderer {
     const sunCanvas = (core: boolean): THREE.CanvasTexture => {
       const c = document.createElement('canvas');
       c.width = c.height = 128;
-      const ctx = c.getContext('2d')!;
+      const ctx = c.getContext('2d');
+      if (ctx === null) throw new Error('2D canvas context unavailable for sun texture');
       const g = ctx.createRadialGradient(64, 64, 2, 64, 64, 64);
       if (core) {
         g.addColorStop(0, 'rgba(255,252,238,1)');
@@ -1431,7 +1445,8 @@ export class Renderer {
       const shaft = document.createElement('canvas');
       shaft.width = 64;
       shaft.height = 256;
-      const sctx = shaft.getContext('2d')!;
+      const sctx = shaft.getContext('2d');
+      if (sctx === null) throw new Error('2D canvas context unavailable for sun shaft texture');
       const gh = sctx.createLinearGradient(0, 0, 0, 256);
       gh.addColorStop(0, 'rgba(255,240,200,0)');
       gh.addColorStop(0.45, 'rgba(255,240,200,0.55)');
@@ -2249,7 +2264,12 @@ export class Renderer {
     return this.renderDiagnosticsSnapshot;
   }
 
-  private updateAdaptiveResolution(dt: number): void {
+  private updateAdaptiveResolution(
+    dt: number,
+    intentionalFramePacing: boolean,
+    pacedTargetFps: number,
+    previousFrameWorkMs: number,
+  ): void {
     if (!Number.isFinite(dt) || dt <= 0) return;
     const frameMs = Math.min(250, dt * 1000);
     const previousSubmitMs = this.lastFrameStats.phaseMs.submit;
@@ -2274,6 +2294,9 @@ export class Renderer {
       createdViews: this.lastFrameStats.createdViews,
       minRenderScale: lockedRenderScale,
       maxRenderScale: lockedRenderScale,
+      intentionalFramePacing,
+      pacedTargetFps,
+      workMs: previousFrameWorkMs > 0 ? previousFrameWorkMs : previousTotalMs,
     });
     this.frameMsEma = state.frameMsEma;
     this.adaptiveCooldown = state.cooldownSeconds;
@@ -3987,14 +4010,14 @@ export class Renderer {
       body = built.body;
       portal = built.portal;
       height = 4.6;
-      objectMesh = body!;
+      objectMesh = body;
     } else if (e.kind === 'object' && e.templateId === 'mailbox') {
       // Ravenpost pillar: bespoke procedural prop (no sparkle; the unread-mail
       // votive in the group is the per-viewer beacon, toggled in sync()).
       const built = buildMailboxPillar(e.id);
       body = built.group;
       height = built.height;
-      objectMesh = body!;
+      objectMesh = body;
     } else if (e.kind === 'object' && e.templateId?.startsWith('delve_')) {
       // Delve interactables: skip the object pool (each is unique/stateful) and
       // build a dedicated procedural mesh that matches the crypt aesthetic.
@@ -4002,7 +4025,7 @@ export class Renderer {
       const built = buildDelveInteractable(e.templateId, e.id);
       body = built.group;
       height = built.height;
-      objectMesh = body!;
+      objectMesh = body;
       // Pressure plates are flush to the floor, no sparkle clutter overhead.
       if (
         e.templateId !== 'delve_pressure_plate' &&
@@ -4042,7 +4065,7 @@ export class Renderer {
         height = built.height;
         objectPoolKey = null;
       }
-      objectMesh = body!;
+      objectMesh = body;
       if (!this.sparkleMat) {
         this.sparkleMat = new THREE.SpriteMaterial({
           map: sparkleTexture(),
@@ -4124,11 +4147,12 @@ export class Renderer {
       if (!isQuestVision) visual.clickProxy.userData.entityId = e.id;
       clickTarget = visual.clickProxy;
     } else {
-      group.add(body!);
-      body?.traverse((o) => {
+      if (body === null) return;
+      group.add(body);
+      body.traverse((o) => {
         o.userData.entityId = e.id;
       });
-      clickTarget = body!;
+      clickTarget = body;
     }
     group.scale.setScalar(e.scale);
     group.position.set(e.pos.x, e.pos.y, e.pos.z);
@@ -4922,13 +4946,14 @@ export class Renderer {
     };
   }
 
-  sync(
-    alpha: number,
-    dt: number,
-    renderFacingOverride: number | null,
-    selfAlphaLead = 0,
-    selfMotion: SelfMotionFrame | null = null,
-  ): void {
+  sync(alpha: number, dt: number, options: RendererSyncOptions | null = null): void {
+    const renderFacingOverride = options?.renderFacingOverride ?? null;
+    const selfAlphaLead = options?.selfAlphaLead ?? 0;
+    const selfMotion = options?.selfMotion ?? null;
+    const framePacing = options?.framePacing;
+    const intentionalFramePacing = framePacing?.intentional ?? false;
+    const pacedTargetFps = framePacing?.targetFps ?? GFX.budget.targetFps;
+    const previousFrameWorkMs = framePacing?.previousWorkMs ?? 0;
     const totalStart = performance.now();
     let phaseStart = totalStart;
     const framePhaseMs = emptyFramePhaseMs();
@@ -4949,7 +4974,7 @@ export class Renderer {
       return t;
     };
 
-    this.updateAdaptiveResolution(dt);
+    this.updateAdaptiveResolution(dt, intentionalFramePacing, pacedTargetFps, previousFrameWorkMs);
     this.viewportPollTimer += dt;
     if (this.viewportPollTimer >= 0.25) {
       this.viewportPollTimer = 0;
@@ -5545,13 +5570,16 @@ export class Renderer {
       }
 
       if (st.casting) {
+        const castingAbility = e.castingAbility;
         this.vfx.castSparkle(
           e.id,
           waterJetVisualChannel
             ? 'frost'
             : e.castingAbility === 'demon_heal'
               ? 'shadow'
-              : (ABILITIES[e.castingAbility!]?.school ?? 'arcane'),
+              : castingAbility !== null
+                ? (ABILITIES[castingAbility]?.school ?? 'arcane')
+                : 'arcane',
           dt,
         );
       }

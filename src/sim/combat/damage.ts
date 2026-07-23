@@ -1020,8 +1020,16 @@ export function handleDeath(ctx: SimContext, e: Entity, killer: Entity | null): 
   // control. The encounter script remains responsible for releasing its markers.
   e.auras = aurasSurvivingDeath(e.auras);
   e.ccDr.clear();
+  // Death clears the WHOLE cast/channel state (the same fields cancelCast resets,
+  // without its castStop emit). Nulling only castingAbility left `channeling`
+  // armed through death, so the victim's next timed cast after a resurrection ran
+  // updateCasting's channel branch and re-fired the spell's effects on every
+  // leftover channel-tick boundary (the Pyrelance "hundreds of fireballs" bug).
   e.castingAbility = null;
   e.castTargetId = null;
+  e.channeling = false;
+  e.castRemaining = 0;
+  e.castAim = null;
   // Hidden per-cast state: death ends any gather/fishing session, so
   // the fields must return to inert here too (the parity samplers rely on them
   // being 0/'' at every sampled frame outside a live cast; cancelCast owns the

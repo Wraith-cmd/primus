@@ -424,6 +424,37 @@ describe('taunt and growl', () => {
     expect(wolf.aggroTargetId).toBe(tank.id);
   });
 
+  it('keeps a taunted mob focused through higher-threat pull-over attempts', () => {
+    const sim = new Sim({ seed: 42, playerClass: 'warrior', noPlayer: true });
+    const tank = sim.entities.get(sim.addPlayer('warrior', 'Tank'))!;
+    const dps = sim.entities.get(sim.addPlayer('rogue', 'Dps'))!;
+    sim.setPlayerLevel(10, tank.id);
+    sim.setPlayerLevel(10, dps.id);
+    const wolf = nearestMob(sim, 'forest_wolf', tank);
+    beefUp(wolf);
+    teleport(sim, tank, wolf.pos.x + 2, wolf.pos.z);
+    teleport(sim, dps, wolf.pos.x + 3, wolf.pos.z);
+    wolf.threat.set(dps.id, 500);
+    wolf.aggroTargetId = dps.id;
+    wolf.aiState = 'attack';
+    wolf.inCombat = true;
+
+    sim.targetEntity(wolf.id, tank.id);
+    tank.facing = Math.atan2(wolf.pos.x - tank.pos.x, wolf.pos.z - tank.pos.z);
+    sim.castAbility('taunt', tank.id);
+    wolf.threat.set(dps.id, (wolf.threat.get(tank.id) ?? 0) * 3);
+
+    for (let i = 0; i < 20 * 2; i++) {
+      sim.tick();
+      expect(wolf.aggroTargetId).toBe(tank.id);
+      expect(wolf.forcedTargetId).toBe(tank.id);
+    }
+
+    for (let i = 0; i < 20 * 2; i++) sim.tick();
+    expect(wolf.forcedTargetId).toBe(null);
+    expect(wolf.aggroTargetId).toBe(dps.id);
+  });
+
   it('level 10 paladins know Sacred Goad and taunt at 30 yards', () => {
     expect(abilitiesKnownAt('paladin', 10).some((a) => a.def.id === 'holy_taunt')).toBe(true);
 

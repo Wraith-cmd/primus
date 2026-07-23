@@ -54,6 +54,7 @@ import {
   hoverCursorKind,
   isAttackableEntity,
   shouldApproachPickedEntity,
+  shouldDeferPickedCorpseToGatherNode,
 } from './game/interactions';
 import { createIntroLogoOverlay } from './game/intro_logo_overlay';
 import { Keybinds } from './game/keybinds';
@@ -2554,7 +2555,12 @@ async function startGame(
     // ground-click/click-to-move fallback. A click that lands on a node
     // harvests it; it does not also walk you there or deselect your target.
     let id = renderer.pickDirect(x, y);
-    if (id === null) {
+    const directEntity = id !== null ? world.entities.get(id) : undefined;
+    const deferDirectCorpseToNode = shouldDeferPickedCorpseToGatherNode(
+      directEntity,
+      world.playerId,
+    );
+    if (id === null || deferDirectCorpseToNode) {
       const nodeId = renderer.pickGatherNode(x, y);
       const node = nodeId !== null ? GATHER_NODES.find((n) => n.id === nodeId) : undefined;
       if (node) {
@@ -2574,7 +2580,7 @@ async function startGame(
         );
         return;
       }
-      id = renderer.pickSloppy(x, y);
+      if (id === null) id = renderer.pickSloppy(x, y);
     }
     // OSRS-style click feedback (its own toggle): a brief ground marker, gold for a
     // neutral click and red on a hostile. Both reference games only mark a real action,

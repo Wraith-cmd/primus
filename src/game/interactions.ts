@@ -135,6 +135,20 @@ export function shouldApproachPickedEntity(
   return true;
 }
 
+export function shouldDeferPickedCorpseToGatherNode(
+  entity: Entity | undefined,
+  playerId: number,
+  harvestStateReliable = true,
+): boolean {
+  return (
+    !!entity &&
+    entity.kind === 'mob' &&
+    entity.dead &&
+    entity.lootable &&
+    !corpseLootAvailability(entity, playerId, harvestStateReliable).canOpen
+  );
+}
+
 /** Route a picked entity and report only completed non-combat world interactions. */
 export function handlePickedEntity(
   world: PickInteractionWorld,

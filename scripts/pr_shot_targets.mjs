@@ -1835,6 +1835,112 @@ export const TARGETS = [
     },
   },
   {
+    key: 'target-of-target',
+    label: 'Target-of-target mini-frame beside the target frame, clear of the aura strip',
+    when: ['totarget', 'ui/target_of_target'],
+    variants: [
+      { key: 'desktop', charClass: 'warrior', charName: 'Marksman' },
+      // Slider maximum: the mini zoom compounds --target-frame-scale, so the
+      // 18px gap and the top-aligned anchor must hold at the largest frame.
+      { key: 'desktop-scale-max', charClass: 'warrior', charName: 'Marksman', frameScale: 1.15 },
+      // Move mode: the unlocked frame grows a dashed outline and the corner
+      // button lights gold; the mini must stay clear of both.
+      { key: 'desktop-unlocked', charClass: 'warrior', charName: 'Marksman', unlockFrame: true },
+      // Party pushed below the target: the painter measures frame + strip only,
+      // so the beside-the-frame mini must no longer interact with the pushed rows.
+      { key: 'desktop-party', charClass: 'paladin', charName: 'Marksman', party: true },
+      { key: 'mobile', charClass: 'mage', charName: 'Marksman', mobile: true },
+    ],
+    async capture(page, variant) {
+      await page.evaluate(
+        ({ withParty }) => {
+          const game = window.__game;
+          const sim = game.sim;
+          const me = sim.primaryId;
+          const p = sim.player;
+          if (withParty) {
+            // Party state lives on the PartyMachine (sim.party); assemble the
+            // struct directly (offline invites queue stale cards).
+            const pm = sim.party;
+            const roster = [
+              ['Brightoak', 'druid'],
+              ['Stormcaller', 'shaman'],
+              ['Nightblade', 'rogue'],
+              ['Emberlyn', 'mage'],
+            ];
+            const pids = roster.map(([name, cls], i) => {
+              const pid = sim.addPlayer(cls, name);
+              const e = sim.entities.get(pid);
+              if (e) {
+                e.pos = { x: p.pos.x + (i % 4) * 2 - 3, y: p.pos.y, z: p.pos.z + 2 };
+                e.prevPos = { ...e.pos };
+              }
+              return pid;
+            });
+            const party = {
+              id: pm.nextPartyId++,
+              leader: me,
+              members: [me, ...pids],
+              raid: false,
+              raidGroups: new Map(),
+              lootStrategies: {},
+            };
+            pm.parties.set(party.id, party);
+            pm.partyByPid.set(me, party.id);
+            for (const q of pids) pm.partyByPid.set(q, party.id);
+          }
+          // Target a nearby mob, make it target US (a mob's target-of-target is
+          // its aggro target), and load the strip so its first wrapped row
+          // reaches the frame's right edge, the old collision band.
+          let mob = null;
+          for (const e of sim.entities.values()) {
+            if (e.kind === 'mob' && e.ownerId === null && !e.dead) {
+              mob = e;
+              break;
+            }
+          }
+          if (!mob) return;
+          mob.pos = { x: p.pos.x + 2, y: p.pos.y, z: p.pos.z + 8 };
+          mob.prevPos = { ...mob.pos };
+          sim.rebucket(mob);
+          sim.targetEntity(mob.id);
+          mob.aggroTargetId = me;
+          // The same call the options row lands on (applySetting delegates here).
+          game.hud.setShowTargetOfTarget(true);
+          for (let i = 0; i < 9; i++) {
+            sim.applyAura(mob, {
+              id: `tot_probe_${i}`,
+              name: `Probe ${i}`,
+              kind: 'dot',
+              value: 1,
+              remaining: 600,
+              duration: 600,
+              sourceId: me,
+              school: 'shadow',
+            });
+          }
+        },
+        { withParty: !!variant.party },
+      );
+      if (variant.frameScale) {
+        await page.evaluate((scale) => {
+          document.documentElement.style.setProperty('--target-frame-scale', String(scale));
+        }, variant.frameScale);
+      }
+      await wait(1200);
+      if (variant.party) {
+        // Becoming leader auto-opens Loot Settings on the frame the HUD notices
+        // the new party; close it AFTER that frame so the scene stays clean.
+        await page.evaluate(() => window.__game.hud.closeLootSettings?.());
+      }
+      if (variant.unlockFrame) {
+        await page.evaluate(() => document.querySelector('#target-frame > .tf-move-btn')?.click());
+      }
+      await wait(600);
+      return {};
+    },
+  },
+  {
     key: 'confirm-gates',
     label: 'Confirm dialogs: spirit-healer revive + marks purchases',
     when: ['ui/hud/delve/delve_board_controller', 'tests/hud_confirm_gates'],

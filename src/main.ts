@@ -60,6 +60,7 @@ import { Keybinds } from './game/keybinds';
 import { newKeyboardTurnState, stepKeyboardTurnFacing } from './game/keyboard_turn_facing';
 import { applyMobileKeyboardViewport } from './game/keyboard_viewport_applier';
 import { shouldUseStaticBackdrop } from './game/landing_backdrop';
+import { createLandingThemeAudio } from './game/landing_theme';
 import {
   interfaceModeFromSetting,
   isPhoneTouchDevice,
@@ -348,6 +349,7 @@ let homepageMusic: HTMLAudioElement | null = null;
 let homepageMusicStarted = false;
 let homepageMusicMuted = readHomepageMusicMuted();
 let removeHomepageMusicGestureListeners: (() => void) | null = null;
+const landingThemeAudio = createLandingThemeAudio();
 
 function isNativeRuntime(): boolean {
   if (NATIVE_APP) return true;
@@ -5855,8 +5857,12 @@ function syncHomepageMusicToggle(): void {
 function playHomepageMusic(): void {
   const el = homepageMusic;
   if (!el || homepageMusicMuted || homepageMusicStarted) return;
-  void el
-    .play()
+  // Route the theme through its dedicated AudioContext BEFORE it plays: a bare
+  // media stream playing when the world-entry inits open the first game
+  // AudioContext cracks audibly on Android (see src/game/landing_theme.ts).
+  void landingThemeAudio
+    .prepare(el)
+    .then(() => el.play())
     .then(() => {
       homepageMusicStarted = true;
       removeHomepageMusicGestureListeners?.();

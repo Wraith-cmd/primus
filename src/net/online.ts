@@ -2424,6 +2424,8 @@ export class ClientWorld implements IWorld {
       e.afk = !!w.ak; // /afk display bit: drives the nameplate tag + social presence dot
       e.weaponStowed = !!w.ws;
       e.aggroTargetId = w.aggro ?? null;
+      e.forcedTargetId = w.ft ?? null;
+      e.forcedTargetTimer = w.ftm ?? 0;
       // Another entity's selected target (players/bots; mobs use aggro above). Powers
       // the target-of-target frame for a player target. For the SELF record this is
       // re-set authoritatively from `s.target` in the self-decode below (same value).

@@ -455,6 +455,50 @@ describe('taunt and growl', () => {
     expect(wolf.aggroTargetId).toBe(dps.id);
   });
 
+  it('level 5 Warrior Goad locks Deeprock Digger focus and expires back to threat', () => {
+    const sim = new Sim({ seed: 42, playerClass: 'warrior' });
+    const tank = sim.player;
+    const dps = sim.entities.get(sim.addPlayer('mage', 'Dps'))!;
+    sim.setPlayerLevel(5, tank.id);
+    sim.setPlayerLevel(5, dps.id);
+    tank.maxHp = 5000;
+    tank.hp = tank.maxHp;
+    dps.maxHp = 5000;
+    dps.hp = dps.maxHp;
+    const digger = sim.entities.get(85);
+    if (!digger || digger.kind !== 'mob' || digger.templateId !== 'tunnel_rat') {
+      throw new Error('expected Deeprock Digger id 85');
+    }
+    beefUp(digger);
+    teleport(sim, tank, digger.pos.x + 2, digger.pos.z);
+    teleport(sim, dps, digger.pos.x + 3, digger.pos.z);
+    digger.threat.set(dps.id, 500);
+    digger.aggroTargetId = dps.id;
+    digger.aiState = 'attack';
+    digger.inCombat = true;
+
+    sim.targetEntity(digger.id, tank.id);
+    tank.facing = Math.atan2(digger.pos.x - tank.pos.x, digger.pos.z - tank.pos.z);
+    sim.castAbility('taunt', tank.id);
+
+    expect(digger.forcedTargetId).toBe(tank.id);
+    expect(digger.forcedTargetTimer).toBeGreaterThan(0);
+    expect(digger.aggroTargetId).toBe(tank.id);
+    expect(digger.threat.get(tank.id)).toBe(500);
+
+    digger.threat.set(dps.id, 5000);
+    for (let i = 0; i < 20 * 2; i++) {
+      sim.tick();
+      expect(digger.forcedTargetId).toBe(tank.id);
+      expect(digger.aggroTargetId).toBe(tank.id);
+    }
+
+    for (let i = 0; i < 20 * 2; i++) sim.tick();
+    expect(digger.forcedTargetId).toBe(null);
+    expect(digger.forcedTargetTimer).toBeLessThanOrEqual(0);
+    expect(digger.aggroTargetId).toBe(dps.id);
+  });
+
   it('level 10 paladins know Sacred Goad and taunt at 30 yards', () => {
     expect(abilitiesKnownAt('paladin', 10).some((a) => a.def.id === 'holy_taunt')).toBe(true);
 

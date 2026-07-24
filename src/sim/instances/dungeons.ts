@@ -664,7 +664,10 @@ export function resetDungeonInstances(ctx: SimContext, pid?: number): void {
     resettable.some(
       (inst) =>
         inst.resetAvailableAt > ctx.time ||
-        ownerPids.some((ownerPid) => activeResetLock(ctx, ownerPid, inst.dungeonId) !== null),
+        ownerPids.some((ownerPid) => {
+          const lock = activeResetLock(ctx, ownerPid, inst.dungeonId);
+          return lock !== null && lock.claimId !== inst.exitId;
+        }),
     )
   ) {
     ctx.error(r.meta.entityId, 'Instances can only be reset once every 5 minutes.');

@@ -239,6 +239,18 @@ function runShortFight(spec: Spec, seconds: number, seed = 41, rows?: Rows): Bur
 describe('fire mage short-fight burst (27s live report harness)', () => {
   const fire = runShortFight('fire', FIGHT_SECONDS);
   const frost = runShortFight('frost', FIGHT_SECONDS);
+  // Post-#2358 (crit/haste rating halved) the naked frost 27s cell is
+  // proc-luck heavy: ~8 Rimelances fit the window, so a single seed has a
+  // 27% chance of ZERO Fingers procs and its DPS swings ~40%. The band
+  // therefore compares 5-seed MEANS (same seeds as the talented gates); the
+  // single seed-41 run above stays for the breakdown report and sanity.
+  const BAND_SEEDS = [41, 101, 108, 115, 122];
+  const fireMean =
+    BAND_SEEDS.map((s) => runShortFight('fire', FIGHT_SECONDS, s).dps).reduce((a, b) => a + b, 0) /
+    BAND_SEEDS.length;
+  const frostMean =
+    BAND_SEEDS.map((s) => runShortFight('frost', FIGHT_SECONDS, s).dps).reduce((a, b) => a + b, 0) /
+    BAND_SEEDS.length;
 
   it('the reported gear resolves (every id exists on its slot)', () => {
     for (const [slot, id] of Object.entries(REPORTED_GEAR)) {
@@ -275,11 +287,18 @@ describe('fire mage short-fight burst (27s live report harness)', () => {
   });
 
   it(`fire's 27s burst stays within ${SHORT_FIGHT_DPS_CEILING}x the sustained comparator`, () => {
-    expect(fire.dps).toBeLessThanOrEqual(frost.dps * SHORT_FIGHT_DPS_CEILING);
+    expect(fireMean).toBeLessThanOrEqual(frostMean * SHORT_FIGHT_DPS_CEILING);
   });
 
   it('the burst edge survives (the fix must not gut the spec)', () => {
-    expect(fire.dps).toBeGreaterThanOrEqual(frost.dps * SHORT_FIGHT_DPS_FLOOR);
+    expect(fireMean).toBeGreaterThanOrEqual(frostMean * SHORT_FIGHT_DPS_FLOOR);
+  });
+
+  it('reports the naked band means (owner harness)', () => {
+    console.log(
+      `[naked band, 5 seeds] fire=${fireMean.toFixed(1)} frost=${frostMean.toFixed(1)} ratio=${(fireMean / frostMean).toFixed(2)}`,
+    );
+    expect(fireMean).toBeGreaterThan(0);
   });
 });
 

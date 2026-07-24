@@ -38,15 +38,18 @@ const DEFENSIVE_STANCE_TAKEN = 0.9; // dealDamage: Defensive Stance takes 10% le
 // v0.30 fresh-group retune: normal Sanctum serves freshly-capped groups in
 // quest greens/blues (1371-1752 hp / 1439-2361 armor across the three
 // committed tanks), for whom even the 200/420 floors meant 21-24% (trash) and
-// 41-54% (bosses) of the pool per swing. Trash 90, bosses 150 (Korgath and
-// Korzul land ~173; Velkhar sits at the 150 line because he swings at 2.0s
-// and layers his bonewalker waves on top), and the summoned bonewalkers 50
+// 41-54% (bosses) of the pool per swing. Trash 90; bosses 200 (Korgath and
+// Korzul land ~245, an average swing of ~25% of the fresh pool, the same
+// audience-pool share the heroic and Nythraxis boss calibrations use; tanks
+// are crit-immune since v0.29.1 so there is no spike tail above the 1.25x
+// roll cap. Velkhar sits at the 200 line, ~20.5%, because he swings at 2.0s
+// and layers his bonewalker waves on top); and the summoned bonewalkers 50
 // (three spawn at once: wave pressure, not extra bosses). The DOUBLED health
 // stays. Accepted trade (2026-07-25): a best-in-slot self-healing tank can
-// out-heal a 150-floor boss again, so clear TIME, not lethality, is what
-// keeps solo farming unprofitable.
+// out-heal these bosses again, so clear TIME, not lethality, is what keeps
+// solo farming unprofitable.
 const TRASH_FLOOR = 90;
-const BOSS_FLOOR = 150;
+const BOSS_FLOOR = 200;
 const ADD_FLOOR = 50;
 
 // The dungeon's five spawn-list templates plus Velkhar's summoned add.
@@ -98,9 +101,9 @@ describe('normal Gravewyrm Sanctum tuning data', () => {
       sanctum_boneguard: 3.4,
       sanctum_drakonid: 3.3,
       raised_bonewalker: 3.75,
-      korgath_the_bound: 5.5,
-      grand_necromancer_velkhar: 5.0,
-      korzul_the_gravewyrm: 5.25,
+      korgath_the_bound: 7.75,
+      grand_necromancer_velkhar: 6.6,
+      korzul_the_gravewyrm: 7.5,
     });
   });
 });
@@ -141,7 +144,7 @@ describe('normal Gravewyrm Sanctum melee floors vs the reference warrior', () =>
     }
   });
 
-  it('every boss swing lands for at least 150 at every spawnable level', () => {
+  it('every boss swing lands for at least 200 at every spawnable level', () => {
     for (const id of BOSS_IDS) {
       const { minLevel, maxLevel } = MOBS[id];
       for (let level = minLevel; level <= maxLevel; level++) {
@@ -177,10 +180,10 @@ describe('normal Gravewyrm Sanctum mechanic scaling', () => {
     // Raw (unmitigated) mechanic damage after the per-mob multiplier: the
     // FOURTH (largest) inferno pulse on normal, and the stomp band.
     const mult = tuning.damageMultiplierByMob.korzul_the_gravewyrm;
-    expect(inferno.min * inferno.pulses * mult).toBe(147);
-    expect(inferno.max * inferno.pulses * mult).toBe(189);
-    expect(korgathStomp.min * tuning.damageMultiplierByMob.korgath_the_bound).toBe(110);
-    expect(korgathStomp.max * tuning.damageMultiplierByMob.korgath_the_bound).toBe(165);
+    expect(inferno.min * inferno.pulses * mult).toBe(210);
+    expect(inferno.max * inferno.pulses * mult).toBe(270);
+    expect(korgathStomp.min * tuning.damageMultiplierByMob.korgath_the_bound).toBe(155);
+    expect(korgathStomp.max * tuning.damageMultiplierByMob.korgath_the_bound).toBe(232.5);
   });
 
   it('leaves untuned normal dungeons untouched', () => {

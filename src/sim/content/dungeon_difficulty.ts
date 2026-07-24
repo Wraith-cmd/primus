@@ -83,12 +83,15 @@ export interface NormalDungeonTuning {
 // every run even against single bosses with a healer. New calibration: the
 // minimum non-crit swing on the same reference warrior (level-20 prot in the
 // max-armor kit, 2861 armor, Defensive Stance) lands at least 90 (trash),
-// 150 (bosses; Korgath/Korzul reach ~173, Velkhar sits at the 150 line
+// 200 (bosses; Korgath/Korzul land ~245, Velkhar sits at the 200 line
 // because he swings at 2.0s and layers his summon waves on top), and 50
 // (Velkhar's non-elite bonewalker waves, which spawn three at a time and are
-// wave pressure, not extra bosses). That prices a boss swing at ~15-22% and
-// an add swing at ~5-7% of a fresh tank pool. The DOUBLED health stays: the
-// economy lever is clear time, not lethality. Pinned by
+// wave pressure, not extra bosses). That prices a boss swing at ~25% of the
+// fresh tank pool (~20.5% for Velkhar), the same audience-pool share the
+// heroic and Nythraxis calibrations use, with tanks crit-immune since
+// v0.29.1 so there is no spike tail above the 1.25x roll cap; an add swing
+// is ~5-7%. The DOUBLED health stays: the economy lever is clear time, not
+// lethality. Pinned by
 // tests/gravewyrm_normal_tuning.test.ts, which also pins the heroic transform
 // literals so a base-template edit cannot slip through unnoticed.
 //
@@ -106,9 +109,9 @@ export const NORMAL_DUNGEON_TUNING: Record<string, NormalDungeonTuning> = {
       sanctum_boneguard: 3.4,
       sanctum_drakonid: 3.3,
       raised_bonewalker: 3.75,
-      korgath_the_bound: 5.5,
-      grand_necromancer_velkhar: 5.0,
-      korzul_the_gravewyrm: 5.25,
+      korgath_the_bound: 7.75,
+      grand_necromancer_velkhar: 6.6,
+      korzul_the_gravewyrm: 7.5,
     },
   },
   nythraxis_boss_arena: {
@@ -174,7 +177,7 @@ export const HEROIC_DUNGEON_TUNING: Record<string, HeroicDungeonTuning> = {
     // (v0.30), the summoned floor drops from 250 to 150.
     addDamageMultiplier: 8.55,
     // The Sanctum bosses must out-hit their retuned NORMAL selves (normal
-    // floors them at 150-174 post-mitigation since the v0.30 fresh-group
+    // floors them at 200-247 post-mitigation since the v0.30 fresh-group
     // retune): 19x lands 652-708, comfortably above.
     damageMultiplierByMob: {
       korgath_the_bound: 19,

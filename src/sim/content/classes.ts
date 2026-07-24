@@ -1802,16 +1802,16 @@ export const ABILITIES: Record<string, AbilityDef> = {
     learnLevel: 5,
     cost: 40,
     castTime: 0,
-    // Balance 2026-07-24 (live 27s raid parse, fire ~2.3x comparable DPS):
-    // Cinderfall's action economy was the short-fight outlier, so the charge
-    // bank is gone (was three stored charges on an 8s recharge, playtest
-    // 2026-07-13) and it is a plain 12s cooldown button again, the vanilla
-    // Fire Blast shape. The press keeps its whole fantasy (guaranteed crit,
-    // Ignite bank, Hot Streak build, off-GCD); the Monte Carlo sweep showed
-    // the banked double-dump inside Phoenix Trance was the piece that kept
-    // every talented build over the 250 DPS line. Pinned by
-    // tests/fire_short_fight_tuning.test.ts.
-    cooldown: 12,
+    // Balance 2026-07-25 (live raid parses + class designer round): the full
+    // three-charge bank STAYS (dumping it inside Phoenix Trance for the free
+    // Pyrelance chain is the fire fantasy, designer call), but each charge
+    // recharges in 30s (was 8s, playtest 2026-07-13). The burst window keeps
+    // its whole payoff; the slow refill is what makes fire fall off after the
+    // window and come back for the next Trance (~110s), so FIGHT-LONG damage
+    // lands at parity: with the Ignite fold fix this measures 1.03x-1.17x the
+    // talented frost comparator at 60s/120s/300s (was 2.2x-2.9x live). Pinned
+    // by tests/fire_short_fight_tuning.test.ts.
+    cooldown: 30,
     range: 20,
     school: 'fire',
     requiresTarget: true,
@@ -1820,6 +1820,8 @@ export const ABILITIES: Record<string, AbilityDef> = {
     // Owner rule (round five): fully off the GCD, like Phoenix Trance: castable
     // during one and it never arms one for the other abilities.
     offGcd: true,
+    // Owner playtest 2026-07-13: three stored charges, back to back if banked.
+    maxCharges: 3,
     // Owner playtest round four: no bolt, the embers bite the moment you press.
     projectile: false,
     effects: [{ type: 'directDamage', min: 27, max: 35 }],

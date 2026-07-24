@@ -23,10 +23,12 @@
 // regression this change turns green.
 //
 // Despite the file name, the suite gates ENTIRE fights, not just the 27s
-// incident: the talented-ceiling block pins the strongest Monte Carlo build,
-// and the sustained block pins 120s rotational parity plus the Ignite
-// contract at duration (pre-fix, sustained fire ran ~3x frost and Ignite
-// was 46% of all damage; all five substantive gates fail on the old sim).
+// incident. Final shape (designer round 2026-07-25): the burst window is
+// sanctioned fire identity (the Cinderfall bank dump inside Phoenix Trance
+// stays), so the 27s blocks only sanity-bound it; the BALANCE target is
+// fight-long damage, pinned by the sustained block at 60s and 120s plus the
+// Ignite contract at duration (pre-fix, sustained fire ran 2.2x-2.9x frost
+// at every duration and Ignite was 46% of all damage).
 import { describe, expect, it } from 'vitest';
 import { ABILITIES, ITEMS, MOBS } from '../src/sim/data';
 import { createMob, type PlayerEquipment, recalcPlayerStats } from '../src/sim/entity';
@@ -278,39 +280,44 @@ describe('fire mage short-fight burst (27s live report harness)', () => {
   });
 });
 
-describe('the tuned knobs (balance 2026-07-24)', () => {
-  it('Cinderfall is a plain 12s cooldown button, no charge bank (was three charges on 8s)', () => {
-    expect(ABILITIES.fire_blast.maxCharges).toBeUndefined();
-    expect(ABILITIES.fire_blast.cooldown).toBe(12);
+describe('the tuned knobs (balance 2026-07-25, designer round)', () => {
+  it('Cinderfall keeps its three-charge bank on a 30s recharge (was 8s)', () => {
+    expect(ABILITIES.fire_blast.maxCharges).toBe(3);
+    expect(ABILITIES.fire_blast.cooldown).toBe(30);
   });
 });
 
 // The Monte Carlo talent sweep (2026-07-24) showed the naked-spec pin above
 // is not the real ceiling: row 14/17/20 actives (Racing Mind, Convergence,
-// Rune of Power) stack multiplicatively on the trance loop and pushed EVERY
-// talented fire build over 250 DPS while the charge bank existed. This gate
-// pins the strongest found build across a fixed seed spread: its MEAN must
-// stay under the line (single lucky-crit seeds may spike; a crit spec's
-// right tail is irreducible), and it must keep a burst edge so a future
-// over-nerf also fails loudly.
-describe('talented ceiling (Monte Carlo follow-up 2026-07-24)', () => {
-  const TOO_STRONG_DPS = 250;
+// Rune of Power) stack multiplicatively on the trance loop. Designer round
+// (2026-07-25): the burst window IS the fire identity (dump the Cinderfall
+// bank inside Phoenix Trance, chain free Pyrelances), so the burst is not
+// held to the fight-long line; it gets a SANITY ratio ceiling versus the
+// talented frost comparator instead, wide enough for the sanctioned spike
+// (measured ~1.4x) and tight enough to catch a pre-fix-magnitude explosion
+// (3.6x). Fight-long balance lives in the sustained block below.
+describe('talented burst window (Monte Carlo 2026-07-24, designer round 2026-07-25)', () => {
+  const BURST_SANITY_CEILING = 1.8; // x the talented frost 27s comparator
   const CEILING_SEEDS = [41, 101, 108, 115, 122];
-  const runs = CEILING_SEEDS.map((seed) =>
+  const fire = CEILING_SEEDS.map((seed) =>
     runShortFight('fire', FIGHT_SECONDS, seed, TOP_TALENTED_ROWS),
   );
-  const mean = runs.reduce((a, r) => a + r.dps, 0) / runs.length;
+  const frost = CEILING_SEEDS.map((seed) =>
+    runShortFight('frost', FIGHT_SECONDS, seed, FROST_TOP_ROWS),
+  );
+  const mean = fire.reduce((a, r) => a + r.dps, 0) / fire.length;
+  const frostMean = frost.reduce((a, r) => a + r.dps, 0) / frost.length;
 
-  it('reports the talented-ceiling numbers (owner harness)', () => {
-    const per = runs.map((r, k) => `${CEILING_SEEDS[k]}:${r.dps.toFixed(1)}`).join(' ');
+  it('reports the talented burst numbers (owner harness)', () => {
+    const per = fire.map((r, k) => `${CEILING_SEEDS[k]}:${r.dps.toFixed(1)}`).join(' ');
     console.log(
-      `\n[fire talented ceiling] racing+convergence+rune, mean=${mean.toFixed(1)} [${per}]`,
+      `\n[fire talented burst] racing+convergence+rune, mean=${mean.toFixed(1)} frost=${frostMean.toFixed(1)} ratio=${(mean / frostMean).toFixed(2)} [${per}]`,
     );
-    expect(runs.length).toBe(CEILING_SEEDS.length);
+    expect(fire.length).toBe(CEILING_SEEDS.length);
   });
 
-  it(`the strongest talent build stays under ${TOO_STRONG_DPS} DPS on average`, () => {
-    expect(mean).toBeLessThanOrEqual(TOO_STRONG_DPS);
+  it(`the burst window stays a bounded spike (within ${BURST_SANITY_CEILING}x talented frost)`, () => {
+    expect(mean).toBeLessThanOrEqual(frostMean * BURST_SANITY_CEILING);
   });
 
   it('the talented build still out-bursts the naked spec (over-nerf guard)', () => {
@@ -329,38 +336,47 @@ describe('talented ceiling (Monte Carlo follow-up 2026-07-24)', () => {
 // measured). Pre-fix ratio at these seeds: ~2.8x, so both fire assertions
 // fail loudly on the old sim.
 describe('sustained parity, entire fight (Monte Carlo follow-up 2026-07-24)', () => {
-  const SUSTAINED_SECONDS = 120;
   const SUSTAINED_SEEDS = [41, 101, 115];
-  const SUSTAINED_CEILING = 1.25; // x talented frost, 120s
+  const SUSTAINED_CEILING = 1.25; // x talented frost, per duration
   const SUSTAINED_FLOOR = 0.85; // the burst spec may trail sustained, not vanish
   const IGNITE_SHARE_CEILING = 0.3; // the 40%-over-6s contract at duration
-  const fire = SUSTAINED_SEEDS.map((s) =>
-    runShortFight('fire', SUSTAINED_SECONDS, s, TOP_TALENTED_ROWS),
-  );
-  const frost = SUSTAINED_SEEDS.map((s) =>
-    runShortFight('frost', SUSTAINED_SECONDS, s, FROST_TOP_ROWS),
-  );
-  const fireMean = fire.reduce((a, r) => a + r.dps, 0) / fire.length;
-  const frostMean = frost.reduce((a, r) => a + r.dps, 0) / frost.length;
-  const igniteShare =
-    fire.reduce((a, r) => a + (r.byAbility.Ignite ?? 0) / r.damage, 0) / fire.length;
+  // 60s is the shortest "entire fight" (one full burst window amortized), the
+  // leakiest cell across every knob variant tried; 120s is the raid-typical
+  // length. Both are pinned so the bank/recharge shape cannot smear the
+  // opener across a whole fight again.
+  const measure = (seconds: number) => {
+    const fire = SUSTAINED_SEEDS.map((s) => runShortFight('fire', seconds, s, TOP_TALENTED_ROWS));
+    const frost = SUSTAINED_SEEDS.map((s) => runShortFight('frost', seconds, s, FROST_TOP_ROWS));
+    const fireMean = fire.reduce((a, r) => a + r.dps, 0) / fire.length;
+    const frostMean = frost.reduce((a, r) => a + r.dps, 0) / frost.length;
+    const igniteShare =
+      fire.reduce((a, r) => a + (r.byAbility.Ignite ?? 0) / r.damage, 0) / fire.length;
+    return { fireMean, frostMean, igniteShare };
+  };
+  const at60 = measure(60);
+  const at120 = measure(120);
 
   it('reports the sustained numbers (owner harness)', () => {
-    console.log(
-      `\n[fire sustained ${SUSTAINED_SECONDS}s] fire=${fireMean.toFixed(1)} frost=${frostMean.toFixed(1)} ratio=${(fireMean / frostMean).toFixed(2)} igniteShare=${(igniteShare * 100).toFixed(0)}%`,
-    );
-    expect(fire.length).toBe(SUSTAINED_SEEDS.length);
+    const fmt = (label: string, m: { fireMean: number; frostMean: number; igniteShare: number }) =>
+      `${label}: fire=${m.fireMean.toFixed(1)} frost=${m.frostMean.toFixed(1)} ratio=${(m.fireMean / m.frostMean).toFixed(2)} igniteShare=${(m.igniteShare * 100).toFixed(0)}%`;
+    console.log(`\n[fire sustained] ${fmt('60s', at60)} | ${fmt('120s', at120)}`);
+    expect(at60.fireMean).toBeGreaterThan(0);
   });
 
-  it(`talented fire sustains within ${SUSTAINED_CEILING}x of talented frost over ${SUSTAINED_SECONDS}s`, () => {
-    expect(fireMean).toBeLessThanOrEqual(frostMean * SUSTAINED_CEILING);
+  it(`talented fire sustains within ${SUSTAINED_CEILING}x of talented frost over 60s`, () => {
+    expect(at60.fireMean).toBeLessThanOrEqual(at60.frostMean * SUSTAINED_CEILING);
+  });
+
+  it(`talented fire sustains within ${SUSTAINED_CEILING}x of talented frost over 120s`, () => {
+    expect(at120.fireMean).toBeLessThanOrEqual(at120.frostMean * SUSTAINED_CEILING);
   });
 
   it('and does not collapse below the sustained floor (over-nerf guard)', () => {
-    expect(fireMean).toBeGreaterThanOrEqual(frostMean * SUSTAINED_FLOOR);
+    expect(at120.fireMean).toBeGreaterThanOrEqual(at120.frostMean * SUSTAINED_FLOOR);
   });
 
   it('Ignite pays its stated contract at duration (share stays bounded)', () => {
-    expect(igniteShare).toBeLessThanOrEqual(IGNITE_SHARE_CEILING);
+    expect(at120.igniteShare).toBeLessThanOrEqual(IGNITE_SHARE_CEILING);
+    expect(at60.igniteShare).toBeLessThanOrEqual(IGNITE_SHARE_CEILING);
   });
 });

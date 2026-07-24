@@ -322,8 +322,7 @@ describe('Pyroblast as a builder (owner rule)', () => {
     sim.castAbility('fire_blast'); // crit 1 (instant)
     collect(sim, 0.3);
     gcdReset(p);
-    p.cooldowns.delete('fire_blast'); // plain cooldown now; reset for the second press
-    sim.castAbility('fire_blast'); // crit 2: Hot Streak armed
+    sim.castAbility('fire_blast'); // crit 2: Hot Streak armed (charge 2, no GCD)
     collect(sim, 0.3);
     expect(p.auras.some((a) => a.id === 'hot_streak')).toBe(true);
     gcdReset(p);
@@ -384,14 +383,13 @@ describe('playtest round five (owner hotfixes)', () => {
     expect((p as unknown as { gcdRemaining: number }).gcdRemaining).toBe(0); // arms none
     sim.castAbility('scorch'); // arms the GCD at cast start
     expect((p as unknown as { gcdRemaining: number }).gcdRemaining).toBeGreaterThan(0);
-    p.cooldowns.delete('fire_blast'); // balance 2026-07-24: plain cooldown, no charge bank
-    sim.castAbility('fire_blast'); // ...and Fire Blast casts straight through the GCD
+    sim.castAbility('fire_blast'); // ...and Fire Blast casts straight through it
     const events = collect(sim, 0.2);
     const hits = events.filter(
       (e): e is Extract<SimEvent, { type: 'damage' }> =>
         e.type === 'damage' && e.sourceId === p.id && e.ability === 'Cinderfall' && e.amount > 0,
     );
-    expect(hits.length).toBe(2); // both presses landed, GCD never in the way
+    expect(hits.length).toBe(2); // both charges landed, GCD never in the way
   });
 
   it('Hot Streak makes Flamestrike instant and free (otherwise a 2s cast)', () => {
@@ -399,8 +397,7 @@ describe('playtest round five (owner hotfixes)', () => {
     const mob = addDummy(sim);
     sim.castAbility('fire_blast'); // crit 1
     collect(sim, 0.2);
-    p.cooldowns.delete('fire_blast'); // plain cooldown now; reset for the second press
-    sim.castAbility('fire_blast'); // crit 2: Hot Streak armed (no GCD)
+    sim.castAbility('fire_blast'); // crit 2: Hot Streak armed (charge 2, no GCD)
     collect(sim, 0.2);
     expect(p.auras.some((a) => a.id === 'hot_streak')).toBe(true);
     gcdReset(p);

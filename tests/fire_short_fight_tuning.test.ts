@@ -39,21 +39,24 @@ const FIGHT_SECONDS = 27; // the reported Nythraxis kill length
 const SHORT_FIGHT_DPS_CEILING = 1.6; // x the sustained comparator, 27s window
 const SHORT_FIGHT_DPS_FLOOR = 1.0; // the nerf must not gut the burst identity
 
-// The reported player's exact equipment: Soulflame (Wraithfire Regalia) 4pc +
-// Mournweave 3pc + heroic-vendor jewelry, epic staff and offhand.
-const REPORTED_GEAR: PlayerEquipment = {
-  helmet: 'soulflame_cowl',
+// BiS mage gear (owner direction 2026-07-25, gear-candidate sim): the
+// reported live loadout's sets (Soulflame 4pc + Mournweave 3pc) with every
+// Heroic upgrade that exists, the Heroic legendary staff and Heroic orb, and
+// the two haste rings. Beat the reported loadout, a 4pc+offset hybrid, and a
+// per-slot stat-greedy set in head-to-head sims (set bonuses dominate).
+const BIS_GEAR: PlayerEquipment = {
+  helmet: 'heroic_soulflame_cowl',
   neck: 'zense_meridian',
-  shoulder: 'soulflame_mantle',
-  chest: 'necromancers_starshroud',
-  mainhand: 'deathless_heartwood',
+  shoulder: 'heroic_soulflame_mantle',
+  chest: 'heroic_necromancers_starshroud',
+  mainhand: 'heroic_deathless_heartwood',
   offhand: 'heroic_wraithfire_orb',
   gloves: 'soulflame_gloves',
   waist: 'soulflame_cord',
   legs: 'necromancers_legwraps',
-  feet: 'necromancers_soulsteps',
-  ring1: 'nielas_coldlight_band',
-  ring2: 'nielas_coldlight_band',
+  feet: 'heroic_necromancers_soulsteps',
+  ring1: 'architects_cornerstone',
+  ring2: 'zyzzs_deathless_signet',
 };
 
 type Spec = 'fire' | 'frost';
@@ -64,6 +67,11 @@ type Rows = Record<number, string>;
 // instant Pyrelance, Elemental Convergence fed by a free instant Icebind
 // weave, and Rune of Power under the whole opener. The talented ceiling
 // gate below runs THIS build; a naked-spec pin alone would miss it.
+// (BiS re-sweep 2026-07-25: at heroic gear the top burst builds swap
+// Convergence for a dead r17 within seed noise, ~280 vs ~276 mean, because
+// the Icebind weave's GCD costs more than the surge pays at high spell
+// power. This build stays the gate's pin: representative within 2% of the
+// strongest, and the sanity ceiling holds 35% headroom over either.)
 const TOP_TALENTED_ROWS: Rows = {
   5: 'mag_r5_ice_floes',
   8: 'mag_r8_warded',
@@ -100,7 +108,7 @@ function gearedMage(spec: Spec, seed = 41, rows?: Rows): { sim: Sim; p: Entity }
   const ctx = (sim as unknown as { ctx: CtxLike }).ctx;
   const meta = ctx.players.get(p.id);
   if (!meta) throw new Error('player meta missing');
-  meta.equipment = { ...REPORTED_GEAR };
+  meta.equipment = { ...BIS_GEAR };
   recalcPlayerStats(
     p,
     meta.cls as never,
@@ -146,6 +154,8 @@ interface BurstResult {
   dps: number;
   damage: number;
   byAbility: Record<string, number>;
+  ignitePaid: number; // Ignite damage actually received by the dummy
+  igniteBanked: number; // estimate: 40% of fire crit damage + 40% of non-crit Meteor impacts
 }
 
 // Drive one spec's short-fight loop for `seconds` and sum every point of
@@ -176,6 +186,8 @@ function runShortFight(spec: Spec, seconds: number, seed = 41, rows?: Rows): Bur
     return src?.ownerId === p.id;
   };
   let damage = 0;
+  let ignitePaid = 0;
+  let igniteBanked = 0;
   const byAbility: Record<string, number> = {};
   const ticks = Math.round(seconds * 20);
   for (let i = 0; i < ticks; i++) {
@@ -230,10 +242,15 @@ function runShortFight(spec: Spec, seconds: number, seed = 41, rows?: Rows): Bur
         damage += e.amount;
         const key = e.ability ?? 'auto';
         byAbility[key] = (byAbility[key] ?? 0) + e.amount;
+        if (e.ability === 'Ignite') ignitePaid += e.amount;
+        else if (e.school === 'fire' && e.sourceId === p.id) {
+          if (e.crit) igniteBanked += Math.round(e.amount * 0.4);
+          else if (e.ability === 'Meteor') igniteBanked += Math.round(e.amount * 0.4);
+        }
       }
     }
   }
-  return { dps: damage / seconds, damage, byAbility };
+  return { dps: damage / seconds, damage, byAbility, ignitePaid, igniteBanked };
 }
 
 describe('fire mage short-fight burst (27s live report harness)', () => {
@@ -253,7 +270,7 @@ describe('fire mage short-fight burst (27s live report harness)', () => {
     BAND_SEEDS.length;
 
   it('the reported gear resolves (every id exists on its slot)', () => {
-    for (const [slot, id] of Object.entries(REPORTED_GEAR)) {
+    for (const [slot, id] of Object.entries(BIS_GEAR)) {
       const def = ITEMS[id as string];
       expect(def, `${id} exists`).toBeTruthy();
       const wanted = slot === 'ring1' || slot === 'ring2' ? 'ring' : slot;
@@ -404,5 +421,21 @@ describe('sustained parity, entire fight (Monte Carlo follow-up 2026-07-24)', ()
   it('Ignite pays its stated contract at duration (share stays bounded)', () => {
     expect(at120.igniteShare).toBeLessThanOrEqual(IGNITE_SHARE_CEILING);
     expect(at60.igniteShare).toBeLessThanOrEqual(IGNITE_SHARE_CEILING);
+  });
+
+  it('Ignite conservation: the bank pays out once, buffs never double-dip (review P1)', () => {
+    // Paid Ignite over the full buffed rotation must not exceed what the
+    // crits banked (40% each). Rounding can add fractions of a point per
+    // tick, end-of-fight truncation loses the tail, so the healthy reading
+    // sits just under 1.0; the pre-fix double-dip read ~1.05-1.2 with Rune
+    // and Convergence running.
+    const runs = SUSTAINED_SEEDS.map((s) => runShortFight('fire', 120, s, TOP_TALENTED_ROWS));
+    const paid = runs.reduce((a, r) => a + r.ignitePaid, 0);
+    const banked = runs.reduce((a, r) => a + r.igniteBanked, 0);
+    console.log(
+      `[ignite conservation] paid=${paid} banked=${banked} ratio=${(paid / banked).toFixed(3)}`,
+    );
+    expect(paid).toBeLessThanOrEqual(banked * 1.02);
+    expect(paid).toBeGreaterThanOrEqual(banked * 0.8); // sanity: the burn does flow
   });
 });

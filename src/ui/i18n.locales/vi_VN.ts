@@ -219,7 +219,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
     'Ở kỹ năng {at} nghề thủ công này chuyên ngành hóa bạn, không cần nhiệm vụ: từ đó trở đi công thức tốn ít hơn {pct}% nguyên liệu, và chuyên ngành hóa thêm vào tỉ lệ kiệt tác của nó.\n\nCác chuyên gia cũng học cách mang xưởng theo mình: một thợ chế tạo đã chuyên ngành có thể thiết lập trạm di động ở thực địa trong mười phút mỗi lần, nên công thức gắn trạm có thể được thực hiện ngay cửa mỏ thay vì quay về thị trấn. Các giới hạn của nó là có chủ ý: nó không bao giờ tính cho việc học với bậc thầy hay để giải trói một món đồ ủy thác, và nó hết hạn theo bộ đếm thời gian dù bạn có dùng nó hay không.',
   'guide.profPages.ench.disenchantHeading': 'Hủy pháp khắc',
   'guide.profPages.ench.disenchantNote':
-    'Hủy pháp khắc nhận bất kỳ vũ khí hoặc trang phục giáp phẩm chất phổ thông trở lên và tiêu thụ một bản, không bao giờ là bản đã có pháp khắc sẵn. Đồ phổ thông và khác thường nghiền thành một nắm Bụi Thanh Âm ngẫu nhiên, phong phú hơn với đồ hiếm hơn và cấp độ cao hơn; từ hiếm trở lên sản lượng thay đổi hình dạng, chính xác một Tinh Chất Thanh Âm từ đồ hiếm hoặc một Mảnh Thanh Âm từ đồ sử thi hoặc huyền thoại, cộng với phụ liệu thứ cấp theo loại dựa trên chất liệu làm nên vật phẩm đó.',
+    'Hủy pháp khắc nhận bất kỳ vũ khí hoặc trang phục giáp phẩm chất phổ thông trở lên và tiêu thụ một bản, ưu tiên bản thường trước bản đã có pháp khắc; khi chỉ còn lại các bản đã có pháp khắc, một bản trong số đó sẽ bị phá hủy, mất luôn cả pháp khắc. Đồ phổ thông và khác thường nghiền thành một nắm Bụi Thanh Âm ngẫu nhiên, phong phú hơn với đồ hiếm hơn và cấp độ cao hơn; từ hiếm trở lên sản lượng thay đổi hình dạng, chính xác một Tinh Chất Thanh Âm từ đồ hiếm hoặc một Mảnh Thanh Âm từ đồ sử thi hoặc huyền thoại, cộng với phụ liệu thứ cấp theo loại dựa trên chất liệu làm nên vật phẩm đó.',
   'guide.profPages.ench.typedHeading': 'Phụ liệu thứ cấp theo loại',
   'guide.profPages.ench.typedNote':
     'Các phụ liệu thứ cấp theo loại dựa trên chất liệu: giáp vải cho Sợi Cộng Hưởng, da cho Da Cộng Hưởng, thư giáp cho Xích Cộng Hưởng, vũ khí cận chiến cho Thép Cộng Hưởng, và trượng, đũa phép, cung, và nỏ cho Gỗ Cộng Hưởng. Đồ hiếm cho chính xác {rare}; đồ sử thi hoặc huyền thoại cho {epicMin} hoặc {epicMax}. Nhẫn và vòng cổ không có hạng giáp, nên chúng chỉ cho nguyên liệu chính.\n\nLưu ý điều nhỏ: các phụ liệu Cộng Hưởng ràng buộc khi giao dịch, nên mỗi cái chỉ có thể đổi tay một lần, thẳng từ thợ phá đến thợ pháp khắc sẽ đốt nó. Bụi, Tinh Chất, và Mảnh không bị ràng buộc như vậy và di chuyển như bất kỳ hàng hóa giao dịch nào khác.',
@@ -264,7 +264,6 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'Không bán',
   'guide.profPages.priceNone': 'Không bán',
   'guide.profPages.toolTierReq': 'Công cụ bậc {tier}',
-  'guide.profPages.bareHands': 'Tay không',
   'guide.profPages.yieldsHeading': 'Một lần thu hoạch mang lại gì',
   'guide.profPages.yieldsBody':
     'Mỗi lần thu hoạch sẽ tung một phẩm chất cho những gì nó mang lại, và thành thạo của bạn là toàn bộ câu chuyện của lần tung đó. Một người mới thu thập hoàn toàn luôn khai thác được nguyên liệu thông thường; mỗi điểm kỹ năng dịch chuyển tỉ trọng đều đặn ra khỏi thông thường vào các bậc cao hơn và không bao giờ ngược lại, cho đến khi ở giới hạn 100 bậc thông thường biến mất hoàn toàn: 60 phần trăm không phổ biến, 30 phần trăm hiếm, 8 phần trăm sử thi, và 2 phần trăm huyền thoại, mỗi lần.\n\nPhẩm chất cũng là số lượng: lần tung thông thường cho 1 đơn vị, không phổ biến và hiếm cho 2, sử thi 3, và huyền thoại 4. Bất kỳ sản phẩm hiếm, sử thi, hoặc huyền thoại nào đều đến như một bản được đóng dấu Được thu thập bởi bạn: ở giới hạn đó là bốn trong mười lần thu hoạch mang tên bạn, và các quy tắc xuất xứ trên trang Kinh Tế Chế Tạo giải thích lý do tại sao các thợ thủ công trả thêm cho chính xác những chồng đó.',
@@ -757,7 +756,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Chúc Phúc Khô Héo (đốt cháy mana)',
   'hudChrome.finder.mech.mist_surge': 'Sóng Sương Mù (sát thương vùng theo nhịp)',
   'hudChrome.finder.mech.mortal_wound': 'Vết Thương Bị Lãng Quên (giảm lượng máu hồi nhận vào)',
-  'hudChrome.finder.mech.necrotic_shockwave': 'Sóng Xung Hoại Tử (sát thương vùng nặng)',
+  'hudChrome.finder.mech.grave_inferno': 'Địa Ngục Mộ Phần (AoE lửa kênh, giữ khoảng cách)',
   'hudChrome.finder.mech.profane_mending': 'Chữa Lành Bất Thánh (hồi máu cho đồng minh)',
   'hudChrome.finder.mech.raise_fallen': 'Triệu Hồi Tử Giả (các đợt quân tiếp viện theo chu kỳ)',
   'hudChrome.finder.mech.reaping_arc': 'Vòng Chém Gặt (chém ngang phía trước)',
@@ -2761,7 +2760,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
     'Lao vào kẻ địch, tạo 9 nộ khí và làm choáng nó trong 1 giây. Tầm 8-25 thước. Chỉ dùng được ở Bruin Form.',
   'entities.abilities.bear_charge.name': 'Cú Lao Bruin',
   'entities.abilities.bear_form.description':
-    'Biến hình thành gấu: giáp +90%, sức mạnh tấn công tăng mạnh, các đòn đánh của ngươi tích nộ khí và tạo thêm 30% đe dọa. Niệm lại để trở về hình pháp sư.',
+    'Biến hình thành gấu: giáp +130%, sức mạnh tấn công tăng mạnh, các đòn đánh của ngươi tích nộ khí và tạo thêm 30% đe dọa. Niệm lại để trở về hình pháp sư.',
   'entities.abilities.bear_form.name': 'Bruin Form',
   'entities.abilities.berserker_rage.description':
     'Bước vào cơn thịnh nộ sục sôi, tạo 20 nộ khí. (Tài năng Chiến Binh)',
@@ -7514,6 +7513,8 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Hiện rương',
   'hudChrome.dailyRewards.hideChestButton': 'Ẩn rương',
   'hudChrome.dailyRewards.title': 'Phần Thưởng Hằng Ngày',
+  'hudChrome.dailyRewards.disabled':
+    'Phần Thưởng Hằng Ngày hiện đang bị tắt. Chúng tôi sẽ thông báo các cập nhật về tính năng này trong kênh Discord.',
   'hudChrome.dailyRewards.unknown': 'Không rõ',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

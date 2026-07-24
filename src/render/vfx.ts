@@ -818,6 +818,26 @@ export class Vfx {
       0,
     );
   }
+  /** Lightweight continuous surface wake when the GPU height field is unavailable. */
+  waterWake(x: number, y: number, z: number, dt: number): void {
+    if (!this.emitChance(9, dt)) return;
+    const angle = Math.random() * Math.PI * 2;
+    const dirX = Math.sin(angle);
+    const dirZ = Math.cos(angle);
+    this.spawn(
+      x + dirX * 0.5,
+      y + 0.025,
+      z + dirZ * 0.5,
+      dirX * 1.2,
+      1.1,
+      dirZ * 1.2,
+      0x9fcdd4,
+      0.3,
+      0.55,
+      5,
+      SPR.glowSoft,
+    );
+  }
 
   /** Directional, low-arc spray for a character crossing the waterline. */
   characterWaterSplash(

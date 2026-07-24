@@ -139,9 +139,10 @@ describe('heroic boss adds swing at addDamageMultiplier', () => {
     // The summoner himself carries the Sanctum boss override (see
     // damageMultiplierByMob), not the trash-wide multiplier.
     expect(boss.mechanicDamageMult).toBe(tuning.damageMultiplierByMob?.grand_necromancer_velkhar);
-    // Non-elite adds need a LARGER multiplier than elite trash to land the
-    // same 500 per-swing floor (no 1.5x elite swing multiplier).
-    expect(tuning.addDamageMultiplier).toBeGreaterThan(tuning.damageMultiplier);
+    // 2026-07 retune: summoned adds floor at HALF the mob line (they are
+    // wave pressure, not extra bosses), so their multiplier now sits BELOW
+    // the trash-wide one despite the missing 1.5x elite swing multiplier.
+    expect(tuning.addDamageMultiplier).toBeLessThan(tuning.damageMultiplier);
   });
 
   it('normal-difficulty adds use the normal per-mob retune, not the heroic add multiplier', () => {
@@ -152,12 +153,13 @@ describe('heroic boss adds swing at addDamageMultiplier', () => {
     const adds = fireFirstWave(sim, boss, pid);
     expect(adds).toHaveLength(3);
 
-    // Normal Sanctum carries its own per-mob retune (economy fix, see
-    // NORMAL_DUNGEON_TUNING): bonewalkers swing at 23x base and keep their
-    // rolled level, distinct from the heroic addDamageMultiplier path.
+    // Normal Sanctum carries its own per-mob retune (fresh-group floors,
+    // see NORMAL_DUNGEON_TUNING): bonewalkers swing at 11.25x base (the 150
+    // add floor) and keep their rolled level, distinct from the heroic
+    // addDamageMultiplier path.
     const normalMult =
       NORMAL_DUNGEON_TUNING.gravewyrm_sanctum.damageMultiplierByMob.raised_bonewalker;
-    expect(normalMult).toBe(23);
+    expect(normalMult).toBe(11.25);
     const tmpl = MOBS.raised_bonewalker;
     const addDmg = (tmpl.dmgBase + tmpl.dmgPerLevel * (tmpl.minLevel - 1)) * normalMult;
     for (const add of adds) {

@@ -220,7 +220,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
     'Pada keahlian {at} kerajinan ini menspesialisasimu, tanpa perlu misi: resep menghabiskan {pct}% lebih sedikit material sejak saat itu, dan spesialisasi menambahkan kenaikannya sendiri pada peluang karya master.\n\nSpesialis juga belajar membawa bengkel bersama mereka: pengrajin terspesialisasi dapat mendirikan stasiun bergerak di lapangan selama sepuluh menit sekaligus, sehingga resep terikat stasiun bisa dikerjakan di mulut tambang daripada kembali ke kota. Batasannya disengaja: tidak pernah dihitung untuk berlatih dengan master atau untuk melepas ikat karya pesanan, dan berakhir pada timernya apakah digunakan atau tidak.',
   'guide.profPages.ench.disenchantHeading': 'Penghancuran mantra',
   'guide.profPages.ench.disenchantNote':
-    'Penghancuran mantra mengambil senjata atau potongan zirah apa pun berkualitas biasa atau lebih baik dan mengonsumsi satu salinan, tidak pernah salinan yang sudah terpesonan. Item biasa dan langka biasa digiling menjadi segenggam Debu Dentingan yang dipilih secara acak, sedikit lebih banyak untuk item yang lebih langka dan lebih tinggi levelnya; dari langka ke atas hasilnya berubah wujud, tepat satu Esensi Dentingan dari item langka atau satu Serpihan Dentingan dari item epik atau legendaris, ditambah sekunder yang diketik sesuai bahan item tersebut.',
+    'Penghancuran mantra mengambil senjata atau potongan zirah apa pun berkualitas biasa atau lebih baik dan mengonsumsi satu salinan, mendahulukan salinan biasa sebelum salinan yang sudah terpesonan; jika hanya tersisa salinan yang terpesonan, salah satunya dihancurkan beserta pesonanya. Item biasa dan langka biasa digiling menjadi segenggam Debu Dentingan yang dipilih secara acak, sedikit lebih banyak untuk item yang lebih langka dan lebih tinggi levelnya; dari langka ke atas hasilnya berubah wujud, tepat satu Esensi Dentingan dari item langka atau satu Serpihan Dentingan dari item epik atau legendaris, ditambah sekunder yang diketik sesuai bahan item tersebut.',
   'guide.profPages.ench.typedHeading': 'Sekunder yang diketik',
   'guide.profPages.ench.typedNote':
     'Sekunder yang diketik mengikuti bahan: zirah kain menghasilkan Benang Resonant, kulit menghasilkan Kulit Resonant, rantai menghasilkan Kait Resonant, senjata jarak dekat menghasilkan Baja Resonant, dan staf, tongkat sihir, busur, serta busur silang menghasilkan Kayu Resonant. Item langka memberikan tepat {rare}; item epik atau legendaris memberikan {epicMin} atau {epicMax}. Cincin dan kalung tidak memiliki kelas zirah, sehingga hanya menghasilkan bahan utama.\n\nPerhatikan ketentuan halus: sekunder Resonant terikat saat diperdagangkan, sehingga masing-masing hanya bisa berpindah tangan sekali, langsung dari pemecah ke pemantrai yang akan menggunakannya. Debu, Esensi, dan Serpihan tidak memiliki ikatan semacam itu dan bergerak seperti barang dagangan lainnya.',
@@ -265,7 +265,6 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'Tidak dijual',
   'guide.profPages.priceNone': 'Tidak dijual',
   'guide.profPages.toolTierReq': 'Alat tingkat {tier}',
-  'guide.profPages.bareHands': 'Tangan kosong',
   'guide.profPages.yieldsHeading': 'Apa yang dihasilkan panen',
   'guide.profPages.yieldsBody':
     'Setiap panen menggulung mutu untuk apa yang diberikannya, dan keahlianmu adalah satu-satunya penentu gulungan itu. Pengumpul baru selalu mengambil material umum; setiap poin keahlian menggeser bobot secara stabil dari umum ke tingkat yang lebih tinggi dan tidak pernah mundur, hingga di batas 100 tingkat umum hilang sepenuhnya: 60 persen tidak umum, 30 persen langka, 8 persen epik, dan 2 persen legendaris, setiap saat.\n\nMutu juga berarti kuantitas: gulungan umum menghasilkan 1 unit, tidak umum dan langka menghasilkan 2, epik 3, dan legendaris 4. Setiap tarikan langka, epik, atau legendaris tiba sebagai salinan bertanda tangan yang distempel Dikumpulkan oleh kamu: di batas itu berarti empat dari sepuluh panen membawa namamu, dan aturan asal-usul pada halaman Ekonomi Kerajinan menjelaskan mengapa pengrajin membayar lebih untuk tumpukan-tumpukan itu.',
@@ -766,7 +765,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Berkah Layu (membakar mana)',
   'hudChrome.finder.mech.mist_surge': 'Lonjakan Kabut (kerusakan area berdenyut)',
   'hudChrome.finder.mech.mortal_wound': 'Luka Terlupakan (mengurangi penyembuhan yang diterima)',
-  'hudChrome.finder.mech.necrotic_shockwave': 'Gelombang Kejut Nekrotik (kerusakan area berat)',
+  'hudChrome.finder.mech.grave_inferno': 'Neraka Kubur (AoE api tersalur, jaga jarak)',
   'hudChrome.finder.mech.profane_mending': 'Pemulihan Najis (menyembuhkan sekutunya)',
   'hudChrome.finder.mech.raise_fallen': 'Bangkitkan Yang Gugur (gelombang bala bantuan berkala)',
   'hudChrome.finder.mech.reaping_arc': 'Busur Penuai (tebasan ke depan)',
@@ -2692,7 +2691,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
     'Menerjang musuh, menghasilkan 9 amarah dan menyetrumnya selama 1 detik. Jangkauan 8-25 yard. Hanya dalam Wujud Bruin.',
   'entities.abilities.bear_charge.name': 'Terjangan Bruin',
   'entities.abilities.bear_form.description':
-    'Berubah wujud menjadi beruang: zirah +90%, daya serang sangat meningkat, seranganmu membangun amarah dan menghasilkan 30% lebih banyak ancaman. Rapal lagi untuk kembali ke wujud perapal.',
+    'Berubah wujud menjadi beruang: zirah +130%, daya serang sangat meningkat, seranganmu membangun amarah dan menghasilkan 30% lebih banyak ancaman. Rapal lagi untuk kembali ke wujud perapal.',
   'entities.abilities.bear_form.name': 'Wujud Bruin',
   'entities.abilities.berserker_rage.description':
     'Memasuki amukan mendidih, menghasilkan 20 amarah. (Talenta Prajurit)',
@@ -7493,6 +7492,8 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Tampilkan Peti',
   'hudChrome.dailyRewards.hideChestButton': 'Sembunyikan Peti',
   'hudChrome.dailyRewards.title': 'Hadiah Harian',
+  'hudChrome.dailyRewards.disabled':
+    'Hadiah Harian saat ini dinonaktifkan. Kami akan mengumumkan pembaruan fitur ini di kanal Discord.',
   'hudChrome.dailyRewards.unknown': 'Tidak diketahui',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

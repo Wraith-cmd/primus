@@ -235,7 +235,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
     "À la compétence {at}, ce métier vous spécialise, sans quête requise : les recettes coûtent {pct}% de matériaux en moins à partir de là, et la spécialisation ajoute son propre bonus à la chance de chef-d'oeuvre.\n\nLes spécialistes apprennent aussi à emporter l'atelier avec eux : un artisan spécialisé peut installer une station mobile sur le terrain pendant dix minutes à la fois, permettant de travailler des recettes liées à une station à l'entrée de la mine plutôt qu'en revenant en ville. Ses limites sont intentionnelles : elle ne compte jamais pour la formation auprès d'un maître ni pour la déliaison d'une pièce de commande, et elle expire selon son minuteur que vous l'ayez utilisée ou non.",
   'guide.profPages.ench.disenchantHeading': 'Désenchantement',
   'guide.profPages.ench.disenchantNote':
-    "Le désenchantement prend n'importe quelle arme ou pièce d'armure de qualité commune ou supérieure et en consomme un exemplaire, jamais un exemplaire déjà enchanté. Les pièces communes et inhabituelles sont réduites en une poignée aléatoire de Poussière carillon, un peu plus généreuse pour les pièces plus rares et de niveau plus élevé ; à partir du rare, le rendement change de forme : exactement une Essence carillon pour une pièce rare, ou un Éclat carillon pour une pièce épique ou légendaire, plus un secondaire typé lié au matériau dont la pièce était faite.",
+    "Le désenchantement prend n'importe quelle arme ou pièce d'armure de qualité commune ou supérieure et en consomme un exemplaire, un exemplaire ordinaire avant un exemplaire enchanté ; s'il ne reste que des exemplaires enchantés, l'un d'eux est détruit, enchantement compris. Les pièces communes et inhabituelles sont réduites en une poignée aléatoire de Poussière carillon, un peu plus généreuse pour les pièces plus rares et de niveau plus élevé ; à partir du rare, le rendement change de forme : exactement une Essence carillon pour une pièce rare, ou un Éclat carillon pour une pièce épique ou légendaire, plus un secondaire typé lié au matériau dont la pièce était faite.",
   'guide.profPages.ench.typedHeading': 'Secondaires typés',
   'guide.profPages.ench.typedNote':
     "Les secondaires typés suivent le matériau : l'armure en tissu donne du Fil Résonant, le cuir du Cuir Résonant, les mailles des Mailles Résonantes, les armes de mêlée de l'Acier Résonant, et les bâtons, baguettes, arcs et arbalètes du Bois Résonant. Une pièce rare donne exactement {rare} ; une pièce épique ou légendaire donne {epicMin} ou {epicMax}. Les bagues et colliers n'ont pas de classe d'armure, donc ils ne donnent que le matériau primaire.\n\nAttention aux petits caractères : les secondaires Résonants se lient à l'échange, donc chacun peut changer de mains exactement une fois, directement du démanteleur à l'enchanteur qui va le brûler. La Poussière, l'Essence et les Éclats ne sont soumis à aucune restriction de ce type et circulent comme n'importe quel autre bien échangeable.",
@@ -280,7 +280,6 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'Non vendu',
   'guide.profPages.priceNone': 'Non vendu',
   'guide.profPages.toolTierReq': 'Outil de palier {tier}',
-  'guide.profPages.bareHands': 'Mains nues',
   'guide.profPages.yieldsHeading': 'Ce que rapporte une récolte',
   'guide.profPages.yieldsBody':
     "Chaque récolte tire une qualité pour ce qu'elle rapporte, et votre maîtrise est le seul facteur de ce tirage. Un récolteur tout nouveau tire toujours des matériaux communs ; chaque point de compétence déplace régulièrement le poids du commun vers les grades supérieurs et jamais en arrière, jusqu'à ce qu'au plafond de 100 le grade commun disparaisse entièrement : 60 pourcent peu commun, 30 pourcent rare, 8 pourcent épique et 2 pourcent légendaire, à chaque fois.\n\nLa qualité signifie aussi la quantité : un tirage commun rapporte 1 unité, les tirages peu communs et rares en rapportent 2, épique 3, et légendaire 4. Tout tirage rare, épique ou légendaire arrive comme une instance signée estampillée Collecté par vous : au plafond, quatre récoltes sur dix portent votre nom, et les règles de provenance sur la page de l'Économie d'artisanat expliquent pourquoi les artisans paient en supplément exactement pour ces piles.",
@@ -896,7 +895,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Bénédiction desséchée (brûle le mana)',
   'hudChrome.finder.mech.mist_surge': 'Déferlante de brume (dégâts de zone pulsés)',
   'hudChrome.finder.mech.mortal_wound': 'Blessure oubliée (réduit les soins reçus)',
-  'hudChrome.finder.mech.necrotic_shockwave': 'Onde de choc nécrotique (dégâts de zone importants)',
+  'hudChrome.finder.mech.grave_inferno': 'Brasier sépulcral (AoE de feu canalisé, restez espacés)',
   'hudChrome.finder.mech.profane_mending': 'Soins profanes (soigne ses alliés)',
   'hudChrome.finder.mech.raise_fallen': 'Relever les morts (vagues périodiques de renforts)',
   'hudChrome.finder.mech.reaping_arc': 'Arc faucheur (cleave frontal)',
@@ -4673,7 +4672,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
     'Enracine la cible sur place pendant un maximum de 12 s.',
   'entities.abilities.bear_form.name': 'Forme de Bruin',
   'entities.abilities.bear_form.description':
-    "Vous change en ours: armure +90%, puissance d'attaque fortement augmentée, vos attaques génèrent de la rage et 30% de menace en plus. Relancez pour reprendre votre forme de lanceur.",
+    "Vous change en ours: armure +130%, puissance d'attaque fortement augmentée, vos attaques génèrent de la rage et 30% de menace en plus. Relancez pour reprendre votre forme de lanceur.",
   'entities.abilities.maul.name': 'Bonecrush',
   'entities.abilities.maul.description':
     "Attaque dévastatrice qui augmente les dégâts de mêlée de {damage} et génère beaucoup de menace. S'active lors de votre prochaine frappe. Forme de Bruin uniquement.",
@@ -8054,6 +8053,8 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Afficher le coffre',
   'hudChrome.dailyRewards.hideChestButton': 'Masquer le coffre',
   'hudChrome.dailyRewards.title': 'Récompenses quotidiennes',
+  'hudChrome.dailyRewards.disabled':
+    'Les récompenses quotidiennes sont actuellement désactivées. Nous annoncerons les mises à jour de cette fonctionnalité sur le canal Discord.',
   'hudChrome.dailyRewards.unknown': 'Inconnu',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

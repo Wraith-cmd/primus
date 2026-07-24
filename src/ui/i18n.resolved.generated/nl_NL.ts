@@ -355,6 +355,7 @@ export const nl_NL: EnTranslations = {
       "close": "Dagelijkse beloningen sluiten",
       "loading": "Dagelijkse beloningen worden geladen...",
       "error": "Kon de dagelijkse beloningen niet laden.",
+      "disabled": "Dagelijkse beloningen zijn momenteel uitgeschakeld. We kondigen updates voor deze functie aan in het Discord-kanaal.",
       "intro": "Houd genoeg WOC in je geverifieerde portemonnee om dagelijkse beloningen te ontgrendelen. Verdien punten met één dagelijkse draai en wisselende taken, en klim daarna op in de dagelijkse ranglijst voor een deel van de prijzenpot.",
       "disclaimer": "De WOC-prijs kan snel bewegen. We raden aan meer aan te houden dan het minimum van $20 USD, zodat normale koersschommelingen je niet buitensluiten. Dit is geen financieel advies.",
       "prize": "Prijzenpot",
@@ -1459,7 +1460,9 @@ export const nl_NL: EnTranslations = {
         "gills": "Kieuwen",
         "claw": "Klauw",
         "horn": "Hoorn",
-        "tusk": "Slagtand"
+        "tusk": "Slagtand",
+        "meat": "Meat",
+        "cloth": "Cloth"
       }
     },
     "townFocus": {
@@ -1991,6 +1994,9 @@ export const nl_NL: EnTranslations = {
         "takeParcelsFirst": "Haal de pakketten eruit voordat je de brief weggooit."
       }
     },
+    "noticeboard": {
+      "empty": "Nothing seems posted."
+    },
     "bank": {
       "title": "Bank",
       "subtitle": "De Vergulde Geldkist",
@@ -2131,12 +2137,51 @@ export const nl_NL: EnTranslations = {
         "logging": "Vereist een rang {tier} kapbijl",
         "herbalism": "Vereist een rang {tier} kruidenkunde-sikkel"
       },
+      "requiresTool": {
+        "mining": "Requires a mining pick",
+        "logging": "Requires a logging axe",
+        "herbalism": "Requires a herbalism sickle"
+      },
       "toolTierUnmet": {
         "mining": "Je hebt een rang {tier} mijnhouweel nodig om deze ader te oogsten.",
         "logging": "Je hebt een rang {tier} kapbijl nodig om deze opstand te kappen.",
         "herbalism": "Je hebt een rang {tier} kruidenkunde-sikkel nodig om dit veld te verzamelen."
       },
+      "toolRequired": {
+        "mining": "You need a mining pick to harvest this vein.",
+        "logging": "You need a logging axe to fell this stand.",
+        "herbalism": "You need a herbalism sickle to gather this patch.",
+        "fishing": "You need a fishing pole to cast a line."
+      },
+      "noNodeNearby": {
+        "mining": "There is no ore vein within reach.",
+        "logging": "There is no timber stand within reach.",
+        "herbalism": "There is no herb patch within reach."
+      },
       "toolTierUnmetCorpse": "Je hebt een rang {tier} verzamelgereedschap nodig om de fijnste materialen te verzamelen.",
+      "toolTooltip": {
+        "kind": {
+          "mining": "Mining tool (tier {tier})",
+          "logging": "Logging tool (tier {tier})",
+          "herbalism": "Herbalism tool (tier {tier})",
+          "fishing": "Fishing rod (tier {tier})"
+        },
+        "unlocks": {
+          "mining": "Required to mine ore veins up to tier {tier}.",
+          "logging": "Required to fell timber stands up to tier {tier}.",
+          "herbalism": "Required to gather herb patches up to tier {tier}."
+        },
+        "use": {
+          "mining": "Use: Mine a nearby ore vein.",
+          "logging": "Use: Fell a nearby timber stand.",
+          "herbalism": "Use: Gather from a nearby herb patch."
+        },
+        "speed": "Gathers faster at nodes below tier {tier}.",
+        "rodRequired": "Required to fish.",
+        "rodBite": "Fish bite up to {seconds}s sooner.",
+        "rodReel": "Extends the reel window by {seconds}s.",
+        "rodBand": "Unlocks richer catch tables at fishing skill {skill} and above."
+      },
       "downgradeMark": "Tassen vol: de vondst werd opgeslagen zonder verzamelderstempel.",
       "downgradeFind": "Tassen vol: een ongeschonden vondst glipte weg.",
       "stateReady": "Gereed",
@@ -2312,6 +2357,7 @@ export const nl_NL: EnTranslations = {
       },
       "throttled": "Je maakt te snel. Wacht even en probeer het opnieuw.",
       "recipeNotLearned": "Je hebt dat recept nog niet geleerd.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Vereist {craft} {skill}",
       "difficultyFull": "Volledige vaardigheidswinst",
       "difficultyReduced": "Verminderde vaardigheidswinst",
@@ -2363,6 +2409,9 @@ export const nl_NL: EnTranslations = {
       "enchantWrongSlot": "Die betovering kan niet op dat voorwerp worden aangebracht.",
       "enchantUnknown": "Die betovering bestaat niet.",
       "enchantInsufficient": "Je hebt de materialen niet voor die betovering.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "{item} onbetoveren?",
       "disenchantConfirmBody": "Dit vernietigt {item} en levert arcanematerialen op. Dit kan niet ongedaan worden gemaakt.",
       "disenchantConfirmBodySpecial": "Dit vernietigt een speciaal exemplaar van {item} (gesigneerd, meesterwerk of betoverd) en levert arcanematerialen op. Dit kan niet ongedaan worden gemaakt.",
@@ -2382,8 +2431,10 @@ export const nl_NL: EnTranslations = {
       "stateKnown": "Bekend",
       "stateTeachable": "Beschikbaar",
       "stateLocked": "Vergrendeld",
+      "statePending": "Learning",
       "requirement": "Geleerd bij {craft} {skill}",
       "trainAria": "Leer {name} voor {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Opleiding",
       "dialogOptionAria": "Bekijk trainingen van {name}",
       "learned": "Recept geleerd: {recipe}",
@@ -2410,7 +2461,8 @@ export const nl_NL: EnTranslations = {
       "notEligible": "Dat voorwerp kan niet worden ontbonden.",
       "notBound": "Dat voorwerp is niet gebonden.",
       "cannotAfford": "Je kunt de ontbindingskosten niet betalen.",
-      "outOfRange": "Je moet bij een ambachtsstation zijn om te ontbinden."
+      "outOfRange": "Je moet bij een ambachtsstation zijn om te ontbinden.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Kerkerzoekmachine",
@@ -2498,7 +2550,7 @@ export const nl_NL: EnTranslations = {
         "lunar_tide": "Maantij (pulserende gebiedsschade)",
         "enrage": "Razend bij weinig gezondheid",
         "shuddering_stomp": "Huiverende Stamp (gebiedsverdoving)",
-        "necrotic_shockwave": "Necrotische Schokgolf (zware gebiedsschade)",
+        "grave_inferno": "Grafsinferno (gekanaliseerde vuur-AoE, houd afstand)",
         "grave_cleaver": "Grafsplijter (frontale maaislaan)",
         "shadow_nova": "Schaduw-Nova (gebiedsexplosie)",
         "profane_mending": "Onheilige Heling (geneest zijn bondgenoten)",
@@ -3784,7 +3836,7 @@ export const nl_NL: EnTranslations = {
       "specializationBody": "Bij vaardigheid {at} specialiseert dit ambacht je, geen quest vereist: recepten kosten vanaf dan {pct}% minder materialen, en specialisatie voegt zijn eigen bonus toe aan de meesterwerkkans.\n\nGespecialiseerden leren ook de werkplaats mee te nemen: een gespecialiseerde maker kan tien minuten per keer een mobiel station in het veld opzetten, zodat stationsgebonden recepten bij de mijnmond bewerkt kunnen worden in plaats van terug in de stad. De beperkingen zijn bewust: het telt nooit mee voor training bij een meester of voor het ontbinden van een opdrachtstuk, en het verloopt op zijn timer of je het nu gebruikt of niet.",
       "ench": {
         "disenchantHeading": "Onbetoveren",
-        "disenchantNote": "Onbetoveren neemt elk wapen of wapenrustingsstuk van gewone kwaliteit of beter en verbruikt één kopie, nooit een kopie die al betoverd is. Gewone en ongewone stukken worden vermalen tot een willekeurige handvol Chimestof, iets rijker voor zeldzamere en hogere-niveau stukken; vanaf zeldzaam verandert de opbrengst van vorm: precies één Chimessentie van een zeldzaam stuk of één Chimescherf van een episch of legendarisch stuk, plus een getypte secundaire gebonden aan het materiaal waarvan het stuk was gemaakt.",
+        "disenchantNote": "Onbetoveren neemt elk wapen of wapenrustingsstuk van gewone kwaliteit of beter en verbruikt één kopie, waarbij een gewone kopie vóór een betoverde gaat; als er alleen nog betoverde kopieën over zijn, wordt daarvan één vernietigd, betovering en al. Gewone en ongewone stukken worden vermalen tot een willekeurige handvol Chimestof, iets rijker voor zeldzamere en hogere-niveau stukken; vanaf zeldzaam verandert de opbrengst van vorm: precies één Chimessentie van een zeldzaam stuk of één Chimescherf van een episch of legendarisch stuk, plus een getypte secundaire gebonden aan het materiaal waarvan het stuk was gemaakt.",
         "typedHeading": "Getypte secondaires",
         "typedNote": "De getypte secondaires volgen het materiaal: stofwapenrusting levert Resonant Draad, leer Resonante Huid, maliën Resonante Maliën, meleewapens Resonant Staal, en staven, stokken, bogen en kruisbogen Resonant Hout. Een zeldzaam stuk geeft exact {rare}; een episch of legendarisch stuk geeft {epicMin} of {epicMax}. Ringen en kettingen hebben geen wapenrustingklasse, dus ze leveren alleen het primaire materiaal.\n\nLet op de kleine lettertjes: de Resonante secondaires binden bij ruil, zodat elk precies eenmaal van eigenaar kan wisselen, rechtstreeks van de breker naar de betoveraar die het zal verbranden. Stof, Essentie en Scherven dragen geen dergelijke beperking en bewegen als elk ander handelsgoed.",
         "colSource": "Gebroken van",
@@ -3823,7 +3875,6 @@ export const nl_NL: EnTranslations = {
       "toolUnavailable": "Niet verkocht",
       "priceNone": "Niet verkocht",
       "toolTierReq": "Rang {tier} gereedschap",
-      "bareHands": "Blote handen",
       "yieldsHeading": "Wat een oogst oplevert",
       "yieldsBody": "Elke oogst rolt een kwaliteit voor wat het oplevert, en je vaardigheid is het hele verhaal van die rol. Een splinternieuwe verzamelaar haalt altijd gewoon materiaal op; elk punt vaardigheid verschuift gewicht gestaag van gewoon naar de hogere kwaliteiten en nooit terug, totdat op de grens van 100 de gewone kwaliteit volledig verdwijnt: 60 procent ongewoon, 30 procent zeldzaam, 8 procent episch en 2 procent legendarisch, elke keer.\n\nKwaliteit betekent ook hoeveelheid: een gewone rol levert 1 eenheid, ongewoon en zeldzaam leveren 2, episch 3, en legendarisch 4. Elke zeldzame, epische of legendarische opbrengst arriveert als een gesigneerde instantie gestempeld Verzameld door jou: op de grens draagt dat vier van de tien oogsten jouw naam, en de herkomstregels op de Ambachtseconomiepagina leggen uit waarom makers extra betalen voor precies die stapels.",
       "bandsHeading": "Vaardigheidsbanden",
@@ -5523,8 +5574,10 @@ export const nl_NL: EnTranslations = {
     "reconnectingNow": "Verbinding verbroken. Er wordt nu opnieuw verbinding gemaakt... (poging {attempt}/{maxAttempts})",
     "slowConnection": "Dit duurt langer dan normaal. Controleer uw internetverbinding.",
     "connectionRejected": "De server heeft de verbinding gesloten.",
+    "incompatibleWorldVersion": "Game and server versions are incompatible. Reload or update, then try again.",
     "realmFull": "Deze wereld is op dit moment vol. Probeer het over een paar minuten opnieuw.",
     "tooManyConnections": "Er komen te veel verbindingen naar deze wereld vanuit jouw netwerk. Sluit extra spelvensters of probeer het over een paar minuten opnieuw.",
+    "messageRateExceeded": "You were disconnected for sending actions too quickly. Please wait a moment and log back in.",
     "tips": {
       "classes": "Tip: elk van de 9 klassen speelt anders. Probeer er een paar voordat je er een kiest.",
       "talents": "Tip: je kunt je talenten buiten gevechten altijd herstellen, dus een vroege keuze is nooit een valstrik.",
@@ -5593,6 +5646,12 @@ export const nl_NL: EnTranslations = {
     "bodyDesktop": "Het spel draait zonder GPU-versnelling en zal traag zijn. Werk je grafische stuurprogramma's bij en herstart het spel. Stel op Windows ook het spel in op Hoge prestaties via Instellingen, Systeem, Beeldscherm, Afbeeldingen.",
     "bodyWeb": "Het spel draait zonder GPU-versnelling en zal traag zijn. Schakel hardwareversnelling in je browserinstellingen in, werk je grafische stuurprogramma's bij en herstart je browser.",
     "dismiss": "Sluiten"
+  },
+  "perfNudge": {
+    "integratedGpu": "The game is running on the integrated (power-saving) GPU. If this computer also has a gaming GPU, set your browser to High performance under Settings > System > Display > Graphics on Windows, then restart the browser. The desktop app picks the gaming GPU automatically.",
+    "hardwareAccelerationDesktop": "The game is running without GPU acceleration, which makes it very slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "hardwareAccelerationWeb": "The game is running without GPU acceleration, which makes it very slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "Geen werelden beschikbaar.",
@@ -6018,7 +6077,8 @@ export const nl_NL: EnTranslations = {
       "death": "{name} sterft.",
       "auraGain": "Je krijgt {name}.",
       "auraFade": "{name} vervaagt van je.",
-      "auraAfflicted": "{target} is getroffen door {name}."
+      "auraAfflicted": "{target} is getroffen door {name}.",
+      "auraGainOther": "{target} gains {name}."
     },
     "system": {
       "playerDeath": "Je bent gestorven.",
@@ -7279,7 +7339,7 @@ export const nl_NL: EnTranslations = {
       },
       "bear_form": {
         "name": "Bruingedaante",
-        "description": "Verander in een beer: pantser +90%, sterk verhoogde aanvalskracht, je aanvallen bouwen woede op en genereren 30% meer dreiging. Spreek opnieuw om terug te keren naar je oorspronkelijke gedaante."
+        "description": "Verander in een beer: pantser +130%, sterk verhoogde aanvalskracht, je aanvallen bouwen woede op en genereren 30% meer dreiging. Spreek opnieuw om terug te keren naar je oorspronkelijke gedaante."
       },
       "maul": {
         "name": "Botverbrijzelen",
@@ -11725,6 +11785,7 @@ export const nl_NL: EnTranslations = {
     "delveRiteShrineCandleInteract": "Kaarsenschrijn: druk op F om het aan te raken",
     "delveRiteShrineReedInteract": "Rietschrijn: druk op F om het aan te raken",
     "delveRiteShrineSkullInteract": "Schedelschrijn: druk op F om het aan te raken",
-    "mailboxName": "Brievenbus"
+    "mailboxName": "Brievenbus",
+    "noticeboardName": "Notice Board"
   }
 };

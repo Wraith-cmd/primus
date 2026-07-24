@@ -355,6 +355,7 @@ export const cs_CZ: EnTranslations = {
       "close": "Zavřít denní odměny",
       "loading": "Načítají se denní odměny...",
       "error": "Denní odměny se nepodařilo načíst.",
+      "disabled": "Denní odměny jsou momentálně vypnuté. Novinky o této funkci oznámíme na kanálu Discord.",
       "intro": "Drž dost WOC v ověřené peněžence a odemkni denní odměny. Získávej body jedním denním zatočením a rotujícími úkoly, potom stoupej v denním žebříčku o podíl z prize poolu.",
       "disclaimer": "Cena WOC se může rychle měnit. Doporučujeme držet víc než minimálních 20 USD, aby tě běžné cenové výkyvy neuzamkly ven. Toto není finanční rada.",
       "prize": "Prize pool",
@@ -1459,7 +1460,9 @@ export const cs_CZ: EnTranslations = {
         "gills": "Žábry",
         "claw": "Dráp",
         "horn": "Roh",
-        "tusk": "Kly"
+        "tusk": "Kly",
+        "meat": "Meat",
+        "cloth": "Cloth"
       }
     },
     "townFocus": {
@@ -1991,6 +1994,9 @@ export const cs_CZ: EnTranslations = {
         "takeParcelsFirst": "Před zahozením dopisu nejdřív vyzvedni balíky."
       }
     },
+    "noticeboard": {
+      "empty": "Nothing seems posted."
+    },
     "bank": {
       "title": "Banka",
       "subtitle": "Pozlacená truhlice",
@@ -2131,12 +2137,51 @@ export const cs_CZ: EnTranslations = {
         "logging": "Vyžaduje dřevorubectví úrovně {tier}.",
         "herbalism": "Vyžaduje bylinkářství úrovně {tier}."
       },
+      "requiresTool": {
+        "mining": "Requires a mining pick",
+        "logging": "Requires a logging axe",
+        "herbalism": "Requires a herbalism sickle"
+      },
       "toolTierUnmet": {
         "mining": "K vytěžení této žíly potřebuješ krumpáč úrovně {tier}.",
         "logging": "K pokácení tohoto porostu potřebuješ dřevorubeckou sekeru úrovně {tier}.",
         "herbalism": "K sesbírání tohoto záhonu potřebuješ bylinkářský srp úrovně {tier}."
       },
+      "toolRequired": {
+        "mining": "You need a mining pick to harvest this vein.",
+        "logging": "You need a logging axe to fell this stand.",
+        "herbalism": "You need a herbalism sickle to gather this patch.",
+        "fishing": "You need a fishing pole to cast a line."
+      },
+      "noNodeNearby": {
+        "mining": "There is no ore vein within reach.",
+        "logging": "There is no timber stand within reach.",
+        "herbalism": "There is no herb patch within reach."
+      },
       "toolTierUnmetCorpse": "K získání nejjemnějších materiálů potřebuješ sběračský nástroj úrovně {tier}.",
+      "toolTooltip": {
+        "kind": {
+          "mining": "Mining tool (tier {tier})",
+          "logging": "Logging tool (tier {tier})",
+          "herbalism": "Herbalism tool (tier {tier})",
+          "fishing": "Fishing rod (tier {tier})"
+        },
+        "unlocks": {
+          "mining": "Required to mine ore veins up to tier {tier}.",
+          "logging": "Required to fell timber stands up to tier {tier}.",
+          "herbalism": "Required to gather herb patches up to tier {tier}."
+        },
+        "use": {
+          "mining": "Use: Mine a nearby ore vein.",
+          "logging": "Use: Fell a nearby timber stand.",
+          "herbalism": "Use: Gather from a nearby herb patch."
+        },
+        "speed": "Gathers faster at nodes below tier {tier}.",
+        "rodRequired": "Required to fish.",
+        "rodBite": "Fish bite up to {seconds}s sooner.",
+        "rodReel": "Extends the reel window by {seconds}s.",
+        "rodBand": "Unlocks richer catch tables at fishing skill {skill} and above."
+      },
       "downgradeMark": "Plné brašny: nález byl uložen bez značky sběrače.",
       "downgradeFind": "Plné brašny: vzácný nález ti proklouzl.",
       "stateReady": "Připraveno",
@@ -2312,6 +2357,7 @@ export const cs_CZ: EnTranslations = {
       },
       "throttled": "Vyrábíš příliš rychle. Chvíli počkej a zkus to znovu.",
       "recipeNotLearned": "Tento recept ses ještě nenaučil.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Vyžaduje {craft} {skill}",
       "difficultyFull": "Plný zisk dovedností",
       "difficultyReduced": "Snížený zisk dovedností",
@@ -2363,6 +2409,9 @@ export const cs_CZ: EnTranslations = {
       "enchantWrongSlot": "Toto okouzlení nelze aplikovat na tento předmět.",
       "enchantUnknown": "Toto okouzlení neexistuje.",
       "enchantInsufficient": "Na toto okouzlení nemáš materiály.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Rozzačarovat {item}?",
       "disenchantConfirmBody": "Tímto se {item} zničí a získáš arcanové materiály. Tuto akci nelze vrátit.",
       "disenchantConfirmBodySpecial": "Tímto se zvláštní kopie {item} (podepsaná, mistrovská nebo okouzlená) zničí a získáš arcanové materiály. Tuto akci nelze vrátit.",
@@ -2382,8 +2431,10 @@ export const cs_CZ: EnTranslations = {
       "stateKnown": "Známé",
       "stateTeachable": "K dispozici",
       "stateLocked": "Zamčeno",
+      "statePending": "Learning",
       "requirement": "Vyučováno na {craft} {skill}",
       "trainAria": "Naučit se {name} za {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Výcvik",
       "dialogOptionAria": "Prohlédnout výcvik u {name}",
       "learned": "Naučen recept: {recipe}",
@@ -2410,7 +2461,8 @@ export const cs_CZ: EnTranslations = {
       "notEligible": "Tento předmět nelze odpoutat.",
       "notBound": "Tento předmět není vázaný.",
       "cannotAfford": "Na odpoutání nemáš dostatek prostředků.",
-      "outOfRange": "Pro odpoutání musíš být u příslušného mistra."
+      "outOfRange": "Pro odpoutání musíš být u příslušného mistra.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Hledač dungeonů",
@@ -2498,7 +2550,7 @@ export const cs_CZ: EnTranslations = {
         "lunar_tide": "Měsíční příboj (pulzující plošné poškození)",
         "enrage": "Zuří při nízkém zdraví",
         "shuddering_stomp": "Třesoucí dupnutí (plošné ochromení)",
-        "necrotic_shockwave": "Nekrotická rázová vlna (silné plošné poškození)",
+        "grave_inferno": "Hrobové Peklo (kanalizované ohnivé AoE, udržujte rozestupy)",
         "grave_cleaver": "Hrobní sekáč (čelní sek)",
         "shadow_nova": "Stínová nova (plošný výbuch)",
         "profane_mending": "Znesvěcené léčení (léčí spojence)",
@@ -3784,7 +3836,7 @@ export const cs_CZ: EnTranslations = {
       "specializationBody": "Na dovednosti {at} toto řemeslo tě specializuje, bez potřeby úkolu: recepty od té chvíle stojí o {pct}% méně materiálů a specializace přidá vlastní zlepšení šance na mistrovské dílo.\n\nSpecialisté se také naučí brát dílnu s sebou: specializovaný řemeslník může postavit mobilní stanici v terénu na deset minut najednou, takže recepty vázané na stanici lze zpracovávat přímo u ústí dolu místo zpátky ve městě. Její limity jsou záměrné: nikdy se nepočítá pro výcvik u mistra ani pro odpoutání zakázkového kusu a vyprší na svém časovači, ať ji použiješ nebo ne.",
       "ench": {
         "disenchantHeading": "Rozzačarování",
-        "disenchantNote": "Rozzačarování vezme jakoukoliv zbraň nebo kus zbroje běžné kvality nebo lepší a spotřebuje jednu kopii, nikdy takovou, která je již okouzlená. Běžné a neobvyklé kusy se rozmelou na hrstku Zvonivého prachu, o něco bohatší u vzácnějších a vyšší úrovně; od vzácných výše se výnos mění: přesně jedna Zvonivá esence za vzácný kus nebo jeden Zvonivý střep za epický nebo legendární, plus typizovaná sekundární statistika klíčovaná podle materiálu, z něhož byl kus vyroben.",
+        "disenchantNote": "Rozzačarování vezme jakoukoliv zbraň nebo kus zbroje běžné kvality nebo lepší a spotřebuje jednu kopii, obyčejnou dříve než okouzlenou; pokud už zbývají jen okouzlené kopie, jedna z nich se zničí i s okouzlením. Běžné a neobvyklé kusy se rozmelou na hrstku Zvonivého prachu, o něco bohatší u vzácnějších a vyšší úrovně; od vzácných výše se výnos mění: přesně jedna Zvonivá esence za vzácný kus nebo jeden Zvonivý střep za epický nebo legendární, plus typizovaná sekundární statistika klíčovaná podle materiálu, z něhož byl kus vyroben.",
         "typedHeading": "Typizované sekundární statistiky",
         "typedNote": "Typizované sekundární statistiky se řídí materiálem: látkové zbroje dávají Rezonující nit, kožené Rezonující kůži, kroužkové Rezonující kroužky, zbraně na blízko Rezonující ocel a hole, hůlky, luky a kuše Rezonující dřevo. Vzácný kus dá přesně {rare}; epický nebo legendární kus dá {epicMin} nebo {epicMax}. Prsteny a náhrdelníky nemají třídu zbroje, takže dávají pouze základní materiál.\n\nPozor na drobné písmo: Rezonující sekundární statistiky se vážou při výměně, takže každá může přejít z rukou do rukou přesně jednou, přímo od rozebíratele k okouzlovateli, který ji spotřebuje. Prach, Esence a Střepy takový řetězec nemají a pohybují se jako jakékoli jiné obchodní zboží.",
         "colSource": "Získáno rozzačarováním z",
@@ -3823,7 +3875,6 @@ export const cs_CZ: EnTranslations = {
       "toolUnavailable": "Neprodáváno",
       "priceNone": "Neprodáváno",
       "toolTierReq": "Nástroj {tier}. úrovně",
-      "bareHands": "Holýma rukama",
       "yieldsHeading": "Co sklizeň přinese",
       "yieldsBody": "Každá sklizeň hodí kvalitu toho, co uděluje, a tvoje dovednost je celým příběhem toho hodu. Nováček sběrač vždy vytáhne běžný materiál; každý bod dovednosti přesouvá váhu rovnoměrně z běžného do vyšších stupňů a nikdy zpátky, až na limitu 100 běžný stupeň zcela zmizí: 60 procent neobvyklého, 30 procent vzácného, 8 procent epického a 2 procenta legendárního, pokaždé.\n\nKvalita také znamená množství: běžný hod přinese 1 jednotku, neobvyklý a vzácný 2, epický 3 a legendární 4. Jakýkoli vzácný, epický nebo legendární výtah přichází jako podepsaná instance s razítkem Sebral ty: na limitu to jsou čtyři sklizně z deseti nesoucí tvé jméno a pravidla původu na stránce Řemeslnická ekonomika vysvětlují, proč řemeslníci platí navíc právě za tyto zásoby.",
       "bandsHeading": "Dovednostní pásma",
@@ -5523,8 +5574,10 @@ export const cs_CZ: EnTranslations = {
     "reconnectingNow": "Spojení ztraceno. Nyní se znovu připojuje... (pokus {attempt}/{maxAttempts})",
     "slowConnection": "Trvá to déle než obvykle. Zkontrolujte připojení k internetu.",
     "connectionRejected": "Server ukončil připojení.",
+    "incompatibleWorldVersion": "Game and server versions are incompatible. Reload or update, then try again.",
     "realmFull": "Tento svět je momentálně plný. Zkus to prosím znovu za několik minut.",
     "tooManyConnections": "Z tvé sítě se k tomuto světu připojuje příliš mnoho spojení. Zavři nadbytečná herní okna nebo to zkus znovu za několik minut.",
+    "messageRateExceeded": "You were disconnected for sending actions too quickly. Please wait a moment and log back in.",
     "tips": {
       "classes": "Tip: každá z 9 tříd se hraje jinak. Než se pro jednu rozhodneš, několik jich vyzkoušej.",
       "talents": "Tip: kdykoli nejsi v boji, můžeš resetovat své talenty, takže časná volba nikdy není past.",
@@ -5593,6 +5646,12 @@ export const cs_CZ: EnTranslations = {
     "bodyDesktop": "Hra běží bez grafické akcelerace a bude pomalá. Aktualizuj ovladače grafiky a restartuj hru. Ve Windows nastav hru na Vysoký výkon v Nastavení, Systém, Displej, Grafika.",
     "bodyWeb": "Hra běží bez grafické akcelerace a bude pomalá. Povol hardwarovou akceleraci v nastavení prohlížeče, aktualizuj ovladače grafiky a restartuj prohlížeč.",
     "dismiss": "Zavřít"
+  },
+  "perfNudge": {
+    "integratedGpu": "The game is running on the integrated (power-saving) GPU. If this computer also has a gaming GPU, set your browser to High performance under Settings > System > Display > Graphics on Windows, then restart the browser. The desktop app picks the gaming GPU automatically.",
+    "hardwareAccelerationDesktop": "The game is running without GPU acceleration, which makes it very slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "hardwareAccelerationWeb": "The game is running without GPU acceleration, which makes it very slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "Nejsou dostupné žádné světy.",
@@ -6018,7 +6077,8 @@ export const cs_CZ: EnTranslations = {
       "death": "{name} umírá.",
       "auraGain": "Získáváš {name}.",
       "auraFade": "{name} z tebe mizí.",
-      "auraAfflicted": "{target} je zasažen(a) efektem {name}."
+      "auraAfflicted": "{target} je zasažen(a) efektem {name}.",
+      "auraGainOther": "{target} gains {name}."
     },
     "system": {
       "playerDeath": "Zemřel(a) jsi.",
@@ -7279,7 +7339,7 @@ export const cs_CZ: EnTranslations = {
       },
       "bear_form": {
         "name": "Medvědí podoba",
-        "description": "Proměníš se v medvěda: zbroj +90 %, výrazně zvýšená síla útoku, tvoje útoky budují vztek a vytvářejí o 30 % více hrozby. Sesláním znovu se vrátíš do podoby sesilatele."
+        "description": "Proměníš se v medvěda: zbroj +130 %, výrazně zvýšená síla útoku, tvoje útoky budují vztek a vytvářejí o 30 % více hrozby. Sesláním znovu se vrátíš do podoby sesilatele."
       },
       "maul": {
         "name": "Drcení kostí",
@@ -11725,6 +11785,7 @@ export const cs_CZ: EnTranslations = {
     "delveRiteShrineCandleInteract": "Svíčková svatyně: stiskni F a dotkni se jí",
     "delveRiteShrineReedInteract": "Rákosová svatyně: stiskni F a dotkni se jí",
     "delveRiteShrineSkullInteract": "Lebková svatyně: stiskni F a dotkni se jí",
-    "mailboxName": "Poštovní schránka"
+    "mailboxName": "Poštovní schránka",
+    "noticeboardName": "Notice Board"
   }
 };

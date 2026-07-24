@@ -355,6 +355,7 @@ export const fr_FR: EnTranslations = {
       "close": "Fermer les récompenses quotidiennes",
       "loading": "Chargement des récompenses quotidiennes...",
       "error": "Impossible de charger les récompenses quotidiennes.",
+      "disabled": "Les récompenses quotidiennes sont actuellement désactivées. Nous annoncerons les mises à jour de cette fonctionnalité sur le canal Discord.",
       "intro": "Détenez assez de WOC dans votre portefeuille vérifié pour débloquer les récompenses quotidiennes. Gagnez des points grâce à un tour quotidien et à des tâches en rotation, puis grimpez dans le classement quotidien pour remporter une part de la cagnotte.",
       "disclaimer": "Le cours du WOC peut varier rapidement. Nous vous recommandons de détenir plus que le minimum de 20 USD afin que les variations normales du cours ne vous bloquent pas. Ceci n'est pas un conseil financier.",
       "prize": "Cagnotte",
@@ -1459,7 +1460,9 @@ export const fr_FR: EnTranslations = {
         "gills": "Branchies",
         "claw": "Griffe",
         "horn": "Corne",
-        "tusk": "Défense"
+        "tusk": "Défense",
+        "meat": "Meat",
+        "cloth": "Cloth"
       }
     },
     "townFocus": {
@@ -1991,6 +1994,9 @@ export const fr_FR: EnTranslations = {
         "takeParcelsFirst": "Retirez les colis avant de jeter la lettre."
       }
     },
+    "noticeboard": {
+      "empty": "Nothing seems posted."
+    },
     "bank": {
       "title": "Banque",
       "subtitle": "Le Coffre doré",
@@ -2131,12 +2137,51 @@ export const fr_FR: EnTranslations = {
         "logging": "Requiert une hache de bûcheron de palier {tier}",
         "herbalism": "Requiert une serpe d'herboristerie de palier {tier}"
       },
+      "requiresTool": {
+        "mining": "Requires a mining pick",
+        "logging": "Requires a logging axe",
+        "herbalism": "Requires a herbalism sickle"
+      },
       "toolTierUnmet": {
         "mining": "Vous avez besoin d'un pic de mineur de palier {tier} pour exploiter ce filon.",
         "logging": "Vous avez besoin d'une hache de bûcheron de palier {tier} pour abattre ce bosquet.",
         "herbalism": "Vous avez besoin d'une serpe d'herboristerie de palier {tier} pour collecter cette parcelle."
       },
+      "toolRequired": {
+        "mining": "You need a mining pick to harvest this vein.",
+        "logging": "You need a logging axe to fell this stand.",
+        "herbalism": "You need a herbalism sickle to gather this patch.",
+        "fishing": "You need a fishing pole to cast a line."
+      },
+      "noNodeNearby": {
+        "mining": "There is no ore vein within reach.",
+        "logging": "There is no timber stand within reach.",
+        "herbalism": "There is no herb patch within reach."
+      },
       "toolTierUnmetCorpse": "Vous avez besoin d'un outil de collecte de palier {tier} pour récupérer les meilleurs matériaux.",
+      "toolTooltip": {
+        "kind": {
+          "mining": "Mining tool (tier {tier})",
+          "logging": "Logging tool (tier {tier})",
+          "herbalism": "Herbalism tool (tier {tier})",
+          "fishing": "Fishing rod (tier {tier})"
+        },
+        "unlocks": {
+          "mining": "Required to mine ore veins up to tier {tier}.",
+          "logging": "Required to fell timber stands up to tier {tier}.",
+          "herbalism": "Required to gather herb patches up to tier {tier}."
+        },
+        "use": {
+          "mining": "Use: Mine a nearby ore vein.",
+          "logging": "Use: Fell a nearby timber stand.",
+          "herbalism": "Use: Gather from a nearby herb patch."
+        },
+        "speed": "Gathers faster at nodes below tier {tier}.",
+        "rodRequired": "Required to fish.",
+        "rodBite": "Fish bite up to {seconds}s sooner.",
+        "rodReel": "Extends the reel window by {seconds}s.",
+        "rodBand": "Unlocks richer catch tables at fishing skill {skill} and above."
+      },
       "downgradeMark": "Sacs pleins : la trouvaille a été rangée sans la marque du collecteur.",
       "downgradeFind": "Sacs pleins : une trouvaille de qualité supérieure vous a échappé.",
       "stateReady": "Disponible",
@@ -2312,6 +2357,7 @@ export const fr_FR: EnTranslations = {
       },
       "throttled": "Vous fabriquez trop vite. Patientez un instant et réessayez.",
       "recipeNotLearned": "Vous n'avez pas encore appris cette recette.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Nécessite {craft} {skill}",
       "difficultyFull": "Gain de compétence complet",
       "difficultyReduced": "Gain de compétences réduit",
@@ -2363,6 +2409,9 @@ export const fr_FR: EnTranslations = {
       "enchantWrongSlot": "Cet enchantement ne peut pas être appliqué à cet objet.",
       "enchantUnknown": "Cet enchantement n'existe pas.",
       "enchantInsufficient": "Vous n'avez pas les matériaux pour cet enchantement.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Désenchanter {item} ?",
       "disenchantConfirmBody": "Cela détruit {item} et donne des matériaux arcaniques. Cette action est irréversible.",
       "disenchantConfirmBodySpecial": "Cela détruit une copie spéciale de {item} (signée, de maître ou enchantée) et donne des matériaux arcaniques. Cette action est irréversible.",
@@ -2382,8 +2431,10 @@ export const fr_FR: EnTranslations = {
       "stateKnown": "Connu",
       "stateTeachable": "Disponible",
       "stateLocked": "Verrouillé",
+      "statePending": "Learning",
       "requirement": "Enseigné à {craft} {skill}",
       "trainAria": "Apprenez {name} pour {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Formation",
       "dialogOptionAria": "Parcourir la formation de {name}",
       "learned": "Recette apprise : {recipe}",
@@ -2410,7 +2461,8 @@ export const fr_FR: EnTranslations = {
       "notEligible": "Cet objet ne peut pas être délié.",
       "notBound": "Cet objet n'est pas lié.",
       "cannotAfford": "Vous n'avez pas les moyens de payer les frais de déliage.",
-      "outOfRange": "Vous devez être à un établi pour délier."
+      "outOfRange": "Vous devez être à un établi pour délier.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Chercheur de donjons",
@@ -2498,7 +2550,7 @@ export const fr_FR: EnTranslations = {
         "lunar_tide": "Marée lunaire (dégâts de zone pulsés)",
         "enrage": "Entre en rage à faible santé",
         "shuddering_stomp": "Piétinement tremblant (étourdissement de zone)",
-        "necrotic_shockwave": "Onde de choc nécrotique (dégâts de zone importants)",
+        "grave_inferno": "Brasier sépulcral (AoE de feu canalisé, restez espacés)",
         "grave_cleaver": "Faucheur de tombes (cleave frontal)",
         "shadow_nova": "Nova des ombres (explosion de zone)",
         "profane_mending": "Soins profanes (soigne ses alliés)",
@@ -3784,7 +3836,7 @@ export const fr_FR: EnTranslations = {
       "specializationBody": "À la compétence {at}, ce métier vous spécialise, sans quête requise : les recettes coûtent {pct}% de matériaux en moins à partir de là, et la spécialisation ajoute son propre bonus à la chance de chef-d'oeuvre.\n\nLes spécialistes apprennent aussi à emporter l'atelier avec eux : un artisan spécialisé peut installer une station mobile sur le terrain pendant dix minutes à la fois, permettant de travailler des recettes liées à une station à l'entrée de la mine plutôt qu'en revenant en ville. Ses limites sont intentionnelles : elle ne compte jamais pour la formation auprès d'un maître ni pour la déliaison d'une pièce de commande, et elle expire selon son minuteur que vous l'ayez utilisée ou non.",
       "ench": {
         "disenchantHeading": "Désenchantement",
-        "disenchantNote": "Le désenchantement prend n'importe quelle arme ou pièce d'armure de qualité commune ou supérieure et en consomme un exemplaire, jamais un exemplaire déjà enchanté. Les pièces communes et inhabituelles sont réduites en une poignée aléatoire de Poussière carillon, un peu plus généreuse pour les pièces plus rares et de niveau plus élevé ; à partir du rare, le rendement change de forme : exactement une Essence carillon pour une pièce rare, ou un Éclat carillon pour une pièce épique ou légendaire, plus un secondaire typé lié au matériau dont la pièce était faite.",
+        "disenchantNote": "Le désenchantement prend n'importe quelle arme ou pièce d'armure de qualité commune ou supérieure et en consomme un exemplaire, un exemplaire ordinaire avant un exemplaire enchanté ; s'il ne reste que des exemplaires enchantés, l'un d'eux est détruit, enchantement compris. Les pièces communes et inhabituelles sont réduites en une poignée aléatoire de Poussière carillon, un peu plus généreuse pour les pièces plus rares et de niveau plus élevé ; à partir du rare, le rendement change de forme : exactement une Essence carillon pour une pièce rare, ou un Éclat carillon pour une pièce épique ou légendaire, plus un secondaire typé lié au matériau dont la pièce était faite.",
         "typedHeading": "Secondaires typés",
         "typedNote": "Les secondaires typés suivent le matériau : l'armure en tissu donne du Fil Résonant, le cuir du Cuir Résonant, les mailles des Mailles Résonantes, les armes de mêlée de l'Acier Résonant, et les bâtons, baguettes, arcs et arbalètes du Bois Résonant. Une pièce rare donne exactement {rare} ; une pièce épique ou légendaire donne {epicMin} ou {epicMax}. Les bagues et colliers n'ont pas de classe d'armure, donc ils ne donnent que le matériau primaire.\n\nAttention aux petits caractères : les secondaires Résonants se lient à l'échange, donc chacun peut changer de mains exactement une fois, directement du démanteleur à l'enchanteur qui va le brûler. La Poussière, l'Essence et les Éclats ne sont soumis à aucune restriction de ce type et circulent comme n'importe quel autre bien échangeable.",
         "colSource": "Extrait de",
@@ -3823,7 +3875,6 @@ export const fr_FR: EnTranslations = {
       "toolUnavailable": "Non vendu",
       "priceNone": "Non vendu",
       "toolTierReq": "Outil de palier {tier}",
-      "bareHands": "Mains nues",
       "yieldsHeading": "Ce que rapporte une récolte",
       "yieldsBody": "Chaque récolte tire une qualité pour ce qu'elle rapporte, et votre maîtrise est le seul facteur de ce tirage. Un récolteur tout nouveau tire toujours des matériaux communs ; chaque point de compétence déplace régulièrement le poids du commun vers les grades supérieurs et jamais en arrière, jusqu'à ce qu'au plafond de 100 le grade commun disparaisse entièrement : 60 pourcent peu commun, 30 pourcent rare, 8 pourcent épique et 2 pourcent légendaire, à chaque fois.\n\nLa qualité signifie aussi la quantité : un tirage commun rapporte 1 unité, les tirages peu communs et rares en rapportent 2, épique 3, et légendaire 4. Tout tirage rare, épique ou légendaire arrive comme une instance signée estampillée Collecté par vous : au plafond, quatre récoltes sur dix portent votre nom, et les règles de provenance sur la page de l'Économie d'artisanat expliquent pourquoi les artisans paient en supplément exactement pour ces piles.",
       "bandsHeading": "Tranches de compétence",
@@ -5523,8 +5574,10 @@ export const fr_FR: EnTranslations = {
     "reconnectingNow": "Connexion perdue. Reconnexion maintenant... (tentative {attempt}/{maxAttempts})",
     "slowConnection": "Cela prend plus de temps que d'habitude. Vérifiez votre connexion Internet.",
     "connectionRejected": "Le serveur a fermé la connexion.",
+    "incompatibleWorldVersion": "Game and server versions are incompatible. Reload or update, then try again.",
     "realmFull": "Ce monde est complet en ce moment. Veuillez réessayer dans quelques minutes.",
     "tooManyConnections": "Trop de connexions à ce monde proviennent de votre réseau. Veuillez fermer les fenêtres de jeu superflues ou réessayer dans quelques minutes.",
+    "messageRateExceeded": "You were disconnected for sending actions too quickly. Please wait a moment and log back in.",
     "tips": {
       "classes": "Conseil : chacune des 9 classes se joue différemment. Essayez-en plusieurs avant de faire votre choix.",
       "talents": "Conseil : vous pouvez réinitialiser vos talents dès que vous êtes hors combat, un premier choix ne vous enferme donc jamais.",
@@ -5593,6 +5646,12 @@ export const fr_FR: EnTranslations = {
     "bodyDesktop": "Le jeu fonctionne sans accélération GPU et sera lent. Mettez à jour vos pilotes graphiques, puis redémarrez le jeu. Sous Windows, définissez également le jeu sur Performances élevées dans Paramètres, Système, Affichage, Graphiques.",
     "bodyWeb": "Le jeu fonctionne sans accélération GPU et sera lent. Activez l'accélération matérielle dans les paramètres de votre navigateur, mettez à jour vos pilotes graphiques, puis redémarrez votre navigateur.",
     "dismiss": "Ignorer"
+  },
+  "perfNudge": {
+    "integratedGpu": "The game is running on the integrated (power-saving) GPU. If this computer also has a gaming GPU, set your browser to High performance under Settings > System > Display > Graphics on Windows, then restart the browser. The desktop app picks the gaming GPU automatically.",
+    "hardwareAccelerationDesktop": "The game is running without GPU acceleration, which makes it very slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "hardwareAccelerationWeb": "The game is running without GPU acceleration, which makes it very slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "Aucun monde disponible.",
@@ -6018,7 +6077,8 @@ export const fr_FR: EnTranslations = {
       "death": "{name} meurt.",
       "auraGain": "Vous gagnez {name}.",
       "auraFade": "{name} se dissipe de vous.",
-      "auraAfflicted": "{target} est affecté par {name}."
+      "auraAfflicted": "{target} est affecté par {name}.",
+      "auraGainOther": "{target} gains {name}."
     },
     "system": {
       "playerDeath": "Vous êtes mort.",
@@ -7279,7 +7339,7 @@ export const fr_FR: EnTranslations = {
       },
       "bear_form": {
         "name": "Forme de Bruin",
-        "description": "Vous change en ours: armure +90%, puissance d'attaque fortement augmentée, vos attaques génèrent de la rage et 30% de menace en plus. Relancez pour reprendre votre forme de lanceur."
+        "description": "Vous change en ours: armure +130%, puissance d'attaque fortement augmentée, vos attaques génèrent de la rage et 30% de menace en plus. Relancez pour reprendre votre forme de lanceur."
       },
       "maul": {
         "name": "Bonecrush",
@@ -11725,6 +11785,7 @@ export const fr_FR: EnTranslations = {
     "delveRiteShrineCandleInteract": "Autel de la chandelle : appuyez sur F pour la toucher",
     "delveRiteShrineReedInteract": "Autel du roseau : appuyez sur F pour le toucher",
     "delveRiteShrineSkullInteract": "Autel du crâne : appuyez sur F pour le toucher",
-    "mailboxName": "Boîte aux lettres"
+    "mailboxName": "Boîte aux lettres",
+    "noticeboardName": "Notice Board"
   }
 };

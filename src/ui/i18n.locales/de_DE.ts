@@ -234,7 +234,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Ab Fertigkeit {at} spezialisiert sich dieser Beruf für dich, ohne dass eine Quest nötig ist: Rezepte kosten von da an {pct}% weniger Materialien, und die Spezialisierung fügt der Meisterwerkchance einen eigenen Bonus hinzu.\n\nSpezialisierte Handwerker lernen außerdem, die Werkstatt mit sich zu nehmen: Ein spezialisierter Handwerker kann im Feld eine mobile Station für jeweils zehn Minuten errichten, sodass stationsgebundene Rezepte am Eingang der Mine statt in der Stadt bearbeitet werden können. Ihre Grenzen sind bewusst gesetzt: Sie zählt nie für das Training bei einem Meister oder für das Entbinden einer Auftragsarbeit, und sie läuft nach ihrem Timer ab, ob du sie genutzt hast oder nicht.',
   'guide.profPages.ench.disenchantHeading': 'Entzaubern',
   'guide.profPages.ench.disenchantNote':
-    'Entzaubern nimmt jedes Waffen- oder Rüstungsstück der Qualität Gewöhnlich oder besser und verbraucht eine Kopie, niemals eine, die bereits verzaubert ist. Gewöhnliche und ungewöhnliche Stücke werden zu einer zufälligen Handvoll Glockenpulver zermahlen, etwas reicher für seltenere und höherstufige Stücke; ab Selten ändert sich der Ertrag: genau eine Glockenessenz von einem seltenen Stück oder ein Glockensplitter von einem epischen oder legendären, plus ein typisiertes Sekundärmaterial, das dem entspricht, woraus das Stück gefertigt wurde.',
+    'Entzaubern nimmt jedes Waffen- oder Rüstungsstück der Qualität Gewöhnlich oder besser und verbraucht eine Kopie, wobei eine einfache Kopie vor einer verzauberten drankommt; bleiben nur noch verzauberte Kopien übrig, wird eine davon zerstört, mitsamt ihrer Verzauberung. Gewöhnliche und ungewöhnliche Stücke werden zu einer zufälligen Handvoll Glockenpulver zermahlen, etwas reicher für seltenere und höherstufige Stücke; ab Selten ändert sich der Ertrag: genau eine Glockenessenz von einem seltenen Stück oder ein Glockensplitter von einem epischen oder legendären, plus ein typisiertes Sekundärmaterial, das dem entspricht, woraus das Stück gefertigt wurde.',
   'guide.profPages.ench.typedHeading': 'Typisierte Sekundärmaterialien',
   'guide.profPages.ench.typedNote':
     'Die typisierten Sekundärmaterialien folgen dem Material: Stoffrüstung ergibt Resonanten Faden, Leder Resonantes Fell, Kettenrüstung Resonante Kettenglieder, Nahkampfwaffen Resonanten Stahl, und Stäbe, Zauberstäbe, Bögen und Armbrüste Resonantes Holz. Ein seltenes Stück gibt genau {rare}; ein episches oder legendäres gibt {epicMin} oder {epicMax}. Ringe und Halsketten haben keine Rüstungsklasse, also ergibt sich daraus nur das Primärmaterial.\n\nAchte auf das Kleingedruckte: Die Resonanten Sekundärmaterialien binden bei Handel, sodass jedes genau einmal den Besitzer wechseln kann, direkt vom Zerbrecher zum Verzauberer, der es verbrennt. Staub, Essenz und Splitter tragen keine solche Einschränkung und bewegen sich wie jede andere Handelsware.',
@@ -279,7 +279,6 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'Nicht erhältlich',
   'guide.profPages.priceNone': 'Nicht erhältlich',
   'guide.profPages.toolTierReq': 'Werkzeug der Stufe {tier}',
-  'guide.profPages.bareHands': 'Mit bloßen Händen',
   'guide.profPages.yieldsHeading': 'Was eine Ernte einbringt',
   'guide.profPages.yieldsBody':
     'Jede Ernte würfelt eine Qualität für das, was sie gewährt, und deine Fertigkeit ist die ganze Geschichte dieses Wurfs. Ein brandneuer Sammler zieht immer gewöhnliches Material; jeder Fertigkeitspunkt verschiebt das Gewicht stetig weg von Gewöhnlich hin zu den höheren Qualitätsstufen und nie zurück, bis an der Obergrenze von 100 die gewöhnliche Qualität vollständig verschwindet: 60 Prozent ungewöhnlich, 30 Prozent selten, 8 Prozent episch und 2 Prozent legendär, immer.\n\nQualität bedeutet auch Menge: Ein gewöhnlicher Wurf ergibt 1 Einheit, Ungewöhnlich und Selten ergeben 2, Episch 3 und Legendär 4. Jeder seltene, epische oder legendäre Fund kommt als signiertes Exemplar gestempelt mit Gesammelt von dir an: An der Obergrenze tragen vier von zehn Ernten deinen Namen, und die Herkunftsregeln auf der Seite Handwerkswirtschaft erklären, warum Handwerker genau für diese Stapel extra zahlen.',
@@ -860,7 +859,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Verdorrter Segen (verbrennt Mana)',
   'hudChrome.finder.mech.mist_surge': 'Nebelwelle (pulsierender Flachenschaden)',
   'hudChrome.finder.mech.mortal_wound': 'Vergessene Wunde (verringert erhaltene Heilung)',
-  'hudChrome.finder.mech.necrotic_shockwave': 'Nekrotische Schockwelle (schwerer Flachenschaden)',
+  'hudChrome.finder.mech.grave_inferno': 'Grabesinferno (kanalisiertes Feuer-AoE, Abstand halten)',
   'hudChrome.finder.mech.profane_mending': 'Entweihte Heilung (heilt Verbundete)',
   'hudChrome.finder.mech.raise_fallen': 'Gefallene erheben (periodische Verstarkungswellen)',
   'hudChrome.finder.mech.reaping_arc': 'Sichelschwung (frontaler Schwung)',
@@ -4260,7 +4259,7 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
     'Verwurzelt das Ziel bis zu 12 Sek. lang an Ort und Stelle.',
   'entities.abilities.bear_form.name': 'Bruin Form',
   'entities.abilities.bear_form.description':
-    'Verwandelt euch in einen Bären: Rüstung +90%, stark erhöhte Angriffskraft, eure Angriffe erzeugen Wut und 30% mehr Bedrohung. Erneut wirken, um zur Zauberergestalt zurückzukehren.',
+    'Verwandelt euch in einen Bären: Rüstung +130%, stark erhöhte Angriffskraft, eure Angriffe erzeugen Wut und 30% mehr Bedrohung. Erneut wirken, um zur Zauberergestalt zurückzukehren.',
   'entities.abilities.maul.name': 'Bonecrush',
   'entities.abilities.maul.description':
     'Ein zerfleischender Angriff, der den Nahkampfschaden um {damage} erhöht und viel Bedrohung verursacht. Wird bei eurem nächsten Schwung ausgelöst. Nur in Bruin Form.',
@@ -7563,6 +7562,8 @@ export const de_DE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Truhe anzeigen',
   'hudChrome.dailyRewards.hideChestButton': 'Truhe ausblenden',
   'hudChrome.dailyRewards.title': 'Tägliche Belohnungen',
+  'hudChrome.dailyRewards.disabled':
+    'Tägliche Belohnungen sind derzeit deaktiviert. Neuigkeiten zu dieser Funktion geben wir im Discord-Kanal bekannt.',
   'hudChrome.dailyRewards.unknown': 'Unbekannt',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

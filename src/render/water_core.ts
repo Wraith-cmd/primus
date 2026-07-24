@@ -18,6 +18,14 @@ export interface WaterSimulationPlan {
   stepHz: number;
 }
 
+export interface WaterSolverCoefficients {
+  stepSeconds: number;
+  cellSize: number;
+  damping: number;
+  waveCoefficient: number;
+}
+
+export const WATER_WAVE_COEFFICIENT_LIMIT = 0.38;
 export const WATER_IMPULSE_CAPACITY = 8;
 export const WATER_SIM_ACTIVE_SECONDS = 6;
 export const WATER_MAX_STEPS_PER_FRAME = 2;
@@ -57,6 +65,25 @@ export function waterSimulationPlan(
   return {
     resolution: waterSimulationTargetResolution(tier),
     stepHz: tier === 'ultra' ? 30 : tier === 'high' ? 24 : tier === 'medium' ? 20 : 15,
+  };
+}
+
+/** Stable fixed-step coefficients shared by GPU construction and Node tests. */
+export function waterSolverCoefficients(
+  radius: number,
+  plan: WaterSimulationPlan,
+): WaterSolverCoefficients {
+  const stepSeconds = 1 / Math.max(1, plan.stepHz);
+  const cellSize = (Math.max(0.01, radius) * 2) / Math.max(1, plan.resolution);
+  const propagationDistance = 10.5 * stepSeconds;
+  return {
+    stepSeconds,
+    cellSize,
+    damping: 0.74 ** stepSeconds,
+    waveCoefficient: Math.min(
+      WATER_WAVE_COEFFICIENT_LIMIT,
+      (propagationDistance * propagationDistance) / (cellSize * cellSize),
+    ),
   };
 }
 

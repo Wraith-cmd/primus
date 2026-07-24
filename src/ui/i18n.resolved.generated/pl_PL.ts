@@ -355,6 +355,7 @@ export const pl_PL: EnTranslations = {
       "close": "Zamknij codzienne nagrody",
       "loading": "Ładowanie codziennych nagród...",
       "error": "Nie udało się załadować codziennych nagród.",
+      "disabled": "Codzienne nagrody są obecnie wyłączone. Aktualizacje dotyczące tej funkcji ogłosimy na kanale Discord.",
       "intro": "Trzymaj wystarczająco dużo WOC w zweryfikowanym portfelu, aby odblokować codzienne nagrody. Zdobywaj punkty dzięki jednemu codziennemu losowaniu i zmieniającym się zadaniom, a następnie wspinaj się w codziennej tabeli wyników, aby zdobyć udział w puli nagród.",
       "disclaimer": "Cena WOC może zmieniać się szybko. Zalecamy trzymanie więcej niż minimalne 20 USD, aby zwykłe wahania ceny nie odcięły ci dostępu. To nie jest porada finansowa.",
       "prize": "Pula nagród",
@@ -1459,7 +1460,9 @@ export const pl_PL: EnTranslations = {
         "gills": "Skrzela",
         "claw": "Pazur",
         "horn": "Róg",
-        "tusk": "Cios"
+        "tusk": "Cios",
+        "meat": "Meat",
+        "cloth": "Cloth"
       }
     },
     "townFocus": {
@@ -1991,6 +1994,9 @@ export const pl_PL: EnTranslations = {
         "takeParcelsFirst": "Wyjmij paczki, zanim wyrzucisz list."
       }
     },
+    "noticeboard": {
+      "empty": "Nothing seems posted."
+    },
     "bank": {
       "title": "Bank",
       "subtitle": "Złocona Szkatuła",
@@ -2131,12 +2137,51 @@ export const pl_PL: EnTranslations = {
         "logging": "Wymaga siekiery drwala {tier} poziomu",
         "herbalism": "Wymaga sierpa zielarskiego {tier} poziomu"
       },
+      "requiresTool": {
+        "mining": "Requires a mining pick",
+        "logging": "Requires a logging axe",
+        "herbalism": "Requires a herbalism sickle"
+      },
       "toolTierUnmet": {
         "mining": "Potrzebujesz kilofika górniczego {tier} poziomu, by zebrać tę żyłę.",
         "logging": "Potrzebujesz siekiery drwala {tier} poziomu, by ściąć ten drzewostan.",
         "herbalism": "Potrzebujesz sierpa zielarskiego {tier} poziomu, by zebrać ten łan."
       },
+      "toolRequired": {
+        "mining": "You need a mining pick to harvest this vein.",
+        "logging": "You need a logging axe to fell this stand.",
+        "herbalism": "You need a herbalism sickle to gather this patch.",
+        "fishing": "You need a fishing pole to cast a line."
+      },
+      "noNodeNearby": {
+        "mining": "There is no ore vein within reach.",
+        "logging": "There is no timber stand within reach.",
+        "herbalism": "There is no herb patch within reach."
+      },
       "toolTierUnmetCorpse": "Potrzebujesz narzędzia zbieracza {tier} poziomu, by odzyskać najlepsze materiały.",
+      "toolTooltip": {
+        "kind": {
+          "mining": "Mining tool (tier {tier})",
+          "logging": "Logging tool (tier {tier})",
+          "herbalism": "Herbalism tool (tier {tier})",
+          "fishing": "Fishing rod (tier {tier})"
+        },
+        "unlocks": {
+          "mining": "Required to mine ore veins up to tier {tier}.",
+          "logging": "Required to fell timber stands up to tier {tier}.",
+          "herbalism": "Required to gather herb patches up to tier {tier}."
+        },
+        "use": {
+          "mining": "Use: Mine a nearby ore vein.",
+          "logging": "Use: Fell a nearby timber stand.",
+          "herbalism": "Use: Gather from a nearby herb patch."
+        },
+        "speed": "Gathers faster at nodes below tier {tier}.",
+        "rodRequired": "Required to fish.",
+        "rodBite": "Fish bite up to {seconds}s sooner.",
+        "rodReel": "Extends the reel window by {seconds}s.",
+        "rodBand": "Unlocks richer catch tables at fishing skill {skill} and above."
+      },
       "downgradeMark": "Torby pełne: znalezisko zostało schowane bez znaku zbieracza.",
       "downgradeFind": "Torby pełne: wyjątkowe znalezisko przeszło ci koło nosa.",
       "stateReady": "Gotowy",
@@ -2312,6 +2357,7 @@ export const pl_PL: EnTranslations = {
       },
       "throttled": "Wytwarzasz zbyt szybko. Zaczekaj chwilę i spróbuj ponownie.",
       "recipeNotLearned": "Nie nauczyłeś się jeszcze tego przepisu.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Wymaga {craft} {skill}",
       "difficultyFull": "Pełny przyrost umiejętności",
       "difficultyReduced": "Zmniejszony przyrost umiejętności",
@@ -2363,6 +2409,9 @@ export const pl_PL: EnTranslations = {
       "enchantWrongSlot": "To zaklinanie nie może być zastosowane do tego przedmiotu.",
       "enchantUnknown": "To zaklinanie nie istnieje.",
       "enchantInsufficient": "Nie masz materiałów na to zaklinanie.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Rozbroić {item}?",
       "disenchantConfirmBody": "To niszczy {item} i daje materiały arkaniczne. Nie można tego cofnąć.",
       "disenchantConfirmBodySpecial": "To niszczy specjalną kopię {item} (podpisaną, mistrzowską lub zaklinowaną) i daje materiały arkaniczne. Nie można tego cofnąć.",
@@ -2382,8 +2431,10 @@ export const pl_PL: EnTranslations = {
       "stateKnown": "Znany",
       "stateTeachable": "Dostępny",
       "stateLocked": "Zamknięty",
+      "statePending": "Learning",
       "requirement": "Uczył w {craft} {skill}",
       "trainAria": "Naucz się {name} dla {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Szkolenie",
       "dialogOptionAria": "Przeglądaj szkolenia z {name}",
       "learned": "Poznawany przepis: {recipe}",
@@ -2410,7 +2461,8 @@ export const pl_PL: EnTranslations = {
       "notEligible": "Tego przedmiotu nie można odwiązać.",
       "notBound": "Ten przedmiot nie jest przywiązany.",
       "cannotAfford": "Nie stać cię na opłatę za odwiązanie.",
-      "outOfRange": "Musisz być przy stanowisku rzemieślniczym, by odwiązać."
+      "outOfRange": "Musisz być przy stanowisku rzemieślniczym, by odwiązać.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Znajdywacz Lochów",
@@ -2498,7 +2550,7 @@ export const pl_PL: EnTranslations = {
         "lunar_tide": "Księżycowy Odpływ (pulsujące obrażenia obszarowe)",
         "enrage": "Wpada w szał przy niskim zdrowiu",
         "shuddering_stomp": "Wstrząsające Tupnięcie (ogłuszenie obszarowe)",
-        "necrotic_shockwave": "Nekrotyczna Fala Uderzeniowa (silne obrażenia obszarowe)",
+        "grave_inferno": "Grobowy Inferno (kanalizowane AoE ognia, trzymajcie dystans)",
         "grave_cleaver": "Grobowe Cięcie (frontalne cięcie)",
         "shadow_nova": "Nova Cienia (wybuch obszarowy)",
         "profane_mending": "Plugawe Leczenie (leczy sojuszników)",
@@ -3784,7 +3836,7 @@ export const pl_PL: EnTranslations = {
       "specializationBody": "Przy umiejętności {at} dane rzemiosło cię specjalizuje, bez żadnego zadania: od tej chwili przepisy kosztują {pct}% mniej materiałów, a specjalizacja dodaje też własną premię do szansy na arcydzieło.\n\nSpecjaliści uczą się też zabierać warsztat ze sobą: wyspecjalizowany rzemieślnik może rozstawić mobilną stację w terenie na dziesięć minut, dzięki czemu przepisy stacjonarne można realizować przy wejściu do kopalni zamiast wracać do miasta. Ograniczenia są celowe: mobilna stacja nigdy nie liczy się jako trening u mistrza ani do odwiązywania zamówionych przedmiotów i wygasa po odliczeniu czasu niezależnie od tego, czy jej użyłeś.",
       "ench": {
         "disenchantHeading": "Rozkładanie zaklęć",
-        "disenchantNote": "Rozkładanie zaklęć bierze dowolną broń lub element zbroi pospolitej jakości lub lepszy i zużywa jedną kopię, nigdy kopii, która jest już zaklęta. Pospolite i niepospolite przedmioty mielą się w losową garść Pyłu Kuranta, trochę bogatszego dla rzadszych i wyższopoziomowych przedmiotów; od rzadkiego wzwyż plon zmienia kształt, dokładnie jedna Esencja Kuranta z rzadkiego przedmiotu lub jeden Odłamek Kuranta z epickiego lub legendarnego, plus typowany drugorzędny klucz do tego, z czego przedmiot był wykonany.",
+        "disenchantNote": "Rozkładanie zaklęć bierze dowolną broń lub element zbroi pospolitej jakości lub lepszy i zużywa jedną kopię, sięgając po zwykłą kopię przed zaklętą; gdy zostały już tylko zaklęte kopie, jedna z nich zostaje zniszczona razem z zaklęciem. Pospolite i niepospolite przedmioty mielą się w losową garść Pyłu Kuranta, trochę bogatszego dla rzadszych i wyższopoziomowych przedmiotów; od rzadkiego wzwyż plon zmienia kształt, dokładnie jedna Esencja Kuranta z rzadkiego przedmiotu lub jeden Odłamek Kuranta z epickiego lub legendarnego, plus typowany drugorzędny klucz do tego, z czego przedmiot był wykonany.",
         "typedHeading": "Typowane drugorzędne",
         "typedNote": "Typowane drugorzędne podążają za materiałem: zbroja materiałowa daje Rezonujący Wątek, skórzana Rezonującą Skórę, kolcza Rezonujące Ogniwa, bronie do walki wręcz Rezonującą Stal, a laski, różdżki, łuki i kusze Rezonujące Drewno. Rzadki przedmiot daje dokładnie {rare}; epicki lub legendarny przedmiot daje {epicMin} lub {epicMax}. Pierścienie i naszyjniki nie mają klasy zbroi, więc dają tylko materiał podstawowy.\n\nZwróć uwagę na drobny druk: drugorzędne Rezonujące wiążą się przy wymianie, więc każde może zmienić właścicieli dokładnie raz, prosto od rozkładacza do zaklinacza, który je spali. Pył, Esencja i Drzazgi nie mają takiego ograniczenia i poruszają się jak każdy inny towar handlowy.",
         "colSource": "Uzyskiwane z",
@@ -3823,7 +3875,6 @@ export const pl_PL: EnTranslations = {
       "toolUnavailable": "Niesprzedawany",
       "priceNone": "Niesprzedawany",
       "toolTierReq": "Narzędzie poziomu {tier}",
-      "bareHands": "Gołe ręce",
       "yieldsHeading": "Co przynosi zebranie",
       "yieldsBody": "Każde zebranie losuje jakość dla tego, co przynosi, a twoja biegłość to cały mechanizm tego losowania. Zupełnie nowy zbieracz zawsze wyciąga pospolity materiał; każdy punkt umiejętności stale przesuwa wagę z pospolitego na wyższe gatunki i nigdy wstecz, aż przy limicie 100 jakość pospolita znika całkowicie: 60 procent niezwykłego, 30 procent rzadkiego, 8 procent epickiego i 2 procent legendarnego, za każdym razem.\n\nJakość to też ilość: pospolitość daje 1 jednostkę, niezwykły i rzadki 2, epicki 3, a legendarny 4. Każde rzadkie, epickie lub legendarne ciągnie jako podpisany egzemplarz ze stemplem Zebrany przez ciebie: przy limicie to cztery zebrania na dziesięć noszące twoje imię, a zasady proweniencji na stronie Ekonomii Wytwarzania wyjaśniają, dlaczego rzemieślnicy płacą ekstra właśnie za te stosy.",
       "bandsHeading": "Pasma biegłości",
@@ -5523,8 +5574,10 @@ export const pl_PL: EnTranslations = {
     "reconnectingNow": "Połączenie utracone. Łączę się teraz ponownie... (próba {attempt}/{maxAttempts})",
     "slowConnection": "To trwa dłużej niż zwykle. Sprawdź swoje połączenie internetowe.",
     "connectionRejected": "Serwer zamknął połączenie.",
+    "incompatibleWorldVersion": "Game and server versions are incompatible. Reload or update, then try again.",
     "realmFull": "Ten świat jest teraz pełny. Spróbuj ponownie za kilka minut.",
     "tooManyConnections": "Z twojej sieci pochodzi zbyt wiele połączeń do tego świata. Zamknij dodatkowe okna gry lub spróbuj ponownie za kilka minut.",
+    "messageRateExceeded": "You were disconnected for sending actions too quickly. Please wait a moment and log back in.",
     "tips": {
       "classes": "Wskazówka: każdą z 9 klas gra się inaczej. Wypróbuj kilka, zanim zdecydujesz się na jedną.",
       "talents": "Wskazówka: poza walką możesz w każdej chwili wyzerować talenty, więc wczesny wybór nigdy nie jest pułapką.",
@@ -5593,6 +5646,12 @@ export const pl_PL: EnTranslations = {
     "bodyDesktop": "Gra działa bez akceleracji GPU i będzie wolna. Zaktualizuj sterowniki karty graficznej, a następnie zrestartuj grę. W systemie Windows ustaw grę na Wysoką wydajność w Ustawienia > System > Ekran > Grafika.",
     "bodyWeb": "Gra działa bez akceleracji GPU i będzie wolna. Włącz akcelerację sprzętową w ustawieniach przeglądarki, zaktualizuj sterowniki karty graficznej, a następnie zrestartuj przeglądarkę.",
     "dismiss": "Odrzuć"
+  },
+  "perfNudge": {
+    "integratedGpu": "The game is running on the integrated (power-saving) GPU. If this computer also has a gaming GPU, set your browser to High performance under Settings > System > Display > Graphics on Windows, then restart the browser. The desktop app picks the gaming GPU automatically.",
+    "hardwareAccelerationDesktop": "The game is running without GPU acceleration, which makes it very slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "hardwareAccelerationWeb": "The game is running without GPU acceleration, which makes it very slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "Brak dostępnych światów.",
@@ -6018,7 +6077,8 @@ export const pl_PL: EnTranslations = {
       "death": "{name} umiera.",
       "auraGain": "Zyskujesz {name}.",
       "auraFade": "{name} znika z ciebie.",
-      "auraAfflicted": "{target} zostaje dotknięty efektem {name}."
+      "auraAfflicted": "{target} zostaje dotknięty efektem {name}.",
+      "auraGainOther": "{target} gains {name}."
     },
     "system": {
       "playerDeath": "Zginąłeś.",
@@ -7279,7 +7339,7 @@ export const pl_PL: EnTranslations = {
       },
       "bear_form": {
         "name": "Postać Bruina",
-        "description": "Zmień postać w niedźwiedzia: pancerz +90%, znacznie zwiększona moc ataku, twoje ataki budują wściekłość i generują 30% więcej zagrożenia. Rzuć ponownie, aby wrócić do postaci rzucającego."
+        "description": "Zmień postać w niedźwiedzia: pancerz +130%, znacznie zwiększona moc ataku, twoje ataki budują wściekłość i generują 30% więcej zagrożenia. Rzuć ponownie, aby wrócić do postaci rzucającego."
       },
       "maul": {
         "name": "Kruszenie kości",
@@ -11725,6 +11785,7 @@ export const pl_PL: EnTranslations = {
     "delveRiteShrineCandleInteract": "Kapliczka Świecy: Naciśnij F, aby jej dotknąć",
     "delveRiteShrineReedInteract": "Kapliczka Trzciny: Naciśnij F, aby jej dotknąć",
     "delveRiteShrineSkullInteract": "Kapliczka Czaszki: Naciśnij F, aby jej dotknąć",
-    "mailboxName": "Skrzynka pocztowa"
+    "mailboxName": "Skrzynka pocztowa",
+    "noticeboardName": "Notice Board"
   }
 };

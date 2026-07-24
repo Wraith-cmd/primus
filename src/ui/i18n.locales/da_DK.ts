@@ -218,7 +218,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
     'Ved færdighed {at} specialiserer dette håndværk dig, ingen opgave nødvendig: opskrifter koster {pct}% færre materialer fra da af, og specialiseringen tilføjer sit eget løft til mesterværkschancen.\n\nSpecialister lærer også at tage værkstedet med sig: en specialiseret håndværker kan opstille en mobil station i felten i ti minutter ad gangen, så stationsbundne opskrifter kan fremstilles ved mindens mund frem for tilbage i byen. Dens grænser er tilsigtede: den tæller aldrig ved træning hos en mester eller ved aflæsning af et kommissionsstykke, og den udløber på sin timer uanset om du brugte den.',
   'guide.profPages.ench.disenchantHeading': 'Affortrylling',
   'guide.profPages.ench.disenchantNote':
-    'Affortrylling tager et vilkårligt våben- eller rustningsstykke af almindelig kvalitet eller bedre og forbruger ét eksemplar, aldrig et eksemplar der allerede er fortryllet. Almindelige og ualmindelige stykker males ned til en rullet håndfuld Kime Støv, lidt rigere for sjældnere og stykker med højere niveau; fra sjælden og op ændres udbyttet, præcis én Kime Essens fra et sjældent stykke eller én Kime Skærv fra et episk eller legendarisk, plus en typebestemt sekundær keyed til hvad stykket var lavet af.',
+    'Affortrylling tager et vilkårligt våben- eller rustningsstykke af almindelig kvalitet eller bedre og forbruger ét eksemplar, et almindeligt eksemplar før et fortryllet; når kun fortryllede eksemplarer er tilbage, ødelægges et af dem, fortryllelse og det hele. Almindelige og ualmindelige stykker males ned til en rullet håndfuld Kime Støv, lidt rigere for sjældnere og stykker med højere niveau; fra sjælden og op ændres udbyttet, præcis én Kime Essens fra et sjældent stykke eller én Kime Skærv fra et episk eller legendarisk, plus en typebestemt sekundær keyed til hvad stykket var lavet af.',
   'guide.profPages.ench.typedHeading': 'Typebestemte sekundærer',
   'guide.profPages.ench.typedNote':
     'De typebestemte sekundærer følger materialet: klædedrustning giver Resonant Tråd, læder Resonant Skind, mail Resonante Ringe, nærkampsvåben Resonant Stål, og stave, trylledrikstave, buer og armbrøster Resonant Tømmer. Et sjældent stykke giver præcis {rare}; et episk eller legendarisk stykke giver {epicMin} eller {epicMax}. Ringe og halskæder har ingen rustningsklasse, så de giver kun det primære materiale.\n\nBemærk det med småt: de Resonante sekundærer binder ved handel, så hver kan skifte hænder præcis én gang, direkte fra nedbryderen til fortrylleren der vil brænde den. Støv, Essens og Skærver bærer ingen sådan snor og bevæger sig som enhver anden handelsvare.',
@@ -263,7 +263,6 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'Sælges ikke',
   'guide.profPages.priceNone': 'Sælges ikke',
   'guide.profPages.toolTierReq': 'Niveau {tier}-værktøj',
-  'guide.profPages.bareHands': 'Bare hænder',
   'guide.profPages.yieldsHeading': 'Hvad en høst giver',
   'guide.profPages.yieldsBody':
     'Enhver høst ruller en kvalitet for det, den giver, og din færdighed er hele historien bag det rul. En helt ny indsamler trækker altid almindeligt materiale; hvert point færdighed skifter jævnt vægt fra almindelig til de højere grader og aldrig tilbage, indtil grænsen på 100 gør den almindelige grad fuldstændig: 60 procent ualmindelig, 30 procent sjælden, 8 procent episk og 2 procent legendarisk, hver gang.\n\nKvalitet betyder også kvantitet: et almindeligt rul giver 1 enhed, ualmindelig og sjælden giver 2, episk 3 og legendarisk 4. Enhver sjælden, episk eller legendarisk høst ankommer som et signeret eksemplar stemplet Indsamlet af dig: ved grænsen er det fire ud af ti høster, der bærer dit navn, og proveniens-reglerne på siden om Håndværksøkonomi forklarer, hvorfor håndværkere betaler ekstra for præcis dem.',
@@ -804,7 +803,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Visnet Velsignelse (forbrænder mana)',
   'hudChrome.finder.mech.mist_surge': 'Tågebølge (pulserende omradesskade)',
   'hudChrome.finder.mech.mortal_wound': 'Glemt Sår (reducerer modtaget heling)',
-  'hudChrome.finder.mech.necrotic_shockwave': 'Nekrotisk Chokbølge (kraftig omradesskade)',
+  'hudChrome.finder.mech.grave_inferno': 'Gravsinferno (kanaliseret ild-AoE, hold afstand)',
   'hudChrome.finder.mech.profane_mending': 'Vanhellig Heling (heler sine allierede)',
   'hudChrome.finder.mech.raise_fallen': 'Rejse de Faldne (periodiske bølger af tilkaldelser)',
   'hudChrome.finder.mech.reaping_arc': 'Mejende Bue (frontal mejning)',
@@ -2553,7 +2552,7 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
     'Storm mod en fjende, generér 9 raseri og bedøv den i 1 sek. 8-25 m rækkevidde. Kun i Bruin-form.',
   'entities.abilities.bear_charge.name': 'Bruin-storm',
   'entities.abilities.bear_form.description':
-    'Forvandl dig til en bjørn: rustning +90%, stærkt øget angrebskraft, dine angreb opbygger raseri og genererer 30% mere trussel. Kast igen for at vende tilbage til besværgerform.',
+    'Forvandl dig til en bjørn: rustning +130%, stærkt øget angrebskraft, dine angreb opbygger raseri og genererer 30% mere trussel. Kast igen for at vende tilbage til besværgerform.',
   'entities.abilities.bear_form.name': 'Bruin-form',
   'entities.abilities.berserker_rage.description':
     'Gå i et sydende raseri, og generér 20 raseri. (Krigertalent)',
@@ -7414,6 +7413,8 @@ export const da_DK: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Vis kiste',
   'hudChrome.dailyRewards.hideChestButton': 'Skjul kiste',
   'hudChrome.dailyRewards.title': 'Daglige belønninger',
+  'hudChrome.dailyRewards.disabled':
+    'Daglige belønninger er i øjeblikket deaktiveret. Vi annoncerer opdateringer til denne funktion i Discord-kanalen.',
   'hudChrome.dailyRewards.unknown': 'Ukendt',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

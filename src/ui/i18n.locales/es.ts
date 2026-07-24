@@ -230,7 +230,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
     'En la habilidad {at} este oficio te especializa, sin necesidad de misión: las recetas cuestan un {pct}% menos de materiales a partir de entonces, y la especialización añade su propio impulso a la probabilidad de obra maestra.\n\nLos especializados también aprenden a llevar el taller consigo: un artesano especializado puede montar una estación móvil en el campo durante diez minutos seguidos, de modo que las recetas de estación se pueden trabajar en la boca de la mina en vez de volver al pueblo. Sus límites son deliberados: nunca cuenta para entrenar con un maestro ni para desvincular una pieza de encargo, y expira con su temporizador la hayas usado o no.',
   'guide.profPages.ench.disenchantHeading': 'Desencantamiento',
   'guide.profPages.ench.disenchantNote':
-    'Desencantar toma cualquier arma o pieza de armadura de calidad común o mejor y consume una copia, nunca una que ya esté encantada. Las piezas comunes y poco comunes se procesan en un puñado de Polvo de Carillón, más rico para piezas más raras y de mayor nivel; a partir de raro, el rendimiento cambia de forma: exactamente una Esencia de Carillón de una pieza rara o un Fragmento de Carillón de una pieza épica o legendaria, más un secundario tipificado según el material del que estaba hecha la pieza.',
+    'Desencantar toma cualquier arma o pieza de armadura de calidad común o mejor y consume una copia, tomando una copia normal antes que una encantada; cuando solo quedan copias encantadas, se destruye una de ellas, con encantamiento y todo. Las piezas comunes y poco comunes se procesan en un puñado de Polvo de Carillón, más rico para piezas más raras y de mayor nivel; a partir de raro, el rendimiento cambia de forma: exactamente una Esencia de Carillón de una pieza rara o un Fragmento de Carillón de una pieza épica o legendaria, más un secundario tipificado según el material del que estaba hecha la pieza.',
   'guide.profPages.ench.typedHeading': 'Secundarios tipificados',
   'guide.profPages.ench.typedNote':
     'Los secundarios tipificados siguen el material: la armadura de tela produce Hilo Resonante, el cuero Piel Resonante, la cota de malla Eslabones Resonantes, las armas de cuerpo a cuerpo Acero Resonante, y los bastones, varitas, arcos y ballestas Madera Resonante. Una pieza rara da exactamente {rare}; una pieza épica o legendaria da {epicMin} o {epicMax}. Los anillos y collares no tienen clase de armadura, así que solo producen el material primario.\n\nPresta atención a la letra pequeña: los secundarios Resonantes se vinculan al intercambiar, así que cada uno puede cambiar de manos exactamente una vez, directamente del desencantador al encantador que lo usará. El Polvo, la Esencia y los Fragmentos no tienen esa restricción y se mueven como cualquier otro bien de intercambio.',
@@ -275,7 +275,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'No se vende',
   'guide.profPages.priceNone': 'No se vende',
   'guide.profPages.toolTierReq': 'Herramienta de nivel {tier}',
-  'guide.profPages.bareHands': 'Manos desnudas',
   'guide.profPages.yieldsHeading': 'Qué produce una cosecha',
   'guide.profPages.yieldsBody':
     'Cada cosecha tira una calidad para lo que otorga, y tu pericia es toda la historia de esa tirada. Un recolector nuevo siempre saca material común; cada punto de habilidad desplaza peso de forma constante desde el común hacia los grados más altos y nunca hacia atrás, hasta que al llegar al tope de 100 el grado común desaparece por completo: 60 por ciento poco común, 30 por ciento raro, 8 por ciento épico y 2 por ciento legendario, siempre.\n\nLa calidad también significa cantidad: una tirada común da 1 unidad, poco común y raro dan 2, épico 3, y legendario 4. Cualquier resultado raro, épico o legendario llega como una copia firmada marcada como Recolectado por ti: al tope, eso es cuatro de cada diez cosechas con tu nombre, y las reglas de procedencia en la página de Economía de Artesanía explican por qué los artesanos pagan de más exactamente por esas pilas.',
@@ -750,7 +749,8 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Bendicion Marchita (quema el mana)',
   'hudChrome.finder.mech.mist_surge': 'Oleada de Niebla (dano de area pulsante)',
   'hudChrome.finder.mech.mortal_wound': 'Herida Olvidada (reduce la curacion recibida)',
-  'hudChrome.finder.mech.necrotic_shockwave': 'Onda de Choque Necrotica (dano de area intenso)',
+  'hudChrome.finder.mech.grave_inferno':
+    'Infierno Sepulcral (AoE de fuego canalizado, manteneos separados)',
   'hudChrome.finder.mech.profane_mending': 'Restauracion Profana (cura a sus aliados)',
   'hudChrome.finder.mech.raise_fallen': 'Despertar a los Caidos (oleadas periodicas de refuerzos)',
   'hudChrome.finder.mech.reaping_arc': 'Arco Segador (tajo frontal)',
@@ -4103,7 +4103,7 @@ export const es: Partial<Record<TranslationKey, string>> = {
     'Enraíza al objetivo en el sitio durante hasta 12 s.',
   'entities.abilities.bear_form.name': 'Forma de Bruin',
   'entities.abilities.bear_form.description':
-    'Cambias a forma de oso: armadura +90%, poder de ataque muy aumentado, tus ataques generan ira y un 30% más de amenaza. Lánzala de nuevo para volver a forma de taumaturgo.',
+    'Cambias a forma de oso: armadura +130%, poder de ataque muy aumentado, tus ataques generan ira y un 30% más de amenaza. Lánzala de nuevo para volver a forma de taumaturgo.',
   'entities.abilities.maul.name': 'Rompehuesos',
   'entities.abilities.maul.description':
     'Ataque brutal que aumenta el daño cuerpo a cuerpo en {damage} y causa mucha amenaza. Se activa en tu siguiente golpe. Solo en forma de Bruin.',
@@ -7460,6 +7460,8 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Mostrar cofre',
   'hudChrome.dailyRewards.hideChestButton': 'Ocultar cofre',
   'hudChrome.dailyRewards.title': 'Recompensas diarias',
+  'hudChrome.dailyRewards.disabled':
+    'Las recompensas diarias están desactivadas actualmente. Anunciaremos las novedades de esta función en el canal de Discord.',
   'hudChrome.dailyRewards.unknown': 'Desconocido',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

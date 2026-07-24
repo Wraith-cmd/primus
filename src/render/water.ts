@@ -51,6 +51,8 @@ const SUN_COLOR = new THREE.Color(0xfff0d4);
 
 export interface WaterView {
   meshes: THREE.Mesh[];
+  /** True when GPU height-field contacts can provide continuous wakes. */
+  simulationEnabled: boolean;
   /** Advances wave simulation and fog-culls whole water bodies. */
   update(time: number, cameraX: number, cameraZ: number, visibleRange: number): number;
   /** Adds a local entry, landing, fish, or bobber disturbance. */
@@ -321,6 +323,7 @@ function buildShaderWater(seed: number, renderer?: THREE.WebGLRenderer): WaterVi
   const visibleBodies = bodies.map(() => true);
   return {
     meshes,
+    simulationEnabled: simulation?.enabled ?? false,
     update(time: number, cameraX: number, cameraZ: number, visibleRange: number): number {
       for (let i = 0; i < meshes.length; i++) {
         const lake = bodies[i];
@@ -419,6 +422,7 @@ function buildPhongWater(): WaterView {
   });
   return {
     meshes,
+    simulationEnabled: false,
     update(time: number, cameraX: number, cameraZ: number, visibleRange: number): number {
       texture.offset.x = time * 0.008;
       texture.offset.y = time * 0.011;

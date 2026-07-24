@@ -1,5 +1,19 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { isLeapableWater } from '../src/render/fish';
+import {
+  advanceWaterSchedule,
+  WATER_MAX_STEPS_PER_FRAME,
+  WATER_SCHEDULE_SLEEP,
+  WATER_SCHEDULE_WAKE,
+  WATER_WAVE_COEFFICIENT_LIMIT,
+  waterBodyVisible,
+  waterCellIntersectsDisc,
+  waterGridPlan,
+  waterResidentBodyBudget,
+  waterSimulationPlan,
+  waterSimulationTargetResolution,
+  waterSolverCoefficients,
+} from '../src/render/water_core';
 import { isBlocked } from '../src/sim/colliders';
 import { BUILTIN_WORLD, setActiveWorldContent } from '../src/sim/data';
 import { findPlayerPath, PLAYER_SWIM_DEPTH, resolvePlayerDestination } from '../src/sim/pathfind';
@@ -34,6 +48,104 @@ function withSunkenFeature(): WorldContent {
 }
 
 afterEach(() => setActiveWorldContent(null));
+
+describe('optimized water geometry, scheduling, and stability', () => {
+  it('bounds tessellation for very large editor-authored lakes', () => {
+    expect(waterGridPlan(48, 2.6, 8, 64)).toEqual({ size: 96, segments: 37 });
+    expect(waterGridPlan(10_000, 2, 8, 64).segments).toBe(64);
+  });
+
+  it('drops corner cells but retains every cell touching the circular boundary', () => {
+    expect(waterCellIntersectsDisc(-1, -1, 1, 1, 5)).toBe(true);
+    expect(waterCellIntersectsDisc(4.9, -0.2, 5.2, 0.2, 5)).toBe(true);
+    expect(waterCellIntersectsDisc(7, 7, 8, 8, 5)).toBe(false);
+  });
+
+  it('culls only after the whole lake has left fog range', () => {
+    expect(waterBodyVisible(70, 0, 0, 0, 20, 50)).toBe(true);
+    expect(waterBodyVisible(70.01, 0, 0, 0, 20, 50)).toBe(false);
+    expect(waterBodyVisible(0, 0, 500, 500, 20, 100)).toBe(false);
+  });
+
+  it('bounds fixed-step wave simulation by graphics tier', () => {
+    expect(waterSimulationPlan(29, 'medium')).toEqual({ resolution: 64, stepHz: 20 });
+    expect(waterSimulationPlan(48, 'high')).toEqual({ resolution: 96, stepHz: 24 });
+    expect(waterSimulationPlan(56, 'ultra')).toEqual({ resolution: 128, stepHz: 30 });
+    expect(waterSimulationPlan(10_000, 'ultra')).toEqual({ resolution: 128, stepHz: 30 });
+    expect(waterSimulationPlan(0, 'low')).toEqual({ resolution: 48, stepHz: 15 });
+  });
+
+  it('keeps target allocation fixed for every lake radius and contact order', () => {
+    const radii = [0, 1, 29, 48, 96, 10_000];
+    for (const tier of ['low', 'medium', 'high', 'ultra'] as const) {
+      const allocation = waterSimulationTargetResolution(tier);
+      expect(radii.map((radius) => waterSimulationPlan(radius, tier).resolution)).toEqual(
+        radii.map(() => allocation),
+      );
+    }
+  });
+
+  it('pins damping and keeps the wave coefficient inside the stable band', () => {
+    expect(WATER_WAVE_COEFFICIENT_LIMIT).toBe(0.38);
+    const radii = [1, 29, 48, 96, 10_000];
+    for (const tier of ['low', 'medium', 'high', 'ultra'] as const) {
+      for (const radius of radii) {
+        const plan = waterSimulationPlan(radius, tier);
+        const coefficients = waterSolverCoefficients(radius, plan);
+        expect(coefficients.stepSeconds).toBeCloseTo(1 / plan.stepHz, 12);
+        expect(coefficients.cellSize).toBeCloseTo((radius * 2) / plan.resolution, 12);
+        expect(coefficients.damping).toBeCloseTo(0.74 ** coefficients.stepSeconds, 12);
+        expect(coefficients.damping).toBeGreaterThan(0);
+        expect(coefficients.damping).toBeLessThan(1);
+        expect(coefficients.waveCoefficient).toBeGreaterThanOrEqual(0);
+        expect(coefficients.waveCoefficient).toBeLessThanOrEqual(WATER_WAVE_COEFFICIENT_LIMIT);
+      }
+    }
+    expect(waterSolverCoefficients(1, waterSimulationPlan(1, 'ultra')).waveCoefficient).toBe(
+      WATER_WAVE_COEFFICIENT_LIMIT,
+    );
+  });
+
+  it('bounds resident height fields independently of custom-map lake count', () => {
+    expect(waterResidentBodyBudget('low')).toBe(1);
+    expect(waterResidentBodyBudget('medium')).toBe(2);
+    expect(waterResidentBodyBudget('high')).toBe(3);
+    expect(waterResidentBodyBudget('ultra')).toBe(4);
+  });
+
+  it('drops hidden impulses without extending the wake and sleeps on schedule', () => {
+    const state = {
+      active: true,
+      pendingCount: 4,
+      accumulator: 0.03,
+      awakeUntil: 6,
+      stepSeconds: 1 / 30,
+    };
+    expect(advanceWaterSchedule(state, false, 5, 0.1)).toBe(0);
+    expect(state.pendingCount).toBe(0);
+    expect(state.accumulator).toBe(0);
+    expect(state.awakeUntil).toBe(6);
+    expect(advanceWaterSchedule(state, false, 6, 0.1)).toBe(WATER_SCHEDULE_SLEEP);
+  });
+
+  it('wakes once and caps hitch catch-up to two fixed steps', () => {
+    const stepSeconds = 1 / 24;
+    const state = {
+      active: false,
+      pendingCount: 1,
+      accumulator: 0,
+      awakeUntil: 0,
+      stepSeconds,
+    };
+    expect(advanceWaterSchedule(state, true, 10, 1)).toBe(WATER_SCHEDULE_WAKE);
+    expect(state.active).toBe(true);
+    expect(state.awakeUntil).toBe(16);
+    expect(state.accumulator).toBe(stepSeconds * WATER_MAX_STEPS_PER_FRAME);
+    state.pendingCount = 0;
+    state.accumulator = 0;
+    expect(advanceWaterSchedule(state, true, 16, 0.01)).toBe(WATER_SCHEDULE_SLEEP);
+  });
+});
 
 describe('terrain/feature-aware water (#1518)', () => {
   it('the built-in lake is a declared water body; open ground is not', () => {

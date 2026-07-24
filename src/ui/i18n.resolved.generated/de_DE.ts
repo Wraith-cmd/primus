@@ -355,6 +355,7 @@ export const de_DE: EnTranslations = {
       "close": "Tägliche Belohnungen schließen",
       "loading": "Tägliche Belohnungen werden geladen...",
       "error": "Tägliche Belohnungen konnten nicht geladen werden.",
+      "disabled": "Tägliche Belohnungen sind derzeit deaktiviert. Neuigkeiten zu dieser Funktion geben wir im Discord-Kanal bekannt.",
       "intro": "Halte genügend WOC in deiner verifizierten Wallet, um tägliche Belohnungen freizuschalten. Verdiene Punkte mit einem täglichen Dreh und wechselnden Aufgaben und klettere dann in der täglichen Rangliste nach oben, um einen Anteil am Preispool zu erhalten.",
       "disclaimer": "Der WOC-Kurs kann sich schnell bewegen. Wir empfehlen, mehr als das Minimum von 20 USD zu halten, damit gewöhnliche Kursschwankungen dich nicht aussperren. Dies ist keine Finanzberatung.",
       "prize": "Preispool",
@@ -1459,7 +1460,9 @@ export const de_DE: EnTranslations = {
         "gills": "Kiemen",
         "claw": "Klaue",
         "horn": "Horn",
-        "tusk": "Stoßzahn"
+        "tusk": "Stoßzahn",
+        "meat": "Meat",
+        "cloth": "Cloth"
       }
     },
     "townFocus": {
@@ -1991,6 +1994,9 @@ export const de_DE: EnTranslations = {
         "takeParcelsFirst": "Entnimm erst die Pakete, bevor du den Brief verwirfst."
       }
     },
+    "noticeboard": {
+      "empty": "Nothing seems posted."
+    },
     "bank": {
       "title": "Bank",
       "subtitle": "Die Vergoldete Schatulle",
@@ -2131,12 +2137,51 @@ export const de_DE: EnTranslations = {
         "logging": "Erfordert eine Holzfäller-Axt der Stufe {tier}",
         "herbalism": "Erfordert eine Kräuterkunde-Sichel der Stufe {tier}"
       },
+      "requiresTool": {
+        "mining": "Requires a mining pick",
+        "logging": "Requires a logging axe",
+        "herbalism": "Requires a herbalism sickle"
+      },
       "toolTierUnmet": {
         "mining": "Du brauchst eine Bergbau-Spitzhacke der Stufe {tier}, um diese Ader abzubauen.",
         "logging": "Du brauchst eine Holzfäller-Axt der Stufe {tier}, um diesen Stand zu fällen.",
         "herbalism": "Du brauchst eine Kräuterkunde-Sichel der Stufe {tier}, um diese Pflanze zu sammeln."
       },
+      "toolRequired": {
+        "mining": "You need a mining pick to harvest this vein.",
+        "logging": "You need a logging axe to fell this stand.",
+        "herbalism": "You need a herbalism sickle to gather this patch.",
+        "fishing": "You need a fishing pole to cast a line."
+      },
+      "noNodeNearby": {
+        "mining": "There is no ore vein within reach.",
+        "logging": "There is no timber stand within reach.",
+        "herbalism": "There is no herb patch within reach."
+      },
       "toolTierUnmetCorpse": "Du brauchst ein Sammelwerkzeug der Stufe {tier}, um die feinsten Materialien zu gewinnen.",
+      "toolTooltip": {
+        "kind": {
+          "mining": "Mining tool (tier {tier})",
+          "logging": "Logging tool (tier {tier})",
+          "herbalism": "Herbalism tool (tier {tier})",
+          "fishing": "Fishing rod (tier {tier})"
+        },
+        "unlocks": {
+          "mining": "Required to mine ore veins up to tier {tier}.",
+          "logging": "Required to fell timber stands up to tier {tier}.",
+          "herbalism": "Required to gather herb patches up to tier {tier}."
+        },
+        "use": {
+          "mining": "Use: Mine a nearby ore vein.",
+          "logging": "Use: Fell a nearby timber stand.",
+          "herbalism": "Use: Gather from a nearby herb patch."
+        },
+        "speed": "Gathers faster at nodes below tier {tier}.",
+        "rodRequired": "Required to fish.",
+        "rodBite": "Fish bite up to {seconds}s sooner.",
+        "rodReel": "Extends the reel window by {seconds}s.",
+        "rodBand": "Unlocks richer catch tables at fishing skill {skill} and above."
+      },
       "downgradeMark": "Taschen voll: der Fund wurde ohne Sammelzeichen gespeichert.",
       "downgradeFind": "Taschen voll: ein makelloser Fund ist entkommen.",
       "stateReady": "Bereit",
@@ -2312,6 +2357,7 @@ export const de_DE: EnTranslations = {
       },
       "throttled": "Ihr stellt zu schnell her. Wartet einen Moment und versucht es erneut.",
       "recipeNotLearned": "Ihr habt dieses Rezept noch nicht erlernt.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Erfordert {craft} {skill}",
       "difficultyFull": "Voller Fähigkeitsgewinn",
       "difficultyReduced": "Reduzierter Fähigkeitsgewinn",
@@ -2363,6 +2409,9 @@ export const de_DE: EnTranslations = {
       "enchantWrongSlot": "Diese Verzauberung kann nicht auf diesen Gegenstand angewendet werden.",
       "enchantUnknown": "Diese Verzauberung existiert nicht.",
       "enchantInsufficient": "Du hast nicht die Materialien für diese Verzauberung.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "{item} entzaubern?",
       "disenchantConfirmBody": "Dies zerstört {item} und ergibt arkane Materialien. Dies kann nicht rückgängig gemacht werden.",
       "disenchantConfirmBodySpecial": "Dies zerstört eine besondere Kopie von {item} (signiert, Meisterwerk oder verzaubert) und ergibt arkane Materialien. Dies kann nicht rückgängig gemacht werden.",
@@ -2382,8 +2431,10 @@ export const de_DE: EnTranslations = {
       "stateKnown": "Bekannt",
       "stateTeachable": "Verfügbar",
       "stateLocked": "Gesperrt",
+      "statePending": "Learning",
       "requirement": "Wird ab {craft} {skill} gelehrt",
       "trainAria": "Lernen Sie {name} für {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Ausbildung",
       "dialogOptionAria": "Ausbildung bei {name} ansehen",
       "learned": "Rezept gelernt: {recipe}",
@@ -2410,7 +2461,8 @@ export const de_DE: EnTranslations = {
       "notEligible": "Dieser Gegenstand kann nicht entbunden werden.",
       "notBound": "Dieser Gegenstand ist nicht gebunden.",
       "cannotAfford": "Du kannst die Entbindungsgebühr nicht bezahlen.",
-      "outOfRange": "Du musst dich an einer Handwerksstation befinden, um zu entbinden."
+      "outOfRange": "Du musst dich an einer Handwerksstation befinden, um zu entbinden.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Instanzfinder",
@@ -2498,7 +2550,7 @@ export const de_DE: EnTranslations = {
         "lunar_tide": "Mondflut (pulsierender Flachenschaden)",
         "enrage": "Rasiert bei geringer Gesundheit",
         "shuddering_stomp": "Erschutternder Stampfer (Flachenbetaubung)",
-        "necrotic_shockwave": "Nekrotische Schockwelle (schwerer Flachenschaden)",
+        "grave_inferno": "Grabesinferno (kanalisiertes Feuer-AoE, Abstand halten)",
         "grave_cleaver": "Grabspalter (frontaler Schwung)",
         "shadow_nova": "Schattennova (Flachenexplosion)",
         "profane_mending": "Entweihte Heilung (heilt Verbundete)",
@@ -3784,7 +3836,7 @@ export const de_DE: EnTranslations = {
       "specializationBody": "Ab Fertigkeit {at} spezialisiert sich dieser Beruf für dich, ohne dass eine Quest nötig ist: Rezepte kosten von da an {pct}% weniger Materialien, und die Spezialisierung fügt der Meisterwerkchance einen eigenen Bonus hinzu.\n\nSpezialisierte Handwerker lernen außerdem, die Werkstatt mit sich zu nehmen: Ein spezialisierter Handwerker kann im Feld eine mobile Station für jeweils zehn Minuten errichten, sodass stationsgebundene Rezepte am Eingang der Mine statt in der Stadt bearbeitet werden können. Ihre Grenzen sind bewusst gesetzt: Sie zählt nie für das Training bei einem Meister oder für das Entbinden einer Auftragsarbeit, und sie läuft nach ihrem Timer ab, ob du sie genutzt hast oder nicht.",
       "ench": {
         "disenchantHeading": "Entzaubern",
-        "disenchantNote": "Entzaubern nimmt jedes Waffen- oder Rüstungsstück der Qualität Gewöhnlich oder besser und verbraucht eine Kopie, niemals eine, die bereits verzaubert ist. Gewöhnliche und ungewöhnliche Stücke werden zu einer zufälligen Handvoll Glockenpulver zermahlen, etwas reicher für seltenere und höherstufige Stücke; ab Selten ändert sich der Ertrag: genau eine Glockenessenz von einem seltenen Stück oder ein Glockensplitter von einem epischen oder legendären, plus ein typisiertes Sekundärmaterial, das dem entspricht, woraus das Stück gefertigt wurde.",
+        "disenchantNote": "Entzaubern nimmt jedes Waffen- oder Rüstungsstück der Qualität Gewöhnlich oder besser und verbraucht eine Kopie, wobei eine einfache Kopie vor einer verzauberten drankommt; bleiben nur noch verzauberte Kopien übrig, wird eine davon zerstört, mitsamt ihrer Verzauberung. Gewöhnliche und ungewöhnliche Stücke werden zu einer zufälligen Handvoll Glockenpulver zermahlen, etwas reicher für seltenere und höherstufige Stücke; ab Selten ändert sich der Ertrag: genau eine Glockenessenz von einem seltenen Stück oder ein Glockensplitter von einem epischen oder legendären, plus ein typisiertes Sekundärmaterial, das dem entspricht, woraus das Stück gefertigt wurde.",
         "typedHeading": "Typisierte Sekundärmaterialien",
         "typedNote": "Die typisierten Sekundärmaterialien folgen dem Material: Stoffrüstung ergibt Resonanten Faden, Leder Resonantes Fell, Kettenrüstung Resonante Kettenglieder, Nahkampfwaffen Resonanten Stahl, und Stäbe, Zauberstäbe, Bögen und Armbrüste Resonantes Holz. Ein seltenes Stück gibt genau {rare}; ein episches oder legendäres gibt {epicMin} oder {epicMax}. Ringe und Halsketten haben keine Rüstungsklasse, also ergibt sich daraus nur das Primärmaterial.\n\nAchte auf das Kleingedruckte: Die Resonanten Sekundärmaterialien binden bei Handel, sodass jedes genau einmal den Besitzer wechseln kann, direkt vom Zerbrecher zum Verzauberer, der es verbrennt. Staub, Essenz und Splitter tragen keine solche Einschränkung und bewegen sich wie jede andere Handelsware.",
         "colSource": "Gebrochen aus",
@@ -3823,7 +3875,6 @@ export const de_DE: EnTranslations = {
       "toolUnavailable": "Nicht erhältlich",
       "priceNone": "Nicht erhältlich",
       "toolTierReq": "Werkzeug der Stufe {tier}",
-      "bareHands": "Mit bloßen Händen",
       "yieldsHeading": "Was eine Ernte einbringt",
       "yieldsBody": "Jede Ernte würfelt eine Qualität für das, was sie gewährt, und deine Fertigkeit ist die ganze Geschichte dieses Wurfs. Ein brandneuer Sammler zieht immer gewöhnliches Material; jeder Fertigkeitspunkt verschiebt das Gewicht stetig weg von Gewöhnlich hin zu den höheren Qualitätsstufen und nie zurück, bis an der Obergrenze von 100 die gewöhnliche Qualität vollständig verschwindet: 60 Prozent ungewöhnlich, 30 Prozent selten, 8 Prozent episch und 2 Prozent legendär, immer.\n\nQualität bedeutet auch Menge: Ein gewöhnlicher Wurf ergibt 1 Einheit, Ungewöhnlich und Selten ergeben 2, Episch 3 und Legendär 4. Jeder seltene, epische oder legendäre Fund kommt als signiertes Exemplar gestempelt mit Gesammelt von dir an: An der Obergrenze tragen vier von zehn Ernten deinen Namen, und die Herkunftsregeln auf der Seite Handwerkswirtschaft erklären, warum Handwerker genau für diese Stapel extra zahlen.",
       "bandsHeading": "Fertigkeitsstufen",
@@ -5523,8 +5574,10 @@ export const de_DE: EnTranslations = {
     "reconnectingNow": "Verbindung verloren. Jetzt wird die Verbindung wiederhergestellt... (Versuch {attempt}/{maxAttempts})",
     "slowConnection": "Das dauert länger als gewöhnlich. Überprüfen Sie Ihre Internetverbindung.",
     "connectionRejected": "Der Server hat die Verbindung geschlossen.",
+    "incompatibleWorldVersion": "Game and server versions are incompatible. Reload or update, then try again.",
     "realmFull": "Diese Welt ist derzeit voll. Bitte versuche es in wenigen Minuten erneut.",
     "tooManyConnections": "Zu viele Verbindungen zu dieser Welt kommen von deinem Netzwerk. Bitte schliesse zusatzliche Spielfenster oder versuche es in wenigen Minuten erneut.",
+    "messageRateExceeded": "You were disconnected for sending actions too quickly. Please wait a moment and log back in.",
     "tips": {
       "classes": "Tipp: Jede der 9 Klassen spielt sich anders. Probiere einige aus, bevor du dich für eine entscheidest.",
       "talents": "Tipp: Du kannst deine Talente jederzeit außerhalb des Kampfes zurücksetzen, eine frühe Wahl ist also nie eine Falle.",
@@ -5593,6 +5646,12 @@ export const de_DE: EnTranslations = {
     "bodyDesktop": "Das Spiel läuft ohne GPU-Beschleunigung und wird langsam sein. Aktualisiere deine Grafiktreiber und starte das Spiel neu. Unter Windows stelle das Spiel außerdem unter Einstellungen > System > Anzeige > Grafik auf Hohe Leistung ein.",
     "bodyWeb": "Das Spiel läuft ohne GPU-Beschleunigung und wird langsam sein. Aktiviere die Hardwarebeschleunigung in deinen Browsereinstellungen, aktualisiere deine Grafiktreiber und starte deinen Browser neu.",
     "dismiss": "Schließen"
+  },
+  "perfNudge": {
+    "integratedGpu": "The game is running on the integrated (power-saving) GPU. If this computer also has a gaming GPU, set your browser to High performance under Settings > System > Display > Graphics on Windows, then restart the browser. The desktop app picks the gaming GPU automatically.",
+    "hardwareAccelerationDesktop": "The game is running without GPU acceleration, which makes it very slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "hardwareAccelerationWeb": "The game is running without GPU acceleration, which makes it very slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "Keine Welten verfügbar.",
@@ -6018,7 +6077,8 @@ export const de_DE: EnTranslations = {
       "death": "{name} stirbt.",
       "auraGain": "Ihr erhaltet {name}.",
       "auraFade": "{name} schwindet von Euch.",
-      "auraAfflicted": "{target} ist von {name} betroffen."
+      "auraAfflicted": "{target} ist von {name} betroffen.",
+      "auraGainOther": "{target} gains {name}."
     },
     "system": {
       "playerDeath": "Ihr seid gestorben.",
@@ -7279,7 +7339,7 @@ export const de_DE: EnTranslations = {
       },
       "bear_form": {
         "name": "Bruin Form",
-        "description": "Verwandelt euch in einen Bären: Rüstung +90%, stark erhöhte Angriffskraft, eure Angriffe erzeugen Wut und 30% mehr Bedrohung. Erneut wirken, um zur Zauberergestalt zurückzukehren."
+        "description": "Verwandelt euch in einen Bären: Rüstung +130%, stark erhöhte Angriffskraft, eure Angriffe erzeugen Wut und 30% mehr Bedrohung. Erneut wirken, um zur Zauberergestalt zurückzukehren."
       },
       "maul": {
         "name": "Bonecrush",
@@ -11725,6 +11785,7 @@ export const de_DE: EnTranslations = {
     "delveRiteShrineCandleInteract": "Kerzenschrein: Drücke F, um ihn zu berühren",
     "delveRiteShrineReedInteract": "Schilfschrein: Drücke F, um ihn zu berühren",
     "delveRiteShrineSkullInteract": "Schädelschrein: Drücke F, um ihn zu berühren",
-    "mailboxName": "Briefkasten"
+    "mailboxName": "Briefkasten",
+    "noticeboardName": "Notice Board"
   }
 };

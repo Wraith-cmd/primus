@@ -218,7 +218,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     'Bu zanaat {at} becerisinde seni uzmanlaştırır, görev gerekmez: tarifler o andan itibaren {pct}% daha az malzeme gerektirir ve uzmanlaşma şaheser şansına kendi artışını ekler.\n\nUzmanlar aynı zamanda atölyeyi yanlarında taşımayı öğrenir: uzmanlaşmış bir üretici bir seferde on dakikalığına sahaya mobil bir istasyon kurabilir; böylece istasyona bağlı tarifler kasabaya dönmek yerine maden ağzında çalışılabilir. Sınırları kasıtlıdır: bir usta yanında eğitim için veya sipariş edilmiş bir parçayı serbest bırakmak için hiçbir zaman geçerli sayılmaz ve zamanlayıcısında kullandığına bakılmaksızın sona erer.',
   'guide.profPages.ench.disenchantHeading': 'Büyü bozumu',
   'guide.profPages.ench.disenchantNote':
-    "Büyü bozumu, sıradan kalite veya daha iyisindeki herhangi bir silah ya da zırh parçasını alır ve bir kopyasını tüketir; büyülü olan bir kopyayı asla tüketmez. Sıradan ve sıradan dışı parçalar bir miktar Çan Tozu'na dönüştürülür; nadir ve daha yüksek seviyeli parçalar için bu oran biraz daha yüksektir; nadir olandan itibaren verim şekil değiştirir, nadir parçadan tam olarak bir Çan Özü ya da destansı veya efsanevi parçadan bir Çan Kırığı, artı parçanın neyden yapıldığına göre yazılan bir ikincil.",
+    "Büyü bozumu, sıradan kalite veya daha iyisindeki herhangi bir silah ya da zırh parçasını alır ve bir kopyasını tüketir; büyülü bir kopyadan önce sıradan bir kopyayı alır, yalnızca büyülü kopyalar kaldıysa bunlardan biri büyüsüyle birlikte yok edilir. Sıradan ve sıradan dışı parçalar bir miktar Çan Tozu'na dönüştürülür; nadir ve daha yüksek seviyeli parçalar için bu oran biraz daha yüksektir; nadir olandan itibaren verim şekil değiştirir, nadir parçadan tam olarak bir Çan Özü ya da destansı veya efsanevi parçadan bir Çan Kırığı, artı parçanın neyden yapıldığına göre yazılan bir ikincil.",
   'guide.profPages.ench.typedHeading': 'Yazılan ikinciller',
   'guide.profPages.ench.typedNote':
     'Yazılan ikinciller malzemeyi izler: kumaş zırh Rezonant İplik, deri Rezonant Deri, posta Rezonant Halkalar, yakın dövüş silahları Rezonant Çelik ve asalar, değnekler, yaylar ve arbaletler Rezonant Kereste verir. Nadir parça tam olarak {rare} verir; destansı veya efsanevi parça {epicMin} ya da {epicMax} verir. Yüzükler ve kolyeler zırh sınıfı taşımaz, bu nedenle yalnızca birincil malzemeyi verir.\n\nİnce yazıya dikkat edin: Rezonant ikinciller ticarette bağlanır, bu nedenle her biri tam olarak bir kez el değiştirebilir, doğrudan kırıcıdan onu yakacak büyücüye. Toz, Öz ve Kıymıklar böyle bir kısıtlama taşımaz ve diğer ticaret malları gibi hareket eder.',
@@ -263,7 +263,6 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'Satılmaz',
   'guide.profPages.priceNone': 'Satılmaz',
   'guide.profPages.toolTierReq': 'Kademe {tier} alet',
-  'guide.profPages.bareHands': 'Çıplak eller',
   'guide.profPages.yieldsHeading': 'Hasat ne verir',
   'guide.profPages.yieldsBody':
     'Her hasat, verdiği şeyin kalitesini çalar ve yetkinliğin tüm hikayesidir bu. Yeni başlayan bir toplayıcı her zaman yaygın malzeme çıkarır; her beceri puanı ağırlığı istikrarlı bir şekilde yaygından daha yüksek kademelere taşır ve asla geri dönmez; 100 tavanında yaygın kademe tamamen ortadan kalkar: her seferinde yüzde 60 nadir dışı, yüzde 30 nadir, yüzde 8 epik ve yüzde 2 efsanevi.\n\nKalite aynı zamanda miktar anlamına da gelir: yaygın çekim 1 birim, nadir dışı ve nadir 2, epik 3 ve efsanevi 4 verir. Nadir, epik veya efsanevi her çekim, tarafından toplandı olarak damgalanmış imzalı bir örnek olarak gelir: tavanda on hasattan dördü adını taşır ve Zanaat Ekonomisi sayfasındaki provenance kuralları, üreticilerin tam olarak bu yığınlar için neden fazladan ödediğini açıklar.',
@@ -756,7 +755,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Solmuş Kutsama (manayı yakar)',
   'hudChrome.finder.mech.mist_surge': 'Sis Dalgası (darbeli alan hasarı)',
   'hudChrome.finder.mech.mortal_wound': 'Unutulmuş Yara (alınan iyileştirmeyi azaltır)',
-  'hudChrome.finder.mech.necrotic_shockwave': 'Nekrotik Şok Dalgası (ağır alan hasarı)',
+  'hudChrome.finder.mech.grave_inferno': 'Mezar Inferno (kanalize ateş AoE, daginik durun)',
   'hudChrome.finder.mech.profane_mending': 'Murdar Şifa (müttefiklerini iyileştirir)',
   'hudChrome.finder.mech.raise_fallen': 'Düşenleri Kaldır (periyodik yardımcı dalgaları)',
   'hudChrome.finder.mech.reaping_arc': 'Biçen Yay (öne doğru yay saldırısı)',
@@ -2668,7 +2667,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
     'Bir düşmana hücum ederek 9 öfke üretir ve onu 1 saniye sersemletir. 8-25 yarda menzil. Yalnızca Bruin Formu.',
   'entities.abilities.bear_charge.name': 'Bruin Hücumu',
   'entities.abilities.bear_form.description':
-    'Bir ayıya dönüş: zırh +%90, saldırı gücü büyük ölçüde artar, saldırıların öfke biriktirir ve %30 daha fazla tehdit üretir. Büyücü formuna dönmek için tekrar kullan.',
+    'Bir ayıya dönüş: zırh +%130, saldırı gücü büyük ölçüde artar, saldırıların öfke biriktirir ve %30 daha fazla tehdit üretir. Büyücü formuna dönmek için tekrar kullan.',
   'entities.abilities.bear_form.name': 'Bruin Formu',
   'entities.abilities.berserker_rage.description':
     'Kaynayan bir gazaba kapılarak 20 öfke üretir. (Savaşçı yeteneği)',
@@ -7397,6 +7396,8 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Sandığı Göster',
   'hudChrome.dailyRewards.hideChestButton': 'Sandığı Gizle',
   'hudChrome.dailyRewards.title': 'Günlük Ödüller',
+  'hudChrome.dailyRewards.disabled':
+    'Günlük Ödüller şu anda devre dışı. Bu özellikle ilgili güncellemeleri Discord kanalında duyuracağız.',
   'hudChrome.dailyRewards.unknown': 'Bilinmiyor',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

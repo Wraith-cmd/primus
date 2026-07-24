@@ -25,6 +25,11 @@ export interface HeroicDungeonTuning {
   // Nythraxis encounter-script adds (spawned with NO summonedAdd role, and
   // spanning a 2x spread in base weapon damage).
   damageMultiplierByMob?: Record<string, number>;
+  // Per-mob HEALTH override (same shape as the damage map): a mob listed here
+  // takes this factor instead of the dungeon-wide healthMultiplier. Added for
+  // the 2026-07-24 heroic Nythraxis nerf (skeleton waves at 1.2x their
+  // NORMAL-mode pool instead of the raid-wide 3.2x).
+  healthMultiplierByMob?: Record<string, number>;
   armorMultiplier: number;
   // The dungeon's last boss: killing it in a heroic instance awards Heroic
   // Marks for every eligible participant.
@@ -92,12 +97,12 @@ export const NORMAL_DUNGEON_TUNING: Record<string, NormalDungeonTuning> = {
     difficulty: 'normal',
     healthMultiplier: 2.0,
     damageMultiplierByMob: {
-      sanctum_boneguard: 11.5,
-      sanctum_drakonid: 11,
-      raised_bonewalker: 23,
-      korgath_the_bound: 19.5,
-      grand_necromancer_velkhar: 20.5,
-      korzul_the_gravewyrm: 19,
+      sanctum_boneguard: 7.5,
+      sanctum_drakonid: 7.25,
+      raised_bonewalker: 11.25,
+      korgath_the_bound: 13.5,
+      grand_necromancer_velkhar: 14,
+      korzul_the_gravewyrm: 13,
     },
   },
   nythraxis_boss_arena: {
@@ -130,8 +135,9 @@ export const HEROIC_DUNGEON_TUNING: Record<string, HeroicDungeonTuning> = {
     level: 22,
     healthMultiplier: 4.0,
     damageMultiplier: 18,
-    // Vael's drowned_thrall summons are non-elite: 32.5x lands their 500.
-    addDamageMultiplier: 32.5,
+    // Vael's drowned_thrall summons are non-elite: 16.25x lands the summoned
+    // 250 floor (adds are wave pressure, not extra bosses; 2026-07 retune).
+    addDamageMultiplier: 16.25,
     armorMultiplier: 1.3,
     finalBossId: 'vael_the_mistcaller',
     marksPerParticipant: 1,
@@ -142,8 +148,9 @@ export const HEROIC_DUNGEON_TUNING: Record<string, HeroicDungeonTuning> = {
     level: 22,
     healthMultiplier: 5.2,
     damageMultiplier: 16.5,
-    // Ysolei's moonspawn summons are non-elite: 30.5x lands their 500.
-    addDamageMultiplier: 30.5,
+    // Ysolei's moonspawn summons are non-elite: 15.25x lands the summoned
+    // 250 floor (2026-07 retune).
+    addDamageMultiplier: 15.25,
     armorMultiplier: 1.25,
     finalBossId: 'ysolei',
     marksPerParticipant: 1,
@@ -154,11 +161,12 @@ export const HEROIC_DUNGEON_TUNING: Record<string, HeroicDungeonTuning> = {
     level: 22,
     healthMultiplier: 4.0,
     damageMultiplier: 15.5,
-    // Velkhar's raised_bonewalker summons are non-elite: 29x lands their 500.
-    addDamageMultiplier: 29,
+    // Velkhar's raised_bonewalker summons are non-elite: 14.25x lands the
+    // summoned 250 floor (2026-07 retune).
+    addDamageMultiplier: 14.25,
     // The Sanctum bosses must out-hit their retuned NORMAL selves (normal
-    // floors them at 600 post-mitigation): 19x lands 652-708 versus the
-    // dungeon-wide 15.5x, which would leave them at 532-578, UNDER normal.
+    // floors them at 420 post-mitigation since the 2026-07 fresh-group
+    // retune): 19x lands 652-708, comfortably above.
     damageMultiplierByMob: {
       korgath_the_bound: 19,
       grand_necromancer_velkhar: 19,
@@ -186,16 +194,32 @@ export const HEROIC_DUNGEON_TUNING: Record<string, HeroicDungeonTuning> = {
     difficulty: 'heroic',
     level: 22,
     healthMultiplier: 3.2,
-    damageMultiplier: 8.75,
+    // 2026-07-24 nerf: 7.25 lands the boss floor at ~1016 (was 8.75 / 1227).
+    // The launch calibration one-shot tanks through the whole progression;
+    // at 1000 the bench raid reaches phase 2 at 46-60% boss with worst-case
+    // scripted play. Further nerfs, if live raids still cannot clear, come
+    // as a morning hotfix from HERE, not from 1200.
+    damageMultiplier: 7.25,
     // The raid's add waves spawn through the encounter script
     // (encounters/nythraxis.ts), never spawnBossAdds, so this field is inert
     // there; it mirrors damageMultiplier to state that nothing is softened.
-    addDamageMultiplier: 8.75,
+    addDamageMultiplier: 7.25,
+    // 2026-07 retune: the raid's add waves drop from the five-man 500 line to
+    // the summoned 250 floor; their mechanics (Malric's ramping boss heal,
+    // Aldren's cleave, Voss's taunt immunity) stay the real threat.
     damageMultiplierByMob: {
-      nythraxis_skeleton_warrior: 7.5,
-      nythraxis_heroic_warrior_add: 7.5,
-      nythraxis_heroic_priest_add: 16,
-      nythraxis_heroic_rogue_add: 12.5,
+      nythraxis_skeleton_warrior: 3.75,
+      nythraxis_heroic_warrior_add: 3.75,
+      nythraxis_heroic_priest_add: 8,
+      nythraxis_heroic_rogue_add: 6,
+    },
+    // Skeleton waves at 1.2x their NORMAL-mode pool (3,768 vs 3,137): phase 1
+    // must stop out-massing the boss (a six-wave phase 1 at the raid-wide 3.2x
+    // carried more add HP than the 30% boss push it gated). The heroic court
+    // trio deliberately keeps the full 3.2x: measured off the critical path,
+    // and its respawn gate (only after the previous court dies) self-limits.
+    healthMultiplierByMob: {
+      nythraxis_skeleton_warrior: 2.22,
     },
     armorMultiplier: 1.2,
     finalBossId: 'nythraxis_scourge_of_thornpeak',

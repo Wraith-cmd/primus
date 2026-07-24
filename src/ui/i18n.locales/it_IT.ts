@@ -235,7 +235,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
     "All'abilita {at} questo mestiere ti specializza, senza bisogno di missione: le ricette costano il {pct}% di materiali in meno da quel momento, e la specializzazione aggiunge il proprio incremento alla probabilita di capolavoro.\n\nGli specialisti imparano anche a portare l'officina con se: un fabbricatore specializzato puo allestire una stazione mobile sul campo per dieci minuti alla volta, cosi le ricette legate alla stazione possono essere lavorate all'ingresso della miniera invece che di ritorno in citta. I suoi limiti sono deliberati: non conta mai per l'addestramento con un maestro ne per sciogliere un pezzo su commissione, e scade al suo timer sia che tu l'abbia usata sia che no.",
   'guide.profPages.ench.disenchantHeading': 'Disincanto',
   'guide.profPages.ench.disenchantNote':
-    "Il disincanto prende qualsiasi arma o pezzo d'armatura di qualita comune o superiore e ne consuma una copia, mai una copia gia incantata. I pezzi comuni e non comuni si frantumano in una manciata tirata di Polvere di Tintinnio, un po' piu ricca per i pezzi piu rari e di livello piu alto; dal raro in su il raccolto cambia forma, esattamente una Essenza di Tintinnio da un pezzo raro o un Frammento di Tintinnio da uno epico o leggendario, piu un secondario tipizzato legato a cosa era fatto il pezzo.",
+    "Il disincanto prende qualsiasi arma o pezzo d'armatura di qualita comune o superiore e ne consuma una copia, prendendo prima una copia semplice rispetto a una incantata; quando restano solo copie incantate, una di queste viene distrutta, incanto compreso. I pezzi comuni e non comuni si frantumano in una manciata tirata di Polvere di Tintinnio, un po' piu ricca per i pezzi piu rari e di livello piu alto; dal raro in su il raccolto cambia forma, esattamente una Essenza di Tintinnio da un pezzo raro o un Frammento di Tintinnio da uno epico o leggendario, piu un secondario tipizzato legato a cosa era fatto il pezzo.",
   'guide.profPages.ench.typedHeading': 'Secondari tipizzati',
   'guide.profPages.ench.typedNote':
     "I secondari tipizzati seguono il materiale: l'armatura di panno produce Filo Risonante, il cuoio Pelle Risonante, la maglia Anelli Risonanti, le armi da mischia Acciaio Risonante, e bastoni, bacchette, archi e balestre Legname Risonante. Un pezzo raro da esattamente {rare}; un pezzo epico o leggendario da {epicMin} o {epicMax}. Anelli e collane non hanno classe armatura, quindi producono solo il materiale primario.\n\nAttenzione ai dettagli: i secondari Risonanti si vincolano allo scambio, quindi ognuno puo cambiare mani esattamente una volta, direttamente da chi smantella all'incantatore che lo usera. Polvere, Essenza e Frammenti non hanno tale vincolo e si muovono come qualsiasi altro bene commerciabile.",
@@ -280,7 +280,6 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'Non in vendita',
   'guide.profPages.priceNone': 'Non in vendita',
   'guide.profPages.toolTierReq': 'Strumento di livello {tier}',
-  'guide.profPages.bareHands': 'Mani nude',
   'guide.profPages.yieldsHeading': 'Cosa produce un raccolto',
   'guide.profPages.yieldsBody':
     "Ogni raccolta tira una qualita per cio che concede, e la tua competenza e l'unico fattore di quel tiro. Un raccoglitore alle prime armi ottiene sempre materiale comune; ogni punto di abilita sposta il peso costantemente dal comune ai gradi superiori e mai al contrario, finche al massimo di 100 il grado comune scompare del tutto: 60 percento non comune, 30 percento raro, 8 percento epico e 2 percento leggendario, ogni volta.\n\nLa qualita significa anche quantita: un tiro comune da 1 unita, non comune e raro danno 2, epico 3 e leggendario 4. Qualsiasi tiro raro, epico o leggendario arriva come istanza firmata con il timbro Raccolto da te: al massimo sono quattro raccolti su dieci che portano il tuo nome, e le regole di provenienza nella pagina dell'Economia Artigianale spiegano perche i fabbricatori pagano di piu esattamente per quelle pile.",
@@ -873,7 +872,8 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Benedizione Avvizzita (brucia mana)',
   'hudChrome.finder.mech.mist_surge': 'Ondata di Nebbia (danno ad area pulsante)',
   'hudChrome.finder.mech.mortal_wound': 'Ferita Dimenticata (riduce le cure ricevute)',
-  'hudChrome.finder.mech.necrotic_shockwave': "Onda d'Urto Necrotica (danno ad area pesante)",
+  'hudChrome.finder.mech.grave_inferno':
+    'Inferno Sepolcrale (AoE di fuoco canalizzato, tenetevi distanti)',
   'hudChrome.finder.mech.profane_mending': 'Cura Profana (cura i propri alleati)',
   'hudChrome.finder.mech.raise_fallen': 'Richiama i Caduti (ondate periodiche di rinforzi)',
   'hudChrome.finder.mech.reaping_arc': 'Arco Mietitore (fendente frontale)',
@@ -4226,7 +4226,7 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
     'Radica il bersaglio sul posto per un massimo di 12 s.',
   'entities.abilities.bear_form.name': 'Forma di Bruin',
   'entities.abilities.bear_form.description':
-    "Mutamenti in orso: armatura +90%, potenza d'attacco notevolmente aumentata, i tuoi attacchi generano rabbia e il 30% di minaccia in più. Lanciala di nuovo per tornare alla forma da incantatore.",
+    "Mutamenti in orso: armatura +130%, potenza d'attacco notevolmente aumentata, i tuoi attacchi generano rabbia e il 30% di minaccia in più. Lanciala di nuovo per tornare alla forma da incantatore.",
   'entities.abilities.maul.name': 'Frantumaossa',
   'entities.abilities.maul.description':
     'Attacco brutale che aumenta i danni in mischia di {damage} e causa molta minaccia. Si attiva al tuo prossimo colpo. Solo in Forma di Bruin.',
@@ -7581,6 +7581,8 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Mostra forziere',
   'hudChrome.dailyRewards.hideChestButton': 'Nascondi forziere',
   'hudChrome.dailyRewards.title': 'Ricompense giornaliere',
+  'hudChrome.dailyRewards.disabled':
+    'Le ricompense giornaliere sono attualmente disattivate. Annunceremo gli aggiornamenti di questa funzionalità nel canale Discord.',
   'hudChrome.dailyRewards.unknown': 'Sconosciuto',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

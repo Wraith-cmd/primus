@@ -223,7 +223,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
     'Bij vaardigheid {at} specialiseert dit ambacht je, geen quest vereist: recepten kosten vanaf dan {pct}% minder materialen, en specialisatie voegt zijn eigen bonus toe aan de meesterwerkkans.\n\nGespecialiseerden leren ook de werkplaats mee te nemen: een gespecialiseerde maker kan tien minuten per keer een mobiel station in het veld opzetten, zodat stationsgebonden recepten bij de mijnmond bewerkt kunnen worden in plaats van terug in de stad. De beperkingen zijn bewust: het telt nooit mee voor training bij een meester of voor het ontbinden van een opdrachtstuk, en het verloopt op zijn timer of je het nu gebruikt of niet.',
   'guide.profPages.ench.disenchantHeading': 'Onbetoveren',
   'guide.profPages.ench.disenchantNote':
-    'Onbetoveren neemt elk wapen of wapenrustingsstuk van gewone kwaliteit of beter en verbruikt één kopie, nooit een kopie die al betoverd is. Gewone en ongewone stukken worden vermalen tot een willekeurige handvol Chimestof, iets rijker voor zeldzamere en hogere-niveau stukken; vanaf zeldzaam verandert de opbrengst van vorm: precies één Chimessentie van een zeldzaam stuk of één Chimescherf van een episch of legendarisch stuk, plus een getypte secundaire gebonden aan het materiaal waarvan het stuk was gemaakt.',
+    'Onbetoveren neemt elk wapen of wapenrustingsstuk van gewone kwaliteit of beter en verbruikt één kopie, waarbij een gewone kopie vóór een betoverde gaat; als er alleen nog betoverde kopieën over zijn, wordt daarvan één vernietigd, betovering en al. Gewone en ongewone stukken worden vermalen tot een willekeurige handvol Chimestof, iets rijker voor zeldzamere en hogere-niveau stukken; vanaf zeldzaam verandert de opbrengst van vorm: precies één Chimessentie van een zeldzaam stuk of één Chimescherf van een episch of legendarisch stuk, plus een getypte secundaire gebonden aan het materiaal waarvan het stuk was gemaakt.',
   'guide.profPages.ench.typedHeading': 'Getypte secondaires',
   'guide.profPages.ench.typedNote':
     'De getypte secondaires volgen het materiaal: stofwapenrusting levert Resonant Draad, leer Resonante Huid, maliën Resonante Maliën, meleewapens Resonant Staal, en staven, stokken, bogen en kruisbogen Resonant Hout. Een zeldzaam stuk geeft exact {rare}; een episch of legendarisch stuk geeft {epicMin} of {epicMax}. Ringen en kettingen hebben geen wapenrustingklasse, dus ze leveren alleen het primaire materiaal.\n\nLet op de kleine lettertjes: de Resonante secondaires binden bij ruil, zodat elk precies eenmaal van eigenaar kan wisselen, rechtstreeks van de breker naar de betoveraar die het zal verbranden. Stof, Essentie en Scherven dragen geen dergelijke beperking en bewegen als elk ander handelsgoed.',
@@ -268,7 +268,6 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'Niet verkocht',
   'guide.profPages.priceNone': 'Niet verkocht',
   'guide.profPages.toolTierReq': 'Rang {tier} gereedschap',
-  'guide.profPages.bareHands': 'Blote handen',
   'guide.profPages.yieldsHeading': 'Wat een oogst oplevert',
   'guide.profPages.yieldsBody':
     'Elke oogst rolt een kwaliteit voor wat het oplevert, en je vaardigheid is het hele verhaal van die rol. Een splinternieuwe verzamelaar haalt altijd gewoon materiaal op; elk punt vaardigheid verschuift gewicht gestaag van gewoon naar de hogere kwaliteiten en nooit terug, totdat op de grens van 100 de gewone kwaliteit volledig verdwijnt: 60 procent ongewoon, 30 procent zeldzaam, 8 procent episch en 2 procent legendarisch, elke keer.\n\nKwaliteit betekent ook hoeveelheid: een gewone rol levert 1 eenheid, ongewoon en zeldzaam leveren 2, episch 3, en legendarisch 4. Elke zeldzame, epische of legendarische opbrengst arriveert als een gesigneerde instantie gestempeld Verzameld door jou: op de grens draagt dat vier van de tien oogsten jouw naam, en de herkomstregels op de Ambachtseconomiepagina leggen uit waarom makers extra betalen voor precies die stapels.',
@@ -860,7 +859,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Verdorde Zegening (verbrandt mana)',
   'hudChrome.finder.mech.mist_surge': 'Mistgolf (pulserende gebiedsschade)',
   'hudChrome.finder.mech.mortal_wound': 'Vergeten Wond (vermindert ontvangen heling)',
-  'hudChrome.finder.mech.necrotic_shockwave': 'Necrotische Schokgolf (zware gebiedsschade)',
+  'hudChrome.finder.mech.grave_inferno': 'Grafsinferno (gekanaliseerde vuur-AoE, houd afstand)',
   'hudChrome.finder.mech.profane_mending': 'Onheilige Heling (geneest zijn bondgenoten)',
   'hudChrome.finder.mech.raise_fallen': 'Gevallenen Herrijzen (periodieke golven van toevoegingen)',
   'hudChrome.finder.mech.reaping_arc': 'Maaiboog (frontale maaislaan)',
@@ -2794,7 +2793,7 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
     'Storm op een vijand af, genereer 9 woede en verdoof hem gedurende 1 sec. Bereik 8-25 m. Alleen in Bruingedaante.',
   'entities.abilities.bear_charge.name': 'Bruin-stormloop',
   'entities.abilities.bear_form.description':
-    'Verander in een beer: pantser +90%, sterk verhoogde aanvalskracht, je aanvallen bouwen woede op en genereren 30% meer dreiging. Spreek opnieuw om terug te keren naar je oorspronkelijke gedaante.',
+    'Verander in een beer: pantser +130%, sterk verhoogde aanvalskracht, je aanvallen bouwen woede op en genereren 30% meer dreiging. Spreek opnieuw om terug te keren naar je oorspronkelijke gedaante.',
   'entities.abilities.bear_form.name': 'Bruingedaante',
   'entities.abilities.berserker_rage.description':
     'Ga in een kolkende woede en genereer 20 woede. (Krijger-talent)',
@@ -7582,6 +7581,8 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Kist tonen',
   'hudChrome.dailyRewards.hideChestButton': 'Kist verbergen',
   'hudChrome.dailyRewards.title': 'Dagelijkse beloningen',
+  'hudChrome.dailyRewards.disabled':
+    'Dagelijkse beloningen zijn momenteel uitgeschakeld. We kondigen updates voor deze functie aan in het Discord-kanaal.',
   'hudChrome.dailyRewards.unknown': 'Onbekend',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

@@ -218,7 +218,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
     'Vid skicklighet {at} specialiserar detta hantverk dig, inget uppdrag behövs: recept kostar {pct}% färre material från och med då, och specialiseringen lägger till en egen höjning av mästerverksrisken.\n\nSpecialister lär sig också att ta verkstaden med sig: en specialiserad hantverkare kan sätta upp en mobil station i fält i tio minuter åt gången, så att stationsbundna recept kan utföras vid gruventrén istället för tillbaka i staden. Dess gränser är avsiktliga: den räknas aldrig för träning hos en mästare eller för att lösa upp ett beställt föremål, och den löper ut vid sin timer oavsett om du använde den.',
   'guide.profPages.ench.disenchantHeading': 'Avförtrollning',
   'guide.profPages.ench.disenchantNote':
-    'Avförtrollning tar ett vapen eller en rustningspjäs av vanlig kvalitet eller bättre och konsumerar en kopia, aldrig en kopia som redan är förtrollad. Vanliga och ovanliga pjäser mals ner till en rullad handfull Klingdamm, lite rikare för sällsyntare och högre-nivåartiklar; från sällsynt och uppåt ändrar avkastningen form, exakt en Klingessens från en sällsynt pjäs eller en Klingskarva från en episk eller legendarisk, plus en typad sekundär kopplad till vad pjäsen var tillverkad av.',
+    'Avförtrollning tar ett vapen eller en rustningspjäs av vanlig kvalitet eller bättre och konsumerar en kopia, en vanlig kopia före en förtrollad; när bara förtrollade kopior återstår förstörs en av dem, förtrollning och allt. Vanliga och ovanliga pjäser mals ner till en rullad handfull Klingdamm, lite rikare för sällsyntare och högre-nivåartiklar; från sällsynt och uppåt ändrar avkastningen form, exakt en Klingessens från en sällsynt pjäs eller en Klingskarva från en episk eller legendarisk, plus en typad sekundär kopplad till vad pjäsen var tillverkad av.',
   'guide.profPages.ench.typedHeading': 'Typade sekundärer',
   'guide.profPages.ench.typedNote':
     'De typade sekundärerna följer materialet: tygruskning ger Resonant Tråd, läder Resonant Skinn, ringbrynja Resonant Länkpjäser, närstridsvapen Resonant Stål, och stavar, trollstavar, bågar och armborstar Resonant Timmer. En sällsynt pjäs ger exakt {rare}; en episk eller legendarisk pjäs ger {epicMin} eller {epicMax}. Ringar och halsband har ingen rustningsklass, så de ger bara primärmaterialet.\n\nVar uppmärksam på det finstilta: de Resonanta sekundärerna binds vid handel, så var och en kan byta händer exakt en gång, rakt från avbrytaren till förtrollaren som ska bränna det. Damm, Essens och Skärvor bär ingen sådan sträng och rör sig som vilken annan handelsvara som helst.',
@@ -263,7 +263,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'Säljs inte',
   'guide.profPages.priceNone': 'Säljs inte',
   'guide.profPages.toolTierReq': 'Nivå {tier}-verktyg',
-  'guide.profPages.bareHands': 'Med bara händerna',
   'guide.profPages.yieldsHeading': 'Vad en skörd ger',
   'guide.profPages.yieldsBody':
     'Varje skörd rullar en kvalitet för det den ger, och din skicklighet är hela historien bakom det rullet. En helt ny skördare drar alltid vanligt material; varje skicklighetspoäng förskjuter stadigt vikt från vanligt till de högre graderna och aldrig bakåt, tills graden vanlig vid 100-taket försvinner helt: 60 procent ovanligt, 30 procent sällsynt, 8 procent episkt och 2 procent legendariskt, varje gång.\n\nKvalitet innebär också kvantitet: ett vanligt resultat ger 1 enhet, ovanligt och sällsynt ger 2, episkt 3 och legendariskt 4. Varje sällsynt, episk eller legendarisk skörd anländer som en signerad kopia stämplad Samlat av dig: vid taket är det fyra av tio skördar som bär ditt namn, och provenansreglerna på sidan Hantverksekonomi förklarar varför hantverkare betalar extra för just de stackarna.',
@@ -802,7 +801,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Förvissnad välsignelse (bränner mana)',
   'hudChrome.finder.mech.mist_surge': 'Dimstorm (pulserande områdesskada)',
   'hudChrome.finder.mech.mortal_wound': 'Glömt sår (minskar mottagen läkning)',
-  'hudChrome.finder.mech.necrotic_shockwave': 'Nekrotisk chockvåg (kraftig områdesskada)',
+  'hudChrome.finder.mech.grave_inferno': 'Gravinferno (kanaliserat eld-AoE, håll avstånd)',
   'hudChrome.finder.mech.profane_mending': 'Vanhelgad läkning (helar sina allierade)',
   'hudChrome.finder.mech.raise_fallen': 'Res de fallna (periodiska vågor av tillskott)',
   'hudChrome.finder.mech.reaping_arc': 'Skördebåge (frontalt huggsving)',
@@ -2545,7 +2544,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
     'Storma en fiende, generera 9 raseri och bedöva den i 1 sek. 8-25 m räckvidd. Endast i Bruinform.',
   'entities.abilities.bear_charge.name': 'Bruinrusning',
   'entities.abilities.bear_form.description':
-    'Skiftar gestalt till en björn: rustning +90 %, kraftigt ökad attackkraft, dina attacker bygger raseri och genererar 30 % mer hot. Kasta igen för att återgå till besvärjarform.',
+    'Skiftar gestalt till en björn: rustning +130 %, kraftigt ökad attackkraft, dina attacker bygger raseri och genererar 30 % mer hot. Kasta igen för att återgå till besvärjarform.',
   'entities.abilities.bear_form.name': 'Bruinform',
   'entities.abilities.berserker_rage.description':
     'Gå in i ett sjudande raseri och generera 20 raseri. (Krigartalang)',
@@ -7327,6 +7326,8 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Visa kista',
   'hudChrome.dailyRewards.hideChestButton': 'Dölj kista',
   'hudChrome.dailyRewards.title': 'Dagliga belöningar',
+  'hudChrome.dailyRewards.disabled':
+    'Dagliga belöningar är för närvarande inaktiverade. Vi meddelar uppdateringar om den här funktionen i Discord-kanalen.',
   'hudChrome.dailyRewards.unknown': 'Okänd',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

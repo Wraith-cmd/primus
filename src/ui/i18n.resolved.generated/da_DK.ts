@@ -355,6 +355,7 @@ export const da_DK: EnTranslations = {
       "close": "Luk daglige belønninger",
       "loading": "Indlæser daglige belønninger...",
       "error": "Kunne ikke indlæse daglige belønninger.",
+      "disabled": "Daglige belønninger er i øjeblikket deaktiveret. Vi annoncerer opdateringer til denne funktion i Discord-kanalen.",
       "intro": "Behold nok WOC i din verificerede wallet for at låse daglige belønninger op. Optjen point med én daglig drejning og skiftende opgaver, og klatr så op ad den daglige resultattavle for en andel af præmiepuljen.",
       "disclaimer": "WOC-kursen kan bevæge sig hurtigt. Vi anbefaler at holde mere end minimummet på 20 USD, så normale kursudsving ikke lukker dig ude. Dette er ikke finansiel rådgivning.",
       "prize": "Præmiepulje",
@@ -1459,7 +1460,9 @@ export const da_DK: EnTranslations = {
         "gills": "Gæller",
         "claw": "Klo",
         "horn": "Horn",
-        "tusk": "Stødtand"
+        "tusk": "Stødtand",
+        "meat": "Meat",
+        "cloth": "Cloth"
       }
     },
     "townFocus": {
@@ -1991,6 +1994,9 @@ export const da_DK: EnTranslations = {
         "takeParcelsFirst": "Tag pakkerne ud, før du kasserer brevet."
       }
     },
+    "noticeboard": {
+      "empty": "Nothing seems posted."
+    },
     "bank": {
       "title": "Bank",
       "subtitle": "Det Forgyldte Pengeskrin",
@@ -2131,12 +2137,51 @@ export const da_DK: EnTranslations = {
         "logging": "Kræver en niveau {tier} skovhuggeøkse",
         "herbalism": "Kræver en niveau {tier} urtesegl"
       },
+      "requiresTool": {
+        "mining": "Requires a mining pick",
+        "logging": "Requires a logging axe",
+        "herbalism": "Requires a herbalism sickle"
+      },
       "toolTierUnmet": {
         "mining": "Du har brug for en niveau {tier} mineøkse for at høste denne åre.",
         "logging": "Du har brug for en niveau {tier} skovhuggeøkse for at fælde denne lund.",
         "herbalism": "Du har brug for en niveau {tier} urtesegl for at samle denne plette."
       },
+      "toolRequired": {
+        "mining": "You need a mining pick to harvest this vein.",
+        "logging": "You need a logging axe to fell this stand.",
+        "herbalism": "You need a herbalism sickle to gather this patch.",
+        "fishing": "You need a fishing pole to cast a line."
+      },
+      "noNodeNearby": {
+        "mining": "There is no ore vein within reach.",
+        "logging": "There is no timber stand within reach.",
+        "herbalism": "There is no herb patch within reach."
+      },
       "toolTierUnmetCorpse": "Du har brug for et niveau {tier} indsamlingsværktøj for at genvinde de fineste materialer.",
+      "toolTooltip": {
+        "kind": {
+          "mining": "Mining tool (tier {tier})",
+          "logging": "Logging tool (tier {tier})",
+          "herbalism": "Herbalism tool (tier {tier})",
+          "fishing": "Fishing rod (tier {tier})"
+        },
+        "unlocks": {
+          "mining": "Required to mine ore veins up to tier {tier}.",
+          "logging": "Required to fell timber stands up to tier {tier}.",
+          "herbalism": "Required to gather herb patches up to tier {tier}."
+        },
+        "use": {
+          "mining": "Use: Mine a nearby ore vein.",
+          "logging": "Use: Fell a nearby timber stand.",
+          "herbalism": "Use: Gather from a nearby herb patch."
+        },
+        "speed": "Gathers faster at nodes below tier {tier}.",
+        "rodRequired": "Required to fish.",
+        "rodBite": "Fish bite up to {seconds}s sooner.",
+        "rodReel": "Extends the reel window by {seconds}s.",
+        "rodBand": "Unlocks richer catch tables at fishing skill {skill} and above."
+      },
       "downgradeMark": "Tasker fyldte: fundet blev gemt uden indsamlerens mærke.",
       "downgradeFind": "Tasker fyldte: et pristint fund slap væk.",
       "stateReady": "Klar",
@@ -2312,6 +2357,7 @@ export const da_DK: EnTranslations = {
       },
       "throttled": "Du laver ting for hurtigt. Vent et øjeblik, og prøv igen.",
       "recipeNotLearned": "Du har ikke lært den opskrift endnu.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Kræver {craft} {skill}",
       "difficultyFull": "Fuld færdighedsforøgelse",
       "difficultyReduced": "Reduceret færdighedsforøgelse",
@@ -2363,6 +2409,9 @@ export const da_DK: EnTranslations = {
       "enchantWrongSlot": "Den fortryllelse kan ikke anvendes på den genstand.",
       "enchantUnknown": "Den fortryllelse eksisterer ikke.",
       "enchantInsufficient": "Du har ikke materialerne til den fortryllelse.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Affortrylle {item}?",
       "disenchantConfirmBody": "Dette ødelægger {item} og giver arkan materiale. Dette kan ikke fortrydes.",
       "disenchantConfirmBodySpecial": "Dette ødelægger et særligt eksemplar af {item} (signeret, mesterværk eller fortryllet) og giver arkan materiale. Dette kan ikke fortrydes.",
@@ -2382,8 +2431,10 @@ export const da_DK: EnTranslations = {
       "stateKnown": "Kendt",
       "stateTeachable": "Tilgængelig",
       "stateLocked": "Låst",
+      "statePending": "Learning",
       "requirement": "Undervist på {craft} {skill}",
       "trainAria": "Lær {name} for {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Uddannelse",
       "dialogOptionAria": "Gennemse træning fra {name}",
       "learned": "Opskrift lært: {recipe}",
@@ -2410,7 +2461,8 @@ export const da_DK: EnTranslations = {
       "notEligible": "Den genstand kan ikke aflæses.",
       "notBound": "Den genstand er ikke bundet.",
       "cannotAfford": "Du har ikke råd til aflæsningsgebyret.",
-      "outOfRange": "Du skal være ved en håndværksstation for at aflæse."
+      "outOfRange": "Du skal være ved en håndværksstation for at aflæse.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Fangekældersfinder",
@@ -2498,7 +2550,7 @@ export const da_DK: EnTranslations = {
         "lunar_tide": "Manetide (pulserende omradesskade)",
         "enrage": "Raserer ved lavt helbred",
         "shuddering_stomp": "Rystende Tramp (omradesbedøvelse)",
-        "necrotic_shockwave": "Nekrotisk Chokbølge (kraftig omradesskade)",
+        "grave_inferno": "Gravsinferno (kanaliseret ild-AoE, hold afstand)",
         "grave_cleaver": "Gravhugger (frontal mejning)",
         "shadow_nova": "Skyggeudbrud (omradesudbrud)",
         "profane_mending": "Vanhellig Heling (heler sine allierede)",
@@ -3784,7 +3836,7 @@ export const da_DK: EnTranslations = {
       "specializationBody": "Ved færdighed {at} specialiserer dette håndværk dig, ingen opgave nødvendig: opskrifter koster {pct}% færre materialer fra da af, og specialiseringen tilføjer sit eget løft til mesterværkschancen.\n\nSpecialister lærer også at tage værkstedet med sig: en specialiseret håndværker kan opstille en mobil station i felten i ti minutter ad gangen, så stationsbundne opskrifter kan fremstilles ved mindens mund frem for tilbage i byen. Dens grænser er tilsigtede: den tæller aldrig ved træning hos en mester eller ved aflæsning af et kommissionsstykke, og den udløber på sin timer uanset om du brugte den.",
       "ench": {
         "disenchantHeading": "Affortrylling",
-        "disenchantNote": "Affortrylling tager et vilkårligt våben- eller rustningsstykke af almindelig kvalitet eller bedre og forbruger ét eksemplar, aldrig et eksemplar der allerede er fortryllet. Almindelige og ualmindelige stykker males ned til en rullet håndfuld Kime Støv, lidt rigere for sjældnere og stykker med højere niveau; fra sjælden og op ændres udbyttet, præcis én Kime Essens fra et sjældent stykke eller én Kime Skærv fra et episk eller legendarisk, plus en typebestemt sekundær keyed til hvad stykket var lavet af.",
+        "disenchantNote": "Affortrylling tager et vilkårligt våben- eller rustningsstykke af almindelig kvalitet eller bedre og forbruger ét eksemplar, et almindeligt eksemplar før et fortryllet; når kun fortryllede eksemplarer er tilbage, ødelægges et af dem, fortryllelse og det hele. Almindelige og ualmindelige stykker males ned til en rullet håndfuld Kime Støv, lidt rigere for sjældnere og stykker med højere niveau; fra sjælden og op ændres udbyttet, præcis én Kime Essens fra et sjældent stykke eller én Kime Skærv fra et episk eller legendarisk, plus en typebestemt sekundær keyed til hvad stykket var lavet af.",
         "typedHeading": "Typebestemte sekundærer",
         "typedNote": "De typebestemte sekundærer følger materialet: klædedrustning giver Resonant Tråd, læder Resonant Skind, mail Resonante Ringe, nærkampsvåben Resonant Stål, og stave, trylledrikstave, buer og armbrøster Resonant Tømmer. Et sjældent stykke giver præcis {rare}; et episk eller legendarisk stykke giver {epicMin} eller {epicMax}. Ringe og halskæder har ingen rustningsklasse, så de giver kun det primære materiale.\n\nBemærk det med småt: de Resonante sekundærer binder ved handel, så hver kan skifte hænder præcis én gang, direkte fra nedbryderen til fortrylleren der vil brænde den. Støv, Essens og Skærver bærer ingen sådan snor og bevæger sig som enhver anden handelsvare.",
         "colSource": "Brudt fra",
@@ -3823,7 +3875,6 @@ export const da_DK: EnTranslations = {
       "toolUnavailable": "Sælges ikke",
       "priceNone": "Sælges ikke",
       "toolTierReq": "Niveau {tier}-værktøj",
-      "bareHands": "Bare hænder",
       "yieldsHeading": "Hvad en høst giver",
       "yieldsBody": "Enhver høst ruller en kvalitet for det, den giver, og din færdighed er hele historien bag det rul. En helt ny indsamler trækker altid almindeligt materiale; hvert point færdighed skifter jævnt vægt fra almindelig til de højere grader og aldrig tilbage, indtil grænsen på 100 gør den almindelige grad fuldstændig: 60 procent ualmindelig, 30 procent sjælden, 8 procent episk og 2 procent legendarisk, hver gang.\n\nKvalitet betyder også kvantitet: et almindeligt rul giver 1 enhed, ualmindelig og sjælden giver 2, episk 3 og legendarisk 4. Enhver sjælden, episk eller legendarisk høst ankommer som et signeret eksemplar stemplet Indsamlet af dig: ved grænsen er det fire ud af ti høster, der bærer dit navn, og proveniens-reglerne på siden om Håndværksøkonomi forklarer, hvorfor håndværkere betaler ekstra for præcis dem.",
       "bandsHeading": "Proficiensbånd",
@@ -5523,8 +5574,10 @@ export const da_DK: EnTranslations = {
     "reconnectingNow": "Forbindelse mistet. Genopretter forbindelse nu... (forsøg {attempt}/{maxAttempts})",
     "slowConnection": "Dette tager længere tid end normalt. Tjek din internetforbindelse.",
     "connectionRejected": "Serveren lukkede forbindelsen.",
+    "incompatibleWorldVersion": "Game and server versions are incompatible. Reload or update, then try again.",
     "realmFull": "Denne verden er fuld i øjeblikket. Prøv igen om et par minutter.",
     "tooManyConnections": "Der kommer for mange forbindelser til denne verden fra dit netværk. Luk ekstra spilvinduer, eller prøv igen om et par minutter.",
+    "messageRateExceeded": "You were disconnected for sending actions too quickly. Please wait a moment and log back in.",
     "tips": {
       "classes": "Tip: Hver af de 9 klasser spilles forskelligt. Prøv nogle stykker, før du vælger én.",
       "talents": "Tip: Du kan nulstille dine talenter, når du er ude af kamp, så et tidligt valg er aldrig en fælde.",
@@ -5593,6 +5646,12 @@ export const da_DK: EnTranslations = {
     "bodyDesktop": "Spillet kører uden GPU-acceleration og vil være langsomt. Opdater dine grafikdrivere og genstart derefter spillet. På Windows skal du også indstille spillet til Høj ydeevne under Indstillinger, System, Skærm, Grafik.",
     "bodyWeb": "Spillet kører uden GPU-acceleration og vil være langsomt. Aktiver hardwareacceleration i din browsers indstillinger, opdater dine grafikdrivere og genstart derefter din browser.",
     "dismiss": "Afvis"
+  },
+  "perfNudge": {
+    "integratedGpu": "The game is running on the integrated (power-saving) GPU. If this computer also has a gaming GPU, set your browser to High performance under Settings > System > Display > Graphics on Windows, then restart the browser. The desktop app picks the gaming GPU automatically.",
+    "hardwareAccelerationDesktop": "The game is running without GPU acceleration, which makes it very slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "hardwareAccelerationWeb": "The game is running without GPU acceleration, which makes it very slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "Ingen verdener tilgængelige.",
@@ -6018,7 +6077,8 @@ export const da_DK: EnTranslations = {
       "death": "{name} dør.",
       "auraGain": "Du får {name}.",
       "auraFade": "{name} svinder bort fra dig.",
-      "auraAfflicted": "{target} er ramt af {name}."
+      "auraAfflicted": "{target} er ramt af {name}.",
+      "auraGainOther": "{target} gains {name}."
     },
     "system": {
       "playerDeath": "Du er død.",
@@ -7279,7 +7339,7 @@ export const da_DK: EnTranslations = {
       },
       "bear_form": {
         "name": "Bruin-form",
-        "description": "Forvandl dig til en bjørn: rustning +90%, stærkt øget angrebskraft, dine angreb opbygger raseri og genererer 30% mere trussel. Kast igen for at vende tilbage til besværgerform."
+        "description": "Forvandl dig til en bjørn: rustning +130%, stærkt øget angrebskraft, dine angreb opbygger raseri og genererer 30% mere trussel. Kast igen for at vende tilbage til besværgerform."
       },
       "maul": {
         "name": "Knogleknus",
@@ -11725,6 +11785,7 @@ export const da_DK: EnTranslations = {
     "delveRiteShrineCandleInteract": "Kerteskrin: Tryk på F for at røre det",
     "delveRiteShrineReedInteract": "Sivskrin: Tryk på F for at røre det",
     "delveRiteShrineSkullInteract": "Kranieskrin: Tryk på F for at røre det",
-    "mailboxName": "Postkasse"
+    "mailboxName": "Postkasse",
+    "noticeboardName": "Notice Board"
   }
 };

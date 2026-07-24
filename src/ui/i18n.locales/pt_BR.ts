@@ -232,7 +232,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
     'Na habilidade {at}, este ofício especializa você, sem missão necessária: receitas custam {pct}% menos materiais a partir daí, e a especialização adiciona seu próprio bônus à chance de obra-prima.\n\nEspecialistas também aprendem a levar a oficina consigo: um artesão especializado pode montar uma bancada móvel no campo por dez minutos de cada vez, então receitas vinculadas a bancada podem ser trabalhadas na boca da mina em vez de voltar à cidade. Seus limites são deliberados: nunca conta como treinamento com um mestre ou para desvincular uma peça por encomenda, e expira no seu temporizador quer você a tenha usado ou não.',
   'guide.profPages.ench.disenchantHeading': 'Desencantamento',
   'guide.profPages.ench.disenchantNote':
-    'O desencantamento pega qualquer arma ou peça de armadura de qualidade comum ou melhor e consome uma cópia, nunca uma cópia que já esteja encantada. Peças comuns e incomuns se desfazem em um punhado aleatório de Pó de Toque, um pouco mais rico para peças mais raras e de nível mais alto; a partir de raro o rendimento muda de forma, exatamente uma Essência de Toque de uma peça rara ou um Fragmento de Toque de uma épica ou lendária, mais um secundário tipado vinculado ao material da peça.',
+    'O desencantamento pega qualquer arma ou peça de armadura de qualidade comum ou melhor e consome uma cópia, pegando uma cópia comum antes de uma encantada; quando só restam cópias encantadas, uma delas é destruída, com encantamento e tudo. Peças comuns e incomuns se desfazem em um punhado aleatório de Pó de Toque, um pouco mais rico para peças mais raras e de nível mais alto; a partir de raro o rendimento muda de forma, exatamente uma Essência de Toque de uma peça rara ou um Fragmento de Toque de uma épica ou lendária, mais um secundário tipado vinculado ao material da peça.',
   'guide.profPages.ench.typedHeading': 'Secundários tipados',
   'guide.profPages.ench.typedNote':
     'Os secundários tipados seguem o material: armadura de pano rende Fio Ressonante, couro rende Couro Ressonante, malha rende Elos Ressonantes, armas corpo a corpo rendem Aço Ressonante, e cajados, varinhas, arcos e bestas rendem Madeira Ressonante. Uma peça rara dá exatamente {rare}; uma peça épica ou lendária dá {epicMin} ou {epicMax}. Anéis e colares não têm classe de armadura, então rendem apenas o material primário.\n\nAtenção à letra miúda: os secundários Ressonantes se vinculam na troca, então cada um pode trocar de mãos exatamente uma vez, direto do demolidor para o encantador que vai usá-lo. Pó, Essência e Fragmentos não têm essa restrição e circulam como qualquer outro bem.',
@@ -277,7 +277,6 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'Não vendido',
   'guide.profPages.priceNone': 'Não vendido',
   'guide.profPages.toolTierReq': 'Ferramenta de nível {tier}',
-  'guide.profPages.bareHands': 'Mãos nuas',
   'guide.profPages.yieldsHeading': 'O que uma coleta rende',
   'guide.profPages.yieldsBody':
     'Cada coleta rola uma qualidade para o que concede, e sua proficiência é toda a história dessa rolagem. Um coletor novato sempre extrai material comum; cada ponto de habilidade desloca o peso de forma constante do comum para os graus superiores e nunca para trás, até que no limite de 100 o grau comum desaparece completamente: 60 por cento incomum, 30 por cento raro, 8 por cento épico e 2 por cento lendário, sempre.\n\nQualidade também significa quantidade: uma rolagem comum rende 1 unidade, incomum e raro rendem 2, épico 3 e lendário 4. Qualquer extração rara, épica ou lendária chega como uma instância assinada carimbada Coletado por você: no limite são quatro coletas em dez carregando seu nome, e as regras de proveniência na página de Economia de Criação explicam por que artesãos pagam a mais exatamente por essas pilhas.',
@@ -862,7 +861,8 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Bênção Murcha (consome mana)',
   'hudChrome.finder.mech.mist_surge': 'Surto de Névoa (dano em área pulsante)',
   'hudChrome.finder.mech.mortal_wound': 'Ferida Esquecida (reduz a cura recebida)',
-  'hudChrome.finder.mech.necrotic_shockwave': 'Onda de Choque Necrótica (dano em área intenso)',
+  'hudChrome.finder.mech.grave_inferno':
+    'Inferno Sepulcral (AoE de fogo canalizado, mantenha distancia)',
   'hudChrome.finder.mech.profane_mending': 'Cura Profana (cura os aliados)',
   'hudChrome.finder.mech.raise_fallen': 'Erguer os Caídos (ondas periódicas de reforços)',
   'hudChrome.finder.mech.reaping_arc': 'Arco Ceifante (golpe em cone frontal)',
@@ -4188,7 +4188,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.entangling_roots.description': 'Enraíza o alvo no lugar por até 12 s.',
   'entities.abilities.bear_form.name': 'Forma de Bruin',
   'entities.abilities.bear_form.description':
-    'Assume a forma de urso: armadura +90%, poder de ataque muito aumentado, seus ataques geram raiva e 30% mais ameaça. Lance de novo para voltar à forma de conjurador.',
+    'Assume a forma de urso: armadura +130%, poder de ataque muito aumentado, seus ataques geram raiva e 30% mais ameaça. Lance de novo para voltar à forma de conjurador.',
   'entities.abilities.maul.name': 'Esmaga-Ossos',
   'entities.abilities.maul.description':
     'Ataque brutal que aumenta o dano corpo a corpo em {damage} e causa muita ameaça. Ativa no seu próximo golpe. Apenas Forma de Bruin.',
@@ -7463,6 +7463,8 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Mostrar Baú',
   'hudChrome.dailyRewards.hideChestButton': 'Ocultar Baú',
   'hudChrome.dailyRewards.title': 'Recompensas Diárias',
+  'hudChrome.dailyRewards.disabled':
+    'As Recompensas Diárias estão desativadas no momento. Anunciaremos atualizações sobre este recurso no canal do Discord.',
   'hudChrome.dailyRewards.unknown': 'Desconhecido',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

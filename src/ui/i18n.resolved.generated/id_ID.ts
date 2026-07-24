@@ -355,6 +355,7 @@ export const id_ID: EnTranslations = {
       "close": "Tutup hadiah harian",
       "loading": "Memuat hadiah harian...",
       "error": "Tidak dapat memuat hadiah harian.",
+      "disabled": "Hadiah Harian saat ini dinonaktifkan. Kami akan mengumumkan pembaruan fitur ini di kanal Discord.",
       "intro": "Simpan cukup WOC di dompet terverifikasimu untuk membuka hadiah harian. Kumpulkan poin lewat satu putaran harian dan tugas yang bergilir, lalu naiki papan peringkat harian untuk mendapat bagian dari kolam hadiah.",
       "disclaimer": "Harga WOC dapat bergerak cepat. Kami menyarankan untuk menyimpan lebih dari batas minimum $20 USD agar gejolak harga yang wajar tidak mengunci aksesmu. Ini bukan nasihat keuangan.",
       "prize": "Kolam Hadiah",
@@ -1459,7 +1460,9 @@ export const id_ID: EnTranslations = {
         "gills": "Insang",
         "claw": "Cakar",
         "horn": "Tanduk",
-        "tusk": "Gading"
+        "tusk": "Gading",
+        "meat": "Meat",
+        "cloth": "Cloth"
       }
     },
     "townFocus": {
@@ -1991,6 +1994,9 @@ export const id_ID: EnTranslations = {
         "takeParcelsFirst": "Keluarkan bingkisannya dulu sebelum membuang surat itu."
       }
     },
+    "noticeboard": {
+      "empty": "Nothing seems posted."
+    },
     "bank": {
       "title": "Bank",
       "subtitle": "Brankas Bersepuh Emas",
@@ -2131,12 +2137,51 @@ export const id_ID: EnTranslations = {
         "logging": "Membutuhkan kapak penebangan tingkat {tier}",
         "herbalism": "Membutuhkan arit herbalisme tingkat {tier}"
       },
+      "requiresTool": {
+        "mining": "Requires a mining pick",
+        "logging": "Requires a logging axe",
+        "herbalism": "Requires a herbalism sickle"
+      },
       "toolTierUnmet": {
         "mining": "Kamu membutuhkan beliung pertambangan tingkat {tier} untuk memanen urat ini.",
         "logging": "Kamu membutuhkan kapak penebangan tingkat {tier} untuk menebang rumpun ini.",
         "herbalism": "Kamu membutuhkan arit herbalisme tingkat {tier} untuk mengumpulkan petak ini."
       },
+      "toolRequired": {
+        "mining": "You need a mining pick to harvest this vein.",
+        "logging": "You need a logging axe to fell this stand.",
+        "herbalism": "You need a herbalism sickle to gather this patch.",
+        "fishing": "You need a fishing pole to cast a line."
+      },
+      "noNodeNearby": {
+        "mining": "There is no ore vein within reach.",
+        "logging": "There is no timber stand within reach.",
+        "herbalism": "There is no herb patch within reach."
+      },
       "toolTierUnmetCorpse": "Kamu membutuhkan alat pengumpul tingkat {tier} untuk mendapatkan bahan terbaik.",
+      "toolTooltip": {
+        "kind": {
+          "mining": "Mining tool (tier {tier})",
+          "logging": "Logging tool (tier {tier})",
+          "herbalism": "Herbalism tool (tier {tier})",
+          "fishing": "Fishing rod (tier {tier})"
+        },
+        "unlocks": {
+          "mining": "Required to mine ore veins up to tier {tier}.",
+          "logging": "Required to fell timber stands up to tier {tier}.",
+          "herbalism": "Required to gather herb patches up to tier {tier}."
+        },
+        "use": {
+          "mining": "Use: Mine a nearby ore vein.",
+          "logging": "Use: Fell a nearby timber stand.",
+          "herbalism": "Use: Gather from a nearby herb patch."
+        },
+        "speed": "Gathers faster at nodes below tier {tier}.",
+        "rodRequired": "Required to fish.",
+        "rodBite": "Fish bite up to {seconds}s sooner.",
+        "rodReel": "Extends the reel window by {seconds}s.",
+        "rodBand": "Unlocks richer catch tables at fishing skill {skill} and above."
+      },
       "downgradeMark": "Tas penuh: temuan disimpan tanpa tanda pengumpulnya.",
       "downgradeFind": "Tas penuh: temuan murni terlewat.",
       "stateReady": "Siap",
@@ -2312,6 +2357,7 @@ export const id_ID: EnTranslations = {
       },
       "throttled": "Kamu membuat terlalu cepat. Tunggu sejenak dan coba lagi.",
       "recipeNotLearned": "Kamu belum mempelajari resep itu.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Membutuhkan {craft} {skill}",
       "difficultyFull": "Peningkatan keterampilan penuh",
       "difficultyReduced": "Mengurangi perolehan keterampilan",
@@ -2363,6 +2409,9 @@ export const id_ID: EnTranslations = {
       "enchantWrongSlot": "Mantrai itu tidak bisa diterapkan pada barang itu.",
       "enchantUnknown": "Mantrai itu tidak ada.",
       "enchantInsufficient": "Kamu tidak memiliki bahan untuk mantrai itu.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Hancurkan pemantraan {item}?",
       "disenchantConfirmBody": "Ini menghancurkan {item} dan menghasilkan bahan arkan. Tindakan ini tidak dapat dibatalkan.",
       "disenchantConfirmBodySpecial": "Ini menghancurkan salinan khusus dari {item} (bertanda tangan, karya besar, atau terpesonan) dan menghasilkan bahan arkan. Tindakan ini tidak dapat dibatalkan.",
@@ -2382,8 +2431,10 @@ export const id_ID: EnTranslations = {
       "stateKnown": "Diketahui",
       "stateTeachable": "Tersedia",
       "stateLocked": "Terkunci",
+      "statePending": "Learning",
       "requirement": "Diajarkan di {craft} {skill}",
       "trainAria": "Pelajari {name} untuk {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Pelatihan",
       "dialogOptionAria": "Jelajahi pelatihan dari {name}",
       "learned": "Resep yang dipelajari: {recipe}",
@@ -2410,7 +2461,8 @@ export const id_ID: EnTranslations = {
       "notEligible": "Barang itu tidak bisa dilepas ikatnya.",
       "notBound": "Barang itu tidak terikat.",
       "cannotAfford": "Kamu tidak mampu membayar biaya pelepasan ikat.",
-      "outOfRange": "Kamu harus berada di stasiun kerajinan untuk melepas ikat."
+      "outOfRange": "Kamu harus berada di stasiun kerajinan untuk melepas ikat.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Pencari Dungeon",
@@ -2498,7 +2550,7 @@ export const id_ID: EnTranslations = {
         "lunar_tide": "Arus Bulan (kerusakan area berdenyut)",
         "enrage": "Mengamuk saat darah menipis",
         "shuddering_stomp": "Hentakan Gemetar (stun area)",
-        "necrotic_shockwave": "Gelombang Kejut Nekrotik (kerusakan area berat)",
+        "grave_inferno": "Neraka Kubur (AoE api tersalur, jaga jarak)",
         "grave_cleaver": "Penebas Kubur (tebasan ke depan)",
         "shadow_nova": "Nova Bayangan (ledakan area)",
         "profane_mending": "Pemulihan Najis (menyembuhkan sekutunya)",
@@ -3784,7 +3836,7 @@ export const id_ID: EnTranslations = {
       "specializationBody": "Pada keahlian {at} kerajinan ini menspesialisasimu, tanpa perlu misi: resep menghabiskan {pct}% lebih sedikit material sejak saat itu, dan spesialisasi menambahkan kenaikannya sendiri pada peluang karya master.\n\nSpesialis juga belajar membawa bengkel bersama mereka: pengrajin terspesialisasi dapat mendirikan stasiun bergerak di lapangan selama sepuluh menit sekaligus, sehingga resep terikat stasiun bisa dikerjakan di mulut tambang daripada kembali ke kota. Batasannya disengaja: tidak pernah dihitung untuk berlatih dengan master atau untuk melepas ikat karya pesanan, dan berakhir pada timernya apakah digunakan atau tidak.",
       "ench": {
         "disenchantHeading": "Penghancuran mantra",
-        "disenchantNote": "Penghancuran mantra mengambil senjata atau potongan zirah apa pun berkualitas biasa atau lebih baik dan mengonsumsi satu salinan, tidak pernah salinan yang sudah terpesonan. Item biasa dan langka biasa digiling menjadi segenggam Debu Dentingan yang dipilih secara acak, sedikit lebih banyak untuk item yang lebih langka dan lebih tinggi levelnya; dari langka ke atas hasilnya berubah wujud, tepat satu Esensi Dentingan dari item langka atau satu Serpihan Dentingan dari item epik atau legendaris, ditambah sekunder yang diketik sesuai bahan item tersebut.",
+        "disenchantNote": "Penghancuran mantra mengambil senjata atau potongan zirah apa pun berkualitas biasa atau lebih baik dan mengonsumsi satu salinan, mendahulukan salinan biasa sebelum salinan yang sudah terpesonan; jika hanya tersisa salinan yang terpesonan, salah satunya dihancurkan beserta pesonanya. Item biasa dan langka biasa digiling menjadi segenggam Debu Dentingan yang dipilih secara acak, sedikit lebih banyak untuk item yang lebih langka dan lebih tinggi levelnya; dari langka ke atas hasilnya berubah wujud, tepat satu Esensi Dentingan dari item langka atau satu Serpihan Dentingan dari item epik atau legendaris, ditambah sekunder yang diketik sesuai bahan item tersebut.",
         "typedHeading": "Sekunder yang diketik",
         "typedNote": "Sekunder yang diketik mengikuti bahan: zirah kain menghasilkan Benang Resonant, kulit menghasilkan Kulit Resonant, rantai menghasilkan Kait Resonant, senjata jarak dekat menghasilkan Baja Resonant, dan staf, tongkat sihir, busur, serta busur silang menghasilkan Kayu Resonant. Item langka memberikan tepat {rare}; item epik atau legendaris memberikan {epicMin} atau {epicMax}. Cincin dan kalung tidak memiliki kelas zirah, sehingga hanya menghasilkan bahan utama.\n\nPerhatikan ketentuan halus: sekunder Resonant terikat saat diperdagangkan, sehingga masing-masing hanya bisa berpindah tangan sekali, langsung dari pemecah ke pemantrai yang akan menggunakannya. Debu, Esensi, dan Serpihan tidak memiliki ikatan semacam itu dan bergerak seperti barang dagangan lainnya.",
         "colSource": "Dipecah dari",
@@ -3823,7 +3875,6 @@ export const id_ID: EnTranslations = {
       "toolUnavailable": "Tidak dijual",
       "priceNone": "Tidak dijual",
       "toolTierReq": "Alat tingkat {tier}",
-      "bareHands": "Tangan kosong",
       "yieldsHeading": "Apa yang dihasilkan panen",
       "yieldsBody": "Setiap panen menggulung mutu untuk apa yang diberikannya, dan keahlianmu adalah satu-satunya penentu gulungan itu. Pengumpul baru selalu mengambil material umum; setiap poin keahlian menggeser bobot secara stabil dari umum ke tingkat yang lebih tinggi dan tidak pernah mundur, hingga di batas 100 tingkat umum hilang sepenuhnya: 60 persen tidak umum, 30 persen langka, 8 persen epik, dan 2 persen legendaris, setiap saat.\n\nMutu juga berarti kuantitas: gulungan umum menghasilkan 1 unit, tidak umum dan langka menghasilkan 2, epik 3, dan legendaris 4. Setiap tarikan langka, epik, atau legendaris tiba sebagai salinan bertanda tangan yang distempel Dikumpulkan oleh kamu: di batas itu berarti empat dari sepuluh panen membawa namamu, dan aturan asal-usul pada halaman Ekonomi Kerajinan menjelaskan mengapa pengrajin membayar lebih untuk tumpukan-tumpukan itu.",
       "bandsHeading": "Band kecakapan",
@@ -5523,8 +5574,10 @@ export const id_ID: EnTranslations = {
     "reconnectingNow": "Koneksi terputus. Hubungkan kembali sekarang... (coba {attempt}/{maxAttempts})",
     "slowConnection": "Ini memakan waktu lebih lama dari biasanya. Periksa koneksi internet Anda.",
     "connectionRejected": "Server menutup koneksi.",
+    "incompatibleWorldVersion": "Game and server versions are incompatible. Reload or update, then try again.",
     "realmFull": "Dunia ini sedang penuh. Coba lagi dalam beberapa menit.",
     "tooManyConnections": "Terlalu banyak koneksi ke dunia ini dari jaringanmu. Tutup jendela permainan ekstra atau coba lagi dalam beberapa menit.",
+    "messageRateExceeded": "You were disconnected for sending actions too quickly. Please wait a moment and log back in.",
     "tips": {
       "classes": "Kiat: masing-masing dari 9 kelas memiliki gaya bermain berbeda. Cobalah beberapa sebelum menetapkan pilihan.",
       "talents": "Kiat: kamu dapat mengatur ulang talenta kapan saja saat tidak bertarung, jadi pilihan awal tidak akan menjadi jebakan.",
@@ -5593,6 +5646,12 @@ export const id_ID: EnTranslations = {
     "bodyDesktop": "Permainan berjalan tanpa akselerasi GPU dan akan lambat. Perbarui driver grafismu, lalu nyalakan ulang permainan. Di Windows, juga atur permainan ke Performa tinggi di Pengaturan > Sistem > Tampilan > Grafis.",
     "bodyWeb": "Permainan berjalan tanpa akselerasi GPU dan akan lambat. Aktifkan akselerasi perangkat keras di pengaturan browsermu, perbarui driver grafismu, lalu nyalakan ulang browsermu.",
     "dismiss": "Tutup"
+  },
+  "perfNudge": {
+    "integratedGpu": "The game is running on the integrated (power-saving) GPU. If this computer also has a gaming GPU, set your browser to High performance under Settings > System > Display > Graphics on Windows, then restart the browser. The desktop app picks the gaming GPU automatically.",
+    "hardwareAccelerationDesktop": "The game is running without GPU acceleration, which makes it very slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "hardwareAccelerationWeb": "The game is running without GPU acceleration, which makes it very slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "Tidak ada dunia tersedia.",
@@ -6018,7 +6077,8 @@ export const id_ID: EnTranslations = {
       "death": "{name} tewas.",
       "auraGain": "Kamu memperoleh {name}.",
       "auraFade": "{name} memudar darimu.",
-      "auraAfflicted": "{target} terkena {name}."
+      "auraAfflicted": "{target} terkena {name}.",
+      "auraGainOther": "{target} gains {name}."
     },
     "system": {
       "playerDeath": "Kamu telah tewas.",
@@ -7279,7 +7339,7 @@ export const id_ID: EnTranslations = {
       },
       "bear_form": {
         "name": "Wujud Bruin",
-        "description": "Berubah wujud menjadi beruang: zirah +90%, daya serang sangat meningkat, seranganmu membangun amarah dan menghasilkan 30% lebih banyak ancaman. Rapal lagi untuk kembali ke wujud perapal."
+        "description": "Berubah wujud menjadi beruang: zirah +130%, daya serang sangat meningkat, seranganmu membangun amarah dan menghasilkan 30% lebih banyak ancaman. Rapal lagi untuk kembali ke wujud perapal."
       },
       "maul": {
         "name": "Bonecrush",
@@ -11725,6 +11785,7 @@ export const id_ID: EnTranslations = {
     "delveRiteShrineCandleInteract": "Altar Lilin: Tekan F untuk menyentuhnya",
     "delveRiteShrineReedInteract": "Altar Buluh: Tekan F untuk menyentuhnya",
     "delveRiteShrineSkullInteract": "Altar Tengkorak: Tekan F untuk menyentuhnya",
-    "mailboxName": "Kotak Surat"
+    "mailboxName": "Kotak Surat",
+    "noticeboardName": "Notice Board"
   }
 };

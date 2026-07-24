@@ -217,7 +217,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
     'Przy umiejętności {at} dane rzemiosło cię specjalizuje, bez żadnego zadania: od tej chwili przepisy kosztują {pct}% mniej materiałów, a specjalizacja dodaje też własną premię do szansy na arcydzieło.\n\nSpecjaliści uczą się też zabierać warsztat ze sobą: wyspecjalizowany rzemieślnik może rozstawić mobilną stację w terenie na dziesięć minut, dzięki czemu przepisy stacjonarne można realizować przy wejściu do kopalni zamiast wracać do miasta. Ograniczenia są celowe: mobilna stacja nigdy nie liczy się jako trening u mistrza ani do odwiązywania zamówionych przedmiotów i wygasa po odliczeniu czasu niezależnie od tego, czy jej użyłeś.',
   'guide.profPages.ench.disenchantHeading': 'Rozkładanie zaklęć',
   'guide.profPages.ench.disenchantNote':
-    'Rozkładanie zaklęć bierze dowolną broń lub element zbroi pospolitej jakości lub lepszy i zużywa jedną kopię, nigdy kopii, która jest już zaklęta. Pospolite i niepospolite przedmioty mielą się w losową garść Pyłu Kuranta, trochę bogatszego dla rzadszych i wyższopoziomowych przedmiotów; od rzadkiego wzwyż plon zmienia kształt, dokładnie jedna Esencja Kuranta z rzadkiego przedmiotu lub jeden Odłamek Kuranta z epickiego lub legendarnego, plus typowany drugorzędny klucz do tego, z czego przedmiot był wykonany.',
+    'Rozkładanie zaklęć bierze dowolną broń lub element zbroi pospolitej jakości lub lepszy i zużywa jedną kopię, sięgając po zwykłą kopię przed zaklętą; gdy zostały już tylko zaklęte kopie, jedna z nich zostaje zniszczona razem z zaklęciem. Pospolite i niepospolite przedmioty mielą się w losową garść Pyłu Kuranta, trochę bogatszego dla rzadszych i wyższopoziomowych przedmiotów; od rzadkiego wzwyż plon zmienia kształt, dokładnie jedna Esencja Kuranta z rzadkiego przedmiotu lub jeden Odłamek Kuranta z epickiego lub legendarnego, plus typowany drugorzędny klucz do tego, z czego przedmiot był wykonany.',
   'guide.profPages.ench.typedHeading': 'Typowane drugorzędne',
   'guide.profPages.ench.typedNote':
     'Typowane drugorzędne podążają za materiałem: zbroja materiałowa daje Rezonujący Wątek, skórzana Rezonującą Skórę, kolcza Rezonujące Ogniwa, bronie do walki wręcz Rezonującą Stal, a laski, różdżki, łuki i kusze Rezonujące Drewno. Rzadki przedmiot daje dokładnie {rare}; epicki lub legendarny przedmiot daje {epicMin} lub {epicMax}. Pierścienie i naszyjniki nie mają klasy zbroi, więc dają tylko materiał podstawowy.\n\nZwróć uwagę na drobny druk: drugorzędne Rezonujące wiążą się przy wymianie, więc każde może zmienić właścicieli dokładnie raz, prosto od rozkładacza do zaklinacza, który je spali. Pył, Esencja i Drzazgi nie mają takiego ograniczenia i poruszają się jak każdy inny towar handlowy.',
@@ -262,7 +262,6 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'Niesprzedawany',
   'guide.profPages.priceNone': 'Niesprzedawany',
   'guide.profPages.toolTierReq': 'Narzędzie poziomu {tier}',
-  'guide.profPages.bareHands': 'Gołe ręce',
   'guide.profPages.yieldsHeading': 'Co przynosi zebranie',
   'guide.profPages.yieldsBody':
     'Każde zebranie losuje jakość dla tego, co przynosi, a twoja biegłość to cały mechanizm tego losowania. Zupełnie nowy zbieracz zawsze wyciąga pospolity materiał; każdy punkt umiejętności stale przesuwa wagę z pospolitego na wyższe gatunki i nigdy wstecz, aż przy limicie 100 jakość pospolita znika całkowicie: 60 procent niezwykłego, 30 procent rzadkiego, 8 procent epickiego i 2 procent legendarnego, za każdym razem.\n\nJakość to też ilość: pospolitość daje 1 jednostkę, niezwykły i rzadki 2, epicki 3, a legendarny 4. Każde rzadkie, epickie lub legendarne ciągnie jako podpisany egzemplarz ze stemplem Zebrany przez ciebie: przy limicie to cztery zebrania na dziesięć noszące twoje imię, a zasady proweniencji na stronie Ekonomii Wytwarzania wyjaśniają, dlaczego rzemieślnicy płacą ekstra właśnie za te stosy.',
@@ -871,8 +870,8 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Zwiędłe Błogosławieństwo (wypala manę)',
   'hudChrome.finder.mech.mist_surge': 'Nawałnica Mgły (pulsujące obrażenia obszarowe)',
   'hudChrome.finder.mech.mortal_wound': 'Zapomniana Rana (zmniejsza otrzymane leczenie)',
-  'hudChrome.finder.mech.necrotic_shockwave':
-    'Nekrotyczna Fala Uderzeniowa (silne obrażenia obszarowe)',
+  'hudChrome.finder.mech.grave_inferno':
+    'Grobowy Inferno (kanalizowane AoE ognia, trzymajcie dystans)',
   'hudChrome.finder.mech.profane_mending': 'Plugawe Leczenie (leczy sojuszników)',
   'hudChrome.finder.mech.raise_fallen': 'Wskrzeszenie Poległych (okresowe fale wrogów)',
   'hudChrome.finder.mech.reaping_arc': 'Kosiący Łuk (frontalne cięcie)',
@@ -2709,7 +2708,7 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
     'Szarżuj na wroga, generując 9 wściekłości i ogłuszając go na 1 sek. Zasięg 8-25 jardów. Tylko w postaci Bruina.',
   'entities.abilities.bear_charge.name': 'Szarża Bruina',
   'entities.abilities.bear_form.description':
-    'Zmień postać w niedźwiedzia: pancerz +90%, znacznie zwiększona moc ataku, twoje ataki budują wściekłość i generują 30% więcej zagrożenia. Rzuć ponownie, aby wrócić do postaci rzucającego.',
+    'Zmień postać w niedźwiedzia: pancerz +130%, znacznie zwiększona moc ataku, twoje ataki budują wściekłość i generują 30% więcej zagrożenia. Rzuć ponownie, aby wrócić do postaci rzucającego.',
   'entities.abilities.bear_form.name': 'Postać Bruina',
   'entities.abilities.berserker_rage.description':
     'Wpadnij w kipiącą furię, generując 20 wściekłości. (Talent wojownika)',
@@ -7564,6 +7563,8 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.showChestButton': 'Pokaż skrzynię',
   'hudChrome.dailyRewards.hideChestButton': 'Ukryj skrzynię',
   'hudChrome.dailyRewards.title': 'Codzienne nagrody',
+  'hudChrome.dailyRewards.disabled':
+    'Codzienne nagrody są obecnie wyłączone. Aktualizacje dotyczące tej funkcji ogłosimy na kanale Discord.',
   'hudChrome.dailyRewards.unknown': 'Nieznane',
   'hudChrome.dailyRewards.usd': '{amount} USD',
   'hudChrome.dailyRewards.walletConnectBody':

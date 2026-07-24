@@ -355,6 +355,7 @@ export const vi_VN: EnTranslations = {
       "close": "Đóng phần thưởng hằng ngày",
       "loading": "Đang tải phần thưởng hằng ngày...",
       "error": "Không thể tải phần thưởng hằng ngày.",
+      "disabled": "Phần Thưởng Hằng Ngày hiện đang bị tắt. Chúng tôi sẽ thông báo các cập nhật về tính năng này trong kênh Discord.",
       "intro": "Giữ đủ WOC trong ví đã xác minh của bạn để mở khóa phần thưởng hằng ngày. Kiếm điểm bằng một lượt quay mỗi ngày và các nhiệm vụ luân phiên, rồi leo lên bảng xếp hạng hằng ngày để nhận phần chia từ quỹ giải thưởng.",
       "disclaimer": "Giá WOC có thể biến động nhanh. Chúng tôi khuyên bạn nên giữ nhiều hơn mức tối thiểu 20 USD để những dao động giá thông thường không khóa bạn ở ngoài. Đây không phải lời khuyên tài chính.",
       "prize": "Quỹ Giải Thưởng",
@@ -1459,7 +1460,9 @@ export const vi_VN: EnTranslations = {
         "gills": "Mang",
         "claw": "Móng Vuốt",
         "horn": "Sừng",
-        "tusk": "Ngà"
+        "tusk": "Ngà",
+        "meat": "Meat",
+        "cloth": "Cloth"
       }
     },
     "townFocus": {
@@ -1991,6 +1994,9 @@ export const vi_VN: EnTranslations = {
         "takeParcelsFirst": "Hãy lấy bưu kiện ra trước khi bỏ lá thư."
       }
     },
+    "noticeboard": {
+      "empty": "Nothing seems posted."
+    },
     "bank": {
       "title": "Ngân Hàng",
       "subtitle": "Két Sắt Mạ Vàng",
@@ -2131,12 +2137,51 @@ export const vi_VN: EnTranslations = {
         "logging": "Yêu cầu rìu đốn gỗ bậc {tier}",
         "herbalism": "Yêu cầu liềm hái thảo dược bậc {tier}"
       },
+      "requiresTool": {
+        "mining": "Requires a mining pick",
+        "logging": "Requires a logging axe",
+        "herbalism": "Requires a herbalism sickle"
+      },
       "toolTierUnmet": {
         "mining": "Bạn cần cuốc khai khoáng bậc {tier} để khai thác mạch này.",
         "logging": "Bạn cần rìu đốn gỗ bậc {tier} để đốn bãi này.",
         "herbalism": "Bạn cần liềm hái thảo dược bậc {tier} để thu hoạch bụi này."
       },
+      "toolRequired": {
+        "mining": "You need a mining pick to harvest this vein.",
+        "logging": "You need a logging axe to fell this stand.",
+        "herbalism": "You need a herbalism sickle to gather this patch.",
+        "fishing": "You need a fishing pole to cast a line."
+      },
+      "noNodeNearby": {
+        "mining": "There is no ore vein within reach.",
+        "logging": "There is no timber stand within reach.",
+        "herbalism": "There is no herb patch within reach."
+      },
       "toolTierUnmetCorpse": "Bạn cần công cụ thu thập bậc {tier} để lấy được nguyên liệu tốt nhất.",
+      "toolTooltip": {
+        "kind": {
+          "mining": "Mining tool (tier {tier})",
+          "logging": "Logging tool (tier {tier})",
+          "herbalism": "Herbalism tool (tier {tier})",
+          "fishing": "Fishing rod (tier {tier})"
+        },
+        "unlocks": {
+          "mining": "Required to mine ore veins up to tier {tier}.",
+          "logging": "Required to fell timber stands up to tier {tier}.",
+          "herbalism": "Required to gather herb patches up to tier {tier}."
+        },
+        "use": {
+          "mining": "Use: Mine a nearby ore vein.",
+          "logging": "Use: Fell a nearby timber stand.",
+          "herbalism": "Use: Gather from a nearby herb patch."
+        },
+        "speed": "Gathers faster at nodes below tier {tier}.",
+        "rodRequired": "Required to fish.",
+        "rodBite": "Fish bite up to {seconds}s sooner.",
+        "rodReel": "Extends the reel window by {seconds}s.",
+        "rodBand": "Unlocks richer catch tables at fishing skill {skill} and above."
+      },
       "downgradeMark": "Túi đầy: phát hiện được lưu mà không có dấu thợ thu thập.",
       "downgradeFind": "Túi đầy: một phát hiện tuyệt vời đã trôi qua.",
       "stateReady": "Sẵn Sàng",
@@ -2312,6 +2357,7 @@ export const vi_VN: EnTranslations = {
       },
       "throttled": "Bạn đang chế tạo quá nhanh. Hãy chờ một lát rồi thử lại.",
       "recipeNotLearned": "Bạn chưa học công thức đó.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Yêu cầu {craft} {skill}",
       "difficultyFull": "Đạt được kỹ năng đầy đủ",
       "difficultyReduced": "Giảm khả năng nhận được kỹ năng",
@@ -2363,6 +2409,9 @@ export const vi_VN: EnTranslations = {
       "enchantWrongSlot": "Phép khắc đó không thể áp dụng cho vật phẩm đó.",
       "enchantUnknown": "Phép khắc đó không tồn tại.",
       "enchantInsufficient": "Bạn không có đủ nguyên liệu cho phép khắc đó.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Hủy Pháp Khắc {item}?",
       "disenchantConfirmBody": "Thao tác này phá hủy {item} và thu được nguyên liệu huyền bí. Không thể hoàn tác.",
       "disenchantConfirmBodySpecial": "Thao tác này phá hủy một bản đặc biệt của {item} (có chữ ký, kiệt tác hoặc đã pháp khắc) và thu được nguyên liệu huyền bí. Không thể hoàn tác.",
@@ -2382,8 +2431,10 @@ export const vi_VN: EnTranslations = {
       "stateKnown": "Đã biết",
       "stateTeachable": "Có sẵn",
       "stateLocked": "Đã khóa",
+      "statePending": "Learning",
       "requirement": "Đã học tại {craft} {skill}",
       "trainAria": "Tìm hiểu {name} cho {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Đào tạo",
       "dialogOptionAria": "Duyệt đào tạo từ {name}",
       "learned": "Công thức đã học: {recipe}",
@@ -2410,7 +2461,8 @@ export const vi_VN: EnTranslations = {
       "notEligible": "Vật phẩm đó không thể gỡ ràng buộc.",
       "notBound": "Vật phẩm đó không bị ràng buộc.",
       "cannotAfford": "Bạn không đủ tiền để trả phí gỡ ràng buộc.",
-      "outOfRange": "Bạn phải ở tại bàn chế tác để gỡ ràng buộc."
+      "outOfRange": "Bạn phải ở tại bàn chế tác để gỡ ràng buộc.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Tìm Hầm Ngục",
@@ -2498,7 +2550,7 @@ export const vi_VN: EnTranslations = {
         "lunar_tide": "Triều Nguyệt (sát thương vùng theo nhịp)",
         "enrage": "Nổi giận khi máu thấp",
         "shuddering_stomp": "Giậm Chân Rùng Rợn (làm choáng vùng)",
-        "necrotic_shockwave": "Sóng Xung Hoại Tử (sát thương vùng nặng)",
+        "grave_inferno": "Địa Ngục Mộ Phần (AoE lửa kênh, giữ khoảng cách)",
         "grave_cleaver": "Chém Mộ Phần (chém ngang phía trước)",
         "shadow_nova": "Nova Bóng Tối (bùng nổ vùng)",
         "profane_mending": "Chữa Lành Bất Thánh (hồi máu cho đồng minh)",
@@ -3784,7 +3836,7 @@ export const vi_VN: EnTranslations = {
       "specializationBody": "Ở kỹ năng {at} nghề thủ công này chuyên ngành hóa bạn, không cần nhiệm vụ: từ đó trở đi công thức tốn ít hơn {pct}% nguyên liệu, và chuyên ngành hóa thêm vào tỉ lệ kiệt tác của nó.\n\nCác chuyên gia cũng học cách mang xưởng theo mình: một thợ chế tạo đã chuyên ngành có thể thiết lập trạm di động ở thực địa trong mười phút mỗi lần, nên công thức gắn trạm có thể được thực hiện ngay cửa mỏ thay vì quay về thị trấn. Các giới hạn của nó là có chủ ý: nó không bao giờ tính cho việc học với bậc thầy hay để giải trói một món đồ ủy thác, và nó hết hạn theo bộ đếm thời gian dù bạn có dùng nó hay không.",
       "ench": {
         "disenchantHeading": "Hủy pháp khắc",
-        "disenchantNote": "Hủy pháp khắc nhận bất kỳ vũ khí hoặc trang phục giáp phẩm chất phổ thông trở lên và tiêu thụ một bản, không bao giờ là bản đã có pháp khắc sẵn. Đồ phổ thông và khác thường nghiền thành một nắm Bụi Thanh Âm ngẫu nhiên, phong phú hơn với đồ hiếm hơn và cấp độ cao hơn; từ hiếm trở lên sản lượng thay đổi hình dạng, chính xác một Tinh Chất Thanh Âm từ đồ hiếm hoặc một Mảnh Thanh Âm từ đồ sử thi hoặc huyền thoại, cộng với phụ liệu thứ cấp theo loại dựa trên chất liệu làm nên vật phẩm đó.",
+        "disenchantNote": "Hủy pháp khắc nhận bất kỳ vũ khí hoặc trang phục giáp phẩm chất phổ thông trở lên và tiêu thụ một bản, ưu tiên bản thường trước bản đã có pháp khắc; khi chỉ còn lại các bản đã có pháp khắc, một bản trong số đó sẽ bị phá hủy, mất luôn cả pháp khắc. Đồ phổ thông và khác thường nghiền thành một nắm Bụi Thanh Âm ngẫu nhiên, phong phú hơn với đồ hiếm hơn và cấp độ cao hơn; từ hiếm trở lên sản lượng thay đổi hình dạng, chính xác một Tinh Chất Thanh Âm từ đồ hiếm hoặc một Mảnh Thanh Âm từ đồ sử thi hoặc huyền thoại, cộng với phụ liệu thứ cấp theo loại dựa trên chất liệu làm nên vật phẩm đó.",
         "typedHeading": "Phụ liệu thứ cấp theo loại",
         "typedNote": "Các phụ liệu thứ cấp theo loại dựa trên chất liệu: giáp vải cho Sợi Cộng Hưởng, da cho Da Cộng Hưởng, thư giáp cho Xích Cộng Hưởng, vũ khí cận chiến cho Thép Cộng Hưởng, và trượng, đũa phép, cung, và nỏ cho Gỗ Cộng Hưởng. Đồ hiếm cho chính xác {rare}; đồ sử thi hoặc huyền thoại cho {epicMin} hoặc {epicMax}. Nhẫn và vòng cổ không có hạng giáp, nên chúng chỉ cho nguyên liệu chính.\n\nLưu ý điều nhỏ: các phụ liệu Cộng Hưởng ràng buộc khi giao dịch, nên mỗi cái chỉ có thể đổi tay một lần, thẳng từ thợ phá đến thợ pháp khắc sẽ đốt nó. Bụi, Tinh Chất, và Mảnh không bị ràng buộc như vậy và di chuyển như bất kỳ hàng hóa giao dịch nào khác.",
         "colSource": "Phá từ",
@@ -3823,7 +3875,6 @@ export const vi_VN: EnTranslations = {
       "toolUnavailable": "Không bán",
       "priceNone": "Không bán",
       "toolTierReq": "Công cụ bậc {tier}",
-      "bareHands": "Tay không",
       "yieldsHeading": "Một lần thu hoạch mang lại gì",
       "yieldsBody": "Mỗi lần thu hoạch sẽ tung một phẩm chất cho những gì nó mang lại, và thành thạo của bạn là toàn bộ câu chuyện của lần tung đó. Một người mới thu thập hoàn toàn luôn khai thác được nguyên liệu thông thường; mỗi điểm kỹ năng dịch chuyển tỉ trọng đều đặn ra khỏi thông thường vào các bậc cao hơn và không bao giờ ngược lại, cho đến khi ở giới hạn 100 bậc thông thường biến mất hoàn toàn: 60 phần trăm không phổ biến, 30 phần trăm hiếm, 8 phần trăm sử thi, và 2 phần trăm huyền thoại, mỗi lần.\n\nPhẩm chất cũng là số lượng: lần tung thông thường cho 1 đơn vị, không phổ biến và hiếm cho 2, sử thi 3, và huyền thoại 4. Bất kỳ sản phẩm hiếm, sử thi, hoặc huyền thoại nào đều đến như một bản được đóng dấu Được thu thập bởi bạn: ở giới hạn đó là bốn trong mười lần thu hoạch mang tên bạn, và các quy tắc xuất xứ trên trang Kinh Tế Chế Tạo giải thích lý do tại sao các thợ thủ công trả thêm cho chính xác những chồng đó.",
       "bandsHeading": "Các dải thành thạo",
@@ -5523,8 +5574,10 @@ export const vi_VN: EnTranslations = {
     "reconnectingNow": "Mất kết nối. Đang kết nối lại ngay bây giờ... (thử {attempt}/{maxAttempts})",
     "slowConnection": "Quá trình này mất nhiều thời gian hơn bình thường. Kiểm tra kết nối internet của bạn.",
     "connectionRejected": "Máy chủ đã đóng kết nối.",
+    "incompatibleWorldVersion": "Game and server versions are incompatible. Reload or update, then try again.",
     "realmFull": "Thế giới này đang đầy người chơi. Vui lòng thử lại sau vài phút.",
     "tooManyConnections": "Có quá nhiều kết nối đến thế giới này từ mạng của bạn. Vui lòng đóng bớt cửa sổ trò chơi hoặc thử lại sau vài phút.",
+    "messageRateExceeded": "You were disconnected for sending actions too quickly. Please wait a moment and log back in.",
     "tips": {
       "classes": "Mẹo: mỗi lớp trong 9 lớp nhân vật có lối chơi khác nhau. Hãy thử vài lớp trước khi quyết định gắn bó.",
       "talents": "Mẹo: bạn có thể đặt lại tài năng bất cứ lúc nào ngoài chiến đấu, nên lựa chọn ban đầu không bao giờ là cái bẫy.",
@@ -5593,6 +5646,12 @@ export const vi_VN: EnTranslations = {
     "bodyDesktop": "Trò chơi đang chạy mà không có tăng tốc GPU và sẽ chậm. Hãy cập nhật trình điều khiển đồ họa, sau đó khởi động lại trò chơi. Trên Windows, hãy đặt trò chơi thành Hiệu suất cao trong Cài đặt > Hệ thống > Màn hình > Đồ họa.",
     "bodyWeb": "Trò chơi đang chạy mà không có tăng tốc GPU và sẽ chậm. Hãy bật tăng tốc phần cứng trong cài đặt trình duyệt, cập nhật trình điều khiển đồ họa, sau đó khởi động lại trình duyệt.",
     "dismiss": "Bỏ Qua"
+  },
+  "perfNudge": {
+    "integratedGpu": "The game is running on the integrated (power-saving) GPU. If this computer also has a gaming GPU, set your browser to High performance under Settings > System > Display > Graphics on Windows, then restart the browser. The desktop app picks the gaming GPU automatically.",
+    "hardwareAccelerationDesktop": "The game is running without GPU acceleration, which makes it very slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "hardwareAccelerationWeb": "The game is running without GPU acceleration, which makes it very slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "Không có thế giới nào khả dụng.",
@@ -6018,7 +6077,8 @@ export const vi_VN: EnTranslations = {
       "death": "{name} gục ngã.",
       "auraGain": "Bạn nhận được {name}.",
       "auraFade": "{name} tan biến khỏi bạn.",
-      "auraAfflicted": "{target} bị ảnh hưởng bởi {name}."
+      "auraAfflicted": "{target} bị ảnh hưởng bởi {name}.",
+      "auraGainOther": "{target} gains {name}."
     },
     "system": {
       "playerDeath": "Bạn đã chết.",
@@ -7279,7 +7339,7 @@ export const vi_VN: EnTranslations = {
       },
       "bear_form": {
         "name": "Bruin Form",
-        "description": "Biến hình thành gấu: giáp +90%, sức mạnh tấn công tăng mạnh, các đòn đánh của ngươi tích nộ khí và tạo thêm 30% đe dọa. Niệm lại để trở về hình pháp sư."
+        "description": "Biến hình thành gấu: giáp +130%, sức mạnh tấn công tăng mạnh, các đòn đánh của ngươi tích nộ khí và tạo thêm 30% đe dọa. Niệm lại để trở về hình pháp sư."
       },
       "maul": {
         "name": "Nghiền Xương",
@@ -11725,6 +11785,7 @@ export const vi_VN: EnTranslations = {
     "delveRiteShrineCandleInteract": "Miếu Nến: Nhấn F để chạm vào",
     "delveRiteShrineReedInteract": "Miếu Lau Sậy: Nhấn F để chạm vào",
     "delveRiteShrineSkullInteract": "Miếu Đầu Lâu: Nhấn F để chạm vào",
-    "mailboxName": "Hòm Thư"
+    "mailboxName": "Hòm Thư",
+    "noticeboardName": "Notice Board"
   }
 };

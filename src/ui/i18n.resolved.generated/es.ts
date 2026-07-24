@@ -355,6 +355,7 @@ export const es: EnTranslations = {
       "close": "Cerrar recompensas diarias",
       "loading": "Cargando recompensas diarias...",
       "error": "No se pudieron cargar las recompensas diarias.",
+      "disabled": "Las recompensas diarias están desactivadas actualmente. Anunciaremos las novedades de esta función en el canal de Discord.",
       "intro": "Mantén suficiente WOC en tu cartera verificada para desbloquear las recompensas diarias. Gana puntos con un giro diario y tareas rotativas, y escala la clasificación diaria para llevarte una parte del fondo de premios.",
       "disclaimer": "El precio de WOC puede moverse deprisa. Recomendamos mantener más del mínimo de $20 USD para que las oscilaciones normales del precio no te bloqueen el acceso. Esto no es asesoramiento financiero.",
       "prize": "Fondo de premios",
@@ -1459,7 +1460,9 @@ export const es: EnTranslations = {
         "gills": "Agallas",
         "claw": "Garra",
         "horn": "Cuerno",
-        "tusk": "Colmillo"
+        "tusk": "Colmillo",
+        "meat": "Meat",
+        "cloth": "Cloth"
       }
     },
     "townFocus": {
@@ -1991,6 +1994,9 @@ export const es: EnTranslations = {
         "takeParcelsFirst": "Saca los paquetes antes de desechar la carta."
       }
     },
+    "noticeboard": {
+      "empty": "Nothing seems posted."
+    },
     "bank": {
       "title": "Banco",
       "subtitle": "El Arca Dorada",
@@ -2131,12 +2137,51 @@ export const es: EnTranslations = {
         "logging": "Requiere un hacha de tala de nivel {tier}",
         "herbalism": "Requiere una hoz de herboristería de nivel {tier}"
       },
+      "requiresTool": {
+        "mining": "Requires a mining pick",
+        "logging": "Requires a logging axe",
+        "herbalism": "Requires a herbalism sickle"
+      },
       "toolTierUnmet": {
         "mining": "Necesitas un pico de minería de nivel {tier} para extraer esta veta.",
         "logging": "Necesitas un hacha de tala de nivel {tier} para talar este rodal.",
         "herbalism": "Necesitas una hoz de herboristería de nivel {tier} para recolectar esta parcela."
       },
+      "toolRequired": {
+        "mining": "You need a mining pick to harvest this vein.",
+        "logging": "You need a logging axe to fell this stand.",
+        "herbalism": "You need a herbalism sickle to gather this patch.",
+        "fishing": "You need a fishing pole to cast a line."
+      },
+      "noNodeNearby": {
+        "mining": "There is no ore vein within reach.",
+        "logging": "There is no timber stand within reach.",
+        "herbalism": "There is no herb patch within reach."
+      },
       "toolTierUnmetCorpse": "Necesitas una herramienta de recolección de nivel {tier} para recuperar los mejores materiales.",
+      "toolTooltip": {
+        "kind": {
+          "mining": "Mining tool (tier {tier})",
+          "logging": "Logging tool (tier {tier})",
+          "herbalism": "Herbalism tool (tier {tier})",
+          "fishing": "Fishing rod (tier {tier})"
+        },
+        "unlocks": {
+          "mining": "Required to mine ore veins up to tier {tier}.",
+          "logging": "Required to fell timber stands up to tier {tier}.",
+          "herbalism": "Required to gather herb patches up to tier {tier}."
+        },
+        "use": {
+          "mining": "Use: Mine a nearby ore vein.",
+          "logging": "Use: Fell a nearby timber stand.",
+          "herbalism": "Use: Gather from a nearby herb patch."
+        },
+        "speed": "Gathers faster at nodes below tier {tier}.",
+        "rodRequired": "Required to fish.",
+        "rodBite": "Fish bite up to {seconds}s sooner.",
+        "rodReel": "Extends the reel window by {seconds}s.",
+        "rodBand": "Unlocks richer catch tables at fishing skill {skill} and above."
+      },
       "downgradeMark": "Bolsas llenas: el hallazgo se guardó sin la marca del recolector.",
       "downgradeFind": "Bolsas llenas: se perdió un hallazgo prístino.",
       "stateReady": "Listo",
@@ -2312,6 +2357,7 @@ export const es: EnTranslations = {
       },
       "throttled": "Estás elaborando demasiado rápido. Espera un momento e inténtalo de nuevo.",
       "recipeNotLearned": "Aún no has aprendido esa receta.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Requiere {craft} {skill}",
       "difficultyFull": "Ganancia total de habilidad",
       "difficultyReduced": "Ganancia de habilidad reducida",
@@ -2363,6 +2409,9 @@ export const es: EnTranslations = {
       "enchantWrongSlot": "Ese encantamiento no se puede aplicar a ese objeto.",
       "enchantUnknown": "Ese encantamiento no existe.",
       "enchantInsufficient": "No tienes los materiales para ese encantamiento.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "¿Desencatar {item}?",
       "disenchantConfirmBody": "Esto destruye {item} y produce materiales arcanos. No se puede deshacer.",
       "disenchantConfirmBodySpecial": "Esto destruye una copia especial de {item} (firmada, obra maestra o encantada) y produce materiales arcanos. No se puede deshacer.",
@@ -2382,8 +2431,10 @@ export const es: EnTranslations = {
       "stateKnown": "conocido",
       "stateTeachable": "Disponible",
       "stateLocked": "bloqueado",
+      "statePending": "Learning",
       "requirement": "Impartido en {craft} {skill}",
       "trainAria": "Aprenda {name} para {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Entrenamiento",
       "dialogOptionAria": "Explore la capacitación de {name}",
       "learned": "Receta aprendida: {recipe}",
@@ -2410,7 +2461,8 @@ export const es: EnTranslations = {
       "notEligible": "Ese objeto no puede desvincularse.",
       "notBound": "Ese objeto no está vinculado.",
       "cannotAfford": "No puedes permitirte la tarifa de desvinculación.",
-      "outOfRange": "Debes estar en una estación artesanal para desvincular."
+      "outOfRange": "Debes estar en una estación artesanal para desvincular.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Buscador de Mazmorras",
@@ -2498,7 +2550,7 @@ export const es: EnTranslations = {
         "lunar_tide": "Marea Lunar (dano de area pulsante)",
         "enrage": "Entra en furia al tener poca salud",
         "shuddering_stomp": "Pisada Estremecedora (aturdimiento de area)",
-        "necrotic_shockwave": "Onda de Choque Necrotica (dano de area intenso)",
+        "grave_inferno": "Infierno Sepulcral (AoE de fuego canalizado, manteneos separados)",
         "grave_cleaver": "Hacha Funebra (tajo frontal)",
         "shadow_nova": "Nova de Sombra (explosion de area)",
         "profane_mending": "Restauracion Profana (cura a sus aliados)",
@@ -3784,7 +3836,7 @@ export const es: EnTranslations = {
       "specializationBody": "En la habilidad {at} este oficio te especializa, sin necesidad de misión: las recetas cuestan un {pct}% menos de materiales a partir de entonces, y la especialización añade su propio impulso a la probabilidad de obra maestra.\n\nLos especializados también aprenden a llevar el taller consigo: un artesano especializado puede montar una estación móvil en el campo durante diez minutos seguidos, de modo que las recetas de estación se pueden trabajar en la boca de la mina en vez de volver al pueblo. Sus límites son deliberados: nunca cuenta para entrenar con un maestro ni para desvincular una pieza de encargo, y expira con su temporizador la hayas usado o no.",
       "ench": {
         "disenchantHeading": "Desencantamiento",
-        "disenchantNote": "Desencantar toma cualquier arma o pieza de armadura de calidad común o mejor y consume una copia, nunca una que ya esté encantada. Las piezas comunes y poco comunes se procesan en un puñado de Polvo de Carillón, más rico para piezas más raras y de mayor nivel; a partir de raro, el rendimiento cambia de forma: exactamente una Esencia de Carillón de una pieza rara o un Fragmento de Carillón de una pieza épica o legendaria, más un secundario tipificado según el material del que estaba hecha la pieza.",
+        "disenchantNote": "Desencantar toma cualquier arma o pieza de armadura de calidad común o mejor y consume una copia, tomando una copia normal antes que una encantada; cuando solo quedan copias encantadas, se destruye una de ellas, con encantamiento y todo. Las piezas comunes y poco comunes se procesan en un puñado de Polvo de Carillón, más rico para piezas más raras y de mayor nivel; a partir de raro, el rendimiento cambia de forma: exactamente una Esencia de Carillón de una pieza rara o un Fragmento de Carillón de una pieza épica o legendaria, más un secundario tipificado según el material del que estaba hecha la pieza.",
         "typedHeading": "Secundarios tipificados",
         "typedNote": "Los secundarios tipificados siguen el material: la armadura de tela produce Hilo Resonante, el cuero Piel Resonante, la cota de malla Eslabones Resonantes, las armas de cuerpo a cuerpo Acero Resonante, y los bastones, varitas, arcos y ballestas Madera Resonante. Una pieza rara da exactamente {rare}; una pieza épica o legendaria da {epicMin} o {epicMax}. Los anillos y collares no tienen clase de armadura, así que solo producen el material primario.\n\nPresta atención a la letra pequeña: los secundarios Resonantes se vinculan al intercambiar, así que cada uno puede cambiar de manos exactamente una vez, directamente del desencantador al encantador que lo usará. El Polvo, la Esencia y los Fragmentos no tienen esa restricción y se mueven como cualquier otro bien de intercambio.",
         "colSource": "Obtenido de",
@@ -3823,7 +3875,6 @@ export const es: EnTranslations = {
       "toolUnavailable": "No se vende",
       "priceNone": "No se vende",
       "toolTierReq": "Herramienta de nivel {tier}",
-      "bareHands": "Manos desnudas",
       "yieldsHeading": "Qué produce una cosecha",
       "yieldsBody": "Cada cosecha tira una calidad para lo que otorga, y tu pericia es toda la historia de esa tirada. Un recolector nuevo siempre saca material común; cada punto de habilidad desplaza peso de forma constante desde el común hacia los grados más altos y nunca hacia atrás, hasta que al llegar al tope de 100 el grado común desaparece por completo: 60 por ciento poco común, 30 por ciento raro, 8 por ciento épico y 2 por ciento legendario, siempre.\n\nLa calidad también significa cantidad: una tirada común da 1 unidad, poco común y raro dan 2, épico 3, y legendario 4. Cualquier resultado raro, épico o legendario llega como una copia firmada marcada como Recolectado por ti: al tope, eso es cuatro de cada diez cosechas con tu nombre, y las reglas de procedencia en la página de Economía de Artesanía explican por qué los artesanos pagan de más exactamente por esas pilas.",
       "bandsHeading": "Franjas de habilidad",
@@ -5523,8 +5574,10 @@ export const es: EnTranslations = {
     "reconnectingNow": "Conexión perdida. Reconectando ahora... (intento {attempt}/{maxAttempts})",
     "slowConnection": "Esto está tardando más de lo habitual. Verifique su conexión a Internet.",
     "connectionRejected": "El servidor cerró la conexión.",
+    "incompatibleWorldVersion": "Game and server versions are incompatible. Reload or update, then try again.",
     "realmFull": "Este mundo esta lleno en este momento. Por favor, intentalo de nuevo en unos minutos.",
     "tooManyConnections": "Hay demasiadas conexiones a este mundo desde tu red. Cierra ventanas adicionales del juego o intentalo de nuevo en unos minutos.",
+    "messageRateExceeded": "You were disconnected for sending actions too quickly. Please wait a moment and log back in.",
     "tips": {
       "classes": "Consejo: cada una de las 9 clases se juega de forma distinta. Prueba varias antes de decidirte por una.",
       "talents": "Consejo: puedes restablecer tus talentos cuando estés fuera de combate, así que una elección temprana nunca es definitiva.",
@@ -5593,6 +5646,12 @@ export const es: EnTranslations = {
     "bodyDesktop": "El juego se ejecuta sin aceleración de GPU y será lento. Actualiza los controladores de gráficos y reinicia el juego. En Windows, establece también el juego como Alto rendimiento en Configuración > Sistema > Pantalla > Gráficos.",
     "bodyWeb": "El juego se ejecuta sin aceleración de GPU y será lento. Activa la aceleración de hardware en los ajustes del navegador, actualiza los controladores de gráficos y reinicia el navegador.",
     "dismiss": "Cerrar"
+  },
+  "perfNudge": {
+    "integratedGpu": "The game is running on the integrated (power-saving) GPU. If this computer also has a gaming GPU, set your browser to High performance under Settings > System > Display > Graphics on Windows, then restart the browser. The desktop app picks the gaming GPU automatically.",
+    "hardwareAccelerationDesktop": "The game is running without GPU acceleration, which makes it very slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "hardwareAccelerationWeb": "The game is running without GPU acceleration, which makes it very slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "No hay mundos disponibles.",
@@ -6018,7 +6077,8 @@ export const es: EnTranslations = {
       "death": "{name} muere.",
       "auraGain": "Obtienes {name}.",
       "auraFade": "{name} se desvanece de ti.",
-      "auraAfflicted": "{target} queda afectado por {name}."
+      "auraAfflicted": "{target} queda afectado por {name}.",
+      "auraGainOther": "{target} gains {name}."
     },
     "system": {
       "playerDeath": "Has muerto.",
@@ -7279,7 +7339,7 @@ export const es: EnTranslations = {
       },
       "bear_form": {
         "name": "Forma de Bruin",
-        "description": "Cambias a forma de oso: armadura +90%, poder de ataque muy aumentado, tus ataques generan ira y un 30% más de amenaza. Lánzala de nuevo para volver a forma de taumaturgo."
+        "description": "Cambias a forma de oso: armadura +130%, poder de ataque muy aumentado, tus ataques generan ira y un 30% más de amenaza. Lánzala de nuevo para volver a forma de taumaturgo."
       },
       "maul": {
         "name": "Rompehuesos",
@@ -11725,6 +11785,7 @@ export const es: EnTranslations = {
     "delveRiteShrineCandleInteract": "Santuario de la Vela: pulsa F para tocarlo",
     "delveRiteShrineReedInteract": "Santuario del Junco: pulsa F para tocarlo",
     "delveRiteShrineSkullInteract": "Santuario de la Calavera: pulsa F para tocarlo",
-    "mailboxName": "Buzón"
+    "mailboxName": "Buzón",
+    "noticeboardName": "Notice Board"
   }
 };

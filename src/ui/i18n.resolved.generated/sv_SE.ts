@@ -355,6 +355,7 @@ export const sv_SE: EnTranslations = {
       "close": "Stäng dagliga belöningar",
       "loading": "Laddar dagliga belöningar...",
       "error": "Kunde inte ladda dagliga belöningar.",
+      "disabled": "Dagliga belöningar är för närvarande inaktiverade. Vi meddelar uppdateringar om den här funktionen i Discord-kanalen.",
       "intro": "Håll tillräckligt med WOC i din verifierade plånbok för att låsa upp dagliga belöningar. Tjäna poäng med ett dagligt snurr och roterande uppgifter, och klättra sedan på den dagliga topplistan för en andel av prispotten.",
       "disclaimer": "WOC-priset kan röra sig snabbt. Vi rekommenderar att du håller mer än miniminivån på 20 USD så att vanliga prissvängningar inte låser dig ute. Detta är inte finansiell rådgivning.",
       "prize": "Prispott",
@@ -1459,7 +1460,9 @@ export const sv_SE: EnTranslations = {
         "gills": "Gälar",
         "claw": "Klo",
         "horn": "Horn",
-        "tusk": "Bete"
+        "tusk": "Bete",
+        "meat": "Meat",
+        "cloth": "Cloth"
       }
     },
     "townFocus": {
@@ -1991,6 +1994,9 @@ export const sv_SE: EnTranslations = {
         "takeParcelsFirst": "Ta ut paketen innan du kastar brevet."
       }
     },
+    "noticeboard": {
+      "empty": "Nothing seems posted."
+    },
     "bank": {
       "title": "Bank",
       "subtitle": "Förgyllda kassakistan",
@@ -2131,12 +2137,51 @@ export const sv_SE: EnTranslations = {
         "logging": "Kräver en tier {tier} skogsavverkningsyxa",
         "herbalism": "Kräver en tier {tier} örtinsamlingsskära"
       },
+      "requiresTool": {
+        "mining": "Requires a mining pick",
+        "logging": "Requires a logging axe",
+        "herbalism": "Requires a herbalism sickle"
+      },
       "toolTierUnmet": {
         "mining": "Du behöver en tier {tier} gruvhacka för att bryta den här ådern.",
         "logging": "Du behöver en tier {tier} skogsavverkningsyxa för att fälla det här beståndet.",
         "herbalism": "Du behöver en tier {tier} örtinsamlingsskära för att samla den här fläcken."
       },
+      "toolRequired": {
+        "mining": "You need a mining pick to harvest this vein.",
+        "logging": "You need a logging axe to fell this stand.",
+        "herbalism": "You need a herbalism sickle to gather this patch.",
+        "fishing": "You need a fishing pole to cast a line."
+      },
+      "noNodeNearby": {
+        "mining": "There is no ore vein within reach.",
+        "logging": "There is no timber stand within reach.",
+        "herbalism": "There is no herb patch within reach."
+      },
       "toolTierUnmetCorpse": "Du behöver ett tier {tier} insamlingsverktyg för att återvinna de bästa materialen.",
+      "toolTooltip": {
+        "kind": {
+          "mining": "Mining tool (tier {tier})",
+          "logging": "Logging tool (tier {tier})",
+          "herbalism": "Herbalism tool (tier {tier})",
+          "fishing": "Fishing rod (tier {tier})"
+        },
+        "unlocks": {
+          "mining": "Required to mine ore veins up to tier {tier}.",
+          "logging": "Required to fell timber stands up to tier {tier}.",
+          "herbalism": "Required to gather herb patches up to tier {tier}."
+        },
+        "use": {
+          "mining": "Use: Mine a nearby ore vein.",
+          "logging": "Use: Fell a nearby timber stand.",
+          "herbalism": "Use: Gather from a nearby herb patch."
+        },
+        "speed": "Gathers faster at nodes below tier {tier}.",
+        "rodRequired": "Required to fish.",
+        "rodBite": "Fish bite up to {seconds}s sooner.",
+        "rodReel": "Extends the reel window by {seconds}s.",
+        "rodBand": "Unlocks richer catch tables at fishing skill {skill} and above."
+      },
       "downgradeMark": "Väskorna fulla: fyndet förvarades utan samlarmärke.",
       "downgradeFind": "Väskorna fulla: ett orört fynd gled undan.",
       "stateReady": "Redo",
@@ -2312,6 +2357,7 @@ export const sv_SE: EnTranslations = {
       },
       "throttled": "Du tillverkar för snabbt. Vänta ett ögonblick och försök igen.",
       "recipeNotLearned": "Du har inte lärt dig det receptet än.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Kräver {craft} {skill}",
       "difficultyFull": "Full skicklighetsvinst",
       "difficultyReduced": "Minskad färdighetsvinst",
@@ -2363,6 +2409,9 @@ export const sv_SE: EnTranslations = {
       "enchantWrongSlot": "Den förtrollningen kan inte appliceras på det föremålet.",
       "enchantUnknown": "Den förtrollningen finns inte.",
       "enchantInsufficient": "Du har inte materialet för den förtrollningen.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Avförtrylla {item}?",
       "disenchantConfirmBody": "Detta förstör {item} och ger arkanmaterial. Det kan inte ångras.",
       "disenchantConfirmBodySpecial": "Detta förstör en särskild kopia av {item} (signerad, mästerverk eller förtrollad) och ger arkanmaterial. Det kan inte ångras.",
@@ -2382,8 +2431,10 @@ export const sv_SE: EnTranslations = {
       "stateKnown": "Känd",
       "stateTeachable": "Tillgänglig",
       "stateLocked": "Låst",
+      "statePending": "Learning",
       "requirement": "Undervisade på {craft} {skill}",
       "trainAria": "Lär dig {name} för {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Utbildning",
       "dialogOptionAria": "Bläddra bland utbildningar från {name}",
       "learned": "Lärt recept: {recipe}",
@@ -2410,7 +2461,8 @@ export const sv_SE: EnTranslations = {
       "notEligible": "Det föremålet kan inte lösas upp.",
       "notBound": "Det föremålet är inte bundet.",
       "cannotAfford": "Du har inte råd med upplösningsavgiften.",
-      "outOfRange": "Du måste vara vid en hantverksstation för att lösa upp."
+      "outOfRange": "Du måste vara vid en hantverksstation för att lösa upp.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Fängelsehålsletaren",
@@ -2498,7 +2550,7 @@ export const sv_SE: EnTranslations = {
         "lunar_tide": "Månflod (pulserande områdesskada)",
         "enrage": "Rasar vid låga livspunkter",
         "shuddering_stomp": "Darrande trampling (områdeschock)",
-        "necrotic_shockwave": "Nekrotisk chockvåg (kraftig områdesskada)",
+        "grave_inferno": "Gravinferno (kanaliserat eld-AoE, håll avstånd)",
         "grave_cleaver": "Grav-klyvare (frontalt huggsving)",
         "shadow_nova": "Skuggnova (områdesburst)",
         "profane_mending": "Vanhelgad läkning (helar sina allierade)",
@@ -3784,7 +3836,7 @@ export const sv_SE: EnTranslations = {
       "specializationBody": "Vid skicklighet {at} specialiserar detta hantverk dig, inget uppdrag behövs: recept kostar {pct}% färre material från och med då, och specialiseringen lägger till en egen höjning av mästerverksrisken.\n\nSpecialister lär sig också att ta verkstaden med sig: en specialiserad hantverkare kan sätta upp en mobil station i fält i tio minuter åt gången, så att stationsbundna recept kan utföras vid gruventrén istället för tillbaka i staden. Dess gränser är avsiktliga: den räknas aldrig för träning hos en mästare eller för att lösa upp ett beställt föremål, och den löper ut vid sin timer oavsett om du använde den.",
       "ench": {
         "disenchantHeading": "Avförtrollning",
-        "disenchantNote": "Avförtrollning tar ett vapen eller en rustningspjäs av vanlig kvalitet eller bättre och konsumerar en kopia, aldrig en kopia som redan är förtrollad. Vanliga och ovanliga pjäser mals ner till en rullad handfull Klingdamm, lite rikare för sällsyntare och högre-nivåartiklar; från sällsynt och uppåt ändrar avkastningen form, exakt en Klingessens från en sällsynt pjäs eller en Klingskarva från en episk eller legendarisk, plus en typad sekundär kopplad till vad pjäsen var tillverkad av.",
+        "disenchantNote": "Avförtrollning tar ett vapen eller en rustningspjäs av vanlig kvalitet eller bättre och konsumerar en kopia, en vanlig kopia före en förtrollad; när bara förtrollade kopior återstår förstörs en av dem, förtrollning och allt. Vanliga och ovanliga pjäser mals ner till en rullad handfull Klingdamm, lite rikare för sällsyntare och högre-nivåartiklar; från sällsynt och uppåt ändrar avkastningen form, exakt en Klingessens från en sällsynt pjäs eller en Klingskarva från en episk eller legendarisk, plus en typad sekundär kopplad till vad pjäsen var tillverkad av.",
         "typedHeading": "Typade sekundärer",
         "typedNote": "De typade sekundärerna följer materialet: tygruskning ger Resonant Tråd, läder Resonant Skinn, ringbrynja Resonant Länkpjäser, närstridsvapen Resonant Stål, och stavar, trollstavar, bågar och armborstar Resonant Timmer. En sällsynt pjäs ger exakt {rare}; en episk eller legendarisk pjäs ger {epicMin} eller {epicMax}. Ringar och halsband har ingen rustningsklass, så de ger bara primärmaterialet.\n\nVar uppmärksam på det finstilta: de Resonanta sekundärerna binds vid handel, så var och en kan byta händer exakt en gång, rakt från avbrytaren till förtrollaren som ska bränna det. Damm, Essens och Skärvor bär ingen sådan sträng och rör sig som vilken annan handelsvara som helst.",
         "colSource": "Krossad fran",
@@ -3823,7 +3875,6 @@ export const sv_SE: EnTranslations = {
       "toolUnavailable": "Säljs inte",
       "priceNone": "Säljs inte",
       "toolTierReq": "Nivå {tier}-verktyg",
-      "bareHands": "Med bara händerna",
       "yieldsHeading": "Vad en skörd ger",
       "yieldsBody": "Varje skörd rullar en kvalitet för det den ger, och din skicklighet är hela historien bakom det rullet. En helt ny skördare drar alltid vanligt material; varje skicklighetspoäng förskjuter stadigt vikt från vanligt till de högre graderna och aldrig bakåt, tills graden vanlig vid 100-taket försvinner helt: 60 procent ovanligt, 30 procent sällsynt, 8 procent episkt och 2 procent legendariskt, varje gång.\n\nKvalitet innebär också kvantitet: ett vanligt resultat ger 1 enhet, ovanligt och sällsynt ger 2, episkt 3 och legendariskt 4. Varje sällsynt, episk eller legendarisk skörd anländer som en signerad kopia stämplad Samlat av dig: vid taket är det fyra av tio skördar som bär ditt namn, och provenansreglerna på sidan Hantverksekonomi förklarar varför hantverkare betalar extra för just de stackarna.",
       "bandsHeading": "Skicklighetsband",
@@ -5523,8 +5574,10 @@ export const sv_SE: EnTranslations = {
     "reconnectingNow": "Anslutning förlorad. Återansluter nu... (försök {attempt}/{maxAttempts})",
     "slowConnection": "Detta tar längre tid än vanligt. Kontrollera din internetanslutning.",
     "connectionRejected": "Servern stängde anslutningen.",
+    "incompatibleWorldVersion": "Game and server versions are incompatible. Reload or update, then try again.",
     "realmFull": "Denna värld är full just nu. Försök igen om några minuter.",
     "tooManyConnections": "För många anslutningar till denna värld kommer från ditt nätverk. Stäng extra spelfönster eller försök igen om några minuter.",
+    "messageRateExceeded": "You were disconnected for sending actions too quickly. Please wait a moment and log back in.",
     "tips": {
       "classes": "Tips: var och en av de 9 klasserna spelas på sitt eget sätt. Prova några innan du bestämmer dig för en.",
       "talents": "Tips: du kan återställa dina talanger när du inte strider, så ett tidigt val blir aldrig en fälla.",
@@ -5593,6 +5646,12 @@ export const sv_SE: EnTranslations = {
     "bodyDesktop": "Spelet körs utan GPU-acceleration och kommer att vara långsamt. Uppdatera dina grafikdrivrutiner och starta sedan om spelet. I Windows anger du även spelet till Höga prestanda under Inställningar > System > Skärm > Grafik.",
     "bodyWeb": "Spelet körs utan GPU-acceleration och kommer att vara långsamt. Aktivera hårdvaruacceleration i din webbläsares inställningar, uppdatera dina grafikdrivrutiner och starta sedan om din webbläsare.",
     "dismiss": "Stäng"
+  },
+  "perfNudge": {
+    "integratedGpu": "The game is running on the integrated (power-saving) GPU. If this computer also has a gaming GPU, set your browser to High performance under Settings > System > Display > Graphics on Windows, then restart the browser. The desktop app picks the gaming GPU automatically.",
+    "hardwareAccelerationDesktop": "The game is running without GPU acceleration, which makes it very slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "hardwareAccelerationWeb": "The game is running without GPU acceleration, which makes it very slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "Inga världar tillgängliga.",
@@ -6018,7 +6077,8 @@ export const sv_SE: EnTranslations = {
       "death": "{name} dör.",
       "auraGain": "Du får {name}.",
       "auraFade": "{name} bleknar bort från dig.",
-      "auraAfflicted": "{target} är drabbad av {name}."
+      "auraAfflicted": "{target} är drabbad av {name}.",
+      "auraGainOther": "{target} gains {name}."
     },
     "system": {
       "playerDeath": "Du har dött.",
@@ -7279,7 +7339,7 @@ export const sv_SE: EnTranslations = {
       },
       "bear_form": {
         "name": "Bruinform",
-        "description": "Skiftar gestalt till en björn: rustning +90 %, kraftigt ökad attackkraft, dina attacker bygger raseri och genererar 30 % mer hot. Kasta igen för att återgå till besvärjarform."
+        "description": "Skiftar gestalt till en björn: rustning +130 %, kraftigt ökad attackkraft, dina attacker bygger raseri och genererar 30 % mer hot. Kasta igen för att återgå till besvärjarform."
       },
       "maul": {
         "name": "Benkross",
@@ -11725,6 +11785,7 @@ export const sv_SE: EnTranslations = {
     "delveRiteShrineCandleInteract": "Ljushelgedom: Tryck på F för att röra vid den",
     "delveRiteShrineReedInteract": "Vasshelgedom: Tryck på F för att röra vid den",
     "delveRiteShrineSkullInteract": "Skallhelgedom: Tryck på F för att röra vid den",
-    "mailboxName": "Brevlåda"
+    "mailboxName": "Brevlåda",
+    "noticeboardName": "Notice Board"
   }
 };

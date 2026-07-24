@@ -219,7 +219,7 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
     'Na dovednosti {at} toto řemeslo tě specializuje, bez potřeby úkolu: recepty od té chvíle stojí o {pct}% méně materiálů a specializace přidá vlastní zlepšení šance na mistrovské dílo.\n\nSpecialisté se také naučí brát dílnu s sebou: specializovaný řemeslník může postavit mobilní stanici v terénu na deset minut najednou, takže recepty vázané na stanici lze zpracovávat přímo u ústí dolu místo zpátky ve městě. Její limity jsou záměrné: nikdy se nepočítá pro výcvik u mistra ani pro odpoutání zakázkového kusu a vyprší na svém časovači, ať ji použiješ nebo ne.',
   'guide.profPages.ench.disenchantHeading': 'Rozzačarování',
   'guide.profPages.ench.disenchantNote':
-    'Rozzačarování vezme jakoukoliv zbraň nebo kus zbroje běžné kvality nebo lepší a spotřebuje jednu kopii, nikdy takovou, která je již okouzlená. Běžné a neobvyklé kusy se rozmelou na hrstku Zvonivého prachu, o něco bohatší u vzácnějších a vyšší úrovně; od vzácných výše se výnos mění: přesně jedna Zvonivá esence za vzácný kus nebo jeden Zvonivý střep za epický nebo legendární, plus typizovaná sekundární statistika klíčovaná podle materiálu, z něhož byl kus vyroben.',
+    'Rozzačarování vezme jakoukoliv zbraň nebo kus zbroje běžné kvality nebo lepší a spotřebuje jednu kopii, obyčejnou dříve než okouzlenou; pokud už zbývají jen okouzlené kopie, jedna z nich se zničí i s okouzlením. Běžné a neobvyklé kusy se rozmelou na hrstku Zvonivého prachu, o něco bohatší u vzácnějších a vyšší úrovně; od vzácných výše se výnos mění: přesně jedna Zvonivá esence za vzácný kus nebo jeden Zvonivý střep za epický nebo legendární, plus typizovaná sekundární statistika klíčovaná podle materiálu, z něhož byl kus vyroben.',
   'guide.profPages.ench.typedHeading': 'Typizované sekundární statistiky',
   'guide.profPages.ench.typedNote':
     'Typizované sekundární statistiky se řídí materiálem: látkové zbroje dávají Rezonující nit, kožené Rezonující kůži, kroužkové Rezonující kroužky, zbraně na blízko Rezonující ocel a hole, hůlky, luky a kuše Rezonující dřevo. Vzácný kus dá přesně {rare}; epický nebo legendární kus dá {epicMin} nebo {epicMax}. Prsteny a náhrdelníky nemají třídu zbroje, takže dávají pouze základní materiál.\n\nPozor na drobné písmo: Rezonující sekundární statistiky se vážou při výměně, takže každá může přejít z rukou do rukou přesně jednou, přímo od rozebíratele k okouzlovateli, který ji spotřebuje. Prach, Esence a Střepy takový řetězec nemají a pohybují se jako jakékoli jiné obchodní zboží.',
@@ -264,7 +264,6 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.toolUnavailable': 'Neprodáváno',
   'guide.profPages.priceNone': 'Neprodáváno',
   'guide.profPages.toolTierReq': 'Nástroj {tier}. úrovně',
-  'guide.profPages.bareHands': 'Holýma rukama',
   'guide.profPages.yieldsHeading': 'Co sklizeň přinese',
   'guide.profPages.yieldsBody':
     'Každá sklizeň hodí kvalitu toho, co uděluje, a tvoje dovednost je celým příběhem toho hodu. Nováček sběrač vždy vytáhne běžný materiál; každý bod dovednosti přesouvá váhu rovnoměrně z běžného do vyšších stupňů a nikdy zpátky, až na limitu 100 běžný stupeň zcela zmizí: 60 procent neobvyklého, 30 procent vzácného, 8 procent epického a 2 procenta legendárního, pokaždé.\n\nKvalita také znamená množství: běžný hod přinese 1 jednotku, neobvyklý a vzácný 2, epický 3 a legendární 4. Jakýkoli vzácný, epický nebo legendární výtah přichází jako podepsaná instance s razítkem Sebral ty: na limitu to jsou čtyři sklizně z deseti nesoucí tvé jméno a pravidla původu na stránce Řemeslnická ekonomika vysvětlují, proč řemeslníci platí navíc právě za tyto zásoby.',
@@ -765,7 +764,8 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'hudChrome.finder.mech.mana_burn': 'Vyschlé požehnání (spaluje manu)',
   'hudChrome.finder.mech.mist_surge': 'Mlžný příval (pulzující plošné poškození)',
   'hudChrome.finder.mech.mortal_wound': 'Zapomenutá rána (snižuje přijímané léčení)',
-  'hudChrome.finder.mech.necrotic_shockwave': 'Nekrotická rázová vlna (silné plošné poškození)',
+  'hudChrome.finder.mech.grave_inferno':
+    'Hrobové Peklo (kanalizované ohnivé AoE, udržujte rozestupy)',
   'hudChrome.finder.mech.profane_mending': 'Znesvěcené léčení (léčí spojence)',
   'hudChrome.finder.mech.raise_fallen': 'Povstání padlých (periodické vlny přivolávek)',
   'hudChrome.finder.mech.reaping_arc': 'Žací oblouk (čelní sek)',
@@ -3802,6 +3802,8 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'hudChrome.dailyRewards.oneVsOneExcluded': 'Zápasy 1 proti 1 neudělují body denních odměn.',
   'hudChrome.dailyRewards.tasks': 'Úkoly',
   'hudChrome.dailyRewards.title': 'Denní odměny',
+  'hudChrome.dailyRewards.disabled':
+    'Denní odměny jsou momentálně vypnuté. Novinky o této funkci oznámíme na kanálu Discord.',
   'hudChrome.dailyRewards.totalPlayer': '{count} hráč dnes',
   'hudChrome.dailyRewards.totalPlayers': '{count} hráčů dnes',
   'hudChrome.dailyRewards.unknown': 'Neznámé',
@@ -4794,7 +4796,7 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.battle_shout.name': 'Železný řev',
   'entities.abilities.bear_charge.name': 'Medvědí výpad',
   'entities.abilities.bear_form.description':
-    'Proměníš se v medvěda: zbroj +90 %, výrazně zvýšená síla útoku, tvoje útoky budují vztek a vytvářejí o 30 % více hrozby. Sesláním znovu se vrátíš do podoby sesilatele.',
+    'Proměníš se v medvěda: zbroj +130 %, výrazně zvýšená síla útoku, tvoje útoky budují vztek a vytvářejí o 30 % více hrozby. Sesláním znovu se vrátíš do podoby sesilatele.',
   'entities.abilities.bear_form.name': 'Medvědí podoba',
   'entities.abilities.berserker_rage.description':
     'Vstoupíš do vroucí zuřivosti a získáš 20 vzteku. (Talent válečníka)',

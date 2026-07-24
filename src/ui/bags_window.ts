@@ -164,6 +164,10 @@ export interface BagsWindowDeps extends PainterHostPresentation {
   showError(text: string): void;
   setPendingPetFeed(active: boolean): void;
   resetPetBarSig(): void;
+  /** Gathering-tool click routing (#2343): true when the interact-style
+   *  handler consumed the use (nearest matching node + autorun stop); false
+   *  falls back to the plain useItem command. */
+  useGatherTool(item: ItemDef): boolean;
   // Hotbar drag plumbing (cross-window drag state lives on the HUD).
   isHotbarItemId(itemId: string): boolean;
   setDragAction(action: { type: 'item'; id: string } | null): void;
@@ -852,11 +856,16 @@ export class BagsWindow {
         this.deps.hideTooltip();
         this.render();
         break;
-      case 'use':
-        this.deps.world().useItem(s.itemId);
+      case 'use': {
+        // Gathering tools (#2343) route through the interact-style handler
+        // (nearest matching node + autorun stop) when main.ts has wired it;
+        // everything else, and any unwired host, keeps the plain useItem.
+        const item = ITEMS[s.itemId];
+        if (!item || !this.deps.useGatherTool(item)) this.deps.world().useItem(s.itemId);
         this.render();
         this.deps.renderCharIfOpen();
         break;
+      }
     }
   }
 

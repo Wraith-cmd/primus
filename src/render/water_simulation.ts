@@ -9,6 +9,7 @@ import {
   WATER_SCHEDULE_WAKE,
   waterResidentBodyBudget,
   waterSimulationPlan,
+  waterSolverCoefficients,
 } from './water_core';
 
 const IMPULSE_CAPACITY = WATER_IMPULSE_CAPACITY;
@@ -200,19 +201,14 @@ export class WaterSimulation {
 
     this.states = bodies.map((body) => {
       const plan = waterSimulationPlan(body.radius, GFX.tier);
-      const cellSize = (body.radius * 2) / plan.resolution;
-      const stepSeconds = 1 / plan.stepHz;
-      const propagationDistance = 10.5 * stepSeconds;
+      const coefficients = waterSolverCoefficients(body.radius, plan);
       return {
         body,
         resolution: plan.resolution,
-        stepSeconds,
-        cellSize,
-        damping: 0.74 ** stepSeconds,
-        waveCoefficient: Math.min(
-          0.38,
-          (propagationDistance * propagationDistance) / (cellSize * cellSize),
-        ),
+        stepSeconds: coefficients.stepSeconds,
+        cellSize: coefficients.cellSize,
+        damping: coefficients.damping,
+        waveCoefficient: coefficients.waveCoefficient,
         uniforms: {
           uWaveState: { value: this.zeroTexture },
           uWaveEnabled: { value: 0 },

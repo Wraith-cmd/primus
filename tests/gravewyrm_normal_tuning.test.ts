@@ -31,11 +31,19 @@ import { armorReduction } from '../src/sim/types';
 const SANCTUM = 'gravewyrm_sanctum';
 const REF_ARMOR = 2861; // max-armor BiS prot warrior, level 20 (see header)
 const DEFENSIVE_STANCE_TAKEN = 0.9; // dealDamage: Defensive Stance takes 10% less
-const TRASH_FLOOR = 300;
-const BOSS_FLOOR = 600;
+// 2026-07 fresh-group retune: normal Sanctum serves freshly-capped groups in
+// quest greens/blues (a 1433-armor / 1692-hp tank), for whom the old 300/600
+// floors meant 25% and 50% of the pool per swing. Trash 200, bosses 420, and
+// Velkhar's summoned bonewalkers 150; the DOUBLED health stays (the economy
+// lever is clear time), and the solo ceiling holds: the strongest solo
+// archetype self-heals ~140 hps against a 420-floor boss's ~350+ dtps.
+const TRASH_FLOOR = 200;
+const BOSS_FLOOR = 420;
+const ADD_FLOOR = 150;
 
 // The dungeon's five spawn-list templates plus Velkhar's summoned add.
-const TRASH_IDS = ['sanctum_boneguard', 'sanctum_drakonid', 'raised_bonewalker'] as const;
+const TRASH_IDS = ['sanctum_boneguard', 'sanctum_drakonid'] as const;
+const ADD_IDS = ['raised_bonewalker'] as const;
 const BOSS_IDS = [
   'korgath_the_bound',
   'grand_necromancer_velkhar',
@@ -79,12 +87,12 @@ describe('normal Gravewyrm Sanctum tuning data', () => {
     const tuning = sanctumTuning();
     expect(tuning.healthMultiplier).toBe(2.0);
     expect(tuning.damageMultiplierByMob).toEqual({
-      sanctum_boneguard: 11.5,
-      sanctum_drakonid: 11,
-      raised_bonewalker: 23,
-      korgath_the_bound: 19.5,
-      grand_necromancer_velkhar: 20.5,
-      korzul_the_gravewyrm: 19,
+      sanctum_boneguard: 7.5,
+      sanctum_drakonid: 7.25,
+      raised_bonewalker: 11.25,
+      korgath_the_bound: 13.5,
+      grand_necromancer_velkhar: 14,
+      korzul_the_gravewyrm: 13,
     });
   });
 });
@@ -102,7 +110,18 @@ describe('normal Gravewyrm Sanctum health', () => {
 });
 
 describe('normal Gravewyrm Sanctum melee floors vs the reference warrior', () => {
-  it('every trash swing lands for at least 300 at every spawnable level', () => {
+  it('every summoned bonewalker swing lands for at least the 150 add floor', () => {
+    for (const id of ADD_IDS) {
+      const { minLevel, maxLevel } = MOBS[id];
+      for (let level = minLevel; level <= maxLevel; level++) {
+        const swing = minSwingOnReferenceWarrior(id, level);
+        expect(swing, `${id} at level ${level}`).toBeGreaterThanOrEqual(ADD_FLOOR);
+        expect(swing, `${id} at level ${level} above trash`).toBeLessThan(TRASH_FLOOR + 100);
+      }
+    }
+  });
+
+  it('every trash swing lands for at least 200 at every spawnable level', () => {
     for (const id of TRASH_IDS) {
       const { minLevel, maxLevel } = MOBS[id];
       for (let level = minLevel; level <= maxLevel; level++) {
@@ -114,7 +133,7 @@ describe('normal Gravewyrm Sanctum melee floors vs the reference warrior', () =>
     }
   });
 
-  it('every boss swing lands for at least 600 at every spawnable level', () => {
+  it('every boss swing lands for at least 420 at every spawnable level', () => {
     for (const id of BOSS_IDS) {
       const { minLevel, maxLevel } = MOBS[id];
       for (let level = minLevel; level <= maxLevel; level++) {
@@ -137,18 +156,23 @@ describe('normal Gravewyrm Sanctum mechanic scaling', () => {
     }
   });
 
-  it('scales Korzul aoePulse and Korgath stomp with their melee factors', () => {
+  it('scales Korzul Grave Inferno and Korgath stomp with their melee factors', () => {
     const tuning = sanctumTuning();
-    const korzulPulse = MOBS.korzul_the_gravewyrm.aoePulse;
+    // Korzul's aoePulse is GONE (2026-07): Grave Inferno replaced it, a
+    // stationary 8s channel with four escalating avoidable pulses.
+    expect(MOBS.korzul_the_gravewyrm.aoePulse).toBeUndefined();
+    const inferno = MOBS.korzul_the_gravewyrm.infernoChannel;
     const korgathStomp = MOBS.korgath_the_bound.stomp;
-    expect(korzulPulse).toBeTruthy();
+    expect(inferno).toBeTruthy();
     expect(korgathStomp?.min).toBeTruthy();
-    if (!korzulPulse || korgathStomp?.min === undefined || korgathStomp.max === undefined) return;
-    // Raw (unmitigated) mechanic damage after the per-mob multiplier.
-    expect(korzulPulse.min * tuning.damageMultiplierByMob.korzul_the_gravewyrm).toBe(570);
-    expect(korzulPulse.max * tuning.damageMultiplierByMob.korzul_the_gravewyrm).toBe(798);
-    expect(korgathStomp.min * tuning.damageMultiplierByMob.korgath_the_bound).toBe(390);
-    expect(korgathStomp.max * tuning.damageMultiplierByMob.korgath_the_bound).toBe(585);
+    if (!inferno || korgathStomp?.min === undefined || korgathStomp.max === undefined) return;
+    // Raw (unmitigated) mechanic damage after the per-mob multiplier: the
+    // FOURTH (largest) inferno pulse on normal, and the stomp band.
+    const mult = tuning.damageMultiplierByMob.korzul_the_gravewyrm;
+    expect(inferno.min * inferno.pulses * mult).toBe(364);
+    expect(inferno.max * inferno.pulses * mult).toBe(468);
+    expect(korgathStomp.min * tuning.damageMultiplierByMob.korgath_the_bound).toBe(270);
+    expect(korgathStomp.max * tuning.damageMultiplierByMob.korgath_the_bound).toBe(405);
   });
 
   it('leaves untuned normal dungeons untouched', () => {
@@ -231,8 +255,8 @@ describe('heroic Gravewyrm Sanctum transform stays on its own calibration', () =
     const add = mobTemplateForDungeonDifficulty(MOBS.raised_bonewalker, SANCTUM, 'heroic', {
       summonedAdd: true,
     });
-    expect(add.dmgBase).toBeCloseTo(261, 10);
-    expect(add.dmgPerLevel).toBeCloseTo(63.8, 10);
+    expect(add.dmgBase).toBeCloseTo(128.25, 10);
+    expect(add.dmgPerLevel).toBeCloseTo(31.35, 10);
     expect(add.hpBase).toBeCloseTo(168, 10);
     expect(add.hpPerLevel).toBeCloseTo(60, 10);
     expect(add.armorPerLevel).toBeCloseTo(14.4, 10);

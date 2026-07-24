@@ -355,6 +355,7 @@ export const pt_BR: EnTranslations = {
       "close": "Fechar recompensas diárias",
       "loading": "Carregando recompensas diárias...",
       "error": "Não foi possível carregar as recompensas diárias.",
+      "disabled": "As Recompensas Diárias estão desativadas no momento. Anunciaremos atualizações sobre este recurso no canal do Discord.",
       "intro": "Mantenha WOC suficiente na sua carteira verificada para desbloquear as recompensas diárias. Ganhe pontos com um giro diário e tarefas rotativas, depois suba na classificação diária para ganhar uma parte da premiação.",
       "disclaimer": "O preço do WOC pode variar rapidamente. Recomendamos manter mais do que o mínimo de $20 USD para que oscilações normais de preço não bloqueiem seu acesso. Isto não é aconselhamento financeiro.",
       "prize": "Premiação",
@@ -1459,7 +1460,9 @@ export const pt_BR: EnTranslations = {
         "gills": "Guelras",
         "claw": "Garra",
         "horn": "Chifre",
-        "tusk": "Presa"
+        "tusk": "Presa",
+        "meat": "Meat",
+        "cloth": "Cloth"
       }
     },
     "townFocus": {
@@ -1991,6 +1994,9 @@ export const pt_BR: EnTranslations = {
         "takeParcelsFirst": "Retire as encomendas antes de descartar a carta."
       }
     },
+    "noticeboard": {
+      "empty": "Nothing seems posted."
+    },
     "bank": {
       "title": "Banco",
       "subtitle": "A Arca Dourada",
@@ -2131,12 +2137,51 @@ export const pt_BR: EnTranslations = {
         "logging": "Requer um machado de lenharia de nível {tier}",
         "herbalism": "Requer uma foice de herborismo de nível {tier}"
       },
+      "requiresTool": {
+        "mining": "Requires a mining pick",
+        "logging": "Requires a logging axe",
+        "herbalism": "Requires a herbalism sickle"
+      },
       "toolTierUnmet": {
         "mining": "Você precisa de uma picareta de mineração de nível {tier} para extrair este veio.",
         "logging": "Você precisa de um machado de lenharia de nível {tier} para derrubar este arvoredo.",
         "herbalism": "Você precisa de uma foice de herborismo de nível {tier} para colher este canteiro."
       },
+      "toolRequired": {
+        "mining": "You need a mining pick to harvest this vein.",
+        "logging": "You need a logging axe to fell this stand.",
+        "herbalism": "You need a herbalism sickle to gather this patch.",
+        "fishing": "You need a fishing pole to cast a line."
+      },
+      "noNodeNearby": {
+        "mining": "There is no ore vein within reach.",
+        "logging": "There is no timber stand within reach.",
+        "herbalism": "There is no herb patch within reach."
+      },
       "toolTierUnmetCorpse": "Você precisa de uma ferramenta de coleta de nível {tier} para recuperar os melhores materiais.",
+      "toolTooltip": {
+        "kind": {
+          "mining": "Mining tool (tier {tier})",
+          "logging": "Logging tool (tier {tier})",
+          "herbalism": "Herbalism tool (tier {tier})",
+          "fishing": "Fishing rod (tier {tier})"
+        },
+        "unlocks": {
+          "mining": "Required to mine ore veins up to tier {tier}.",
+          "logging": "Required to fell timber stands up to tier {tier}.",
+          "herbalism": "Required to gather herb patches up to tier {tier}."
+        },
+        "use": {
+          "mining": "Use: Mine a nearby ore vein.",
+          "logging": "Use: Fell a nearby timber stand.",
+          "herbalism": "Use: Gather from a nearby herb patch."
+        },
+        "speed": "Gathers faster at nodes below tier {tier}.",
+        "rodRequired": "Required to fish.",
+        "rodBite": "Fish bite up to {seconds}s sooner.",
+        "rodReel": "Extends the reel window by {seconds}s.",
+        "rodBand": "Unlocks richer catch tables at fishing skill {skill} and above."
+      },
       "downgradeMark": "Bolsas cheias: a descoberta foi armazenada sem a marca do coletor.",
       "downgradeFind": "Bolsas cheias: uma descoberta imaculada escapou.",
       "stateReady": "Disponível",
@@ -2312,6 +2357,7 @@ export const pt_BR: EnTranslations = {
       },
       "throttled": "Você está criando rápido demais. Espere um momento e tente de novo.",
       "recipeNotLearned": "Você ainda não aprendeu essa receita.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Requer {craft} {skill}",
       "difficultyFull": "Ganho total de habilidade",
       "difficultyReduced": "Ganho de habilidade reduzido",
@@ -2363,6 +2409,9 @@ export const pt_BR: EnTranslations = {
       "enchantWrongSlot": "Esse encantamento não pode ser aplicado a esse item.",
       "enchantUnknown": "Esse encantamento não existe.",
       "enchantInsufficient": "Você não tem os materiais para esse encantamento.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Desencantar {item}?",
       "disenchantConfirmBody": "Isso destrói {item} e produz materiais arcanos. Não pode ser desfeito.",
       "disenchantConfirmBodySpecial": "Isso destrói uma cópia especial de {item} (assinada, obra-prima ou encantada) e produz materiais arcanos. Não pode ser desfeito.",
@@ -2382,8 +2431,10 @@ export const pt_BR: EnTranslations = {
       "stateKnown": "Conhecido",
       "stateTeachable": "Disponível",
       "stateLocked": "Bloqueado",
+      "statePending": "Learning",
       "requirement": "Ensinado em {craft} {skill}",
       "trainAria": "Aprenda {name} para {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Treinamento",
       "dialogOptionAria": "Procure o treinamento de {name}",
       "learned": "Receita aprendida: {recipe}",
@@ -2410,7 +2461,8 @@ export const pt_BR: EnTranslations = {
       "notEligible": "Esse item não pode ser desvinculado.",
       "notBound": "Esse item não está vinculado.",
       "cannotAfford": "Você não pode pagar a taxa de desvincular.",
-      "outOfRange": "Você deve estar em uma bancada de artesanato para desvincular."
+      "outOfRange": "Você deve estar em uma bancada de artesanato para desvincular.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Localizador de Masmorras",
@@ -2498,7 +2550,7 @@ export const pt_BR: EnTranslations = {
         "lunar_tide": "Mare Lunar (dano em área pulsante)",
         "enrage": "Entra em frenesi com pouca vida",
         "shuddering_stomp": "Pisão Estremecedor (atordoamento em área)",
-        "necrotic_shockwave": "Onda de Choque Necrótica (dano em área intenso)",
+        "grave_inferno": "Inferno Sepulcral (AoE de fogo canalizado, mantenha distancia)",
         "grave_cleaver": "Ceifador de Tumbas (golpe em cone frontal)",
         "shadow_nova": "Nova das Sombras (explosão em área)",
         "profane_mending": "Cura Profana (cura os aliados)",
@@ -3784,7 +3836,7 @@ export const pt_BR: EnTranslations = {
       "specializationBody": "Na habilidade {at}, este ofício especializa você, sem missão necessária: receitas custam {pct}% menos materiais a partir daí, e a especialização adiciona seu próprio bônus à chance de obra-prima.\n\nEspecialistas também aprendem a levar a oficina consigo: um artesão especializado pode montar uma bancada móvel no campo por dez minutos de cada vez, então receitas vinculadas a bancada podem ser trabalhadas na boca da mina em vez de voltar à cidade. Seus limites são deliberados: nunca conta como treinamento com um mestre ou para desvincular uma peça por encomenda, e expira no seu temporizador quer você a tenha usado ou não.",
       "ench": {
         "disenchantHeading": "Desencantamento",
-        "disenchantNote": "O desencantamento pega qualquer arma ou peça de armadura de qualidade comum ou melhor e consome uma cópia, nunca uma cópia que já esteja encantada. Peças comuns e incomuns se desfazem em um punhado aleatório de Pó de Toque, um pouco mais rico para peças mais raras e de nível mais alto; a partir de raro o rendimento muda de forma, exatamente uma Essência de Toque de uma peça rara ou um Fragmento de Toque de uma épica ou lendária, mais um secundário tipado vinculado ao material da peça.",
+        "disenchantNote": "O desencantamento pega qualquer arma ou peça de armadura de qualidade comum ou melhor e consome uma cópia, pegando uma cópia comum antes de uma encantada; quando só restam cópias encantadas, uma delas é destruída, com encantamento e tudo. Peças comuns e incomuns se desfazem em um punhado aleatório de Pó de Toque, um pouco mais rico para peças mais raras e de nível mais alto; a partir de raro o rendimento muda de forma, exatamente uma Essência de Toque de uma peça rara ou um Fragmento de Toque de uma épica ou lendária, mais um secundário tipado vinculado ao material da peça.",
         "typedHeading": "Secundários tipados",
         "typedNote": "Os secundários tipados seguem o material: armadura de pano rende Fio Ressonante, couro rende Couro Ressonante, malha rende Elos Ressonantes, armas corpo a corpo rendem Aço Ressonante, e cajados, varinhas, arcos e bestas rendem Madeira Ressonante. Uma peça rara dá exatamente {rare}; uma peça épica ou lendária dá {epicMin} ou {epicMax}. Anéis e colares não têm classe de armadura, então rendem apenas o material primário.\n\nAtenção à letra miúda: os secundários Ressonantes se vinculam na troca, então cada um pode trocar de mãos exatamente uma vez, direto do demolidor para o encantador que vai usá-lo. Pó, Essência e Fragmentos não têm essa restrição e circulam como qualquer outro bem.",
         "colSource": "Obtido de",
@@ -3823,7 +3875,6 @@ export const pt_BR: EnTranslations = {
       "toolUnavailable": "Não vendido",
       "priceNone": "Não vendido",
       "toolTierReq": "Ferramenta de nível {tier}",
-      "bareHands": "Mãos nuas",
       "yieldsHeading": "O que uma coleta rende",
       "yieldsBody": "Cada coleta rola uma qualidade para o que concede, e sua proficiência é toda a história dessa rolagem. Um coletor novato sempre extrai material comum; cada ponto de habilidade desloca o peso de forma constante do comum para os graus superiores e nunca para trás, até que no limite de 100 o grau comum desaparece completamente: 60 por cento incomum, 30 por cento raro, 8 por cento épico e 2 por cento lendário, sempre.\n\nQualidade também significa quantidade: uma rolagem comum rende 1 unidade, incomum e raro rendem 2, épico 3 e lendário 4. Qualquer extração rara, épica ou lendária chega como uma instância assinada carimbada Coletado por você: no limite são quatro coletas em dez carregando seu nome, e as regras de proveniência na página de Economia de Criação explicam por que artesãos pagam a mais exatamente por essas pilhas.",
       "bandsHeading": "Faixas de proficiência",
@@ -5523,8 +5574,10 @@ export const pt_BR: EnTranslations = {
     "reconnectingNow": "Conexão perdida. Reconectando agora... (tentativa {attempt}/{maxAttempts})",
     "slowConnection": "Isso está demorando mais que o normal. Verifique sua conexão com a Internet.",
     "connectionRejected": "O servidor encerrou a conexão.",
+    "incompatibleWorldVersion": "Game and server versions are incompatible. Reload or update, then try again.",
     "realmFull": "Este mundo está lotado no momento. Tente novamente em alguns minutos.",
     "tooManyConnections": "Há conexões em excesso a este mundo vindas da sua rede. Feche janelas extras do jogo ou tente novamente em alguns minutos.",
+    "messageRateExceeded": "You were disconnected for sending actions too quickly. Please wait a moment and log back in.",
     "tips": {
       "classes": "Dica: cada uma das 9 classes tem um estilo diferente. Experimente algumas antes de escolher uma.",
       "talents": "Dica: você pode redefinir seus talentos sempre que estiver fora de combate, então uma escolha inicial nunca é definitiva.",
@@ -5593,6 +5646,12 @@ export const pt_BR: EnTranslations = {
     "bodyDesktop": "O jogo está funcionando sem aceleração de GPU e ficará lento. Atualize os drivers de placa de vídeo e reinicie o jogo. No Windows, defina o jogo como Alto desempenho em Configurações > Sistema > Vídeo > Gráficos.",
     "bodyWeb": "O jogo está funcionando sem aceleração de GPU e ficará lento. Ative a aceleração de hardware nas configurações do navegador, atualize os drivers de placa de vídeo e reinicie o navegador.",
     "dismiss": "Dispensar"
+  },
+  "perfNudge": {
+    "integratedGpu": "The game is running on the integrated (power-saving) GPU. If this computer also has a gaming GPU, set your browser to High performance under Settings > System > Display > Graphics on Windows, then restart the browser. The desktop app picks the gaming GPU automatically.",
+    "hardwareAccelerationDesktop": "The game is running without GPU acceleration, which makes it very slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "hardwareAccelerationWeb": "The game is running without GPU acceleration, which makes it very slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "Nenhum mundo disponível.",
@@ -6018,7 +6077,8 @@ export const pt_BR: EnTranslations = {
       "death": "{name} morre.",
       "auraGain": "Você ganha {name}.",
       "auraFade": "{name} se dissipa de você.",
-      "auraAfflicted": "{target} é afligido por {name}."
+      "auraAfflicted": "{target} é afligido por {name}.",
+      "auraGainOther": "{target} gains {name}."
     },
     "system": {
       "playerDeath": "Você morreu.",
@@ -7279,7 +7339,7 @@ export const pt_BR: EnTranslations = {
       },
       "bear_form": {
         "name": "Forma de Bruin",
-        "description": "Assume a forma de urso: armadura +90%, poder de ataque muito aumentado, seus ataques geram raiva e 30% mais ameaça. Lance de novo para voltar à forma de conjurador."
+        "description": "Assume a forma de urso: armadura +130%, poder de ataque muito aumentado, seus ataques geram raiva e 30% mais ameaça. Lance de novo para voltar à forma de conjurador."
       },
       "maul": {
         "name": "Esmaga-Ossos",
@@ -11725,6 +11785,7 @@ export const pt_BR: EnTranslations = {
     "delveRiteShrineCandleInteract": "Santuário da Vela: Pressione F para tocá-lo",
     "delveRiteShrineReedInteract": "Santuário do Junco: Pressione F para tocá-lo",
     "delveRiteShrineSkullInteract": "Santuário da Caveira: Pressione F para tocá-lo",
-    "mailboxName": "Caixa de correio"
+    "mailboxName": "Caixa de correio",
+    "noticeboardName": "Notice Board"
   }
 };

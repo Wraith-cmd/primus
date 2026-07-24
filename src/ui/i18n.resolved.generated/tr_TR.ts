@@ -355,6 +355,7 @@ export const tr_TR: EnTranslations = {
       "close": "Günlük ödülleri kapat",
       "loading": "Günlük ödüller yükleniyor...",
       "error": "Günlük ödüller yüklenemedi.",
+      "disabled": "Günlük Ödüller şu anda devre dışı. Bu özellikle ilgili güncellemeleri Discord kanalında duyuracağız.",
       "intro": "Günlük ödüllerin kilidini açmak için doğrulanmış cüzdanında yeterince WOC bulundur. Bir günlük çevirme ve dönüşümlü görevlerle puan kazan, ardından ödül havuzundan pay almak için günlük lider tablosunda yüksel.",
       "disclaimer": "WOC fiyatı hızla değişebilir. Olağan fiyat dalgalanmalarının seni dışarıda bırakmaması için 20 USD asgarisinden fazlasını tutmanı öneririz. Bu bir yatırım tavsiyesi değildir.",
       "prize": "Ödül Havuzu",
@@ -1459,7 +1460,9 @@ export const tr_TR: EnTranslations = {
         "gills": "Solungaç",
         "claw": "Pençe",
         "horn": "Boynuz",
-        "tusk": "Azı Dişi"
+        "tusk": "Azı Dişi",
+        "meat": "Meat",
+        "cloth": "Cloth"
       }
     },
     "townFocus": {
@@ -1991,6 +1994,9 @@ export const tr_TR: EnTranslations = {
         "takeParcelsFirst": "Mektubu atmadan önce paketleri çıkar."
       }
     },
+    "noticeboard": {
+      "empty": "Nothing seems posted."
+    },
     "bank": {
       "title": "Banka",
       "subtitle": "Yaldızlı Kasa",
@@ -2131,12 +2137,51 @@ export const tr_TR: EnTranslations = {
         "logging": "{tier}. kademe odun kesme baltası gerektirir",
         "herbalism": "{tier}. kademe bitkicilik orakı gerektirir"
       },
+      "requiresTool": {
+        "mining": "Requires a mining pick",
+        "logging": "Requires a logging axe",
+        "herbalism": "Requires a herbalism sickle"
+      },
       "toolTierUnmet": {
         "mining": "Bu damarı işlemek için {tier}. kademe madenci kazmasına ihtiyacınız var.",
         "logging": "Bu korulugu devirmek için {tier}. kademe odun kesme baltasına ihtiyacınız var.",
         "herbalism": "Bu tarlayı toplamak için {tier}. kademe bitkicilik orakına ihtiyacınız var."
       },
+      "toolRequired": {
+        "mining": "You need a mining pick to harvest this vein.",
+        "logging": "You need a logging axe to fell this stand.",
+        "herbalism": "You need a herbalism sickle to gather this patch.",
+        "fishing": "You need a fishing pole to cast a line."
+      },
+      "noNodeNearby": {
+        "mining": "There is no ore vein within reach.",
+        "logging": "There is no timber stand within reach.",
+        "herbalism": "There is no herb patch within reach."
+      },
       "toolTierUnmetCorpse": "En iyi malzemeleri kurtarmak için {tier}. kademe toplama aracına ihtiyacınız var.",
+      "toolTooltip": {
+        "kind": {
+          "mining": "Mining tool (tier {tier})",
+          "logging": "Logging tool (tier {tier})",
+          "herbalism": "Herbalism tool (tier {tier})",
+          "fishing": "Fishing rod (tier {tier})"
+        },
+        "unlocks": {
+          "mining": "Required to mine ore veins up to tier {tier}.",
+          "logging": "Required to fell timber stands up to tier {tier}.",
+          "herbalism": "Required to gather herb patches up to tier {tier}."
+        },
+        "use": {
+          "mining": "Use: Mine a nearby ore vein.",
+          "logging": "Use: Fell a nearby timber stand.",
+          "herbalism": "Use: Gather from a nearby herb patch."
+        },
+        "speed": "Gathers faster at nodes below tier {tier}.",
+        "rodRequired": "Required to fish.",
+        "rodBite": "Fish bite up to {seconds}s sooner.",
+        "rodReel": "Extends the reel window by {seconds}s.",
+        "rodBand": "Unlocks richer catch tables at fishing skill {skill} and above."
+      },
       "downgradeMark": "Çantalar dolu: bulgu, toplayıcı işareti olmadan saklandı.",
       "downgradeFind": "Çantalar dolu: pırıl pırıl bir bulgu kayboldu gitti.",
       "stateReady": "Hazır",
@@ -2312,6 +2357,7 @@ export const tr_TR: EnTranslations = {
       },
       "throttled": "Çok hızlı üretiyorsun. Bir an bekle ve tekrar dene.",
       "recipeNotLearned": "Bu tarifi henüz öğrenmedin.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "{craft} {skill} gerektirir",
       "difficultyFull": "Tam beceri kazanımı",
       "difficultyReduced": "Azaltılmış beceri kazanımı",
@@ -2363,6 +2409,9 @@ export const tr_TR: EnTranslations = {
       "enchantWrongSlot": "Bu büyü o eşyaya uygulanamaz.",
       "enchantUnknown": "O büyü mevcut değil.",
       "enchantInsufficient": "O büyü için malzemeniz yok.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "{item} büyüsü bozulsun mu?",
       "disenchantConfirmBody": "{item} yok edilir ve arkanik malzeme verir. Bu geri alınamaz.",
       "disenchantConfirmBodySpecial": "{item}'nin özel bir kopyası (imzalı, şaheser veya büyülü) yok edilir ve arkanik malzeme verir. Bu geri alınamaz.",
@@ -2382,8 +2431,10 @@ export const tr_TR: EnTranslations = {
       "stateKnown": "Bilinen",
       "stateTeachable": "Mevcut",
       "stateLocked": "Kilitli",
+      "statePending": "Learning",
       "requirement": "{craft} {skill}'da okudu",
       "trainAria": "{fee} için {name}'yi öğrenin",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Eğitim",
       "dialogOptionAria": "{name}'deki eğitime göz atın",
       "learned": "Öğrenilen tarif: {recipe}",
@@ -2410,7 +2461,8 @@ export const tr_TR: EnTranslations = {
       "notEligible": "O eşyanın bağı çözülemez.",
       "notBound": "O eşya bağlı değil.",
       "cannotAfford": "Çözüm ücretini karşılayamazsınız.",
-      "outOfRange": "Bağ çözmek için bir zanaat tezgahında olmanız gerekir."
+      "outOfRange": "Bağ çözmek için bir zanaat tezgahında olmanız gerekir.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Zindan Bulucu",
@@ -2498,7 +2550,7 @@ export const tr_TR: EnTranslations = {
         "lunar_tide": "Ay Dalgası (darbeli alan hasarı)",
         "enrage": "Düşük canda çılgına döner",
         "shuddering_stomp": "Titreyen Çiğneme (alan sersemletmesi)",
-        "necrotic_shockwave": "Nekrotik Şok Dalgası (ağır alan hasarı)",
+        "grave_inferno": "Mezar Inferno (kanalize ateş AoE, daginik durun)",
         "grave_cleaver": "Mezar Biçici (öne doğru yay saldırısı)",
         "shadow_nova": "Gölge Novası (alan patlaması)",
         "profane_mending": "Murdar Şifa (müttefiklerini iyileştirir)",
@@ -3784,7 +3836,7 @@ export const tr_TR: EnTranslations = {
       "specializationBody": "Bu zanaat {at} becerisinde seni uzmanlaştırır, görev gerekmez: tarifler o andan itibaren {pct}% daha az malzeme gerektirir ve uzmanlaşma şaheser şansına kendi artışını ekler.\n\nUzmanlar aynı zamanda atölyeyi yanlarında taşımayı öğrenir: uzmanlaşmış bir üretici bir seferde on dakikalığına sahaya mobil bir istasyon kurabilir; böylece istasyona bağlı tarifler kasabaya dönmek yerine maden ağzında çalışılabilir. Sınırları kasıtlıdır: bir usta yanında eğitim için veya sipariş edilmiş bir parçayı serbest bırakmak için hiçbir zaman geçerli sayılmaz ve zamanlayıcısında kullandığına bakılmaksızın sona erer.",
       "ench": {
         "disenchantHeading": "Büyü bozumu",
-        "disenchantNote": "Büyü bozumu, sıradan kalite veya daha iyisindeki herhangi bir silah ya da zırh parçasını alır ve bir kopyasını tüketir; büyülü olan bir kopyayı asla tüketmez. Sıradan ve sıradan dışı parçalar bir miktar Çan Tozu'na dönüştürülür; nadir ve daha yüksek seviyeli parçalar için bu oran biraz daha yüksektir; nadir olandan itibaren verim şekil değiştirir, nadir parçadan tam olarak bir Çan Özü ya da destansı veya efsanevi parçadan bir Çan Kırığı, artı parçanın neyden yapıldığına göre yazılan bir ikincil.",
+        "disenchantNote": "Büyü bozumu, sıradan kalite veya daha iyisindeki herhangi bir silah ya da zırh parçasını alır ve bir kopyasını tüketir; büyülü bir kopyadan önce sıradan bir kopyayı alır, yalnızca büyülü kopyalar kaldıysa bunlardan biri büyüsüyle birlikte yok edilir. Sıradan ve sıradan dışı parçalar bir miktar Çan Tozu'na dönüştürülür; nadir ve daha yüksek seviyeli parçalar için bu oran biraz daha yüksektir; nadir olandan itibaren verim şekil değiştirir, nadir parçadan tam olarak bir Çan Özü ya da destansı veya efsanevi parçadan bir Çan Kırığı, artı parçanın neyden yapıldığına göre yazılan bir ikincil.",
         "typedHeading": "Yazılan ikinciller",
         "typedNote": "Yazılan ikinciller malzemeyi izler: kumaş zırh Rezonant İplik, deri Rezonant Deri, posta Rezonant Halkalar, yakın dövüş silahları Rezonant Çelik ve asalar, değnekler, yaylar ve arbaletler Rezonant Kereste verir. Nadir parça tam olarak {rare} verir; destansı veya efsanevi parça {epicMin} ya da {epicMax} verir. Yüzükler ve kolyeler zırh sınıfı taşımaz, bu nedenle yalnızca birincil malzemeyi verir.\n\nİnce yazıya dikkat edin: Rezonant ikinciller ticarette bağlanır, bu nedenle her biri tam olarak bir kez el değiştirebilir, doğrudan kırıcıdan onu yakacak büyücüye. Toz, Öz ve Kıymıklar böyle bir kısıtlama taşımaz ve diğer ticaret malları gibi hareket eder.",
         "colSource": "Bozulan",
@@ -3823,7 +3875,6 @@ export const tr_TR: EnTranslations = {
       "toolUnavailable": "Satılmaz",
       "priceNone": "Satılmaz",
       "toolTierReq": "Kademe {tier} alet",
-      "bareHands": "Çıplak eller",
       "yieldsHeading": "Hasat ne verir",
       "yieldsBody": "Her hasat, verdiği şeyin kalitesini çalar ve yetkinliğin tüm hikayesidir bu. Yeni başlayan bir toplayıcı her zaman yaygın malzeme çıkarır; her beceri puanı ağırlığı istikrarlı bir şekilde yaygından daha yüksek kademelere taşır ve asla geri dönmez; 100 tavanında yaygın kademe tamamen ortadan kalkar: her seferinde yüzde 60 nadir dışı, yüzde 30 nadir, yüzde 8 epik ve yüzde 2 efsanevi.\n\nKalite aynı zamanda miktar anlamına da gelir: yaygın çekim 1 birim, nadir dışı ve nadir 2, epik 3 ve efsanevi 4 verir. Nadir, epik veya efsanevi her çekim, tarafından toplandı olarak damgalanmış imzalı bir örnek olarak gelir: tavanda on hasattan dördü adını taşır ve Zanaat Ekonomisi sayfasındaki provenance kuralları, üreticilerin tam olarak bu yığınlar için neden fazladan ödediğini açıklar.",
       "bandsHeading": "Yetkinlik bantları",
@@ -5523,8 +5574,10 @@ export const tr_TR: EnTranslations = {
     "reconnectingNow": "Bağlantı kesildi. Şimdi yeniden bağlanılıyor... ({attempt}/{maxAttempts}'yi deneyin)",
     "slowConnection": "Bu normalden daha uzun sürüyor. İnternet bağlantınızı kontrol edin.",
     "connectionRejected": "Sunucu bağlantıyı kapattı.",
+    "incompatibleWorldVersion": "Game and server versions are incompatible. Reload or update, then try again.",
     "realmFull": "Bu dünya şu an dolu. Lütfen birkaç dakika sonra tekrar dene.",
     "tooManyConnections": "Ağından bu dünyaya çok fazla bağlantı geliyor. Lütfen fazladan oyun pencerelerini kapat ya da birkaç dakika sonra tekrar dene.",
+    "messageRateExceeded": "You were disconnected for sending actions too quickly. Please wait a moment and log back in.",
     "tips": {
       "classes": "İpucu: 9 sınıfın her biri farklı oynanır. Birine bağlanmadan önce birkaçını dene.",
       "talents": "İpucu: savaş dışında olduğun sürece yeteneklerini istediğin zaman sıfırlayabilirsin, bu yüzden erken bir seçim asla tuzak değildir.",
@@ -5593,6 +5646,12 @@ export const tr_TR: EnTranslations = {
     "bodyDesktop": "Oyun GPU hızlandırması olmadan çalışıyor ve yavaş olacak. Grafik sürücülerini güncelleyip oyunu yeniden başlat. Windows'ta ayrıca Ayarlar > Sistem > Ekran > Grafikler altında oyunu Yüksek performans olarak ayarla.",
     "bodyWeb": "Oyun GPU hızlandırması olmadan çalışıyor ve yavaş olacak. Tarayıcı ayarlarından donanım hızlandırmayı etkinleştir, grafik sürücülerini güncelleyip tarayıcını yeniden başlat.",
     "dismiss": "Kapat"
+  },
+  "perfNudge": {
+    "integratedGpu": "The game is running on the integrated (power-saving) GPU. If this computer also has a gaming GPU, set your browser to High performance under Settings > System > Display > Graphics on Windows, then restart the browser. The desktop app picks the gaming GPU automatically.",
+    "hardwareAccelerationDesktop": "The game is running without GPU acceleration, which makes it very slow. Update your graphics drivers, then restart the game. On Windows, also set the game to High performance under Settings > System > Display > Graphics.",
+    "hardwareAccelerationWeb": "The game is running without GPU acceleration, which makes it very slow. Enable hardware acceleration in your browser settings, update your graphics drivers, then restart your browser.",
+    "dismiss": "Dismiss"
   },
   "realm": {
     "noRealms": "Mevcut dünya yok.",
@@ -6018,7 +6077,8 @@ export const tr_TR: EnTranslations = {
       "death": "{name} öldü.",
       "auraGain": "{name} kazandın.",
       "auraFade": "{name} üzerinden kayboluyor.",
-      "auraAfflicted": "{target}, {name} etkisine maruz kaldı."
+      "auraAfflicted": "{target}, {name} etkisine maruz kaldı.",
+      "auraGainOther": "{target} gains {name}."
     },
     "system": {
       "playerDeath": "Öldün.",
@@ -7279,7 +7339,7 @@ export const tr_TR: EnTranslations = {
       },
       "bear_form": {
         "name": "Bruin Formu",
-        "description": "Bir ayıya dönüş: zırh +%90, saldırı gücü büyük ölçüde artar, saldırıların öfke biriktirir ve %30 daha fazla tehdit üretir. Büyücü formuna dönmek için tekrar kullan."
+        "description": "Bir ayıya dönüş: zırh +%130, saldırı gücü büyük ölçüde artar, saldırıların öfke biriktirir ve %30 daha fazla tehdit üretir. Büyücü formuna dönmek için tekrar kullan."
       },
       "maul": {
         "name": "Kemik Kıran",
@@ -11725,6 +11785,7 @@ export const tr_TR: EnTranslations = {
     "delveRiteShrineCandleInteract": "Mum Sunağı: Dokunmak için F'ye bas",
     "delveRiteShrineReedInteract": "Saz Sunağı: Dokunmak için F'ye bas",
     "delveRiteShrineSkullInteract": "Kafatası Sunağı: Dokunmak için F'ye bas",
-    "mailboxName": "Posta Kutusu"
+    "mailboxName": "Posta Kutusu",
+    "noticeboardName": "Notice Board"
   }
 };

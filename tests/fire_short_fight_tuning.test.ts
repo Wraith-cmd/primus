@@ -49,16 +49,32 @@ const REPORTED_GEAR: PlayerEquipment = {
 };
 
 type Spec = 'fire' | 'frost';
+type Rows = Record<number, string>;
+
+// The strongest talent build the 2026-07-24 Monte Carlo sweep found (rows
+// 5/8/11 are throughput-neutral, verified by the sweep): Racing Mind's extra
+// instant Pyrelance, Elemental Convergence fed by a free instant Icebind
+// weave, and Rune of Power under the whole opener. The talented ceiling
+// gate below runs THIS build; a naked-spec pin alone would miss it.
+const TOP_TALENTED_ROWS: Rows = {
+  5: 'mag_r5_ice_floes',
+  8: 'mag_r8_warded',
+  11: 'mag_r11_twin_nova',
+  14: 'mag_r14_presence_of_mind',
+  17: 'mag_r17_convergence',
+  20: 'mag_r20_rune_of_power',
+};
 
 interface CtxLike {
   players: Map<number, { cls: string; equipment: PlayerEquipment; equipmentInstance?: unknown }>;
   playerMods: (meta: unknown) => unknown;
 }
 
-function gearedMage(spec: Spec): { sim: Sim; p: Entity } {
-  const sim = new Sim({ seed: 41, playerClass: 'mage', autoEquip: true });
+function gearedMage(spec: Spec, seed = 41, rows?: Rows): { sim: Sim; p: Entity } {
+  const sim = new Sim({ seed, playerClass: 'mage', autoEquip: true });
   sim.setPlayerLevel(20);
-  expect(sim.setSpec(spec)).toBe(true);
+  if (rows) expect(sim.applyTalents({ spec, rows } as never)).toBe(true);
+  else expect(sim.setSpec(spec)).toBe(true);
   sim.tick();
   const p = sim.player;
   const ctx = (sim as unknown as { ctx: CtxLike }).ctx;
@@ -112,11 +128,18 @@ interface BurstResult {
 // Drive one spec's short-fight loop for `seconds` and sum every point of
 // player damage on the dummy (direct hits, DoTs, Ignite and the frost pet all
 // attribute to the mage: pet damage resolves through ownerId). Deterministic:
-// fixed seed, fixed tick script, no rng beyond the sim's own stream.
-function runShortFight(spec: Spec, seconds: number): BurstResult {
-  const { sim, p } = gearedMage(spec);
+// fixed seed, fixed tick script, no rng beyond the sim's own stream. With
+// `rows`, the fire policy also plays the row actives (Rune under the opener,
+// the Icebind weave for Convergence, Racing Mind Pyrelances).
+function runShortFight(spec: Spec, seconds: number, seed = 41, rows?: Rows): BurstResult {
+  const { sim, p } = gearedMage(spec, seed, rows);
   const dummy = addBossDummy(sim);
   sim.targetEntity(dummy.id);
+  const has = (id: string) => Object.values(rows ?? {}).includes(id);
+  const hasRune = has('mag_r20_rune_of_power');
+  const hasConv = has('mag_r17_convergence');
+  const hasRacing = has('mag_r14_presence_of_mind');
+  const auraUp = (id: string) => p.auras.some((a) => a.id === id);
   if (spec === 'frost') {
     // A raider walks in with the Water Elemental already up: summon it before
     // the pull so the 27s window measures the fight, not the setup cast.
@@ -136,12 +159,24 @@ function runShortFight(spec: Spec, seconds: number): BurstResult {
     p.resource = p.maxResource; // mana never matters at 27s (report premise)
     if (spec === 'fire') {
       // Off-GCD presses first, exactly as a player mashes them: the Trance
-      // opener, then every banked Cinderfall (off-GCD, usable while casting).
-      if (offCooldown(p, 'combustion')) sim.castAbility('combustion');
-      if (hasCharge(p, 'fire_blast')) sim.castAbility('fire_blast');
+      // opener (after the rune is down), then Cinderfall whenever it is
+      // ready (off-GCD, usable while casting).
+      if (offCooldown(p, 'combustion') && (!hasRune || i >= 45)) sim.castAbility('combustion');
+      if (hasCharge(p, 'fire_blast') && offCooldown(p, 'fire_blast')) sim.castAbility('fire_blast');
       if (free(p)) {
-        if (p.auras.some((a) => a.id === 'hot_streak')) sim.castAbility('pyroblast');
-        else if (offCooldown(p, 'meteor'))
+        if (hasRune && offCooldown(p, 'rune_of_power') && i < 45) sim.castAbility('rune_of_power');
+        else if (
+          hasConv &&
+          !auraUp('elemental_convergence') &&
+          !auraUp('convergence_cd') &&
+          offCooldown(p, 'frost_nova')
+        )
+          sim.castAbility('frost_nova'); // the free instant Convergence weave
+        else if (auraUp('hot_streak')) sim.castAbility('pyroblast');
+        else if (hasRacing && offCooldown(p, 'presence_of_mind')) {
+          sim.castAbility('presence_of_mind');
+          sim.castAbility('pyroblast');
+        } else if (offCooldown(p, 'meteor'))
           sim.castAbilityAt('meteor', { x: dummy.pos.x, z: dummy.pos.z });
         else sim.castAbility('fireball');
       }
@@ -220,8 +255,42 @@ describe('fire mage short-fight burst (27s live report harness)', () => {
 });
 
 describe('the tuned knobs (balance 2026-07-24)', () => {
-  it('Cinderfall banks two charges on a 15s recharge (was three on 8s)', () => {
-    expect(ABILITIES.fire_blast.maxCharges).toBe(2);
-    expect(ABILITIES.fire_blast.cooldown).toBe(15);
+  it('Cinderfall is a plain 12s cooldown button, no charge bank (was three charges on 8s)', () => {
+    expect(ABILITIES.fire_blast.maxCharges).toBeUndefined();
+    expect(ABILITIES.fire_blast.cooldown).toBe(12);
+  });
+});
+
+// The Monte Carlo talent sweep (2026-07-24) showed the naked-spec pin above
+// is not the real ceiling: row 14/17/20 actives (Racing Mind, Convergence,
+// Rune of Power) stack multiplicatively on the trance loop and pushed EVERY
+// talented fire build over 250 DPS while the charge bank existed. This gate
+// pins the strongest found build across a fixed seed spread: its MEAN must
+// stay under the line (single lucky-crit seeds may spike; a crit spec's
+// right tail is irreducible), and it must keep a burst edge so a future
+// over-nerf also fails loudly.
+describe('talented ceiling (Monte Carlo follow-up 2026-07-24)', () => {
+  const TOO_STRONG_DPS = 250;
+  const CEILING_SEEDS = [41, 101, 108, 115, 122];
+  const runs = CEILING_SEEDS.map((seed) =>
+    runShortFight('fire', FIGHT_SECONDS, seed, TOP_TALENTED_ROWS),
+  );
+  const mean = runs.reduce((a, r) => a + r.dps, 0) / runs.length;
+
+  it('reports the talented-ceiling numbers (owner harness)', () => {
+    const per = runs.map((r, k) => `${CEILING_SEEDS[k]}:${r.dps.toFixed(1)}`).join(' ');
+    console.log(
+      `\n[fire talented ceiling] racing+convergence+rune, mean=${mean.toFixed(1)} [${per}]`,
+    );
+    expect(runs.length).toBe(CEILING_SEEDS.length);
+  });
+
+  it(`the strongest talent build stays under ${TOO_STRONG_DPS} DPS on average`, () => {
+    expect(mean).toBeLessThanOrEqual(TOO_STRONG_DPS);
+  });
+
+  it('the talented build still out-bursts the naked spec (over-nerf guard)', () => {
+    const naked = runShortFight('fire', FIGHT_SECONDS);
+    expect(mean).toBeGreaterThanOrEqual(naked.dps);
   });
 });

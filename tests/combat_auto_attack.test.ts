@@ -17,41 +17,26 @@ import {
 import { MOBS } from '../src/sim/data';
 import { createMob } from '../src/sim/entity';
 import { advancePendingProjectiles } from '../src/sim/projectile_travel';
-import { Sim } from '../src/sim/sim';
-import { DT, type Entity, type PlayerClass } from '../src/sim/types';
-
-type AnySim = Sim & Record<string, any>;
-type AnyEntity = Entity & Record<string, any>;
-type Ev = {
-  type?: string;
-  kind?: string;
-  school?: string;
-  fx?: string;
-  ability?: string | null;
-  sourceId?: number;
-  targetId?: number;
-  amount?: number;
-  crit?: boolean;
-  attackAnimation?: 'ranged-shot';
-  attackAnimationStarted?: true;
-};
+import { type PlayerMeta, Sim } from '../src/sim/sim';
+import type { Aura, Entity, PlayerClass, SimEvent } from '../src/sim/types';
 
 function makeSim(
   cls: PlayerClass,
   level: number,
   seed = 7,
-): { sim: AnySim; p: AnyEntity; meta: any } {
-  const sim = new Sim({ seed, playerClass: cls, autoEquip: true }) as AnySim;
+): { sim: Sim; p: Entity; meta: PlayerMeta } {
+  const sim = new Sim({ seed, playerClass: cls, autoEquip: true });
   sim.setPlayerLevel(level);
-  const p = sim.player as AnyEntity;
+  const p = sim.player;
   const meta = sim.players.get(p.id);
+  if (!meta) throw new Error('test player metadata missing');
   p.resource = p.maxResource;
   return { sim, p, meta };
 }
 
 // An idle hostile mob, beefed, in front of the player at distance dz, targeted + faced.
-function spawnDummy(sim: AnySim, p: AnyEntity, level = 5, dz = 2): AnyEntity {
-  const mob = createMob(sim.nextId++, MOBS['forest_wolf'], level, {
+function spawnDummy(sim: Sim, p: Entity, level = 5, dz = 2): Entity {
+  const mob = createMob(sim.nextId++, MOBS.forest_wolf, level, {
     x: p.pos.x,
     y: p.pos.y,
     z: p.pos.z + dz,
@@ -67,10 +52,10 @@ function spawnDummy(sim: AnySim, p: AnyEntity, level = 5, dz = 2): AnyEntity {
 }
 
 // Capture the event stream. ctx.emit is late-bound, so swapping sim.emit is observed.
-function capture(sim: AnySim): Ev[] {
-  const events: Ev[] = [];
-  const orig = (sim as any).emit.bind(sim);
-  (sim as any).emit = (e: Ev) => {
+function capture(sim: Sim): SimEvent[] {
+  const events: SimEvent[] = [];
+  const orig = sim.emit.bind(sim);
+  sim.emit = (e: SimEvent) => {
     events.push(e);
     orig(e);
   };
@@ -80,7 +65,12 @@ function capture(sim: AnySim): Ev[] {
 // Ranged/spell damage now lands when the projectile arrives (projectile_travel), not
 // the tick it is fired. Advance the sim until the captured stream shows the awaited
 // event (or a tick cap), so a deferred Auto Shot / Wand bolt has time to connect.
-function landProjectiles(sim: AnySim, events: Ev[], pred: (e: Ev) => boolean, maxTicks = 40) {
+function landProjectiles(
+  sim: Sim,
+  events: SimEvent[],
+  pred: (e: SimEvent) => boolean,
+  maxTicks = 40,
+) {
   for (let i = 0; i < maxTicks && !events.some(pred); i++) sim.tick();
 }
 
@@ -185,7 +175,7 @@ describe('auto_attack meleeSwing: the white-hit table', () => {
       value: 1,
       sourceId: 999,
       school: 'physical',
-    } as any);
+    } satisfies Aura);
     const events = capture(sim);
     const hp0 = mob.hp;
     const connected = meleeSwing(sim.ctx, p, mob, 0, null, { cannotBeDodged: true });
@@ -214,7 +204,7 @@ describe('auto_attack meleeSwing: the white-hit table', () => {
 });
 
 describe('auto_attack meleeSwing: landed talent procs resolve before retaliation', () => {
-  const addImbue = (player: AnyEntity): void => {
+  const addImbue = (player: Entity): void => {
     player.auras.push({
       id: 'test_imbue',
       name: 'Test Imbue',
@@ -227,7 +217,7 @@ describe('auto_attack meleeSwing: landed talent procs resolve before retaliation
     });
   };
 
-  const addThorns = (target: AnyEntity, value: number): void => {
+  const addThorns = (target: Entity, value: number): void => {
     target.auras.push({
       id: 'test_thorns',
       name: 'Punishing Thorns',
@@ -279,16 +269,16 @@ describe('auto_attack meleeSwing: landed talent procs resolve before retaliation
       name: 'Oathwheel cooldown refund',
       cls: 'paladin' as const,
       row: { 14: 'pal_r14_righteous_cause' },
-      prepare: (player: AnyEntity) => player.cooldowns.set('judgement', 5),
-      read: (player: AnyEntity) => player.cooldowns.get('judgement'),
+      prepare: (player: Entity) => player.cooldowns.set('judgement', 5),
+      read: (player: Entity) => player.cooldowns.get('judgement'),
       expected: 4.5,
     },
     {
       name: 'Imbued Tempo cooldown refund',
       cls: 'shaman' as const,
       row: { 14: 'sha_r14_weapon_fury' },
-      prepare: (player: AnyEntity) => player.cooldowns.set('earth_shock', 5),
-      read: (player: AnyEntity) => player.cooldowns.get('earth_shock'),
+      prepare: (player: Entity) => player.cooldowns.set('earth_shock', 5),
+      read: (player: Entity) => player.cooldowns.get('earth_shock'),
       expected: 4.5,
     },
   ])('applies $name before thorns without changing the shared RNG trace', (testCase) => {
@@ -389,7 +379,6 @@ describe('auto_attack rangedSwing: Auto Shot vs Wand', () => {
   it('Auto Shot launches on the swing tick without adding a universal draw delay', () => {
     const { sim, p } = makeSim('hunter', 12);
     const mob = spawnDummy(sim, p, 8, 20);
-    void mob;
     const events = capture(sim);
     rangedSwing(sim.ctx, p, mob, { min: 5, max: 9, speed: 2.3 });
     expect(events.some((e) => e.type === 'spellfx' && e.fx === 'projectile')).toBe(true);
@@ -407,7 +396,7 @@ describe('auto_attack rangedSwing: Auto Shot vs Wand', () => {
     rangedSwing(sim.ctx, p, mob, { min: 3, max: 6, speed: 1.8, wand: true, school: 'arcane' });
     expect(events.some((e) => e.type === 'spellfx' && e.fx === 'projectile')).toBe(true);
     expect(events.some((e) => e.type === 'spellfx' && e.fx === 'windup')).toBe(false);
-    expect(events.some((e) => e.attackAnimation !== undefined)).toBe(false);
+    expect(events.some((e) => 'attackAnimation' in e)).toBe(false);
   });
 
   it('Wand is an arcane bolt (no dead zone, ignores armor)', () => {
@@ -430,7 +419,7 @@ describe('auto_attack rangedSwing: Auto Shot vs Wand', () => {
 describe('auto_attack updatePlayerAutoAttack: ranged-vs-melee dispatch', () => {
   it('a hunter at range takes the ranged branch (Auto Shot), arming ranged-speed cadence', () => {
     const { sim, p, meta } = makeSim('hunter', 12);
-    const mob = spawnDummy(sim, p, 8, 20); // beyond the 8yd dead zone, within 35
+    spawnDummy(sim, p, 8, 20); // beyond the 8yd dead zone, within 35
     p.autoAttack = true;
     p.swingTimer = 0;
     const events = capture(sim);
@@ -442,7 +431,7 @@ describe('auto_attack updatePlayerAutoAttack: ranged-vs-melee dispatch', () => {
 
   it('a warrior in melee takes the melee branch, arming weapon-speed cadence', () => {
     const { sim, p, meta } = makeSim('warrior', 12);
-    const mob = spawnDummy(sim, p, 5, 2); // within MELEE_RANGE
+    spawnDummy(sim, p, 5, 2); // within MELEE_RANGE
     p.autoAttack = true;
     p.swingTimer = 0;
     const events = capture(sim);
@@ -462,7 +451,7 @@ describe('auto_attack updatePlayerAutoAttack: ranged-vs-melee dispatch', () => {
     spawnDummy(sim, p, 8, 20);
     p.autoAttack = true;
     p.swingTimer = 0;
-    const shots = (evs: Ev[]): Ev[] =>
+    const shots = (evs: SimEvent[]): SimEvent[] =>
       evs.filter((e) => e.type === 'spellfx' && e.fx === 'projectile' && e.sourceId === p.id);
     // First tick: one legitimate shot fired, and the timer is armed to the interval.
     const first = capture(sim);
@@ -611,8 +600,8 @@ describe('auto_attack determinism', () => {
       const mob = spawnDummy(sim, p, 10, 2);
       p.autoAttack = true;
       const dmg: number[] = [];
-      const orig = (sim as any).emit.bind(sim);
-      (sim as any).emit = (e: Ev) => {
+      const orig = sim.emit.bind(sim);
+      sim.emit = (e: SimEvent) => {
         if (e.type === 'damage' && e.sourceId === p.id) dmg.push(e.amount ?? 0);
         orig(e);
       };
@@ -700,7 +689,7 @@ describe('rangedSwing damage: the 0.6 weapon coefficient is Auto Shot only', () 
 // just a melee swing. A caster's wand bolt does NOT swing the mainhand, so it never
 // rolls the mainhand's proc.
 describe('rangedSwing fires weaponHit procs (Thronebane on a hunter Auto Shot)', () => {
-  const chainArcs = (events: Ev[]) =>
+  const chainArcs = (events: SimEvent[]) =>
     events.filter((e) => e.type === 'damage' && e.ability === 'Chain Arc' && e.school === 'nature');
 
   it('a hunter wielding Thronebane procs Chain Arc off Auto Shot', () => {

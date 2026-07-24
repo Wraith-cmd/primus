@@ -7473,7 +7473,7 @@ export const en: EnTranslations = {
       },
       "combustion": {
         "name": "Phoenix Trance",
-        "description": "Combust: for 10 sec your Fire spells always critically strike. These guaranteed crits do not build Hot Streak. (Fire signature)"
+        "description": "Combust: for 10 sec your Fire spells always critically strike, including bolts already in flight. Off the global cooldown. These crits build Hot Streak like any other, and casting it finishes the Cinderfall charge currently recharging. (Fire signature)"
       },
       "icy_veins": {
         "name": "Icy Veins",

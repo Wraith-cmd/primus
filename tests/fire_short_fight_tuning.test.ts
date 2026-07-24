@@ -134,9 +134,12 @@ function offCooldown(p: Entity, id: string): boolean {
   return (p.cooldowns.get(id) ?? 0) <= 0;
 }
 
-function hasCharge(p: Entity, id: string): boolean {
-  const state = p.abilityCharges?.[id];
-  return !state || state.charges > 0; // lazily initialized: absent = full
+// Charge-banked abilities: the bank is the truth once it exists (the engine
+// also mirrors an empty bank into the cooldown map for the UI swirl, which
+// must NOT gate a press while a charge, e.g. the Trance restoke, is banked).
+function canPress(p: Entity, id: string): boolean {
+  const bank = p.abilityCharges?.[id];
+  return bank ? bank.charges > 0 : offCooldown(p, id);
 }
 
 interface BurstResult {
@@ -182,7 +185,7 @@ function runShortFight(spec: Spec, seconds: number, seed = 41, rows?: Rows): Bur
       // opener (after the rune is down), then Cinderfall whenever it is
       // ready (off-GCD, usable while casting).
       if (offCooldown(p, 'combustion') && (!hasRune || i >= 45)) sim.castAbility('combustion');
-      if (hasCharge(p, 'fire_blast') && offCooldown(p, 'fire_blast')) sim.castAbility('fire_blast');
+      if (canPress(p, 'fire_blast')) sim.castAbility('fire_blast');
       if (free(p)) {
         // Rune re-casts on cooldown so long fights keep its uptime, not just
         // the opener (the 27s window still only ever fits the first cast).

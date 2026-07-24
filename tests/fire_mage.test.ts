@@ -232,6 +232,32 @@ describe('Hot Streak', () => {
   });
 });
 
+describe('Phoenix Trance restokes the bank (designer rule 2026-07-25)', () => {
+  it('finishes the charge currently recharging: the schedule advances, the bank does not grow', () => {
+    const { sim, p } = mageWithSpec('fire');
+    addDummy(sim);
+    sim.castAbility('fire_blast'); // drain the whole bank back to back (off-GCD)
+    sim.castAbility('fire_blast');
+    sim.castAbility('fire_blast');
+    const bank = p.abilityCharges?.fire_blast;
+    expect(bank?.charges).toBe(0);
+    expect(bank?.recharges?.length).toBe(3); // three parallel recharge timers running
+    expect(p.cooldowns.get('fire_blast')).toBeGreaterThan(0); // the empty-bank swirl
+    sim.castAbility('combustion');
+    expect(bank?.charges).toBe(1); // the Trance window opens with a charge
+    expect(bank?.recharges?.length).toBe(2); // the soonest timer retired: no bonus charge
+    expect(p.cooldowns.get('fire_blast')).toBeUndefined(); // the swirl cleared
+  });
+
+  it('is a no-op at a full, untouched bank (the pre-pull opener case)', () => {
+    const { sim, p } = mageWithSpec('fire');
+    addDummy(sim);
+    sim.castAbility('combustion');
+    // The charge state never even materializes: the full bank is implicit.
+    expect(p.abilityCharges?.fire_blast).toBeUndefined();
+  });
+});
+
 describe('playtest round four (owner hotfixes)', () => {
   it('Combustion is off the GCD', () => {
     const { sim, p } = mageWithSpec('fire');

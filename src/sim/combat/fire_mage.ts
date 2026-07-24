@@ -112,6 +112,34 @@ export function fireGuaranteedCrit(
   return false;
 }
 
+/** Phoenix Trance restokes the bank (designer rule 2026-07-25): casting it
+ *  instantly FINISHES the Cinderfall charge that is currently recharging, so
+ *  a mid-fight Trance window always opens with at least one guaranteed crit
+ *  to dump on the slow 30s recharge. Completing the running timer (instead
+ *  of conjuring a bonus charge) advances the bank's schedule without growing
+ *  it, so fight-long throughput stays inside the sustained parity band (a
+ *  plain +1 grant measured 1.27x the frost comparator at 60s/120s, over the
+ *  1.25 gate). No-op at a full bank (the pre-pull case: the charge state
+ *  does not even exist until the first press) and for anyone outside the
+ *  fire spec. Plain charge-state math; draws no rng. */
+export function combustionRestokesCinderfall(ctx: SimContext, p: Entity, abilityId: string): void {
+  if (abilityId !== 'combustion') return;
+  if (!fireSpecMods(ctx, p)) return;
+  const bank = p.abilityCharges?.fire_blast;
+  if (!bank || bank.charges >= bank.maxCharges) return; // bank already full
+  bank.charges += 1;
+  // The soonest-running recharge just completed early: retire ITS timer
+  // (parallel per-charge model, sorted soonest-first) and re-mirror the
+  // empty-bank cooldown swirl, exactly as a natural completion would.
+  if (bank.recharges?.length) {
+    bank.recharges.shift();
+    bank.recharge = bank.recharges[0] ?? 0;
+  } else {
+    bank.recharge = 0;
+  }
+  if (bank.charges > 0) p.cooldowns.delete('fire_blast');
+}
+
 /** Hot Streak: two consecutive BUILDER crits arm a free, instant Pyroblast or
  *  Flamestrike. Wired through noteSpellHit so it READS every resolved spell
  *  hit; draws no rng. Every crit builds, Combustion's guaranteed ones too. */

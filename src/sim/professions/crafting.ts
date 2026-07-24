@@ -361,7 +361,10 @@ export function resolveCraftForRecipe(
       !!meta?.mobileStation &&
       isStationActive(meta.mobileStation, ctx.tickCount) &&
       stationTypeForCraft(meta.mobileStation.craftId) === recipe.stationType;
-    if (!entity || (!isAtStation(entity.pos, recipe.stationType) && !mobileSatisfies)) {
+    if (
+      !entity ||
+      (!isAtStation(ctx.stationPlacements, entity.pos, recipe.stationType) && !mobileSatisfies)
+    ) {
       return { ok: false, recipeId: recipe.id, reason: 'station_required' };
     }
   }
@@ -596,13 +599,26 @@ export function resolveCraftForRecipe(
       meta.archetype.hobbyCraft,
       recipe.skillReq,
     );
+    const skillBefore = meta.craftSkills[recipe.professionId] ?? 0;
     gainCraftSkill(meta.craftSkills, recipe.professionId, CRAFT_SKILL_GAIN * multiplier);
+    const skillLearned = (meta.craftSkills[recipe.professionId] ?? 0) - skillBefore;
     recordAction(meta);
-    // Character XP for the craft (profession_xp.ts), tier-scaled and
-    // level-gated the same way gathering/kill XP are: a max-level player
-    // spamming a trivial (gray) recipe gets zero.
+    // Character XP for the craft is LEARNING XP: the level-banded curve
+    // (profession_xp.ts) scaled by the skill this craft actually taught (the
+    // applied post-clamp delta, 0..CRAFT_SKILL_GAIN). A craft that teaches
+    // nothing, gray by tier, above the archetype ceiling, or at the craft's
+    // 125 content cap, pays nothing. The character-level green/gray falloff
+    // alone cannot bound a level-20 recipe at the level-20 character cap, so
+    // the skill journey is the dimension that keeps total craft XP finite
+    // (craft skill is additive-only and hard-capped, so every recipe's
+    // lifetime XP contribution per character is a closed sum).
     const entity = ctx.entities.get(pid);
-    if (entity) ctx.grantXp(craftActionXp(recipe.level, entity.level), meta);
+    if (entity) {
+      const xp = Math.round(
+        craftActionXp(recipe.level, entity.level) * (skillLearned / CRAFT_SKILL_GAIN),
+      );
+      if (xp > 0) ctx.grantXp(xp, meta);
+    }
   }
   const result: CraftResult = {
     ok: true,

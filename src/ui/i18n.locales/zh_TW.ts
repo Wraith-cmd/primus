@@ -754,6 +754,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.corpseHarvest.components.claw': '爪',
   'hudChrome.corpseHarvest.components.horn': '角',
   'hudChrome.corpseHarvest.components.tusk': '獠牙',
+  'hudChrome.corpseHarvest.components.cloth': '布',
   'hudChrome.townFocus.title': '城鎮專注',
   'hudChrome.townFocus.hint':
     '專注點會在每種材料的基礎產出上疊加加成。未專注的材料保持基礎產出不變。',
@@ -1420,9 +1421,11 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'loading.reconnectingNow': '連線已中斷，正在重新連線...（第 {attempt}/{maxAttempts} 次嘗試）',
   'loading.slowConnection': '載入時間比平常長。請檢查您的網路連線。',
   'loading.connectionRejected': '伺服器已關閉連線。',
+  'loading.incompatibleWorldVersion': '遊戲與伺服器版本不相容。請重新整理或更新後再試一次。',
   'loading.realmFull': '這個世界目前已滿，請於幾分鐘後再試。',
   'loading.tooManyConnections':
     '您的網路對這個世界建立的連線過多。請關閉多餘的遊戲視窗，或於幾分鐘後再試。',
+  'loading.messageRateExceeded': '由於發送操作過快，您已中斷連線。請稍候片刻後重新登入。',
   'errors.nothingInteract': '附近沒有可互動目標。',
   'errors.noEnemyNearby': '附近沒有敵人。',
   'errors.characterNameRequired': '請輸入角色名稱。',
@@ -1806,6 +1809,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hud.combat.auraGain': '你獲得了 {name}。',
   'hud.combat.auraFade': '{name}從你身上消失。',
   'hud.combat.auraAfflicted': '{target}受到了 {name} 影響。',
+  'hud.combat.auraGainOther': '{target}獲得了 {name}。',
   'hud.system.playerDeath': '你已經死亡。',
   'hud.system.respawn': '你再次感到精力恢復、身體完整。',
   'hud.system.ignoringChat': '已封鎖來自 {name} 的聊天。',
@@ -6132,6 +6136,13 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'gpuNotice.bodyWeb':
     '遊戲目前在沒有 GPU 加速的情況下執行，會非常緩慢。請在瀏覽器設定中啟用硬體加速，更新顯示卡驅動程式，然後重新啟動瀏覽器。',
   'gpuNotice.dismiss': '關閉',
+  'perfNudge.integratedGpu':
+    '遊戲目前在內建（省電）顯示晶片上執行。如果這台電腦還配有獨立遊戲顯示卡，請在 Windows 的 設定 > 系統 > 顯示器 > 顯示卡 中將瀏覽器設為「高效能」，然後重新啟動瀏覽器。桌面版會自動選擇遊戲顯示卡。',
+  'perfNudge.hardwareAccelerationDesktop':
+    '遊戲目前在沒有 GPU 加速的情況下執行，因此非常緩慢。請更新顯示卡驅動程式後重新啟動遊戲。在 Windows 上，還請在 設定 > 系統 > 顯示器 > 顯示卡 中將本遊戲設為「高效能」。',
+  'perfNudge.hardwareAccelerationWeb':
+    '遊戲目前在沒有 GPU 加速的情況下執行，因此非常緩慢。請在瀏覽器設定中啟用硬體加速，更新顯示卡驅動程式，然後重新啟動瀏覽器。',
+  'perfNudge.dismiss': '關閉',
   'editor.appTitle': '地圖編輯器',
   'editor.docTitle': '地圖編輯器 - World of ClaudeCraft',
   'editor.untitledMap': '未命名地圖',
@@ -6682,6 +6693,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'apiError.discord.swag_tier': '達到更高階級才能領取此項目。',
   'apiError.discord.swag_points': '點數不足。',
   'hudChrome.mailbox.title': '郵箱',
+  'hudChrome.noticeboard.empty': '看起來沒有張貼任何內容。',
   'hudChrome.mailbox.subtitle': '渡鴉郵驛',
   'hudChrome.mailbox.close': '關閉郵箱',
   'hudChrome.mailbox.tabInbox': '收件匣',
@@ -6726,6 +6738,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.mailbox.result.letterGone': '那封信已不在你的郵箱裡。',
   'hudChrome.mailbox.result.takeParcelsFirst': '請先取出包裹再丟棄信件。',
   'worldContent.mailboxName': '郵箱',
+  'worldContent.noticeboardName': '告示板',
   'entities.letters.ravenpost_welcome.sender': '渡鴉郵驛',
   'entities.letters.ravenpost_welcome.subject': '渡鴉如今為你飛翔',
   'entities.letters.ravenpost_welcome.body':

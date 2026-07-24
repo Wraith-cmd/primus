@@ -1460,7 +1460,9 @@ export const zh_TW: EnTranslations = {
         "gills": "魚鰓",
         "claw": "爪",
         "horn": "角",
-        "tusk": "獠牙"
+        "tusk": "獠牙",
+        "meat": "Meat",
+        "cloth": "布"
       }
     },
     "townFocus": {
@@ -1991,6 +1993,9 @@ export const zh_TW: EnTranslations = {
         "letterGone": "那封信已不在你的郵箱裡。",
         "takeParcelsFirst": "請先取出包裹再丟棄信件。"
       }
+    },
+    "noticeboard": {
+      "empty": "看起來沒有張貼任何內容。"
     },
     "bank": {
       "title": "銀行",
@@ -5569,8 +5574,10 @@ export const zh_TW: EnTranslations = {
     "reconnectingNow": "連線已中斷，正在重新連線...（第 {attempt}/{maxAttempts} 次嘗試）",
     "slowConnection": "載入時間比平常長。請檢查您的網路連線。",
     "connectionRejected": "伺服器已關閉連線。",
+    "incompatibleWorldVersion": "遊戲與伺服器版本不相容。請重新整理或更新後再試一次。",
     "realmFull": "這個世界目前已滿，請於幾分鐘後再試。",
     "tooManyConnections": "您的網路對這個世界建立的連線過多。請關閉多餘的遊戲視窗，或於幾分鐘後再試。",
+    "messageRateExceeded": "由於發送操作過快，您已中斷連線。請稍候片刻後重新登入。",
     "tips": {
       "classes": "提示：9 個職業玩法各不相同，投入之前不妨都試一試。",
       "talents": "提示：只要不在戰鬥中，隨時都能重置天賦，因此早期的選擇不會成為陷阱。",
@@ -5638,6 +5645,12 @@ export const zh_TW: EnTranslations = {
   "gpuNotice": {
     "bodyDesktop": "遊戲目前在沒有 GPU 加速的情況下執行，會非常緩慢。請更新顯示卡驅動程式後重新啟動遊戲。在 Windows 上，還請在 設定 > 系統 > 顯示器 > 顯示卡 中將本遊戲設為「高效能」。",
     "bodyWeb": "遊戲目前在沒有 GPU 加速的情況下執行，會非常緩慢。請在瀏覽器設定中啟用硬體加速，更新顯示卡驅動程式，然後重新啟動瀏覽器。",
+    "dismiss": "關閉"
+  },
+  "perfNudge": {
+    "integratedGpu": "遊戲目前在內建（省電）顯示晶片上執行。如果這台電腦還配有獨立遊戲顯示卡，請在 Windows 的 設定 > 系統 > 顯示器 > 顯示卡 中將瀏覽器設為「高效能」，然後重新啟動瀏覽器。桌面版會自動選擇遊戲顯示卡。",
+    "hardwareAccelerationDesktop": "遊戲目前在沒有 GPU 加速的情況下執行，因此非常緩慢。請更新顯示卡驅動程式後重新啟動遊戲。在 Windows 上，還請在 設定 > 系統 > 顯示器 > 顯示卡 中將本遊戲設為「高效能」。",
+    "hardwareAccelerationWeb": "遊戲目前在沒有 GPU 加速的情況下執行，因此非常緩慢。請在瀏覽器設定中啟用硬體加速，更新顯示卡驅動程式，然後重新啟動瀏覽器。",
     "dismiss": "關閉"
   },
   "realm": {
@@ -6064,7 +6077,8 @@ export const zh_TW: EnTranslations = {
       "death": "{name}死亡。",
       "auraGain": "你獲得了 {name}。",
       "auraFade": "{name}從你身上消失。",
-      "auraAfflicted": "{target}受到了 {name} 影響。"
+      "auraAfflicted": "{target}受到了 {name} 影響。",
+      "auraGainOther": "{target}獲得了 {name}。"
     },
     "system": {
       "playerDeath": "你已經死亡。",
@@ -11771,6 +11785,7 @@ export const zh_TW: EnTranslations = {
     "delveRiteShrineCandleInteract": "燭火神龕：按 F 觸碰",
     "delveRiteShrineReedInteract": "蘆葦神龕：按 F 觸碰",
     "delveRiteShrineSkullInteract": "骷髏神龕：按 F 觸碰",
-    "mailboxName": "郵箱"
+    "mailboxName": "郵箱",
+    "noticeboardName": "告示板"
   }
 };

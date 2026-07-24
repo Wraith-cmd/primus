@@ -779,6 +779,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.corpseHarvest.components.claw': 'Коготь',
   'hudChrome.corpseHarvest.components.horn': 'Рог',
   'hudChrome.corpseHarvest.components.tusk': 'Бивень',
+  'hudChrome.corpseHarvest.components.cloth': 'Ткань',
   'hudChrome.townFocus.title': 'Фокус города',
   'hudChrome.townFocus.hint':
     'Очки фокуса добавляют бонус поверх базового выхода каждого компонента. Компоненты без фокуса остаются на базовом уровне.',
@@ -1500,10 +1501,14 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'loading.slowConnection':
     'Загрузка занимает больше времени, чем обычно. Проверьте подключение к интернету.',
   'loading.connectionRejected': 'Сервер закрыл соединение.',
+  'loading.incompatibleWorldVersion':
+    'Версии игры и сервера несовместимы. Перезагрузите или обновите игру, затем повторите попытку.',
   'loading.realmFull':
     'Этот мир сейчас переполнен. Пожалуйста, попробуйте снова через несколько минут.',
   'loading.tooManyConnections':
     'Из вашей сети открыто слишком много подключений к этому миру. Пожалуйста, закройте лишние игровые окна или попробуйте снова через несколько минут.',
+  'loading.messageRateExceeded':
+    'Вы были отключены за слишком быструю отправку действий. Пожалуйста, подождите немного и войдите снова.',
   'errors.nothingInteract': 'Нет объекта для взаимодействия.',
   'errors.noEnemyNearby': 'Рядом нет врагов.',
   'errors.characterNameRequired': 'Введите имя персонажа.',
@@ -1908,6 +1913,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hud.combat.auraGain': 'Вы получаете {name}.',
   'hud.combat.auraFade': '{name} спадает с вас.',
   'hud.combat.auraAfflicted': '{target} поражен эффектом {name}.',
+  'hud.combat.auraGainOther': '{target} получает {name}.',
   'hud.system.playerDeath': 'Вы погибли.',
   'hud.system.respawn': 'Вы снова чувствуете себя отдохнувшим и целым.',
   'hud.system.ignoringChat': 'Чат от {name} игнорируется.',
@@ -6530,6 +6536,13 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'gpuNotice.bodyWeb':
     'Игра работает без GPU-ускорения и будет сильно тормозить. Включите аппаратное ускорение в настройках браузера, обновите драйверы видеокарты и перезапустите браузер.',
   'gpuNotice.dismiss': 'Закрыть',
+  'perfNudge.integratedGpu':
+    'Игра работает на встроенном (энергосберегающем) графическом процессоре. Если в этом компьютере есть и игровая видеокарта, выберите для браузера режим «Высокая производительность» в разделе Параметры > Система > Дисплей > Графика в Windows, затем перезапустите браузер. Настольная версия выбирает игровую видеокарту автоматически.',
+  'perfNudge.hardwareAccelerationDesktop':
+    'Игра работает без GPU-ускорения и поэтому сильно тормозит. Обновите драйверы видеокарты и перезапустите игру. В Windows также выберите для игры режим «Высокая производительность» в разделе Параметры > Система > Дисплей > Графика.',
+  'perfNudge.hardwareAccelerationWeb':
+    'Игра работает без GPU-ускорения и поэтому сильно тормозит. Включите аппаратное ускорение в настройках браузера, обновите драйверы видеокарты и перезапустите браузер.',
+  'perfNudge.dismiss': 'Закрыть',
   'editor.appTitle': 'Редактор карт',
   'editor.docTitle': 'Редактор карт - World of ClaudeCraft',
   'editor.untitledMap': 'Карта без названия',
@@ -7144,6 +7157,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'apiError.discord.swag_tier': 'Достигните более высокого ранга, чтобы получить это.',
   'apiError.discord.swag_points': 'Недостаточно очков.',
   'hudChrome.mailbox.title': 'Почтовый ящик',
+  'hudChrome.noticeboard.empty': 'Похоже, здесь ничего не опубликовано.',
   'hudChrome.mailbox.subtitle': 'Вороновая почта',
   'hudChrome.mailbox.close': 'Закрыть почтовый ящик',
   'hudChrome.mailbox.tabInbox': 'Входящие',
@@ -7189,6 +7203,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.mailbox.result.letterGone': 'Этого письма больше нет в вашем ящике.',
   'hudChrome.mailbox.result.takeParcelsFirst': 'Сначала заберите посылки, затем удаляйте письмо.',
   'worldContent.mailboxName': 'Почтовый ящик',
+  'worldContent.noticeboardName': 'Доска объявлений',
   'entities.letters.ravenpost_welcome.sender': 'Вороновая почта',
   'entities.letters.ravenpost_welcome.subject': 'Теперь вороны летают и для вас',
   'entities.letters.ravenpost_welcome.body':

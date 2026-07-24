@@ -753,6 +753,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.corpseHarvest.components.claw': '爪',
   'hudChrome.corpseHarvest.components.horn': '角',
   'hudChrome.corpseHarvest.components.tusk': '獠牙',
+  'hudChrome.corpseHarvest.components.cloth': '布',
   'hudChrome.townFocus.title': '城镇专注',
   'hudChrome.townFocus.hint':
     '专注点会在每种材料的基础产出上叠加加成。未专注的材料保持基础产出不变。',
@@ -1419,9 +1420,11 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'loading.reconnectingNow': '连接已断开，正在立即重新连接...（第 {attempt}/{maxAttempts} 次尝试）',
   'loading.slowConnection': '加载时间比平时长。请检查您的网络连接。',
   'loading.connectionRejected': '服务器关闭了连接。',
+  'loading.incompatibleWorldVersion': '游戏与服务器版本不兼容。请刷新或更新后重试。',
   'loading.realmFull': '当前服务器已满，请稍后几分钟再试。',
   'loading.tooManyConnections':
     '您的网络向该服务器发起的连接过多。请关闭多余的游戏窗口，或稍后几分钟再试。',
+  'loading.messageRateExceeded': '由于发送操作过快，您已断开连接。请稍等片刻后重新登录。',
   'errors.nothingInteract': '附近没有可互动目标。',
   'errors.noEnemyNearby': '附近没有敌人。',
   'errors.characterNameRequired': '请输入角色名称。',
@@ -1804,6 +1807,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hud.combat.auraGain': '你获得了 {name}。',
   'hud.combat.auraFade': '{name}从你身上消失。',
   'hud.combat.auraAfflicted': '{target}受到了 {name} 影响。',
+  'hud.combat.auraGainOther': '{target}获得了 {name}。',
   'hud.system.playerDeath': '你已经死亡。',
   'hud.system.respawn': '你再次感到精力恢复、身体完整。',
   'hud.system.ignoringChat': '已屏蔽来自 {name} 的聊天。',
@@ -6132,6 +6136,13 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'gpuNotice.bodyWeb':
     '游戏正在没有 GPU 加速的情况下运行，会非常缓慢。请在浏览器设置中启用硬件加速，更新显卡驱动，然后重启浏览器。',
   'gpuNotice.dismiss': '关闭',
+  'perfNudge.integratedGpu':
+    '游戏正在集成（节能）显卡上运行。如果这台电脑还配有独立游戏显卡，请在 Windows 的 设置 > 系统 > 显示 > 显示卡 中将浏览器设为“高性能”，然后重启浏览器。桌面版会自动选择游戏显卡。',
+  'perfNudge.hardwareAccelerationDesktop':
+    '游戏正在没有 GPU 加速的情况下运行，因此非常缓慢。请更新显卡驱动后重启游戏。在 Windows 上，还请在 设置 > 系统 > 显示 > 显示卡 中将本游戏设为“高性能”。',
+  'perfNudge.hardwareAccelerationWeb':
+    '游戏正在没有 GPU 加速的情况下运行，因此非常缓慢。请在浏览器设置中启用硬件加速，更新显卡驱动，然后重启浏览器。',
+  'perfNudge.dismiss': '关闭',
   'editor.appTitle': '地图编辑器',
   'editor.docTitle': '地图编辑器 - World of ClaudeCraft',
   'editor.untitledMap': '未命名地图',
@@ -6681,6 +6692,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'apiError.discord.swag_tier': '达到更高段位即可领取。',
   'apiError.discord.swag_points': '积分不足。',
   'hudChrome.mailbox.title': '邮箱',
+  'hudChrome.noticeboard.empty': '看起来没有张贴任何内容。',
   'hudChrome.mailbox.subtitle': '渡鸦邮驿',
   'hudChrome.mailbox.close': '关闭邮箱',
   'hudChrome.mailbox.tabInbox': '收件箱',
@@ -6725,6 +6737,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.mailbox.result.letterGone': '那封信已不在你的邮箱里。',
   'hudChrome.mailbox.result.takeParcelsFirst': '请先取出包裹再丢弃信件。',
   'worldContent.mailboxName': '邮箱',
+  'worldContent.noticeboardName': '告示板',
   'entities.letters.ravenpost_welcome.sender': '渡鸦邮驿',
   'entities.letters.ravenpost_welcome.subject': '渡鸦如今为你飞翔',
   'entities.letters.ravenpost_welcome.body':

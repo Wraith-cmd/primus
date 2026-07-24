@@ -113,6 +113,66 @@ describe('auto_attack meleeSwing: the white-hit table', () => {
     );
   });
 
+  it('slow one-hand auto attacks hit harder per swing than fast one-hand attacks at the same weapon damage budget', () => {
+    const hitWithSpeed = (speed: number): number => {
+      const { sim, p } = makeSim('warrior', 12);
+      const mob = spawnDummy(sim, p, 1);
+      p.attackPower = 0;
+      p.critChance = 0;
+      mob.armor = 0;
+      sim.rng.next = () => 0.9; // clears miss/dodge/parry/block and crit; fixed weapon roll
+      const events = capture(sim);
+
+      const connected = meleeSwing(sim.ctx, p, mob, 0, null, {
+        cannotBeDodged: true,
+        weapon: { min: 20, max: 20, speed },
+        autoAttackHand: 'onehand',
+      });
+
+      expect(connected).toBe(true);
+      const hit = events.find(
+        (e) => e.type === 'damage' && e.kind === 'hit' && e.sourceId === p.id,
+      );
+      expect(hit?.amount).toBeGreaterThan(0);
+      return hit?.amount ?? 0;
+    };
+
+    const fast = hitWithSpeed(1);
+    const slow = hitWithSpeed(3);
+    expect(slow).toBeGreaterThan(fast);
+    expect({ fast, slow }).toEqual({ fast: 10, slow: 30 });
+  });
+
+  it('a comparable two-hand auto attack hits harder per swing than a one-hand auto attack', () => {
+    const hitWithHand = (autoAttackHand: 'onehand' | 'twohand'): number => {
+      const { sim, p } = makeSim('warrior', 12);
+      const mob = spawnDummy(sim, p, 1);
+      p.attackPower = 0;
+      p.critChance = 0;
+      mob.armor = 0;
+      sim.rng.next = () => 0.9; // clears miss/dodge/parry/block and crit; fixed weapon roll
+      const events = capture(sim);
+
+      const connected = meleeSwing(sim.ctx, p, mob, 0, null, {
+        cannotBeDodged: true,
+        weapon: { min: 20, max: 20, speed: 2 },
+        autoAttackHand,
+      });
+
+      expect(connected).toBe(true);
+      const hit = events.find(
+        (e) => e.type === 'damage' && e.kind === 'hit' && e.sourceId === p.id,
+      );
+      expect(hit?.amount).toBeGreaterThan(0);
+      return hit?.amount ?? 0;
+    };
+
+    const oneHand = hitWithHand('onehand');
+    const twoHand = hitWithHand('twohand');
+    expect(twoHand).toBeGreaterThan(oneHand);
+    expect({ oneHand, twoHand }).toEqual({ oneHand: 20, twoHand: 23 });
+  });
+
   it('a 100% blind forces a miss: returns false, emits a miss, deals no damage', () => {
     const { sim, p } = makeSim('warrior', 12);
     const mob = spawnDummy(sim, p, 1);

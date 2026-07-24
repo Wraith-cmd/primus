@@ -488,6 +488,11 @@ export interface Aura {
   // the per-application maxBonus cap holds across channel ticks.
   extendedBy?: number;
   leechPct?: number; // dot only: fraction of tick damage healed back to source
+  // dot only: the per-tick value was copied from ALREADY-RESOLVED damage (Ignite's
+  // 40%-of-the-crit bank), so ticks pass dealDamage's alreadyFinal and skip the
+  // source-output multipliers a second application would double-dip (PR #2360
+  // review finding: a 300 bank paid 330 under a +10% damage buff).
+  finalDamage?: boolean;
   // Chronomancy Temporal Echo bookkeeping (temporal_echo auras only). echoGroup
   // marks the ORIGIN: false/undefined = the single-target Temporal Echo (35% ST /
   // 15% AoE conversion), true = a Cascada temporal group echo (13% ST / 6% AoE).

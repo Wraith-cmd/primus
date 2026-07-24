@@ -305,6 +305,9 @@ export function applyIgnite(ctx: SimContext, source: Entity, target: Entity, bur
     id: 'ignite',
     name: 'Ignite',
     kind: 'dot',
+    // The bank copies RESOLVED damage: its ticks must not pick up the
+    // source-output multipliers a second time (dealDamage alreadyFinal).
+    finalDamage: true,
     value: perTick,
     remaining: IGNITE_DURATION,
     duration: IGNITE_DURATION,

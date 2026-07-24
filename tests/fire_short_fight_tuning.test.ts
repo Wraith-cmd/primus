@@ -47,7 +47,7 @@ const REPORTED_GEAR: PlayerEquipment = {
   shoulder: 'soulflame_mantle',
   chest: 'necromancers_starshroud',
   mainhand: 'deathless_heartwood',
-  offhand: 'wraithfire_orb',
+  offhand: 'heroic_wraithfire_orb',
   gloves: 'soulflame_gloves',
   waist: 'soulflame_cord',
   legs: 'necromancers_legwraps',

@@ -144,6 +144,35 @@ describe('guaranteed crits and Ignition', () => {
     expect(mob.auras.some((a) => a.id === 'ignite')).toBe(false); // fully paid out
   });
 
+  it('the bank pays out ONCE: ticks skip source damage buffs (review finding 2026-07-25)', () => {
+    // The bank copies RESOLVED damage, which already ate Rune of Power /
+    // Convergence style multipliers. Pre-fix, each tick then went through
+    // dealDamage's buff_dmg_done block AGAIN: a 300 bank paid 330 under a
+    // +10% buff and 360 under +20%. Now the aura's finalDamage flag routes
+    // ticks through alreadyFinal and the payout equals the bank, exactly.
+    const { sim, p } = mageWithSpec('fire');
+    const mob = addDummy(sim);
+    const ctx = (sim as unknown as { ctx: Parameters<typeof applyIgnite>[0] }).ctx;
+    p.auras.push({
+      id: 'test_dmg_buff',
+      name: 'TestBuff',
+      kind: 'buff_dmg_done',
+      value: 0.2,
+      remaining: 60,
+      duration: 60,
+      sourceId: p.id,
+      school: 'arcane',
+    });
+    applyIgnite(ctx, p, mob, 300);
+    const paid = collect(sim, 10)
+      .filter(
+        (e): e is Extract<SimEvent, { type: 'damage' }> =>
+          e.type === 'damage' && e.ability === 'Ignite' && e.targetId === mob.id,
+      )
+      .reduce((sum, e) => sum + e.amount, 0);
+    expect(paid).toBe(300); // NOT 360: the +20% buff must not double-dip the bank
+  });
+
   it('a re-bank on an expiring Ignite (no ticks left) starts a fresh bank only', () => {
     const { sim, p } = mageWithSpec('fire');
     const mob = addDummy(sim);

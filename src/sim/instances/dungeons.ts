@@ -80,6 +80,25 @@ function activeResetLock(
   return lock;
 }
 
+function clearResetLocksForClaim(ctx: SimContext, claimId: number): void {
+  for (const [key, lock] of ctx.dungeonResetLocks) {
+    if (lock.claimId === claimId) ctx.dungeonResetLocks.delete(key);
+  }
+}
+
+export function lockNormalDungeonResetOnBossKill(ctx: SimContext, mob: Entity): void {
+  const inst = ctx.instances.find((i) => i.partyKey !== null && i.mobIds.includes(mob.id));
+  if (inst?.difficulty !== 'normal' || RAID_ALLOWED_DUNGEON_IDS.has(inst.dungeonId)) return;
+  const finalBossId = HEROIC_DUNGEON_TUNING[inst.dungeonId]?.finalBossId;
+  if (mob.templateId !== finalBossId || inst.exitId === null) return;
+  for (const meta of instanceLockoutMetas(ctx, inst)) {
+    ctx.dungeonResetLocks.set(resetCooldownKey(ctx, meta.entityId, inst.dungeonId), {
+      availableAt: Number.POSITIVE_INFINITY,
+      claimId: inst.exitId,
+    });
+  }
+}
+
 // Joining a party during a reset cooldown inherits that party's active dungeon
 // locks. Otherwise fresh characters could take over the replacement claim, rotate
 // the ephemeral party id, and open another run before the five-minute boundary.
@@ -571,6 +590,7 @@ function claimInstance(
 }
 
 function freeInstance(ctx: SimContext, inst: InstanceSlot): void {
+  const claimId = inst.exitId;
   for (const id of inst.mobIds) {
     if (!ctx.entities.has(id)) continue;
     // drop any player targets on the despawning mob so the delete is clean
@@ -583,7 +603,10 @@ function freeInstance(ctx: SimContext, inst: InstanceSlot): void {
   for (const id of inst.objectIds) {
     if (ctx.entities.has(id)) ctx.dropEntity(id);
   }
-  if (inst.exitId !== null) ctx.dropEntity(inst.exitId);
+  if (claimId !== null) {
+    clearResetLocksForClaim(ctx, claimId);
+    ctx.dropEntity(claimId);
+  }
   inst.partyKey = null;
   inst.difficulty = 'normal';
   inst.mobIds = [];
@@ -761,7 +784,7 @@ function heroicRewardWindowToken(lockedUntil: number): string {
 // snapshot is empty) pays nobody, bags or mail, while the lockout still strikes.
 export function awardHeroicMarks(ctx: SimContext, mob: Entity, recipients: PlayerMeta[]): void {
   const inst = ctx.instances.find((i) => i.partyKey !== null && i.mobIds.includes(mob.id));
-  if (!inst || inst.difficulty !== 'heroic') return;
+  if (inst?.difficulty !== 'heroic') return;
   const tuning = HEROIC_DUNGEON_TUNING[inst.dungeonId];
   if (!tuning || mob.templateId !== tuning.finalBossId) return;
   const lockedUntil = ctx.raidResetMs(ctx.lockoutNowMs());

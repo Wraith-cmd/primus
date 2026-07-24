@@ -29,6 +29,7 @@ import * as deedsMod from '../deeds';
 import { recalcPlayerStats } from '../entity';
 import { DAMAGE_IDLE_DESPAWN_MOB_IDS, DAMAGE_IDLE_DESPAWN_SECONDS } from '../entity_roster';
 import { weaponHand } from '../equipment_rules';
+import { lockNormalDungeonResetOnBossKill } from '../instances/dungeons';
 import { pvpDamageMultiplier } from '../pvp';
 import { aurasSurvivingDeath } from '../resurrection';
 import type { PlayerMeta } from '../sim';
@@ -1313,6 +1314,7 @@ export function handleDeath(ctx: SimContext, e: Entity, killer: Entity | null): 
     // Settle the heroic reward and its realm-reset lockout together. This runs
     // even without player credit so the owning group cannot dodge the lockout;
     // only the participation snapshot above receives marks.
+    lockNormalDungeonResetOnBossKill(ctx, e);
     ctx.awardHeroicMarks(e, heroicRewardRecipients);
     // Nythraxis normal and heroic raid lockouts use a wider room sweep than
     // generic dungeon claims. Run it after heroic settlement so its lock stamp

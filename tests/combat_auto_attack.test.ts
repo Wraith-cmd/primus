@@ -20,6 +20,12 @@ import { advancePendingProjectiles } from '../src/sim/projectile_travel';
 import { type PlayerMeta, Sim } from '../src/sim/sim';
 import type { Aura, Entity, PlayerClass, SimEvent } from '../src/sim/types';
 
+type DamageEvent = Extract<SimEvent, { type: 'damage' }>;
+
+function isDamageEvent(event: SimEvent): event is DamageEvent {
+  return event.type === 'damage';
+}
+
 function makeSim(
   cls: PlayerClass,
   level: number,
@@ -40,7 +46,7 @@ function spawnDummy(sim: Sim, p: Entity, level = 5, dz = 2): Entity {
     x: p.pos.x,
     y: p.pos.y,
     z: p.pos.z + dz,
-  }) as AnyEntity;
+  });
   mob.maxHp = 500000;
   mob.hp = 500000;
   mob.hostile = true;
@@ -109,7 +115,7 @@ describe('auto_attack meleeSwing: the white-hit table', () => {
       const mob = spawnDummy(sim, p, 1);
       p.attackPower = 0;
       p.critChance = 0;
-      mob.armor = 0;
+      mob.stats = { ...mob.stats, armor: 0 };
       sim.rng.next = () => 0.9; // clears miss/dodge/parry/block and crit; fixed weapon roll
       const events = capture(sim);
 
@@ -121,7 +127,7 @@ describe('auto_attack meleeSwing: the white-hit table', () => {
 
       expect(connected).toBe(true);
       const hit = events.find(
-        (e) => e.type === 'damage' && e.kind === 'hit' && e.sourceId === p.id,
+        (e): e is DamageEvent => isDamageEvent(e) && e.kind === 'hit' && e.sourceId === p.id,
       );
       expect(hit?.amount).toBeGreaterThan(0);
       return hit?.amount ?? 0;
@@ -139,7 +145,7 @@ describe('auto_attack meleeSwing: the white-hit table', () => {
       const mob = spawnDummy(sim, p, 1);
       p.attackPower = 0;
       p.critChance = 0;
-      mob.armor = 0;
+      mob.stats = { ...mob.stats, armor: 0 };
       sim.rng.next = () => 0.9; // clears miss/dodge/parry/block and crit; fixed weapon roll
       const events = capture(sim);
 
@@ -151,7 +157,7 @@ describe('auto_attack meleeSwing: the white-hit table', () => {
 
       expect(connected).toBe(true);
       const hit = events.find(
-        (e) => e.type === 'damage' && e.kind === 'hit' && e.sourceId === p.id,
+        (e): e is DamageEvent => isDamageEvent(e) && e.kind === 'hit' && e.sourceId === p.id,
       );
       expect(hit?.amount).toBeGreaterThan(0);
       return hit?.amount ?? 0;
@@ -190,7 +196,8 @@ describe('auto_attack meleeSwing: the white-hit table', () => {
     const { sim, p } = makeSim('warrior', 30); // high level -> floor miss chance (0.005)
     const targetPid = sim.addPlayer('rogue', 'Dodgy') as number;
     sim.setPlayerLevel(1, targetPid);
-    const target = sim.entities.get(targetPid) as AnyEntity;
+    const target = sim.entities.get(targetPid);
+    if (!target) throw new Error('test target missing');
     target.dodgeChance = 1; // player target -> dodgeChance read straight from the field
     p.overpowerUntil = 0;
     const events = capture(sim);
@@ -496,7 +503,7 @@ describe('auto_attack Auto Shot scales off the equipped weapon (ranged DPS)', ()
     const shoot = (weaponMin: number, weaponMax: number): number => {
       const { sim, p, meta } = makeSim('hunter', 20, 3);
       const mob = spawnDummy(sim, p, 1, 20); // far below level -> floored miss chance
-      mob.armor = 0; // isolate the weapon-damage signal from armor mitigation
+      mob.stats = { ...mob.stats, armor: 0 }; // isolate the weapon-damage signal from armor mitigation
       p.critChance = 0; // no crit variance
       p.weapon = { min: weaponMin, max: weaponMax, speed: 2 };
       p.autoAttack = true;
@@ -657,7 +664,7 @@ describe('rangedSwing damage: the 0.6 weapon coefficient is Auto Shot only', () 
     for (let i = 0; i < 400 && sim.ctx.pendingProjectiles.length > 0; i++)
       advancePendingProjectiles(sim.ctx);
     const hits = events.filter(
-      (e) => e.type === 'damage' && e.ability === 'Auto Shot' && e.kind === 'hit',
+      (e): e is DamageEvent => isDamageEvent(e) && e.ability === 'Auto Shot' && e.kind === 'hit',
     );
     expect(hits.length).toBeGreaterThan(10);
     expect(hits.some((h) => !h.crit)).toBe(true);
@@ -675,7 +682,7 @@ describe('rangedSwing damage: the 0.6 weapon coefficient is Auto Shot only', () 
     for (let i = 0; i < 400 && sim.ctx.pendingProjectiles.length > 0; i++)
       advancePendingProjectiles(sim.ctx);
     const hits = events.filter(
-      (e) => e.type === 'damage' && e.ability === 'Wand' && e.kind === 'hit',
+      (e): e is DamageEvent => isDamageEvent(e) && e.ability === 'Wand' && e.kind === 'hit',
     );
     expect(hits.length).toBeGreaterThan(10);
     expect(hits.some((h) => !h.crit)).toBe(true);
@@ -689,8 +696,11 @@ describe('rangedSwing damage: the 0.6 weapon coefficient is Auto Shot only', () 
 // just a melee swing. A caster's wand bolt does NOT swing the mainhand, so it never
 // rolls the mainhand's proc.
 describe('rangedSwing fires weaponHit procs (Thronebane on a hunter Auto Shot)', () => {
-  const chainArcs = (events: SimEvent[]) =>
-    events.filter((e) => e.type === 'damage' && e.ability === 'Chain Arc' && e.school === 'nature');
+  const chainArcs = (events: SimEvent[]): DamageEvent[] =>
+    events.filter(
+      (e): e is DamageEvent =>
+        isDamageEvent(e) && e.ability === 'Chain Arc' && e.school === 'nature',
+    );
 
   it('a hunter wielding Thronebane procs Chain Arc off Auto Shot', () => {
     const { sim, p } = makeSim('hunter', 20);

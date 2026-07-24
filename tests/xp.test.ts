@@ -312,6 +312,30 @@ describe('prestige', () => {
     expect(sim.prestige()).toBe(false);
     expect(sim.prestigeRank).toBe(0);
   });
+
+  // The rank rides every self snapshot, so the client always HAS the new value;
+  // what the character sheet lacked was a signal telling it when to repaint.
+  // This event is that signal (the 'honor' precedent), so a successful prestige
+  // must emit exactly one carrying the new rank, and a refused one must emit none.
+  it('emits a personal prestige event carrying the new rank', () => {
+    const sim = makeSim('warrior');
+    sim.setPlayerLevel(MAX_LEVEL);
+    sim.grantXp(800_000);
+    sim.drainEvents();
+
+    expect(sim.prestige()).toBe(true);
+    const events = sim.drainEvents().filter((e) => e.type === 'prestige');
+    expect(events).toEqual([{ type: 'prestige', pid: sim.playerId, rank: 1 }]);
+  });
+
+  it('emits no prestige event when the gate refuses', () => {
+    const sim = makeSim('warrior');
+    sim.setPlayerLevel(10);
+    sim.drainEvents();
+
+    expect(sim.prestige()).toBe(false);
+    expect(sim.drainEvents().filter((e) => e.type === 'prestige')).toEqual([]);
+  });
 });
 
 describe('prestige anti-abuse gate (server-locked rank)', () => {

@@ -8929,6 +8929,14 @@ export class Hud {
           }
           break;
         }
+        // The rank itself already rides every self snapshot; the open character
+        // sheet is only repainted on an explicit trigger, so without this it
+        // keeps showing the pre-prestige rank until closed and reopened. Same
+        // job the 'honor' case below does for the sheet's Honor balance.
+        case 'prestige': {
+          this.renderCharIfOpen();
+          break;
+        }
         case 'honor': {
           const amount = formatNumber(ev.amount, { maximumFractionDigits: 0 });
           const honorMessage = t('hudChrome.warfare.honorGain', {

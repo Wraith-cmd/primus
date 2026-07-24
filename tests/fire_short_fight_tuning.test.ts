@@ -21,6 +21,12 @@
 // the sustained comparator, but bounded: floor 1.0x, ceiling 1.6x. On the
 // pre-fix values the ratio is ~2x+, so the ceiling assertion is the failing
 // regression this change turns green.
+//
+// Despite the file name, the suite gates ENTIRE fights, not just the 27s
+// incident: the talented-ceiling block pins the strongest Monte Carlo build,
+// and the sustained block pins 120s rotational parity plus the Ignite
+// contract at duration (pre-fix, sustained fire ran ~3x frost and Ignite
+// was 46% of all damage; all five substantive gates fail on the old sim).
 import { describe, expect, it } from 'vitest';
 import { ABILITIES, ITEMS, MOBS } from '../src/sim/data';
 import { createMob, type PlayerEquipment, recalcPlayerStats } from '../src/sim/entity';
@@ -62,6 +68,18 @@ const TOP_TALENTED_ROWS: Rows = {
   11: 'mag_r11_twin_nova',
   14: 'mag_r14_presence_of_mind',
   17: 'mag_r17_convergence',
+  20: 'mag_r20_rune_of_power',
+};
+
+// Frost's best throughput rows from the same sweep (Convergence is a net
+// LOSS for frost, whose weave is a 2.5s Cinderbolt, so it takes the dead
+// r17 instead): the fair talented comparator for the sustained gate.
+const FROST_TOP_ROWS: Rows = {
+  5: 'mag_r5_ice_floes',
+  8: 'mag_r8_warded',
+  11: 'mag_r11_twin_nova',
+  14: 'mag_r14_presence_of_mind',
+  17: 'mag_r17_cold_snap',
   20: 'mag_r20_rune_of_power',
 };
 
@@ -164,7 +182,9 @@ function runShortFight(spec: Spec, seconds: number, seed = 41, rows?: Rows): Bur
       if (offCooldown(p, 'combustion') && (!hasRune || i >= 45)) sim.castAbility('combustion');
       if (hasCharge(p, 'fire_blast') && offCooldown(p, 'fire_blast')) sim.castAbility('fire_blast');
       if (free(p)) {
-        if (hasRune && offCooldown(p, 'rune_of_power') && i < 45) sim.castAbility('rune_of_power');
+        // Rune re-casts on cooldown so long fights keep its uptime, not just
+        // the opener (the 27s window still only ever fits the first cast).
+        if (hasRune && offCooldown(p, 'rune_of_power')) sim.castAbility('rune_of_power');
         else if (
           hasConv &&
           !auraUp('elemental_convergence') &&
@@ -183,11 +203,15 @@ function runShortFight(spec: Spec, seconds: number, seed = 41, rows?: Rows): Bur
     } else if (free(p)) {
       // Frost plays its real kit: Icy Veins opener, Glacial Spike at five
       // icicles, Brain Freeze Flurry, proc-fed Ice Lance, Frozen Orb on
-      // cooldown, Rimelance filler.
+      // cooldown, Rimelance filler; with rows, Rune uptime and Racing Mind
+      // Glacial Spikes.
       const icicles = p.auras.find((a) => a.kind === 'icicles');
-      if (offCooldown(p, 'icy_veins')) sim.castAbility('icy_veins');
-      else if ((icicles?.stacks ?? 0) >= 5) sim.castAbility('glacial_spike');
-      else if (p.auras.some((a) => a.id === 'brain_freeze')) sim.castAbility('flurry');
+      if (hasRune && offCooldown(p, 'rune_of_power')) sim.castAbility('rune_of_power');
+      else if (offCooldown(p, 'icy_veins')) sim.castAbility('icy_veins');
+      else if ((icicles?.stacks ?? 0) >= 5) {
+        if (hasRacing && offCooldown(p, 'presence_of_mind')) sim.castAbility('presence_of_mind');
+        sim.castAbility('glacial_spike');
+      } else if (p.auras.some((a) => a.id === 'brain_freeze')) sim.castAbility('flurry');
       else if (
         p.auras.some((a) => a.id === 'fingers_of_frost') ||
         dummy.auras.some((a) => a.id === 'winters_chill')
@@ -292,5 +316,51 @@ describe('talented ceiling (Monte Carlo follow-up 2026-07-24)', () => {
   it('the talented build still out-bursts the naked spec (over-nerf guard)', () => {
     const naked = runShortFight('fire', FIGHT_SECONDS);
     expect(mean).toBeGreaterThanOrEqual(naked.dps);
+  });
+});
+
+// Entire-fight coverage (owner follow-up 2026-07-24): the bug was never just
+// the opener. On the pre-fix sim the Ignite refresh overpay GREW with fight
+// length (about 47% of all fire damage by 120s) and sustained talented fire
+// ran 2.2x to 2.9x the frost comparator at EVERY duration measured (27s to
+// 300s). This gate pins rotational parity at 120s in the infinite-mana
+// regime (real-mana runs past ~90s at level 20 degenerate into five-second-
+// rule regen idling for every spec, which would hide the rotation being
+// measured). Pre-fix ratio at these seeds: ~2.8x, so both fire assertions
+// fail loudly on the old sim.
+describe('sustained parity, entire fight (Monte Carlo follow-up 2026-07-24)', () => {
+  const SUSTAINED_SECONDS = 120;
+  const SUSTAINED_SEEDS = [41, 101, 115];
+  const SUSTAINED_CEILING = 1.25; // x talented frost, 120s
+  const SUSTAINED_FLOOR = 0.85; // the burst spec may trail sustained, not vanish
+  const IGNITE_SHARE_CEILING = 0.3; // the 40%-over-6s contract at duration
+  const fire = SUSTAINED_SEEDS.map((s) =>
+    runShortFight('fire', SUSTAINED_SECONDS, s, TOP_TALENTED_ROWS),
+  );
+  const frost = SUSTAINED_SEEDS.map((s) =>
+    runShortFight('frost', SUSTAINED_SECONDS, s, FROST_TOP_ROWS),
+  );
+  const fireMean = fire.reduce((a, r) => a + r.dps, 0) / fire.length;
+  const frostMean = frost.reduce((a, r) => a + r.dps, 0) / frost.length;
+  const igniteShare =
+    fire.reduce((a, r) => a + (r.byAbility.Ignite ?? 0) / r.damage, 0) / fire.length;
+
+  it('reports the sustained numbers (owner harness)', () => {
+    console.log(
+      `\n[fire sustained ${SUSTAINED_SECONDS}s] fire=${fireMean.toFixed(1)} frost=${frostMean.toFixed(1)} ratio=${(fireMean / frostMean).toFixed(2)} igniteShare=${(igniteShare * 100).toFixed(0)}%`,
+    );
+    expect(fire.length).toBe(SUSTAINED_SEEDS.length);
+  });
+
+  it(`talented fire sustains within ${SUSTAINED_CEILING}x of talented frost over ${SUSTAINED_SECONDS}s`, () => {
+    expect(fireMean).toBeLessThanOrEqual(frostMean * SUSTAINED_CEILING);
+  });
+
+  it('and does not collapse below the sustained floor (over-nerf guard)', () => {
+    expect(fireMean).toBeGreaterThanOrEqual(frostMean * SUSTAINED_FLOOR);
+  });
+
+  it('Ignite pays its stated contract at duration (share stays bounded)', () => {
+    expect(igniteShare).toBeLessThanOrEqual(IGNITE_SHARE_CEILING);
   });
 });

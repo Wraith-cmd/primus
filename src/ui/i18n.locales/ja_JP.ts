@@ -7273,6 +7273,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'その組み合わせレシピに必要な両方の生産スキルの熟練度に達していません。',
   'hudChrome.crafting.throttled': '製作が速すぎます。少し待ってからもう一度お試しください。',
   'hudChrome.crafting.recipeNotLearned': 'そのレシピはまだ習得していません。',
+  'hudChrome.crafting.noBagSpace': 'バッグに製作したアイテムを入れる空きがありません。',
   // Professions 2.0 (M16 non-Latin fills).
   'hudChrome.crafting.attunementReturnCost':
     'この組み合わせを離れると、後で戻るには償いの任務が {cost} 回必要になります。',
@@ -8287,8 +8288,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.training.stateKnown': '習得済み',
   'hudChrome.training.stateTeachable': '習得可能',
   'hudChrome.training.stateLocked': '未開放',
+  'hudChrome.training.statePending': '習得中',
   'hudChrome.training.requirement': '{craft} {skill} で伝授',
   'hudChrome.training.trainAria': '{fee}で{name}を習得',
+  'hudChrome.training.pendingAria': '{name}を習得中',
   'hudChrome.training.dialogOption': '訓練',
   'hudChrome.training.dialogOptionAria': '{name}から訓練を受ける',
   'hudChrome.training.learned': 'レシピを習得しました：{recipe}',
@@ -8474,6 +8477,10 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.enchanting.enchantWrongSlot': 'そのエンチャントはそのアイテムには付与できません。',
   'hudChrome.enchanting.enchantUnknown': 'そのエンチャントは存在しません。',
   'hudChrome.enchanting.enchantInsufficient': 'そのエンチャントに必要な素材がありません。',
+  'hudChrome.enchanting.disenchantNoSpace': 'バッグに秘術の素材を入れる空きがありません。',
+  'hudChrome.enchanting.salvageNoSpace': 'バッグに解体した素材を入れる空きがありません。',
+  'hudChrome.enchanting.enchantNoSpace':
+    'バッグにエンチャントしたアイテムを入れる空きがありません。',
   'hudChrome.enchanting.disenchantConfirmTitle': '{item}を魔力分解しますか？',
   'hudChrome.enchanting.disenchantConfirmBody':
     '{item}を破壊し、秘術素材を得ます。この操作は元に戻せません。',
@@ -8677,6 +8684,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.unbind.notBound': 'そのアイテムはバインドされていません。',
   'hudChrome.unbind.cannotAfford': 'バインド解除の手数料を支払えません。',
   'hudChrome.unbind.outOfRange': 'バインド解除するには作業台のそばにいる必要があります。',
+  'hudChrome.unbind.noSpace': 'バッグにバインド解除したアイテムを入れる空きがありません。',
   // Professions 2.0 wiki arm: the professions hub rewrite and the
   // /wiki/professions detail pages (M16 non-Latin fills, added with the keys).
   'guide.professions.ringHeading': '製作の輪',

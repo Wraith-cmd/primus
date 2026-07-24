@@ -2312,6 +2312,7 @@ export const cs_CZ: EnTranslations = {
       },
       "throttled": "Vyrábíš příliš rychle. Chvíli počkej a zkus to znovu.",
       "recipeNotLearned": "Tento recept ses ještě nenaučil.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Vyžaduje {craft} {skill}",
       "difficultyFull": "Plný zisk dovedností",
       "difficultyReduced": "Snížený zisk dovedností",
@@ -2363,6 +2364,9 @@ export const cs_CZ: EnTranslations = {
       "enchantWrongSlot": "Toto okouzlení nelze aplikovat na tento předmět.",
       "enchantUnknown": "Toto okouzlení neexistuje.",
       "enchantInsufficient": "Na toto okouzlení nemáš materiály.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Rozzačarovat {item}?",
       "disenchantConfirmBody": "Tímto se {item} zničí a získáš arcanové materiály. Tuto akci nelze vrátit.",
       "disenchantConfirmBodySpecial": "Tímto se zvláštní kopie {item} (podepsaná, mistrovská nebo okouzlená) zničí a získáš arcanové materiály. Tuto akci nelze vrátit.",
@@ -2382,8 +2386,10 @@ export const cs_CZ: EnTranslations = {
       "stateKnown": "Známé",
       "stateTeachable": "K dispozici",
       "stateLocked": "Zamčeno",
+      "statePending": "Learning",
       "requirement": "Vyučováno na {craft} {skill}",
       "trainAria": "Naučit se {name} za {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Výcvik",
       "dialogOptionAria": "Prohlédnout výcvik u {name}",
       "learned": "Naučen recept: {recipe}",
@@ -2410,7 +2416,8 @@ export const cs_CZ: EnTranslations = {
       "notEligible": "Tento předmět nelze odpoutat.",
       "notBound": "Tento předmět není vázaný.",
       "cannotAfford": "Na odpoutání nemáš dostatek prostředků.",
-      "outOfRange": "Pro odpoutání musíš být u příslušného mistra."
+      "outOfRange": "Pro odpoutání musíš být u příslušného mistra.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Hledač dungeonů",

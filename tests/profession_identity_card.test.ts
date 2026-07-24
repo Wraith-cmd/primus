@@ -597,4 +597,13 @@ describe('craftResult deny toast names the station (source pins)', () => {
     expect(hud).toContain("t('hudChrome.crafting.stationRequired', {");
     expect(hud).toContain('station: stationNameText(deniedStationType),');
   });
+
+  it('no_bag_space pairs with the noBagSpace toast, insufficientMaterials as the chain tail', () => {
+    // The reason chain reads no_bag_space ? noBagSpace : insufficientMaterials,
+    // so pin the pairing (a key swap in the ternary tail must fail here) rather
+    // than a bare presence check that two swapped keys could still satisfy.
+    expect(hud).toMatch(
+      /ev\.reason === 'no_bag_space'\s*\?\s*'hudChrome\.crafting\.noBagSpace'\s*:\s*'hudChrome\.crafting\.insufficientMaterials'/,
+    );
+  });
 });

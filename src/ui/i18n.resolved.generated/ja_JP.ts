@@ -2312,6 +2312,7 @@ export const ja_JP: EnTranslations = {
       },
       "throttled": "製作が速すぎます。少し待ってからもう一度お試しください。",
       "recipeNotLearned": "そのレシピはまだ習得していません。",
+      "noBagSpace": "バッグに製作したアイテムを入れる空きがありません。",
       "skillReqLine": "{craft} {skill} が必要",
       "difficultyFull": "技能上昇（全量）",
       "difficultyReduced": "技能上昇（減少）",
@@ -2363,6 +2364,9 @@ export const ja_JP: EnTranslations = {
       "enchantWrongSlot": "そのエンチャントはそのアイテムには付与できません。",
       "enchantUnknown": "そのエンチャントは存在しません。",
       "enchantInsufficient": "そのエンチャントに必要な素材がありません。",
+      "disenchantNoSpace": "バッグに秘術の素材を入れる空きがありません。",
+      "salvageNoSpace": "バッグに解体した素材を入れる空きがありません。",
+      "enchantNoSpace": "バッグにエンチャントしたアイテムを入れる空きがありません。",
       "disenchantConfirmTitle": "{item}を魔力分解しますか？",
       "disenchantConfirmBody": "{item}を破壊し、秘術素材を得ます。この操作は元に戻せません。",
       "disenchantConfirmBodySpecial": "特別な{item}（銘入り、傑作、またはエンチャント済み）を破壊し、秘術素材を得ます。この操作は元に戻せません。",
@@ -2382,8 +2386,10 @@ export const ja_JP: EnTranslations = {
       "stateKnown": "習得済み",
       "stateTeachable": "習得可能",
       "stateLocked": "未開放",
+      "statePending": "習得中",
       "requirement": "{craft} {skill} で伝授",
       "trainAria": "{fee}で{name}を習得",
+      "pendingAria": "{name}を習得中",
       "dialogOption": "訓練",
       "dialogOptionAria": "{name}から訓練を受ける",
       "learned": "レシピを習得しました：{recipe}",
@@ -2410,7 +2416,8 @@ export const ja_JP: EnTranslations = {
       "notEligible": "そのアイテムはバインド解除できません。",
       "notBound": "そのアイテムはバインドされていません。",
       "cannotAfford": "バインド解除の手数料を支払えません。",
-      "outOfRange": "バインド解除するには作業台のそばにいる必要があります。"
+      "outOfRange": "バインド解除するには作業台のそばにいる必要があります。",
+      "noSpace": "バッグにバインド解除したアイテムを入れる空きがありません。"
     },
     "finder": {
       "title": "ダンジョンファインダー",

@@ -2312,6 +2312,7 @@ export const es: EnTranslations = {
       },
       "throttled": "Estás elaborando demasiado rápido. Espera un momento e inténtalo de nuevo.",
       "recipeNotLearned": "Aún no has aprendido esa receta.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Requiere {craft} {skill}",
       "difficultyFull": "Ganancia total de habilidad",
       "difficultyReduced": "Ganancia de habilidad reducida",
@@ -2363,6 +2364,9 @@ export const es: EnTranslations = {
       "enchantWrongSlot": "Ese encantamiento no se puede aplicar a ese objeto.",
       "enchantUnknown": "Ese encantamiento no existe.",
       "enchantInsufficient": "No tienes los materiales para ese encantamiento.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "¿Desencatar {item}?",
       "disenchantConfirmBody": "Esto destruye {item} y produce materiales arcanos. No se puede deshacer.",
       "disenchantConfirmBodySpecial": "Esto destruye una copia especial de {item} (firmada, obra maestra o encantada) y produce materiales arcanos. No se puede deshacer.",
@@ -2382,8 +2386,10 @@ export const es: EnTranslations = {
       "stateKnown": "conocido",
       "stateTeachable": "Disponible",
       "stateLocked": "bloqueado",
+      "statePending": "Learning",
       "requirement": "Impartido en {craft} {skill}",
       "trainAria": "Aprenda {name} para {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Entrenamiento",
       "dialogOptionAria": "Explore la capacitación de {name}",
       "learned": "Receta aprendida: {recipe}",
@@ -2410,7 +2416,8 @@ export const es: EnTranslations = {
       "notEligible": "Ese objeto no puede desvincularse.",
       "notBound": "Ese objeto no está vinculado.",
       "cannotAfford": "No puedes permitirte la tarifa de desvinculación.",
-      "outOfRange": "Debes estar en una estación artesanal para desvincular."
+      "outOfRange": "Debes estar en una estación artesanal para desvincular.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Buscador de Mazmorras",

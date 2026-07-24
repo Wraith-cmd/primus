@@ -2312,6 +2312,7 @@ export const de_DE: EnTranslations = {
       },
       "throttled": "Ihr stellt zu schnell her. Wartet einen Moment und versucht es erneut.",
       "recipeNotLearned": "Ihr habt dieses Rezept noch nicht erlernt.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Erfordert {craft} {skill}",
       "difficultyFull": "Voller Fähigkeitsgewinn",
       "difficultyReduced": "Reduzierter Fähigkeitsgewinn",
@@ -2363,6 +2364,9 @@ export const de_DE: EnTranslations = {
       "enchantWrongSlot": "Diese Verzauberung kann nicht auf diesen Gegenstand angewendet werden.",
       "enchantUnknown": "Diese Verzauberung existiert nicht.",
       "enchantInsufficient": "Du hast nicht die Materialien für diese Verzauberung.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "{item} entzaubern?",
       "disenchantConfirmBody": "Dies zerstört {item} und ergibt arkane Materialien. Dies kann nicht rückgängig gemacht werden.",
       "disenchantConfirmBodySpecial": "Dies zerstört eine besondere Kopie von {item} (signiert, Meisterwerk oder verzaubert) und ergibt arkane Materialien. Dies kann nicht rückgängig gemacht werden.",
@@ -2382,8 +2386,10 @@ export const de_DE: EnTranslations = {
       "stateKnown": "Bekannt",
       "stateTeachable": "Verfügbar",
       "stateLocked": "Gesperrt",
+      "statePending": "Learning",
       "requirement": "Wird ab {craft} {skill} gelehrt",
       "trainAria": "Lernen Sie {name} für {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Ausbildung",
       "dialogOptionAria": "Ausbildung bei {name} ansehen",
       "learned": "Rezept gelernt: {recipe}",
@@ -2410,7 +2416,8 @@ export const de_DE: EnTranslations = {
       "notEligible": "Dieser Gegenstand kann nicht entbunden werden.",
       "notBound": "Dieser Gegenstand ist nicht gebunden.",
       "cannotAfford": "Du kannst die Entbindungsgebühr nicht bezahlen.",
-      "outOfRange": "Du musst dich an einer Handwerksstation befinden, um zu entbinden."
+      "outOfRange": "Du musst dich an einer Handwerksstation befinden, um zu entbinden.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Instanzfinder",

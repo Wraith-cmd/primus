@@ -2312,6 +2312,7 @@ export const en_XA: EnTranslations = {
       },
       "throttled": "[Ýóú áŕé çŕáƒţíñĝ ţóó ɋúíçķļý. Ŵáíţ á ɱóɱéñţ áñð ţŕý áĝáíñ.]",
       "recipeNotLearned": "[Ýóú ĥáʋé ñóţ ļéáŕñéð ţĥáţ ŕéçíþé ýéţ.]",
+      "noBagSpace": "[Ýóú ðó ñóţ ĥáʋé ŕóóɱ ƒóŕ ţĥé çŕáƒţéð íţéɱ.]",
       "skillReqLine": "[Ŕéɋúíŕéš {craft} {skill}]",
       "difficultyFull": "[Ƒúļļ šķíļļ ĝáíñ]",
       "difficultyReduced": "[Ŕéðúçéð šķíļļ ĝáíñ]",
@@ -2363,6 +2364,9 @@ export const en_XA: EnTranslations = {
       "enchantWrongSlot": "[Ţĥáţ éñçĥáñţ çáññóţ ƀé áþþļíéð ţó ţĥáţ íţéɱ.]",
       "enchantUnknown": "[Ţĥáţ éñçĥáñţ ðóéš ñóţ éẋíšţ.]",
       "enchantInsufficient": "[Ýóú ðó ñóţ ĥáʋé ţĥé ɱáţéŕíáļš ƒóŕ ţĥáţ éñçĥáñţ.]",
+      "disenchantNoSpace": "[Ýóú ðó ñóţ ĥáʋé ŕóóɱ ƒóŕ ţĥé áŕçáñé ɱáţéŕíáļš.]",
+      "salvageNoSpace": "[Ýóú ðó ñóţ ĥáʋé ŕóóɱ ƒóŕ ţĥé šáļʋáĝéð ɱáţéŕíáļš.]",
+      "enchantNoSpace": "[Ýóú ðó ñóţ ĥáʋé ŕóóɱ ƒóŕ ţĥé éñçĥáñţéð íţéɱ.]",
       "disenchantConfirmTitle": "[Ðíšéñçĥáñţ {item}?]",
       "disenchantConfirmBody": "[Ţĥíš ðéšţŕóýš {item} áñð ýíéļðš áŕçáñé ɱáţéŕíáļš. Ţĥíš çáññóţ ƀé úñðóñé.]",
       "disenchantConfirmBodySpecial": "[Ţĥíš ðéšţŕóýš á šþéçíáļ çóþý óƒ {item} (šíĝñéð, ɱášţéŕŵóŕķ, óŕ éñçĥáñţéð) áñð ýíéļðš áŕçáñé ɱáţéŕíáļš. Ţĥíš çáññóţ ƀé úñðóñé.]",
@@ -2382,8 +2386,10 @@ export const en_XA: EnTranslations = {
       "stateKnown": "[Ķñóŵñ]",
       "stateTeachable": "[Áʋáíļáƀļé]",
       "stateLocked": "[Ļóçķéð]",
+      "statePending": "[Ļéáŕñíñĝ]",
       "requirement": "[Ţáúĝĥţ áţ {craft} {skill}]",
       "trainAria": "[Ļéáŕñ {name} ƒóŕ {fee}]",
+      "pendingAria": "[Ļéáŕñíñĝ {name}]",
       "dialogOption": "[Ţŕáíñíñĝ]",
       "dialogOptionAria": "[Ɓŕóŵšé ţŕáíñíñĝ ƒŕóɱ {name}]",
       "learned": "[Ŕéçíþé ļéáŕñéð: {recipe}]",
@@ -2410,7 +2416,8 @@ export const en_XA: EnTranslations = {
       "notEligible": "[Ţĥáţ íţéɱ çáññóţ ƀé úñƀóúñð.]",
       "notBound": "[Ţĥáţ íţéɱ íš ñóţ ƀóúñð.]",
       "cannotAfford": "[Ýóú çáññóţ áƒƒóŕð ţĥé úñƀíñðíñĝ ƒéé.]",
-      "outOfRange": "[Ýóú ɱúšţ ƀé áţ á çŕáƒţíñĝ šţáţíóñ ţó úñƀíñð.]"
+      "outOfRange": "[Ýóú ɱúšţ ƀé áţ á çŕáƒţíñĝ šţáţíóñ ţó úñƀíñð.]",
+      "noSpace": "[Ýóú ðó ñóţ ĥáʋé ŕóóɱ ƒóŕ ţĥé úñƀóúñð çóþý.]"
     },
     "finder": {
       "title": "[Ðúñĝéóñ Ƒíñðéŕ]",

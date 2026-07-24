@@ -2312,6 +2312,7 @@ export const zh_CN: EnTranslations = {
       },
       "throttled": "你制作得太快了，请稍等片刻后再试。",
       "recipeNotLearned": "你还没有学会这个配方。",
+      "noBagSpace": "背包空间不足，无法存放制作的物品。",
       "skillReqLine": "需要{craft} {skill}",
       "difficultyFull": "完整技能成长",
       "difficultyReduced": "技能成长减少",
@@ -2363,6 +2364,9 @@ export const zh_CN: EnTranslations = {
       "enchantWrongSlot": "该附魔无法施加于那件物品。",
       "enchantUnknown": "该附魔不存在。",
       "enchantInsufficient": "你没有该附魔所需的材料。",
+      "disenchantNoSpace": "背包空间不足，无法存放奥术材料。",
+      "salvageNoSpace": "背包空间不足，无法存放拆解出的材料。",
+      "enchantNoSpace": "背包空间不足，无法存放附魔后的物品。",
       "disenchantConfirmTitle": "分解{item}？",
       "disenchantConfirmBody": "这会摧毁{item}并产出奥术材料。此操作无法撤销。",
       "disenchantConfirmBodySpecial": "这会摧毁一件特殊的{item}（署名、杰作或已附魔）并产出奥术材料。此操作无法撤销。",
@@ -2382,8 +2386,10 @@ export const zh_CN: EnTranslations = {
       "stateKnown": "已学会",
       "stateTeachable": "可学习",
       "stateLocked": "未解锁",
+      "statePending": "学习中",
       "requirement": "需要{craft}达到 {skill} 后传授",
       "trainAria": "花费{fee}学习{name}",
+      "pendingAria": "正在学习{name}",
       "dialogOption": "训练",
       "dialogOptionAria": "向{name}学习配方",
       "learned": "已学会配方：{recipe}",
@@ -2410,7 +2416,8 @@ export const zh_CN: EnTranslations = {
       "notEligible": "该物品无法解绑。",
       "notBound": "该物品未绑定。",
       "cannotAfford": "你付不起解绑费用。",
-      "outOfRange": "你必须站在工作台旁才能解绑。"
+      "outOfRange": "你必须站在工作台旁才能解绑。",
+      "noSpace": "背包空间不足，无法存放解绑后的物品。"
     },
     "finder": {
       "title": "地下城查找器",

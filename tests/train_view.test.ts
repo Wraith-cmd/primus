@@ -190,6 +190,49 @@ describe('buildTrainView', () => {
     for (const row of view.rows) expect(row.professionId, row.recipeId).toBe('alchemy');
   });
 
+  it('a pending flight marks ONLY its teachable row (issue #2342)', () => {
+    // armorcrafting 25 makes ironbound teachable; forgeguard stays locked at
+    // weaponcrafting 0 and the arming sword reads known: only the teachable
+    // row may carry the pending flag, even when all three ids are in flight.
+    const pending = new Set([
+      'recipe_ironbound_warplate_helm',
+      'recipe_forgeguard_bulwark_gauntlets',
+      'recipe_eastbrook_arming_sword',
+    ]);
+    const view = buildTrainView(
+      'forgemistress_darva',
+      deps({ craftSkills: { armorcrafting: 25 }, pendingRecipes: pending }),
+    );
+    const byId = new Map(view.rows.map((row) => [row.recipeId, row]));
+    expect(byId.get('recipe_ironbound_warplate_helm')?.state).toBe('teachable');
+    expect(byId.get('recipe_ironbound_warplate_helm')?.pending).toBe(true);
+    expect(byId.get('recipe_forgeguard_bulwark_gauntlets')?.pending).toBeUndefined();
+    expect(byId.get('recipe_eastbrook_arming_sword')?.pending).toBeUndefined();
+    // A teachable row NOT in flight stays flag-free.
+    const untouched = view.rows.find(
+      (row) => row.state === 'teachable' && !pending.has(row.recipeId),
+    );
+    expect(untouched?.pending).toBeUndefined();
+  });
+
+  it('a confirmed learn reads known before the mirror carries it, and knownness beats pending', () => {
+    // The trainResult-ok overlay: knownRecipes (the cprof mirror) does NOT
+    // list the recipe yet, but the confirmed set does; the row must already
+    // read known, and a stale pending entry for the same id must not mark it.
+    const id = 'recipe_ironbound_warplate_helm';
+    const view = buildTrainView(
+      'forgemistress_darva',
+      deps({
+        craftSkills: { armorcrafting: 25 },
+        confirmedRecipes: new Set([id]),
+        pendingRecipes: new Set([id]),
+      }),
+    );
+    const row = view.rows.find((entry) => entry.recipeId === id);
+    expect(row?.state).toBe('known');
+    expect(row?.pending).toBeUndefined();
+  });
+
   it('rows resolve their result item defs for the painter', () => {
     const view = buildTrainView('forgemistress_darva', deps());
     for (const row of view.rows) {

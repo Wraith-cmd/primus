@@ -2312,6 +2312,7 @@ export const fr_CA: EnTranslations = {
       },
       "throttled": "Vous fabriquez trop vite. Patientez un instant et réessayez.",
       "recipeNotLearned": "Vous n'avez pas encore appris cette recette.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Nécessite {craft} {skill}",
       "difficultyFull": "Gain de compétence complet",
       "difficultyReduced": "Gain de compétences réduit",
@@ -2363,6 +2364,9 @@ export const fr_CA: EnTranslations = {
       "enchantWrongSlot": "Cet enchantement ne peut pas être appliqué à cet objet.",
       "enchantUnknown": "Cet enchantement n'existe pas.",
       "enchantInsufficient": "Vous n'avez pas les matériaux pour cet enchantement.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Désenchanter {item} ?",
       "disenchantConfirmBody": "Cela détruit {item} et donne des matériaux arcaniques. Cette action est irréversible.",
       "disenchantConfirmBodySpecial": "Cela détruit une copie spéciale de {item} (signée, de maître ou enchantée) et donne des matériaux arcaniques. Cette action est irréversible.",
@@ -2382,8 +2386,10 @@ export const fr_CA: EnTranslations = {
       "stateKnown": "Connu",
       "stateTeachable": "Disponible",
       "stateLocked": "Verrouillé",
+      "statePending": "Learning",
       "requirement": "Enseigné à {craft} {skill}",
       "trainAria": "Apprenez {name} pour {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Formation",
       "dialogOptionAria": "Parcourir la formation de {name}",
       "learned": "Recette apprise : {recipe}",
@@ -2410,7 +2416,8 @@ export const fr_CA: EnTranslations = {
       "notEligible": "Cet objet ne peut pas être délié.",
       "notBound": "Cet objet n'est pas lié.",
       "cannotAfford": "Vous n'avez pas les moyens de payer les frais de déliage.",
-      "outOfRange": "Vous devez être à un établi pour délier."
+      "outOfRange": "Vous devez être à un établi pour délier.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Chercheur de donjons",

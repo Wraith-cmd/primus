@@ -2312,6 +2312,7 @@ export const ru_RU: EnTranslations = {
       },
       "throttled": "Вы создаете предметы слишком быстро. Подождите немного и попробуйте снова.",
       "recipeNotLearned": "Вы еще не изучили этот рецепт.",
+      "noBagSpace": "В сумках нет места для созданного предмета.",
       "skillReqLine": "Требуется {craft} {skill}",
       "difficultyFull": "Полный рост навыка",
       "difficultyReduced": "Сниженный рост навыка",
@@ -2363,6 +2364,9 @@ export const ru_RU: EnTranslations = {
       "enchantWrongSlot": "Эти чары нельзя наложить на этот предмет.",
       "enchantUnknown": "Таких чар не существует.",
       "enchantInsufficient": "У вас нет материалов для этих чар.",
+      "disenchantNoSpace": "В сумках нет места для чародейских материалов.",
+      "salvageNoSpace": "В сумках нет места для материалов от разбора.",
+      "enchantNoSpace": "В сумках нет места для зачарованного предмета.",
       "disenchantConfirmTitle": "Распылить {item}?",
       "disenchantConfirmBody": "Это уничтожит {item} и даст тайные материалы. Действие необратимо.",
       "disenchantConfirmBodySpecial": "Это уничтожит особый экземпляр предмета {item} (подписанный, шедевр или зачарованный) и даст тайные материалы. Действие необратимо.",
@@ -2382,8 +2386,10 @@ export const ru_RU: EnTranslations = {
       "stateKnown": "Изучено",
       "stateTeachable": "Доступно",
       "stateLocked": "Недоступно",
+      "statePending": "Изучается",
       "requirement": "Обучение при {craft} {skill}",
       "trainAria": "Изучить {name} за {fee}",
+      "pendingAria": "Изучается {name}",
       "dialogOption": "Обучение",
       "dialogOptionAria": "Пройти обучение у {name}",
       "learned": "Рецепт изучен: {recipe}",
@@ -2410,7 +2416,8 @@ export const ru_RU: EnTranslations = {
       "notEligible": "С этого предмета нельзя снять привязку.",
       "notBound": "Этот предмет не привязан.",
       "cannotAfford": "Вам не хватает денег на снятие привязки.",
-      "outOfRange": "Для снятия привязки нужно стоять у мастерской."
+      "outOfRange": "Для снятия привязки нужно стоять у мастерской.",
+      "noSpace": "В сумках нет места для предмета со снятой привязкой."
     },
     "finder": {
       "title": "Поиск подземелий",

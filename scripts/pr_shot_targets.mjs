@@ -1623,6 +1623,99 @@ export const TARGETS = [
     },
   },
   {
+    key: 'train-window-pending',
+    label: 'Train view: Learn in flight (pending row disables, issue #2342)',
+    when: ['ui/hud/vendor/train_learn_core'],
+    // Desktop and mobile: the pending row IS the first-click feedback (the
+    // button reads a disabled Learning state until the trainResult lands), so
+    // it must read on both form factors.
+    variants: [
+      { key: 'desktop', charClass: 'warrior', charName: 'Pendaline' },
+      { key: 'mobile', charClass: 'warrior', charName: 'Pendamora', mobile: true },
+    ],
+    // The forge staging of train-window above (weaponcrafting 30 makes
+    // recipe_forgeguard_bulwark_gauntlets the TEACHABLE row), then stage the
+    // in-flight state exactly as trainRecipeClicked paints it: open the learn
+    // flight on the HUD tracker and repaint. The staged flight never sends the
+    // command, because offline the sim answers synchronously and the very next
+    // event drain would resolve the row back out of pending; online this state
+    // is what the window shows for the whole round trip.
+    async capture(page, variant) {
+      await page.evaluate(() => {
+        document.querySelector('.camera-prompt-confirm')?.click();
+        document.querySelector('.tut-skip')?.click();
+        document.querySelector('.gpu-notice-dismiss')?.click();
+        document.querySelector('#gpu-notice')?.remove();
+      });
+      await wait(300);
+      const setup = await page.evaluate(() => {
+        const game = window.__game;
+        const sim = game?.sim;
+        if (!sim) return { ok: false, reason: 'no sim' };
+        const master = [...sim.entities.values()].find(
+          (e) => e.templateId === 'forgemistress_darva',
+        );
+        if (!master) return { ok: false, reason: 'no forgemistress_darva entity' };
+        const meta = sim.players.get(sim.primaryId);
+        if (!meta) return { ok: false, reason: 'no primary player meta' };
+        meta.craftSkills = { ...meta.craftSkills, weaponcrafting: 30, armorcrafting: 10 };
+        meta.knownRecipes.delete('recipe_forgeguard_bulwark_gauntlets');
+        meta.knownRecipes.delete('recipe_ironbound_warplate_helm');
+        sim.copper = 100000;
+        const p = sim.player;
+        if (p?.pos) {
+          p.pos.x = master.pos.x;
+          p.pos.z = master.pos.z - 2;
+        }
+        const el = document.querySelector('#train-window');
+        if (el) el.style.display = 'none';
+        game.hud.openTrain(master.id);
+        return { ok: true };
+      });
+      if (!setup.ok) throw new Error(`train-window-pending setup failed: ${setup.reason}`);
+      const open = await pollForSize(page, '#train-window');
+      if (!open) throw new Error('train window did not open');
+      // The once-ever first-tier explainer fires on a drain-window delay
+      // (the train-window target's trap); poll-dismiss it before staging the
+      // flight so the 5s pending TTL cannot lapse under the dismiss loop.
+      for (let i = 0; i < 10; i++) {
+        const dismissed = await page.evaluate(() => {
+          const ok = document.querySelector('#profession-tutorial .cd-ok');
+          if (ok) ok.click();
+          return Boolean(ok);
+        });
+        if (dismissed) break;
+        await wait(300);
+      }
+      const staged = await page.evaluate(() => {
+        const game = window.__game;
+        const hud = game?.hud;
+        if (!hud?.trainLearns) return { ok: false, reason: 'no trainLearns tracker on hud' };
+        hud.trainLearns.begin('recipe_forgeguard_bulwark_gauntlets', performance.now());
+        hud.renderTrain();
+        // The staged skills leave SEVERAL rows teachable (both crafts' tier-0
+        // rungs plus the tier-1 weaponcrafting ones); exactly the begun one
+        // must read disabled-pending, every copper check passes (affordable
+        // rows never disable on their own at the staged purse).
+        const disabled = document.querySelectorAll('#train-window .train-teachable:disabled');
+        if (disabled.length !== 1) {
+          return { ok: false, reason: `expected 1 disabled pending row, got ${disabled.length}` };
+        }
+        return { ok: true, state: disabled[0].querySelector('.train-state')?.textContent ?? '' };
+      });
+      if (!staged.ok) throw new Error(`pending staging failed: ${staged.reason}`);
+      // Bring the pending row into the frame (the ladder scrolls on both form
+      // factors and the combo row sits deep in the weaponcrafting section).
+      await page.evaluate(() => {
+        document
+          .querySelector('#train-window .train-teachable:disabled')
+          ?.scrollIntoView({ block: 'center' });
+      });
+      await wait(300);
+      return { clip: '#train-window' };
+    },
+  },
+  {
     key: 'attunement-legibility',
     label: 'Attunement legibility: quest-dialog preview with return cost, first-tier tutorial',
     when: [

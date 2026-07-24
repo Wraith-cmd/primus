@@ -9,25 +9,145 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
+  "es_ES": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
+  "fr_FR": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
+  "fr_CA": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
+  "it_IT": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
+  "de_DE": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [],
+  "pt_BR": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
   "ru_RU": [],
-  "cs_CZ": [],
-  "nl_NL": [],
-  "pl_PL": [],
-  "id_ID": [],
-  "tr_TR": [],
-  "sv_SE": [],
-  "vi_VN": [],
-  "da_DK": []
+  "cs_CZ": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
+  "nl_NL": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
+  "pl_PL": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
+  "id_ID": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
+  "tr_TR": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
+  "sv_SE": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
+  "vi_VN": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ],
+  "da_DK": [
+    "hudChrome.crafting.noBagSpace",
+    "hudChrome.enchanting.disenchantNoSpace",
+    "hudChrome.enchanting.enchantNoSpace",
+    "hudChrome.enchanting.salvageNoSpace",
+    "hudChrome.training.pendingAria",
+    "hudChrome.training.statePending",
+    "hudChrome.unbind.noSpace"
+  ]
 };

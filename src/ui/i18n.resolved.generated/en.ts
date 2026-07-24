@@ -2312,6 +2312,7 @@ export const en: EnTranslations = {
       },
       "throttled": "You are crafting too quickly. Wait a moment and try again.",
       "recipeNotLearned": "You have not learned that recipe yet.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Requires {craft} {skill}",
       "difficultyFull": "Full skill gain",
       "difficultyReduced": "Reduced skill gain",
@@ -2363,6 +2364,9 @@ export const en: EnTranslations = {
       "enchantWrongSlot": "That enchant cannot be applied to that item.",
       "enchantUnknown": "That enchant does not exist.",
       "enchantInsufficient": "You do not have the materials for that enchant.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Disenchant {item}?",
       "disenchantConfirmBody": "This destroys {item} and yields arcane materials. This cannot be undone.",
       "disenchantConfirmBodySpecial": "This destroys a special copy of {item} (signed, masterwork, or enchanted) and yields arcane materials. This cannot be undone.",
@@ -2382,8 +2386,10 @@ export const en: EnTranslations = {
       "stateKnown": "Known",
       "stateTeachable": "Available",
       "stateLocked": "Locked",
+      "statePending": "Learning",
       "requirement": "Taught at {craft} {skill}",
       "trainAria": "Learn {name} for {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Training",
       "dialogOptionAria": "Browse training from {name}",
       "learned": "Recipe learned: {recipe}",
@@ -2410,7 +2416,8 @@ export const en: EnTranslations = {
       "notEligible": "That item cannot be unbound.",
       "notBound": "That item is not bound.",
       "cannotAfford": "You cannot afford the unbinding fee.",
-      "outOfRange": "You must be at a crafting station to unbind."
+      "outOfRange": "You must be at a crafting station to unbind.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Dungeon Finder",

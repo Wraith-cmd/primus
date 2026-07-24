@@ -2312,6 +2312,7 @@ export const vi_VN: EnTranslations = {
       },
       "throttled": "Bạn đang chế tạo quá nhanh. Hãy chờ một lát rồi thử lại.",
       "recipeNotLearned": "Bạn chưa học công thức đó.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Yêu cầu {craft} {skill}",
       "difficultyFull": "Đạt được kỹ năng đầy đủ",
       "difficultyReduced": "Giảm khả năng nhận được kỹ năng",
@@ -2363,6 +2364,9 @@ export const vi_VN: EnTranslations = {
       "enchantWrongSlot": "Phép khắc đó không thể áp dụng cho vật phẩm đó.",
       "enchantUnknown": "Phép khắc đó không tồn tại.",
       "enchantInsufficient": "Bạn không có đủ nguyên liệu cho phép khắc đó.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Hủy Pháp Khắc {item}?",
       "disenchantConfirmBody": "Thao tác này phá hủy {item} và thu được nguyên liệu huyền bí. Không thể hoàn tác.",
       "disenchantConfirmBodySpecial": "Thao tác này phá hủy một bản đặc biệt của {item} (có chữ ký, kiệt tác hoặc đã pháp khắc) và thu được nguyên liệu huyền bí. Không thể hoàn tác.",
@@ -2382,8 +2386,10 @@ export const vi_VN: EnTranslations = {
       "stateKnown": "Đã biết",
       "stateTeachable": "Có sẵn",
       "stateLocked": "Đã khóa",
+      "statePending": "Learning",
       "requirement": "Đã học tại {craft} {skill}",
       "trainAria": "Tìm hiểu {name} cho {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Đào tạo",
       "dialogOptionAria": "Duyệt đào tạo từ {name}",
       "learned": "Công thức đã học: {recipe}",
@@ -2410,7 +2416,8 @@ export const vi_VN: EnTranslations = {
       "notEligible": "Vật phẩm đó không thể gỡ ràng buộc.",
       "notBound": "Vật phẩm đó không bị ràng buộc.",
       "cannotAfford": "Bạn không đủ tiền để trả phí gỡ ràng buộc.",
-      "outOfRange": "Bạn phải ở tại bàn chế tác để gỡ ràng buộc."
+      "outOfRange": "Bạn phải ở tại bàn chế tác để gỡ ràng buộc.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Tìm Hầm Ngục",

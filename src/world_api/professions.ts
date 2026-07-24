@@ -71,7 +71,10 @@ export interface CraftResultView {
     // activity and type, never distance). The ui resolves
     // WHICH station from recipeById(recipeId)?.stationType (static content,
     // identical in both worlds): no station field rides the event.
-    | 'station_required';
+    | 'station_required'
+    // #2350: denied because the output (modeled after reagent consumption)
+    // cannot fit the pooled bag budget.
+    | 'no_bag_space';
   // Professions 2.0: true only when the masterwork effect applied to
   // this craft's output. `quality` now reports the output def's static
   // quality (outputs are deterministic; the quality roll is retired).
@@ -100,7 +103,7 @@ export interface SalvageResultView {
   itemId: string;
   materialItemId?: string;
   count?: number;
-  reason?: 'unknown_item' | 'not_salvageable' | 'not_held' | 'throttled';
+  reason?: 'unknown_item' | 'not_salvageable' | 'not_held' | 'throttled' | 'no_bag_space';
 }
 
 // Disenchant-result surface (Professions 2.0): mirrors
@@ -116,7 +119,7 @@ export interface DisenchantResultView {
   count?: number;
   secondaryItemId?: string;
   secondaryCount?: number;
-  reason?: 'unknown_item' | 'not_disenchantable' | 'not_held' | 'throttled';
+  reason?: 'unknown_item' | 'not_disenchantable' | 'not_held' | 'throttled' | 'no_bag_space';
 }
 
 // Apply-enchant-result surface (Professions 2.0): mirrors
@@ -132,7 +135,8 @@ export interface ApplyEnchantResultView {
     | 'wrong_slot'
     | 'not_held'
     | 'insufficient_materials'
-    | 'throttled';
+    | 'throttled'
+    | 'no_bag_space';
 }
 
 // The professions read-surface facet (#1164, extended by #1121/#1127/#1129). `Sim`

@@ -2312,6 +2312,7 @@ export const tr_TR: EnTranslations = {
       },
       "throttled": "Çok hızlı üretiyorsun. Bir an bekle ve tekrar dene.",
       "recipeNotLearned": "Bu tarifi henüz öğrenmedin.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "{craft} {skill} gerektirir",
       "difficultyFull": "Tam beceri kazanımı",
       "difficultyReduced": "Azaltılmış beceri kazanımı",
@@ -2363,6 +2364,9 @@ export const tr_TR: EnTranslations = {
       "enchantWrongSlot": "Bu büyü o eşyaya uygulanamaz.",
       "enchantUnknown": "O büyü mevcut değil.",
       "enchantInsufficient": "O büyü için malzemeniz yok.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "{item} büyüsü bozulsun mu?",
       "disenchantConfirmBody": "{item} yok edilir ve arkanik malzeme verir. Bu geri alınamaz.",
       "disenchantConfirmBodySpecial": "{item}'nin özel bir kopyası (imzalı, şaheser veya büyülü) yok edilir ve arkanik malzeme verir. Bu geri alınamaz.",
@@ -2382,8 +2386,10 @@ export const tr_TR: EnTranslations = {
       "stateKnown": "Bilinen",
       "stateTeachable": "Mevcut",
       "stateLocked": "Kilitli",
+      "statePending": "Learning",
       "requirement": "{craft} {skill}'da okudu",
       "trainAria": "{fee} için {name}'yi öğrenin",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Eğitim",
       "dialogOptionAria": "{name}'deki eğitime göz atın",
       "learned": "Öğrenilen tarif: {recipe}",
@@ -2410,7 +2416,8 @@ export const tr_TR: EnTranslations = {
       "notEligible": "O eşyanın bağı çözülemez.",
       "notBound": "O eşya bağlı değil.",
       "cannotAfford": "Çözüm ücretini karşılayamazsınız.",
-      "outOfRange": "Bağ çözmek için bir zanaat tezgahında olmanız gerekir."
+      "outOfRange": "Bağ çözmek için bir zanaat tezgahında olmanız gerekir.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Zindan Bulucu",

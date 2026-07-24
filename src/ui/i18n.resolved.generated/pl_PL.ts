@@ -2312,6 +2312,7 @@ export const pl_PL: EnTranslations = {
       },
       "throttled": "Wytwarzasz zbyt szybko. Zaczekaj chwilę i spróbuj ponownie.",
       "recipeNotLearned": "Nie nauczyłeś się jeszcze tego przepisu.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Wymaga {craft} {skill}",
       "difficultyFull": "Pełny przyrost umiejętności",
       "difficultyReduced": "Zmniejszony przyrost umiejętności",
@@ -2363,6 +2364,9 @@ export const pl_PL: EnTranslations = {
       "enchantWrongSlot": "To zaklinanie nie może być zastosowane do tego przedmiotu.",
       "enchantUnknown": "To zaklinanie nie istnieje.",
       "enchantInsufficient": "Nie masz materiałów na to zaklinanie.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Rozbroić {item}?",
       "disenchantConfirmBody": "To niszczy {item} i daje materiały arkaniczne. Nie można tego cofnąć.",
       "disenchantConfirmBodySpecial": "To niszczy specjalną kopię {item} (podpisaną, mistrzowską lub zaklinowaną) i daje materiały arkaniczne. Nie można tego cofnąć.",
@@ -2382,8 +2386,10 @@ export const pl_PL: EnTranslations = {
       "stateKnown": "Znany",
       "stateTeachable": "Dostępny",
       "stateLocked": "Zamknięty",
+      "statePending": "Learning",
       "requirement": "Uczył w {craft} {skill}",
       "trainAria": "Naucz się {name} dla {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Szkolenie",
       "dialogOptionAria": "Przeglądaj szkolenia z {name}",
       "learned": "Poznawany przepis: {recipe}",
@@ -2410,7 +2416,8 @@ export const pl_PL: EnTranslations = {
       "notEligible": "Tego przedmiotu nie można odwiązać.",
       "notBound": "Ten przedmiot nie jest przywiązany.",
       "cannotAfford": "Nie stać cię na opłatę za odwiązanie.",
-      "outOfRange": "Musisz być przy stanowisku rzemieślniczym, by odwiązać."
+      "outOfRange": "Musisz być przy stanowisku rzemieślniczym, by odwiązać.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Znajdywacz Lochów",

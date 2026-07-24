@@ -6912,6 +6912,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.crafting.comboRequirementUnmet': '你尚未達到該配方所需組合的兩項製造技能等級。',
   'hudChrome.crafting.throttled': '你製作得太快了，請稍等片刻後再試。',
   'hudChrome.crafting.recipeNotLearned': '你還沒有學會這個配方。',
+  'hudChrome.crafting.noBagSpace': '背包空間不足，無法存放製作的物品。',
   // Professions 2.0 (M16 non-Latin fills).
   'hudChrome.crafting.attunementReturnCost':
     '若你離開這個組合，日後想要重歸需要完成 {cost} 項補償任務。',
@@ -7887,8 +7888,10 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.training.stateKnown': '已學會',
   'hudChrome.training.stateTeachable': '可學習',
   'hudChrome.training.stateLocked': '未解鎖',
+  'hudChrome.training.statePending': '學習中',
   'hudChrome.training.requirement': '需要{craft}達到 {skill} 後傳授',
   'hudChrome.training.trainAria': '花費{fee}學習{name}',
+  'hudChrome.training.pendingAria': '正在學習{name}',
   'hudChrome.training.dialogOption': '訓練',
   'hudChrome.training.dialogOptionAria': '向{name}學習配方',
   'hudChrome.training.learned': '已學會配方：{recipe}',
@@ -8071,6 +8074,9 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.enchanting.enchantWrongSlot': '該附魔無法施加於那件物品。',
   'hudChrome.enchanting.enchantUnknown': '該附魔不存在。',
   'hudChrome.enchanting.enchantInsufficient': '你沒有該附魔所需的材料。',
+  'hudChrome.enchanting.disenchantNoSpace': '背包空間不足，無法存放奧術材料。',
+  'hudChrome.enchanting.salvageNoSpace': '背包空間不足，無法存放拆解出的材料。',
+  'hudChrome.enchanting.enchantNoSpace': '背包空間不足，無法存放附魔後的物品。',
   'hudChrome.enchanting.disenchantConfirmTitle': '分解 {item}？',
   'hudChrome.enchanting.disenchantConfirmBody': '這會摧毀 {item} 並產出奧術材料。此操作無法復原。',
   'hudChrome.enchanting.disenchantConfirmBodySpecial':
@@ -8269,6 +8275,7 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.unbind.notBound': '該物品未綁定。',
   'hudChrome.unbind.cannotAfford': '你付不起解綁費用。',
   'hudChrome.unbind.outOfRange': '你必須站在對應的工作臺旁才能解綁。',
+  'hudChrome.unbind.noSpace': '背包空間不足，無法存放解綁後的物品。',
   // Professions 2.0 wiki arm: the professions hub rewrite and the
   // /wiki/professions detail pages (M16 non-Latin fills, added with the keys).
   'guide.professions.ringHeading': '製作之輪',

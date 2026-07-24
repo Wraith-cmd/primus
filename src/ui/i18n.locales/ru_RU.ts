@@ -7394,6 +7394,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.crafting.throttled':
     'Вы создаете предметы слишком быстро. Подождите немного и попробуйте снова.',
   'hudChrome.crafting.recipeNotLearned': 'Вы еще не изучили этот рецепт.',
+  'hudChrome.crafting.noBagSpace': 'В сумках нет места для созданного предмета.',
   // Professions 2.0 (M16 non-Latin fills).
   'hudChrome.crafting.attunementReturnCost':
     'Если вы покинете эту пару, возвращение к ней позже обойдётся в {cost} заданий искупления.',
@@ -8445,8 +8446,10 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.training.stateKnown': 'Изучено',
   'hudChrome.training.stateTeachable': 'Доступно',
   'hudChrome.training.stateLocked': 'Недоступно',
+  'hudChrome.training.statePending': 'Изучается',
   'hudChrome.training.requirement': 'Обучение при {craft} {skill}',
   'hudChrome.training.trainAria': 'Изучить {name} за {fee}',
+  'hudChrome.training.pendingAria': 'Изучается {name}',
   'hudChrome.training.dialogOption': 'Обучение',
   'hudChrome.training.dialogOptionAria': 'Пройти обучение у {name}',
   'hudChrome.training.learned': 'Рецепт изучен: {recipe}',
@@ -8634,6 +8637,9 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.enchanting.enchantWrongSlot': 'Эти чары нельзя наложить на этот предмет.',
   'hudChrome.enchanting.enchantUnknown': 'Таких чар не существует.',
   'hudChrome.enchanting.enchantInsufficient': 'У вас нет материалов для этих чар.',
+  'hudChrome.enchanting.disenchantNoSpace': 'В сумках нет места для чародейских материалов.',
+  'hudChrome.enchanting.salvageNoSpace': 'В сумках нет места для материалов от разбора.',
+  'hudChrome.enchanting.enchantNoSpace': 'В сумках нет места для зачарованного предмета.',
   'hudChrome.enchanting.disenchantConfirmTitle': 'Распылить {item}?',
   'hudChrome.enchanting.disenchantConfirmBody':
     'Это уничтожит {item} и даст тайные материалы. Действие необратимо.',
@@ -8844,6 +8850,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.unbind.notBound': 'Этот предмет не привязан.',
   'hudChrome.unbind.cannotAfford': 'Вам не хватает денег на снятие привязки.',
   'hudChrome.unbind.outOfRange': 'Для снятия привязки нужно стоять у мастерской.',
+  'hudChrome.unbind.noSpace': 'В сумках нет места для предмета со снятой привязкой.',
   // Professions 2.0 wiki arm: the professions hub rewrite and the
   // /wiki/professions detail pages (M16 non-Latin fills, added with the keys).
   'guide.professions.ringHeading': 'Кольцо ремесел',

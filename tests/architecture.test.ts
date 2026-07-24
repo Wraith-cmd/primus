@@ -162,6 +162,7 @@ const UI_PURE_CORES = [
   'src/ui/hud/vendor/vendor_view.ts',
   'src/ui/hud/vendor/heroic_vendor_view.ts',
   'src/ui/hud/vendor/train_view.ts',
+  'src/ui/hud/vendor/train_learn_core.ts',
   'src/ui/hud/vendor/unbind_view.ts',
   'src/ui/card_duel_view.ts',
   'src/ui/claudium_view.ts',

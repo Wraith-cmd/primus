@@ -2312,6 +2312,7 @@ export const it_IT: EnTranslations = {
       },
       "throttled": "Stai fabbricando troppo in fretta. Aspetta un momento e riprova.",
       "recipeNotLearned": "Non hai ancora imparato quella ricetta.",
+      "noBagSpace": "You do not have room for the crafted item.",
       "skillReqLine": "Richiede {craft} {skill}",
       "difficultyFull": "Guadagno completo di abilità",
       "difficultyReduced": "Guadagno di abilità ridotto",
@@ -2363,6 +2364,9 @@ export const it_IT: EnTranslations = {
       "enchantWrongSlot": "Quell'incantesimo non puo essere applicato a quell'oggetto.",
       "enchantUnknown": "Quell'incantesimo non esiste.",
       "enchantInsufficient": "Non hai i materiali per quell'incantesimo.",
+      "disenchantNoSpace": "You do not have room for the arcane materials.",
+      "salvageNoSpace": "You do not have room for the salvaged materials.",
+      "enchantNoSpace": "You do not have room for the enchanted item.",
       "disenchantConfirmTitle": "Disincanta {item}?",
       "disenchantConfirmBody": "Questo distrugge {item} e produce materiali arcani. Questa azione non puo essere annullata.",
       "disenchantConfirmBodySpecial": "Questo distrugge una copia speciale di {item} (firmata, capolavoro o incantata) e produce materiali arcani. Questa azione non puo essere annullata.",
@@ -2382,8 +2386,10 @@ export const it_IT: EnTranslations = {
       "stateKnown": "Conosciuto",
       "stateTeachable": "Disponibile",
       "stateLocked": "Bloccato",
+      "statePending": "Learning",
       "requirement": "Insegnato a {craft} {skill}",
       "trainAria": "Impara {name} per {fee}",
+      "pendingAria": "Learning {name}",
       "dialogOption": "Formazione",
       "dialogOptionAria": "Sfoglia la formazione da {name}",
       "learned": "Ricetta appresa: {recipe}",
@@ -2410,7 +2416,8 @@ export const it_IT: EnTranslations = {
       "notEligible": "Quell'oggetto non puo essere sciolto.",
       "notBound": "Quell'oggetto non e legato.",
       "cannotAfford": "Non puoi permetterti la tariffa di scioglimento.",
-      "outOfRange": "Devi essere a una stazione artigianale per sciogliere."
+      "outOfRange": "Devi essere a una stazione artigianale per sciogliere.",
+      "noSpace": "You do not have room for the unbound copy."
     },
     "finder": {
       "title": "Cercatore di Dungeon",

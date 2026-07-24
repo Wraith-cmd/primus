@@ -2312,6 +2312,7 @@ export const ko_KR: EnTranslations = {
       },
       "throttled": "너무 빨리 제작하고 있습니다. 잠시 후 다시 시도하세요.",
       "recipeNotLearned": "아직 그 제작법을 배우지 않았습니다.",
+      "noBagSpace": "가방에 제작한 아이템을 넣을 공간이 없습니다.",
       "skillReqLine": "{craft} {skill} 필요",
       "difficultyFull": "숙련도 전량 상승",
       "difficultyReduced": "숙련도 상승 감소",
@@ -2363,6 +2364,9 @@ export const ko_KR: EnTranslations = {
       "enchantWrongSlot": "그 마법부여는 해당 아이템에 적용할 수 없습니다.",
       "enchantUnknown": "해당 마법부여가 존재하지 않습니다.",
       "enchantInsufficient": "해당 마법부여에 필요한 재료가 없습니다.",
+      "disenchantNoSpace": "가방에 비전 재료를 넣을 공간이 없습니다.",
+      "salvageNoSpace": "가방에 분해한 재료를 넣을 공간이 없습니다.",
+      "enchantNoSpace": "가방에 마법부여한 아이템을 넣을 공간이 없습니다.",
       "disenchantConfirmTitle": "{item}의 마력을 추출하시겠습니까?",
       "disenchantConfirmBody": "{item}을(를) 파괴하고 비전 재료를 얻습니다. 되돌릴 수 없습니다.",
       "disenchantConfirmBodySpecial": "특별한 {item} 사본(서명됨, 걸작 또는 마법부여됨)을 파괴하고 비전 재료를 얻습니다. 되돌릴 수 없습니다.",
@@ -2382,8 +2386,10 @@ export const ko_KR: EnTranslations = {
       "stateKnown": "습득함",
       "stateTeachable": "습득 가능",
       "stateLocked": "잠김",
+      "statePending": "습득 중",
       "requirement": "{craft} {skill}에서 전수",
       "trainAria": "{fee}(으)로 {name} 습득",
+      "pendingAria": "{name} 습득 중",
       "dialogOption": "훈련",
       "dialogOptionAria": "{name}에게 훈련 받기",
       "learned": "제조법을 습득했습니다: {recipe}",
@@ -2410,7 +2416,8 @@ export const ko_KR: EnTranslations = {
       "notEligible": "그 아이템은 귀속을 해제할 수 없습니다.",
       "notBound": "그 아이템은 귀속되어 있지 않습니다.",
       "cannotAfford": "귀속 해제 수수료를 지불할 수 없습니다.",
-      "outOfRange": "귀속을 해제하려면 작업대 옆에 있어야 합니다."
+      "outOfRange": "귀속을 해제하려면 작업대 옆에 있어야 합니다.",
+      "noSpace": "가방에 귀속 해제한 아이템을 넣을 공간이 없습니다."
     },
     "finder": {
       "title": "던전 찾기",

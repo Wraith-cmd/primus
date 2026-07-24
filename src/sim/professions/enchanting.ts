@@ -37,12 +37,18 @@
 // Math.random/Date.now (uses ctx.rng only), host-agnostic so it runs
 // offline, on the server, and in the headless RL env unchanged.
 
+import { bagCapacity, consumeOneScratch, countFit, fitsAll, removeStacked } from '../bags';
 import { ENCHANTS, type EnchantDef } from '../content/enchants';
 import { ITEMS } from '../data';
 import { requiredLevelFor } from '../item_level_req';
 import type { Rng } from '../rng';
 import type { SimContext } from '../sim_context';
-import { cloneItemInstancePayload, type ItemDef, type ItemInstancePayload } from '../types';
+import {
+  cloneItemInstancePayload,
+  type InvSlot,
+  type ItemDef,
+  type ItemInstancePayload,
+} from '../types';
 import { recordAction, withinActionThrottle } from './action_throttle';
 import { enchantingGainMultiplier } from './archetype';
 import { typedSecondaryFor } from './disenchant_reagents';
@@ -126,16 +132,30 @@ export function isDisenchantable(def: ItemDef | undefined): boolean {
   );
 }
 
+/** The rarity/tier-scaled base yield the rng bonus rides on: the shared term
+ *  of disenchantYield and maxDisenchantYield, so the #2350 capacity gate's
+ *  worst case can never drift from the rolled grant. */
+function baseDisenchantYield(def: ItemDef): number {
+  const qualityIdx = Math.max(0, QUALITY_ORDER.indexOf(def.quality ?? 'common'));
+  const tierBonus = Math.floor(requiredLevelFor(def) / 10);
+  return qualityIdx + tierBonus + 1;
+}
+
 /** The arcane material yield for one disenchant of `def`: scales with rarity
  *  and tier the same way salvage.ts's salvageYield does, plus one rng-rolled
  *  bonus unit, but the material itself is the dedicated, more valuable
  *  Enchanting tier (see DISENCHANT_MATERIAL_BY_QUALITY), not a generic junk
  *  item. Pure aside from the rng draw. */
 export function disenchantYield(def: ItemDef, rng: Rng): number {
-  const qualityIdx = Math.max(0, QUALITY_ORDER.indexOf(def.quality ?? 'common'));
-  const tierBonus = Math.floor(requiredLevelFor(def) / 10);
   const bonus = rng.next() < 0.5 ? 0 : 1;
-  return qualityIdx + tierBonus + 1 + bonus;
+  return baseDisenchantYield(def) + bonus;
+}
+
+/** The largest yield disenchantYield can roll (the +1 bonus arm): the count
+ *  the #2350 capacity gate pre-fits on the sub-rare arm, so a denial never
+ *  draws rng and a granted roll can never exceed what was checked. */
+export function maxDisenchantYield(def: ItemDef): number {
+  return baseDisenchantYield(def) + 1;
 }
 
 /** The gain tier of one enchant for the apply arm: EnchantDef carries no
@@ -169,7 +189,7 @@ export interface DisenchantResult {
    *  piece, 1 or 2 (one rng draw) for an epic/legendary piece. Set iff
    *  secondaryItemId is. */
   secondaryCount?: number;
-  reason?: 'unknown_item' | 'not_disenchantable' | 'not_held' | 'throttled';
+  reason?: 'unknown_item' | 'not_disenchantable' | 'not_held' | 'throttled' | 'no_bag_space';
 }
 
 /** Resolve one disenchant attempt: denies (no side effect) if the item id is
@@ -195,6 +215,36 @@ export function resolveDisenchant(ctx: SimContext, pid: number, itemId: string):
   if (meta && !withinActionThrottle(meta, ctx.time)) {
     return { ok: false, itemId, reason: 'throttled' };
   }
+  // The yield plan (pure def lookups, no rng): hoisted above the capacity
+  // gate so the gate can model the exact grants the success path mints below.
+  const quality = def.quality ?? 'common';
+  const materialItemId = DISENCHANT_MATERIAL_BY_QUALITY[quality] ?? 'arcane_dust';
+  const isRarePlus = quality === 'rare' || quality === 'epic' || quality === 'legendary';
+  const secondaryItemId = typedSecondaryFor(def);
+  // #2350 capacity gate: the materials must fit AFTER the disenchanted copy
+  // leaves, so consume it on a scratch copy (consumeOneScratch with the
+  // isEnchantedInstance exclusion mirrors the countEnchantableItem-split
+  // victim order below) and pre-fit the WORST-CASE grants: the +1 rng bonus
+  // arm on the sub-rare yield, and two secondaries on an epic/legendary
+  // piece. The denial draws nothing and has no side effect, like every other
+  // arm above; a granted roll can never exceed what was checked.
+  if (meta) {
+    const scratch = meta.inventory.map((s) => ({ ...s }));
+    consumeOneScratch(scratch, itemId, isEnchantedInstance);
+    const adds: InvSlot[] = isRarePlus
+      ? [{ itemId: materialItemId, count: 1 }]
+      : [{ itemId: materialItemId, count: maxDisenchantYield(def) }];
+    if (isRarePlus && secondaryItemId) {
+      adds.push({
+        itemId: secondaryItemId,
+        count: quality === 'rare' ? 1 : 2,
+        instance: { bindOnTrade: true },
+      });
+    }
+    if (!fitsAll(scratch, bagCapacity(meta.bags), adds)) {
+      return { ok: false, itemId, reason: 'no_bag_space' };
+    }
+  }
   // Preference order unchanged from before: plain fungible first, then an
   // unenchanted instanced copy (removeEnchantableItem). The fallback arm is
   // the #2340 fix: with only enchanted copies left, take the highest-index
@@ -202,8 +252,6 @@ export function resolveDisenchant(ctx: SimContext, pid: number, itemId: string):
   // src/ui/bag_item_context_menu.ts mirrors this victim choice).
   if (ctx.countEnchantableItem(itemId, pid) >= 1) ctx.removeEnchantableItem(itemId, 1, pid);
   else ctx.removeItem(itemId, 1, pid);
-  const quality = def.quality ?? 'common';
-  const materialItemId = DISENCHANT_MATERIAL_BY_QUALITY[quality] ?? 'arcane_dust';
   // Yield model: sub-rare (common/uncommon) stays byte-identical to
   // today, a single rng draw (disenchantYield's +0/+1 bonus) over a rolled
   // count of the universal ladder material, and NO secondary. Rare+ shifts to a
@@ -215,8 +263,6 @@ export function resolveDisenchant(ctx: SimContext, pid: number, itemId: string):
   // windfall cannot be freely resold; the universal primary stays a plain
   // ctx.addItem (dust/essence/shard never bind). A rare+ piece with no typed
   // material (jewelry: no armor class) yields only the primary and draws no rng.
-  const isRarePlus = quality === 'rare' || quality === 'epic' || quality === 'legendary';
-  const secondaryItemId = typedSecondaryFor(def);
   let count: number;
   let secondaryCount: number | undefined;
   if (isRarePlus) {
@@ -283,7 +329,37 @@ export interface ApplyEnchantResult {
     | 'wrong_slot'
     | 'not_held'
     | 'insufficient_materials'
-    | 'throttled';
+    | 'throttled'
+    | 'no_bag_space';
+}
+
+/** The exact instance payload an apply-enchant mints from the copy it
+ *  consumed: the consumed payload cloned (empty for a plain fungible copy),
+ *  the enchant's stat bonus summed ADDITIVELY into any existing rolled.stats
+ *  (a masterwork copy's baked bonus and the enchant's bonus must BOTH survive;
+ *  signer, rolled.masterwork, and legacy rolled.quality ride through the clone
+ *  untouched), and the explicit already-enchanted marker set (keyed on the
+ *  enchant itself rather than bare stats presence, so masterwork copies stay
+ *  enchantable while double-enchant stays blocked; see isEnchantedInstance).
+ *  A consumed copy is never already enchanted (removeEnchantableItem guards
+ *  on isEnchantedInstance), so this never stacks one enchant onto another.
+ *  Shared by resolveApplyEnchant's success path and its #2350 capacity gate,
+ *  so the modeled grant can never drift from the minted one. */
+export function enchantedPayloadFor(
+  consumed: ItemInstancePayload | undefined,
+  enchant: EnchantDef,
+): ItemInstancePayload {
+  const merged: ItemInstancePayload = consumed
+    ? cloneItemInstancePayload(consumed)
+    : ({} as ItemInstancePayload);
+  const mergedStats: Record<string, number> = { ...merged.rolled?.stats };
+  for (const [stat, value] of Object.entries(enchant.statBonus)) {
+    if (value === undefined) continue;
+    mergedStats[stat] = (mergedStats[stat] ?? 0) + value;
+  }
+  merged.rolled = { ...merged.rolled, stats: mergedStats };
+  merged.enchant = enchant.id;
+  return merged;
 }
 
 /** Resolve one apply-enchant attempt against a HELD (bagged, not currently
@@ -334,28 +410,30 @@ export function resolveApplyEnchant(
   if (meta && !withinActionThrottle(meta, ctx.time)) {
     return { ok: false, itemId, enchantId, reason: 'throttled' };
   }
+  // #2350 capacity gate: the freshly-enchanted instance must fit AFTER the
+  // consumed copy and every reagent leave, so model all of it on a scratch
+  // copy: the victim via consumeOneScratch (the isEnchantedInstance exclusion
+  // mirrors removeEnchantableItem's victim order, and the not_held gate above
+  // already proved an eligible copy exists), the reagents via removeStacked
+  // (the removeItem walk), and the grant via the SAME enchantedPayloadFor the
+  // success path mints below, so a byte-equal enchanted stack with room still
+  // counts as fitting. Denies with no side effect and draws nothing.
+  if (meta) {
+    const scratch = meta.inventory.map((s) => ({ ...s }));
+    const victim = consumeOneScratch(scratch, itemId, isEnchantedInstance);
+    for (const reagent of enchant.reagents) removeStacked(scratch, reagent.itemId, reagent.count);
+    if (
+      countFit(scratch, bagCapacity(meta.bags), itemId, 1, enchantedPayloadFor(victim, enchant)) < 1
+    ) {
+      return { ok: false, itemId, enchantId, reason: 'no_bag_space' };
+    }
+  }
   const [consumed] = ctx.removeEnchantableItem(itemId, 1, pid);
   for (const reagent of enchant.reagents) ctx.removeItem(reagent.itemId, reagent.count, pid);
-  const merged: ItemInstancePayload = consumed
-    ? cloneItemInstancePayload(consumed)
-    : ({} as ItemInstancePayload);
-  // ADDITIVE stat merge: a masterwork copy's baked bonus
-  // (rolled.stats alongside rolled.masterwork) and the enchant's bonus must
-  // BOTH survive on the enchanted copy, so the enchant sums into any existing
-  // record instead of replacing it. signer, rolled.masterwork, and legacy
-  // rolled.quality ride through the clone above untouched. A consumed copy is
-  // never already enchanted (removeEnchantableItem guards on
-  // isEnchantedInstance), so this never stacks one enchant onto another.
-  const mergedStats: Record<string, number> = { ...merged.rolled?.stats };
-  for (const [stat, value] of Object.entries(enchant.statBonus)) {
-    if (value === undefined) continue;
-    mergedStats[stat] = (mergedStats[stat] ?? 0) + value;
-  }
-  merged.rolled = { ...merged.rolled, stats: mergedStats };
-  // The explicit already-enchanted marker (isEnchantedInstance above): keyed
-  // on the enchant itself rather than bare stats presence, so masterwork
-  // copies stay enchantable while double-enchant stays blocked.
-  merged.enchant = enchant.id;
+  // The minted payload: the consumed copy's markers plus the enchant's
+  // additive bonus and marker (enchantedPayloadFor above, shared with the
+  // capacity gate).
+  const merged = enchantedPayloadFor(consumed, enchant);
   ctx.addItemInstance(itemId, merged, pid);
   if (meta) {
     // Quality-tiered gain: the applied enchant's reagent-derived

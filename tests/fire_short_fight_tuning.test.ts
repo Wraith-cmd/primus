@@ -393,7 +393,9 @@ describe('sustained parity, entire fight (Monte Carlo follow-up 2026-07-24)', ()
     const frostMean = frost.reduce((a, r) => a + r.dps, 0) / frost.length;
     const igniteShare =
       fire.reduce((a, r) => a + (r.byAbility.Ignite ?? 0) / r.damage, 0) / fire.length;
-    return { fireMean, frostMean, igniteShare };
+    const ignitePaid = fire.reduce((a, r) => a + r.ignitePaid, 0);
+    const igniteBanked = fire.reduce((a, r) => a + r.igniteBanked, 0);
+    return { fireMean, frostMean, igniteShare, ignitePaid, igniteBanked };
   };
   const at60 = measure(60);
   const at120 = measure(120);
@@ -428,10 +430,10 @@ describe('sustained parity, entire fight (Monte Carlo follow-up 2026-07-24)', ()
     // crits banked (40% each). Rounding can add fractions of a point per
     // tick, end-of-fight truncation loses the tail, so the healthy reading
     // sits just under 1.0; the pre-fix double-dip read ~1.05-1.2 with Rune
-    // and Convergence running.
-    const runs = SUSTAINED_SEEDS.map((s) => runShortFight('fire', 120, s, TOP_TALENTED_ROWS));
-    const paid = runs.reduce((a, r) => a + r.ignitePaid, 0);
-    const banked = runs.reduce((a, r) => a + r.igniteBanked, 0);
+    // and Convergence running. Reuses the 120s runs measured above: re-running
+    // sims inside the test body blew the 5s test timeout on loaded CI shards.
+    const paid = at120.ignitePaid;
+    const banked = at120.igniteBanked;
     console.log(
       `[ignite conservation] paid=${paid} banked=${banked} ratio=${(paid / banked).toFixed(3)}`,
     );

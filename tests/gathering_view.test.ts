@@ -192,11 +192,27 @@ describe('buildGatheringProficiencyRows', () => {
     const world = makeWorld({ proficiency: { mining: 12, logging: 4, herbalism: 0 } });
     const rows = buildGatheringProficiencyRows(world);
     expect(rows).toEqual([
-      { professionId: 'mining', value: 12 },
-      { professionId: 'logging', value: 4 },
-      { professionId: 'herbalism', value: 0 },
-      { professionId: 'fishing', value: 0 },
+      { professionId: 'mining', value: 12, displayValue: 12 },
+      { professionId: 'logging', value: 4, displayValue: 4 },
+      { professionId: 'herbalism', value: 0, displayValue: 0 },
+      { professionId: 'fishing', value: 0, displayValue: 0 },
     ]);
+  });
+
+  it('display-floors a fractional proficiency, never rounding a threshold forward', () => {
+    // The character sheet must never read "100" while the raw value (which
+    // the deed evaluator and the band ladder compare with >=) is still 99.5
+    // (issue 2339, the Old Salt strand): the readout floors, the buildSkillBar
+    // convention, while `value` keeps the exact fraction for the repaint
+    // signature.
+    const world = makeWorld({ proficiency: { mining: 99.75, fishing: 99.5 } });
+    const rows = buildGatheringProficiencyRows(world);
+    const fishing = rows.find((r) => r.professionId === 'fishing');
+    expect(fishing?.value).toBe(99.5);
+    expect(fishing?.displayValue).toBe(99);
+    const mining = rows.find((r) => r.professionId === 'mining');
+    expect(mining?.value).toBe(99.75);
+    expect(mining?.displayValue).toBe(99);
   });
 
   it('defaults an absent or malformed entry to 0, never throwing', () => {

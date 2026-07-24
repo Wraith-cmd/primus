@@ -331,6 +331,7 @@ import {
   placeMobileStationForPlayer,
 } from './professions/mobile_station';
 import { updateProfNudges } from './professions/prof_nudges';
+import { healDisplayRoundedProficiency } from './professions/proficiency_display_heal';
 import { type SalvageResult, salvageItem as salvageItemImpl } from './professions/salvage';
 import { normalizeTierMailOnLoad, updateTierMail } from './professions/tier_mail';
 import { grandfatherKnownRecipes, resolveTrain, type TrainResult } from './professions/training';
@@ -1411,6 +1412,15 @@ export interface CharacterState {
   // true is serialized unconditionally (any blob written by curve-era code
   // has the reset applied), so it can never re-fire.
   masteryResetApplied?: boolean;
+  // Proficiency display heal already applied (issue 2339; JSONB, the
+  // masteryResetApplied idiom): absent/false on a save written while the
+  // character sheet still ROUNDED its Gathering rows triggers the one-time
+  // healDisplayRoundedProficiency on load (a value the old sheet displayed
+  // as a crossed band threshold, 99.5 to 99.99 reading "100", bumps to that
+  // threshold so the join retro pass grants the stranded 100/200 gathering
+  // deeds), then LITERAL true is serialized unconditionally so it can never
+  // re-fire on the floored post-fix display.
+  proficiencyDisplayHealApplied?: boolean;
   townFocus?: Record<string, number>;
   // Active-archetype state (#1129, superseded scope; JSONB, back-compat: absent on
   // older saves loads as emptyArchetypeState, see normalizeArchetypeState).
@@ -2360,6 +2370,17 @@ export class Sim {
         applyMasteryReset(meta.craftSkills, meta.gatheringProficiency);
         meta.pendingMasteryResetNotice = true;
       }
+      // The one-time proficiency display heal (issue 2339), after the
+      // mastery-reset branch so it sees the values this character actually
+      // keeps: a save written while the character sheet rounded its
+      // Gathering rows can hold a proficiency the old readout showed as a
+      // crossed band threshold (99.5 to 99.99 read "100") while the
+      // threshold deeds, comparing the raw value with >=, stayed locked.
+      // Bump exactly those values to the threshold once; the deed retro
+      // pass below then grants the stranded deeds on this same join.
+      if (s.proficiencyDisplayHealApplied !== true) {
+        healDisplayRoundedProficiency(meta.gatheringProficiency);
+      }
       meta.mailWelcomed = s.mailWelcomed === true;
       meta.guildLetterSent = s.guildLetterSent === true;
       // Work-order cooldowns: clamp every stored availableAt to
@@ -3025,6 +3046,11 @@ export class Sim {
       // serializes unconditionally. There is deliberately NO PlayerMeta
       // mirror: the parity sampler must see zero new fields.
       masteryResetApplied: true,
+      // LITERAL true for the same reason: any blob written by post-fix code
+      // was loaded through the heal branch (or born past the cut), and the
+      // floored display makes the heal unrepeatable by design. No PlayerMeta
+      // mirror here either.
+      proficiencyDisplayHealApplied: true,
       archetype: { ...meta.archetype, attunedPairs: [...meta.archetype.attunedPairs] },
       delveMarks: meta.delveMarks,
       delveClears: { ...meta.delveClears },
@@ -6792,10 +6818,12 @@ export class Sim {
   // masterwork copy, whose rolled.stats are its baked bonus, NOT an enchant).
   // Only an already-enchanted copy (professions/enchanting.ts
   // isEnchantedInstance: the explicit `enchant` marker, or legacy bare
-  // rolled.stats without rolled.masterwork) is excluded, so disenchant/
-  // apply-enchant never consumes an already-enchanted copy but DOES accept
+  // rolled.stats without rolled.masterwork) is excluded, so apply-enchant
+  // never consumes (overwrites) an already-enchanted copy but DOES accept
   // crafted and masterwork gear, unlike the fungible-only gate this replaces
-  // for enchanting.ts specifically.
+  // for enchanting.ts specifically. Disenchant uses this pair only as its
+  // PREFERENCE tier: it gates on countItem and falls back to removeItem when
+  // every held copy is enchanted (issue #2340; see resolveDisenchant).
   countEnchantableItem(itemId: string, pid?: number): number {
     const r = this.resolve(pid);
     if (!r) return 0;

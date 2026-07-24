@@ -143,10 +143,16 @@ export function gatherDowngradeLineKey(lost: 'mark' | 'find'): TranslationKey {
 }
 
 /** One row of the gathering-proficiency display: a profession id plus its
- *  current point value, in the fixed GATHERING_PROFESSION_IDS order. */
+ *  current point value, in the fixed GATHERING_PROFESSION_IDS order. `value`
+ *  is the raw, possibly fractional proficiency (the repaint-signature input,
+ *  full granularity); `displayValue` floors it for readouts, the
+ *  buildSkillBar convention (issue 2339): a fractional value never rounds a
+ *  threshold forward, so 99.5 reads 99, not a fake crossed 100 while the
+ *  100-proficiency deed is still locked. */
 export interface GatheringProficiencyRow {
   professionId: GatheringProfessionId;
   value: number;
+  displayValue: number;
 }
 
 /** Builds the proficiency display rows from IWorldProfessions#professionsState,
@@ -156,6 +162,6 @@ export function buildGatheringProficiencyRows(world: IWorld): GatheringProficien
   return GATHERING_PROFESSION_IDS.map((professionId) => {
     const raw = bySkill.get(professionId);
     const value = typeof raw === 'number' && Number.isFinite(raw) ? Math.max(0, raw) : 0;
-    return { professionId, value };
+    return { professionId, value, displayValue: Math.floor(value) };
   });
 }

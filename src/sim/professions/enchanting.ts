@@ -173,18 +173,21 @@ export interface DisenchantResult {
 }
 
 /** Resolve one disenchant attempt: denies (no side effect) if the item id is
- *  unknown, ineligible, or the player does not hold an eligible copy (a plain
- *  fungible copy, OR an instanced copy that has NOT itself been enchanted -
- *  e.g. crafting.ts's single-copy rare+ craft grant, which instances every
- *  rare-or-better craft for its signer/rolled-quality payload without
- *  applying an enchant; see countEnchantableItem). Consumes exactly one such
- *  copy on success (never an already-enchanted copy, via removeEnchantableItem)
- *  and grants the rolled arcane material yield. */
+ *  unknown, ineligible, or the player holds no copy of it at all. Consumes
+ *  exactly one held copy on success, preferring the least special first: a
+ *  plain fungible copy, then an instanced copy that has NOT itself been
+ *  enchanted (e.g. crafting.ts's single-copy rare+ craft grant; see
+ *  removeEnchantableItem), and only when every held copy is already enchanted
+ *  one of those, destroying the piece enchant and all (issue #2340: the
+ *  enchanted-copy exclusion protects apply-enchant from silently overwriting
+ *  an enchant, but disenchant destroys the item anyway, so gating on it here
+ *  only denied a held item with a wrong "not held" message). Grants the
+ *  rolled arcane material yield. */
 export function resolveDisenchant(ctx: SimContext, pid: number, itemId: string): DisenchantResult {
   const def = ITEMS[itemId];
   if (!def) return { ok: false, itemId, reason: 'unknown_item' };
   if (!isDisenchantable(def)) return { ok: false, itemId, reason: 'not_disenchantable' };
-  if (ctx.countEnchantableItem(itemId, pid) < 1) return { ok: false, itemId, reason: 'not_held' };
+  if (ctx.countItem(itemId, pid) < 1) return { ok: false, itemId, reason: 'not_held' };
   const meta = ctx.players.get(pid);
   // Shared action throttle (action_throttle.ts): disenchant draws
   // from the same 10-per-60s budget as crafting, checked (no side effect
@@ -192,7 +195,13 @@ export function resolveDisenchant(ctx: SimContext, pid: number, itemId: string):
   if (meta && !withinActionThrottle(meta, ctx.time)) {
     return { ok: false, itemId, reason: 'throttled' };
   }
-  ctx.removeEnchantableItem(itemId, 1, pid);
+  // Preference order unchanged from before: plain fungible first, then an
+  // unenchanted instanced copy (removeEnchantableItem). The fallback arm is
+  // the #2340 fix: with only enchanted copies left, take the highest-index
+  // one (removeItem order; the UI confirm predicate in
+  // src/ui/bag_item_context_menu.ts mirrors this victim choice).
+  if (ctx.countEnchantableItem(itemId, pid) >= 1) ctx.removeEnchantableItem(itemId, 1, pid);
+  else ctx.removeItem(itemId, 1, pid);
   const quality = def.quality ?? 'common';
   const materialItemId = DISENCHANT_MATERIAL_BY_QUALITY[quality] ?? 'arcane_dust';
   // Yield model: sub-rare (common/uncommon) stays byte-identical to

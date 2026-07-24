@@ -8361,7 +8361,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'guide.profPages.specializationBody': '技能达到{at}即在本行业专精，配方材料消耗减少{pct}%。',
   'guide.profPages.ench.disenchantHeading': '分解',
   'guide.profPages.ench.disenchantNote':
-    '分解会消耗一件普通品质或更高的武器或护甲，但已附魔的物品不会被分解。普通与优秀品质的物品磨碎后产出数量不等的铃音之尘，稀有度越高或等级越高的物品产量越丰；从精良品质起，产出形态不同：精良件恰好给出一个铃音精华，史诗或传说件恰好给出一个铃音碎片，此外还附带一种与物品材质相关的定向副产物。',
+    '分解会消耗一件普通品质或更高的武器或护甲，优先消耗未附魔的物品；当只剩下已附魔的物品时，将连同附魔一并分解其中一件。普通与优秀品质的物品磨碎后产出数量不等的铃音之尘，稀有度越高或等级越高的物品产量越丰；从精良品质起，产出形态不同：精良件恰好给出一个铃音精华，史诗或传说件恰好给出一个铃音碎片，此外还附带一种与物品材质相关的定向副产物。',
   'guide.profPages.ench.typedHeading': '定向副产物',
   'guide.profPages.ench.typedNote':
     '精良及以上的装备还会产出一种定向的、交易绑定的副产物：精良装备产出{rare}件，史诗或传说产出{epicMin}到{epicMax}件。',

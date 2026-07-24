@@ -341,7 +341,10 @@ describe('talented burst window (Monte Carlo 2026-07-24, designer round 2026-07-
 describe('sustained parity, entire fight (Monte Carlo follow-up 2026-07-24)', () => {
   const SUSTAINED_SEEDS = [41, 101, 115];
   const SUSTAINED_CEILING = 1.25; // x talented frost, per duration
-  const SUSTAINED_FLOOR = 0.85; // the burst spec may trail sustained, not vanish
+  // Owner ruling 2026-07-25: frost is the PvP-leaning spec, so fire must
+  // NEVER fall below it in PvE damage, at any fight length. The floor is
+  // therefore parity, not a discount.
+  const SUSTAINED_FLOOR = 1.0;
   const IGNITE_SHARE_CEILING = 0.3; // the 40%-over-6s contract at duration
   // 60s is the shortest "entire fight" (one full burst window amortized), the
   // leakiest cell across every knob variant tried; 120s is the raid-typical
@@ -374,8 +377,9 @@ describe('sustained parity, entire fight (Monte Carlo follow-up 2026-07-24)', ()
     expect(at120.fireMean).toBeLessThanOrEqual(at120.frostMean * SUSTAINED_CEILING);
   });
 
-  it('and does not collapse below the sustained floor (over-nerf guard)', () => {
+  it('and never falls below frost in PvE (owner ruling: frost is the PvP spec)', () => {
     expect(at120.fireMean).toBeGreaterThanOrEqual(at120.frostMean * SUSTAINED_FLOOR);
+    expect(at60.fireMean).toBeGreaterThanOrEqual(at60.frostMean * SUSTAINED_FLOOR);
   });
 
   it('Ignite pays its stated contract at duration (share stays bounded)', () => {

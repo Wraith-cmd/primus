@@ -1802,7 +1802,14 @@ export const ABILITIES: Record<string, AbilityDef> = {
     learnLevel: 5,
     cost: 40,
     castTime: 0,
-    cooldown: 8,
+    // Balance 2026-07-24 (live 27s raid parse, fire ~2.3x comparable DPS):
+    // Cinderfall's action economy is the short-fight outlier, so the recharge
+    // slows (8s -> 15s) and the bank shrinks back to two. The press keeps its
+    // whole fantasy (guaranteed crit, Ignite bank, Hot Streak build, off-GCD);
+    // there are simply about half as many presses per fight, and each press
+    // removed also removes a guaranteed crit, its Ignite bank and a Hot
+    // Streak build. Pinned by tests/fire_short_fight_tuning.test.ts.
+    cooldown: 15,
     range: 20,
     school: 'fire',
     requiresTarget: true,
@@ -1811,8 +1818,9 @@ export const ABILITIES: Record<string, AbilityDef> = {
     // Owner rule (round five): fully off the GCD, like Phoenix Trance: castable
     // during one and it never arms one for the other abilities.
     offGcd: true,
-    // Owner playtest 2026-07-13: three stored charges (was two), back to back if banked.
-    maxCharges: 3,
+    // Balance 2026-07-24: back to two stored charges (was three, playtest
+    // 2026-07-13); see the recharge note above.
+    maxCharges: 2,
     // Owner playtest round four: no bolt, the embers bite the moment you press.
     projectile: false,
     effects: [{ type: 'directDamage', min: 27, max: 35 }],

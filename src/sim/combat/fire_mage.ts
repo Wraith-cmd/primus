@@ -246,14 +246,29 @@ export function fireMageCauterize(
 }
 
 /** Bank a burn on the target over IGNITE_DURATION, STACKING into the running
- *  Ignite (per-tick value grows, clock refreshes). The caller computes the
- *  burn from RESOLVED damage; draws no rng. */
+ *  Ignite. Balance 2026-07-24 (live 27s raid parse): a re-bank FOLDS the
+ *  unpaid remainder forward into the fresh 6s window instead of re-extending
+ *  the whole accumulated per-tick for free. The old refresh paid a steady
+ *  crit stream far more than the stated 40%-over-6s contract (the measured
+ *  overpay was ~2x on the reported fight, the biggest single slice of the
+ *  fire outlier). Total payout now equals the sum of the banked burns, order
+ *  and cadence independent. The caller computes the burn from RESOLVED
+ *  damage; draws no rng. */
 export function applyIgnite(ctx: SimContext, source: Entity, target: Entity, burn: number): void {
   if (burn <= 0 || target.dead) return;
-  const perTick = Math.max(1, Math.round(burn / (IGNITE_DURATION / IGNITE_INTERVAL)));
+  const spreadTicks = IGNITE_DURATION / IGNITE_INTERVAL;
+  const perTick = Math.max(1, Math.round(burn / spreadTicks));
   const existing = target.auras.find((a) => a.id === 'ignite' && a.sourceId === source.id);
   if (existing) {
-    existing.value += perTick;
+    // Ticks this aura would still fire on its current clock (updateAuras
+    // fires at tickTimer, tickTimer + interval, ... while remaining > 0).
+    const timer = existing.tickTimer ?? existing.tickInterval ?? IGNITE_INTERVAL;
+    const ticksLeft =
+      existing.remaining >= timer
+        ? Math.floor((existing.remaining - timer) / IGNITE_INTERVAL) + 1
+        : 0;
+    const outstanding = existing.value * ticksLeft;
+    existing.value = Math.max(1, Math.round((outstanding + burn) / spreadTicks));
     existing.remaining = IGNITE_DURATION;
     existing.duration = IGNITE_DURATION;
     return;

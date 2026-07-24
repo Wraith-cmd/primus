@@ -4,7 +4,7 @@
 // and the frost mage's Water Elemental. Follows the mage_choice_rows harness.
 
 import { describe, expect, it } from 'vitest';
-import { fireGuaranteedCrit, HOT_STREAK_BUILDERS } from '../src/sim/combat/fire_mage';
+import { applyIgnite, fireGuaranteedCrit, HOT_STREAK_BUILDERS } from '../src/sim/combat/fire_mage';
 import { abilitiesKnownAt } from '../src/sim/content/classes';
 import { ROW_TREES } from '../src/sim/content/talent_rows';
 import { computeTalentModifiers, emptyAllocation } from '../src/sim/content/talents';
@@ -115,6 +115,47 @@ describe('guaranteed crits and Ignition', () => {
     collect(sim, 1);
     const second = mob.auras.find((a) => a.id === 'ignite')?.value ?? 0;
     expect(second).toBeGreaterThan(first); // the burn banked on top
+  });
+
+  it('a re-bank FOLDS the unpaid remainder forward, never re-extends it free (balance 2026-07-24)', () => {
+    const { sim, p } = mageWithSpec('fire');
+    const mob = addDummy(sim);
+    const ctx = (sim as unknown as { ctx: Parameters<typeof applyIgnite>[0] }).ctx;
+    // Bank 300: a third per 2s tick over the 6s window.
+    applyIgnite(ctx, p, mob, 300);
+    const ignite = mob.auras.find((a) => a.id === 'ignite');
+    expect(ignite?.value).toBe(100);
+    if (!ignite) throw new Error('ignite missing');
+    // Pin the clock mid-window: exactly two ticks (of 100) still owed.
+    ignite.remaining = 4;
+    ignite.tickTimer = 2;
+    // Re-bank 90: the 200 outstanding folds into the fresh window with it.
+    applyIgnite(ctx, p, mob, 90);
+    expect(ignite.value).toBe(97); // round((2*100 + 90) / 3), NOT 100 + 30
+    expect(ignite.remaining).toBe(6);
+    // The fresh window pays exactly the folded bank: 3 ticks of 97.
+    const paid = collect(sim, 10)
+      .filter(
+        (e): e is Extract<SimEvent, { type: 'damage' }> =>
+          e.type === 'damage' && e.ability === 'Ignite' && e.targetId === mob.id,
+      )
+      .reduce((sum, e) => sum + e.amount, 0);
+    expect(paid).toBe(291);
+    expect(mob.auras.some((a) => a.id === 'ignite')).toBe(false); // fully paid out
+  });
+
+  it('a re-bank on an expiring Ignite (no ticks left) starts a fresh bank only', () => {
+    const { sim, p } = mageWithSpec('fire');
+    const mob = addDummy(sim);
+    const ctx = (sim as unknown as { ctx: Parameters<typeof applyIgnite>[0] }).ctx;
+    applyIgnite(ctx, p, mob, 300);
+    const ignite = mob.auras.find((a) => a.id === 'ignite');
+    if (!ignite) throw new Error('ignite missing');
+    // The clock has less time left than the tick timer: nothing more would pay.
+    ignite.remaining = 1.5;
+    ignite.tickTimer = 2;
+    applyIgnite(ctx, p, mob, 90);
+    expect(ignite.value).toBe(30); // round(90 / 3): no phantom remainder folded
   });
 
   it('Scorch always crits only against targets at or below 30% health', () => {

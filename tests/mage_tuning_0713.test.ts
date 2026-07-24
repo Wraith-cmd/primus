@@ -133,8 +133,10 @@ describe('Number changes', () => {
   it('Scald lands instantly (no traveling bolt)', () => {
     expect(ABILITIES.scorch.projectile).toBe(false);
   });
-  it('Cinderfall stores three charges', () => {
-    expect(ABILITIES.fire_blast.maxCharges).toBe(3);
+  it('Cinderfall stores two charges (balance 2026-07-24, was three)', () => {
+    // The 2026-07-24 short-fight balance pass (tests/fire_short_fight_tuning
+    // .test.ts) walked the 2026-07-13 three-charge buff back to two.
+    expect(ABILITIES.fire_blast.maxCharges).toBe(2);
   });
   it('Aetherwell restores 100 mana per tick', () => {
     const gain = ABILITIES.evocation.effects.find((e) => e.type === 'gainResource');

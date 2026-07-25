@@ -145,13 +145,13 @@ window.__prof = {
 
 async function api(server, path, body, token, xff) {
   const res = await fetch(server + path, {
-    method: 'POST',
+    method: body === undefined ? 'GET' : 'POST',
     headers: {
       'Content-Type': 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(xff ? { 'X-Forwarded-For': xff } : {}),
     },
-    body: JSON.stringify(body),
+    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
   });
   return { status: res.status, body: await res.json().catch(() => ({})) };
 }
@@ -172,33 +172,48 @@ class Bot {
   }
   async join() {
     const xff = `172.16.${Math.floor(this.i / 254)}.${(this.i % 254) + 1}`;
-    const reg = await api(
+    const username = `prof_${this.uniq}_${this.i}`;
+    let reg = await api(
       this.server,
       '/api/register',
-      {
-        username: `prof_${this.uniq}_${this.i}`,
-        password: 'hunter22',
-        email: `prof_${this.uniq}_${this.i}@example.com`,
-      },
+      { username, password: 'hunter22', email: `${username}@example.com` },
       undefined,
       xff,
     );
+    // A bot that registered on an earlier attempt but timed out joining still owns
+    // the username; fall back to login so retries reuse the account.
+    if (!reg.body.token)
+      reg = await api(
+        this.server,
+        '/api/login',
+        { username, password: 'hunter22' },
+        undefined,
+        xff,
+      );
     this.token = reg.body.token;
     if (!this.token)
       throw new Error(`register ${this.i}: ${JSON.stringify(reg.body).slice(0, 80)}`);
-    const char = await api(
-      this.server,
-      '/api/characters',
-      { name: this.name, class: this.cls },
-      this.token,
-      xff,
-    );
-    this.charId = char.body.id;
-    if (!this.charId)
-      throw new Error(`charcreate ${this.i}: ${JSON.stringify(char.body).slice(0, 80)}`);
+    const chars = await api(this.server, '/api/characters', undefined, this.token, xff);
+    const charList = Array.isArray(chars.body) ? chars.body : (chars.body.characters ?? []);
+    const existing = charList.find((c) => c.name === this.name);
+    if (existing) {
+      this.charId = existing.id;
+    } else {
+      const char = await api(
+        this.server,
+        '/api/characters',
+        { name: this.name, class: this.cls },
+        this.token,
+        xff,
+      );
+      this.charId = char.body.id;
+    }
+    if (!this.charId) throw new Error(`charcreate ${this.i}: no character id for ${this.name}`);
     await new Promise((resolve, reject) => {
-      this.ws = new WebSocket(`${this.wsBase}/ws`);
-      const to = setTimeout(() => reject(new Error('join timeout')), 12000);
+      // The per-IP WS connection cap counts the socket's source address; ride the
+      // same spoofed XFF as the REST calls (loopback is a trusted proxy in dev).
+      this.ws = new WebSocket(`${this.wsBase}/ws`, { headers: { 'X-Forwarded-For': xff } });
+      const to = setTimeout(() => reject(new Error('join timeout')), 30000);
       this.ws.on('open', () =>
         this.ws.send(JSON.stringify(worldAuthMessage(this.token, this.charId))),
       );
@@ -473,17 +488,22 @@ export class Profiler {
     const batch = [];
     for (let i = this.bots.length; i < n; i++)
       batch.push(new Bot(this.server, this.wsBase, this.uniq, i));
-    await Promise.all(
-      batch.map((b) =>
-        b
-          .join()
-          .then(() => {
-            b.place(c.x, c.z, radius);
-            this.bots.push(b);
-          })
-          .catch((e) => this.log(`  bot ${b.i}: ${String(e).slice(0, 60)}`)),
-      ),
-    );
+    // Join in small chunks: a single 60-wide burst of register+charcreate+WS auth
+    // overwhelms the auth path and times bots out before their 'hello'.
+    const CHUNK = 8;
+    for (let at = 0; at < batch.length; at += CHUNK) {
+      await Promise.all(
+        batch.slice(at, at + CHUNK).map((b) =>
+          b
+            .join()
+            .then(() => {
+              b.place(c.x, c.z, radius);
+              this.bots.push(b);
+            })
+            .catch((e) => this.log(`  bot ${b.i}: ${String(e).slice(0, 60)}`)),
+        ),
+      );
+    }
     for (const b of this.bots) b.place(c.x, c.z, radius);
     return this.bots.length;
   }

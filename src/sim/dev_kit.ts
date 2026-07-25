@@ -21,6 +21,9 @@
 
 import { BAG_SOCKETS } from './bags';
 import { type DevKitRole, devKitRole } from './content/dev_kit_roles';
+import { HEROIC_ITEMS, RETIRED_HEROIC_ITEMS } from './content/heroic_loot';
+import { HEROIC_VENDOR_ITEMS } from './content/heroic_vendor';
+import { WARFARE_ITEMS } from './content/pvp_honor';
 import { DUNGEONS, ITEMS, MOBS } from './data';
 import { canEquipItem, canEquipItemInSlot, isShieldItem, weaponHand } from './equipment_rules';
 import { itemFromRaid, itemSourceLevel } from './item_level';
@@ -61,6 +64,20 @@ const CASTER_WEAPON_DPS_WEIGHT = 0.1;
 const SPELL_POWER_WEIGHT = 0.9;
 const TANK_BLOCK_WEIGHT = 0.5;
 const SECONDARY_RATING_WEIGHT = 0.3;
+
+// Every item id that sits ABOVE the fresh-20 tier, identified by the table that
+// defines it. One entry per exclusion the tier calls for:
+//   HEROIC_ITEMS / RETIRED_HEROIC_ITEMS - heroic dungeon gear (heroic_loot.ts)
+//   HEROIC_VENDOR_ITEMS                 - the Heroic Marks badge vendor
+//   WARFARE_ITEMS                       - PvP / honor gear
+// Raid loot and Gravewyrm Sanctum drops are excluded separately (itemFromRaid and
+// the per-dungeon loot sweep below) because they are drop-table facts, not tables.
+const ABOVE_TIER_ITEM_IDS: ReadonlySet<string> = new Set([
+  ...Object.keys(HEROIC_ITEMS),
+  ...Object.keys(RETIRED_HEROIC_ITEMS),
+  ...Object.keys(HEROIC_VENDOR_ITEMS),
+  ...Object.keys(WARFARE_ITEMS),
+]);
 
 // Item ids that drop inside the excluded dungeon.
 //
@@ -109,8 +126,17 @@ export function resetDevKitCache(): void {
 export function isFreshTwentyItem(cls: PlayerClass, item: ItemDef): boolean {
   if (!item.slot) return false;
   if (item.kind !== 'weapon' && item.kind !== 'armor' && item.kind !== 'held_offhand') return false;
-  // PvP gear is bought with honor on its own track; it is not part of the PvE ladder
-  // a fresh 20 has climbed.
+  // Excluded by WHICH TABLE DEFINES the item, not by an inferred level.
+  //
+  // Level inference is not sound for this: the heroic-mark vendor registers its stock
+  // at source level 20 (HEROIC_VENDOR_SOURCE_LEVEL), so a `source > 20` test lets
+  // badge gear straight through, and some heroic pieces have NO derivable source at
+  // all, so no level test can reach them. Both leaked into the first shipped priest
+  // kit, the second case handing out a RETIRED id that is save-compat only and not
+  // obtainable in game. Table membership is exactly the question being asked, so it
+  // is what gets asked.
+  if (ABOVE_TIER_ITEM_IDS.has(item.id)) return false;
+  // Belt and braces for anything carrying PvP ratings that a table sweep missed.
   if (
     item.pvpOffenseRating !== undefined ||
     item.pvpDefenseRating !== undefined ||
@@ -121,7 +147,7 @@ export function isFreshTwentyItem(cls: PlayerClass, item: ItemDef): boolean {
   // are above this tier.
   if (item.heroicOf !== undefined || item.heroic === true) return false;
   if (itemFromRaid(item.id)) return false;
-  // Source level above 20 means heroic five-man, the heroic-mark vendor, or the raid.
+  // A derivable source above 20 is still disqualifying (raid tiers, heroic drops).
   const source = itemSourceLevel(item.id);
   if (source !== undefined && source > DEV_KIT_LEVEL) return false;
   if (excludedLoot().has(item.id)) return false;

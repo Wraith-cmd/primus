@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { DEV_KIT_ROLE_COUNT, DEV_KIT_ROLES, devKitRole } from '../src/sim/content/dev_kit_roles';
+import { HEROIC_ITEMS, RETIRED_HEROIC_ITEMS } from '../src/sim/content/heroic_loot';
+import { HEROIC_VENDOR_ITEMS } from '../src/sim/content/heroic_vendor';
+import { WARFARE_ITEMS } from '../src/sim/content/pvp_honor';
 import { talentsFor } from '../src/sim/content/talents';
 import { ITEMS } from '../src/sim/data';
 import {
@@ -10,7 +13,8 @@ import {
   dungeonLootIds,
   isFreshTwentyItem,
 } from '../src/sim/dev_kit';
-import { canDualWield } from '../src/sim/equipment_rules';
+import { canDualWield, isShieldItem } from '../src/sim/equipment_rules';
+import { itemFromRaid } from '../src/sim/item_level';
 import { Sim } from '../src/sim/sim';
 import { ALL_CLASSES, type PlayerClass } from '../src/sim/types';
 
@@ -80,6 +84,34 @@ describe('fresh-20 item pool', () => {
     }
   });
 
+  // REGRESSION. The first cut of this filter excluded by inferred source level
+  // (`> 20`), which was unsound twice over: the Heroic Marks vendor registers its
+  // stock at EXACTLY 20, and some heroic pieces (soulrend_diadem) have no derivable
+  // source at all. Three badge items and a heroic helm shipped in the priest kit as a
+  // result. The exclusions are now table identity, and this walks every finished kit.
+  it('no kit contains a single item from any excluded source', () => {
+    const banned: [string, ReadonlySet<string>][] = [
+      [
+        'heroic dungeon',
+        new Set([...Object.keys(HEROIC_ITEMS), ...Object.keys(RETIRED_HEROIC_ITEMS)]),
+      ],
+      ['heroic badge vendor', new Set(Object.keys(HEROIC_VENDOR_ITEMS))],
+      ['pvp', new Set(Object.keys(WARFARE_ITEMS))],
+      ['gravewyrm sanctum', dungeonLootIds(DEV_KIT_EXCLUDED_DUNGEON)],
+    ];
+    const violations: string[] = [];
+    for (const { cls, spec } of everySpec()) {
+      for (const [slot, id] of Object.entries(buildDevKit(cls, spec)?.equip ?? {})) {
+        for (const [label, ids] of banned) {
+          if (ids.has(id)) violations.push(`${cls}/${spec} ${slot}=${id} (${label})`);
+        }
+        if (itemFromRaid(id)) violations.push(`${cls}/${spec} ${slot}=${id} (raid)`);
+        if (ITEMS[id]?.heroicOf) violations.push(`${cls}/${spec} ${slot}=${id} (heroic variant)`);
+      }
+    }
+    expect(violations).toEqual([]);
+  });
+
   it('honours requiredClass even for armor, which canEquipItem alone does not', () => {
     // canEquipItem returns on the armor-rank check for anything with an armorType, so
     // a class-locked plate piece never reaches its own requiredClass test. Without the
@@ -98,17 +130,15 @@ describe('fresh-20 item pool', () => {
 
 describe('kit construction', () => {
   it('builds a kit for every one of the 27 specs, with no empty armor slot', () => {
+    // neck/ring1/ring2 are deliberately NOT required: see the jewelry-gap test below.
     const required = [
       'helmet',
-      'neck',
       'shoulder',
       'chest',
       'waist',
       'legs',
       'gloves',
       'feet',
-      'ring1',
-      'ring2',
       'mainhand',
     ] as const;
     for (const { cls, spec } of everySpec()) {
@@ -117,6 +147,23 @@ describe('kit construction', () => {
       for (const slot of required) {
         expect(kit?.equip[slot], `${cls}/${spec} ${slot}`).toBeTruthy();
       }
+    }
+  });
+
+  it('leaves neck and rings empty, because no fresh-20 jewelry exists', () => {
+    // Not a filter bug: every neck/ring in the game is either Heroic-badge-vendor
+    // stock or source level 22+, so a genuinely fresh 20 wears none. Documented as a
+    // test so the day content adds fresh-20 jewelry, this reds and the presets get
+    // revisited rather than silently continuing to ship three empty slots.
+    const jewelry = Object.values(ITEMS).filter(
+      (item) => item.slot === 'neck' || item.slot === 'ring',
+    );
+    expect(jewelry.length).toBeGreaterThan(0);
+    for (const cls of ALL_CLASSES) {
+      expect(
+        jewelry.filter((item) => isFreshTwentyItem(cls, item)),
+        `${cls} has fresh-20 jewelry now: revisit the kit slots`,
+      ).toEqual([]);
     }
   });
 
@@ -142,8 +189,7 @@ describe('kit construction', () => {
     const main = ITEMS[kit?.equip.mainhand ?? ''];
     expect(main).toBeTruthy();
     expect(main?.kind === 'weapon' && main.hand === 'twohand').toBe(false);
-    const off = ITEMS[kit?.equip.offhand ?? ''];
-    expect(off?.kind === 'armor' && off.shield === true).toBe(true);
+    expect(isShieldItem(ITEMS[kit?.equip.offhand ?? ''])).toBe(true);
   });
 
   it('never hands a caster a strength piece over an intellect one', () => {
@@ -225,8 +271,13 @@ describe('/dev kit against a real Sim', () => {
     const sim = kitted('warrior', 'prot');
     const meta = sim.players.get(sim.playerId);
     expect(meta?.bags.filter(Boolean)).toHaveLength(4);
+    // 8 armor/weapon slots minimum. Not 11: neck and both rings stay empty because no
+    // fresh-20 jewelry exists (see the jewelry-gap test above).
     const worn = Object.values(meta?.equipment ?? {}).filter(Boolean);
-    expect(worn.length).toBeGreaterThanOrEqual(11);
+    expect(worn.length).toBeGreaterThanOrEqual(8);
+    for (const slot of ['helmet', 'chest', 'legs', 'mainhand'] as const) {
+      expect(meta?.equipment?.[slot], slot).toBeTruthy();
+    }
   });
 
   it('leaves level and spec alone: this is a GEAR command', () => {

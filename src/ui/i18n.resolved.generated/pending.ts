@@ -9,25 +9,185 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "es_ES": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "fr_FR": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "fr_CA": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
-  "zh_CN": [],
-  "zh_TW": [],
-  "ko_KR": [],
-  "ja_JP": [],
-  "pt_BR": [],
-  "ru_RU": [],
-  "cs_CZ": [],
-  "nl_NL": [],
-  "pl_PL": [],
-  "id_ID": [],
-  "tr_TR": [],
-  "sv_SE": [],
-  "vi_VN": [],
-  "da_DK": []
+  "it_IT": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "de_DE": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "zh_CN": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "zh_TW": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "ko_KR": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "ja_JP": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "pt_BR": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "ru_RU": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "cs_CZ": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "nl_NL": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "pl_PL": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "id_ID": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "tr_TR": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "sv_SE": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "vi_VN": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ],
+  "da_DK": [
+    "devCommand.itemChosen",
+    "devCommand.itemHeroicTag",
+    "devCommand.itemMore",
+    "devCommand.itemNoMatches",
+    "devCommand.itemResultsAria",
+    "devCommand.itemSearchPlaceholder",
+    "devCommand.itemUnknown"
+  ]
 };

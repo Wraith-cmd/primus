@@ -149,6 +149,7 @@ import {
   resolvePlayerSocialFlags,
   serializeIgnoreList,
 } from './chat_ignore_core';
+import { ClaudiumLauncherBalance } from './claudium_launcher_balance_core';
 import type { ClaudiumRail, ClaudiumSnapshot } from './claudium_window';
 import { ClaudiumWindow } from './claudium_window';
 import { formatClockTime } from './clock';
@@ -4073,7 +4074,7 @@ export class Hud {
     storeSnapshot: async () => {
       const snapshot = await this.claudiumHooks?.storeSnapshot();
       if (!snapshot) return { available: false, balance: null, items: [] };
-      this.setClaudiumLauncherBalance(snapshot.balance);
+      this.claudiumBalance.set(snapshot.balance);
       return {
         available: snapshot.available,
         balance: snapshot.balance,
@@ -4083,7 +4084,7 @@ export class Hud {
     spendStoreItem: async (itemId, kind, expectedCostClaudium) => {
       const result = await this.claudiumHooks?.spend(itemId, kind, expectedCostClaudium);
       if (result?.balance !== null && result?.balance !== undefined) {
-        this.setClaudiumLauncherBalance(result.balance);
+        this.claudiumBalance.set(result.balance);
       }
       return (
         result ?? {
@@ -4105,10 +4106,24 @@ export class Hud {
   // hooks are null and the window renders its clean disabled/empty state. The
   // window computes NOTHING; every number rides in through these hooks.
   private claudiumHooks: ClaudiumHooks | null = null;
-  private claudiumLauncherBalance: number | null = null;
-  private claudiumLauncherBalancePending = false;
-  private claudiumLauncherBalanceLastMs = 0;
-  private claudiumLauncherBalanceSeq = 0;
+  // The launcher's Claudium balance and its throttled read live in their own
+  // host-agnostic module (claudium_launcher_balance_core.ts). The HUD keeps only the
+  // wiring: what a read is, and what converging the display means. onChanged fires
+  // for EVERY balance write, which is what makes a store spend catch an open bag up
+  // (#2414), and ONLY when the number moved, which is what stops a poll that
+  // returned the value already on screen from rewriting the footer (#2411).
+  private readonly claudiumBalance = new ClaudiumLauncherBalance({
+    enabled: () => this.claudiumHooks !== null,
+    read: () => this.claudiumHooks?.balance() ?? Promise.resolve(null),
+    onChanged: () => {
+      // Footer-only, and on the cold-load-safe gate (#1538). A balance lands on its
+      // own schedule with no user action behind it, so a full renderBags() here
+      // would tear the window down under a player who is mid-drag, hovering a
+      // tooltip, or typing in bag search.
+      if (bagsWindowShown($('#bags').style.display)) this.bagsWindow.refreshMoneyRow();
+    },
+    now: () => Date.now(),
+  });
   private readonly claudiumWindow = new ClaudiumWindow({
     root: () => $('#claudium-window'),
     closeOthers: () => this.closeOtherWindows('#claudium-window'),
@@ -4120,7 +4135,7 @@ export class Hud {
           skus: [],
           nativeRails: { sol: false, usdc: false, woc: false },
         } satisfies ClaudiumSnapshot);
-      this.setClaudiumLauncherBalance(snapshot.balance);
+      this.claudiumBalance.set(snapshot.balance);
       return snapshot;
     },
     buy: (rail, sku) => this.claudiumHooks?.buy(rail, sku) ?? Promise.resolve(),
@@ -4298,50 +4313,11 @@ export class Hud {
 
   private claudiumLauncherHtml(): string {
     if (!this.claudiumHooks) return '';
-    this.refreshClaudiumLauncherBalance();
-    const label =
-      this.claudiumLauncherBalance === null
-        ? '--'
-        : formatNumber(this.claudiumLauncherBalance, { maximumFractionDigits: 0 });
+    this.claudiumBalance.refresh();
+    const balance = this.claudiumBalance.balance;
+    const label = balance === null ? '--' : formatNumber(balance, { maximumFractionDigits: 0 });
     const aria = t('hudChrome.claudium.open');
     return `<button type="button" class="claudium-launcher" data-claudium-launcher title="${esc(aria)}" aria-label="${esc(aria)}"><img class="claudium-coin" src="/claudium/icons/claudium_coin_64.webp" alt=""><span class="claudium-launcher-balance">${esc(label)}</span></button>`;
-  }
-
-  private setClaudiumLauncherBalance(balance: number | null): void {
-    this.claudiumLauncherBalance = balance;
-    this.claudiumLauncherBalanceLastMs = Date.now();
-  }
-
-  private refreshClaudiumLauncherBalance(force = false): void {
-    if (!this.claudiumHooks || this.claudiumLauncherBalancePending) return;
-    const now = Date.now();
-    if (!force && now - this.claudiumLauncherBalanceLastMs < 30_000) return;
-    this.claudiumLauncherBalancePending = true;
-    const seq = ++this.claudiumLauncherBalanceSeq;
-    void this.claudiumHooks
-      .balance()
-      .then((balance) => {
-        if (seq !== this.claudiumLauncherBalanceSeq) return;
-        this.setClaudiumLauncherBalance(balance);
-        // Footer-only, and on the cold-load-safe gate (#1538). This resolves on the
-        // balance read's own schedule with no user action behind it, so a full
-        // renderBags() here would tear the window down under a player who is
-        // mid-drag, hovering a tooltip, or typing in bag search. Re-entry is not a
-        // risk: the repaint does call claudiumLauncherHtml again, but
-        // claudiumLauncherBalancePending is still true here (.finally has not run),
-        // so the nested read returns before it ever consults the 30s throttle. The
-        // throttle re-stamp above is the second line of defense, not the first.
-        if (bagsWindowShown($('#bags').style.display)) this.bagsWindow.refreshMoneyRow();
-      })
-      .catch(() => {
-        if (seq !== this.claudiumLauncherBalanceSeq) return;
-        this.setClaudiumLauncherBalance(null);
-      })
-      .finally(() => {
-        if (seq === this.claudiumLauncherBalanceSeq) {
-          this.claudiumLauncherBalancePending = false;
-        }
-      });
   }
 
   // One-line aura effect summary HTML for the buff/debuff tooltip: the pure descriptor
@@ -12806,11 +12782,8 @@ export class Hud {
   attachClaudium(hooks: ClaudiumHooks): void {
     this.claudiumHooks = hooks;
     this.syncDailyRewardsSurfaceLabels();
-    this.claudiumLauncherBalance = null;
-    this.claudiumLauncherBalanceLastMs = 0;
-    this.claudiumLauncherBalanceSeq++;
-    this.claudiumLauncherBalancePending = false;
-    this.refreshClaudiumLauncherBalance(true);
+    this.claudiumBalance.reset();
+    this.claudiumBalance.refresh(true);
   }
 
   attachStorePromoCard(): void {
@@ -12844,7 +12817,7 @@ export class Hud {
   }
 
   async refreshClaudium(): Promise<void> {
-    this.refreshClaudiumLauncherBalance(true);
+    this.claudiumBalance.refresh(true);
     if (!this.claudiumWindow.isOpen) return;
     await this.claudiumWindow.render();
   }

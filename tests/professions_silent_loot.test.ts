@@ -146,6 +146,47 @@ describe('professions grants suppress the generic loot audio cue, not the text',
     expect(events[0].silent).toBe(true);
   });
 
+  // The #2415 replace arm mints its own copy through the same hub, so it needs
+  // the same suppression: without it a confirmed replace plays the generic loot
+  // ding stacked on the dedicated enchant cue, exactly the double-ding this
+  // whole file exists to pin. The plain-apply case above cannot see it (a
+  // different arm, a different mint), which is why this case is separate.
+  it('a confirmed enchant REPLACE emits a silent loot event for the replaced copy', () => {
+    const sim = new Sim({ seed: 42, playerClass: 'warrior', autoEquip: false });
+    const pid = sim.playerId;
+    sim.addItem('eastbrook_arming_sword', 1, pid);
+    sim.addItem('arcane_dust', 20, pid);
+    sim.tick();
+    sim.applyEnchant('eastbrook_arming_sword', 'enchant_weapon_might');
+    expect(sim.lastEnchantResult?.ok).toBe(true);
+    sim.tick(); // drain the first (already silent) apply before isolating the replace
+    sim.applyEnchant('eastbrook_arming_sword', 'enchant_weapon_intellect', undefined, true);
+    expect(sim.lastEnchantResult?.ok).toBe(true);
+    const events = lootEvents(sim.tick());
+    expect(events.length).toBe(1);
+    expect(events[0].silent).toBe(true);
+  });
+
+  // The WORN replace arm writes equipmentInstance in place and never reaches
+  // the grant hub, so it must emit NO loot event at all: its single cue is the
+  // enchantResult one. Pinned so a future refactor that routes the worn arm
+  // through a mint cannot quietly reintroduce the stacked ding.
+  it('a confirmed WORN enchant replace emits no loot event at all', () => {
+    const sim = new Sim({ seed: 42, playerClass: 'warrior', autoEquip: false });
+    const pid = sim.playerId;
+    sim.addItem('eastbrook_arming_sword', 1, pid);
+    sim.addItem('arcane_dust', 20, pid);
+    sim.tick();
+    sim.applyEnchant('eastbrook_arming_sword', 'enchant_weapon_might');
+    expect(sim.lastEnchantResult?.ok).toBe(true);
+    sim.tick();
+    sim.equipItem('eastbrook_arming_sword', pid);
+    sim.tick();
+    sim.applyEnchant('eastbrook_arming_sword', 'enchant_weapon_intellect', 'mainhand', true);
+    expect(sim.lastEnchantResult?.ok).toBe(true);
+    expect(lootEvents(sim.tick()).length).toBe(0);
+  });
+
   it('a salvage emits a silent loot event for the reclaimed material', () => {
     const sim = new Sim({ seed: 42, playerClass: 'warrior', autoEquip: false });
     const pid = sim.playerId;

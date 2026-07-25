@@ -675,7 +675,12 @@ function resolveReplaceEnchantBagged(
   if (!consumed) return { ok: false, itemId, enchantId, reason: 'not_held' };
   ctx.onInventoryChangedForQuests(meta);
   for (const reagent of enchant.reagents) ctx.removeItem(reagent.itemId, reagent.count, pid);
-  ctx.addItemInstance(itemId, replacedEnchantPayloadFor(consumed, enchant), pid);
+  // silent, exactly like the plain apply mint below: the enchantResult event
+  // fires its own dedicated cue (audio.enchant in src/game/audio.ts), so the
+  // generic loot ding would otherwise stack on top of it for every replace.
+  ctx.addItemInstance(itemId, replacedEnchantPayloadFor(consumed, enchant), pid, 1, {
+    silent: true,
+  });
   // Quality-tiered gain: the applied enchant's reagent-derived tier, exactly
   // like the plain arms (also stamps the shared throttle).
   grantEnchantingSkill(ctx, meta, enchantGainTier(enchant));

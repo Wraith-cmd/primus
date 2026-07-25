@@ -206,10 +206,23 @@ export function acquireRecipeForRecipe(
   return { ok: true, recipeId };
 }
 
+/** Whether `inventory` holds a slot for `itemId` carrying a signed instance
+ *  stamped with `playerName` (a self-gathered signed material). The
+ *  host-agnostic form of the #1145 self-signed predicate: no PlayerMeta, so
+ *  the crafting window's view core (src/ui/crafting_view.ts) consumes the
+ *  SAME check the sim charges by, and the two can never diverge. */
+export function holdsSelfSignedInstance(
+  inventory: readonly InvSlot[],
+  playerName: string,
+  itemId: string,
+): boolean {
+  return inventory.some((s) => s.itemId === itemId && s.instance?.signer === playerName);
+}
+
 /** Whether `meta` holds an inventory slot for `itemId` carrying a signed
  *  instance stamped with `meta`'s OWN name (a self-gathered signed material). */
 function hasSelfSignedInstance(meta: PlayerMeta, itemId: string): boolean {
-  return meta.inventory.some((s) => s.itemId === itemId && s.instance?.signer === meta.name);
+  return holdsSelfSignedInstance(meta.inventory, meta.name, itemId);
 }
 
 /** Whether `meta` holds an inventory slot for `itemId` carrying a signed
@@ -245,10 +258,29 @@ export function requiredReagentCount(
   craftSkills: CraftSkillState,
   professionId: string,
 ): RequiredReagentResult {
-  const afterSelfSigned =
-    meta && hasSelfSignedInstance(meta, reagent.itemId)
-      ? Math.max(1, reagent.count - 1)
-      : reagent.count;
+  return requiredReagentCountFor(
+    !!meta && hasSelfSignedInstance(meta, reagent.itemId),
+    reagent,
+    craftSkills,
+    professionId,
+  );
+}
+
+/**
+ * The count math behind `requiredReagentCount`, with the #1145 self-signed
+ * fact resolved by the caller (holdsSelfSignedInstance above) instead of read
+ * off a PlayerMeta. Host-agnostic and draw-free, exported so the crafting
+ * window's view core computes its displayed requirement and Craft gate with
+ * the SAME function the sim's availability check and consumption use, the
+ * single-surface doctrine the difficulty label already follows.
+ */
+export function requiredReagentCountFor(
+  hasSelfSigned: boolean,
+  reagent: ProfessionReagent,
+  craftSkills: CraftSkillState,
+  professionId: string,
+): RequiredReagentResult {
+  const afterSelfSigned = hasSelfSigned ? Math.max(1, reagent.count - 1) : reagent.count;
   const multiplier = materialCostMultiplier(craftSkills, professionId);
   return {
     count: Math.max(1, Math.floor(afterSelfSigned * multiplier)),
@@ -329,7 +361,10 @@ export function resolveCraftForRecipe(
       !!meta?.mobileStation &&
       isStationActive(meta.mobileStation, ctx.tickCount) &&
       stationTypeForCraft(meta.mobileStation.craftId) === recipe.stationType;
-    if (!entity || (!isAtStation(entity.pos, recipe.stationType) && !mobileSatisfies)) {
+    if (
+      !entity ||
+      (!isAtStation(ctx.stationPlacements, entity.pos, recipe.stationType) && !mobileSatisfies)
+    ) {
       return { ok: false, recipeId: recipe.id, reason: 'station_required' };
     }
   }
@@ -564,13 +599,26 @@ export function resolveCraftForRecipe(
       meta.archetype.hobbyCraft,
       recipe.skillReq,
     );
+    const skillBefore = meta.craftSkills[recipe.professionId] ?? 0;
     gainCraftSkill(meta.craftSkills, recipe.professionId, CRAFT_SKILL_GAIN * multiplier);
+    const skillLearned = (meta.craftSkills[recipe.professionId] ?? 0) - skillBefore;
     recordAction(meta);
-    // Character XP for the craft (profession_xp.ts), tier-scaled and
-    // level-gated the same way gathering/kill XP are: a max-level player
-    // spamming a trivial (gray) recipe gets zero.
+    // Character XP for the craft is LEARNING XP: the level-banded curve
+    // (profession_xp.ts) scaled by the skill this craft actually taught (the
+    // applied post-clamp delta, 0..CRAFT_SKILL_GAIN). A craft that teaches
+    // nothing, gray by tier, above the archetype ceiling, or at the craft's
+    // 125 content cap, pays nothing. The character-level green/gray falloff
+    // alone cannot bound a level-20 recipe at the level-20 character cap, so
+    // the skill journey is the dimension that keeps total craft XP finite
+    // (craft skill is additive-only and hard-capped, so every recipe's
+    // lifetime XP contribution per character is a closed sum).
     const entity = ctx.entities.get(pid);
-    if (entity) ctx.grantXp(craftActionXp(recipe.level, entity.level), meta);
+    if (entity) {
+      const xp = Math.round(
+        craftActionXp(recipe.level, entity.level) * (skillLearned / CRAFT_SKILL_GAIN),
+      );
+      if (xp > 0) ctx.grantXp(xp, meta);
+    }
   }
   const result: CraftResult = {
     ok: true,

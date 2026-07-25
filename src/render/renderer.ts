@@ -40,8 +40,8 @@ import { tEntity } from '../ui/entity_i18n';
 import type { IWorld } from '../world_api';
 import { isVisuallyDead } from './anim_state';
 import { AOE_RING_LIFETIME, aoeRingAnim } from './aoe_ring';
-import { buildArtisanRowProps } from './artisan_row_props';
 import type { AmbientPointSource, SpatialAudioSink, Surface } from './audio_sink';
+import { attachBankerChestToNpcView } from './banker_chest';
 import { type BirdsView, buildBirds } from './birds';
 import { createCameraBoom, stepCameraBoom } from './camera_boom_core';
 import { type CameraOcclusionState, stepCameraOcclusion } from './camera_collision';
@@ -98,7 +98,14 @@ import { shouldPlayDeedFirework } from './deed_fx_gate';
 import { buildDelveModule } from './delve_interiors';
 import { buildDelveInteractable, syncDelveInteractableVisibility } from './delve_props';
 import { buildDoorBody } from './door_portal';
+import {
+  createDrawStatsAccumulator,
+  type DrawStatsAccumulator,
+  type DrawStatsCounters,
+  governorDrawSignal,
+} from './draw_stats_core';
 import { DungeonInteriors, ensureDungeonAssets } from './dungeon';
+import { buildEastbrookTownView, type EastbrookTownView } from './eastbrook_town';
 import { objectDisplayName } from './entity_labels';
 import { resolveEnvironmentPrefilterPlan } from './env_prefilter_core';
 import { advanceSelfFacing, releaseSelfFacing } from './facing_smooth';
@@ -152,6 +159,7 @@ import {
   nameplateScreenTransform,
 } from './nameplate_projection';
 import { facingAlpha, remoteEntityAlpha } from './net_interp_core';
+import { buildEastbrookNoticeboard } from './noticeboard';
 import { resolveDirectPickEntityId } from './pick_resolution';
 import { PlacedAssetsView } from './placed_assets';
 import {
@@ -162,8 +170,11 @@ import {
 import { buildComposer, type PostPipeline } from './post';
 import {
   constrainedEntryViewCreateBudget,
+  interactionLandmarkViewPriority,
+  mandatoryLandmarkViewsReady,
   orderedPrewarmIds,
   type PrewarmPolicy,
+  partitionMandatoryLandmarkCandidates,
   prewarmEntryRuns,
   remainingPrewarmViewBudget,
   resolvePrewarmPolicy,
@@ -687,12 +698,14 @@ export interface EntityView {
    *  frame drops the stale view so it rebuilds with the new mesh. */
   builtTemplateId?: string;
   portal?: THREE.Mesh; // dungeon door swirl
-  objectCasters: THREE.Object3D[]; // object-view shadow meshes, distance-gated
+  objectCasters: THREE.Object3D[]; // object/accessory shadow meshes, distance-gated
   viewLights: THREE.PointLight[]; // point lights this view contributes to the budget
   shadowOn: boolean;
   isFar: boolean;
   // hidden until its shader programs finish linking off-thread (async-compile gate)
   compilePending: boolean;
+  // Resolves when compilePending clears, including the bounded fail-soft timeout.
+  compileReady: Promise<void> | null;
   lastOverheadEmoteKey: string | null;
   recklessOn?: boolean;
   // render-space position last frame, for true u/s locomotion speed
@@ -996,6 +1009,13 @@ export class Renderer {
   private entityViewCreateRangeSq = ENTITY_VIEW_CREATE_RANGE_SQ;
   private entityViewDestroyRangeSq = ENTITY_VIEW_DESTROY_RANGE_SQ;
   private renderBudgetGovernor!: RenderBudgetGovernor;
+  // Composer tiers only (packet 0 R1): with info.autoReset off, this turns the
+  // monotonic WebGL counters into per-frame deltas; null on every other profile
+  // (low/medium, native-iOS high/ultra, advanced with effects shed), which keep
+  // three's per-render auto-reset and their live reads bit-identical to before.
+  private drawStats: DrawStatsAccumulator | null = null;
+  // Last completed frame's draw delta (what perfStats serves on composer tiers).
+  private drawStatsFrame: DrawStatsCounters = { calls: 0, triangles: 0, points: 0, lines: 0 };
   private baseExposure = 1.12; // tone-mapping exposure at brightness 1.0
   private tmpV = new THREE.Vector3();
   private viewCandidates: ViewCandidate[] = [];
@@ -1104,6 +1124,7 @@ export class Renderer {
       fogFar: number,
     ): void;
   };
+  private eastbrookTownView!: EastbrookTownView;
   private lightRank: RankedPointLight[] = [];
   private doomedIds: number[] = [];
   private dungeons: DungeonInteriors | null = null;
@@ -1258,6 +1279,16 @@ export class Renderer {
       this.captureGlIdentity();
     });
     initGfxTier(this.webgl); // software-GL autodetect needs the live context
+    if (GFX.composer) {
+      // three r165's render() resets info per pass (after the shadow pass, see
+      // draw_stats_core.ts header), so with the composer's multiple passes every
+      // post-frame reader saw only the final fullscreen pass (1 call/1 triangle).
+      // Accumulate manually instead: counters run monotonically and sync() takes
+      // per-frame deltas. Non-composer profiles keep the auto-reset so their
+      // governor input and telemetry stay bit-identical (packet 0 R1).
+      this.webgl.info.autoReset = false;
+      this.drawStats = createDrawStatsAccumulator();
+    }
     // The lightweight material path does not preload HDR sky/water assets.
     // Keep the renderer's HDR/IBL branch aligned with that preload decision.
     this.lowGfx = !GFX.standardMaterials;
@@ -1566,6 +1597,14 @@ export class Renderer {
     this.scene.add(this.valeCupTeamRings.group);
     this.propsView = props;
 
+    // Eastbrook's replacement town is a distinct, stable scene subtree. Its
+    // six opaque building volumes stay individual for camera roof ghosting;
+    // civic, market, fence, and wall geometry is initialization-batched.
+    this.eastbrookTownView = buildEastbrookTownView(this.sim.cfg.seed);
+    setRenderCategory(this.eastbrookTownView.group, 'props');
+    this.scene.add(this.eastbrookTownView.group);
+    freezeStaticMatrices(this.eastbrookTownView.group);
+
     // Map-editor play-test: freely placed GLB models (cosmetic, render-only). Loads
     // async and pops in; absent for the built-in world. The view supports live
     // editing (add/move/remove/reSeat), reached through the editor-only
@@ -1588,14 +1627,9 @@ export class Renderer {
     freezeStaticMatrices(gatherNodes.group);
     this.gatherNodeMeshes = gatherNodes.group.children;
 
-    const artisanRow = buildArtisanRowProps(this.sim.cfg.seed);
-    setRenderCategory(artisanRow.group, 'props');
-    this.scene.add(artisanRow.group);
-    freezeStaticMatrices(artisanRow.group);
-
     // Crafting-station scenery (Professions 2.0): static, except the kitchens
     // fire, whose flame + light join the campfire flicker/ember pass above.
-    const stationProps = buildStationProps(this.sim.cfg.seed);
+    const stationProps = buildStationProps(this.sim.cfg.seed, this.sim.stationPlacements);
     setRenderCategory(stationProps.group, 'props');
     this.scene.add(stationProps.group);
     freezeStaticMatrices(stationProps.group);
@@ -2052,8 +2086,17 @@ export class Renderer {
       pixelRatio: this.webgl.getPixelRatio(),
       width: this.viewport.width,
       height: this.viewport.height,
-      calls: info.render.calls + this.lastWaterSimulationPasses,
-      triangles: info.render.triangles + this.lastWaterSimulationPasses * 2,
+      // Composer tiers serve the accumulated per-frame delta (the live counter is
+      // monotonic there, so it already includes the off-screen water-simulation
+      // passes); other profiles keep the live post-frame read, where three's
+      // per-render auto-reset drops those passes, so add them back at 1 draw call
+      // and 2 triangles each.
+      calls: this.drawStats
+        ? this.drawStatsFrame.calls
+        : info.render.calls + this.lastWaterSimulationPasses,
+      triangles: this.drawStats
+        ? this.drawStatsFrame.triangles
+        : info.render.triangles + this.lastWaterSimulationPasses * 2,
       geometries: info.memory.geometries,
       textures: info.memory.textures,
       programs: info.programs?.length ?? 0,
@@ -2286,13 +2329,26 @@ export class Renderer {
     // signal it is trying to fix. Manual render-scale changes still apply via
     // setRenderScale(); the automatic governor keeps to grass/VFX budgets here.
     const lockedRenderScale = this.effectiveRenderScale;
+    // Composer tiers route through governorDrawSignal, which pins the frozen
+    // legacy constant (1 call/1 triangle, the pre-accumulator post-frame read)
+    // so the governor's draw arm stays exactly as dead as before (packet 0 R1).
+    // Every other profile (including non-composer high/ultra: native iOS,
+    // advanced with effects shed) keeps the live read below, bit-identical.
+    const drawSignal = this.drawStats
+      ? governorDrawSignal(GFX.tier, this.drawStatsFrame)
+      : info.render;
     const state = this.renderBudgetGovernor.update({
       dt,
       frameMs,
       totalMs: previousTotalMs,
       submitMs: previousSubmitMs,
-      calls: info.render.calls + this.lastWaterSimulationPasses,
-      triangles: info.render.triangles + this.lastWaterSimulationPasses * 2,
+      // Non-composer profiles read info.render live, where three's per-render
+      // auto-reset drops the off-screen water-simulation passes: add them back
+      // (1 draw call / 2 triangles per pass). Composer tiers pass drawSignal
+      // through untouched, so the frozen legacy constant stays exact and the
+      // water passes already inside drawStatsFrame are never counted twice.
+      calls: drawSignal.calls + (this.drawStats ? 0 : this.lastWaterSimulationPasses),
+      triangles: drawSignal.triangles + (this.drawStats ? 0 : this.lastWaterSimulationPasses * 2),
       grassVisibleTufts: this.lastFrameStats.foliage.grassVisibleTufts,
       grassVisibleChunks: this.lastFrameStats.foliage.grassVisibleChunks,
       activeViews: this.lastFrameStats.activeViews,
@@ -2333,6 +2389,8 @@ export class Renderer {
     if (e.id === p.targetId) return -90;
     if (e.kind === 'mob' && e.hostile && d2 <= 35 * 35) return 0;
     if (e.kind === 'npc' && d2 <= 45 * 45) return 1;
+    const landmarkPriority = interactionLandmarkViewPriority(e.templateId, d2);
+    if (landmarkPriority !== null) return landmarkPriority;
     if (e.kind === 'object' && (e.lootable || isPersistentPortalObject(e))) return 2;
     if (e.kind === 'player') return 3;
     if (e.kind === 'mob' && e.hostile) return 4;
@@ -2386,6 +2444,39 @@ export class Renderer {
       created++;
     }
     return created;
+  }
+
+  private async createMandatoryLandmarkViews(
+    player: Entity,
+    createdViewTypes: string[],
+  ): Promise<{ created: number; ids: number[] }> {
+    const mandatory = partitionMandatoryLandmarkCandidates(
+      this.sim.entities.values(),
+      player.pos,
+    ).mandatory;
+    const ids = mandatory.map((entity) => entity.id);
+    const compileWaits: Promise<void>[] = [];
+    let created = 0;
+    for (const entity of mandatory) {
+      let view = this.views.get(entity.id);
+      if (!view) {
+        this.createView(entity);
+        view = this.views.get(entity.id);
+        if (view) {
+          this.sampleCreatedViewType(createdViewTypes, entity);
+          created++;
+        }
+      }
+      if (view?.compileReady) compileWaits.push(view.compileReady);
+    }
+    // Parallel compile resolves, rejects, or clears through the per-view 1500ms
+    // fail-soft guard. Without parallel compile there are no promises and the
+    // views begin ready for the per-entry synchronous link pass.
+    await Promise.all(compileWaits);
+    if (!mandatoryLandmarkViewsReady(ids, this.views)) {
+      throw new Error('Mandatory interaction landmark views did not become ready');
+    }
+    return { created, ids };
   }
 
   private createPersistentPortalViews(
@@ -2462,6 +2553,16 @@ export class Renderer {
       this.cameraLookAt.y,
       this.cameraLookAt.z,
       fogFar,
+    );
+    this.eastbrookTownView.update(
+      this.camera.position.x,
+      this.camera.position.y,
+      this.camera.position.z,
+      this.cameraLookAt.x,
+      this.cameraLookAt.y,
+      this.cameraLookAt.z,
+      fogFar,
+      this.reducedMotion(),
     );
     this.foliage.update(
       p.pos.x,
@@ -2880,10 +2981,21 @@ export class Renderer {
     return Math.max(0, this.webgl.info.memory.textures - before);
   }
 
+  // Composer tiers only: drop an out-of-band render (prewarm pass, screenshot)
+  // from the draw-stats accumulator and zero the WebGL counters so the next
+  // sync() delta covers in-band work only. No-op on every other profile, where
+  // three's per-render auto-reset already isolates passes.
+  private discardOutOfBandDraws(): void {
+    if (!this.drawStats) return;
+    this.drawStats.noteOutOfBand(this.webgl.info.render);
+    this.webgl.info.reset();
+  }
+
   private renderPrewarmPass(dt: number): void {
     this.prewarmWorldFrame(dt);
     if (this.post) this.post.render();
     else this.webgl.render(this.scene, this.camera);
+    this.discardOutOfBandDraws();
   }
 
   private diagnosticsBaselineForPrewarm(): RendererPrewarmDiagnosticsBaselineStats | null {
@@ -2939,6 +3051,7 @@ export class Renderer {
     const p = this.sim.player;
     let createdViews = 0;
     let candidateViews = 0;
+    let mandatoryLandmarkIds: number[] = [];
     let doorPrewarmGroup: THREE.Group | null = null;
     let interiorPrewarmGroup: THREE.Group | null = null;
     let entityPrewarmGroup: THREE.Group | null = null;
@@ -2962,6 +3075,8 @@ export class Renderer {
       category: RendererPrewarmCategory;
       priority: number;
       required: boolean;
+      /** This small entry still runs if an earlier required view consumed maxMs. */
+      deadlineExempt?: boolean;
       run: () => void | Promise<void>;
       detail?: () => string;
     };
@@ -2969,7 +3084,7 @@ export class Renderer {
     const runEntry = async (entry: PrewarmManifestEntry): Promise<void> => {
       const before = this.prewarmCounts();
       const entryStarted = performance.now();
-      if (entryStarted >= deadline) {
+      if (entryStarted >= deadline && !entry.deadlineExempt) {
         manifestEntries.push({
           id: entry.id,
           category: entry.category,
@@ -3030,6 +3145,32 @@ export class Renderer {
         required: true,
         run: () => {
           createdViews += this.createRequiredViews(p, createdViewTypes);
+        },
+        detail: () => `created=${createdViews}`,
+      },
+      {
+        id: 'views.landmarks',
+        category: 'views',
+        priority: 12,
+        required: true,
+        deadlineExempt: true,
+        run: async () => {
+          const result = await this.createMandatoryLandmarkViews(p, createdViewTypes);
+          mandatoryLandmarkIds = result.ids;
+          createdViews += result.created;
+        },
+        detail: () =>
+          `required=${mandatoryLandmarkIds.length};ready=${mandatoryLandmarkViewsReady(
+            mandatoryLandmarkIds,
+            this.views,
+          )};created=${createdViews}`,
+      },
+      {
+        id: 'views.persistent-portals',
+        category: 'views',
+        priority: 14,
+        required: true,
+        run: () => {
           createdViews += this.createPersistentPortalViews(
             createdViewTypes,
             deadline,
@@ -4025,6 +4166,13 @@ export class Renderer {
       body = built.group;
       height = built.height;
       objectMesh = body!;
+    } else if (e.kind === 'object' && e.templateId === 'noticeboard_eastbrook') {
+      // The civic board is itself the readable interaction landmark. Keep the
+      // complete GLB on every tier and avoid the generic loot sparkle.
+      const built = buildEastbrookNoticeboard();
+      body = built.group;
+      height = built.height;
+      objectMesh = body!;
     } else if (e.kind === 'object' && e.templateId?.startsWith('delve_')) {
       // Delve interactables: skip the object pool (each is unique/stateful) and
       // build a dedicated procedural mesh that matches the crypt aesthetic.
@@ -4146,6 +4294,13 @@ export class Renderer {
       group.add(visual.root);
       height = visual.height;
     }
+
+    const bankerChest = attachBankerChestToNpcView(
+      group,
+      e,
+      this.sim.cfg.seed,
+      this.sim.cfg.world?.npcs,
+    );
 
     let clickTarget: THREE.Object3D;
     if (visual) {
@@ -4272,9 +4427,11 @@ export class Renderer {
     );
     this.nameplateLayer.appendChild(np);
 
-    // object views gate their own casters; character shadows live in visual
+    // Object views gate their own casters. Character shadows live in visual,
+    // while separately composed accessories use this same distance gate.
     const objectCasters: THREE.Object3D[] = [];
     if (!visual) collectCasters(group, objectCasters);
+    else if (bankerChest) collectCasters(bankerChest, objectCasters);
     // Register any point lights this view owns (e.g. the quest-object glow) into the
     // constant point-light budget so numPointLights never changes as it streams in.
     const reconciledLights = reconcileViewPointLights(group, [], this.viewLights);
@@ -4346,6 +4503,7 @@ export class Renderer {
       shadowOn: true,
       isFar: false,
       compilePending: false,
+      compileReady: null,
       lastOverheadEmoteKey: null,
       lastX: e.pos.x,
       lastZ: e.pos.z,
@@ -4374,7 +4532,9 @@ export class Renderer {
     // class is already prewarmed, and the self render path does not re-evaluate
     // the compilePending flag (only the non-self loop does), so gating it would
     // strand the player invisible. Other entities un-hide via that loop.
-    if (view && e.id !== this.sim.player.id) this.gateViewOnCompile(view, group);
+    if (view && e.id !== this.sim.player.id) {
+      view.compileReady = this.gateViewOnCompile(view, group);
+    }
   }
 
   // Generic anti-freeze layer. A freshly-streamed view links its shader programs
@@ -4386,21 +4546,29 @@ export class Renderer {
   // variants the prewarm cannot anticipate (e.g. the env-map-lit material that links
   // only when you walk into a biome) never hitch in-world. The prewarm stays a pure
   // optimization: already-compiled spawn content resolves instantly, no pop-in.
-  private gateViewOnCompile(view: EntityView, group: THREE.Group): void {
-    if (!this.asyncCompileSupported) return;
+  private gateViewOnCompile(view: EntityView, group: THREE.Group): Promise<void> | null {
+    if (!this.asyncCompileSupported) return null;
     view.compilePending = true;
     group.visible = false;
-    let settled = false;
-    const clear = (): void => {
-      if (settled) return;
-      settled = true;
-      view.compilePending = false;
-    };
-    const guard = setTimeout(clear, VIEW_COMPILE_GATE_MAX_MS);
-    this.webgl
-      .compileAsync(group, this.camera, this.scene)
-      .then(clear, clear)
-      .finally(() => clearTimeout(guard));
+    return new Promise<void>((resolve) => {
+      let settled = false;
+      const clear = (): void => {
+        if (settled) return;
+        settled = true;
+        view.compilePending = false;
+        resolve();
+      };
+      const guard = setTimeout(clear, VIEW_COMPILE_GATE_MAX_MS);
+      try {
+        this.webgl
+          .compileAsync(group, this.camera, this.scene)
+          .then(clear, clear)
+          .finally(() => clearTimeout(guard));
+      } catch {
+        clearTimeout(guard);
+        clear();
+      }
+    });
   }
 
   /** The visual the player currently sees (form swaps hide the base rig). */
@@ -4984,6 +5152,11 @@ export class Renderer {
       return t;
     };
 
+    // Composer tiers: snapshot the previous frame's accumulated draw counters
+    // (all composer + shadow passes) and re-arm the baseline BEFORE the governor
+    // reads its draw signal below. The WebGL counters themselves stay monotonic
+    // (autoReset is off); out-of-band renders reset them via discardOutOfBandDraws.
+    if (this.drawStats) this.drawStatsFrame = this.drawStats.beginFrame(this.webgl.info.render);
     this.updateAdaptiveResolution(dt);
     this.viewportPollTimer += dt;
     if (this.viewportPollTimer >= 0.25) {
@@ -5167,7 +5340,8 @@ export class Renderer {
           v.bearVisual?.setShadow(wantFormShadow);
           v.catVisual?.setShadow(wantFormShadow);
           v.travelVisual?.setShadow(wantFormShadow);
-        } else if (wantShadow !== v.shadowOn) {
+        }
+        if (wantShadow !== v.shadowOn) {
           v.shadowOn = wantShadow;
           for (const caster of v.objectCasters) (caster as THREE.Mesh).castShadow = wantShadow;
         }
@@ -5232,6 +5406,7 @@ export class Renderer {
           v.group,
           e.templateId,
           e.lootable,
+          v.compilePending,
           !isPortalObject || d2 <= this.entityViewCreateRangeSq,
         );
         if (v.sparkle && vis) {
@@ -5261,7 +5436,10 @@ export class Renderer {
           if (glow) {
             const lit = this.sim.mailUnread > 0;
             glow.visible = lit;
-            if (lit) glow.position.y = 1.56 + Math.sin(this.time * 2.4 + e.id) * 0.06;
+            if (lit) {
+              const baseLocalY = glow.userData.mailGlowBaseLocalY as number;
+              glow.position.y = baseLocalY + Math.sin(this.time * 2.4 + e.id) * 0.06;
+            }
           }
         }
         continue;
@@ -5962,6 +6140,16 @@ export class Renderer {
       this.cameraLookAt.z,
       fogFar,
     );
+    this.eastbrookTownView.update(
+      this.camera.position.x,
+      this.camera.position.y,
+      this.camera.position.z,
+      this.cameraLookAt.x,
+      this.cameraLookAt.y,
+      this.cameraLookAt.z,
+      fogFar,
+      this.reducedMotion(),
+    );
     this.dungeons?.update(
       this.camera.position.x,
       this.camera.position.y,
@@ -6173,6 +6361,10 @@ export class Renderer {
       return out.toDataURL('image/jpeg', quality);
     } catch {
       return null;
+    } finally {
+      // The extra render above must not count toward the next frame's draw
+      // stats on composer tiers (covers the throw path too).
+      this.discardOutOfBandDraws();
     }
   }
 

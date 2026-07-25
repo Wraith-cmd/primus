@@ -73,6 +73,8 @@ export const hudChromeStrings = {
     close: 'Close daily rewards',
     loading: 'Loading daily rewards...',
     error: 'Could not load daily rewards.',
+    disabled:
+      'Daily Rewards is currently disabled. We will announce updates to this feature in the Discord channel.',
     intro:
       'Hold enough WOC in your verified wallet to unlock daily rewards. Earn points with one daily spin and rotating tasks, then climb the daily leaderboard for a share of the prize pool.',
     disclaimer:
@@ -1097,9 +1099,9 @@ export const hudChromeStrings = {
       critChance: 'Your chance for an attack to strike critically, dealing double damage.',
       dodge: 'Your chance to completely avoid an incoming melee attack, taking no damage.',
       critRating:
-        'Crit rating from your gear and set bonuses, raising the critical strike chance of both your attacks and your spells. Every 10 rating grants exactly 1% crit.',
+        'Crit rating from your gear and set bonuses, raising the critical strike chance of both your attacks and your spells. Every 20 rating grants exactly 1% crit.',
       hasteRating:
-        'Haste rating from your gear and set bonuses, speeding up your attacks and spellcasting. Every 10 rating grants exactly 1% haste.',
+        'Haste rating from your gear and set bonuses, speeding up your attacks and spellcasting. Every 20 rating grants exactly 1% haste.',
       parry:
         'Your chance to fully parry a frontal melee attack, taking no damage. A blow from behind cannot be parried.',
       hitRating:
@@ -1414,6 +1416,8 @@ export const hudChromeStrings = {
       claw: 'Claw',
       horn: 'Horn',
       tusk: 'Tusk',
+      meat: 'Meat',
+      cloth: 'Cloth',
     },
   },
   // #1143: persistent town focus allocation panel. Reuses the corpseHarvest
@@ -2096,6 +2100,9 @@ export const hudChromeStrings = {
       takeParcelsFirst: 'Take the parcels out before discarding the letter.',
     },
   },
+  noticeboard: {
+    empty: 'Nothing seems posted.',
+  },
   // The bank window (the Gilded Strongbox): a pooled deposit box shown while standing
   // at a banker NPC. Plain click withdraws a stack; shift-click withdraws a partial
   // amount; the footer buys 6-slot expansion blocks. The withdraw-quantity and
@@ -2275,13 +2282,19 @@ export const hudChromeStrings = {
       wood: 'Timber Stand',
       herb: 'Herb Patch',
     },
-    // Tooltip requirement line, shown for tier 2+ nodes only (tier 1 is the
-    // bare-hands floor); doubles as the locked-state line (red while the
-    // viewer's owned-best tool falls short).
+    // Tooltip requirement line for tier 2+ nodes; doubles as the locked-state
+    // line (red while the viewer's owned-best tool falls short).
     tierRequired: {
       mining: 'Requires a tier {tier} mining pick',
       logging: 'Requires a tier {tier} logging axe',
       herbalism: 'Requires a tier {tier} herbalism sickle',
+    },
+    // Tooltip requirement line for tier-1 nodes (#2343: every harvest needs a
+    // matching tool, bare hands never gather, so tier 1 needs the base tool).
+    requiresTool: {
+      mining: 'Requires a mining pick',
+      logging: 'Requires a logging axe',
+      herbalism: 'Requires a herbalism sickle',
     },
     // gatherDenied error toast, surface 'node', worded per node family.
     toolTierUnmet: {
@@ -2289,10 +2302,53 @@ export const hudChromeStrings = {
       logging: 'You need a tier {tier} logging axe to fell this stand.',
       herbalism: 'You need a tier {tier} herbalism sickle to gather this patch.',
     },
+    // gatherDenied error toast for requiredTier 1 (#2343): the player owns no
+    // matching tool at all, so no tier number is named. The fishing arm is
+    // the startFishing implement gate (surface 'fishing').
+    toolRequired: {
+      mining: 'You need a mining pick to harvest this vein.',
+      logging: 'You need a logging axe to fell this stand.',
+      herbalism: 'You need a herbalism sickle to gather this patch.',
+      fishing: 'You need a fishing pole to cast a line.',
+    },
+    // gatherToolNoNode error toast (#2343): the player used a gathering tool
+    // from the bags with no matching resource node within interact range.
+    noNodeNearby: {
+      mining: 'There is no ore vein within reach.',
+      logging: 'There is no timber stand within reach.',
+      herbalism: 'There is no herb patch within reach.',
+    },
     // gatherDenied error toast, surface 'corpse': profession-neutral (a corpse
     // harvest is gated by the best owned tool across ALL gathering
     // professions, so no single tool is named).
     toolTierUnmetCorpse: 'You need a tier {tier} gathering tool to recover the finest materials.',
+    // Gathering-tool item tooltip lines (#2343): what the tool is, what it is
+    // required for, how using it behaves, and its speed/fishing bonuses. All
+    // composed client-side (src/ui/gather_tool_tooltip.ts), keyed per
+    // profession (single-key interpolation, never concatenated fragments).
+    toolTooltip: {
+      kind: {
+        mining: 'Mining tool (tier {tier})',
+        logging: 'Logging tool (tier {tier})',
+        herbalism: 'Herbalism tool (tier {tier})',
+        fishing: 'Fishing rod (tier {tier})',
+      },
+      unlocks: {
+        mining: 'Required to mine ore veins up to tier {tier}.',
+        logging: 'Required to fell timber stands up to tier {tier}.',
+        herbalism: 'Required to gather herb patches up to tier {tier}.',
+      },
+      use: {
+        mining: 'Use: Mine a nearby ore vein.',
+        logging: 'Use: Fell a nearby timber stand.',
+        herbalism: 'Use: Gather from a nearby herb patch.',
+      },
+      speed: 'Gathers faster at nodes below tier {tier}.',
+      rodRequired: 'Required to fish.',
+      rodBite: 'Fish bite up to {seconds}s sooner.',
+      rodReel: 'Extends the reel window by {seconds}s.',
+      rodBand: 'Unlocks richer catch tables at fishing skill {skill} and above.',
+    },
     // Full-bag signed-grant downgrade toasts, rendered from the
     // text-free personal gatherDowngrade SimEvent, one key per lost arm:
     // 'mark' (the yield arrived unsigned) and 'find' (the jackpot dropped).
@@ -2807,7 +2863,7 @@ export const hudChromeStrings = {
       lunar_tide: 'Lunar Tide (pulsing area damage)',
       enrage: 'Enrages at low health',
       shuddering_stomp: 'Shuddering Stomp (area stun)',
-      necrotic_shockwave: 'Necrotic Shockwave (heavy area damage)',
+      grave_inferno: 'Grave Inferno (channeled fire AoE, stay spread)',
       grave_cleaver: 'Grave-Cleaver (frontal cleave)',
       shadow_nova: 'Shadow Nova (area burst)',
       profane_mending: 'Profane Mending (heals its allies)',

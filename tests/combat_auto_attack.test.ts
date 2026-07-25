@@ -19,6 +19,7 @@ import { createMob } from '../src/sim/entity';
 import { advancePendingProjectiles } from '../src/sim/projectile_travel';
 import { type PlayerMeta, Sim } from '../src/sim/sim';
 import type { Aura, Entity, PlayerClass, SimEvent } from '../src/sim/types';
+import { placePlayerInOpenField } from './helpers/open_field';
 
 type DamageEvent = Extract<SimEvent, { type: 'damage' }>;
 
@@ -33,6 +34,7 @@ function makeSim(
 ): { sim: Sim; p: Entity; meta: PlayerMeta } {
   const sim = new Sim({ seed, playerClass: cls, autoEquip: true });
   sim.setPlayerLevel(level);
+  placePlayerInOpenField(sim);
   const p = sim.player;
   const meta = sim.players.get(p.id);
   if (!meta) throw new Error('test player metadata missing');

@@ -424,6 +424,7 @@ export class MobileControls {
       this.releaseCamera();
       this.releasePinch();
       this.touchOwners.releaseAll();
+      this.cancelChatPress();
     });
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
@@ -431,6 +432,7 @@ export class MobileControls {
         this.releaseCamera();
         this.releasePinch();
         this.touchOwners.releaseAll();
+        this.cancelChatPress();
       }
     });
 
@@ -668,17 +670,11 @@ export class MobileControls {
   private bindChatButton(id: string): void {
     const button = document.getElementById(id);
     if (!button) return;
-    const cancel = () => {
-      if (this.chatPressTimer !== null) {
-        clearTimeout(this.chatPressTimer);
-        this.chatPressTimer = null;
-      }
-    };
     button.addEventListener('pointerdown', (e) => {
       if (!this.active) return;
       e.preventDefault();
       this.chatLongFired = false;
-      cancel();
+      this.cancelChatPress();
       this.chatPressTimer = setTimeout(() => {
         this.chatLongFired = true;
         this.chatPressTimer = null;
@@ -688,11 +684,25 @@ export class MobileControls {
     button.addEventListener('pointerup', (e) => {
       if (!this.active) return;
       e.preventDefault();
-      cancel();
+      this.cancelChatPress();
       if (!this.chatLongFired) this.tapChat();
     });
-    button.addEventListener('pointercancel', cancel);
-    button.addEventListener('pointerleave', cancel);
+    button.addEventListener('pointercancel', () => this.cancelChatPress());
+    button.addEventListener('pointerleave', () => this.cancelChatPress());
+  }
+
+  /** Cancel a pending chat long-press timer (a tap or drag off the button, or the
+   *  gesture being interrupted before it completes) so it can never fire blind
+   *  after the fact. Only touches chatLongFired while the timer is still pending
+   *  (it is already false there); once the timer has fired, chatPressTimer is
+   *  already null and this is a no-op, so a completed long press is never
+   *  reopened as a tap by a later release. */
+  private cancelChatPress(): void {
+    if (this.chatPressTimer !== null) {
+      clearTimeout(this.chatPressTimer);
+      this.chatPressTimer = null;
+      this.chatLongFired = false;
+    }
   }
 
   /** Toggle the read-only chat-log peek. Opening a peek closes the full chat first (so a

@@ -8,12 +8,14 @@ import { Sim } from '../src/sim/sim';
 import { type Entity, NYTHRAXIS_BOSS_ID } from '../src/sim/types';
 import { abilityBuffValue } from '../src/ui/ability_damage';
 import { hasExplicitAbilityIcon } from '../src/ui/icons';
+import { placePlayerInOpenField } from './helpers/open_field';
 
 const FORM_ID = 'fireball_form';
 
 function mageWithSpec(spec: 'fire' | 'frost' | 'arcane', devCommands = false): Sim {
   const sim = new Sim({ seed: 73, playerClass: 'mage', autoEquip: true, devCommands });
   sim.setPlayerLevel(11);
+  placePlayerInOpenField(sim);
   expect(sim.setSpec(spec)).toBe(true);
   sim.tick();
   sim.player.resource = sim.player.maxResource;

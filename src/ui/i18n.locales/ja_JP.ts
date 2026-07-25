@@ -9111,7 +9111,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'スキルを動かす行動は二つ、分解とエンチャント付与です。成功ごとに最大1ポイント、仕事の重さで換算されます。コモンの分解と粉だけのエンチャントはコモンの仕事、良質の分解とエッセンスのエンチャントは良質、レアの分解とRunedやGreaterのエンチャントはレア、エピックと伝説の分解はさらに上です。お馴染みの熟達の薄れが25ポイント刻みで効き、コモンの仕事はスキル75で、良質は100で、レアの仕事はちょうど上限の125で灰色になります。エンチャントだけの情けもひとつ。天井を超える入力はゼロではなく天井へ丸められるため、誓う前でもエピックの分解はレアとして数えられ、無駄になりません。エンチャントが休眠に落ちればすべてコモン扱いで登りは75で止まり、趣味に据えればレアの仕事はまだ実り、75以降が遅くなるだけです。',
   'guide.profPages.craftProse.enchanting.marketHeading': '付与済みの品と来歴と市場',
   'guide.profPages.craftProse.enchanting.marketBody':
-    '付与は鞄の中の未装備の一品と素材を消費し、別個の付与済みの品を返します。装備すれば効果は永遠にその品に付き従います。一品にひとつ。付与済みの品は再付与も分解もできず、売却、破棄、分解はどれも無印の品を先に選ぶので、完成品がうっかり食われることはありません。同一の付与品同士は重ねられます。傑作とエンチャントは友人です。傑作は問題なく付与でき、効果は傑作ボーナスにも署名にも触れず上乗せされます。全部を積んだ署名入り傑作のGreater付与が工芸品の頂点で、それでも設計上レイド戦利品の下に座ります。世界市場は無印の品しか扱わないため、付与済みや署名入りは取引ウィンドウで直接手渡し。市場に出せる半分は素材の方です。粉、エッセンス、シャードは自由に出品でき、出品無料、手数料は成立時の5%だけです。',
+    '付与は鞄の中の未装備の一品と素材を消費し、別個の付与済みの品を返します。装備すれば効果は永遠にその品に付き従います。一品にひとつ。付与済みの品に別の付与を使うと確認のうえ古い付与をそのまま置き換え、古い付与は素材の返却なしに破棄されます。売却、破棄、分解はどれも無印の品を先に選ぶので、完成品がうっかり食われることはありません。同一の付与品同士は重ねられます。傑作とエンチャントは友人です。傑作は問題なく付与でき、効果は傑作ボーナスにも署名にも触れず上乗せされます。全部を積んだ署名入り傑作のGreater付与が工芸品の頂点で、それでも設計上レイド戦利品の下に座ります。世界市場は無印の品しか扱わないため、付与済みや署名入りは取引ウィンドウで直接手渡し。市場に出せる半分は素材の方です。粉、エッセンス、シャードは自由に出品でき、出品無料、手数料は成立時の5%だけです。',
   'hudChrome.corpseHarvest.components.meat': '肉',
   'hudChrome.itemTooltip.statEnchanted': '+{value} {stat}（エンチャント）',
   'hudChrome.materialHint.arcaneDust':
@@ -9135,6 +9135,17 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.enchanting.yieldHeader': '獲得予定の材料:',
   'hudChrome.enchanting.yieldLineExact': '{item} {count}個',
   'hudChrome.enchanting.yieldLineRange': '{item} {min}から{max}個',
+  'hudChrome.enchanting.alreadyEnchanted': 'そのアイテムにはすでにエンチャントが付与されています。',
+  'hudChrome.enchanting.sameEnchant': 'そのアイテムにはすでに同じエンチャントが付与されています。',
+  'hudChrome.enchanting.replaceTag': '{enchant}を置き換え',
+  'hudChrome.enchanting.sameEnchantTag': '付与済み',
+  'hudChrome.enchanting.replaceConfirmTitle': '{item}のエンチャントを置き換えますか？',
+  'hudChrome.enchanting.replaceConfirmBody': '{item}の{old}を{new}に置き換えます。',
+  'hudChrome.enchanting.replaceConfirmNoRefund':
+    '古いエンチャントは破棄され、素材は返却されません。この操作は取り消せません。',
+  'hudChrome.enchanting.replaceConfirmCost': '費用: {cost}',
+  'hudChrome.enchanting.replaceConfirmCostItem': '{name} {count}個',
+  'hudChrome.enchanting.replaceConfirmAccept': '置き換える',
   'hudChrome.bags.itemAriaEnchanted': '{item}、数量 {count}、エンチャント済みの品',
   'hudChrome.bags.itemAriaBound': '{item}、数量 {count}、バインド済みの品',
   'hudChrome.itemTooltip.enchantedFallback': 'エンチャント済み',

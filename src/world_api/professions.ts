@@ -137,7 +137,12 @@ export interface ApplyEnchantResultView {
     | 'not_held'
     | 'insufficient_materials'
     | 'throttled'
-    | 'no_bag_space';
+    | 'no_bag_space'
+    // #2415: the honest denies for an already-enchanted target: no
+    // confirmReplace flag on the command, and the identical-enchant-id
+    // re-apply whose accept would be pure reagent loss.
+    | 'already_enchanted'
+    | 'same_enchant';
 }
 
 // The professions read-surface facet (#1164, extended by #1121/#1127/#1129). `Sim`
@@ -231,7 +236,13 @@ export interface IWorldProfessions {
   // id, and only the slot says which the player aimed at. A REQUEST, never a
   // bypass: the server re-validates it against ALL_EQUIP_SLOTS and the sim then
   // re-validates what is actually worn there.
-  applyEnchant(itemId: string, enchantId: string, slot?: EquipSlot): void;
+  // `confirmReplace` (#2415): the explicit consent that lets the apply REPLACE
+  // an existing enchant (old one destroyed, no material refund) instead of
+  // denying already_enchanted. A boolean flag ONLY, the craftItem `commission`
+  // precedent: omitted/false sends a wire message byte-identical to the
+  // pre-feature form, and the sim re-validates the target either way (the flag
+  // can never overwrite anything the dedicated replace arm would not).
+  applyEnchant(itemId: string, enchantId: string, slot?: EquipSlot, confirmReplace?: boolean): void;
   salvageItem(itemId: string): void;
   // Maker's Bond unbind service (Professions 2.0): clear the
   // boundTo lock on ONE held bound copy of `itemId`, for the tier-scaled

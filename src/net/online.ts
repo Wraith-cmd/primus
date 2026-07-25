@@ -3399,8 +3399,21 @@ export class ClientWorld implements IWorld {
   // bagged target sends a message byte-identical to the pre-feature form. The
   // server re-validates the token against ALL_EQUIP_SLOTS and the sim re-checks
   // what is actually worn there, so this is a request, never a bypass.
-  applyEnchant(itemId: string, enchantId: string, slot?: EquipSlot): void {
-    this.cmd({ cmd: 'apply_enchant', item: itemId, enchant: enchantId, slot });
+  // `confirm` (#2415) rides ONLY when confirmReplace is exactly true (the
+  // craftItem `commission` idiom), so every non-replace apply stays
+  // byte-identical to the pre-feature form; the sim re-validates the target
+  // and denies already_enchanted/same_enchant itself, never the client.
+  applyEnchant(
+    itemId: string,
+    enchantId: string,
+    slot?: EquipSlot,
+    confirmReplace?: boolean,
+  ): void {
+    if (confirmReplace === true) {
+      this.cmd({ cmd: 'apply_enchant', item: itemId, enchant: enchantId, slot, confirm: true });
+    } else {
+      this.cmd({ cmd: 'apply_enchant', item: itemId, enchant: enchantId, slot });
+    }
   }
   salvageItem(itemId: string): void {
     this.cmd({ cmd: 'salvage_item', item: itemId });

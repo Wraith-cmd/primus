@@ -305,23 +305,74 @@ describe('enchant_apply_view: enchantTargets', () => {
     expect(targets).toEqual([{ itemId: chestId, count: 2 }]);
   });
 
-  it('excludes an already-enchanted copy but keeps a masterwork copy', () => {
+  it('surfaces an already-enchanted copy as a flagged replace row, and keeps a masterwork copy plain', () => {
     const inventory: InvSlot[] = [
       { itemId: chestId, count: 1, instance: { enchant: 'enchant_chest_stamina' } },
       { itemId: otherChestId, count: 1, instance: { rolled: { masterwork: true } } },
     ];
     const targets = enchantTargets(inventory, 'enchant_chest_stamina');
-    // The enchanted chest is gone (double-enchant blocked); the masterwork one stays.
-    expect(targets).toEqual([{ itemId: otherChestId, count: 1 }]);
+    // #2415: the enchanted chest is no longer hidden: it paints as a replace
+    // row AFTER the plain family, carrying the doomed enchant's id, and since
+    // the picked enchant IS the one it carries, it is a sameEnchant deny row.
+    expect(targets).toEqual([
+      { itemId: otherChestId, count: 1 },
+      {
+        itemId: chestId,
+        count: 1,
+        replace: { enchantId: 'enchant_chest_stamina', sameEnchant: true },
+      },
+    ]);
   });
 
-  it('groups multiple enchantable stacks of one item id by count', () => {
+  it('a replace row for a DIFFERENT carried enchant is selectable (sameEnchant false)', () => {
+    const inventory: InvSlot[] = [
+      { itemId: chestId, count: 1, instance: { enchant: 'enchant_chest_stamina' } },
+    ];
+    expect(enchantTargets(inventory, 'enchant_chest_spirit')).toEqual([
+      {
+        itemId: chestId,
+        count: 1,
+        replace: { enchantId: 'enchant_chest_stamina', sameEnchant: false },
+      },
+    ]);
+  });
+
+  it('a LEGACY pre-marker copy carries its raw doomed stats instead of an enchant id', () => {
+    const inventory: InvSlot[] = [
+      { itemId: chestId, count: 1, instance: { rolled: { stats: { sta: 4 } } } },
+    ];
+    expect(enchantTargets(inventory, 'enchant_chest_spirit')).toEqual([
+      { itemId: chestId, count: 1, replace: { stats: { sta: 4 }, sameEnchant: false } },
+    ]);
+  });
+
+  it('the replace row describes the PINNED victim: the highest-index enchanted copy', () => {
+    const inventory: InvSlot[] = [
+      { itemId: chestId, count: 1, instance: { enchant: 'enchant_chest_stamina' } },
+      { itemId: chestId, count: 1, instance: { enchant: 'enchant_chest_armor' } },
+    ];
+    // One row for the id, count = every enchanted copy, described by the
+    // highest-index copy: exactly the one the sim's replaceVictimIndex
+    // consumes, so what the dialog names is what a confirm destroys.
+    expect(enchantTargets(inventory, 'enchant_chest_spirit')).toEqual([
+      {
+        itemId: chestId,
+        count: 2,
+        replace: { enchantId: 'enchant_chest_armor', sameEnchant: false },
+      },
+    ]);
+  });
+
+  it('groups multiple enchantable stacks of one item id by count, replace rows counted apart', () => {
     const inventory: InvSlot[] = [
       { itemId: chestId, count: 2 },
       { itemId: chestId, count: 1, instance: { rolled: { masterwork: true } } },
-      { itemId: chestId, count: 1, instance: { enchant: 'x' } }, // excluded
+      { itemId: chestId, count: 1, instance: { enchant: 'x' } }, // unknown marker id
     ];
     const targets = enchantTargets(inventory, 'enchant_chest_stamina');
+    // The unknown-marker copy ('x' resolves to no ENCHANTS row) is DROPPED,
+    // never offered: the sim's replace arm refuses what it cannot subtract,
+    // and the picker must not offer what the sim denies.
     expect(targets).toEqual([{ itemId: chestId, count: 3 }]);
   });
 
@@ -363,13 +414,52 @@ describe('enchant_apply_view: wornEnchantTargets', () => {
     ]);
   });
 
-  it('excludes an already-enchanted worn copy but keeps its unenchanted twin', () => {
+  it('surfaces an already-enchanted worn copy as a flagged replace row beside its plain twin', () => {
     const rows = wornEnchantTargets(
       { mainhand: SWORD, offhand: SWORD },
       { mainhand: { enchant: WEAPON_ENCHANT, rolled: { stats: { str: 2 } } } },
       WEAPON_ENCHANT,
     );
-    expect(rows).toEqual([{ itemId: SWORD, slot: 'offhand' }]);
+    // #2415: same slot-order pass, the enchanted hand flagged (and a
+    // sameEnchant deny row here, since the picked enchant is the carried one).
+    expect(rows).toEqual([
+      {
+        itemId: SWORD,
+        slot: 'mainhand',
+        replace: { enchantId: WEAPON_ENCHANT, sameEnchant: true },
+      },
+      { itemId: SWORD, slot: 'offhand' },
+    ]);
+  });
+
+  it('a worn replace row for a DIFFERENT enchant is selectable, a legacy one carries stats, unknown drops', () => {
+    const rows = wornEnchantTargets(
+      { mainhand: SWORD, offhand: SWORD },
+      { mainhand: { enchant: 'enchant_weapon_agility', rolled: { stats: { agi: 2 } } } },
+      WEAPON_ENCHANT,
+    );
+    expect(rows).toEqual([
+      {
+        itemId: SWORD,
+        slot: 'mainhand',
+        replace: { enchantId: 'enchant_weapon_agility', sameEnchant: false },
+      },
+      { itemId: SWORD, slot: 'offhand' },
+    ]);
+    // Legacy pre-marker worn copy: raw doomed stats, no id to name.
+    expect(
+      wornEnchantTargets(
+        { mainhand: SWORD },
+        { mainhand: { rolled: { stats: { str: 5 } } } },
+        WEAPON_ENCHANT,
+      ),
+    ).toEqual([
+      { itemId: SWORD, slot: 'mainhand', replace: { stats: { str: 5 }, sameEnchant: false } },
+    ]);
+    // An unknown marker id is DROPPED, mirroring the sim's defensive refuse.
+    expect(
+      wornEnchantTargets({ mainhand: SWORD }, { mainhand: { enchant: 'x' } }, WEAPON_ENCHANT),
+    ).toEqual([]);
   });
 
   it('keeps a signed or masterwork worn copy: neither reads as already enchanted', () => {

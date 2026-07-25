@@ -2473,7 +2473,17 @@ export const zh_TW: EnTranslations = {
       },
       "yieldHeader": "預計產出材料：",
       "yieldLineExact": "{item} {count} 個",
-      "yieldLineRange": "{item} {min} 至 {max} 個"
+      "yieldLineRange": "{item} {min} 至 {max} 個",
+      "alreadyEnchanted": "那件物品已經附魔。",
+      "sameEnchant": "那件物品已經擁有該附魔。",
+      "replaceTag": "替換{enchant}",
+      "sameEnchantTag": "已施加",
+      "replaceConfirmTitle": "替換 {item} 上的附魔？",
+      "replaceConfirmBody": "這會將 {item} 上的 {old} 替換為 {new}。",
+      "replaceConfirmNoRefund": "舊附魔將被摧毀，材料不予退還。此操作無法復原。",
+      "replaceConfirmCost": "費用：{cost}",
+      "replaceConfirmCostItem": "{name} {count} 個",
+      "replaceConfirmAccept": "替換"
     },
     "training": {
       "title": "訓練：{name}",
@@ -3871,7 +3881,7 @@ export const zh_TW: EnTranslations = {
           "levelingHeading": "附魔如何升級",
           "levelingBody": "兩種行動推動技能：分解與施加附魔，每次成功最多一點，按工作的分量折算：普通分解與純粉塵附魔算普通活；優秀分解與精華附魔算優秀活；精良分解與所有Runed或Greater附魔算精良活；史詩與傳說分解更高。熟悉的精通衰減按25點層級作用：普通活在技能75變灰，優秀活在100，精良活恰在125上限。附魔另有一份仁慈：高於命途上限的輸入向下取整而非歸零，宣誓前史詩分解按精良計而非一無所獲；若附魔淪為休眠，一切按普通活計，爬升停在75；作為愛好則精良活仍有收益，只是75之後變慢。",
           "marketHeading": "附魔副本、出處與市場",
-          "marketBody": "施加附魔消耗背包中未裝備的一件副本加材料，交還一件獨立的附魔副本；穿上它，加成永遠跟隨。一件一附魔：附魔副本不能再附魔也不能分解，出售、丟棄與分解都優先取用普通副本，成品不會被誤吞；完全相同的附魔副本還能疊放。傑作與附魔是朋友：傑作完全可附魔，附魔疊加在傑作加成與署名之上互不干擾；署名傑作配Greater附魔是工藝品的極致，仍按設計低於團本戰利品。世界市場只經手無標記的普通貨，附魔與署名件都面對面交易；材料才是可上市的一半：粉塵、精華與碎片自由掛單，掛單免費，成交才抽5%。"
+          "marketBody": "施加附魔消耗背包中未裝備的一件副本加材料，交還一件獨立的附魔副本；穿上它，加成永遠跟隨。一件一附魔：對附魔副本施加另一個附魔會先要求確認，然後直接替換舊附魔，舊附魔被摧毀且不退還材料；出售、丟棄與分解都優先取用普通副本，成品不會被誤吞；完全相同的附魔副本還能疊放。傑作與附魔是朋友：傑作完全可附魔，附魔疊加在傑作加成與署名之上互不干擾；署名傑作配Greater附魔是工藝品的極致，仍按設計低於團本戰利品。世界市場只經手無標記的普通貨，附魔與署名件都面對面交易；材料才是可上市的一半：粉塵、精華與碎片自由掛單，掛單免費，成交才抽5%。"
         }
       },
       "howHeading": "製作流程",

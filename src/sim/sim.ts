@@ -7260,12 +7260,19 @@ export class Sim {
   }
 
   // `slot`, when present, targets the copy WORN in that equipment slot (the
-  // in-place enchant arm), which is why it precedes `pid` here: the
-  // IWorldProfessions signature is applyEnchant(itemId, enchantId, slot?) and
-  // the trailing pid is the offline/server-side extra (the craftItem
-  // (recipeId, commission?, pid?) precedent).
-  applyEnchant(itemId: string, enchantId: string, slot?: EquipSlot, pid?: number): void {
-    const result = applyEnchantImpl(this.ctx, itemId, enchantId, pid, slot);
+  // in-place enchant arm), and `confirmReplace` (#2415) is the explicit
+  // consent to replace an existing enchant; both precede `pid` here because
+  // the IWorldProfessions signature is applyEnchant(itemId, enchantId, slot?,
+  // confirmReplace?) and the trailing pid is the offline/server-side extra
+  // (the craftItem (recipeId, commission?, pid?) precedent).
+  applyEnchant(
+    itemId: string,
+    enchantId: string,
+    slot?: EquipSlot,
+    confirmReplace?: boolean,
+    pid?: number,
+  ): void {
+    const result = applyEnchantImpl(this.ctx, itemId, enchantId, pid, slot, confirmReplace);
     const meta = this.players.get(pid ?? this.primaryId);
     if (meta) meta.lastEnchantResult = result;
     this.emit({

@@ -48,8 +48,9 @@ function harness(innerHeight: number, stubOrInventory: WorldStub | InvSlot[] = {
   const el = document.createElement('div');
   document.body.append(el);
   const placed: { reserveRight: number; reserveBottom: number }[] = [];
-  const applied: { itemId: string; enchantId: string; slot?: string }[] = [];
-  const confirms: { title: string; body: string; ok: string }[] = [];
+  const applied: { itemId: string; enchantId: string; slot?: string; confirmReplace?: boolean }[] =
+    [];
+  const confirms: { title: string; body: string; ok: string; onOk: () => void }[] = [];
   let activate: ((act: string) => void) | null = null;
   // The self entity mirror carries equippedInstances in both worlds, which is
   // where the painter reads the worn payloads from.
@@ -58,8 +59,8 @@ function harness(innerHeight: number, stubOrInventory: WorldStub | InvSlot[] = {
     equipment: stub.equipment ?? {},
     playerId: 1,
     entities: new Map([[1, { equippedInstances: stub.equippedInstances ?? {} }]]),
-    applyEnchant: (itemId: string, enchantId: string, slot?: string) => {
-      applied.push({ itemId, enchantId, slot });
+    applyEnchant: (itemId: string, enchantId: string, slot?: string, confirmReplace?: boolean) => {
+      applied.push({ itemId, enchantId, slot, confirmReplace });
     },
   };
   const menu = new BagItemActionMenu({
@@ -73,8 +74,8 @@ function harness(innerHeight: number, stubOrInventory: WorldStub | InvSlot[] = {
         activate = onActivate;
       },
     },
-    confirmDialog: (title, body, ok) => {
-      confirms.push({ title, body, ok });
+    confirmDialog: (title, body, ok, _cancel, onOk) => {
+      confirms.push({ title, body, ok, onOk });
     },
     slotName: (slot) => slot,
     isMobileLayout: () => false,
@@ -373,14 +374,110 @@ describe('BagItemActionMenu target step: worn rows', () => {
     expect(h.applied).toEqual([{ itemId: SWORD, enchantId: WEAPON_ENCHANT, slot: 'offhand' }]);
   });
 
-  it('omits an already-enchanted worn copy and falls back to the empty state', () => {
+  it('paints a worn copy already carrying the PICKED enchant as a disabled same-enchant row', () => {
     const h = harness(768, {
       inventory: [{ itemId: DUST, count: 99 }],
       equipment: { mainhand: SWORD },
       equippedInstances: { mainhand: { enchant: WEAPON_ENCHANT } },
     });
     h.openTargets(WEAPON_ENCHANT);
-    // No selectable row survives, so the picker shows only the inert empty line.
-    expect(h.rows().map((row) => row.act)).toEqual([null]);
+    // #2415: no longer hidden, but not selectable either: a confirm whose
+    // accept the sim denies same_enchant is never offered.
+    const rows = h.rows();
+    expect(rows.map((row) => row.act)).toEqual([null]);
+    expect(rows[0].text).toContain('Already applied');
+  });
+});
+
+// The #2415 replace flow through the real painter: flagged rows carry the
+// doomed enchant in their meta, activation opens the ONE destroy-confirm
+// family naming exactly what a confirmed apply destroys (plus the no-refund
+// ruling and the reagent cost), and only the dialog's OK sends the apply,
+// with the confirm flag.
+describe('BagItemActionMenu target step: replace rows (#2415)', () => {
+  const SWORD = 'eastbrook_arming_sword';
+  const WEAPON_ENCHANT = 'enchant_weapon_might';
+  const AGILITY = 'enchant_weapon_agility';
+
+  it('a bagged enchanted copy paints as a replace row; OK (and only OK) sends the confirmed apply', () => {
+    const h = harness(768, {
+      inventory: [
+        { itemId: DUST, count: 99 },
+        { itemId: SWORD, count: 1, instance: { enchant: AGILITY, rolled: { stats: { agi: 2 } } } },
+      ],
+    });
+    h.openTargets(WEAPON_ENCHANT);
+    const rows = h.rows();
+    expect(rows.map((row) => row.act)).toEqual([`replace:${SWORD}`]);
+    // The row's meta names the enchant a confirm would destroy.
+    expect(rows[0].text).toContain('Enchant Weapon - Agility');
+
+    h.click(`replace:${SWORD}`);
+    // The click opened the confirm dialog and sent NOTHING yet.
+    expect(h.applied).toEqual([]);
+    expect(h.confirms).toHaveLength(1);
+    const dialog = h.confirms[0];
+    expect(dialog.ok).toBe('Replace');
+    const lines = dialog.body.split('\n');
+    // Line one names the swap in full: doomed enchant, item, incoming enchant.
+    expect(lines[0]).toContain('Enchant Weapon - Agility');
+    expect(lines[0]).toContain('Enchant Weapon - Might');
+    // The settled ruling, stated before it is paid: destroyed, no refund.
+    expect(lines[1]).toContain('not refunded');
+    // The reagent cost being paid (Might costs 5 dust; dust's display name).
+    expect(lines[2]).toContain('Cost:');
+    expect(lines[2]).toContain('Chime Dust x5');
+
+    dialog.onOk();
+    expect(h.applied).toEqual([
+      { itemId: SWORD, enchantId: WEAPON_ENCHANT, slot: undefined, confirmReplace: true },
+    ]);
+  });
+
+  it('a worn enchanted copy routes through the same confirm and dispatches slot plus flag', () => {
+    const h = harness(768, {
+      inventory: [{ itemId: DUST, count: 99 }],
+      equipment: { mainhand: SWORD },
+      equippedInstances: { mainhand: { enchant: AGILITY, rolled: { stats: { agi: 2 } } } },
+    });
+    h.openTargets(WEAPON_ENCHANT);
+    expect(h.rows().map((row) => row.act)).toEqual(['worn:mainhand']);
+    h.click('worn:mainhand');
+    expect(h.applied).toEqual([]);
+    expect(h.confirms).toHaveLength(1);
+    h.confirms[0].onOk();
+    expect(h.applied).toEqual([
+      { itemId: SWORD, enchantId: WEAPON_ENCHANT, slot: 'mainhand', confirmReplace: true },
+    ]);
+  });
+
+  it('a LEGACY victim with no enchant id is named by its raw doomed stats instead', () => {
+    const h = harness(768, {
+      inventory: [
+        { itemId: DUST, count: 99 },
+        { itemId: SWORD, count: 1, instance: { rolled: { stats: { str: 5 } } } },
+      ],
+    });
+    h.openTargets(WEAPON_ENCHANT);
+    const rows = h.rows();
+    expect(rows.map((row) => row.act)).toEqual([`replace:${SWORD}`]);
+    expect(rows[0].text).toContain('+5 Strength');
+    h.click(`replace:${SWORD}`);
+    expect(h.confirms[0].body.split('\n')[0]).toContain('+5 Strength');
+  });
+
+  it('a plain apply still sends immediately, with NO confirm flag on the wire call', () => {
+    const h = harness(768, {
+      inventory: [
+        { itemId: DUST, count: 99 },
+        { itemId: SWORD, count: 1 },
+      ],
+    });
+    h.openTargets(WEAPON_ENCHANT);
+    h.click(`target:${SWORD}`);
+    expect(h.confirms).toEqual([]);
+    expect(h.applied).toEqual([
+      { itemId: SWORD, enchantId: WEAPON_ENCHANT, slot: undefined, confirmReplace: undefined },
+    ]);
   });
 });

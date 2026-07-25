@@ -2792,6 +2792,24 @@ export const hudChromeStrings = {
     yieldHeader: 'Expected materials:',
     yieldLineExact: '{count} {item}',
     yieldLineRange: '{min} to {max} {item}',
+    // Enchant replacement (#2415): the two dedicated denies (the honest copy
+    // that replaced the misleading notHeld fallback for an already-enchanted
+    // target), the flagged replace-target row tags, and the replace confirm
+    // dialog. {old} in the confirm body is the doomed enchant's name, or a
+    // legacy copy's raw stat lines when the copy predates the enchant marker
+    // and has no name to give. The no-refund line states the settled economy
+    // ruling; the cost line states the reagents being paid before they are.
+    alreadyEnchanted: 'That item is already enchanted.',
+    sameEnchant: 'That item already has that enchant.',
+    replaceTag: 'Replaces {enchant}',
+    sameEnchantTag: 'Already applied',
+    replaceConfirmTitle: 'Replace the enchant on {item}?',
+    replaceConfirmBody: 'This replaces {old} on {item} with {new}.',
+    replaceConfirmNoRefund:
+      'The old enchant is destroyed. Its materials are not refunded. This cannot be undone.',
+    replaceConfirmCost: 'Cost: {cost}',
+    replaceConfirmCostItem: '{name} x{count}',
+    replaceConfirmAccept: 'Replace',
   },
   // Recipe training window (Professions 2.0): a station master
   // teaches trainer-acquisition recipes for a tier-priced copper fee

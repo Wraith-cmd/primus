@@ -7,9 +7,11 @@ import { describe, expect, it } from 'vitest';
 import { ENCHANTS } from '../src/sim/content/enchants';
 import { ITEMS } from '../src/sim/data';
 import { characterDerivedStats } from '../src/sim/entity';
+import { canStackInstancePayloads } from '../src/sim/item_instance_merge';
 import { removePreferFungible } from '../src/sim/items';
 import { CRAFT_THROTTLE_MAX_PER_WINDOW } from '../src/sim/professions/action_throttle';
 import {
+  consumeEnchantedVictim,
   disenchantItem,
   disenchantYield,
   ENCHANTING_GAIN_TIER_BY_QUALITY,
@@ -17,11 +19,12 @@ import {
   enchantGainTier,
   isDisenchantable,
   isEnchantedInstance,
+  replaceVictimIndex,
   resolveApplyEnchant,
   resolveDisenchant,
 } from '../src/sim/professions/enchanting';
 import { Sim } from '../src/sim/sim';
-import { xpForLevel } from '../src/sim/types';
+import { type InvSlot, xpForLevel } from '../src/sim/types';
 
 function makeSim(seed = 7) {
   return new Sim({ seed, playerClass: 'warrior', autoEquip: false });
@@ -221,13 +224,17 @@ describe('disenchanting an enchanted copy (issue #2340)', () => {
     expect(denied.reason).toBe('not_held');
   });
 
-  it('apply-enchant still refuses the enchanted-only copy (no silent overwrite)', () => {
+  it('apply-enchant still refuses the enchanted-only copy by default (no silent overwrite)', () => {
     const { sim, pid } = simWithEnchantedSwordOnly();
     sim.addItem('arcane_dust', 5, pid);
     const second = resolveApplyEnchant(sim.ctx, pid, SWORD, 'enchant_weapon_might');
     expect(second.ok).toBe(false);
-    expect(second.reason).toBe('not_held');
+    // #2415: the default-refuse arm now names the real cause instead of the
+    // misleading not_held; the no-silent-overwrite property itself is
+    // unchanged (only an explicit confirmReplace reaches the replace arm).
+    expect(second.reason).toBe('already_enchanted');
     expect(sim.countItem(SWORD, pid)).toBe(1);
+    expect(sim.countItem('arcane_dust', pid)).toBe(5);
   });
 });
 
@@ -374,7 +381,9 @@ describe('applyEnchant', () => {
     expect(sim.ctx.countFungibleItem('moggers_copper_cudgel', pid)).toBe(0);
     expect(sim.countItem('moggers_copper_cudgel', pid)).toBe(1);
 
-    // The now-enchanted copy (rolled.stats present) is no longer eligible.
+    // The now-enchanted copy (rolled.stats present) is no longer eligible for
+    // a plain apply: the default-refuse arm denies with the dedicated
+    // already_enchanted reason (#2415), never a silent overwrite.
     expect(sim.ctx.countEnchantableItem('moggers_copper_cudgel', pid)).toBe(0);
     sim.addItem('arcane_dust', 5, pid);
     const second = resolveApplyEnchant(
@@ -384,7 +393,7 @@ describe('applyEnchant', () => {
       'enchant_weapon_might',
     );
     expect(second.ok).toBe(false);
-    expect(second.reason).toBe('not_held');
+    expect(second.reason).toBe('already_enchanted');
   });
 
   // Regression for review #1712 round-3: enchanting a crafted rare+ instanced
@@ -604,7 +613,7 @@ describe('applyEnchant on a masterwork copy', () => {
     expect(slot?.instance?.rolled?.quality).toBeUndefined();
   });
 
-  it('an enchanted masterwork copy cannot be enchanted again (double-enchant stays blocked)', () => {
+  it('an enchanted masterwork copy cannot be silently enchanted again (double-enchant stays blocked)', () => {
     const sim = makeSim();
     const pid = sim.playerId;
     sim.ctx.addItemInstance('moggers_copper_cudgel', structuredClone(MASTERWORK_PAYLOAD), pid);
@@ -612,7 +621,8 @@ describe('applyEnchant on a masterwork copy', () => {
     expect(
       resolveApplyEnchant(sim.ctx, pid, 'moggers_copper_cudgel', 'enchant_weapon_might').ok,
     ).toBe(true);
-    // The enchanted masterwork copy is no longer an eligible target.
+    // The enchanted masterwork copy is no longer an eligible plain target: the
+    // default-refuse arm denies already_enchanted (#2415), never overwrites.
     expect(sim.ctx.countEnchantableItem('moggers_copper_cudgel', pid)).toBe(0);
     sim.addItem('arcane_dust', 5, pid);
     const second = resolveApplyEnchant(
@@ -622,7 +632,7 @@ describe('applyEnchant on a masterwork copy', () => {
       'enchant_weapon_might',
     );
     expect(second.ok).toBe(false);
-    expect(second.reason).toBe('not_held');
+    expect(second.reason).toBe('already_enchanted');
     // The copy itself is untouched by the denial: still exactly one, still
     // carrying the merged record.
     expect(sim.countItem('moggers_copper_cudgel', pid)).toBe(1);
@@ -650,12 +660,13 @@ describe('applyEnchant on a masterwork copy', () => {
     expect(sim.player.stats.sta).toBe(baseSta + 3);
   });
 
-  it('a legacy enchanted copy (bare rolled.stats, no marker) is still excluded from re-enchanting', () => {
+  it('a legacy enchanted copy (bare rolled.stats, no marker) is still excluded from a plain re-enchant', () => {
     const sim = makeSim();
     const pid = sim.playerId;
     // The pre-marker enchanted payload shape: bare rolled.stats, no `enchant`
     // field, no masterwork flag. The legacy predicate arm must keep it
-    // excluded so old saves cannot be double-enchanted either.
+    // excluded so old saves cannot be double-enchanted either; the deny names
+    // the real cause (#2415), never a silent overwrite.
     sim.ctx.addItemInstance('eastbrook_arming_sword', { rolled: { stats: { str: 5 } } }, pid);
     expect(sim.ctx.countEnchantableItem('eastbrook_arming_sword', pid)).toBe(0);
     sim.addItem('arcane_dust', 5, pid);
@@ -666,7 +677,7 @@ describe('applyEnchant on a masterwork copy', () => {
       'enchant_weapon_might',
     );
     expect(result.ok).toBe(false);
-    expect(result.reason).toBe('not_held');
+    expect(result.reason).toBe('already_enchanted');
   });
 });
 
@@ -936,7 +947,7 @@ describe('apply enchant to WORN gear (in place)', () => {
     expect(a.sim.ctx.rng.next()).toBe(b.sim.ctx.rng.next());
   });
 
-  it('denies an already-enchanted worn copy with no side effect (double-enchant blocked)', () => {
+  it('denies an already-enchanted worn copy by default with no side effect (double-enchant blocked)', () => {
     const { sim, pid, meta } = wearing('mainhand', WORN_SWORD, {
       dust: 10,
       instance: { enchant: 'enchant_weapon_agility', rolled: { stats: { agi: 2 } } },
@@ -944,7 +955,9 @@ describe('apply enchant to WORN gear (in place)', () => {
     const strBefore = sim.player.stats.str;
     const result = resolveApplyEnchant(sim.ctx, pid, WORN_SWORD, WORN_ENCHANT, 'mainhand');
     expect(result.ok).toBe(false);
-    expect(result.reason).toBe('not_held');
+    // #2415: the honest dedicated reason (was the misleading not_held); the
+    // no-silent-overwrite property is unchanged, only confirmReplace replaces.
+    expect(result.reason).toBe('already_enchanted');
     // Untouched: the original enchant, the reagents, and the stats.
     expect(meta.equipmentInstance.mainhand?.enchant).toBe('enchant_weapon_agility');
     expect(meta.equipmentInstance.mainhand?.rolled?.stats).toEqual({ agi: 2 });
@@ -1056,7 +1069,7 @@ describe('apply enchant to WORN gear (in place)', () => {
 
   it('the applyEnchant command entry point forwards the slot and stashes the result', () => {
     const { sim, pid, meta } = wearing('mainhand', WORN_SWORD, { dust: 5 });
-    sim.applyEnchant(WORN_SWORD, WORN_ENCHANT, 'mainhand', pid);
+    sim.applyEnchant(WORN_SWORD, WORN_ENCHANT, 'mainhand', undefined, pid);
     expect(sim.lastEnchantResult?.ok).toBe(true);
     expect(meta.equipmentInstance.mainhand?.enchant).toBe(WORN_ENCHANT);
     // Same skill gain as the bagged arm (dust enchant tier 0, capability 0 ->
@@ -1081,5 +1094,375 @@ describe('apply enchant to WORN gear (in place)', () => {
     const reloadedPid = reloadedSim.addPlayer('rogue', 'Reload', { state: state! });
     expect(reloadedSim.meta(reloadedPid)!.equipmentInstance.mainhand?.enchant).toBe(WORN_ENCHANT);
     expect(reloadedSim.entities.get(reloadedPid)!.stats.str).toBe(boostedStr);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Replacing an existing enchant behind explicit confirmation (#2415). The
+// settled rulings under test: one-step replace gated on the confirmReplace
+// flag; the old enchant destroyed outright with NO material refund; the swap
+// surgical (signer, masterwork stats, boundTo, bindOnTrade byte-identical);
+// the identical-enchant-id re-apply denied with its own reason on every arm;
+// no new gates (same shared throttle, reagents only); and no code path that
+// silently overwrites.
+// ---------------------------------------------------------------------------
+describe('replacing an enchant behind explicit confirmation (#2415)', () => {
+  const SWORD = 'eastbrook_arming_sword';
+  const MIGHT = 'enchant_weapon_might'; // 5x arcane_dust, str +2 (pinned above)
+  const AGILITY = 'enchant_weapon_agility';
+  const GREATER = 'enchant_weapon_greater_might'; // 1 shard + 2 essence, str +5
+
+  it('replaces surgically on a marker copy: only the enchant layer changes, every other layer byte-identical', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    // A signed masterwork copy that is ALSO bound and bind-on-trade locked:
+    // every payload layer the ruling says must ride through untouched.
+    sim.ctx.addItemInstance(
+      SWORD,
+      {
+        signer: 'Tester',
+        rolled: { masterwork: true, stats: { str: 3, sta: 1 } },
+        boundTo: 42,
+        bindOnTrade: true,
+      },
+      pid,
+    );
+    sim.addItem('arcane_dust', 5, pid);
+    expect(resolveApplyEnchant(sim.ctx, pid, SWORD, MIGHT).ok).toBe(true);
+    const meta = sim.ctx.resolve(pid)!.meta;
+    const skillAfterApply = meta.craftSkills.enchanting;
+
+    sim.addItem('arcane_shard', 1, pid);
+    sim.addItem('arcane_essence', 2, pid);
+    const result = resolveApplyEnchant(sim.ctx, pid, SWORD, GREATER, undefined, true);
+    expect(result).toEqual({ ok: true, itemId: SWORD, enchantId: GREATER });
+
+    const slot = meta.inventory.find((s) => s.itemId === SWORD);
+    // Pin the Greater magnitude once (the literal-pin idiom above), then the
+    // exact swap: masterwork str 3 + greater 5, the might +2 subtracted out.
+    expect(ENCHANTS[GREATER].statBonus).toEqual({ str: 5 });
+    expect(slot?.instance?.rolled?.stats).toEqual({ str: 8, sta: 1 });
+    expect(slot?.instance?.enchant).toBe(GREATER);
+    // The untouched layers, byte-identical.
+    expect(slot?.instance?.signer).toBe('Tester');
+    expect(slot?.instance?.rolled?.masterwork).toBe(true);
+    expect(slot?.instance?.boundTo).toBe(42);
+    expect(slot?.instance?.bindOnTrade).toBe(true);
+    // Exactly one copy throughout; the replace reagents were consumed; the OLD
+    // enchant's materials were NOT refunded (no dust reappears).
+    expect(sim.countItem(SWORD, pid)).toBe(1);
+    expect(sim.countItem('arcane_shard', pid)).toBe(0);
+    expect(sim.countItem('arcane_essence', pid)).toBe(0);
+    expect(sim.countItem('arcane_dust', pid)).toBe(0);
+    // Replacement is just an apply: the same quality-tiered skill gain landed.
+    expect(meta.craftSkills.enchanting).toBeGreaterThan(skillAfterApply);
+  });
+
+  it('a replaced payload is structurally identical to a fresh same-enchant peer (no zero residue)', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    // Copy one: enchant with Might, then confirm-replace with Agility.
+    sim.addItem(SWORD, 1, pid);
+    sim.addItem('arcane_dust', 10, pid);
+    expect(resolveApplyEnchant(sim.ctx, pid, SWORD, MIGHT).ok).toBe(true);
+    expect(resolveApplyEnchant(sim.ctx, pid, SWORD, AGILITY, undefined, true).ok).toBe(true);
+    // Copy two: a fresh plain copy enchanted with Agility directly.
+    sim.addItem(SWORD, 1, pid);
+    sim.addItem('arcane_dust', 5, pid);
+    expect(resolveApplyEnchant(sim.ctx, pid, SWORD, AGILITY).ok).toBe(true);
+
+    const meta = sim.ctx.resolve(pid)!.meta;
+    const copies = meta.inventory.filter((s) => s.itemId === SWORD);
+    expect(copies).toHaveLength(2);
+    const [a, b] = copies;
+    // The Might key was subtracted back to zero and PRUNED, not left as a
+    // zero-valued residue key: structural equality treats a present 0 as
+    // distinct from an absent key, so residue would break this compare.
+    expect(a.instance?.rolled?.stats).not.toHaveProperty('str');
+    expect(a.instance?.rolled?.stats).toEqual(b.instance?.rolled?.stats);
+    expect(canStackInstancePayloads(a.instance, b.instance)).toBe(true);
+  });
+
+  it('denies already_enchanted without the flag even when reagents and confirm intent are otherwise valid', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    sim.ctx.addItemInstance(SWORD, { enchant: MIGHT, rolled: { stats: { str: 2 } } }, pid);
+    sim.addItem('arcane_dust', 5, pid);
+    const result = resolveApplyEnchant(sim.ctx, pid, SWORD, AGILITY);
+    expect(result.ok).toBe(false);
+    expect(result.reason).toBe('already_enchanted');
+    const slot = sim.ctx.resolve(pid)!.meta.inventory.find((s) => s.itemId === SWORD);
+    expect(slot?.instance?.enchant).toBe(MIGHT);
+    expect(sim.countItem('arcane_dust', pid)).toBe(5);
+  });
+
+  it('denies same_enchant on the identical enchant id: no reagents spent, no throttle stamped', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    sim.ctx.addItemInstance(SWORD, { enchant: MIGHT, rolled: { stats: { str: 2 } } }, pid);
+    sim.addItem('arcane_dust', 5, pid);
+    const meta = sim.ctx.resolve(pid)!.meta;
+    const stampsBefore = meta.craftThrottle.count;
+    const result = resolveApplyEnchant(sim.ctx, pid, SWORD, MIGHT, undefined, true);
+    expect(result.ok).toBe(false);
+    expect(result.reason).toBe('same_enchant');
+    // Pure deny: nothing consumed, nothing stamped, payload untouched.
+    expect(sim.countItem('arcane_dust', pid)).toBe(5);
+    expect(meta.craftThrottle.count).toBe(stampsBefore);
+    const slot = meta.inventory.find((s) => s.itemId === SWORD);
+    expect(slot?.instance?.rolled?.stats).toEqual({ str: 2 });
+  });
+
+  it('replaces a LEGACY pre-marker copy wholesale: rolled.stats becomes exactly the new bonus', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    // The pre-marker enchanted shape, on a signed legacy crafted copy: bare
+    // rolled.stats (the old enchant, whole) plus legacy rolled.quality.
+    sim.ctx.addItemInstance(
+      SWORD,
+      { signer: 'Old', rolled: { quality: 'rare', stats: { str: 5, sta: 3 } } },
+      pid,
+    );
+    sim.addItem('arcane_dust', 5, pid);
+    const result = resolveApplyEnchant(sim.ctx, pid, SWORD, MIGHT, undefined, true);
+    expect(result.ok).toBe(true);
+    const slot = sim.ctx.resolve(pid)!.meta.inventory.find((s) => s.itemId === SWORD);
+    // Wholesale: on a pre-marker copy the whole stats map IS the old enchant
+    // (applyEnchant was its only writer), so nothing of {str:5, sta:3} survives.
+    expect(slot?.instance?.rolled?.stats).toEqual({ str: 2 });
+    expect(slot?.instance?.enchant).toBe(MIGHT);
+    expect(slot?.instance?.signer).toBe('Old');
+    expect(slot?.instance?.rolled?.quality).toBe('rare');
+  });
+
+  it('with two differently-enchanted copies of one item id, the HIGHEST-index copy is the pinned victim', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    sim.ctx.addItemInstance(SWORD, { enchant: MIGHT, rolled: { stats: { str: 2 } } }, pid);
+    sim.ctx.addItemInstance(
+      SWORD,
+      { enchant: 'enchant_weapon_intellect', rolled: { stats: { int: 2 } } },
+      pid,
+    );
+    const meta = sim.ctx.resolve(pid)!.meta;
+    // The pin itself: the intellect copy sits at the higher index.
+    const idx = replaceVictimIndex(meta.inventory, SWORD);
+    expect(meta.inventory[idx].instance?.enchant).toBe('enchant_weapon_intellect');
+
+    sim.addItem('arcane_dust', 5, pid);
+    expect(resolveApplyEnchant(sim.ctx, pid, SWORD, AGILITY, undefined, true).ok).toBe(true);
+    const enchants = meta.inventory
+      .filter((s) => s.itemId === SWORD)
+      .map((s) => s.instance?.enchant)
+      .sort();
+    // The intellect copy was replaced; the might copy survived untouched.
+    expect(enchants).toEqual([AGILITY, MIGHT].sort());
+  });
+
+  it('with a plain AND an enchanted copy held, the flag targets the ENCHANTED copy and spares the plain one', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    sim.addItem(SWORD, 1, pid); // plain fungible copy
+    sim.ctx.addItemInstance(SWORD, { enchant: MIGHT, rolled: { stats: { str: 2 } } }, pid);
+    sim.addItem('arcane_dust', 5, pid);
+    expect(resolveApplyEnchant(sim.ctx, pid, SWORD, AGILITY, undefined, true).ok).toBe(true);
+    // The plain copy is still plain and fungible; the enchanted copy now
+    // carries Agility (Might destroyed), so nothing was silently overwritten
+    // on the copy the player did NOT aim at.
+    expect(sim.ctx.countFungibleItem(SWORD, pid)).toBe(1);
+    const meta = sim.ctx.resolve(pid)!.meta;
+    const enchanted = meta.inventory.find((s) => s.itemId === SWORD && s.instance);
+    expect(enchanted?.instance?.enchant).toBe(AGILITY);
+    expect(enchanted?.instance?.rolled?.stats).toEqual({ agi: 2 });
+  });
+
+  it('the flag is INERT with no enchanted copy held: a plain apply proceeds and destroys nothing', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    sim.addItem(SWORD, 1, pid);
+    sim.addItem('arcane_dust', 5, pid);
+    // Consent to destroy is meaningless when nothing would be destroyed (the
+    // dialog-to-accept race): the plain arm runs exactly as without the flag.
+    const result = resolveApplyEnchant(sim.ctx, pid, SWORD, MIGHT, undefined, true);
+    expect(result.ok).toBe(true);
+    const slot = sim.ctx.resolve(pid)!.meta.inventory.find((s) => s.itemId === SWORD);
+    expect(slot?.instance?.enchant).toBe(MIGHT);
+    expect(slot?.instance?.rolled?.stats).toEqual({ str: 2 });
+  });
+
+  it('refuses a marker id that no longer resolves (corrupt save): already_enchanted, nothing consumed', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    sim.ctx.addItemInstance(
+      SWORD,
+      { enchant: 'enchant_deleted_id', rolled: { stats: { str: 9 } } },
+      pid,
+    );
+    sim.addItem('arcane_dust', 5, pid);
+    const result = resolveApplyEnchant(sim.ctx, pid, SWORD, MIGHT, undefined, true);
+    expect(result.ok).toBe(false);
+    expect(result.reason).toBe('already_enchanted');
+    const slot = sim.ctx.resolve(pid)!.meta.inventory.find((s) => s.itemId === SWORD);
+    // The unsubtractable payload is untouched, never wholesale-replaced (that
+    // would stack the unknown old bonus under the new one or erase layers).
+    expect(slot?.instance?.rolled?.stats).toEqual({ str: 9 });
+    expect(sim.countItem('arcane_dust', pid)).toBe(5);
+  });
+
+  it('draws ZERO rng, so a replace cannot shift the shared stream (determinism)', () => {
+    const setup = () => {
+      const sim = makeSim(11);
+      const pid = sim.playerId;
+      sim.ctx.addItemInstance(SWORD, { enchant: MIGHT, rolled: { stats: { str: 2 } } }, pid);
+      sim.addItem('arcane_dust', 5, pid);
+      return { sim, pid };
+    };
+    const a = setup();
+    const b = setup();
+    expect(resolveApplyEnchant(a.sim.ctx, a.pid, SWORD, AGILITY, undefined, true).ok).toBe(true);
+    expect(a.sim.ctx.rng.next()).toBe(b.sim.ctx.rng.next());
+  });
+
+  it('draws from the SAME shared action throttle: a spent window denies the replace with nothing consumed', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    sim.ctx.addItemInstance(SWORD, { enchant: MIGHT, rolled: { stats: { str: 2 } } }, pid);
+    sim.addItem('arcane_dust', 5, pid);
+    sim.addItem(SWORD, CRAFT_THROTTLE_MAX_PER_WINDOW, pid);
+    for (let i = 0; i < CRAFT_THROTTLE_MAX_PER_WINDOW; i++) sim.salvageItem(SWORD, pid);
+    const result = resolveApplyEnchant(sim.ctx, pid, SWORD, AGILITY, undefined, true);
+    expect(result.ok).toBe(false);
+    expect(result.reason).toBe('throttled');
+    expect(sim.countItem('arcane_dust', pid)).toBe(5);
+    const enchanted = sim.ctx
+      .resolve(pid)!
+      .meta.inventory.find((s) => s.itemId === SWORD && s.instance);
+    expect(enchanted?.instance?.enchant).toBe(MIGHT);
+  });
+
+  it('replaces a WORN enchanted copy in place: stats re-baked, signer intact, reagents spent', () => {
+    const { sim, pid, meta } = wearing('mainhand', WORN_SWORD, {
+      dust: 5,
+      instance: { signer: 'Tester', enchant: AGILITY, rolled: { stats: { agi: 2 } } },
+    });
+    // Pin the doomed magnitude once so the re-bake below is anchored.
+    expect(ENCHANTS[AGILITY].statBonus).toEqual({ agi: 2 });
+    const strBefore = sim.player.stats.str;
+    const agiBefore = sim.player.stats.agi;
+
+    const result = resolveApplyEnchant(sim.ctx, pid, WORN_SWORD, WORN_ENCHANT, 'mainhand', true);
+    expect(result).toEqual({ ok: true, itemId: WORN_SWORD, enchantId: WORN_ENCHANT });
+    // Surgical in place: agility subtracted to zero and pruned, might added,
+    // signer untouched, and the stat pipeline re-baked both directions.
+    expect(meta.equipmentInstance.mainhand?.enchant).toBe(WORN_ENCHANT);
+    expect(meta.equipmentInstance.mainhand?.rolled?.stats).toEqual({ str: 2 });
+    expect(meta.equipmentInstance.mainhand?.signer).toBe('Tester');
+    expect(sim.player.stats.str).toBe(strBefore + 2);
+    expect(sim.player.stats.agi).toBe(agiBefore - 2);
+    expect(sim.countItem('arcane_dust', pid)).toBe(0);
+    expect(sim.countItem(WORN_SWORD, pid)).toBe(0);
+  });
+
+  it('denies same_enchant on the WORN arm too, with nothing consumed', () => {
+    const { sim, pid, meta } = wearing('mainhand', WORN_SWORD, {
+      dust: 5,
+      instance: { enchant: WORN_ENCHANT, rolled: { stats: { str: 2 } } },
+    });
+    const result = resolveApplyEnchant(sim.ctx, pid, WORN_SWORD, WORN_ENCHANT, 'mainhand', true);
+    expect(result.ok).toBe(false);
+    expect(result.reason).toBe('same_enchant');
+    expect(meta.equipmentInstance.mainhand?.enchant).toBe(WORN_ENCHANT);
+    expect(sim.countItem('arcane_dust', pid)).toBe(5);
+  });
+
+  it('replaces a WORN legacy pre-marker copy wholesale, exactly like the bagged legacy arm', () => {
+    const { sim, pid, meta } = wearing('mainhand', WORN_SWORD, {
+      dust: 5,
+      instance: { rolled: { stats: { agi: 5 } } },
+    });
+    const agiBefore = sim.player.stats.agi;
+    const result = resolveApplyEnchant(sim.ctx, pid, WORN_SWORD, WORN_ENCHANT, 'mainhand', true);
+    expect(result.ok).toBe(true);
+    expect(meta.equipmentInstance.mainhand?.rolled?.stats).toEqual({ str: 2 });
+    expect(meta.equipmentInstance.mainhand?.enchant).toBe(WORN_ENCHANT);
+    expect(sim.player.stats.agi).toBe(agiBefore - 5);
+  });
+
+  it('the flag is inert on an UNENCHANTED worn copy: the plain worn apply proceeds', () => {
+    const { sim, pid, meta } = wearing('mainhand', WORN_SWORD, { dust: 5 });
+    const result = resolveApplyEnchant(sim.ctx, pid, WORN_SWORD, WORN_ENCHANT, 'mainhand', true);
+    expect(result.ok).toBe(true);
+    expect(meta.equipmentInstance.mainhand?.enchant).toBe(WORN_ENCHANT);
+    expect(meta.equipmentInstance.mainhand?.rolled?.stats).toEqual({ str: 2 });
+  });
+
+  it('a replaced bagged payload survives a save/reload round-trip intact', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    sim.ctx.addItemInstance(
+      SWORD,
+      { signer: 'Tester', enchant: MIGHT, rolled: { stats: { str: 2 } }, bindOnTrade: true },
+      pid,
+    );
+    sim.addItem('arcane_dust', 5, pid);
+    expect(resolveApplyEnchant(sim.ctx, pid, SWORD, AGILITY, undefined, true).ok).toBe(true);
+
+    const state = sim.serializeCharacter(pid);
+    expect(state).not.toBeNull();
+    const saved = state!.inventory.find((s) => s.itemId === SWORD);
+    expect(saved?.instance?.enchant).toBe(AGILITY);
+    expect(saved?.instance?.rolled?.stats).toEqual({ agi: 2 });
+    expect(saved?.instance?.signer).toBe('Tester');
+    expect(saved?.instance?.bindOnTrade).toBe(true);
+
+    const reloadedSim = new Sim({ seed: 7, playerClass: 'warrior', noPlayer: true });
+    const reloadedPid = reloadedSim.addPlayer('warrior', 'Reload', { state: state! });
+    const loaded = reloadedSim.meta(reloadedPid)!.inventory.find((s) => s.itemId === SWORD);
+    expect(loaded?.instance?.enchant).toBe(AGILITY);
+    expect(isEnchantedInstance(loaded!.instance!)).toBe(true);
+  });
+});
+
+// The two pure walks the replace arm and its #2350 scratch gate share
+// (consumeEnchantedVictim wraps replaceVictimIndex): one function on both
+// sides means the modeled victim can never drift from the consumed one, and
+// these pin the walk itself.
+describe('replaceVictimIndex / consumeEnchantedVictim (the shared victim walk)', () => {
+  const GEAR = 'eastbrook_arming_sword';
+
+  it('picks the highest-index ENCHANTED slot, skipping plain and unenchanted-instance slots above it', () => {
+    const inventory: InvSlot[] = [
+      { itemId: GEAR, count: 1, instance: { enchant: 'enchant_weapon_might' } },
+      { itemId: 'arcane_dust', count: 5 },
+      { itemId: GEAR, count: 1, instance: { rolled: { stats: { str: 5 } } } }, // legacy = enchanted
+      { itemId: GEAR, count: 1 }, // plain: never the replace victim
+      {
+        itemId: GEAR,
+        count: 1,
+        instance: { signer: 'T', rolled: { masterwork: true, stats: { str: 2 } } },
+      },
+    ];
+    // Index 2 (the legacy copy): the masterwork copy above it is NOT enchanted
+    // and the plain copy is skipped outright.
+    expect(replaceVictimIndex(inventory, GEAR)).toBe(2);
+    expect(replaceVictimIndex(inventory, 'arcane_dust')).toBe(-1);
+    expect(replaceVictimIndex([], GEAR)).toBe(-1);
+  });
+
+  it('consumes exactly one unit: removes a count-1 slot, decrements a surviving stack with a CLONED return', () => {
+    const shared = { enchant: 'enchant_weapon_might', rolled: { stats: { str: 2 } } };
+    const stacked: InvSlot[] = [{ itemId: GEAR, count: 2, instance: shared }];
+    const consumed = consumeEnchantedVictim(stacked, GEAR);
+    expect(stacked).toHaveLength(1);
+    expect(stacked[0].count).toBe(1);
+    // Clone-on-survival: mutating the returned payload never reaches the
+    // surviving stack's shared payload (the removeEnchantableItem contract).
+    consumed!.rolled!.stats!.str = 99;
+    expect(stacked[0].instance?.rolled?.stats?.str).toBe(2);
+
+    const single: InvSlot[] = [{ itemId: GEAR, count: 1, instance: { enchant: 'x' } }];
+    expect(consumeEnchantedVictim(single, GEAR)?.enchant).toBe('x');
+    expect(single).toHaveLength(0);
+    expect(consumeEnchantedVictim([{ itemId: GEAR, count: 1 }], GEAR)).toBeUndefined();
   });
 });

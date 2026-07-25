@@ -18,6 +18,7 @@
 // The pure decisions live in the two view cores; this owns only DOM + dispatch,
 // talks to the world exclusively through IWorld, and never decides an outcome.
 
+import { ENCHANTS } from '../sim/content/enchants';
 import { ITEMS } from '../sim/data';
 import type { EquipSlot, ItemDef, ItemSlot } from '../sim/types';
 import type { IWorld } from '../world_api';
@@ -28,6 +29,7 @@ import {
 } from './bag_item_context_menu';
 import { disenchantYieldLines } from './disenchant_yield_view';
 import {
+  type EnchantReplaceTargetInfo,
   enchantNameKey,
   enchantSectionsForReagent,
   enchantTargets,
@@ -223,13 +225,76 @@ export class BagItemActionMenu {
     );
   }
 
+  // The plain-text description of what a REPLACE would destroy (#2415), for
+  // the flagged row's meta tag and the confirm body: the doomed enchant's
+  // localized name for a marker copy, or, for a legacy pre-marker copy with no
+  // id to name, its raw baked stats formatted with the same tooltip stat key
+  // the picker's effect lines use ("+5 Strength"), so the two surfaces read
+  // identically.
+  private replacedEnchantText(replace: EnchantReplaceTargetInfo): string {
+    if (replace.enchantId !== undefined) return t(enchantNameKey(replace.enchantId));
+    const statsText = Object.entries(replace.stats ?? {})
+      .filter(([, value]) => value !== 0)
+      .map(([stat, value]) =>
+        t('itemUi.tooltip.stat', { value: itemNumber(value), stat: itemStatName(stat) }),
+      )
+      .join(', ');
+    return statsText || t('hudChrome.itemTooltip.enchantedFallback');
+  }
+
+  // The #2415 replace confirm: the one destroy-confirm family, naming exactly
+  // what is being destroyed (the pinned victim's enchant, or a legacy copy's
+  // raw stats), that the old enchant is not refunded, and the reagent cost
+  // being paid, BEFORE the command is sent. OK sends the apply with the
+  // explicit confirm flag; the sim re-validates everything server-side.
+  private confirmReplace(
+    itemId: string,
+    enchantId: string,
+    replace: EnchantReplaceTargetInfo,
+    slot?: EquipSlot,
+  ): void {
+    const world = this.deps.world();
+    const def = ITEMS[itemId];
+    const name = def ? itemDisplayName(def) : itemId;
+    const oldText = this.replacedEnchantText(replace);
+    const newText = t(enchantNameKey(enchantId));
+    const costText = (ENCHANTS[enchantId]?.reagents ?? [])
+      .map((reagent) =>
+        t('hudChrome.enchanting.replaceConfirmCostItem', {
+          name: itemDisplayName(ITEMS[reagent.itemId]),
+          count: reagent.count,
+        }),
+      )
+      .join(', ');
+    const body = [
+      t('hudChrome.enchanting.replaceConfirmBody', { item: name, old: oldText, new: newText }),
+      t('hudChrome.enchanting.replaceConfirmNoRefund'),
+      t('hudChrome.enchanting.replaceConfirmCost', { cost: costText }),
+    ].join('\n');
+    this.deps.confirmDialog(
+      t('hudChrome.enchanting.replaceConfirmTitle', { item: name }),
+      body,
+      t('hudChrome.enchanting.replaceConfirmAccept'),
+      t('hud.chat.context.cancel'),
+      () => {
+        world.applyEnchant(itemId, enchantId, slot, true);
+        this.deps.afterAction();
+      },
+    );
+  }
+
   // Step two: every eligible enchant target, then world.applyEnchant. Two
   // families, in one list: the bagged copies (def slot matches, a
   // non-already-enchanted copy is held) and the WORN copies (the same match
   // against the equipped set), since worn gear is enchanted in place and needs no
   // unequip / re-equip round trip. A worn row carries its equipment slot both in
   // its label and in its dispatch, which is what separates a dual-wielded pair or
-  // two rings holding identical copies.
+  // two rings holding identical copies. Already-enchanted copies paint as
+  // FLAGGED replace rows (#2415): their meta names the enchant that would be
+  // destroyed, activation runs the replace confirm (confirmReplace above), and
+  // a row whose victim already carries the picked enchant paints disabled (the
+  // sim would deny same_enchant; a confirm that can only lose reagents is
+  // never offered).
   private openTargetPicker(enchantId: string, x: number, y: number): void {
     const world = this.deps.world();
     const targets = enchantTargets(world.inventory, enchantId);
@@ -256,17 +321,28 @@ export class BagItemActionMenu {
       const def = ITEMS[itemId];
       return esc(def ? itemDisplayName(def) : itemId);
     };
+    const replaceMeta = (replace: EnchantReplaceTargetInfo): string =>
+      `<span class="ctx-item-meta">${esc(
+        replace.sameEnchant
+          ? t('hudChrome.enchanting.sameEnchantTag')
+          : t('hudChrome.enchanting.replaceTag', { enchant: this.replacedEnchantText(replace) }),
+      )}</span>`;
     const rows = [
-      ...worn.map((target) => ({
-        act: `worn:${target.slot}`,
-        html: `${nameOf(target.itemId)}<span class="ctx-item-meta">${esc(
+      ...worn.map((target) => {
+        const html = `${nameOf(target.itemId)}<span class="ctx-item-meta">${esc(
           t('hudChrome.enchanting.wornTag', { slot: this.deps.slotName(target.slot) }),
-        )}</span>`,
-      })),
-      ...targets.map((target) => ({
-        act: `target:${target.itemId}`,
-        html: nameOf(target.itemId),
-      })),
+        )}</span>${target.replace ? replaceMeta(target.replace) : ''}`;
+        return target.replace?.sameEnchant
+          ? { html, disabled: true }
+          : { act: `worn:${target.slot}`, html };
+      }),
+      ...targets.map((target) => {
+        if (!target.replace) return { act: `target:${target.itemId}`, html: nameOf(target.itemId) };
+        const html = `${nameOf(target.itemId)}${replaceMeta(target.replace)}`;
+        return target.replace.sameEnchant
+          ? { html, disabled: true }
+          : { act: `replace:${target.itemId}`, html };
+      }),
     ];
     this.paint(
       rows,
@@ -276,7 +352,19 @@ export class BagItemActionMenu {
         if (act.startsWith('worn:')) {
           const slot = act.slice('worn:'.length) as EquipSlot;
           const target = worn.find((row) => row.slot === slot);
-          if (target) world.applyEnchant(target.itemId, enchantId, slot);
+          if (!target) return;
+          // A worn replace routes through the confirm dialog (which sends and
+          // repaints on OK); a plain worn apply stays a straight send.
+          if (target.replace) {
+            this.confirmReplace(target.itemId, enchantId, target.replace, slot);
+            return;
+          }
+          world.applyEnchant(target.itemId, enchantId, slot);
+        } else if (act.startsWith('replace:')) {
+          const itemId = act.slice('replace:'.length);
+          const target = targets.find((row) => row.itemId === itemId && row.replace);
+          if (target?.replace) this.confirmReplace(itemId, enchantId, target.replace);
+          return;
         } else {
           world.applyEnchant(act.slice('target:'.length), enchantId);
         }

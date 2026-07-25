@@ -65,6 +65,17 @@ const SPELL_POWER_WEIGHT = 0.9;
 const TANK_BLOCK_WEIGHT = 0.5;
 const SECONDARY_RATING_WEIGHT = 0.3;
 
+// The qualities a fresh level 20 can plausibly be wearing: quest and world greens
+// and blues. Epic and legendary are excluded outright, and so is an item with NO
+// declared quality, because unset cannot be shown to be below the cap and this list
+// is the one place the tier is not allowed to leak.
+export const FRESH_TWENTY_QUALITIES: ReadonlySet<string> = new Set([
+  'poor',
+  'common',
+  'uncommon',
+  'rare',
+]);
+
 // Every item id that sits ABOVE the fresh-20 tier, identified by the table that
 // defines it. One entry per exclusion the tier calls for:
 //   HEROIC_ITEMS / RETIRED_HEROIC_ITEMS - heroic dungeon gear (heroic_loot.ts)
@@ -126,6 +137,12 @@ export function resetDevKitCache(): void {
 export function isFreshTwentyItem(cls: PlayerClass, item: ItemDef): boolean {
   if (!item.slot) return false;
   if (item.kind !== 'weapon' && item.kind !== 'armor' && item.kind !== 'held_offhand') return false;
+  // QUALITY CAP, and the single most important rule here. A fresh 20 wears quest
+  // greens and blues; epics are what you go INTO a dungeon to get, not what you
+  // arrive in. Source filtering alone cannot express this: the scorer maximizes
+  // stats, so given an epic in the pool it will always take it, and 43% of the first
+  // shipped kits were epics reached through perfectly legal-looking sources.
+  if (!FRESH_TWENTY_QUALITIES.has(item.quality ?? '')) return false;
   // Excluded by WHICH TABLE DEFINES the item, not by an inferred level.
   //
   // Level inference is not sound for this: the heroic-mark vendor registers its stock

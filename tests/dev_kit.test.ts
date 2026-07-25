@@ -112,6 +112,41 @@ describe('fresh-20 item pool', () => {
     expect(violations).toEqual([]);
   });
 
+  // REGRESSION, and the one that matters most. Source filtering alone cannot express
+  // the tier: the scorer maximizes stats, so given an epic in the pool it takes it
+  // every time. 43% of the first shipped kits were epics reached through sources that
+  // each looked individually legal. A fresh 20 wears quest greens and blues; epics
+  // are what you enter a dungeon to GET, not what you arrive wearing.
+  it('never puts an epic or legendary in any of the 27 kits', () => {
+    const offenders: string[] = [];
+    for (const { cls, spec } of everySpec()) {
+      for (const [slot, id] of Object.entries(buildDevKit(cls, spec)?.equip ?? {})) {
+        const quality = ITEMS[id]?.quality;
+        if (quality === 'epic' || quality === 'legendary') {
+          offenders.push(`${cls}/${spec} ${slot}=${id} (${quality})`);
+        }
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  it('rejects epic and legendary from the pool outright', () => {
+    for (const item of Object.values(ITEMS)) {
+      if (item.quality === 'epic' || item.quality === 'legendary') {
+        for (const cls of ALL_CLASSES) expect(isFreshTwentyItem(cls, item)).toBe(false);
+      }
+    }
+  });
+
+  it('rejects an item with no declared quality', () => {
+    // Unset cannot be shown to be below the cap, and this is the one place the tier
+    // is not allowed to leak, so it fails closed.
+    const unset = Object.values(ITEMS).filter((item) => item.quality === undefined && item.slot);
+    for (const item of unset) {
+      for (const cls of ALL_CLASSES) expect(isFreshTwentyItem(cls, item)).toBe(false);
+    }
+  });
+
   it('honours requiredClass even for armor, which canEquipItem alone does not', () => {
     // canEquipItem returns on the armor-rank check for anything with an armorType, so
     // a class-locked plate piece never reaches its own requiredClass test. Without the

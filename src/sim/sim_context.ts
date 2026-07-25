@@ -632,7 +632,9 @@ export interface SimContextCallbacks {
   // I2b lockpick controller (abandonLockpick/tickLockpickTimeout), and the I2c companion
   // AI (spawnDelveCompanion/despawnDelveCompanion/maybeCompanionBark).
   partyMembersForKey(key: string): number[];
-  addItem(itemId: string, count: number, pid?: number): void;
+  // opts.silent: see Sim.addItem's matching param, same contract (suppress
+  // only the client's default loot audio cue, the text line still prints).
+  addItem(itemId: string, count: number, pid?: number, opts?: { silent?: boolean }): void;
   // Equip passthroughs for the /dev kit presets (src/sim/dev_kit.ts), which equip
   // bags before gear so pooled bag capacity exists before the pieces land. Plain
   // delegations to the Sim inventory hub; every validation (class, level, slot,
@@ -649,6 +651,7 @@ export interface SimContextCallbacks {
     instance: ItemInstancePayload,
     pid?: number,
     count?: number,
+    opts?: { silent?: boolean },
   ): void;
   // L2 World Market escrow (marketList) also consumes removeItem; it is declared once
   // above (P1b inventory-hub helper, points-at Sim) - deduped, not re-added here.

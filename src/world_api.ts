@@ -192,6 +192,7 @@ export type { PartyInfo, PartyMemberAura, PartyMemberInfo } from './world_api/pa
 export type {
   CraftingIdentityView,
   CraftResultView,
+  DisenchantResultView,
   PlayerProfessionsView,
   RecipeDef,
 } from './world_api/professions';

@@ -12,7 +12,12 @@
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { InvSlot } from '../src/sim/types';
+import { bagsWindowShown } from '../src/ui/bags_view';
 import { BagsWindow, type BagsWindowDeps } from '../src/ui/bags_window';
+import {
+  CLAUDIUM_BALANCE_THROTTLE_MS,
+  ClaudiumLauncherBalance,
+} from '../src/ui/claudium_launcher_balance_core';
 import { ItemDragState } from '../src/ui/item_drag_state';
 import type { IWorld } from '../src/world_api';
 
@@ -350,5 +355,155 @@ describe('BagsWindow.refreshIfChanged preserves what the player is holding', () 
     // The rewrite happened (fresh node), and focus was left where the browser put it.
     expect(h.root.querySelector('[data-claudium-launcher]')).not.toBe(before);
     expect(document.activeElement).toBe(document.body);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The Claudium balance, composed with the real painter (issues #2411, #2414). The
+// state machine's own truth table is tests/claudium_launcher_balance.test.ts; what
+// this block adds is the footer half, counted in PAINTS: an unchanged balance must
+// leave the row alone, a changed one must rewrite it in place, and the round trip
+// through claudiumLauncherHtml (which starts the next read) must not feed itself.
+//
+// Wired exactly as hud.ts wires it, so the two cannot drift apart silently: the
+// launcher label dep starts a read and renders the current value, and onChanged
+// repaints the money row behind the cold-load-safe gate (#1538).
+// ---------------------------------------------------------------------------
+
+interface BalanceHarness extends Harness {
+  balance: ClaudiumLauncherBalance;
+  reads(): number;
+  resolve(value: number | null): Promise<void>;
+  advance(ms: number): void;
+}
+
+function balanceHarness(startCopper = 1000): BalanceHarness {
+  const h = harness(startCopper);
+  let clock = 1_000_000;
+  let reads = 0;
+  const inflight: Array<(v: number | null) => void> = [];
+  const balance = new ClaudiumLauncherBalance({
+    enabled: () => true,
+    read: () => {
+      reads++;
+      return new Promise<number | null>((res) => inflight.push(res));
+    },
+    // The hud's gated footer repaint, verbatim.
+    onChanged: () => {
+      if (bagsWindowShown(h.root.style.display)) h.window.refreshMoneyRow();
+    },
+    now: () => clock,
+  });
+  // The hud's claudiumLauncherHtml: every paint starts a (throttled) read, then
+  // renders whatever the balance currently is.
+  const w = h.window as unknown as { deps: Record<string, unknown> };
+  w.deps.claudiumLauncherHtml = () => {
+    balance.refresh();
+    const value = balance.balance;
+    return `<button data-claudium-launcher>${value === null ? '--' : value}</button>`;
+  };
+  return {
+    ...h,
+    balance,
+    reads: () => reads,
+    // Loud when nothing is in flight: an elision case that never started the read it
+    // claims to elide would otherwise pass with no read behind it at all.
+    resolve: async (value) => {
+      const next = inflight.shift();
+      if (!next) throw new Error('settled a read that was never started');
+      next(value);
+      for (let i = 0; i < 6; i++) await Promise.resolve();
+    },
+    advance: (ms) => {
+      clock += ms;
+    },
+  };
+}
+
+describe('the Claudium balance read and the money footer', () => {
+  it('does not repaint the footer when the balance came back unchanged (#2411)', async () => {
+    const h = balanceHarness();
+    h.window.render();
+    await h.resolve(500); // the read the first paint started
+    const paintsAfterFirstBalance = h.paints();
+    expect(h.moneyText()).toContain('500');
+
+    // The poll crosses the throttle boundary again and returns the same number.
+    h.advance(CLAUDIUM_BALANCE_THROTTLE_MS);
+    h.window.refreshIfChanged(); // no purse movement, so this paints nothing itself
+    h.balance.refresh();
+    await h.resolve(500);
+    expect(h.paints()).toBe(paintsAfterFirstBalance);
+    expect(h.moneyText()).toContain('500');
+  });
+
+  it('repaints the footer in place when the balance moved', async () => {
+    const h = balanceHarness();
+    h.window.render();
+    await h.resolve(500);
+    const grid = h.root.querySelector('.bag-grid');
+    const before = h.paints();
+
+    h.advance(CLAUDIUM_BALANCE_THROTTLE_MS);
+    h.balance.refresh();
+    await h.resolve(420);
+
+    expect(h.paints()).toBe(before + 1);
+    expect(h.moneyText()).toContain('420');
+    // In place: the grid is the same node, so a hovered row keeps its listeners.
+    expect(h.root.querySelector('.bag-grid')).toBe(grid);
+  });
+
+  it('repaints the footer after a store spend, with no read involved (#2414)', () => {
+    // The WOC Store hands the post-spend balance straight to the HUD. An armory skin
+    // is an account cosmetic, so no inventory delta and no purse movement follow it:
+    // this write is the only convergence edge the open bag gets.
+    const h = balanceHarness();
+    h.window.render();
+    h.balance.set(500);
+    const before = h.paints();
+    expect(h.moneyText()).toContain('500');
+
+    h.balance.set(420); // the spend result
+    expect(h.paints()).toBe(before + 1);
+    expect(h.moneyText()).toContain('420');
+  });
+
+  it('paints nothing while the window is hidden, then converges on reopen (#1538)', async () => {
+    const h = balanceHarness();
+    h.window.render();
+    await h.resolve(500);
+    const before = h.paints();
+
+    h.root.style.display = 'none';
+    h.advance(CLAUDIUM_BALANCE_THROTTLE_MS);
+    h.balance.refresh();
+    await h.resolve(420);
+    expect(h.paints()).toBe(before); // the gate held
+
+    h.root.style.display = 'flex';
+    h.window.render();
+    expect(h.moneyText()).toContain('420');
+  });
+
+  it('does not feed itself: the repaint starts no further read', async () => {
+    // The repaint calls claudiumLauncherHtml again, which calls refresh(). Inside a
+    // resolve the in-flight flag stops it; on the store-write path the throttle stamp
+    // set() takes BEFORE it converges does. Either way the count must not run away.
+    const h = balanceHarness();
+    h.window.render();
+    expect(h.reads()).toBe(1); // the first paint's read
+    await h.resolve(500);
+    expect(h.reads()).toBe(1);
+    expect(h.paints()).toBe(2);
+
+    // Park the clock well past the throttle first, or this arm proves nothing: with a
+    // stale stamp still inside the window, a set() that stamped AFTER converging would
+    // look just as quiet as one that stamped before it. A spend a minute after the
+    // last read is also the realistic shape.
+    h.advance(CLAUDIUM_BALANCE_THROTTLE_MS * 2);
+    h.balance.set(420);
+    expect(h.reads()).toBe(1);
+    expect(h.paints()).toBe(3);
   });
 });

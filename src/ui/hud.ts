@@ -39,6 +39,7 @@ import { resolveActiveWeaponSkin } from '../sim/content/weapon_skin_rules';
 import type { ZoneDef } from '../sim/data';
 import {
   ABILITIES,
+  ALL_RECIPES,
   CLASSES,
   DELVE_LIST,
   DELVES,
@@ -149,6 +150,7 @@ import {
   resolvePlayerSocialFlags,
   serializeIgnoreList,
 } from './chat_ignore_core';
+import { ClaudiumLauncherBalance } from './claudium_launcher_balance_core';
 import type { ClaudiumRail, ClaudiumSnapshot } from './claudium_window';
 import { ClaudiumWindow } from './claudium_window';
 import { formatClockTime } from './clock';
@@ -234,6 +236,7 @@ import {
   buildGatheringProficiencyRows,
   gatherDeniedLineKey,
   gatherDowngradeLineKey,
+  gatherRareTierFor,
   gatherToolNoNodeKey,
 } from './gathering_view';
 import { isSelfOnlyAbility } from './hud/action_bar/ability_self_only';
@@ -4073,7 +4076,7 @@ export class Hud {
     storeSnapshot: async () => {
       const snapshot = await this.claudiumHooks?.storeSnapshot();
       if (!snapshot) return { available: false, balance: null, items: [] };
-      this.setClaudiumLauncherBalance(snapshot.balance);
+      this.claudiumBalance.set(snapshot.balance);
       return {
         available: snapshot.available,
         balance: snapshot.balance,
@@ -4083,7 +4086,7 @@ export class Hud {
     spendStoreItem: async (itemId, kind, expectedCostClaudium) => {
       const result = await this.claudiumHooks?.spend(itemId, kind, expectedCostClaudium);
       if (result?.balance !== null && result?.balance !== undefined) {
-        this.setClaudiumLauncherBalance(result.balance);
+        this.claudiumBalance.set(result.balance);
       }
       return (
         result ?? {
@@ -4105,10 +4108,24 @@ export class Hud {
   // hooks are null and the window renders its clean disabled/empty state. The
   // window computes NOTHING; every number rides in through these hooks.
   private claudiumHooks: ClaudiumHooks | null = null;
-  private claudiumLauncherBalance: number | null = null;
-  private claudiumLauncherBalancePending = false;
-  private claudiumLauncherBalanceLastMs = 0;
-  private claudiumLauncherBalanceSeq = 0;
+  // The launcher's Claudium balance and its throttled read live in their own
+  // host-agnostic module (claudium_launcher_balance_core.ts). The HUD keeps only the
+  // wiring: what a read is, and what converging the display means. onChanged fires
+  // for EVERY balance write, which is what makes a store spend catch an open bag up
+  // (#2414), and ONLY when the number moved, which is what stops a poll that
+  // returned the value already on screen from rewriting the footer (#2411).
+  private readonly claudiumBalance = new ClaudiumLauncherBalance({
+    enabled: () => this.claudiumHooks !== null,
+    read: () => this.claudiumHooks?.balance() ?? Promise.resolve(null),
+    onChanged: () => {
+      // Footer-only, and on the cold-load-safe gate (#1538). A balance lands on its
+      // own schedule with no user action behind it, so a full renderBags() here
+      // would tear the window down under a player who is mid-drag, hovering a
+      // tooltip, or typing in bag search.
+      if (bagsWindowShown($('#bags').style.display)) this.bagsWindow.refreshMoneyRow();
+    },
+    now: () => Date.now(),
+  });
   private readonly claudiumWindow = new ClaudiumWindow({
     root: () => $('#claudium-window'),
     closeOthers: () => this.closeOtherWindows('#claudium-window'),
@@ -4120,7 +4137,7 @@ export class Hud {
           skus: [],
           nativeRails: { sol: false, usdc: false, woc: false },
         } satisfies ClaudiumSnapshot);
-      this.setClaudiumLauncherBalance(snapshot.balance);
+      this.claudiumBalance.set(snapshot.balance);
       return snapshot;
     },
     buy: (rail, sku) => this.claudiumHooks?.buy(rail, sku) ?? Promise.resolve(),
@@ -4298,50 +4315,11 @@ export class Hud {
 
   private claudiumLauncherHtml(): string {
     if (!this.claudiumHooks) return '';
-    this.refreshClaudiumLauncherBalance();
-    const label =
-      this.claudiumLauncherBalance === null
-        ? '--'
-        : formatNumber(this.claudiumLauncherBalance, { maximumFractionDigits: 0 });
+    this.claudiumBalance.refresh();
+    const balance = this.claudiumBalance.balance;
+    const label = balance === null ? '--' : formatNumber(balance, { maximumFractionDigits: 0 });
     const aria = t('hudChrome.claudium.open');
     return `<button type="button" class="claudium-launcher" data-claudium-launcher title="${esc(aria)}" aria-label="${esc(aria)}"><img class="claudium-coin" src="/claudium/icons/claudium_coin_64.webp" alt=""><span class="claudium-launcher-balance">${esc(label)}</span></button>`;
-  }
-
-  private setClaudiumLauncherBalance(balance: number | null): void {
-    this.claudiumLauncherBalance = balance;
-    this.claudiumLauncherBalanceLastMs = Date.now();
-  }
-
-  private refreshClaudiumLauncherBalance(force = false): void {
-    if (!this.claudiumHooks || this.claudiumLauncherBalancePending) return;
-    const now = Date.now();
-    if (!force && now - this.claudiumLauncherBalanceLastMs < 30_000) return;
-    this.claudiumLauncherBalancePending = true;
-    const seq = ++this.claudiumLauncherBalanceSeq;
-    void this.claudiumHooks
-      .balance()
-      .then((balance) => {
-        if (seq !== this.claudiumLauncherBalanceSeq) return;
-        this.setClaudiumLauncherBalance(balance);
-        // Footer-only, and on the cold-load-safe gate (#1538). This resolves on the
-        // balance read's own schedule with no user action behind it, so a full
-        // renderBags() here would tear the window down under a player who is
-        // mid-drag, hovering a tooltip, or typing in bag search. Re-entry is not a
-        // risk: the repaint does call claudiumLauncherHtml again, but
-        // claudiumLauncherBalancePending is still true here (.finally has not run),
-        // so the nested read returns before it ever consults the 30s throttle. The
-        // throttle re-stamp above is the second line of defense, not the first.
-        if (bagsWindowShown($('#bags').style.display)) this.bagsWindow.refreshMoneyRow();
-      })
-      .catch(() => {
-        if (seq !== this.claudiumLauncherBalanceSeq) return;
-        this.setClaudiumLauncherBalance(null);
-      })
-      .finally(() => {
-        if (seq === this.claudiumLauncherBalanceSeq) {
-          this.claudiumLauncherBalancePending = false;
-        }
-      });
   }
 
   // One-line aura effect summary HTML for the buff/debuff tooltip: the pure descriptor
@@ -9142,13 +9120,18 @@ export class Hud {
             /^.+ was not assigned and is free for all\.$/.test(ev.text)
           )
             this.lootRolls.closeForItem(ev.text);
-          if (
-            ev.text.includes('loot') ||
-            ev.text.includes('Sold') ||
-            ev.text.includes('Bought back')
-          )
-            audio.coin();
-          else audio.lootItem();
+          // silent: a professions grant (gather/craft/enchant) with its own
+          // dedicated cue for this same grant sets this so the generic ding
+          // doesn't stack on top of it; the text line above still prints.
+          if (!ev.silent) {
+            if (
+              ev.text.includes('loot') ||
+              ev.text.includes('Sold') ||
+              ev.text.includes('Bought back')
+            )
+              audio.coin();
+            else audio.lootItem();
+          }
           if ($('#bags').style.display !== 'none') this.renderBags();
           break;
         }
@@ -9162,7 +9145,12 @@ export class Hud {
             const item = ITEMS[ev.itemId];
             const name = item ? itemDisplayName(item) : ev.itemId;
             this.log(t('hudChrome.crafting.craftedToast', { name }), '#7fdc4f');
-            audio.lootItem();
+            const recipe = ALL_RECIPES.find((r) => r.id === ev.recipeId);
+            audio.craftSuccess(recipe?.professionId ?? '');
+            // Masterwork layers alongside the family cue above, never replaces
+            // it: craftResult.masterwork mirrors the standalone 'masterwork'
+            // event (see src/sim/types.ts), so this one check covers both.
+            if (ev.masterwork) audio.masterwork();
           } else if (!ev.ok) {
             // station_required names WHICH station: no station field
             // rides the event, the type resolves from the recipe content
@@ -9325,12 +9313,14 @@ export class Hud {
         case 'gatherResult': {
           // Harvest feedback line (Professions 2.0), colored by rolled
           // material rarity. Identical on every graphics tier (player feedback
-          // is never profile-gated). The grant hub's own 'loot' event already
-          // prints the "You receive:" line and plays the loot cue, so this
-          // line uses distinct gather wording; the strike cue is
-          // the physical pick/axe/sickle impact of the completed gather cast,
-          // not a second loot notification, with a rare variant for a rare+
-          // material or a rare-event roll.
+          // is never profile-gated). The grant hub's own 'loot' event still
+          // prints the "You receive:" line (distinct gather wording here so
+          // the two lines never look like a duplicate), but the loot event is
+          // emitted silent for a gather grant (see gathering.ts harvestNode)
+          // specifically so it doesn't stack with the dedicated node-type cue
+          // below. The node-type impact always plays; a rare-or-better
+          // material roll (or any rare-event roll) layers one additional
+          // tiered stinger on top, never a replacement for the impact.
           const item = ITEMS[ev.itemId];
           const name = item ? itemDisplayName(item) : ev.itemId;
           this.log(
@@ -9342,14 +9332,9 @@ export class Hud {
               : t('hudChrome.gathering.gatherLine', { name }),
             QUALITY_COLOR[ev.rarity],
           );
-          if (
-            ev.rareEvent !== null ||
-            ev.rarity === 'rare' ||
-            ev.rarity === 'epic' ||
-            ev.rarity === 'legendary'
-          )
-            audio.gatherRare();
-          else audio.gatherStrike();
+          audio.gather(ev.nodeType);
+          const gatherRareTier = gatherRareTierFor(ev.rarity, ev.rareEvent);
+          if (gatherRareTier) audio.gatherRareTier(gatherRareTier);
           break;
         }
         case 'gatherDenied': {
@@ -9389,8 +9374,10 @@ export class Hud {
           const toast = disenchantResultToast(ev);
           const item = ITEMS[ev.itemId];
           const params = { item: item ? itemDisplayName(item) : ev.itemId };
-          if (toast.sink === 'log') this.log(t(toast.key, params), '#7fdc4f');
-          else this.showError(t(toast.key));
+          if (toast.sink === 'log') {
+            this.log(t(toast.key, params), '#7fdc4f');
+            audio.disenchant();
+          } else this.showError(t(toast.key));
           break;
         }
         case 'salvageResult': {
@@ -9399,8 +9386,10 @@ export class Hud {
           const toast = salvageResultToast(ev);
           const item = ITEMS[ev.itemId];
           const params = { item: item ? itemDisplayName(item) : ev.itemId };
-          if (toast.sink === 'log') this.log(t(toast.key, params), '#7fdc4f');
-          else this.showError(t(toast.key));
+          if (toast.sink === 'log') {
+            this.log(t(toast.key, params), '#7fdc4f');
+            audio.salvage();
+          } else this.showError(t(toast.key));
           break;
         }
         case 'enchantResult': {
@@ -9417,6 +9406,7 @@ export class Hud {
               }),
               '#7fdc4f',
             );
+            audio.enchant();
           } else {
             this.showError(t(toast.key));
           }
@@ -10413,10 +10403,12 @@ export class Hud {
           break;
         case 'castStart':
           // cast-loop SFX is spatial now (see playEventSfx); the profession
-          // casts (Professions 2.0) add a personal placeholder cue
-          // at cast start, feedback-gated like other notification cues.
+          // casts (Professions 2.0) add a personal cue at cast start,
+          // feedback-gated like other notification cues. Gathering's cue
+          // branches by node type (a pickaxe/axe/knife tool-out sound);
+          // ev.gatherNodeType is only set on a gather cast (see gathering.ts).
           if (ev.entityId === sim.playerId) {
-            if (ev.ability === GATHER_CAST_ID) audio.gatherCast();
+            if (ev.ability === GATHER_CAST_ID) audio.gatherCast(ev.gatherNodeType);
             else if (ev.ability === FISHING_CAST_ID) audio.fishCast();
           }
           break;
@@ -12806,11 +12798,8 @@ export class Hud {
   attachClaudium(hooks: ClaudiumHooks): void {
     this.claudiumHooks = hooks;
     this.syncDailyRewardsSurfaceLabels();
-    this.claudiumLauncherBalance = null;
-    this.claudiumLauncherBalanceLastMs = 0;
-    this.claudiumLauncherBalanceSeq++;
-    this.claudiumLauncherBalancePending = false;
-    this.refreshClaudiumLauncherBalance(true);
+    this.claudiumBalance.reset();
+    this.claudiumBalance.refresh(true);
   }
 
   attachStorePromoCard(): void {
@@ -12844,7 +12833,7 @@ export class Hud {
   }
 
   async refreshClaudium(): Promise<void> {
-    this.refreshClaudiumLauncherBalance(true);
+    this.claudiumBalance.refresh(true);
     if (!this.claudiumWindow.isOpen) return;
     await this.claudiumWindow.render();
   }

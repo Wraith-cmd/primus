@@ -4136,12 +4136,12 @@ export class Sim {
       // reach-ins delegate to delves/runs via their Sim method body.
       partyMembersForKey: (key) => sim.partyMembersForKey(key),
       grantXp: (amount, meta, opts) => sim.grantXp(amount, meta, opts),
-      addItem: (itemId, count, pid) => sim.addItem(itemId, count, pid),
+      addItem: (itemId, count, pid, opts) => sim.addItem(itemId, count, pid, opts),
       equipBag: (itemId, socket, pid) => sim.equipBag(itemId, socket, pid),
       equipItem: (itemId, pid) => sim.equipItem(itemId, pid),
       unequipItem: (slot, pid) => sim.unequipItem(slot, pid),
-      addItemInstance: (itemId, instance, pid, count) =>
-        sim.addItemInstance(itemId, instance, pid, count),
+      addItemInstance: (itemId, instance, pid, count, opts) =>
+        sim.addItemInstance(itemId, instance, pid, count, opts),
       // L2's World Market escrow (marketList) also consumes removeItem; it is bound once
       // above (P1b inventory-hub helper, points-at Sim) - deduped, not re-added here.
       spawnBossAdds: (boss, mobId, count) => sim.spawnBossAdds(boss, mobId, count),
@@ -6766,7 +6766,14 @@ export class Sim {
   // this hub always lands, so an async award (loot roll, master loot, delve
   // rewards) can't destroy items. Capacity is enforced by canAddItem pre-checks
   // at the command boundaries instead.
-  addItem(itemId: string, count: number, pid?: number): void {
+  // opts.silent suppresses only the client's default loot audio cue for this
+  // grant (the "You receive:" text line still prints); a caller with its own
+  // dedicated cue for the same grant (gathering/crafting/enchanting) sets
+  // this so the generic ding doesn't stack on top of it. Professions 2.0's
+  // later phases add new grant sites here (Phase 4 rare-event jackpot yields,
+  // Phase 13's disenchant UI wiring): pass { silent: true } from those too,
+  // or the new grants will double-ding the same way the original ones did.
+  addItem(itemId: string, count: number, pid?: number, opts?: { silent?: boolean }): void {
     const r = this.resolve(pid);
     if (!r) return;
     const { meta } = r;
@@ -6780,6 +6787,11 @@ export class Sim {
       // biome-ignore lint/style/useTemplate: keep this scanner-friendly shape for i18n extraction.
       text: `You receive: ${def?.name ?? itemId}${count > 1 ? ' x' + count : ''}.`,
       pid: meta.entityId,
+      // Conditional, not `silent: opts?.silent`: writing the key even as
+      // `undefined` on every grant moved every loot event's parity digest
+      // (the canonicalizer keeps `undefined` keys, tests/parity/trace.ts),
+      // dragging goldens with no professions content into every regen.
+      ...(opts?.silent ? { silent: true } : {}),
     });
     this.ctx.onInventoryChangedForQuests(meta);
     if (
@@ -6799,7 +6811,14 @@ export class Sim {
   // grant (a rare-event windfall) emits ONE loot line with the xN suffix
   // instead of one line and cue per unit; discovery and quest hooks fire once
   // per grant, matching addItem's per-call semantics.
-  addItemInstance(itemId: string, instance: ItemInstancePayload, pid?: number, count = 1): void {
+  // opts.silent: see addItem's matching param above, same contract.
+  addItemInstance(
+    itemId: string,
+    instance: ItemInstancePayload,
+    pid?: number,
+    count = 1,
+    opts?: { silent?: boolean },
+  ): void {
     const r = this.resolve(pid);
     if (!r) return;
     if (count < 1) return;
@@ -6831,6 +6850,8 @@ export class Sim {
       // biome-ignore lint/style/useTemplate: keep this scanner-friendly shape for i18n extraction.
       text: `You receive: ${def?.name ?? itemId}${count > 1 ? ' x' + count : ''}.`,
       pid: meta.entityId,
+      // Conditional, see the matching comment in addItem above.
+      ...(opts?.silent ? { silent: true } : {}),
     });
     this.ctx.onInventoryChangedForQuests(meta);
   }

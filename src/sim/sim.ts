@@ -175,6 +175,7 @@ import * as runsMod from './delves/runs';
 import { CASCADE_SCENARIO } from './dev/cascade_playtest';
 import { despawnMobsForDev } from './dev_commands';
 import { projectOutsideDungeonDoors } from './dungeon_door_clearance';
+import { arenaMapForSlot } from './dungeon_layout';
 import * as nythraxis from './encounters/nythraxis';
 // A3: ARENA_SPAWNS_A_2v2/B_2v2 (read only by the moved fiestaRevive) now live with
 // social/fiesta.ts. The dungeon-wall consts (DUNGEON_WALL_HW/X) are now read only by
@@ -5367,8 +5368,15 @@ export class Sim {
     )
       return;
     for (const existing of replacementConflicts) {
-      this.applyNonPlayerStatAura(target, target.auras[existing], -1);
+      const displaced = target.auras[existing];
+      this.applyNonPlayerStatAura(target, displaced, -1);
       target.auras.splice(existing, 1);
+      // A same-id replacement that swaps in a DIFFERENT display name (a
+      // same-stat elixir overwriting another brand) would otherwise vanish
+      // from the buff bar with no combat-log trace: emit the fade the client
+      // cannot infer. Same-name refreshes stay silent, exactly as before.
+      if (displaced.name !== aura.name)
+        this.emit({ type: 'aura', targetId: target.id, name: displaced.name, gained: false });
     }
     target.auras.push(aura);
     if (aura.kind === 'stealth') target.stealthed = true; // keep the cache live without waiting for updateAuras
@@ -7248,8 +7256,13 @@ export class Sim {
     return this.players.get(pid)?.lastDisenchantResult ?? null;
   }
 
-  applyEnchant(itemId: string, enchantId: string, pid?: number): void {
-    const result = applyEnchantImpl(this.ctx, itemId, enchantId, pid);
+  // `slot`, when present, targets the copy WORN in that equipment slot (the
+  // in-place enchant arm), which is why it precedes `pid` here: the
+  // IWorldProfessions signature is applyEnchant(itemId, enchantId, slot?) and
+  // the trailing pid is the offline/server-side extra (the craftItem
+  // (recipeId, commission?, pid?) precedent).
+  applyEnchant(itemId: string, enchantId: string, slot?: EquipSlot, pid?: number): void {
+    const result = applyEnchantImpl(this.ctx, itemId, enchantId, pid, slot);
     const meta = this.players.get(pid ?? this.primaryId);
     if (meta) meta.lastEnchantResult = result;
     this.emit({
@@ -7915,6 +7928,7 @@ export class Sim {
   guildDisband(): void {}
   guildEventCreate(_day: string, _hour: number | null, _title: string, _note: string): void {}
   guildEventRemove(_eventId: number): void {}
+  guildSetMotd(_text: string): void {}
   searchCharacters(_query: string): Promise<import('../world_api').CharacterSearchResult[]> {
     return Promise.resolve([]);
   }
@@ -8200,6 +8214,10 @@ export class Sim {
   // -------------------------------------------------------------------------
 
   fiestaBotPids: number[] = [];
+  // Per-bot stuck-recovery steering state (fiesta_bots.ts advanceBotSteer):
+  // session-only, never serialized, cleared by stopFiestaPractice and on any
+  // tick a bot is not actively fighting.
+  fiestaBotSteer = new Map<number, fiestaBotsMod.BotSteer>();
 
   fiestaPracticeActive(): boolean {
     return fiestaBotsMod.fiestaPracticeActive(this);
@@ -8382,6 +8400,10 @@ export class Sim {
           matchInfo = {
             format: match.format,
             state: match.state,
+            // Yumi bouts hold a MAZE slot (a different pool whose numbers
+            // collide with pit slots), so parity would be meaningless there:
+            // they report the documented default instead.
+            map: match.yumi ? 'coliseum' : arenaMapForSlot(match.slot).id,
             oppName: enemies.map((e) => e.name).join(' & '),
             oppClass: primary.cls,
             oppLevel: primary.level,
@@ -8551,6 +8573,12 @@ export class Sim {
 
   marketInfoFor(pid: number): import('../world_api').MarketInfo | null {
     return this.market.marketInfoFor(pid);
+  }
+
+  // The always-streamed collect-indicator bit (the mailUnreadFor pattern):
+  // server/game.ts ships it on every snapshot as `mktU`.
+  marketCollectPendingFor(pid: number): boolean {
+    return this.market.collectPendingFor(pid);
   }
 
   serializeMarket(): MarketSave {
@@ -8841,6 +8869,10 @@ export class Sim {
 
   get marketInfo(): import('../world_api').MarketInfo | null {
     return this.primaryId === -1 ? null : this.marketInfoFor(this.primaryId);
+  }
+
+  get marketCollectPending(): boolean {
+    return this.primaryId === -1 ? false : this.marketCollectPendingFor(this.primaryId);
   }
 
   get mailInfo(): import('../world_api').MailInfo | null {

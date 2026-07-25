@@ -1,5 +1,5 @@
 import { audio } from '../game/audio';
-import { corpseLootAvailability } from '../game/corpse_loot_availability';
+import { corpseLootAvailability, localPartyMemberIds } from '../game/corpse_loot_availability';
 import type { GamepadKind } from '../game/gamepad_map';
 import { InstanceMusicController } from '../game/instance_music';
 import { type Keybinds, keyCapLabel } from '../game/keybinds';
@@ -76,6 +76,7 @@ import type {
   ItemInstancePayload,
   ItemSlot,
   MailResultCode,
+  MotdResultCode,
   PetMode,
   PlayerClass,
   ResourceType,
@@ -173,7 +174,7 @@ import {
   type CraftTierUp,
   observeCraftSkillsForTierUps,
 } from './craft_celebration_view';
-import { buildCraftingView, craftLearnHints } from './crafting_view';
+import { buildCraftingView, craftingReagentSig, craftLearnHints } from './crafting_view';
 import { renderCraftingWindow, stationNameText } from './crafting_window';
 import { shouldRefreshDailyRewardsLauncher } from './daily_rewards_launcher_core';
 import { DailyRewardsWindow } from './daily_rewards_window';
@@ -380,7 +381,9 @@ import {
   npcMarkerAt,
   questAreaObjectivesAt,
 } from './map_window_view';
+import { marketCollectIndicatorView } from './market_view';
 import { MarketWindow } from './market_window';
+import { materialHintLine } from './material_hint_view';
 import { Meters } from './meters';
 import { minimapMode } from './minimap_markers';
 import { MINIMAP_SIZE, MinimapPainter } from './minimap_painter';
@@ -768,6 +771,12 @@ const CALENDAR_RESULT_KEYS: Record<CalendarResultCode, TranslationKey> = {
   badInput: 'hudChrome.calendar.result.badInput',
   calendarFull: 'hudChrome.calendar.result.calendarFull',
   eventGone: 'hudChrome.calendar.result.eventGone',
+};
+// Guild billboard outcome lines (`set` is the chat-log success).
+const MOTD_RESULT_KEYS: Record<MotdResultCode, TranslationKey> = {
+  set: 'hudChrome.social.billboard.result.set',
+  notInGuild: 'hudChrome.calendar.result.notInGuild',
+  notOfficer: 'hudChrome.social.billboard.result.notOfficer',
 };
 const HONOR_REASON_KEYS: Record<HonorReason, TranslationKey> = {
   arena_win: 'hudChrome.warfare.reasons.arenaWin',
@@ -1307,6 +1316,13 @@ export class Hud {
   // (walking into/out of a station, or the own mobile station expiring); the
   // server re-validates the gate on every craft anyway.
   private lastCraftingStationSig = '';
+  // Signature of the bag as of the last crafting-window paint (#2375). The
+  // Craft gate is inventory-derived, so an open window goes stale on ANY bag
+  // change (a vendor buy, loot, mail, trade, bank withdraw, quest reward);
+  // refreshOpenCraftingIfReagentsChanged diffs the live bag against this and
+  // repaints only on a real move. Same cold-painter posture as the station
+  // signature above: never a per-frame repaint.
+  private lastCraftingReagentSig = '';
   // Character and Crafting are cold painters. Diff the local crafting
   // identity plus the gathering proficiency rows on the slow band so a late
   // online cprof or professions snapshot replaces stale archetype art/title
@@ -1470,6 +1486,9 @@ export class Hud {
   // Ravenpost envelope indicator (slow-band, value-diffed; see updateMailIndicator).
   private mailIndicatorEl: HTMLElement | null = null;
   private lastMailUnread = -1;
+  // World Market collect indicator (slow-band, value-diffed; see updateMarketIndicator).
+  private marketIndicatorEl: HTMLElement | null = null;
+  private lastMarketCollectPending: boolean | null = null;
   private pendingPetFeed = false;
   private petModeMenuOpen = false;
   constructor(
@@ -1616,7 +1635,13 @@ export class Hud {
       element: $('#loot-window'),
       document,
       world: () => this.sim,
-      corpseAvailability: (mob) => corpseLootAvailability(mob, this.sim.playerId),
+      corpseAvailability: (mob) =>
+        corpseLootAvailability(
+          mob,
+          this.sim.playerId,
+          true,
+          localPartyMemberIds(this.sim.partyInfo),
+        ),
       closeTransient: () => this.closeOtherWindows('#loot-window'),
       hideTooltip: () => this.hideTooltip(),
       entityName: entityDisplayName,
@@ -1731,13 +1756,17 @@ export class Hud {
     this.actionBarController.init();
     this.buildActionBar();
     this.initMailIndicator();
+    this.initMarketIndicator();
     this.refreshKeybindLabels();
     this.buildXpTicks();
     document.addEventListener('woc:languagechange', () => this.refreshLocalizedDynamicUi());
     // re-render the bag footer (and re-composite an open player card) when the
     // connected wallet's $WOC balance changes
     onWalletUiChange(() => {
-      if ($('#bags').style.display !== 'none') this.renderBags();
+      // Footer-only, as this comment always claimed: the balance lands asynchronously
+      // with no user action behind it, so a full rebuild would drop the bag-search
+      // caret and strand a hovered tooltip. Cold-load-safe gate (#1538) too.
+      if (bagsWindowShown($('#bags').style.display)) this.bagsWindow.refreshMoneyRow();
       this.playerCard.refresh();
       this.claudiumWindow.onWalletChanged();
     });
@@ -2398,6 +2427,7 @@ export class Hud {
         !!charWindow && this.isWindowVisible(charWindow),
         document.body.classList.contains('vendor-open'),
         document.body.classList.contains('bank-open'),
+        document.body.classList.contains('market-open'),
         document.body.classList.contains('char-bags-paired'),
       ),
     );
@@ -4281,7 +4311,15 @@ export class Hud {
       .then((balance) => {
         if (seq !== this.claudiumLauncherBalanceSeq) return;
         this.setClaudiumLauncherBalance(balance);
-        if ($('#bags').style.display !== 'none') this.renderBags();
+        // Footer-only, and on the cold-load-safe gate (#1538). This resolves on the
+        // balance read's own schedule with no user action behind it, so a full
+        // renderBags() here would tear the window down under a player who is
+        // mid-drag, hovering a tooltip, or typing in bag search. Re-entry is not a
+        // risk: the repaint does call claudiumLauncherHtml again, but
+        // claudiumLauncherBalancePending is still true here (.finally has not run),
+        // so the nested read returns before it ever consults the 30s throttle. The
+        // throttle re-stamp above is the second line of defense, not the first.
+        if (bagsWindowShown($('#bags').style.display)) this.bagsWindow.refreshMoneyRow();
       })
       .catch(() => {
         if (seq !== this.claudiumLauncherBalanceSeq) return;
@@ -4763,6 +4801,10 @@ export class Hud {
     // pole render their kind, requirement, use, and bonus lines from the
     // pure sibling module (the item_instance_tooltip.ts pattern).
     html += gatherToolTooltipLines(item);
+    // Purpose hint for the eight enchanting materials (material_hint_view.ts
+    // keys the table by item id): what the reagent is for and which gear
+    // disenchants into it. Every other item id renders nothing here.
+    html += materialHintLine(item.id);
     if (item.potionHp)
       html += `<div class="tt-desc">${esc(t('itemUi.tooltip.useHealingPotion', { amount: itemNumber(item.potionHp) }))}</div>`;
     if (item.potionMana)
@@ -7132,6 +7174,11 @@ export class Hud {
         ) !== this.lastCraftingStationSig
       )
         this.renderCrafting();
+      // Bag staleness (#2375): the same cold-painter treatment for the other
+      // half of the Craft gate. This is the ONE edge that covers every bag
+      // source in BOTH hosts (loot, mail, trade, bank, quest reward), so the
+      // window can never sit disabled on reagents the player is holding.
+      this.refreshOpenCraftingIfReagentsChanged();
     }
 
     // player frame: the first instance of the unit_frame family. Build a
@@ -7722,6 +7769,12 @@ export class Hud {
     if (slowHud && this.mailboxWindow.isOpen) this.mailboxWindow.refreshIfChanged();
     // The bank closes itself when the bank mirror goes null (left the banker).
     if (slowHud && this.bankWindow.isOpen) this.bankWindow.refreshIfChanged();
+    // The bag money row is a cold painter, and several copper credits reach no bags
+    // arm in EITHER host (a trainer fee, a settled Vale Cup bet, delve and lockpick
+    // copper), so this is the backstop that converges them all (#2373). Online the
+    // ClientWorld purse diff gets there first via onInventoryChanged. The window owns
+    // the latch and repaints only its .money footer, never the whole grid.
+    if (slowHud) this.bagsWindow.refreshIfChanged();
     if (slowHud && this.deedsWindow.isOpen) this.deedsWindow.refreshIfChanged();
     if (slowHud) this.refreshOpenProfessionSurfacesIfChanged();
     if (slowHud && this.professionsWindow.isOpen) this.professionsWindow.refreshIfChanged();
@@ -7733,6 +7786,7 @@ export class Hud {
     if (slowHud) this.updateDeedTracker();
     if (slowHud && this.calendarWindow.isOpen) this.calendarWindow.refreshIfChanged();
     if (slowHud) this.updateMailIndicator();
+    if (slowHud) this.updateMarketIndicator();
   }
 
   private initMailIndicator(): void {
@@ -7768,6 +7822,45 @@ export class Hud {
       el.setAttribute('aria-label', t('hudChrome.mailbox.indicatorAria', { count }));
       el.title = t('hudChrome.mailbox.indicatorTip', { count });
     }
+  }
+
+  private initMarketIndicator(): void {
+    // Null-guarded (the raid-lockout init pattern): a game entry missing the
+    // badge markup must degrade to no badge, never abort the rest of HUD init.
+    const el = $('#market-indicator') as HTMLButtonElement | null;
+    if (!el) return;
+    this.marketIndicatorEl = el;
+    const activate = () => {
+      // At the Merchant the coin opens the World Market (the same gate the
+      // market window itself lives behind); anywhere else it is informational
+      // only: the tooltip already says the proceeds wait at the Merchant.
+      if (this.nearbyMarketNpc()) this.openMarket();
+    };
+    el.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      activate();
+    });
+    el.addEventListener('keydown', (ev) => {
+      if (ev.key !== 'Enter' && ev.key !== ' ') return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      activate();
+    });
+  }
+
+  // The World Market coin by the minimap: visible while sale proceeds or
+  // returned items wait at the Merchant (the mail envelope pattern).
+  // Slow-band, value-diffed writes only (the bit changes rarely); the static
+  // title/aria come from index.html's data-i18n attributes.
+  private updateMarketIndicator(): void {
+    const el = this.marketIndicatorEl ?? ($('#market-indicator') as HTMLElement | null);
+    if (!el) return;
+    this.marketIndicatorEl = el;
+    const view = marketCollectIndicatorView(this.sim.marketCollectPending);
+    if (view.visible === this.lastMarketCollectPending) return;
+    this.lastMarketCollectPending = view.visible;
+    el.hidden = !view.visible;
   }
 
   // Classic "low mana/energy" warning: pulse the player resource bar when power
@@ -9454,6 +9547,14 @@ export class Hud {
           this.calendarWindow.onCalendarResult(ev.code);
           break;
         }
+        case 'motdResult': {
+          if (ev.code === 'set') {
+            this.log(t(MOTD_RESULT_KEYS[ev.code]), '#c8f7c5');
+          } else {
+            this.showError(t(MOTD_RESULT_KEYS[ev.code]));
+          }
+          break;
+        }
         case 'deedBroadcast': {
           // A guildmate's or followed friend's marquee unlock. Id-based on
           // the wire (server sends the deed id, never English); the visible
@@ -10931,6 +11032,7 @@ export class Hud {
       'You join the Ashen Coliseum queue. Stand by for a worthy opponent…': 'hud.logs.arenaJoin',
       'You leave the Ashen Coliseum queue.': 'hud.logs.arenaLeave',
       'You step onto the sands of the Ashen Coliseum.': 'hud.logs.arenaSands',
+      'You step onto the flooded stones of the Drowned Court.': 'hud.logs.arenaSandsDrowned',
       'Fight!': 'hud.system.arenaStart',
       'Trade window opened.': 'hud.logs.tradeOpened',
       'Trade complete.': 'hud.logs.tradeComplete',
@@ -11383,6 +11485,10 @@ export class Hud {
       buy();
       if ($('#bags').style.display !== 'none') this.renderBags();
       this.renderVendor();
+      // The issue #2375 repro: buying the last reagent with the crafting
+      // window open must enable the row on the click, not on the next slow
+      // tick (offline has no authoritative-delta hook to ride).
+      this.refreshOpenCraftingIfReagentsChanged();
     };
     renderVendorWindow(
       $('#vendor-window'),
@@ -11683,6 +11789,9 @@ export class Hud {
       this.sim.activeMobileStationCraft,
     );
     this.lastCraftingStationSig = stationTypesSignature(inRangeStations);
+    // Re-arm the bag diff on EVERY paint, whatever caused it, so a repaint
+    // from one edge never leaves another edge owing a second one (#2375).
+    this.lastCraftingReagentSig = craftingReagentSig(this.sim.inventory, this.sim.player.name);
     // The window lists only KNOWN recipes, so an unlearned trainer
     // recipe never renders as a craftable row (it surfaces in the Train
     // ladder instead). The SAME viewer-side predicate the ladder's known
@@ -11838,6 +11947,16 @@ export class Hud {
     if (document.body.classList.contains('mobile-touch') && this.bankWindow.isOpen) {
       document.body.classList.remove('bank-open');
     }
+    // The market cluster undocks the same way: a bags-only close (the bags x-btn
+    // or the tray toggle; the market keeps its own x-btn, bags is only its
+    // optional Sell-tab companion) must not leave the still-open market pinned
+    // to the left half of the mobile 50/50 pairing with nothing on the right.
+    // Dropping the class lets the standalone mobile sheet rule take the full
+    // width back; mobile-only exactly like the bank arm above (desktop
+    // deliberately keeps the docked offset until the market closes).
+    if (document.body.classList.contains('mobile-touch') && this.marketWindow.isOpen) {
+      document.body.classList.remove('market-open');
+    }
     // The char-sheet companion undocks too: with the bags gone the sheet takes the
     // full screen back rather than staying a half-width orphan.
     this.syncCharBagsPairing();
@@ -11966,20 +12085,49 @@ export class Hud {
     // onBagsClosed drops the class while the bank stays up; idempotent on desktop,
     // which never undocks).
     if (this.bankWindow.isOpen) document.body.classList.add('bank-open');
+    // Re-dock the market pairing the same way (its mobile undock in onBagsClosed
+    // mirrors the bank's; idempotent on desktop, which never undocks).
+    if (this.marketWindow.isOpen) document.body.classList.add('market-open');
     // Dock the char-sheet pairing when its companion opens (the touch cluster).
     this.syncCharBagsPairing();
     audio.bagOpen();
-    // Pull a fresh on-chain $WOC balance for the footer; the async result
-    // re-renders the bag via the onWalletUiChange listener wired in the ctor.
+    // Pull a fresh on-chain $WOC balance for the footer; the async result repaints
+    // the footer (not the whole bag) via the onWalletUiChange listener wired in the
+    // ctor. The display is set to 'flex' above precisely so that listener's
+    // bagsWindowShown gate sees an open window when the balance lands.
     this.optionsHooks?.refreshWocBalance();
   }
 
   // Called when an authoritative inventory delta lands (online snapshots
   // carry inventory separately from the event frames that normally redraw).
   onInventoryChanged(): void {
-    if ($('#bags').style.display !== 'none') this.renderBags();
+    // Cold-load-safe gate (#1538): a never-opened window's inline display is '', which
+    // the raw `!== 'none'` form reads as shown. That mattered little while only
+    // inventory deltas landed here, but every money-only credit now routes through
+    // this hook (#2373), so a hidden window would be rebuilt on each one.
+    if (bagsWindowShown($('#bags').style.display)) this.renderBags();
     if (this.openVendorNpcId !== null) this.renderVendor();
     this.renderCharIfOpen();
+    // The crafting window rides this hook too (#2375): it is the online
+    // host's instant edge for an authoritative delta, and offline it is what
+    // the bank window raises on a withdraw. Every other offline bag source
+    // converges on the slow band instead.
+    this.refreshOpenCraftingIfReagentsChanged();
+  }
+
+  /**
+   * Repaint an OPEN crafting window when the bag facts behind its Craft gate
+   * actually moved (issue #2375). Cheap enough for the slow band and for every
+   * inventory delta: the window has to be open before the signature is built
+   * at all, and an unchanged bag never reaches the painter.
+   */
+  private refreshOpenCraftingIfReagentsChanged(): void {
+    if ($('#crafting-window').style.display !== 'flex') return;
+    if (
+      craftingReagentSig(this.sim.inventory, this.sim.player.name) === this.lastCraftingReagentSig
+    )
+      return;
+    this.renderCrafting();
   }
 
   onCosmeticsChanged(): void {
@@ -12033,6 +12181,7 @@ export class Hud {
       bagsShown: bagsWindowShown($('#bags').style.display),
       bankOpen: this.bankWindow.isOpen,
       vendorOpen: this.vendorOpen,
+      marketOpen: this.marketWindow.isOpen,
     });
     document.body.classList.toggle('char-bags-paired', paired);
   }

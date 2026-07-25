@@ -24,6 +24,7 @@ import {
 } from './game/click_move';
 import { clientEnvBits, installPageStateTracking, pageStateBits } from './game/client_env';
 import { getClientSeed } from './game/client_seed';
+import { localPartyMemberIds } from './game/corpse_loot_availability';
 import { shouldClearAutorunOnDeath } from './game/death_input_reset';
 import { initDesktopDownload } from './game/desktop_download';
 import { initDesktopShellIntegration } from './game/desktop_shell_integration';
@@ -96,6 +97,7 @@ import {
   spawnCinematicPose,
 } from './game/spawn_cinematic';
 import { safeStartupGraphicsPreset } from './game/startup_graphics_safety';
+import { shouldClearTargetOnGroundClick } from './game/target_click';
 import { resolveUiEffectsProfile } from './game/ui_effects_profile';
 import { currentUtcDay } from './game/utc_day';
 import { voice } from './game/voice';
@@ -2589,7 +2591,10 @@ async function startGame(
     const clickToMoveButton = normalizeClickMoveButton(settings.get('clickToMoveButton'));
     const isClickMoveButton = clickToMove && button === clickToMoveButton;
     if (id === null) {
-      if (button === 0) {
+      // Classic behavior clears the target on a ground left-click; the opt-in
+      // stickyTarget setting keeps it (only the clear is skipped, click-to-move
+      // below is untouched). Decision table: src/game/target_click.ts.
+      if (shouldClearTargetOnGroundClick(button, settings.get('stickyTarget'))) {
         world.targetEntity(null);
       }
       // One ground raycast feeds both the move target and its marker, so the gold
@@ -2619,7 +2624,13 @@ async function startGame(
       // regular click handler still performs target/interact behavior.
       if (
         isClickMoveButton &&
-        shouldApproachPickedEntity(world.player, e, didInteractImmediately)
+        shouldApproachPickedEntity(
+          world.player,
+          e,
+          didInteractImmediately,
+          true,
+          localPartyMemberIds(world.partyInfo),
+        )
       ) {
         const target = resolvedClickMoveTarget({ x: e.pos.x, z: e.pos.z });
         input.setClickMoveTarget(target, 3.5, e.id, clickMovePathTo(target));

@@ -52,8 +52,8 @@ export const GCD = 1.5; // seconds
 // never collapses to nothing. The base GCD is divided by spellHasteMult at cast time.
 export const MIN_GCD = 0.75; // seconds
 // Combat ratings are gear-facing stats converted to fractions in recalcPlayerStats.
-export const HASTE_RATING_PER_PCT = 10; // 10 haste rating = 1% faster
-export const CRIT_RATING_PER_PCT = 10; // 10 crit rating = +1% crit chance
+export const HASTE_RATING_PER_PCT = 20; // 20 haste rating = 1% faster
+export const CRIT_RATING_PER_PCT = 20; // 20 crit rating = +1% crit chance
 export const HIT_RATING_PER_PCT = 10; // 10 hit rating = +1% hit (less miss/resist)
 export function hasteFractionFromRating(rating: number): number {
   return rating / (HASTE_RATING_PER_PCT * 100);
@@ -488,6 +488,11 @@ export interface Aura {
   // the per-application maxBonus cap holds across channel ticks.
   extendedBy?: number;
   leechPct?: number; // dot only: fraction of tick damage healed back to source
+  // dot only: the per-tick value was copied from ALREADY-RESOLVED damage (Ignite's
+  // 40%-of-the-crit bank), so ticks pass dealDamage's alreadyFinal and skip the
+  // source-output multipliers a second application would double-dip (PR #2360
+  // review finding: a 300 bank paid 330 under a +10% damage buff).
+  finalDamage?: boolean;
   // Chronomancy Temporal Echo bookkeeping (temporal_echo auras only). echoGroup
   // marks the ORIGIN: false/undefined = the single-target Temporal Echo (35% ST /
   // 15% AoE conversion), true = a Cascada temporal group echo (13% ST / 6% AoE).
@@ -3195,6 +3200,10 @@ export type CalendarResultCode =
   | 'calendarFull'
   | 'eventGone';
 
+// Guild billboard command outcomes (mirrors server/social.ts MotdResultCode;
+// `set` is the success, the rest refusals).
+export type MotdResultCode = 'set' | 'notInGuild' | 'notOfficer';
+
 // An in-flight party/raid ready check (social/ready_check.ts). Keyed on Sim by party
 // id. Each member is 'pending' until they answer; anyone still 'pending' when the
 // timeout fires is counted as "no response" (there is no separate afk state).
@@ -3316,6 +3325,10 @@ export type SimEvent = { pid?: number } & (
   // sim never books guild events); declared here so the one client event
   // switch stays exhaustively typed.
   | { type: 'calendarResult'; code: CalendarResultCode }
+  // Guild billboard outcome. Emitted only by the server's SocialService (the
+  // sim never edits the billboard); declared here, like calendarResult, so the
+  // one client event switch stays exhaustively typed.
+  | { type: 'motdResult'; code: MotdResultCode }
   // A guildmate's or followed friend's marquee deed unlock. Emitted only by
   // the server's SocialService (the sim never sees other players' social
   // graphs); declared here, like calendarResult, so the one client event

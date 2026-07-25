@@ -43,7 +43,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "es_ES": [
     "hud.arena.map.coliseum",
@@ -79,7 +87,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "fr_FR": [
     "hud.arena.map.coliseum",
@@ -115,7 +131,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "fr_CA": [
     "hud.arena.map.coliseum",
@@ -151,7 +175,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "en_CA": [],
   "it_IT": [
@@ -188,7 +220,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "de_DE": [
     "hud.arena.map.coliseum",
@@ -224,7 +264,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "zh_CN": [
     "hudChrome.enchanting.wornTag"
@@ -272,7 +320,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "ru_RU": [
     "hudChrome.enchanting.wornTag"
@@ -311,7 +367,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "nl_NL": [
     "hud.arena.map.coliseum",
@@ -347,7 +411,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "pl_PL": [
     "hud.arena.map.coliseum",
@@ -383,7 +455,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "id_ID": [
     "hud.arena.map.coliseum",
@@ -419,7 +499,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "tr_TR": [
     "hud.arena.map.coliseum",
@@ -455,7 +543,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "sv_SE": [
     "hud.arena.map.coliseum",
@@ -491,7 +587,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "vi_VN": [
     "hud.arena.map.coliseum",
@@ -527,7 +631,15 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ],
   "da_DK": [
     "hud.arena.map.coliseum",
@@ -563,6 +675,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.social.billboard.result.notOfficer",
     "hudChrome.social.billboard.result.set",
     "hudChrome.social.billboard.save",
-    "hudChrome.social.billboard.setBy"
+    "hudChrome.social.billboard.setBy",
+    "itemUi.market.armorCloth",
+    "itemUi.market.armorLeather",
+    "itemUi.market.armorMail",
+    "itemUi.market.filterArmorClassAll",
+    "itemUi.market.filterArmorSlot",
+    "itemUi.market.filterPrimaryStat",
+    "itemUi.market.filterPrimaryStatAll",
+    "itemUi.market.filterValueAria"
   ]
 };

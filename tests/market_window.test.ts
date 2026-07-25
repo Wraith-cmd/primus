@@ -249,6 +249,21 @@ describe('market_window: behavior preserved through the core', () => {
     );
   });
 
+  // Source discipline only: the RENDERED menus, their labels, the committed values and the
+  // emitted query are asserted for real in tests/browser/keyboard_nav.browser.test.ts. The
+  // aria-label grep below is not redundant with it: reverting to a hand-built
+  // `${label}: ${current}` produces a byte-identical English string, so the DOM assertion
+  // cannot see that regression and this source pin is the only guard against it.
+  it('wires the advanced filters through the shared constants and the i18n aria pattern', () => {
+    expect(painter).toContain('MARKET_ARMOR_CLASS_FILTERS');
+    expect(painter).toContain('MARKET_PRIMARY_STAT_FILTERS');
+    expect(painter).toMatch(/this\.renderMarketFilterMenu\(\s*'armorClass'/);
+    expect(painter).toMatch(/this\.renderMarketFilterMenu\(\s*'primaryStat'/);
+    expect(painter).toContain('armorClass: this.armorClassFilter');
+    expect(painter).toContain('primaryStat: this.primaryStatFilter');
+    expect(painter).toContain("t('itemUi.market.filterValueAria', { label, value: current })");
+  });
+
   it('preserves the buy / list / cancel / collect dispatch and money formatting', () => {
     expect(painter).toContain('.marketBuy(l.id)');
     expect(painter).toContain('.marketCancel(l.id)');

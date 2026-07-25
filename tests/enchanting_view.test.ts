@@ -1,4 +1,4 @@
-// Pure-core tests for the enchanting result toasts (Professions 2.0 Phase 13):
+// Pure-core tests for the enchanting result toasts (Professions 2.0):
 // every event x reason maps to the exact i18n key and sink (a success chat line
 // vs an error toast). The throttled arm is pinned to its OWN action key (never
 // the crafting-busy line), the 12c cross-action-throttle nuance.
@@ -31,6 +31,10 @@ describe('enchanting_view: disenchant toast mapping', () => {
     expect(disenchantResultToast({ ok: false, reason: 'unknown_item' }).key).toBe(
       'hudChrome.enchanting.notHeld',
     );
+    expect(disenchantResultToast({ ok: false, reason: 'no_bag_space' })).toEqual({
+      key: 'hudChrome.enchanting.disenchantNoSpace',
+      sink: 'error',
+    });
   });
 });
 
@@ -54,6 +58,10 @@ describe('enchanting_view: salvage toast mapping', () => {
     expect(salvageResultToast({ ok: false, reason: 'unknown_item' }).key).toBe(
       'hudChrome.enchanting.notHeld',
     );
+    expect(salvageResultToast({ ok: false, reason: 'no_bag_space' })).toEqual({
+      key: 'hudChrome.enchanting.salvageNoSpace',
+      sink: 'error',
+    });
   });
 });
 
@@ -83,6 +91,18 @@ describe('enchanting_view: apply-enchant toast mapping', () => {
     expect(applyEnchantResultToast({ ok: false, reason: 'unknown_item' }).key).toBe(
       'hudChrome.enchanting.notHeld',
     );
+    expect(applyEnchantResultToast({ ok: false, reason: 'no_bag_space' })).toEqual({
+      key: 'hudChrome.enchanting.enchantNoSpace',
+      sink: 'error',
+    });
+    // #2415: the two dedicated already-enchanted denies get their OWN honest
+    // copy, never the shared notHeld fallback.
+    expect(applyEnchantResultToast({ ok: false, reason: 'already_enchanted' }).key).toBe(
+      'hudChrome.enchanting.alreadyEnchanted',
+    );
+    expect(applyEnchantResultToast({ ok: false, reason: 'same_enchant' }).key).toBe(
+      'hudChrome.enchanting.sameEnchant',
+    );
   });
   it('always routes a failure through the error sink', () => {
     for (const reason of [
@@ -92,6 +112,9 @@ describe('enchanting_view: apply-enchant toast mapping', () => {
       'insufficient_materials',
       'not_held',
       'unknown_item',
+      'no_bag_space',
+      'already_enchanted',
+      'same_enchant',
     ] as const) {
       expect(applyEnchantResultToast({ ok: false, reason }).sink).toBe('error');
     }

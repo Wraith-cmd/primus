@@ -442,6 +442,82 @@ export const TARGETS = [
     },
   },
   {
+    key: 'profession-grant-lines',
+    label: 'Chat log: one line per profession grant (#2430)',
+    when: ['ui/grant_line_view', 'ui/enchanting_view', 'sim/professions'],
+    // Runs four profession actions back to back through the REAL sim commands
+    // (craft, salvage, disenchant, apply enchant) and clips the chat log, so
+    // the before/after pair shows the same four actions producing eight grant
+    // lines versus four. The whole set runs TWICE: the first pass burns the
+    // once-ever deed unlocks and the profession nudge, which would otherwise
+    // push the oldest line out of the fixed-height log, and the shot is taken
+    // on the second pass with a cleared log so every line fits. Eight actions
+    // stay under the shared 10-per-60s action throttle. Deliberately not a
+    // harvest: a gather is a 2.5s cast needing a node underfoot and a matching
+    // tool, and these four already cover every line family the change touches.
+    // The mobile variant is the same chat log at the touch layout's width,
+    // where the longer yield-naming lines have the least room to sit.
+    variants: [{ key: 'desktop' }, { key: 'mobile', mobile: true }],
+    async capture(page, variant) {
+      await page.evaluate(() => {
+        document.querySelector('.camera-prompt-confirm')?.click();
+        document.querySelector('.tut-skip')?.click();
+        document.querySelector('.gpu-notice-dismiss')?.click();
+      });
+      const staged = await page.evaluate(() => {
+        const sim = window.__game?.sim;
+        const pid = sim?.playerId;
+        if (!sim || pid === undefined) return { ok: false, reason: 'offline world is unavailable' };
+        if (!sim.players?.get(pid)) return { ok: false, reason: 'player meta is unavailable' };
+        // Two swords broken down per pass (one salvaged, one disenchanted)
+        // plus one enchanted per pass; apply-enchant prefers an UNENCHANTED
+        // copy, so the second pass takes a fresh one rather than tripping the
+        // same-enchant deny. Reagents cover both passes.
+        sim.addItem('eastbrook_arming_sword', 6, pid);
+        sim.addItem('arcane_dust', 40, pid);
+        sim.addItem('spider_leg', 8, pid);
+        return { ok: true };
+      });
+      if (!staged.ok) throw new Error(staged.reason);
+      await wait(400);
+      const runPass = () =>
+        page.evaluate(() => {
+          const sim = window.__game?.sim;
+          const pid = sim?.playerId;
+          if (!sim || pid === undefined) return { ok: false, reason: 'world went away' };
+          sim.craftItem?.('recipe_tough_jerky', false, pid);
+          sim.salvageItem?.('eastbrook_arming_sword', pid);
+          sim.disenchantItem?.('eastbrook_arming_sword', pid);
+          sim.applyEnchant?.('eastbrook_arming_sword', 'enchant_weapon_might');
+          return { ok: true };
+        });
+      const warmup = await runPass();
+      if (!warmup.ok) throw new Error(warmup.reason);
+      // The commands resolve on the tick they arrive on, but the events reach
+      // the HUD through the live 20 Hz drain, so give the loop real time.
+      await wait(1500);
+      // Clear the log so the shot holds ONLY the second pass's four actions.
+      await page.evaluate(() => {
+        document.querySelector('#chatlog')?.replaceChildren();
+      });
+      const shot = await runPass();
+      if (!shot.ok) throw new Error(shot.reason);
+      await wait(1500);
+      if (variant?.mobile) {
+        // The touch layout parks the chat panel behind its own button; without
+        // this the clip target is not visible and the shot silently falls back
+        // to the whole HUD.
+        await page.evaluate(() => {
+          document
+            .getElementById('mobile-chat')
+            ?.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true }));
+        });
+        await wait(700);
+      }
+      return { clip: '#chatlog-wrap' };
+    },
+  },
+  {
     key: 'world-map',
     label: 'World map / zone',
     when: [

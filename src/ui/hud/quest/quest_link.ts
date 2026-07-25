@@ -13,6 +13,18 @@ export type ChatSegment =
 // (q | i) selects the segment kind. Global so we can walk every match.
 const CHAT_LINK_RE = /\[\[([qi]):([A-Za-z0-9_]+)\]\]/g;
 
+// The same id charset as CHAT_LINK_RE, anchored, for callers that build a token
+// from an id they did not choose (content data). A token whose id the parser
+// cannot match is NOT dropped by parseChatSegments: it survives as a text
+// segment, so the player reads the literal "[[i:...]]" source. Callers that
+// can fall back to a plain name should ask here first, and this lives beside
+// the regex so the two can never answer the question differently.
+const LINKABLE_ID_RE = /^[A-Za-z0-9_]+$/;
+
+export function isLinkableId(id: string): boolean {
+  return LINKABLE_ID_RE.test(id);
+}
+
 export function encodeQuestLink(questId: string): string {
   return `[[q:${questId}]]`;
 }

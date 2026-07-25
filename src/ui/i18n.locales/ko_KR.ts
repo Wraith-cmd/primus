@@ -6348,6 +6348,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.crafting.empty': '알려진 제작법이 없습니다.',
   'hudChrome.crafting.resultAria': '{name} 제작',
   'hudChrome.crafting.craftedToast': '제작 완료:{name}',
+  'hudChrome.crafting.craftedToastQty': '제작 완료:{name} x{qty}',
   'hudChrome.crafting.insufficientMaterials': '재료가 부족합니다.',
   'hudChrome.crafting.unknownRecipe': '해당 제작법이 존재하지 않습니다.',
   'hudChrome.crafting.comboRequires': '조율 조건: {craftA} + {craftB}, 티어 {tier}.',
@@ -8539,7 +8540,16 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.itemMenu.salvage': '분해',
   'hudChrome.itemMenu.applyEnchant': '마법부여 적용',
   'hudChrome.enchanting.disenchantedLine': '{item}의 마력을 추출했습니다.',
+  'hudChrome.enchanting.disenchantedYield':
+    '{item}의 마력을 추출하여 {material}(으)로 만들었습니다.',
+  'hudChrome.enchanting.disenchantedYieldQty':
+    '{item}의 마력을 추출하여 {material} {qty}개로 만들었습니다.',
+  'hudChrome.enchanting.disenchantedAlso': '추가로 {material}을(를) 얻었습니다.',
+  'hudChrome.enchanting.disenchantedAlsoQty': '추가로 {material}을(를) {qty}개 얻었습니다.',
   'hudChrome.enchanting.salvagedLine': '{item}을(를) 분해했습니다.',
+  'hudChrome.enchanting.salvagedYield': '{item}을(를) 분해하여 {material}(으)로 만들었습니다.',
+  'hudChrome.enchanting.salvagedYieldQty':
+    '{item}을(를) 분해하여 {material} {qty}개로 만들었습니다.',
   'hudChrome.enchanting.enchantAppliedLine': '{item}에 {enchant}을(를) 부여했습니다.',
   'hudChrome.enchanting.notHeld': '해당 아이템을 가지고 있지 않습니다.',
   'hudChrome.enchanting.notDisenchantable': '해당 아이템은 마력을 추출할 수 없습니다.',

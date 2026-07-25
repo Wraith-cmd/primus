@@ -3609,8 +3609,15 @@ export class Hud {
       this.showPrompt(text, acceptLabel, onAccept, onDecline),
     startWhisper: (name) => this.startWhisper(name),
   });
+  // Set by main.ts once the realm's /api/status advert answers, which lands AFTER
+  // this window is constructed: a hosted dev/PBE realm booted with
+  // ALLOW_DEV_COMMANDS=1 lights the /dev GUI without needing a dev client build
+  // (production realms never set the env, so it stays dark there). Kept beside the
+  // build-time HudFeatures flag rather than mutating it, so the constructor's
+  // features bag stays the immutable record of what the BUILD asked for.
+  private devCommandsAdvertised = false;
   private readonly devCommandWindow = new DevCommandWindow({
-    available: () => this.features.devCommandsEnabled === true,
+    available: () => this.devCommandsAvailable,
     world: () => this.sim,
     closeOthers: () => this.closeOtherWindows('#dev-command-window'),
     ...this.windowFocus('#dev-command-window'),
@@ -13700,6 +13707,21 @@ export class Hud {
 
   toggleSocial(): void {
     this.socialWindow.toggle();
+  }
+
+  // The single source of truth for "may this client offer the /dev GUI": either the
+  // build asked for it (local `npm run dev`) or the connected realm advertised
+  // ALLOW_DEV_COMMANDS=1. Both the window's own `available` gate and the "/dev gui"
+  // chat hook in main.ts read THIS, so the two can never disagree.
+  get devCommandsAvailable(): boolean {
+    return this.features.devCommandsEnabled === true || this.devCommandsAdvertised;
+  }
+
+  // Latch the realm's dev-command advert on. One-way on purpose: the advert is only
+  // ever consulted to LIGHT the surface, and every dev_* command is re-gated
+  // server-side per message, so this can never grant power the realm withholds.
+  noteDevCommandsAdvertised(): void {
+    this.devCommandsAdvertised = true;
   }
 
   toggleDevCommandWindow(): boolean {

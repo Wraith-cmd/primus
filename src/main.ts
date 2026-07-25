@@ -1348,7 +1348,7 @@ async function startGame(
       // that channel without the player retyping "/world" etc.
       const raw = chatInput.value;
       // "/share" links the selected quest into party chat; skip the normal send path.
-      if (import.meta.env.DEV && isDevGuiCommand(raw)) {
+      if (hud.devCommandsAvailable && isDevGuiCommand(raw)) {
         hud.toggleDevCommandWindow();
       } else if (!hud.maybeHandleQuestShareCommand(raw)) {
         const text = hud.composeChatSend(raw);
@@ -2204,6 +2204,16 @@ async function startGame(
   // otherwise, so it is a live affordance offline too (not gated on `online`).
   hud.attachDiscordHook(() => openDiscordEntry());
   if (online) {
+    // A hosted dev/PBE realm booted with ALLOW_DEV_COMMANDS=1 lights the /dev GUI
+    // even in a production client build, where import.meta.env.DEV is false. That
+    // build flag alone used to gate it, which is why a tester on a dev realm could
+    // never open the window and had to be geared straight from the database.
+    // Fire-and-forget: the surface stays dark until the advert answers, and every
+    // dev_* command is re-gated server-side per message, so the advert only ever
+    // reveals a surface the realm already permits.
+    void api.devCommandsAdvert().then((enabled) => {
+      if (enabled) hud.noteDevCommandsAdvertised();
+    });
     hud.attachReporting({
       submit: (targetPid, reason, details) =>
         api.reportPlayer(online.characterId, targetPid, reason, details),

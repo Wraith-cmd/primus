@@ -156,13 +156,14 @@ export function shouldDeferPickedCorpseToGatherNode(
   entity: Entity | undefined,
   playerId: number,
   harvestStateReliable = true,
+  partyMemberIds: readonly number[] | null = null,
 ): boolean {
   return (
     !!entity &&
     entity.kind === 'mob' &&
     entity.dead &&
     entity.lootable &&
-    !corpseLootAvailability(entity, playerId, harvestStateReliable).canOpen
+    !corpseLootAvailability(entity, playerId, harvestStateReliable, partyMemberIds).canOpen
   );
 }
 

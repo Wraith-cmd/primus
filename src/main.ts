@@ -2576,6 +2576,8 @@ async function startGame(
     const deferDirectCorpseToNode = shouldDeferPickedCorpseToGatherNode(
       directEntity,
       world.playerId,
+      true,
+      localPartyMemberIds(world.partyInfo),
     );
     if (id === null || deferDirectCorpseToNode) {
       const nodeId = renderer.pickGatherNode(x, y);

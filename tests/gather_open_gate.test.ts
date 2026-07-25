@@ -143,6 +143,26 @@ describe('direct corpse hits over gather nodes', () => {
     const openCorpse = corpse({});
     expect(shouldDeferPickedCorpseToGatherNode(openCorpse, 1)).toBe(false);
   });
+
+  // The defer arm shares corpseLootAvailability with the open and approach arms,
+  // so it must share their party roster too: a party member's tap grants ME
+  // shared rights, and that corpse is mine to open, never deferred to a node
+  // sitting under it.
+  it('does not defer a party member claimed kill once the roster is passed', () => {
+    // Harvest already claimed, so the ONLY thing that can open this corpse is
+    // shared loot rights from the tapper being in my party.
+    const partyKill = corpse({
+      harvestClaimedBy: 9,
+      tappedById: 7,
+      loot: { copper: 120, items: [] },
+    } as Partial<Entity>);
+
+    // Solo (no roster): a stranger's kill, correctly deferred.
+    expect(shouldDeferPickedCorpseToGatherNode(partyKill, 1)).toBe(true);
+
+    // Same corpse, but pid 7 is my party member: mine to open, so no defer.
+    expect(shouldDeferPickedCorpseToGatherNode(partyKill, 1, true, [1, 7])).toBe(false);
+  });
 });
 
 describe('tryNearbyInteraction default arm', () => {

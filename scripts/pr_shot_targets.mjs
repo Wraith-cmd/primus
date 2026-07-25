@@ -2889,6 +2889,14 @@ export const TARGETS = [
       { key: 'targets', targets: true },
       { key: 'targets-mobile', targets: true, mobile: true },
       { key: 'targets-dualwield', targets: true, dualWield: true, charClass: 'rogue' },
+      // The #2415 replace flow: already-enchanted copies list as FLAGGED
+      // replace rows (worn and bagged families both, the meta naming the
+      // enchant a confirm would destroy, the same-enchant row disabled), and
+      // accepting one runs the destroy-confirm dialog that names the doomed
+      // enchant, the no-refund ruling, and the reagent cost.
+      { key: 'targets-replace', targets: true, replace: true },
+      { key: 'targets-replace-mobile', targets: true, replace: true, mobile: true },
+      { key: 'replace-confirm', targets: true, replace: true, replaceConfirm: true },
     ],
     async capture(page, variant) {
       await page.evaluate(() => {
@@ -2897,10 +2905,31 @@ export const TARGETS = [
         document.querySelector('.gpu-notice-dismiss')?.click();
       });
       const staged = await page.evaluate(
-        (wantsConfirm, wantsPicker, wantsTargets, wantsDualWield) => {
+        (wantsConfirm, wantsPicker, wantsTargets, wantsDualWield, wantsReplace) => {
           const game = window.__game;
           const sim = game?.sim;
           if (!game || !sim?.player) return { ok: false, reason: 'offline world unavailable' };
+          if (wantsReplace) {
+            // The #2415 scene: a WORN enchanted copy (the in-place replace
+            // target), a bagged copy carrying a DIFFERENT enchant (the flagged
+            // bagged replace row, signed so the swap's carry-through is the
+            // one on screen), and a plain bagged copy (the classic target), so
+            // the target step paints all three families at once. Real ids
+            // only, never hand-written display strings.
+            sim.addItemInstance('eastbrook_arming_sword', {
+              enchant: 'enchant_weapon_agility',
+              rolled: { stats: { agi: 2 } },
+            });
+            sim.equipItemToSlot('eastbrook_arming_sword', 'mainhand');
+            sim.addItemInstance('eastbrook_arming_sword', {
+              signer: 'Aldric',
+              enchant: 'enchant_weapon_intellect',
+              rolled: { stats: { int: 2 } },
+            });
+            sim.addItem('eastbrook_arming_sword', 1);
+            sim.addItem('arcane_dust', 6);
+            return { ok: true, itemName: 'Chime Dust' };
+          }
           if (wantsTargets) {
             // One sword WORN (the in-place target) and one in the bags (the
             // classic target), so the target step shows both families at once.
@@ -2942,6 +2971,7 @@ export const TARGETS = [
         Boolean(variant?.picker),
         Boolean(variant?.targets),
         Boolean(variant?.dualWield),
+        Boolean(variant?.replace),
       );
       if (!staged.ok) throw new Error(staged.reason);
       await page.evaluate(() => {
@@ -3009,6 +3039,21 @@ export const TARGETS = [
           await wait(500);
           if (!(await pollForSize(page, '#ctx-menu')))
             throw new Error('enchant target step did not open');
+          if (variant?.replaceConfirm) {
+            // Accept path of the #2415 flow: click the BAGGED replace row
+            // (its act token is the discriminator) and shoot the confirm
+            // dialog that names the doomed enchant, the no-refund ruling,
+            // and the reagent cost.
+            const clicked = await page.evaluate(() => {
+              const row = document.querySelector('#ctx-menu .ctx-item[data-act^="replace:"]');
+              if (!row) return false;
+              row.click();
+              return true;
+            });
+            if (!clicked) throw new Error('no bagged replace row to confirm');
+            if (!(await pollForSize(page, '#confirm-dialog')))
+              throw new Error('replace confirm did not open');
+          }
         }
         await wait(300);
         return { clip: '#ui' };

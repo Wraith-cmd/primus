@@ -1147,6 +1147,11 @@ export interface MobTemplate {
   // firing `pulses` evenly-spaced unmitigated AoE pulses whose damage
   // ESCALATES per pulse (pulse k rolls range(min, max) x k, then the
   // per-entity mechanicDamageMult). Uninterruptible: pair with ccImmune.
+  // Optional atHpPct thresholds (mirroring summonAdds) ALSO arm the channel
+  // the first time hp falls to each fraction, so every group sees the burn
+  // phase even when the boss dies inside the first cadence window; a
+  // threshold crossed while a channel is already live is served by that
+  // channel (no back-to-back re-arm).
   infernoChannel?: {
     every: number;
     duration: number;
@@ -1156,6 +1161,7 @@ export interface MobTemplate {
     radius: number;
     name: string;
     school?: string;
+    atHpPct?: number[];
   };
   // Boss mechanic: a periodic telegraphed HARDCAST. Unlike the instant aoePulse,
   // the mob shows a real cast bar (the entity casting fields carry castId) for
@@ -2951,6 +2957,7 @@ export interface Entity {
   infernoTimer: number; // infernoChannel cadence countdown
   infernoRemaining: number; // seconds left in a live inferno channel (0 = not channeling)
   infernoPulsesFired: number; // pulses already fired this channel
+  infernoGatesFired: number; // infernoChannel.atHpPct thresholds already consumed
   yelledEngage: boolean; // engage bark fired this pull (reset on evade/respawn)
   stoneskinTimer: number; // periodic self-absorb barrier countdown
   terrifyTimer: number; // Banshee's Wail fear-pulse countdown

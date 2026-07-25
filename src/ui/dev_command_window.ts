@@ -1,6 +1,7 @@
+import { DEV_KIT_ROLES } from '../sim/content/dev_kit_roles';
 import { GATHERING_PROFESSIONS } from '../sim/content/professions';
 import { DUNGEONS, ITEMS, MOBS, QUESTS } from '../sim/data';
-import { MAX_LEVEL } from '../sim/types';
+import { ALL_CLASSES, MAX_LEVEL } from '../sim/types';
 import type { IWorld } from '../world_api';
 import {
   buildDevCommand,
@@ -15,7 +16,7 @@ import {
   resolveDevItem,
 } from './dev_item_picker_view';
 import { markDialogRoot } from './dialog_root';
-import { tEntity } from './entity_i18n';
+import { classDisplayName, tEntity } from './entity_i18n';
 import { esc } from './esc';
 import { getLanguage, type SupportedLanguage, type TranslationKey, t } from './i18n';
 import { svgIcon } from './ui_icons';
@@ -127,6 +128,21 @@ function actionFields(actionId: string): string {
       )}${textField('devCommand.fields.count', 'count', '1', 'number')}${textField('devCommand.fields.level', 'mobLevel', String(MAX_LEVEL), 'number')}`;
     case 'give':
       return `${itemPickerField()}${textField('devCommand.fields.count', 'itemCount', '1', 'number')}`;
+    case 'kit':
+      // Every spec across all nine classes, grouped by class so the list reads as the
+      // talent tree does. Only this character's class actually applies, but the field
+      // is built statically without a world handle, so the server does the rejecting
+      // and names the legal specs back. Blank = the spec already chosen.
+      return selectField(
+        'devCommand.fields.spec',
+        'kitSpec',
+        `<option value="">${esc(t('devCommand.kitCurrentSpec'))}</option>${ALL_CLASSES.map(
+          (cls) =>
+            `<optgroup label="${esc(classDisplayName(cls))}">${(DEV_KIT_ROLES[cls] ?? [])
+              .map((role) => `<option value="${esc(role.spec)}">${esc(role.spec)}</option>`)
+              .join('')}</optgroup>`,
+        ).join('')}`,
+      );
     case 'gold':
       return textField('devCommand.fields.gold', 'gold', '100', 'number');
     case 'quest':

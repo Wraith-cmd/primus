@@ -45,6 +45,7 @@ export const es_ES: EnTranslations = {
     "itemChosen": "Selected: {name}",
     "itemUnknown": "No item has that id.",
     "itemHeroicTag": "Heroic",
+    "kitCurrentSpec": "Current spec",
     "serverRequirement": "Los trucos del servidor siguen requiriendo ALLOW_DEV_COMMANDS=1.",
     "invalidValues": "Elige valores válidos antes de ejecutar este comando.",
     "sent": "Enviado: {command}",
@@ -62,7 +63,8 @@ export const es_ES: EnTranslations = {
       "z": "Z",
       "dungeon": "Mazmorra",
       "difficulty": "Dificultad",
-      "name": "Nombre"
+      "name": "Nombre",
+      "spec": "Spec"
     },
     "difficulty": {
       "normal": "Normal",
@@ -120,6 +122,10 @@ export const es_ES: EnTranslations = {
       "give": {
         "label": "Dar objeto",
         "description": "Añade un objeto al inventario del jugador."
+      },
+      "kit": {
+        "label": "Equip fresh-20 kit",
+        "description": "Wear the pre-Sanctum level-20 preset for a spec, bags first. Gear only."
       },
       "gold": {
         "label": "Añadir oro",

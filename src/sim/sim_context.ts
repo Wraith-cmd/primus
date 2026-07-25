@@ -49,6 +49,7 @@ import type {
   DelveRun,
   DungeonDifficulty,
   Entity,
+  EquipSlot,
   ErrorReason,
   GatherNodeDef,
   ItemInstancePayload,
@@ -630,6 +631,13 @@ export interface SimContextCallbacks {
   // AI (spawnDelveCompanion/despawnDelveCompanion/maybeCompanionBark).
   partyMembersForKey(key: string): number[];
   addItem(itemId: string, count: number, pid?: number): void;
+  // Equip passthroughs for the /dev kit presets (src/sim/dev_kit.ts), which equip
+  // bags before gear so pooled bag capacity exists before the pieces land. Plain
+  // delegations to the Sim inventory hub; every validation (class, level, slot,
+  // spec-aware dual wield) still happens there.
+  equipBag(itemId: string, socket?: number, pid?: number): void;
+  equipItem(itemId: string, pid?: number): void;
+  unequipItem(slot: EquipSlot, pid?: number): boolean;
   // #1145 signed materials: grants a single non-fungible item copy carrying an
   // instance payload (signer/charges/rolled/boundTo, #1165), never merged into a
   // plain fungible stack. Used by corpse harvest to stamp a rare+ monster
@@ -1209,6 +1217,9 @@ export function createSimContext(host: SimContextHost): SimContext {
     partyMembersForKey: host.partyMembersForKey,
     addItem: host.addItem,
     addItemInstance: host.addItemInstance,
+    equipBag: host.equipBag,
+    equipItem: host.equipItem,
+    unequipItem: host.unequipItem,
     // removeItem passed through above (P1b inventory-hub helper) - deduped, not re-added.
     spawnBossAdds: host.spawnBossAdds,
     tradeFor: host.tradeFor,

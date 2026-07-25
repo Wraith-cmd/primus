@@ -4136,6 +4136,9 @@ export class Sim {
       partyMembersForKey: (key) => sim.partyMembersForKey(key),
       grantXp: (amount, meta, opts) => sim.grantXp(amount, meta, opts),
       addItem: (itemId, count, pid) => sim.addItem(itemId, count, pid),
+      equipBag: (itemId, socket, pid) => sim.equipBag(itemId, socket, pid),
+      equipItem: (itemId, pid) => sim.equipItem(itemId, pid),
+      unequipItem: (slot, pid) => sim.unequipItem(slot, pid),
       addItemInstance: (itemId, instance, pid, count) =>
         sim.addItemInstance(itemId, instance, pid, count),
       // L2's World Market escrow (marketList) also consumes removeItem; it is bound once

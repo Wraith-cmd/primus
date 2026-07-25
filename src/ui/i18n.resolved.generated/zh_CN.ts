@@ -45,6 +45,7 @@ export const zh_CN: EnTranslations = {
     "itemChosen": "Selected: {name}",
     "itemUnknown": "No item has that id.",
     "itemHeroicTag": "Heroic",
+    "kitCurrentSpec": "Current spec",
     "serverRequirement": "服务器作弊功能仍需 ALLOW_DEV_COMMANDS=1。",
     "invalidValues": "运行此命令前请选择有效值。",
     "sent": "已发送：{command}",
@@ -62,7 +63,8 @@ export const zh_CN: EnTranslations = {
       "z": "Z",
       "dungeon": "地下城",
       "difficulty": "难度",
-      "name": "名称"
+      "name": "名称",
+      "spec": "Spec"
     },
     "difficulty": {
       "normal": "普通",
@@ -120,6 +122,10 @@ export const zh_CN: EnTranslations = {
       "give": {
         "label": "给予物品",
         "description": "向玩家物品栏添加一件物品。"
+      },
+      "kit": {
+        "label": "Equip fresh-20 kit",
+        "description": "Wear the pre-Sanctum level-20 preset for a spec, bags first. Gear only."
       },
       "gold": {
         "label": "添加金币",

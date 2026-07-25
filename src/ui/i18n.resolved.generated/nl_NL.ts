@@ -45,6 +45,7 @@ export const nl_NL: EnTranslations = {
     "itemChosen": "Selected: {name}",
     "itemUnknown": "No item has that id.",
     "itemHeroicTag": "Heroic",
+    "kitCurrentSpec": "Current spec",
     "serverRequirement": "Servercheats vereisen nog steeds ALLOW_DEV_COMMANDS=1.",
     "invalidValues": "Kies geldige waarden voordat je deze opdracht uitvoert.",
     "sent": "Verzonden: {command}",
@@ -62,7 +63,8 @@ export const nl_NL: EnTranslations = {
       "z": "Z",
       "dungeon": "Kerker",
       "difficulty": "Moeilijkheidsgraad",
-      "name": "Naam"
+      "name": "Naam",
+      "spec": "Spec"
     },
     "difficulty": {
       "normal": "Normaal",
@@ -120,6 +122,10 @@ export const nl_NL: EnTranslations = {
       "give": {
         "label": "Voorwerp geven",
         "description": "Voeg een voorwerp toe aan de inventaris van de speler."
+      },
+      "kit": {
+        "label": "Equip fresh-20 kit",
+        "description": "Wear the pre-Sanctum level-20 preset for a spec, bags first. Gear only."
       },
       "gold": {
         "label": "Goud toevoegen",

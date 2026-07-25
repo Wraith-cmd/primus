@@ -45,6 +45,7 @@ export const it_IT: EnTranslations = {
     "itemChosen": "Selected: {name}",
     "itemUnknown": "No item has that id.",
     "itemHeroicTag": "Heroic",
+    "kitCurrentSpec": "Current spec",
     "serverRequirement": "I trucchi del server richiedono comunque ALLOW_DEV_COMMANDS=1.",
     "invalidValues": "Scegli valori validi prima di eseguire questo comando.",
     "sent": "Inviato: {command}",
@@ -62,7 +63,8 @@ export const it_IT: EnTranslations = {
       "z": "Z",
       "dungeon": "Dungeon",
       "difficulty": "Difficoltà",
-      "name": "Nome"
+      "name": "Nome",
+      "spec": "Spec"
     },
     "difficulty": {
       "normal": "Normale",
@@ -120,6 +122,10 @@ export const it_IT: EnTranslations = {
       "give": {
         "label": "Dai oggetto",
         "description": "Aggiunge un oggetto all’inventario del giocatore."
+      },
+      "kit": {
+        "label": "Equip fresh-20 kit",
+        "description": "Wear the pre-Sanctum level-20 preset for a spec, bags first. Gear only."
       },
       "gold": {
         "label": "Aggiungi oro",

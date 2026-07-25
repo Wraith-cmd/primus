@@ -45,6 +45,7 @@ export const ru_RU: EnTranslations = {
     "itemChosen": "Selected: {name}",
     "itemUnknown": "No item has that id.",
     "itemHeroicTag": "Heroic",
+    "kitCurrentSpec": "Current spec",
     "serverRequirement": "Для серверных читов всё ещё требуется ALLOW_DEV_COMMANDS=1.",
     "invalidValues": "Выберите допустимые значения перед запуском этой команды.",
     "sent": "Отправлено: {command}",
@@ -62,7 +63,8 @@ export const ru_RU: EnTranslations = {
       "z": "Z",
       "dungeon": "Подземелье",
       "difficulty": "Сложность",
-      "name": "Имя"
+      "name": "Имя",
+      "spec": "Spec"
     },
     "difficulty": {
       "normal": "Обычная",
@@ -120,6 +122,10 @@ export const ru_RU: EnTranslations = {
       "give": {
         "label": "Дать предмет",
         "description": "Добавить предмет в инвентарь игрока."
+      },
+      "kit": {
+        "label": "Equip fresh-20 kit",
+        "description": "Wear the pre-Sanctum level-20 preset for a spec, bags first. Gear only."
       },
       "gold": {
         "label": "Добавить золото",

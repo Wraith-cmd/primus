@@ -10,184 +10,264 @@
 
 export const pending: Record<string, readonly string[]> = {
   "es": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "es_ES": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "fr_FR": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "fr_CA": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "en_CA": [],
   "it_IT": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "de_DE": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "zh_CN": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "zh_TW": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "ko_KR": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "ja_JP": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "pt_BR": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "ru_RU": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "cs_CZ": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "nl_NL": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "pl_PL": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "id_ID": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "tr_TR": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "sv_SE": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "vi_VN": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ],
   "da_DK": [
+    "devCommand.actions.kit.description",
+    "devCommand.actions.kit.label",
+    "devCommand.fields.spec",
     "devCommand.itemChosen",
     "devCommand.itemHeroicTag",
     "devCommand.itemMore",
     "devCommand.itemNoMatches",
     "devCommand.itemResultsAria",
     "devCommand.itemSearchPlaceholder",
-    "devCommand.itemUnknown"
+    "devCommand.itemUnknown",
+    "devCommand.kitCurrentSpec"
   ]
 };

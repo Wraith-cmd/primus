@@ -112,6 +112,7 @@ export const en = {
     itemChosen: 'Selected: {name}',
     itemUnknown: 'No item has that id.',
     itemHeroicTag: 'Heroic',
+    kitCurrentSpec: 'Current spec',
     serverRequirement: 'Server cheats still require ALLOW_DEV_COMMANDS=1.',
     invalidValues: 'Choose valid values before running this command.',
     sent: 'Sent: {command}',
@@ -130,6 +131,7 @@ export const en = {
       dungeon: 'Dungeon',
       difficulty: 'Difficulty',
       name: 'Name',
+      spec: 'Spec',
     },
     difficulty: { normal: 'Normal', heroic: 'Heroic' },
     actions: {
@@ -167,6 +169,10 @@ export const en = {
         description: 'Remove every mob spawned by this developer.',
       },
       give: { label: 'Give item', description: 'Add an item to the player inventory.' },
+      kit: {
+        label: 'Equip fresh-20 kit',
+        description: 'Wear the pre-Sanctum level-20 preset for a spec, bags first. Gear only.',
+      },
       gold: { label: 'Add gold', description: 'Add gold to the current purse.' },
       quest: { label: 'Complete quest', description: 'Complete a specific quest by id.' },
       quests: {

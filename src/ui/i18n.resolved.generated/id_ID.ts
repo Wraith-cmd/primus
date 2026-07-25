@@ -45,6 +45,7 @@ export const id_ID: EnTranslations = {
     "itemChosen": "Selected: {name}",
     "itemUnknown": "No item has that id.",
     "itemHeroicTag": "Heroic",
+    "kitCurrentSpec": "Current spec",
     "serverRequirement": "Perintah curang server tetap memerlukan ALLOW_DEV_COMMANDS=1.",
     "invalidValues": "Pilih nilai yang valid sebelum menjalankan perintah ini.",
     "sent": "Terkirim: {command}",
@@ -62,7 +63,8 @@ export const id_ID: EnTranslations = {
       "z": "Z",
       "dungeon": "Dungeon",
       "difficulty": "Tingkat kesulitan",
-      "name": "Nama"
+      "name": "Nama",
+      "spec": "Spec"
     },
     "difficulty": {
       "normal": "Normal",
@@ -120,6 +122,10 @@ export const id_ID: EnTranslations = {
       "give": {
         "label": "Berikan barang",
         "description": "Tambahkan barang ke inventaris pemain."
+      },
+      "kit": {
+        "label": "Equip fresh-20 kit",
+        "description": "Wear the pre-Sanctum level-20 preset for a spec, bags first. Gear only."
       },
       "gold": {
         "label": "Tambah emas",

@@ -45,6 +45,7 @@ export const cs_CZ: EnTranslations = {
     "itemChosen": "Selected: {name}",
     "itemUnknown": "No item has that id.",
     "itemHeroicTag": "Heroic",
+    "kitCurrentSpec": "Current spec",
     "serverRequirement": "Serverové cheaty stále vyžadují ALLOW_DEV_COMMANDS=1.",
     "invalidValues": "Před spuštěním tohoto příkazu vyber platné hodnoty.",
     "sent": "Odesláno: {command}",
@@ -62,7 +63,8 @@ export const cs_CZ: EnTranslations = {
       "z": "Z",
       "dungeon": "Dungeon",
       "difficulty": "Obtížnost",
-      "name": "Jméno"
+      "name": "Jméno",
+      "spec": "Spec"
     },
     "difficulty": {
       "normal": "Normální",
@@ -120,6 +122,10 @@ export const cs_CZ: EnTranslations = {
       "give": {
         "label": "Dát předmět",
         "description": "Přidej předmět do hráčova inventáře."
+      },
+      "kit": {
+        "label": "Equip fresh-20 kit",
+        "description": "Wear the pre-Sanctum level-20 preset for a spec, bags first. Gear only."
       },
       "gold": {
         "label": "Přidat zlato",

@@ -45,6 +45,7 @@ export const en_XA: EnTranslations = {
     "itemChosen": "[Šéļéçţéð: {name}]",
     "itemUnknown": "[Ñó íţéɱ ĥáš ţĥáţ íð.]",
     "itemHeroicTag": "[Ĥéŕóíç]",
+    "kitCurrentSpec": "[Çúŕŕéñţ šþéç]",
     "serverRequirement": "[Šéŕʋéŕ çĥéáţš šţíļļ ŕéɋúíŕé ÁĻĻÓŴ_ÐÉƲ_ÇÓⱮⱮÁÑÐŠ=1.]",
     "invalidValues": "[Çĥóóšé ʋáļíð ʋáļúéš ƀéƒóŕé ŕúññíñĝ ţĥíš çóɱɱáñð.]",
     "sent": "[Šéñţ: {command}]",
@@ -62,7 +63,8 @@ export const en_XA: EnTranslations = {
       "z": "[Ž]",
       "dungeon": "[Ðúñĝéóñ]",
       "difficulty": "[Ðíƒƒíçúļţý]",
-      "name": "[Ñáɱé]"
+      "name": "[Ñáɱé]",
+      "spec": "[Šþéç]"
     },
     "difficulty": {
       "normal": "[Ñóŕɱáļ]",
@@ -120,6 +122,10 @@ export const en_XA: EnTranslations = {
       "give": {
         "label": "[Ĝíʋé íţéɱ]",
         "description": "[Áðð áñ íţéɱ ţó ţĥé þļáýéŕ íñʋéñţóŕý.]"
+      },
+      "kit": {
+        "label": "[Éɋúíþ ƒŕéšĥ-20 ķíţ]",
+        "description": "[Ŵéáŕ ţĥé þŕé-Šáñçţúɱ ļéʋéļ-20 þŕéšéţ ƒóŕ á šþéç, ƀáĝš ƒíŕšţ. Ĝéáŕ óñļý.]"
       },
       "gold": {
         "label": "[Áðð ĝóļð]",

@@ -14,6 +14,9 @@
 //     that consume the reagent, each with affordability + target slot, then the
 //     eligible targets (the held copies AND the WORN ones, which enchant in
 //     place), then world.applyEnchant. enchant_apply_view.ts models both steps.
+//     An already-enchanted target is a flagged REPLACE row (#2415): it routes
+//     through the same destroy-confirm family before sending, and only that
+//     dialog's OK sends the apply with the explicit confirm flag.
 //
 // The pure decisions live in the two view cores; this owns only DOM + dispatch,
 // talks to the world exclusively through IWorld, and never decides an outcome.
@@ -262,7 +265,10 @@ export class BagItemActionMenu {
       .map((reagent) =>
         t('hudChrome.enchanting.replaceConfirmCostItem', {
           name: itemDisplayName(ITEMS[reagent.itemId]),
-          count: reagent.count,
+          // itemNumber, not the raw number: t()'s interpolation is String(v),
+          // so a raw count would never see Intl. Same formatter the stat lines
+          // above use and the disenchant yield line's count uses.
+          count: itemNumber(reagent.count),
         }),
       )
       .join(', ');

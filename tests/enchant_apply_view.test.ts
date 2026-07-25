@@ -324,6 +324,28 @@ describe('enchant_apply_view: enchantTargets', () => {
     ]);
   });
 
+  // The mixed holding, the one case that emits TWO rows for a single item id.
+  // Pinned as a whole array so both the pairing and the plain-before-replace
+  // order are constrained, not just each row's presence.
+  it('emits a plain row AND a replace row for one item id held both ways', () => {
+    const inventory: InvSlot[] = [
+      { itemId: chestId, count: 1, instance: { enchant: 'enchant_chest_spirit' } },
+      { itemId: chestId, count: 2 }, // plain fungible copies of the SAME id
+    ];
+    const targets = enchantTargets(inventory, 'enchant_chest_stamina');
+    expect(targets).toEqual([
+      // The plain family first, counting only the enchantable copies...
+      { itemId: chestId, count: 2 },
+      // ...then the flagged replace row, counting only the enchanted ones and
+      // naming the enchant on the pinned victim.
+      {
+        itemId: chestId,
+        count: 1,
+        replace: { enchantId: 'enchant_chest_spirit', sameEnchant: false },
+      },
+    ]);
+  });
+
   it('a replace row for a DIFFERENT carried enchant is selectable (sameEnchant false)', () => {
     const inventory: InvSlot[] = [
       { itemId: chestId, count: 1, instance: { enchant: 'enchant_chest_stamina' } },

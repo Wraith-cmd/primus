@@ -19,6 +19,7 @@ import {
   enchantGainTier,
   isDisenchantable,
   isEnchantedInstance,
+  replacedEnchantPayloadFor,
   replaceVictimIndex,
   resolveApplyEnchant,
   resolveDisenchant,
@@ -1267,6 +1268,33 @@ describe('replacing an enchant behind explicit confirmation (#2415)', () => {
     expect(sim.countItem('arcane_dust', pid)).toBe(5);
   });
 
+  // The BAGGED half of the strict-boolean rule. The worn arm has its own case
+  // below, and the dispatch normalizes with `msg.confirm === true` before the
+  // resolver is reached, so neither of those can see this check loosen:
+  // relaxing it to a plain truthy test leaves every other test green.
+  it('the BAGGED confirm gate is a STRICT boolean check: a truthy non-boolean reads as unconfirmed', () => {
+    for (const truthy of ['yes', 1, {}]) {
+      const sim = makeSim();
+      const pid = sim.playerId;
+      sim.ctx.addItemInstance(SWORD, { enchant: MIGHT, rolled: { stats: { str: 2 } } }, pid);
+      sim.addItem('arcane_dust', 5, pid);
+      const result = resolveApplyEnchant(
+        sim.ctx,
+        pid,
+        SWORD,
+        AGILITY,
+        undefined,
+        truthy as unknown as boolean,
+      );
+      expect(result.ok, String(truthy)).toBe(false);
+      expect(result.reason, String(truthy)).toBe('already_enchanted');
+      // Nothing destroyed, nothing spent: it took the no-flag deny arm.
+      const slot = sim.ctx.resolve(pid)!.meta.inventory.find((s) => s.itemId === SWORD);
+      expect(slot?.instance?.enchant, String(truthy)).toBe(MIGHT);
+      expect(sim.countItem('arcane_dust', pid), String(truthy)).toBe(5);
+    }
+  });
+
   it('denies same_enchant on the identical enchant id: no reagents spent, no throttle stamped', () => {
     const sim = makeSim();
     const pid = sim.playerId;
@@ -1347,6 +1375,33 @@ describe('replacing an enchant behind explicit confirmation (#2415)', () => {
     const enchanted = meta.inventory.find((s) => s.itemId === SWORD && s.instance);
     expect(enchanted?.instance?.enchant).toBe(AGILITY);
     expect(enchanted?.instance?.rolled?.stats).toEqual({ agi: 2 });
+  });
+
+  // The same mixed holding WITHOUT the flag: the picker paints these as two
+  // separate rows (a plain target and a replace target), and the unconfirmed
+  // one must spend the free copy and leave the enchanted one alone. Without
+  // this the pair is only ever tested on its confirmed arm.
+  it('with a plain AND an enchanted copy held, NO flag consumes the plain copy and spares the enchanted one', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    sim.addItem(SWORD, 1, pid); // plain fungible copy
+    sim.ctx.addItemInstance(SWORD, { enchant: MIGHT, rolled: { stats: { str: 2 } } }, pid);
+    sim.addItem('arcane_dust', 5, pid);
+    const result = resolveApplyEnchant(sim.ctx, pid, SWORD, AGILITY);
+    expect(result.ok).toBe(true);
+    const meta = sim.ctx.resolve(pid)!.meta;
+    // No fungible copy left (it was the one enchanted), and BOTH copies are
+    // now instanced: the pre-existing Might one untouched, plus the new
+    // Agility one minted from the plain copy.
+    expect(sim.ctx.countFungibleItem(SWORD, pid)).toBe(0);
+    const enchants = meta.inventory
+      .filter((s) => s.itemId === SWORD)
+      .map((s) => s.instance?.enchant)
+      .sort();
+    expect(enchants).toEqual([AGILITY, MIGHT].sort());
+    // The Might copy's payload is byte-untouched: it was never the victim.
+    const might = meta.inventory.find((s) => s.instance?.enchant === MIGHT);
+    expect(might?.instance?.rolled?.stats).toEqual({ str: 2 });
   });
 
   it('the flag is INERT with no enchanted copy held: a plain apply proceeds and destroys nothing', () => {
@@ -1574,5 +1629,29 @@ describe('replaceVictimIndex / consumeEnchantedVictim (the shared victim walk)',
     expect(consumeEnchantedVictim(single, GEAR)?.enchant).toBe('x');
     expect(single).toHaveLength(0);
     expect(consumeEnchantedVictim([{ itemId: GEAR, count: 1 }], GEAR)).toBeUndefined();
+  });
+});
+
+// The prune arm of replacedEnchantPayloadFor, exercised directly. The
+// resolver tests cover remain > 0 (a masterwork bake under the enchant) and
+// remain === 0 (the clean zero-residue case); the NEGATIVE arm is only
+// reachable from a corrupt under-baked payload, which no resolver path can
+// stage, so it needs a unit case or the docstring's "never mints a negative
+// stat" claim rides on nothing.
+describe('replacedEnchantPayloadFor prune arm (corrupt under-baked marker)', () => {
+  it('deletes rather than going negative when the baked value is SMALLER than the old bonus', () => {
+    // Greater Might is str 5, but this copy only carries str 1: subtracting
+    // exactly would leave -4.
+    const victim = {
+      enchant: 'enchant_weapon_greater_might',
+      rolled: { stats: { str: 1, sta: 2 } },
+    };
+    const out = replacedEnchantPayloadFor(victim, ENCHANTS.enchant_weapon_agility);
+    // str is GONE, not negative; the unrelated sta rides through; the new
+    // bonus lands on top.
+    expect(out.rolled?.stats).toEqual({ sta: 2, agi: 2 });
+    expect(out.enchant).toBe('enchant_weapon_agility');
+    // The victim itself is never mutated (clone-first contract).
+    expect(victim.rolled.stats).toEqual({ str: 1, sta: 2 });
   });
 });

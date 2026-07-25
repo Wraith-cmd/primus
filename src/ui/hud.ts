@@ -12529,9 +12529,15 @@ export class Hud {
     el.setAttribute('role', 'dialog');
     el.setAttribute('aria-modal', 'true');
     el.setAttribute('aria-labelledby', 'confirm-dialog-title');
+    // The body is the DESCRIPTION, not decoration: on a destroy confirm it
+    // carries what dies, whether anything is refunded, and what it costs. With
+    // focus landing on OK, a screen reader announces the dialog name and the
+    // focused control, so without this association the warning is never read
+    // aloud and the accept is one keypress away.
+    el.setAttribute('aria-describedby', 'confirm-dialog-body');
     el.innerHTML =
       `<div class="panel-title"><span id="confirm-dialog-title">${esc(title)}</span><button type="button" class="x-btn" data-cancel aria-label="${esc(cancelText)}">${svgIcon('close')}</button></div>` +
-      `<div class="cd-body">${esc(body)}</div>` +
+      `<div class="cd-body" id="confirm-dialog-body">${esc(body)}</div>` +
       `<div class="cd-actions"><button type="button" class="btn" data-cancel>${esc(cancelText)}</button><button type="button" class="btn cd-ok" data-ok>${esc(okText)}</button></div>`;
     document.body.appendChild(el);
     this.bringWindowToFront(el);

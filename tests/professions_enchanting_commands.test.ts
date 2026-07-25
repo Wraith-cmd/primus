@@ -49,7 +49,8 @@ const COMMON_WEAPON = 'eastbrook_arming_sword';
 const RARE_WEAPON = 'moggers_copper_cudgel';
 const RARE_PRIMARY = 'arcane_essence';
 const RARE_SECONDARY = 'resonant_steel';
-// enchant_weapon_might: itemSlot 'mainhand', reagents 5x arcane_dust, str +5.
+// enchant_weapon_might: itemSlot 'mainhand', reagents 5x arcane_dust, str +2
+// (the magnitude is pinned to that literal in enchants_magnitude_invariants).
 const WEAPON_ENCHANT = 'enchant_weapon_might';
 // A helmet enchant, used to exercise the wrong_slot deny on the weapon above.
 const HELMET_ENCHANT = 'enchant_helmet_fortitude';

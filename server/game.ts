@@ -4336,6 +4336,13 @@ export class GameServer {
           // as false. The sim re-validates the target and picks the pinned
           // victim itself, so nothing here trusts client data: the flag can
           // only ever unlock the dedicated replace arm, never aim it.
+          // Note the two tokens are independent: an unrecognized `slot` falls
+          // back to undefined ABOVE, so a hand-crafted {slot: bogus, confirm:
+          // true} becomes a confirmed BAGGED replace rather than being
+          // rejected. Harmless by construction (the victim is still the sim's
+          // own pin over the SENDER's inventory, so the worst case is that
+          // sender destroying one of their own enchants), and an honest client
+          // never emits an invalid slot.
           sim.applyEnchant(msg.item, msg.enchant, worn, msg.confirm === true, pid);
         }
         break;

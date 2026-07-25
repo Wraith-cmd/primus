@@ -50,7 +50,17 @@ function harness(innerHeight: number, stubOrInventory: WorldStub | InvSlot[] = {
   const placed: { reserveRight: number; reserveBottom: number }[] = [];
   const applied: { itemId: string; enchantId: string; slot?: string; confirmReplace?: boolean }[] =
     [];
-  const confirms: { title: string; body: string; ok: string; onOk: () => void }[] = [];
+  const confirms: {
+    title: string;
+    body: string;
+    ok: string;
+    cancel: string;
+    onOk: () => void;
+  }[] = [];
+  // Observable, not a no-op stub: the dialog-opening paths document an EARLY
+  // RETURN (the dialog repaints on OK instead), so afterAction has to be
+  // countable for that contract to be pinnable at all.
+  let afterActions = 0;
   let activate: ((act: string) => void) | null = null;
   // The self entity mirror carries equippedInstances in both worlds, which is
   // where the painter reads the worn payloads from.
@@ -74,12 +84,14 @@ function harness(innerHeight: number, stubOrInventory: WorldStub | InvSlot[] = {
         activate = onActivate;
       },
     },
-    confirmDialog: (title, body, ok, _cancel, onOk) => {
-      confirms.push({ title, body, ok, onOk });
+    confirmDialog: (title, body, ok, cancel, onOk) => {
+      confirms.push({ title, body, ok, cancel, onOk });
     },
     slotName: (slot) => slot,
     isMobileLayout: () => false,
-    afterAction: () => {},
+    afterAction: () => {
+      afterActions += 1;
+    },
   });
   const openFor = (itemId: string) => menu.open(ITEMS[itemId], itemId, 10, 10, () => {});
   const openPlain = () => openFor(DUST);
@@ -113,6 +125,7 @@ function harness(innerHeight: number, stubOrInventory: WorldStub | InvSlot[] = {
     placed,
     applied,
     confirms,
+    afterActions: () => afterActions,
     openPlain,
     openPicker,
     openTargets,
@@ -418,15 +431,20 @@ describe('BagItemActionMenu target step: replace rows (#2415)', () => {
     expect(h.confirms).toHaveLength(1);
     const dialog = h.confirms[0];
     expect(dialog.ok).toBe('Replace');
+    expect(dialog.cancel).toBe('Cancel');
+    // The title names the ITEM being operated on, not the enchant.
+    expect(dialog.title).toBe('Replace the enchant on Eastbrook Arming Sword?');
     const lines = dialog.body.split('\n');
-    // Line one names the swap in full: doomed enchant, item, incoming enchant.
-    expect(lines[0]).toContain('Enchant Weapon - Agility');
-    expect(lines[0]).toContain('Enchant Weapon - Might');
+    // Line one names the swap in full, and ORDER is load-bearing: two
+    // toContains would still pass with {old} and {new} swapped, which would
+    // tell the player the incoming enchant is the one being destroyed.
+    expect(lines[0]).toBe(
+      'This replaces Enchant Weapon - Agility on Eastbrook Arming Sword with Enchant Weapon - Might.',
+    );
     // The settled ruling, stated before it is paid: destroyed, no refund.
     expect(lines[1]).toContain('not refunded');
     // The reagent cost being paid (Might costs 5 dust; dust's display name).
-    expect(lines[2]).toContain('Cost:');
-    expect(lines[2]).toContain('Chime Dust x5');
+    expect(lines[2]).toBe('Cost: Chime Dust x5');
 
     dialog.onOk();
     expect(h.applied).toEqual([
@@ -445,10 +463,100 @@ describe('BagItemActionMenu target step: replace rows (#2415)', () => {
     h.click('worn:mainhand');
     expect(h.applied).toEqual([]);
     expect(h.confirms).toHaveLength(1);
+    // The worn family paints the same replace meta the bagged one does, on
+    // top of its own worn tag (both are .ctx-item-meta sub-lines).
+    expect(h.rows()[0].text).toContain('Replaces Enchant Weapon - Agility');
     h.confirms[0].onOk();
     expect(h.applied).toEqual([
       { itemId: SWORD, enchantId: WEAPON_ENCHANT, slot: 'mainhand', confirmReplace: true },
     ]);
+  });
+
+  // The mixed holding: ONE item id held both plain and enchanted. It is the
+  // only case that emits two rows for a single id, so it is the only place the
+  // painter's act-prefix routing can cross the two families' wires, and it is
+  // exactly the scene the PR screenshots stage.
+  it('a plain AND an enchanted copy of one item id paint as two rows that dispatch differently', () => {
+    const h = harness(768, {
+      inventory: [
+        { itemId: DUST, count: 99 },
+        { itemId: SWORD, count: 1 },
+        { itemId: SWORD, count: 1, instance: { enchant: AGILITY, rolled: { stats: { agi: 2 } } } },
+      ],
+    });
+    h.openTargets(WEAPON_ENCHANT);
+    const rows = h.rows();
+    // Plain row first, replace row after, and only the replace row is flagged.
+    expect(rows.map((row) => row.act)).toEqual([`target:${SWORD}`, `replace:${SWORD}`]);
+    expect(rows[0].text).not.toContain('Replaces');
+    expect(rows[1].text).toContain('Replaces Enchant Weapon - Agility');
+
+    // The plain row sends immediately, unconfirmed, with no dialog at all.
+    h.click(`target:${SWORD}`);
+    expect(h.confirms).toEqual([]);
+    expect(h.applied).toEqual([
+      { itemId: SWORD, enchantId: WEAPON_ENCHANT, slot: undefined, confirmReplace: undefined },
+    ]);
+
+    // Its twin still confirm-gates: the two rows never share an arm.
+    h.openTargets(WEAPON_ENCHANT);
+    h.click(`replace:${SWORD}`);
+    expect(h.confirms).toHaveLength(1);
+    expect(h.applied).toHaveLength(1); // still just the plain send
+    h.confirms[0].onOk();
+    expect(h.applied[1]).toEqual({
+      itemId: SWORD,
+      enchantId: WEAPON_ENCHANT,
+      slot: undefined,
+      confirmReplace: true,
+    });
+  });
+
+  // The documented early return on the two dialog-opening paths: the dialog
+  // repaints on OK, so the click itself must NOT call afterAction. A dropped
+  // `return` would leave the send correct and only this counter wrong.
+  it('a replace click defers afterAction to the dialog OK, on both families', () => {
+    const h = harness(768, {
+      inventory: [
+        { itemId: DUST, count: 99 },
+        { itemId: SWORD, count: 1, instance: { enchant: AGILITY, rolled: { stats: { agi: 2 } } } },
+      ],
+      equipment: { mainhand: SWORD },
+      equippedInstances: { mainhand: { enchant: AGILITY, rolled: { stats: { agi: 2 } } } },
+    });
+    h.openTargets(WEAPON_ENCHANT);
+    h.click('worn:mainhand');
+    expect(h.afterActions()).toBe(0);
+    h.confirms[0].onOk();
+    expect(h.afterActions()).toBe(1);
+
+    h.openTargets(WEAPON_ENCHANT);
+    h.click(`replace:${SWORD}`);
+    expect(h.afterActions()).toBe(1); // the bagged arm defers too
+    h.confirms[1].onOk();
+    expect(h.afterActions()).toBe(2);
+  });
+
+  it('a MULTI-reagent enchant lists every reagent in the cost line', () => {
+    const h = harness(768, {
+      inventory: [
+        { itemId: DUST, count: 99 },
+        { itemId: 'arcane_essence', count: 99 },
+        { itemId: 'arcane_shard', count: 99 },
+        { itemId: SWORD, count: 1, instance: { enchant: AGILITY, rolled: { stats: { agi: 2 } } } },
+      ],
+    });
+    // Greater Might is the shard tier: more than one reagent, so the join is
+    // exercised rather than collapsing to a single entry.
+    h.openTargets('enchant_weapon_greater_might');
+    h.click(`replace:${SWORD}`);
+    const costLine = h.confirms[0].body.split('\n')[2];
+    const reagents = ENCHANTS.enchant_weapon_greater_might.reagents;
+    expect(reagents.length).toBeGreaterThan(1);
+    for (const reagent of reagents) {
+      expect(costLine).toContain(`x${reagent.count}`);
+    }
+    expect(costLine.split(',')).toHaveLength(reagents.length);
   });
 
   it('a LEGACY victim with no enchant id is named by its raw doomed stats instead', () => {

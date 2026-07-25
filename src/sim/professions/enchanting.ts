@@ -20,10 +20,13 @@
 // surgically: only the enchant layer changes, the signer, masterwork stats,
 // and boundTo/bindOnTrade flags carry through byte-identical
 // (replacedEnchantPayloadFor below). Without the flag the deny is the
-// dedicated already_enchanted reason; re-applying the identical enchant id
-// denies as same_enchant on every arm, because its accept would be pure
-// reagent loss with zero state change. Replacement is just an apply: same
-// shared action throttle, no extra fee or skill gate.
+// dedicated already_enchanted reason, on both the bagged and the worn arm.
+// WITH the flag, re-applying the identical enchant id denies as same_enchant
+// on both arms, because its accept would be pure reagent loss with zero state
+// change. The order matters and is deliberate: the flag check precedes the id
+// compare, so an unconfirmed same-id apply reads already_enchanted, not
+// same_enchant. Replacement is just an apply: same shared action throttle, no
+// extra fee or skill gate.
 //
 // Layered on top of, not a replacement for, the existing everyone-can-salvage
 // system (./salvage.ts, issue #1300): salvage still yields the same generic
@@ -457,7 +460,20 @@ export function enchantedPayloadFor(
  *  zero-valued key as distinct from an absent one, so residue would stop the
  *  replaced copy comparing equal to a fresh same-enchant peer. The <= 0 arm
  *  also swallows a corrupt over-large baked value gracefully instead of
- *  minting a negative stat. Legacy pre-marker copies (bare rolled.stats, no
+ *  minting a negative stat.
+ *
+ *  One accepted asymmetry in that prune: a masterwork bake can itself contain
+ *  a ZERO-valued key (item_budget.ts normalizePrimaryStats writes out[k] =
+ *  base, and base floors to 0 when the exact share rounds down and the
+ *  leftover pass does not reach that axis). Bake {str:1, agi:0} plus an
+ *  agility enchant is {str:1, agi:2}; replacing it with a strength enchant
+ *  subtracts agi to 0 and PRUNES the key, giving {str:3}, while a fresh peer
+ *  off the same bake keeps {str:3, agi:0}. Stat-identical (a zero contributes
+ *  nothing to recalcPlayerStats), but structurallyEqual counts present-0 as
+ *  distinct from absent, so those two copies would not stack. Accepted: gear
+ *  is stack-cap 1, so no stack exists to lose, and preserving the zero would
+ *  cost the far more common zero-residue case its clean peer equality.
+ *  Legacy pre-marker copies (bare rolled.stats, no
  *  masterwork): rolled.stats is replaced WHOLESALE, exact because applyEnchant
  *  was the only writer of rolled.stats before the masterwork model, so on
  *  such a copy the whole map IS the old enchant. Standing caution: that
@@ -619,7 +635,16 @@ function resolveReplaceEnchantBagged(
   enchant: EnchantDef,
 ): ApplyEnchantResult {
   const enchantId = enchant.id;
-  const meta = ctx.players.get(pid);
+  // ctx.resolve, NOT ctx.players.get: this arm splices meta.inventory directly
+  // (consumeEnchantedVictim) but mints through ctx.addItemInstance, which
+  // no-ops unless resolve finds BOTH the meta and the entity. Guarding on the
+  // meta alone would let a meta-without-entity state destroy the victim and
+  // mint nothing. The plain arm cannot lose that way (its removal and its mint
+  // both fail through the same resolve), and the worn arm already resolves;
+  // this makes the third arm match. Unreachable on the shipped path, but
+  // resolveApplyEnchant is exported and called with a raw pid by tests and any
+  // future host.
+  const meta = ctx.resolve(pid)?.meta;
   const victimIdx = meta ? replaceVictimIndex(meta.inventory, itemId) : -1;
   const victim = meta && victimIdx >= 0 ? meta.inventory[victimIdx].instance : undefined;
   // Unreachable (the caller proved an enchanted copy is held), kept as the
@@ -654,6 +679,10 @@ function resolveReplaceEnchantBagged(
   // in which case the replaced copy needs its own home. Model the removals
   // with the SAME walks the live path runs below and pre-fit the SAME mint.
   const scratch = meta.inventory.map((s) => ({ ...s }));
+  // The `?? victim` arm is unreachable (scratch is a content-identical copy of
+  // the array the peek above found the victim in) and deliberately kept as the
+  // safe direction: were it ever taken, the gate would model the mint without
+  // modeling the removal, which under-counts free space and denies MORE.
   const scratchVictim = consumeEnchantedVictim(scratch, itemId) ?? victim;
   for (const reagent of enchant.reagents) removeStacked(scratch, reagent.itemId, reagent.count);
   if (
@@ -668,10 +697,14 @@ function resolveReplaceEnchantBagged(
     return { ok: false, itemId, enchantId, reason: 'no_bag_space' };
   }
   const consumed = consumeEnchantedVictim(meta.inventory, itemId);
-  // Fail CLOSED: with no victim actually consumed (unreachable today, the
-  // victim peek above proved one exists and nothing in between mutates the
-  // inventory) this arm must deny rather than mint, or a future gate that
-  // mutates state between peek and consume turns this into a dupe.
+  // Deny rather than mint when nothing was consumed. Note what this does and
+  // does NOT cover: consumeEnchantedVictim returns undefined ONLY from its
+  // no-victim-found arm, which is before it touches the array, so today this
+  // is a clean pre-mutation bail. It is NOT a guard against a future helper
+  // that mutates and then returns undefined: that shape would already have
+  // destroyed the copy by the time we get here, and this return would skip the
+  // mint, losing the item rather than duping it. Any such change has to keep
+  // the removal and the mint atomic here, not lean on this line.
   if (!consumed) return { ok: false, itemId, enchantId, reason: 'not_held' };
   ctx.onInventoryChangedForQuests(meta);
   for (const reagent of enchant.reagents) ctx.removeItem(reagent.itemId, reagent.count, pid);
@@ -722,7 +755,14 @@ function resolveReplaceEnchantBagged(
  *  destroy is meaningless when nothing would be destroyed, so the plain arm
  *  proceeds (this also keeps a confirmed command race-safe when the enchanted
  *  copy left the bags between dialog and accept: it falls back to a deny or a
- *  destroy-nothing apply, never a surprise overwrite of a different copy). */
+ *  destroy-nothing apply, never a surprise overwrite of a different copy).
+ *  The converse is NOT symmetric and is deliberate: when BOTH an enchanted and
+ *  an unenchanted copy of the item id are held, the flag still routes to the
+ *  replace arm, so a confirmed command destroys the enchant rather than
+ *  quietly spending the free copy. The player asked for this specific copy in
+ *  the picker (the replace row is the only sender of the flag), and silently
+ *  redirecting a confirmed destroy onto a different copy would be the bigger
+ *  surprise. */
 export function resolveApplyEnchant(
   ctx: SimContext,
   pid: number,

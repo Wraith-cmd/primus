@@ -180,7 +180,7 @@ function setup() {
   const client = bareClient(session.pid);
   (server as any).broadcastSnapshots();
   (client as any).applySnapshot(lastSnap(fc.sent));
-  expect(client.consumeInventoryChanged()).toBe(true); // negative control
+  expect(client.consumeInventoryChanged()).toBe(true); // fixture control, see above
   fc.sent.length = 0;
   return { server, fc, session, sim, meta, client };
 }
@@ -360,6 +360,64 @@ describe('bag purse-freshness wiring (source pins)', () => {
     // this only guards that adding the purse probe did not displace any of them.
     const crafting = hud.match(/this\.refreshOpenCraftingIfReagentsChanged\(\);/g) ?? [];
     expect(crafting).toHaveLength(3);
+  });
+});
+
+describe('async balance reads repaint the FOOTER, not the whole window', () => {
+  // Both $WOC and Claudium balances resolve on their own schedule with no user action
+  // behind them, and both used to call the HUD's full renderBags() from a promise
+  // resolve. That tore the window down under a player who was mid-drag, hovering a
+  // tooltip, or typing in bag search, and it defeated the narrow money-row rewrite the
+  // purse probe was built around (the Claudium read is 30s-throttled, so an open bag
+  // with a moving purse hit it roughly twice a minute). Pinned per SITE, because a
+  // whole-file assertion would be satisfied by either one alone.
+
+  it('the wallet UI change listener repaints only the money row', () => {
+    expect(hud).toMatch(/onWalletUiChange\(\(\) => \{[^}]*this\.bagsWindow\.refreshMoneyRow\(\);/);
+    // ONLY. A toMatch on the new call says nothing about the old one: re-adding
+    // `this.renderBags();` on the next line satisfies every affirmative pin here
+    // while restoring the exact teardown this block is named after. Scoped to the
+    // block, not the file, because ~7 other sites call renderBags() legitimately.
+    expect(hud).not.toMatch(/onWalletUiChange\(\(\) => \{[^}]*this\.renderBags\(\);/);
+  });
+
+  it('the Claudium balance resolve repaints only the money row', () => {
+    expect(hud).toMatch(
+      /this\.setClaudiumLauncherBalance\(balance\);[^}]*this\.bagsWindow\.refreshMoneyRow\(\);/,
+    );
+    expect(hud).not.toMatch(
+      /this\.setClaudiumLauncherBalance\(balance\);[^}]*this\.renderBags\(\);/,
+    );
+  });
+
+  it('leaves the pending flag as the re-entry guard, reset only in the finally arm', () => {
+    // The repaint re-enters claudiumLauncherHtml() -> refreshClaudiumLauncherBalance(),
+    // so something has to stop a self-feeding balance read. That something is
+    // claudiumLauncherBalancePending, which is still true inside .then because
+    // .finally has not run: the 30s throttle re-stamp is a second line of defense,
+    // not the first. Move the reset into .then (before the repaint) and the loop is
+    // live again with every behavior test still green, so pin WHERE it is cleared.
+    expect(hud).toMatch(
+      /\.finally\(\(\) => \{\s*if \(seq === this\.claudiumLauncherBalanceSeq\) \{\s*this\.claudiumLauncherBalancePending = false;/,
+    );
+    const resets = hud.match(/this\.claudiumLauncherBalancePending = false;/g) ?? [];
+    expect(resets).toHaveLength(2); // the finally arm + the attachClaudium re-arm
+    // And the early-return that consumes it still guards the whole read.
+    expect(hud).toMatch(
+      /if \(!this\.claudiumHooks \|\| this\.claudiumLauncherBalancePending\) return;/,
+    );
+  });
+
+  it('neither async path is left on the cold-load-unsafe raw display compare', () => {
+    // `!== 'none'` reads a never-opened window as shown (#1538), so the old form
+    // would paint a window the player has never opened on every balance read.
+    const sites = hud.match(/this\.bagsWindow\.refreshMoneyRow\(\);/g) ?? [];
+    expect(sites).toHaveLength(2);
+    const guarded =
+      hud.match(
+        /if \(bagsWindowShown\(\$\('#bags'\)\.style\.display\)\) this\.bagsWindow\.refreshMoneyRow\(\);/g,
+      ) ?? [];
+    expect(guarded).toHaveLength(2);
   });
 });
 

@@ -6405,6 +6405,30 @@ function scaleEffect(
       return { ...eff, mana: Math.round(eff.mana * dmgMult + flat) };
     case 'gainResource':
       return { ...eff, amount: Math.round(eff.amount * dmgMult + flat) };
+    case 'groundAoE':
+      // Rune of Power's pulse is an ally damage-done buff, not a damage roll
+      // (its authored min/max are 0/0): leave it untouched so a flat talent
+      // mod can never turn a buff zone into a damage zone.
+      return eff.allyBuffPct
+        ? eff
+        : {
+            ...eff,
+            min: Math.round(eff.min * dmgMult + flat),
+            max: Math.round(eff.max * dmgMult + flat),
+          };
+    case 'repositionToAim':
+      // Heroic Leap's landing hit is a groundAoE-shaped rider on the
+      // reposition; scale it the same way a groundAoE pulse scales.
+      return eff.landingAoe
+        ? {
+            ...eff,
+            landingAoe: {
+              ...eff.landingAoe,
+              min: Math.round(eff.landingAoe.min * dmgMult + flat),
+              max: Math.round(eff.landingAoe.max * dmgMult + flat),
+            },
+          }
+        : eff;
     default:
       return eff;
   }

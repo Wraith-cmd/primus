@@ -1,5 +1,5 @@
 import { audio } from '../game/audio';
-import { corpseLootAvailability } from '../game/corpse_loot_availability';
+import { corpseLootAvailability, localPartyMemberIds } from '../game/corpse_loot_availability';
 import type { GamepadKind } from '../game/gamepad_map';
 import { InstanceMusicController } from '../game/instance_music';
 import { type Keybinds, keyCapLabel } from '../game/keybinds';
@@ -76,6 +76,7 @@ import type {
   ItemInstancePayload,
   ItemSlot,
   MailResultCode,
+  MotdResultCode,
   PetMode,
   PlayerClass,
   ResourceType,
@@ -385,7 +386,9 @@ import {
   npcMarkerAt,
   questAreaObjectivesAt,
 } from './map_window_view';
+import { marketCollectIndicatorView } from './market_view';
 import { MarketWindow } from './market_window';
+import { materialHintLine } from './material_hint_view';
 import { Meters } from './meters';
 import { minimapMode } from './minimap_markers';
 import { MINIMAP_SIZE, MinimapPainter } from './minimap_painter';
@@ -773,6 +776,12 @@ const CALENDAR_RESULT_KEYS: Record<CalendarResultCode, TranslationKey> = {
   badInput: 'hudChrome.calendar.result.badInput',
   calendarFull: 'hudChrome.calendar.result.calendarFull',
   eventGone: 'hudChrome.calendar.result.eventGone',
+};
+// Guild billboard outcome lines (`set` is the chat-log success).
+const MOTD_RESULT_KEYS: Record<MotdResultCode, TranslationKey> = {
+  set: 'hudChrome.social.billboard.result.set',
+  notInGuild: 'hudChrome.calendar.result.notInGuild',
+  notOfficer: 'hudChrome.social.billboard.result.notOfficer',
 };
 const HONOR_REASON_KEYS: Record<HonorReason, TranslationKey> = {
   arena_win: 'hudChrome.warfare.reasons.arenaWin',
@@ -1482,6 +1491,9 @@ export class Hud {
   // Ravenpost envelope indicator (slow-band, value-diffed; see updateMailIndicator).
   private mailIndicatorEl: HTMLElement | null = null;
   private lastMailUnread = -1;
+  // World Market collect indicator (slow-band, value-diffed; see updateMarketIndicator).
+  private marketIndicatorEl: HTMLElement | null = null;
+  private lastMarketCollectPending: boolean | null = null;
   private pendingPetFeed = false;
   private petModeMenuOpen = false;
   constructor(
@@ -1628,7 +1640,13 @@ export class Hud {
       element: $('#loot-window'),
       document,
       world: () => this.sim,
-      corpseAvailability: (mob) => corpseLootAvailability(mob, this.sim.playerId),
+      corpseAvailability: (mob) =>
+        corpseLootAvailability(
+          mob,
+          this.sim.playerId,
+          true,
+          localPartyMemberIds(this.sim.partyInfo),
+        ),
       closeTransient: () => this.closeOtherWindows('#loot-window'),
       hideTooltip: () => this.hideTooltip(),
       entityName: entityDisplayName,
@@ -1743,13 +1761,17 @@ export class Hud {
     this.actionBarController.init();
     this.buildActionBar();
     this.initMailIndicator();
+    this.initMarketIndicator();
     this.refreshKeybindLabels();
     this.buildXpTicks();
     document.addEventListener('woc:languagechange', () => this.refreshLocalizedDynamicUi());
     // re-render the bag footer (and re-composite an open player card) when the
     // connected wallet's $WOC balance changes
     onWalletUiChange(() => {
-      if ($('#bags').style.display !== 'none') this.renderBags();
+      // Footer-only, as this comment always claimed: the balance lands asynchronously
+      // with no user action behind it, so a full rebuild would drop the bag-search
+      // caret and strand a hovered tooltip. Cold-load-safe gate (#1538) too.
+      if (bagsWindowShown($('#bags').style.display)) this.bagsWindow.refreshMoneyRow();
       this.playerCard.refresh();
       this.claudiumWindow.onWalletChanged();
     });
@@ -4301,7 +4323,15 @@ export class Hud {
       .then((balance) => {
         if (seq !== this.claudiumLauncherBalanceSeq) return;
         this.setClaudiumLauncherBalance(balance);
-        if ($('#bags').style.display !== 'none') this.renderBags();
+        // Footer-only, and on the cold-load-safe gate (#1538). This resolves on the
+        // balance read's own schedule with no user action behind it, so a full
+        // renderBags() here would tear the window down under a player who is
+        // mid-drag, hovering a tooltip, or typing in bag search. Re-entry is not a
+        // risk: the repaint does call claudiumLauncherHtml again, but
+        // claudiumLauncherBalancePending is still true here (.finally has not run),
+        // so the nested read returns before it ever consults the 30s throttle. The
+        // throttle re-stamp above is the second line of defense, not the first.
+        if (bagsWindowShown($('#bags').style.display)) this.bagsWindow.refreshMoneyRow();
       })
       .catch(() => {
         if (seq !== this.claudiumLauncherBalanceSeq) return;
@@ -4783,6 +4813,10 @@ export class Hud {
     // pole render their kind, requirement, use, and bonus lines from the
     // pure sibling module (the item_instance_tooltip.ts pattern).
     html += gatherToolTooltipLines(item);
+    // Purpose hint for the eight enchanting materials (material_hint_view.ts
+    // keys the table by item id): what the reagent is for and which gear
+    // disenchants into it. Every other item id renders nothing here.
+    html += materialHintLine(item.id);
     if (item.potionHp)
       html += `<div class="tt-desc">${esc(t('itemUi.tooltip.useHealingPotion', { amount: itemNumber(item.potionHp) }))}</div>`;
     if (item.potionMana)
@@ -7759,6 +7793,7 @@ export class Hud {
     if (slowHud) this.updateDeedTracker();
     if (slowHud && this.calendarWindow.isOpen) this.calendarWindow.refreshIfChanged();
     if (slowHud) this.updateMailIndicator();
+    if (slowHud) this.updateMarketIndicator();
   }
 
   private initMailIndicator(): void {
@@ -7794,6 +7829,45 @@ export class Hud {
       el.setAttribute('aria-label', t('hudChrome.mailbox.indicatorAria', { count }));
       el.title = t('hudChrome.mailbox.indicatorTip', { count });
     }
+  }
+
+  private initMarketIndicator(): void {
+    // Null-guarded (the raid-lockout init pattern): a game entry missing the
+    // badge markup must degrade to no badge, never abort the rest of HUD init.
+    const el = $('#market-indicator') as HTMLButtonElement | null;
+    if (!el) return;
+    this.marketIndicatorEl = el;
+    const activate = () => {
+      // At the Merchant the coin opens the World Market (the same gate the
+      // market window itself lives behind); anywhere else it is informational
+      // only: the tooltip already says the proceeds wait at the Merchant.
+      if (this.nearbyMarketNpc()) this.openMarket();
+    };
+    el.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      activate();
+    });
+    el.addEventListener('keydown', (ev) => {
+      if (ev.key !== 'Enter' && ev.key !== ' ') return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      activate();
+    });
+  }
+
+  // The World Market coin by the minimap: visible while sale proceeds or
+  // returned items wait at the Merchant (the mail envelope pattern).
+  // Slow-band, value-diffed writes only (the bit changes rarely); the static
+  // title/aria come from index.html's data-i18n attributes.
+  private updateMarketIndicator(): void {
+    const el = this.marketIndicatorEl ?? ($('#market-indicator') as HTMLElement | null);
+    if (!el) return;
+    this.marketIndicatorEl = el;
+    const view = marketCollectIndicatorView(this.sim.marketCollectPending);
+    if (view.visible === this.lastMarketCollectPending) return;
+    this.lastMarketCollectPending = view.visible;
+    el.hidden = !view.visible;
   }
 
   // Classic "low mana/energy" warning: pulse the player resource bar when power
@@ -9484,6 +9558,14 @@ export class Hud {
           this.calendarWindow.onCalendarResult(ev.code);
           break;
         }
+        case 'motdResult': {
+          if (ev.code === 'set') {
+            this.log(t(MOTD_RESULT_KEYS[ev.code]), '#c8f7c5');
+          } else {
+            this.showError(t(MOTD_RESULT_KEYS[ev.code]));
+          }
+          break;
+        }
         case 'deedBroadcast': {
           // A guildmate's or followed friend's marquee unlock. Id-based on
           // the wire (server sends the deed id, never English); the visible
@@ -10967,6 +11049,7 @@ export class Hud {
       'You join the Ashen Coliseum queue. Stand by for a worthy opponent…': 'hud.logs.arenaJoin',
       'You leave the Ashen Coliseum queue.': 'hud.logs.arenaLeave',
       'You step onto the sands of the Ashen Coliseum.': 'hud.logs.arenaSands',
+      'You step onto the flooded stones of the Drowned Court.': 'hud.logs.arenaSandsDrowned',
       'Fight!': 'hud.system.arenaStart',
       'Trade window opened.': 'hud.logs.tradeOpened',
       'Trade complete.': 'hud.logs.tradeComplete',
@@ -12025,8 +12108,10 @@ export class Hud {
     // Dock the char-sheet pairing when its companion opens (the touch cluster).
     this.syncCharBagsPairing();
     audio.bagOpen();
-    // Pull a fresh on-chain $WOC balance for the footer; the async result
-    // re-renders the bag via the onWalletUiChange listener wired in the ctor.
+    // Pull a fresh on-chain $WOC balance for the footer; the async result repaints
+    // the footer (not the whole bag) via the onWalletUiChange listener wired in the
+    // ctor. The display is set to 'flex' above precisely so that listener's
+    // bagsWindowShown gate sees an open window when the balance lands.
     this.optionsHooks?.refreshWocBalance();
   }
 

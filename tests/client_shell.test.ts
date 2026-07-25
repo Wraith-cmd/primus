@@ -1860,6 +1860,8 @@ describe('client HTML shell', () => {
     expect(marketWindowTs).toContain('data-market-filter-menu="${menu}"');
     expect(marketWindowTs).toMatch(/this\.renderMarketFilterMenu\(\s*'itemType'/);
     expect(marketWindowTs).toMatch(/this\.renderMarketFilterMenu\(\s*'subtype'/);
+    expect(marketWindowTs).toMatch(/this\.renderMarketFilterMenu\(\s*'armorClass'/);
+    expect(marketWindowTs).toMatch(/this\.renderMarketFilterMenu\(\s*'primaryStat'/);
     expect(marketWindowTs).toMatch(/this\.renderMarketFilterMenu\(\s*'rarity'/);
     expect(marketWindowTs).not.toContain('<select data-market-filter=');
     // The load-bearing claim of the landscape refactor: `.mkt-controls` (search +
@@ -2036,7 +2038,7 @@ describe('client HTML shell', () => {
     expect(mainTs).not.toContain('online === null');
     expect(mainTs).toContain('const interactionOutcome = handlePickedEntity(');
     expect(mainTs).toContain(
-      'isClickMoveButton &&\n        shouldApproachPickedEntity(world.player, e, didInteractImmediately)',
+      'isClickMoveButton &&\n        shouldApproachPickedEntity(\n          world.player,\n          e,\n          didInteractImmediately,\n          true,\n          localPartyMemberIds(world.partyInfo),\n        )',
     );
     expect(mainTs).toContain(
       'stopAutorunForInteraction(interactionOutcome, input, mobileControls);',

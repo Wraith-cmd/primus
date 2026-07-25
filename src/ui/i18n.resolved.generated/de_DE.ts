@@ -1062,6 +1062,7 @@ export const de_DE: EnTranslations = {
       "walkByAutoloot": "Plündern im Vorbeigehen",
       "groundReticle": "Bodenziel-Fadenkreuz",
       "mouseoverCast": "Mouseover-Wirken auf Gruppenfenstern",
+      "stickyTarget": "Keep Target on Ground Click",
       "showItemLevel": "Gegenstandsstufe anzeigen",
       "itemLevelLine": "Gegenstandsstufe {level}",
       "itemScoreLine": "Wertung {score}",
@@ -1542,6 +1543,8 @@ export const de_DE: EnTranslations = {
       "dragDestroyHint": "In die Welt ziehen, um zu vernichten",
       "reorderNeedsRecent": "Filter aufheben und nach Zuletzt sortieren, um deine Taschen neu anzuordnen",
       "itemAriaInstanced": "{item}, Menge {count}, herstellermarkierte Kopie",
+      "itemAriaEnchanted": "{item}, quantity {count}, enchanted copy",
+      "itemAriaBound": "{item}, quantity {count}, bound copy",
       "itemAriaMasterwork": "{item}, Menge {count}, Meisterwerk",
       "filterGroupAria": "Taschen nach Kategorie filtern",
       "filterAll": "Alle",
@@ -1766,7 +1769,19 @@ export const de_DE: EnTranslations = {
       "label": "Fensterpositionen zurücksetzen"
     },
     "itemTooltip": {
-      "requiresLevel": "Benötigt Stufe {level}"
+      "requiresLevel": "Benötigt Stufe {level}",
+      "statEnchanted": "+{value} {stat} (Enchanted)",
+      "enchantedFallback": "Enchanted"
+    },
+    "materialHint": {
+      "arcaneDust": "Enchanting reagent. Disenchanted from common and uncommon gear.",
+      "arcaneEssence": "Enchanting reagent. Disenchanted from rare gear.",
+      "arcaneShard": "Enchanting reagent. Disenchanted from epic and legendary gear.",
+      "resonantThread": "Enchanting reagent. Disenchanted from rare and better cloth armor.",
+      "resonantHide": "Enchanting reagent. Disenchanted from rare and better leather armor.",
+      "resonantLinks": "Enchanting reagent. Disenchanted from rare and better mail armor.",
+      "resonantSteel": "Enchanting reagent. Disenchanted from rare and better melee weapons.",
+      "resonantTimber": "Enchanting reagent. Disenchanted from rare and better staves, wands, bows, and crossbows."
     },
     "discord": {
       "title": "Discord",
@@ -2007,6 +2022,10 @@ export const de_DE: EnTranslations = {
         "takeParcelsFirst": "Entnimm erst die Pakete, bevor du den Brief verwirfst."
       }
     },
+    "marketIndicator": {
+      "aria": "World Market collection waiting",
+      "tip": "Gold or items are waiting for you at the Merchant."
+    },
     "noticeboard": {
       "empty": "Hier scheint nichts ausgehängt zu sein."
     },
@@ -2126,7 +2145,19 @@ export const de_DE: EnTranslations = {
       "onlineHeader": "Online ({n})",
       "offlineHeader": "Offline ({n})",
       "hideOffline": "Offline ausblenden",
-      "hideOfflineTitle": "Offline-Gildenmitglieder ausblenden"
+      "hideOfflineTitle": "Offline-Gildenmitglieder ausblenden",
+      "billboard": {
+        "label": "Guild Billboard",
+        "empty": "Nothing on the billboard yet.",
+        "setBy": "Set by {name}",
+        "save": "Save",
+        "placeholder": "Write a message for the guild",
+        "inputLabel": "Guild billboard message",
+        "result": {
+          "set": "The guild billboard was updated.",
+          "notOfficer": "Only officers and the Guild Master may edit the billboard."
+        }
+      }
     },
     "gathering": {
       "title": "Sammeln",
@@ -2396,7 +2427,6 @@ export const de_DE: EnTranslations = {
       "makersMark": "Hergestellt von {name}",
       "gatheredBy": "Gesammelt von {name}",
       "masterworkSeal": "Meisterwerk",
-      "enchantedLine": "Verzaubert",
       "commissionToggle": "Auftragsarbeit",
       "commissionToggleHint": "Bindet sich an den ersten Charakter, der es im Handel erhält.",
       "commissionUnbound": "Auftragsarbeit: bindet sich an den ersten Empfänger",
@@ -2434,7 +2464,16 @@ export const de_DE: EnTranslations = {
       "pickerTitle": "Verzauberung anwenden",
       "targetTitle": "Wähle einen Gegenstand zum Verzaubern",
       "noEnchants": "Keine Verzauberung verwendet dieses Reagenz.",
-      "noTargets": "Kein geeigneter Gegenstand zum Verzaubern."
+      "noTargets": "Kein geeigneter Gegenstand zum Verzaubern.",
+      "wornTag": "Worn ({slot})",
+      "tier": {
+        "base": "Base Enchants",
+        "runed": "Runed Enchants",
+        "greater": "Greater Enchants"
+      },
+      "yieldHeader": "Expected materials:",
+      "yieldLineExact": "{count} {item}",
+      "yieldLineRange": "{min} to {max} {item}"
     },
     "training": {
       "title": "Ausbildung: {name}",
@@ -6194,6 +6233,7 @@ export const de_DE: EnTranslations = {
       "arenaJoin": "Ihr tretet der Warteschlange des Aschenen Kolosseums bei. Wartet auf einen würdigen Gegner...",
       "arenaLeave": "Ihr verlasst die Warteschlange des Aschenen Kolosseums.",
       "arenaSands": "Ihr betretet den Sand des Aschenen Kolosseums.",
+      "arenaSandsDrowned": "You step onto the flooded stones of the Drowned Court.",
       "tradeRequestSent": "Ihr habt {name} um Handel gebeten.",
       "tradeOpened": "Handelsfenster geöffnet.",
       "tradeComplete": "Handel abgeschlossen.",
@@ -6362,6 +6402,11 @@ export const de_DE: EnTranslations = {
       "playerLevelClassTitle": "{name} - St. {level} {className}",
       "noChallengers": "Noch keine Herausforderer gewertet - sei der Erste.",
       "matchInProgress": "Kampf läuft gegen {name}.",
+      "mapName": "Map: {name}",
+      "map": {
+        "coliseum": "Ashen Coliseum",
+        "drownedCourt": "The Drowned Court"
+      },
       "leaveQueue": "Warteschlange verlassen",
       "searching": "Suche nach Gegner... ({count} in der Warteschlange)",
       "enterQueue": "In Warteschlange",
@@ -6654,6 +6699,7 @@ export const de_DE: EnTranslations = {
       "pageNextAria": "Nächste Marktseite",
       "pageStatus": "Seite {current} von {total}",
       "filters": "Marktfilter",
+      "filterValueAria": "{label}: {value}",
       "filterType": "Typ",
       "filterTypeAll": "Alle Typen",
       "filterTypeWeapon": "Waffen",
@@ -6664,8 +6710,15 @@ export const de_DE: EnTranslations = {
       "filterTypeOther": "Sonstiges",
       "filterArmorType": "Rüstungstyp",
       "filterArmorAll": "Alle Rüstung",
+      "filterArmorSlot": "Armor slot",
+      "filterArmorClassAll": "All armor types",
+      "armorCloth": "Cloth",
+      "armorLeather": "Leather",
+      "armorMail": "Mail",
       "filterWeaponType": "Waffentyp",
       "filterWeaponAll": "Alle Waffen",
+      "filterPrimaryStat": "Primary stat",
+      "filterPrimaryStatAll": "Any primary stat",
       "filterRarity": "Seltenheit",
       "filterRarityAll": "Alle Seltenheiten",
       "weaponSword": "Schwerter",

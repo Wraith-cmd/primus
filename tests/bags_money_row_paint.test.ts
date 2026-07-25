@@ -183,6 +183,51 @@ describe('BagsWindow.refreshIfChanged', () => {
 });
 
 // ---------------------------------------------------------------------------
+// The public entry point the async balance reads use. refreshIfChanged is the
+// purse-driven probe and elides on an unmoved purse; refreshMoneyRow is the
+// unconditional repaint, because the $WOC and Claudium balances move while `copper`
+// stands still. Driving it directly is what keeps those two from collapsing into one.
+// ---------------------------------------------------------------------------
+
+describe('BagsWindow.refreshMoneyRow (the async balance-read entry point)', () => {
+  it('repaints even when the purse has NOT moved', () => {
+    // The whole reason it is a separate public method. A $WOC or Claudium balance
+    // landing changes the footer markup with `copper` untouched, so a refreshMoneyRow
+    // that consulted the lastMoneyCopper latch (or delegated to refreshIfChanged)
+    // would silently never paint the new balance.
+    const h = harness(1000);
+    h.window.render();
+    expect(h.paints()).toBe(1);
+
+    h.window.refreshMoneyRow();
+    expect(h.paints()).toBe(2);
+    h.window.refreshMoneyRow();
+    expect(h.paints()).toBe(3);
+    expect(h.moneyText()).toContain('1000'); // and it repaints the CURRENT purse
+  });
+
+  it('re-arms the latch, so it never leaves a paint owed to the purse probe', () => {
+    const h = harness(1000);
+    h.window.render();
+    h.setCopper(5000);
+    h.window.refreshMoneyRow(); // paints 5000 off the balance read's own schedule
+    expect(h.paints()).toBe(2);
+    h.window.refreshIfChanged(); // the purse probe now has nothing left to do
+    expect(h.paints()).toBe(2);
+    expect(h.moneyText()).toContain('5000');
+  });
+
+  it('is a no-op on a window that has never rendered (no .money row yet)', () => {
+    // Both call sites fire from a promise resolve, so this can land before the
+    // player has ever opened the bag. It must not throw and must not half-paint.
+    const h = harness(1000);
+    expect(() => h.window.refreshMoneyRow()).not.toThrow();
+    expect(h.paints()).toBe(0);
+    expect(h.root.querySelector('.money')).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
 // What the refresh must not disturb. These are the reason it is a narrow .money
 // rewrite rather than renderBags(): this edge fires with no user action behind it.
 // ---------------------------------------------------------------------------
@@ -243,22 +288,67 @@ describe('BagsWindow.refreshIfChanged preserves what the player is holding', () 
     expect(h.hideTooltip).not.toHaveBeenCalled();
   });
 
-  it('keeps the money row wired after its rewrite', () => {
-    // The row's two launchers are bound per paint, so an in-place rewrite has to
-    // re-bind them or the wallet/Claudium buttons go dead after the first credit.
-    const opened: string[] = [];
+  // BOTH launchers, one case each. A single combined assertion is not enough here:
+  // with only the Claudium arm, deleting the wallet re-bind from paintMoneyRow left
+  // all 55 tests green, and the footer's Connect/Link wallet button would have gone
+  // dead after the first purse-driven repaint. wocBalanceHtml emits
+  // [data-wallet-action] only on its BUTTON variant (an unverified wallet), which is
+  // exactly the case a real player hits before verifying.
+  for (const launcher of [
+    {
+      name: 'Claudium',
+      html: 'claudiumLauncherHtml',
+      hook: 'openClaudium',
+      attr: 'data-claudium-launcher',
+    },
+    { name: 'wallet', html: 'wocBalanceHtml', hook: 'openWallet', attr: 'data-wallet-action' },
+  ] as const) {
+    it(`keeps the ${launcher.name} launcher wired after an in-place rewrite`, () => {
+      const opened: string[] = [];
+      const h = harness(1000);
+      const w = h.window as unknown as { deps: Record<string, unknown> };
+      w.deps[launcher.html] = () => `<button ${launcher.attr}>x</button>`;
+      w.deps[launcher.hook] = () => opened.push(launcher.name);
+      h.window.render();
+      h.setCopper(5000);
+      h.window.refreshIfChanged();
+
+      // Prove the click lands on a FRESH node. Without this the arm passes off the
+      // binding render() already did, so a refreshIfChanged stubbed to a no-op would
+      // stay green; two paints means the in-place rewrite the title claims really ran.
+      expect(h.paints()).toBe(2);
+      (h.root.querySelector(`[${launcher.attr}]`) as HTMLElement | null)?.click();
+      expect(opened).toEqual([launcher.name]);
+    });
+  }
+
+  it('deliberately does NOT restore focus onto the rewritten launcher (PR #2377 ruling)', () => {
+    // Tempting to copy the deeds/professions "refocus the role-equivalent control"
+    // family here, since the rewrite really does drop focus to <body>. Do not: it was
+    // ruled out on PR #2377 and both reasons still hold.
+    //  - Each footer control is a BUTTON, and src/game/input.ts cancels Enter's
+    //    default on the chat edge only when `tag !== 'button'`, on the stated grounds
+    //    that a button's own Enter activation is a real default action too. Parking
+    //    focus back on one makes the player's next Enter (meaning "open chat") ALSO
+    //    open the Claudium store or re-fire the wallet connect flow.
+    //  - #bags is non-modal and absent from Hud.isModalOpen(), so canUseGameKeys()
+    //    stays true and input.ts preventDefaults Tab for target-nearest. Keyboard
+    //    focus cannot reach this footer at all, so there is no WCAG 2.4.3 debt to pay
+    //    off here, only the Enter hazard to buy.
+    // Pinned so the next reader finds the ruling instead of re-deriving the family.
     const h = harness(1000);
-    const w = h.window as unknown as {
-      deps: { claudiumLauncherHtml(): string; openClaudium(): void };
-    };
-    // Swap in a launcher with a real hook, then paint through the narrow path.
+    const w = h.window as unknown as { deps: Record<string, unknown> };
     w.deps.claudiumLauncherHtml = () => '<button data-claudium-launcher>c</button>';
-    w.deps.openClaudium = () => opened.push('claudium');
     h.window.render();
+    const before = h.root.querySelector('[data-claudium-launcher]') as HTMLElement;
+    before.focus();
+    expect(document.activeElement).toBe(before);
+
     h.setCopper(5000);
     h.window.refreshIfChanged();
 
-    (h.root.querySelector('[data-claudium-launcher]') as HTMLElement | null)?.click();
-    expect(opened).toEqual(['claudium']);
+    // The rewrite happened (fresh node), and focus was left where the browser put it.
+    expect(h.root.querySelector('[data-claudium-launcher]')).not.toBe(before);
+    expect(document.activeElement).toBe(document.body);
   });
 });

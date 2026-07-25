@@ -1062,6 +1062,7 @@ export const ru_RU: EnTranslations = {
       "walkByAutoloot": "Автосбор добычи при проходе",
       "groundReticle": "Прицел наземного наведения",
       "mouseoverCast": "Применение по наведению на рамки группы",
+      "stickyTarget": "Сохранять цель при клике по земле",
       "showItemLevel": "Показывать уровень предмета",
       "itemLevelLine": "Уровень предмета {level}",
       "itemScoreLine": "Оценка {score}",
@@ -1542,6 +1543,8 @@ export const ru_RU: EnTranslations = {
       "dragDestroyHint": "Перетащите в мир, чтобы уничтожить",
       "reorderNeedsRecent": "Сбросьте фильтр и выберите сортировку «Недавние», чтобы менять порядок в сумках",
       "itemAriaInstanced": "{item}, количество {count}, копия с клеймом мастера",
+      "itemAriaEnchanted": "{item}, количество {count}, зачарованный экземпляр",
+      "itemAriaBound": "{item}, количество {count}, привязанный экземпляр",
       "itemAriaMasterwork": "{item}, количество {count}, шедевр",
       "filterGroupAria": "Фильтровать сумки по категории",
       "filterAll": "Все",
@@ -1766,7 +1769,19 @@ export const ru_RU: EnTranslations = {
       "label": "Сбросить положение рамок"
     },
     "itemTooltip": {
-      "requiresLevel": "Требуется уровень {level}"
+      "requiresLevel": "Требуется уровень {level}",
+      "statEnchanted": "+{value} {stat} (зачаровано)",
+      "enchantedFallback": "Зачаровано"
+    },
+    "materialHint": {
+      "arcaneDust": "Реагент для наложения чар. Выпадает при распылении обычного и необычного снаряжения.",
+      "arcaneEssence": "Реагент для наложения чар. Выпадает при распылении редкого снаряжения.",
+      "arcaneShard": "Реагент для наложения чар. Выпадает при распылении эпического и легендарного снаряжения.",
+      "resonantThread": "Реагент для наложения чар. Выпадает при распылении тканевой брони редкого качества и выше.",
+      "resonantHide": "Реагент для наложения чар. Выпадает при распылении кожаной брони редкого качества и выше.",
+      "resonantLinks": "Реагент для наложения чар. Выпадает при распылении кольчужной брони редкого качества и выше.",
+      "resonantSteel": "Реагент для наложения чар. Выпадает при распылении оружия ближнего боя редкого качества и выше.",
+      "resonantTimber": "Реагент для наложения чар. Выпадает при распылении посохов, жезлов, луков и арбалетов редкого качества и выше."
     },
     "discord": {
       "title": "Discord",
@@ -2007,6 +2022,10 @@ export const ru_RU: EnTranslations = {
         "takeParcelsFirst": "Сначала заберите посылки, затем удаляйте письмо."
       }
     },
+    "marketIndicator": {
+      "aria": "Ожидает получения на Мировом рынке",
+      "tip": "Золото или предметы ждут вас у Торговца."
+    },
     "noticeboard": {
       "empty": "Похоже, здесь ничего не опубликовано."
     },
@@ -2126,7 +2145,19 @@ export const ru_RU: EnTranslations = {
       "onlineHeader": "В сети ({n})",
       "offlineHeader": "Не в сети ({n})",
       "hideOffline": "Скрыть офлайн",
-      "hideOfflineTitle": "Скрыть офлайн участников гильдии"
+      "hideOfflineTitle": "Скрыть офлайн участников гильдии",
+      "billboard": {
+        "label": "Доска объявлений гильдии",
+        "empty": "На доске объявлений пока пусто.",
+        "setBy": "Разместил(а): {name}",
+        "save": "Сохранить",
+        "placeholder": "Напишите сообщение для гильдии",
+        "inputLabel": "Сообщение на доске объявлений гильдии",
+        "result": {
+          "set": "Доска объявлений гильдии обновлена.",
+          "notOfficer": "Редактировать доску объявлений могут только офицеры и глава гильдии."
+        }
+      }
     },
     "gathering": {
       "title": "Собирательство",
@@ -2396,7 +2427,6 @@ export const ru_RU: EnTranslations = {
       "makersMark": "Создатель: {name}",
       "gatheredBy": "Сборщик: {name}",
       "masterworkSeal": "Шедевр",
-      "enchantedLine": "Зачаровано",
       "commissionToggle": "Изделие на заказ",
       "commissionToggleHint": "Привязывается к первому персонажу, получившему его при обмене.",
       "commissionUnbound": "Изделие на заказ: привяжется к первому получателю",
@@ -2434,7 +2464,16 @@ export const ru_RU: EnTranslations = {
       "pickerTitle": "Наложить чары",
       "targetTitle": "Выберите предмет для зачарования",
       "noEnchants": "Нет чар, использующих этот реагент.",
-      "noTargets": "Нет подходящего предмета для зачарования."
+      "noTargets": "Нет подходящего предмета для зачарования.",
+      "wornTag": "Worn ({slot})",
+      "tier": {
+        "base": "Базовые чары",
+        "runed": "Рунные чары",
+        "greater": "Высшие чары"
+      },
+      "yieldHeader": "Ожидаемые материалы:",
+      "yieldLineExact": "{item}: {count}",
+      "yieldLineRange": "{item}: {min}-{max}"
     },
     "training": {
       "title": "Обучение: {name}",
@@ -6194,6 +6233,7 @@ export const ru_RU: EnTranslations = {
       "arenaJoin": "Вы вступаете в очередь Пепельного Колизея. Ожидайте достойного соперника...",
       "arenaLeave": "Вы покидаете очередь Пепельного Колизея.",
       "arenaSands": "Вы выходите на песок Пепельного Колизея.",
+      "arenaSandsDrowned": "Вы ступаете на затопленные камни Затонувшего Двора.",
       "tradeRequestSent": "Вы запросили обмен с {name}.",
       "tradeOpened": "Окно обмена открыто.",
       "tradeComplete": "Обмен завершен.",
@@ -6362,6 +6402,11 @@ export const ru_RU: EnTranslations = {
       "playerLevelClassTitle": "{name} - ур. {level} {className}",
       "noChallengers": "Рейтинговых претендентов пока нет - станьте первым.",
       "matchInProgress": "Бой идет против {name}.",
+      "mapName": "Карта: {name}",
+      "map": {
+        "coliseum": "Пепельный Колизей",
+        "drownedCourt": "Затонувший Двор"
+      },
       "leaveQueue": "Покинуть очередь",
       "searching": "Поиск соперника... ({count} в очереди)",
       "enterQueue": "Встать в очередь",
@@ -6654,6 +6699,7 @@ export const ru_RU: EnTranslations = {
       "pageNextAria": "Следующая страница рынка",
       "pageStatus": "Страница {current} из {total}",
       "filters": "Фильтры рынка",
+      "filterValueAria": "{label}: {value}",
       "filterType": "Тип",
       "filterTypeAll": "Все типы",
       "filterTypeWeapon": "Оружие",
@@ -6664,8 +6710,15 @@ export const ru_RU: EnTranslations = {
       "filterTypeOther": "Другое",
       "filterArmorType": "Тип брони",
       "filterArmorAll": "Вся броня",
+      "filterArmorSlot": "Слот брони",
+      "filterArmorClassAll": "Все типы брони",
+      "armorCloth": "Ткань",
+      "armorLeather": "Кожа",
+      "armorMail": "Кольчуга",
       "filterWeaponType": "Тип оружия",
       "filterWeaponAll": "Все оружие",
+      "filterPrimaryStat": "Основная характеристика",
+      "filterPrimaryStatAll": "Любая основная характеристика",
       "filterRarity": "Редкость",
       "filterRarityAll": "Все редкости",
       "weaponSword": "Мечи",

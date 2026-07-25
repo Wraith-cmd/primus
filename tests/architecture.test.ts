@@ -155,6 +155,9 @@ const UI_PURE_CORES = [
   'src/ui/bag_item_context_menu.ts',
   'src/ui/enchant_apply_view.ts',
   'src/ui/enchanting_view.ts',
+  'src/ui/disenchant_yield_view.ts',
+  'src/ui/material_hint_view.ts',
+  'src/ui/bag_instance_glyph_view.ts',
   'src/ui/bank_view.ts',
   'src/ui/item_set_tooltip_view.ts',
   'src/ui/weapon_proc_view.ts',
@@ -250,6 +253,7 @@ const UI_PURE_CORES = [
 // water_core (the shore-depth sample shared by build + editor setLevel) follow
 // the same contract for the map editor's realtime terrain/water edits.
 const RENDER_PURE_CORES = [
+  'src/render/arena_water_band_core.ts',
   'src/render/camera_boom_core.ts',
   'src/render/camera_director_core.ts',
   'src/render/camera_feel_core.ts',
@@ -260,6 +264,7 @@ const RENDER_PURE_CORES = [
   'src/render/stations_core.ts',
   'src/render/delve_interactable_visibility_core.ts',
   'src/render/env_prefilter_core.ts',
+  'src/render/nameplate_extent_core.ts',
   'src/render/eastbrook_town_visibility_core.ts',
   'src/render/nameplate_view.ts',
   'src/render/net_interp_core.ts',

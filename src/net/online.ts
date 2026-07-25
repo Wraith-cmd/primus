@@ -1383,8 +1383,10 @@ export class ClientWorld implements IWorld {
   // the write rule. NON-IWorld mirror: the seam exposes only `accountFlair`.
   private playerFlair = new Map<string, PlayerFlair>();
   // --- IWorldMarket: World Market view, mirrored from the snapshot self
-  // (`s.market`, delta-omitted). ---
+  // (`s.market`, delta-omitted). `s.mktU` is the always-streamed collect
+  // indicator bit (the mailU pattern; the minimap badge). ---
   marketInfo: MarketInfo | null = null;
+  marketCollectPending = false;
   // --- IWorldMail: Ravenpost mailbox view + unread badge, mirrored from the
   // snapshot self (`s.mail` / `s.mailU`, delta-omitted). ---
   mailInfo: MailInfo | null = null;
@@ -2537,6 +2539,12 @@ export class ClientWorld implements IWorld {
       // corpse harvest claim: unconditional so a record without hcb (unclaimed,
       // or a respawn that cleared the claim) resets any stale mirrored pid
       e.harvestClaimedBy = typeof w.hcb === 'number' ? w.hcb : null;
+      // loot owner-lock lapse: flag present means lapsed (mirror as already
+      // counted down), absent means the lock still holds or never started;
+      // unconditional so a respawned record resets any stale lapse (same
+      // contract as hcb above). The server owns the countdown; the client only
+      // ever needs the boolean.
+      e.lootFfaTimer = w.ffa ? 0 : Infinity;
       e.ownerId = w.own ?? null;
       e.petMode = w.pm ?? 'defensive';
       e.petTauntTimer = w.pt ?? 0;
@@ -2911,6 +2919,7 @@ export class ClientWorld implements IWorld {
       if (s.vcupb !== undefined) this.lastVcupShared = s.vcupb as VcSharedCupInfo | null;
       if (s.vcup !== undefined || s.vcupb !== undefined) this.recomputeCupInfo();
       if (s.market !== undefined) this.marketInfo = s.market;
+      if (s.mktU !== undefined) this.marketCollectPending = !!s.mktU;
       if (s.mail !== undefined) this.mailInfo = s.mail;
       if (s.mailU !== undefined) this.mailUnread = s.mailU ?? 0;
       // `bank` is delta-omitted when unchanged (an omitted key means unchanged, NOT
@@ -3386,8 +3395,12 @@ export class ClientWorld implements IWorld {
   disenchantItem(itemId: string): void {
     this.cmd({ cmd: 'disenchant_item', item: itemId });
   }
-  applyEnchant(itemId: string, enchantId: string): void {
-    this.cmd({ cmd: 'apply_enchant', item: itemId, enchant: enchantId });
+  // `slot` rides only when the target is a WORN piece (the in-place arm); a
+  // bagged target sends a message byte-identical to the pre-feature form. The
+  // server re-validates the token against ALL_EQUIP_SLOTS and the sim re-checks
+  // what is actually worn there, so this is a request, never a bypass.
+  applyEnchant(itemId: string, enchantId: string, slot?: EquipSlot): void {
+    this.cmd({ cmd: 'apply_enchant', item: itemId, enchant: enchantId, slot });
   }
   salvageItem(itemId: string): void {
     this.cmd({ cmd: 'salvage_item', item: itemId });
@@ -3801,6 +3814,9 @@ export class ClientWorld implements IWorld {
   guildEventRemove(eventId: number): void {
     this.cmd({ cmd: 'guild_event_remove', id: eventId });
   }
+  guildSetMotd(text: string): void {
+    this.cmd({ cmd: 'guild_set_motd', text });
+  }
   async searchCharacters(query: string): Promise<CharacterSearchResult[]> {
     const q = query.trim();
     if (!q) return [];
@@ -3897,6 +3913,8 @@ export class ClientWorld implements IWorld {
       q: query.search,
       itemType: query.itemType,
       subtype: query.subtype,
+      armorClass: query.armorClass,
+      primaryStat: query.primaryStat,
       rarity: query.rarity,
       page: query.page,
     });

@@ -398,10 +398,15 @@ export class WaterSimulation {
       ) {
         continue;
       }
-      this.step(state, state.stepsThisFrame === 0);
+      const drew = this.step(state, state.stepsThisFrame === 0);
       state.accumulator -= state.stepSeconds;
       state.stepsThisFrame++;
-      passes++;
+      // A starved body (no free target pair) burns its accumulator so it cannot
+      // busy-retry, but it must NOT burn a global pass slot: the frame budget
+      // belongs to bodies that can actually draw, and draw-stat telemetry feeds
+      // the adaptive-resolution governor, so counting a pass that never issued
+      // a draw would over-report. The inspection cap still bounds the loop.
+      if (drew) passes++;
     }
     return passes;
   }
@@ -494,7 +499,6 @@ export class WaterSimulation {
   }
 
   private prewarmPool(): void {
-    this.renderer.compile(this.scene, this.camera);
     if (this.states.length === 0) return;
     const poolSize = Math.min(this.maxResidentBodies, this.states.length);
     for (let i = 0; i < poolSize; i++) {
@@ -511,6 +515,14 @@ export class WaterSimulation {
       this.renderer.setRenderTarget(targets.write);
       this.renderer.clear();
     }
+    // Compile with a render target STILL BOUND. three folds outputColorSpace
+    // into the program cache key, and it resolves to LinearSRGBColorSpace only
+    // while a target is bound; with none bound it takes the renderer's
+    // SRGBColorSpace default. Every solver draw in step() runs into a target,
+    // so compiling unbound would build the wrong program and force a full
+    // recompile plus relink on the first frame anything touches water, which is
+    // the exact hitch this prewarm exists to remove.
+    this.renderer.compile(this.scene, this.camera);
     this.renderer.setRenderTarget(previousTarget);
     this.renderer.setClearColor(previousColor, previousAlpha);
   }
@@ -568,10 +580,11 @@ export class WaterSimulation {
     targets.write.dispose();
   }
 
-  private step(state: BodyState, injectPending: boolean): void {
+  /** Returns whether a solver draw actually happened (false on target starvation). */
+  private step(state: BodyState, injectPending: boolean): boolean {
     this.ensureTargets(state);
     if (state.needsReset) this.clearState(state);
-    if (!state.targets) return;
+    if (!state.targets) return false;
     const impulseCount = injectPending ? state.pendingCount : 0;
     for (let i = 0; i < IMPULSE_CAPACITY; i++) {
       const impulse = state.pending[i];
@@ -604,5 +617,6 @@ export class WaterSimulation {
     state.targets.read = state.targets.write;
     state.targets.write = previousRead;
     state.uniforms.uWaveState.value = state.targets.read.texture;
+    return true;
   }
 }

@@ -5764,26 +5764,33 @@ export class Renderer {
       // Keep the coordinator allocation-free while the tested contact core owns
       // culling, entry, movement cadence, teleport re-seating, release, and the
       // lightweight VFX fallback used when the height field is unavailable.
-      const waterContactFrame = this.waterContactFrame;
-      waterContactFrame.editorCamera = Boolean(this.editorCam);
-      waterContactFrame.visible = charOnScreen;
-      waterContactFrame.x = ax;
-      waterContactFrame.y = ay;
-      waterContactFrame.z = az;
-      waterContactFrame.waterLevel = wl;
-      waterContactFrame.bodyHeight = active.height * e.scale;
-      waterContactFrame.facing = facing;
-      waterContactFrame.speed = loco.speed;
-      waterContactFrame.velocityX = vx;
-      waterContactFrame.velocityZ = vz;
-      waterContactFrame.dt = dt;
-      waterContactFrame.sitting = st.sitting;
-      waterContactFrame.dead = visuallyDead;
-      waterContactFrame.airborne = airborne;
-      waterContactFrame.swimming = swimming;
-      waterContactFrame.wasAirborne = v.wasAirborne;
-      waterContactFrame.wasSwimming = v.wasSwimming;
-      updateWaterContact(v, waterContactFrame, this.waterView, this.vfx, this.waterContactPlan);
+      // waterLevelAt is -Infinity outside every declared lake, so the vast
+      // majority (everyone on land) skip the frame fill and the call entirely.
+      // An entity with a LIVE contact still runs even once it leaves the lake
+      // footprint, so the release edge and the cull-forget path cannot be lost;
+      // entry always re-seats the anchor, so a stale one cannot leak.
+      if (Number.isFinite(wl) || v.waterContactActive) {
+        const waterContactFrame = this.waterContactFrame;
+        waterContactFrame.editorCamera = Boolean(this.editorCam);
+        waterContactFrame.visible = charOnScreen;
+        waterContactFrame.x = ax;
+        waterContactFrame.y = ay;
+        waterContactFrame.z = az;
+        waterContactFrame.waterLevel = wl;
+        waterContactFrame.bodyHeight = active.height * e.scale;
+        waterContactFrame.facing = facing;
+        waterContactFrame.speed = loco.speed;
+        waterContactFrame.velocityX = vx;
+        waterContactFrame.velocityZ = vz;
+        waterContactFrame.dt = dt;
+        waterContactFrame.sitting = st.sitting;
+        waterContactFrame.dead = visuallyDead;
+        waterContactFrame.airborne = airborne;
+        waterContactFrame.swimming = swimming;
+        waterContactFrame.wasAirborne = v.wasAirborne;
+        waterContactFrame.wasSwimming = v.wasSwimming;
+        updateWaterContact(v, waterContactFrame, this.waterView, this.vfx, this.waterContactPlan);
+      }
       v.wasAirborne = airborne;
       v.wasSwimming = swimming;
       // Distance-tiered mixer updates: near = every frame, mid = every Nth, the

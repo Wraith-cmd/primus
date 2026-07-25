@@ -12,6 +12,7 @@ import {
   waterContactFrameMode,
 } from '../src/render/characters/anim_state';
 import { MOVE_HOLD_TIME, newLocoTrack, updateLocomotion } from '../src/render/locomotion';
+import { PLAYER_SWIM_DEPTH } from '../src/sim/pathfind';
 
 const FPS = 1 / 60;
 const BASE_ANIM_STATE: AnimState = {
@@ -151,12 +152,39 @@ describe('gait hysteresis (run vs walk)', () => {
 });
 
 describe('swim animation stability', () => {
+  // The depths are pinned to LITERALS, not re-derived from the constants: an
+  // assertion written as `SWIM_ENTER_FEET_DEPTH - 0.01` moves with whatever the
+  // constant becomes, so it cannot fail when the pair is swapped or retuned.
+  it('pins the enter/exit depths and their ordering', () => {
+    expect(SWIM_ENTER_FEET_DEPTH).toBe(0.5);
+    expect(SWIM_EXIT_FEET_DEPTH).toBe(0.25);
+    // hysteresis only exists if you must go DEEPER to start than to keep going
+    expect(SWIM_EXIT_FEET_DEPTH).toBeLessThan(SWIM_ENTER_FEET_DEPTH);
+  });
+
   it('uses separate enter and exit depths so waterline noise cannot flap the pose', () => {
-    expect(isSwimmingAtDepth(false, false, SWIM_ENTER_FEET_DEPTH - 0.01, 2)).toBe(false);
-    expect(isSwimmingAtDepth(false, false, SWIM_ENTER_FEET_DEPTH, 0.8)).toBe(true);
-    expect(isSwimmingAtDepth(true, false, SWIM_EXIT_FEET_DEPTH + 0.01, 0.61)).toBe(true);
-    expect(isSwimmingAtDepth(true, false, SWIM_EXIT_FEET_DEPTH - 0.01, 2)).toBe(false);
+    expect(isSwimmingAtDepth(false, false, 0.49, 2)).toBe(false);
+    expect(isSwimmingAtDepth(false, false, 0.5, 2)).toBe(true);
+    expect(isSwimmingAtDepth(true, false, 0.26, 2)).toBe(true);
+    expect(isSwimmingAtDepth(true, false, 0.24, 2)).toBe(false);
     expect(isSwimmingAtDepth(true, true, 2, 2)).toBe(false);
+    // a depth inside the band holds whatever state it was already in
+    expect(isSwimmingAtDepth(false, false, 0.3, 2)).toBe(false);
+    expect(isSwimmingAtDepth(true, false, 0.3, 2)).toBe(true);
+  });
+
+  // The regression this guards: an exit floor BELOW the sim's swim depth keeps
+  // the prone pose while the sim has already dropped the player onto the
+  // lakebed at land speed, so they swim along a walkable shelf.
+  it('matches the sim swim floor exactly, with no render-side hysteresis band', () => {
+    const justDeep = PLAYER_SWIM_DEPTH + 0.01;
+    const justShallow = PLAYER_SWIM_DEPTH - 0.01;
+    expect(isSwimmingAtDepth(false, false, 2, justDeep)).toBe(true);
+    expect(isSwimmingAtDepth(false, false, 2, justShallow)).toBe(false);
+    // the exit arm must use the SAME floor, not a lower one
+    expect(isSwimmingAtDepth(true, false, 2, justShallow)).toBe(false);
+    expect(isSwimmingAtDepth(true, false, 2, PLAYER_SWIM_DEPTH)).toBe(false);
+    expect(isSwimmingAtDepth(true, false, 2, justDeep)).toBe(true);
   });
 
   it('fires one impact for contact, water landing, and entering the swim state', () => {

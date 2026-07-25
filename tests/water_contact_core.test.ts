@@ -129,6 +129,61 @@ describe('water contact orchestration', () => {
     expect(h.effects.waterWake).toHaveBeenCalledTimes(1);
   });
 
+  it('shapes the swimming contact as a long volume along the facing axis', () => {
+    const h = makeHarness();
+    h.step(); // seeded wading
+    h.frame.swimming = true;
+    h.step();
+    expect(h.surface.enterContact).toHaveBeenCalledTimes(1);
+    const [x, z, radius, halfLength, axisX, axisZ] = h.surface.enterContact.mock.calls[0];
+    expect(x).toBe(0);
+    expect(z).toBe(0);
+    expect(radius).toBeCloseTo(0.34, 10); // clamped floor, bodyHeight * 0.16 is below it
+    expect(halfLength).toBeCloseTo(0.6, 10); // bodyHeight * 0.3, far longer than the wading disc
+    expect(axisX).toBeCloseTo(1, 10); // facing PI/2 points down +X
+    expect(axisZ).toBeCloseTo(0, 10);
+  });
+
+  it('never disturbs the surface while dead or sitting, and releases a live contact', () => {
+    const h = makeHarness();
+    h.step();
+    expect(h.state.waterContactActive).toBe(true);
+    h.frame.dead = true;
+    h.step();
+    expect(h.surface.releaseContact).toHaveBeenCalledTimes(1);
+    expect(h.state.waterContactActive).toBe(false);
+    h.step();
+    expect(h.surface.releaseContact).toHaveBeenCalledTimes(1); // not re-released
+    expect(h.surface.enterContact).not.toHaveBeenCalled();
+
+    const sitter = makeHarness();
+    sitter.frame.sitting = true;
+    sitter.step();
+    sitter.step();
+    expect(sitter.state.waterContactActive).toBe(false);
+    expect(sitter.surface.enterContact).not.toHaveBeenCalled();
+    expect(sitter.surface.addSplash).not.toHaveBeenCalled();
+  });
+
+  it('re-seats on re-entry, so an anchor left on shore cannot drag a wake back', () => {
+    const h = makeHarness();
+    h.step();
+    h.frame.waterLevel = -Infinity; // walks out onto land
+    h.step();
+    expect(h.state.waterContactActive).toBe(false);
+    // The renderer skips this entity entirely while it is outside every lake
+    // footprint, so its anchor sits where the exit left it. Walking far away
+    // and wading back in must read as a fresh entry, never one enormous move.
+    h.frame.x = 400;
+    h.frame.z = 400;
+    h.frame.waterLevel = 0.6;
+    h.step();
+    expect(h.surface.enterContact).toHaveBeenCalledTimes(1);
+    expect(h.surface.moveContact).not.toHaveBeenCalled();
+    expect(h.state.waterContactX).toBe(400);
+    expect(h.state.waterContactZ).toBe(400);
+  });
+
   it('forgets culled contacts without a phantom release and seeds them again on return', () => {
     const h = makeHarness();
     h.step();

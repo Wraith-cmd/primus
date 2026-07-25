@@ -1,3 +1,5 @@
+import { PLAYER_SWIM_DEPTH } from '../../sim/pathfind';
+
 /** Renderer-derived animation inputs (same facts the old pose machine used). */
 export interface AnimState {
   /** horizontal speed, world units/sec */
@@ -36,8 +38,18 @@ const DEFAULT_RUN_REF = 7;
 
 export const SWIM_ENTER_FEET_DEPTH = 0.5;
 export const SWIM_EXIT_FEET_DEPTH = 0.25;
-const SWIM_ENTER_FLOOR_DEPTH = 0.8;
-const SWIM_EXIT_FLOOR_DEPTH = 0.6;
+
+/**
+ * Floor depth mirrors the sim's authoritative swim predicate EXACTLY (the same
+ * `groundHeight < waterLevel - PLAYER_SWIM_DEPTH` strict compare `isSwimming`
+ * uses in src/sim/player_motion.ts). It deliberately has NO render-side
+ * hysteresis band: below this the sim has already dropped the player onto the
+ * lakebed at full land speed, so a lower exit threshold would hold the prone
+ * swim pose while they walk a shallow shelf. Feet depth carries the flicker
+ * guard instead; floor depth is a smooth terrain function that cannot flap
+ * frame to frame. Pinned against the sim in tests/locomotion.test.ts.
+ */
+const SWIM_FLOOR_DEPTH = PLAYER_SWIM_DEPTH;
 
 /** Stable waterline latch. Separate enter/exit depths prevent pose flicker. */
 export function isSwimmingAtDepth(
@@ -48,8 +60,7 @@ export function isSwimmingAtDepth(
 ): boolean {
   if (dead || !Number.isFinite(feetDepth) || !Number.isFinite(floorDepth)) return false;
   const minFeetDepth = previous ? SWIM_EXIT_FEET_DEPTH : SWIM_ENTER_FEET_DEPTH;
-  const minFloorDepth = previous ? SWIM_EXIT_FLOOR_DEPTH : SWIM_ENTER_FLOOR_DEPTH;
-  return feetDepth >= minFeetDepth && floorDepth >= minFloorDepth;
+  return feetDepth >= minFeetDepth && floorDepth > SWIM_FLOOR_DEPTH;
 }
 
 /**

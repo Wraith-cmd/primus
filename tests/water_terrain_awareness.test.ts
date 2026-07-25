@@ -145,6 +145,25 @@ describe('optimized water geometry, scheduling, and stability', () => {
     state.accumulator = 0;
     expect(advanceWaterSchedule(state, true, 16, 0.01)).toBe(WATER_SCHEDULE_SLEEP);
   });
+
+  it('primes a woken body to a full step so an impulse is not held for frames', () => {
+    const stepSeconds = 1 / 24;
+    const state = {
+      active: false,
+      pendingCount: 1,
+      accumulator: 0,
+      awakeUntil: 0,
+      stepSeconds,
+    };
+    // A 60 fps frame is SHORTER than one 24 Hz solver step. The case above
+    // passes dt = 1, which saturates the catch-up clamp and hides whether the
+    // wake primed anything at all; at a real frame dt, dropping the priming
+    // would make a splash, contact enter, or fishing bite wait three frames.
+    const frameDt = 1 / 60;
+    expect(frameDt).toBeLessThan(stepSeconds);
+    expect(advanceWaterSchedule(state, true, 10, frameDt)).toBe(WATER_SCHEDULE_WAKE);
+    expect(state.accumulator).toBeGreaterThanOrEqual(stepSeconds);
+  });
 });
 
 describe('terrain/feature-aware water (#1518)', () => {

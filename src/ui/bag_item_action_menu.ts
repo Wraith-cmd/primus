@@ -349,22 +349,24 @@ export class BagItemActionMenu {
       x,
       y,
       (act) => {
+        // The two dialog-opening paths return early (the dialog sends and
+        // repaints on OK); every other path, hits and misses alike, falls
+        // through to afterAction exactly as before this feature.
         if (act.startsWith('worn:')) {
           const slot = act.slice('worn:'.length) as EquipSlot;
           const target = worn.find((row) => row.slot === slot);
-          if (!target) return;
-          // A worn replace routes through the confirm dialog (which sends and
-          // repaints on OK); a plain worn apply stays a straight send.
-          if (target.replace) {
+          if (target?.replace) {
             this.confirmReplace(target.itemId, enchantId, target.replace, slot);
             return;
           }
-          world.applyEnchant(target.itemId, enchantId, slot);
+          if (target) world.applyEnchant(target.itemId, enchantId, slot);
         } else if (act.startsWith('replace:')) {
           const itemId = act.slice('replace:'.length);
           const target = targets.find((row) => row.itemId === itemId && row.replace);
-          if (target?.replace) this.confirmReplace(itemId, enchantId, target.replace);
-          return;
+          if (target?.replace) {
+            this.confirmReplace(itemId, enchantId, target.replace);
+            return;
+          }
         } else {
           world.applyEnchant(act.slice('target:'.length), enchantId);
         }

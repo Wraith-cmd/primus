@@ -466,6 +466,57 @@ describe('BagItemActionMenu target step: replace rows (#2415)', () => {
     expect(h.confirms[0].body.split('\n')[0]).toContain('+5 Strength');
   });
 
+  it('a BAGGED copy already carrying the picked enchant paints disabled, exactly like the worn arm', () => {
+    const h = harness(768, {
+      inventory: [
+        { itemId: DUST, count: 99 },
+        {
+          itemId: SWORD,
+          count: 1,
+          instance: { enchant: WEAPON_ENCHANT, rolled: { stats: { str: 2 } } },
+        },
+      ],
+    });
+    h.openTargets(WEAPON_ENCHANT);
+    const rows = h.rows();
+    // No data-act: the row is inert to mouse and keyboard, so a confirm whose
+    // accept the sim denies same_enchant (burning nothing but the round trip)
+    // is never offered from the bagged family either.
+    expect(rows.map((row) => row.act)).toEqual([null]);
+    expect(rows[0].text).toContain('Already applied');
+  });
+
+  it('a legacy victim with EMPTY or all-zero stats falls back to the plain Enchanted label', () => {
+    const h = harness(768, {
+      inventory: [
+        { itemId: DUST, count: 99 },
+        { itemId: SWORD, count: 1, instance: { rolled: { stats: { str: 0 } } } },
+      ],
+    });
+    h.openTargets(WEAPON_ENCHANT);
+    // isEnchantedInstance keys on stats PRESENCE, so a zero-valued map still
+    // reads as enchanted; with every line filtered out, the row and the
+    // dialog fall back to the tooltip's own Enchanted label rather than an
+    // empty name.
+    const rows = h.rows();
+    expect(rows.map((row) => row.act)).toEqual([`replace:${SWORD}`]);
+    expect(rows[0].text).toContain('Replaces Enchanted');
+    h.click(`replace:${SWORD}`);
+    expect(h.confirms[0].body.split('\n')[0]).toContain('Enchanted');
+  });
+
+  it('with NO eligible target of any kind, the inert empty state still paints', () => {
+    // The pre-#2415 empty-state pin, restored on its own premise: an
+    // inventory with no slot-matching item at all (dust is a reagent, not a
+    // mainhand piece), nothing worn.
+    const h = harness(768, { inventory: [{ itemId: DUST, count: 99 }] });
+    h.openTargets(WEAPON_ENCHANT);
+    const rows = h.rows();
+    expect(rows.map((row) => row.act)).toEqual([null]);
+    expect(rows[0].text).toBe('No eligible item to enchant.');
+    expect(h.confirms).toEqual([]);
+  });
+
   it('a plain apply still sends immediately, with NO confirm flag on the wire call', () => {
     const h = harness(768, {
       inventory: [

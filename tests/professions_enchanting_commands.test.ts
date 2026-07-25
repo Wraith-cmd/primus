@@ -512,25 +512,88 @@ describe('enchanting commands over the live GameServer wire (event + delta routi
     );
     server.sim.addItem(DUST, 5, st.pid);
 
-    cmd(server, st, {
-      cmd: 'apply_enchant',
-      item: COMMON_WEAPON,
-      enchant: 'enchant_weapon_agility',
-      confirm: 'yes',
-    });
-    routeTick(server);
-
     // The house dispatch rule (`msg.confirm === true`): anything else is the
     // unconfirmed path, which denies with the dedicated honest reason and
-    // consumes nothing.
+    // consumes nothing. Two truthy non-booleans, so neither the string nor
+    // the number arm of a loosened check can slip through.
+    for (const confirm of ['yes', 1] as const) {
+      cmd(server, st, {
+        cmd: 'apply_enchant',
+        item: COMMON_WEAPON,
+        enchant: 'enchant_weapon_agility',
+        confirm,
+      });
+      routeTick(server);
+    }
     const ench = eventsFor(fc.sent, 'enchantResult');
-    expect(ench).toHaveLength(1);
-    if (ench[0].type !== 'enchantResult') throw new Error('expected enchantResult');
-    expect(ench[0].ok).toBe(false);
-    expect(ench[0].reason).toBe('already_enchanted');
+    expect(ench).toHaveLength(2);
+    for (const ev of ench) {
+      if (ev.type !== 'enchantResult') throw new Error('expected enchantResult');
+      expect(ev.ok).toBe(false);
+      expect(ev.reason).toBe('already_enchanted');
+    }
     const slot = metaOf(server, st.pid).inventory.find((s) => s.itemId === COMMON_WEAPON);
     expect(slot?.instance?.enchant).toBe(WEAPON_ENCHANT);
     expect(server.sim.countItem(DUST, st.pid)).toBe(5);
+  });
+
+  it('a confirmed WORN replace over the wire swaps in place and the eqi mirror carries the new payload', () => {
+    const AGILITY = 'enchant_weapon_agility';
+    const server = new GameServer();
+    const fc = fakeWs();
+    const fcWatch = fakeWs();
+    const st = joinServer(server, fc, 411, 'WornRepl');
+    const watch = joinServer(server, fcWatch, 412, 'WornWatch');
+    placeAt(server, st.pid, FIELD_POS);
+    placeAt(server, watch.pid, FIELD_POS);
+    // Wear an enchanted, signed copy through the real equip path, then
+    // confirm-replace it over the live dispatch.
+    server.sim.ctx.addItemInstance(
+      COMMON_WEAPON,
+      { signer: 'Tester', enchant: AGILITY, rolled: { stats: { agi: 2 } } },
+      st.pid,
+    );
+    server.sim.equipItemToSlot(COMMON_WEAPON, 'mainhand', st.pid);
+    server.sim.addItem(DUST, 5, st.pid);
+
+    cmd(server, st, {
+      cmd: 'apply_enchant',
+      item: COMMON_WEAPON,
+      enchant: WEAPON_ENCHANT,
+      slot: 'mainhand',
+      confirm: true,
+    });
+    routeTick(server);
+
+    const ench = eventsFor(fc.sent, 'enchantResult');
+    expect(ench).toHaveLength(1);
+    if (ench[0].type !== 'enchantResult') throw new Error('expected enchantResult');
+    expect(ench[0].ok).toBe(true);
+    expect(ench[0].enchantId).toBe(WEAPON_ENCHANT);
+
+    // Server truth: replaced in place, signer intact, reagents spent.
+    const meta = metaOf(server, st.pid);
+    expect(meta.equipmentInstance.mainhand?.enchant).toBe(WEAPON_ENCHANT);
+    expect(meta.equipmentInstance.mainhand?.rolled?.stats).toEqual({ str: 2 });
+    expect(meta.equipmentInstance.mainhand?.signer).toBe('Tester');
+    expect(server.sim.countItem(DUST, st.pid)).toBe(0);
+
+    // The eqi identity mirror re-diffs for an ONLOOKER: the watcher's full
+    // record for the wearer carries the replaced payload (allowlisted fields
+    // only: signer/enchant/rolled, never the lock flags), proving the
+    // identity JSON diff fired on the in-place swap, and a real ClientWorld
+    // decodes it onto the wearer's equippedInstances.
+    fcWatch.sent.length = 0;
+    broadcast(server);
+    const snap = lastSnap(fcWatch.sent) as unknown as { ents: Record<string, any>[] } | null;
+    if (!snap) throw new Error('no snapshot');
+    const record = snap.ents.find((r) => r.id === st.pid);
+    expect(record?.eqi).toEqual({
+      mainhand: { signer: 'Tester', enchant: WEAPON_ENCHANT, rolled: { stats: { str: 2 } } },
+    });
+    const client = bareClient(watch.pid);
+    (client as unknown as { applySnapshot(s: unknown): void }).applySnapshot(snap);
+    expect(client.entities.get(st.pid)?.equippedInstances.mainhand?.enchant).toBe(WEAPON_ENCHANT);
   });
 
   it('apply_enchant with a worn slot enchants in place and the eqi mirror carries it', () => {

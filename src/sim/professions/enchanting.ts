@@ -147,9 +147,15 @@ export function isEnchantedInstance(instance: ItemInstancePayload): boolean {
  *  #2340 disenchant fallback). The apply command is item-id-keyed, so when two
  *  enchanted copies of one item id carry different enchants, this pin is what
  *  decides the victim; the UI confirm dialog names the enchant of exactly this
- *  copy (src/ui/enchant_apply_view.ts replaceTargetsFor reads the same
- *  function), so what the player confirms is what the sim destroys. Returns -1
- *  when no enchanted copy is held. */
+ *  copy (src/ui/enchant_apply_view.ts enchantTargets builds its replace rows
+ *  from this same function), so what the player confirms is what the sim
+ *  destroys. The pin re-resolves when the command lands, which is the accepted
+ *  trade of an id-keyed command with no per-copy token: an enchanted copy of
+ *  the same item id ARRIVING at a higher index between dialog and accept
+ *  moves the pin onto the newcomer. The loss stays the actor's own (no dupe,
+ *  no cross-player reach) and the window is one confirm click; carrying a
+ *  confirmed-enchant token on the wire was ruled out as not worth the surface.
+ *  Returns -1 when no enchanted copy is held. */
 export function replaceVictimIndex(inventory: readonly InvSlot[], itemId: string): number {
   for (let i = inventory.length - 1; i >= 0; i--) {
     const s = inventory[i];
@@ -451,7 +457,11 @@ export function enchantedPayloadFor(
  *  minting a negative stat. Legacy pre-marker copies (bare rolled.stats, no
  *  masterwork): rolled.stats is replaced WHOLESALE, exact because applyEnchant
  *  was the only writer of rolled.stats before the masterwork model, so on
- *  such a copy the whole map IS the old enchant.
+ *  such a copy the whole map IS the old enchant. Standing caution: that
+ *  sole-writer premise is what keeps the wipe safe, so any future system that
+ *  writes rolled.stats WITHOUT setting rolled.masterwork would hand its stats
+ *  to this arm for deletion (and to isEnchantedInstance for misclassification)
+ *  and must use the masterwork flag or a new marker instead.
  *
  *  Callers must resolve and validate the old enchant id BEFORE calling (the
  *  same_enchant deny, and the defensive unknown-old-id deny): this function
@@ -527,7 +537,13 @@ function resolveApplyEnchantWorn(
   const worn = meta.equipmentInstance?.[slot];
   const replacing = worn !== undefined && isEnchantedInstance(worn);
   if (replacing) {
-    if (!confirmReplace) return { ok: false, itemId, enchantId, reason: 'already_enchanted' };
+    // Strict boolean-true, the same house rule the dispatch and the bagged
+    // arm apply: the resolver is the authoritative re-validation layer, so a
+    // truthy non-boolean from any future non-WS caller must read as
+    // unconfirmed here too, never as consent to destroy.
+    if (confirmReplace !== true) {
+      return { ok: false, itemId, enchantId, reason: 'already_enchanted' };
+    }
     // Re-applying the identical enchant id is denied outright rather than
     // confirmed: its accept would be pure reagent loss with zero state change.
     if (worn.enchant === enchantId) {
@@ -648,7 +664,12 @@ function resolveReplaceEnchantBagged(
   ) {
     return { ok: false, itemId, enchantId, reason: 'no_bag_space' };
   }
-  const consumed = consumeEnchantedVictim(meta.inventory, itemId) ?? victim;
+  const consumed = consumeEnchantedVictim(meta.inventory, itemId);
+  // Fail CLOSED: with no victim actually consumed (unreachable today, the
+  // victim peek above proved one exists and nothing in between mutates the
+  // inventory) this arm must deny rather than mint, or a future gate that
+  // mutates state between peek and consume turns this into a dupe.
+  if (!consumed) return { ok: false, itemId, enchantId, reason: 'not_held' };
   ctx.onInventoryChangedForQuests(meta);
   for (const reagent of enchant.reagents) ctx.removeItem(reagent.itemId, reagent.count, pid);
   ctx.addItemInstance(itemId, replacedEnchantPayloadFor(consumed, enchant), pid);

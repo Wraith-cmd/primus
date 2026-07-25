@@ -394,6 +394,9 @@ describe('applyEnchant', () => {
     );
     expect(second.ok).toBe(false);
     expect(second.reason).toBe('already_enchanted');
+    // The deny is side-effect-free: the copy and the reagents are untouched.
+    expect(sim.countItem('moggers_copper_cudgel', pid)).toBe(1);
+    expect(sim.countItem('arcane_dust', pid)).toBe(5);
   });
 
   // Regression for review #1712 round-3: enchanting a crafted rare+ instanced
@@ -678,6 +681,9 @@ describe('applyEnchant on a masterwork copy', () => {
     );
     expect(result.ok).toBe(false);
     expect(result.reason).toBe('already_enchanted');
+    // Side-effect-free: the legacy copy and the reagents are untouched.
+    expect(sim.countItem('eastbrook_arming_sword', pid)).toBe(1);
+    expect(sim.countItem('arcane_dust', pid)).toBe(5);
   });
 });
 
@@ -1154,8 +1160,73 @@ describe('replacing an enchant behind explicit confirmation (#2415)', () => {
     expect(sim.countItem('arcane_shard', pid)).toBe(0);
     expect(sim.countItem('arcane_essence', pid)).toBe(0);
     expect(sim.countItem('arcane_dust', pid)).toBe(0);
-    // Replacement is just an apply: the same quality-tiered skill gain landed.
+    // Replacement is just an apply: the same quality-tiered skill gain landed
+    // and exactly ONE shared-throttle stamp was spent on it (one apply + one
+    // replace = two stamps total; a stamp-free replace would sidestep the
+    // shared 10-per-60s pace entirely).
     expect(meta.craftSkills.enchanting).toBeGreaterThan(skillAfterApply);
+    expect(meta.craftThrottle.count).toBe(2);
+  });
+
+  it('grants EXACTLY the plain apply gain for the same enchant tier (same curve, same input)', () => {
+    // Two same-shape sims at skill 80: past the tier-0 gray boundary (75), so
+    // a regression hardcoding the replace input to tier 0 reads gray and
+    // fails the > 0 arm, while any tier drift fails the equality arm.
+    const applySim = makeSim();
+    const applyMeta = applySim.ctx.resolve(applySim.playerId)!.meta;
+    applyMeta.craftSkills.enchanting = 80;
+    applySim.addItem(SWORD, 1, applySim.playerId);
+    applySim.addItem('arcane_shard', 1, applySim.playerId);
+    applySim.addItem('arcane_essence', 2, applySim.playerId);
+    expect(resolveApplyEnchant(applySim.ctx, applySim.playerId, SWORD, GREATER).ok).toBe(true);
+    const plainGain = applyMeta.craftSkills.enchanting - 80;
+    expect(plainGain).toBeGreaterThan(0);
+
+    const replaceSim = makeSim();
+    const replaceMeta = replaceSim.ctx.resolve(replaceSim.playerId)!.meta;
+    replaceMeta.craftSkills.enchanting = 80;
+    replaceSim.ctx.addItemInstance(
+      SWORD,
+      { enchant: MIGHT, rolled: { stats: { str: 2 } } },
+      replaceSim.playerId,
+    );
+    replaceSim.addItem('arcane_shard', 1, replaceSim.playerId);
+    replaceSim.addItem('arcane_essence', 2, replaceSim.playerId);
+    expect(
+      resolveApplyEnchant(replaceSim.ctx, replaceSim.playerId, SWORD, GREATER, undefined, true).ok,
+    ).toBe(true);
+    expect(replaceMeta.craftSkills.enchanting - 80).toBe(plainGain);
+  });
+
+  it('denies insufficient_materials on the replace arm all-or-nothing, victim untouched', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    sim.ctx.addItemInstance(SWORD, { enchant: MIGHT, rolled: { stats: { str: 2 } } }, pid);
+    sim.addItem('arcane_dust', 4, pid); // Agility needs 5: one short
+    const result = resolveApplyEnchant(sim.ctx, pid, SWORD, AGILITY, undefined, true);
+    expect(result.ok).toBe(false);
+    expect(result.reason).toBe('insufficient_materials');
+    // Nothing was paid and nothing was destroyed: a confirmed replace is
+    // never free and never partially paid.
+    expect(sim.countItem('arcane_dust', pid)).toBe(4);
+    const slot = sim.ctx.resolve(pid)?.meta.inventory.find((s) => s.itemId === SWORD);
+    expect(slot?.instance?.enchant).toBe(MIGHT);
+    expect(slot?.instance?.rolled?.stats).toEqual({ str: 2 });
+  });
+
+  it('a LEGACY victim whose raw stats happen to equal the picked bonus still replaces (no id, no same_enchant)', () => {
+    const sim = makeSim();
+    const pid = sim.playerId;
+    // Bare stats byte-equal to Might's own bonus: without a marker there is
+    // no id to compare, so the documented rule is replace, never deny.
+    sim.ctx.addItemInstance(SWORD, { rolled: { stats: { str: 2 } } }, pid);
+    sim.addItem('arcane_dust', 5, pid);
+    const result = resolveApplyEnchant(sim.ctx, pid, SWORD, MIGHT, undefined, true);
+    expect(result.ok).toBe(true);
+    const slot = sim.ctx.resolve(pid)?.meta.inventory.find((s) => s.itemId === SWORD);
+    expect(slot?.instance?.enchant).toBe(MIGHT);
+    expect(slot?.instance?.rolled?.stats).toEqual({ str: 2 });
+    expect(sim.countItem('arcane_dust', pid)).toBe(0);
   });
 
   it('a replaced payload is structurally identical to a fresh same-enchant peer (no zero residue)', () => {
@@ -1233,6 +1304,8 @@ describe('replacing an enchant behind explicit confirmation (#2415)', () => {
     expect(slot?.instance?.enchant).toBe(MIGHT);
     expect(slot?.instance?.signer).toBe('Old');
     expect(slot?.instance?.rolled?.quality).toBe('rare');
+    // The legacy arm pays like every other: the reagents were consumed.
+    expect(sim.countItem('arcane_dust', pid)).toBe(0);
   });
 
   it('with two differently-enchanted copies of one item id, the HIGHEST-index copy is the pinned victim', () => {
@@ -1372,6 +1445,43 @@ describe('replacing an enchant behind explicit confirmation (#2415)', () => {
     expect(result.ok).toBe(false);
     expect(result.reason).toBe('same_enchant');
     expect(meta.equipmentInstance.mainhand?.enchant).toBe(WORN_ENCHANT);
+    expect(sim.countItem('arcane_dust', pid)).toBe(5);
+  });
+
+  it('refuses a WORN marker id that no longer resolves (corrupt save): already_enchanted, untouched', () => {
+    const { sim, pid, meta } = wearing('mainhand', WORN_SWORD, {
+      dust: 5,
+      instance: { enchant: 'enchant_deleted_id', rolled: { stats: { str: 9 } } },
+    });
+    const result = resolveApplyEnchant(sim.ctx, pid, WORN_SWORD, WORN_ENCHANT, 'mainhand', true);
+    expect(result.ok).toBe(false);
+    expect(result.reason).toBe('already_enchanted');
+    // Never wholesale-replaced and never stacked-under: the unsubtractable
+    // payload is byte-untouched and nothing was paid.
+    expect(meta.equipmentInstance.mainhand?.enchant).toBe('enchant_deleted_id');
+    expect(meta.equipmentInstance.mainhand?.rolled?.stats).toEqual({ str: 9 });
+    expect(sim.countItem('arcane_dust', pid)).toBe(5);
+  });
+
+  it('the WORN confirm gate is a STRICT boolean check too: a truthy non-boolean reads as unconfirmed', () => {
+    const { sim, pid, meta } = wearing('mainhand', WORN_SWORD, {
+      dust: 5,
+      instance: { enchant: AGILITY, rolled: { stats: { agi: 2 } } },
+    });
+    // The resolver is the authoritative re-validation layer: even a caller
+    // that bypasses the dispatch's own === true normalization gets the
+    // unconfirmed deny, never a destructive replace.
+    const result = resolveApplyEnchant(
+      sim.ctx,
+      pid,
+      WORN_SWORD,
+      WORN_ENCHANT,
+      'mainhand',
+      'yes' as unknown as boolean,
+    );
+    expect(result.ok).toBe(false);
+    expect(result.reason).toBe('already_enchanted');
+    expect(meta.equipmentInstance.mainhand?.enchant).toBe(AGILITY);
     expect(sim.countItem('arcane_dust', pid)).toBe(5);
   });
 

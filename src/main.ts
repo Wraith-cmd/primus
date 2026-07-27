@@ -6682,7 +6682,12 @@ function wireStartScreens(): void {
     // The trigger sub-line shows live realm stats for Online and a short blurb
     // for Offline; toggle the matching child by its data-mode.
     const subParts = Array.from(serverSub.querySelectorAll<HTMLElement>('[data-mode]'));
-    let serverMode: ServerMode = 'online';
+    // Offline is the default: it is this fork's primary mode and needs no
+    // account, so Play goes straight into a character instead of an auth wall.
+    // The last explicit pick is remembered, so choosing Online sticks.
+    const MODE_KEY = 'primus.worldMode';
+    const remembered = localStorageOrNull()?.getItem(MODE_KEY);
+    let serverMode: ServerMode = remembered === 'online' ? 'online' : 'offline';
 
     const setActiveOption = (opt: HTMLElement | null): void => {
       serverOptions.forEach((o) => {
@@ -6789,11 +6794,16 @@ function wireStartScreens(): void {
     });
 
     btnPlay.addEventListener('click', () => {
+      try {
+        localStorageOrNull()?.setItem(MODE_KEY, serverMode);
+      } catch {
+        // A storage that refuses the write just means the pick is not remembered.
+      }
       if (serverMode === 'offline') handleOfflineSelect();
       else handleOnlineSelect();
     });
 
-    applyServerMode('online');
+    applyServerMode(serverMode);
   } else if (btnPlay) {
     // Online-only entry (play.html): no realm dropdown in the console, so the
     // Play button commits straight to the online flow.

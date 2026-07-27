@@ -5,8 +5,8 @@
 //
 // Why a second source for icons that already have a glyph in ui_icons.ts: DESIGN.md
 // section 6 splits the icon system by ROLE, not by file. Painted art with a recognizable
-// silhouette is the standard for primary destinations (launcher tiles, the store chest,
-// window headers); the monochrome `currentColor` glyphs are "the only sanctioned thin-line
+// silhouette is the standard for primary destinations (launcher tiles, window
+// headers); the monochrome `currentColor` glyphs are "the only sanctioned thin-line
 // icons" and "serve secondary controls (close, collapse, zoom, filters, settings), never
 // primary destinations". So every name here keeps its ui_icons.ts glyph, which stays the
 // source for the small inline uses (a `svgIcon('arena')` beside dialog text tints with the
@@ -19,7 +19,9 @@
 //   - every brand mark (discord, twitch, x, kick, youtube): reproduced for identification,
 //     so they are never repainted;
 //   - `market`, which reads as a destination but has no launcher: its only surface is the
-//     `svgIcon('market')` row inside the quest dialog, where the glyph tints with the row.
+//     `svgIcon('market')` row inside the quest dialog, where the glyph tints with the row;
+//   - `chest`, whose only launcher was the removed store: its remaining surface is the
+//     `svgIcon('chest')` tab inside the dungeon finder, which tints with the tab.
 // Art for a name with no `[data-icon]` placeholder would never render, so the guard test
 // requires every id here to be reachable from index.html / play.html.
 //
@@ -39,7 +41,6 @@ export const CHROME_ART_IDS: ReadonlySet<UiIconName> = new Set<UiIconName>([
   'book',
   'cards',
   'character',
-  'chest',
   'crafting',
   'dfinder',
   'donate',

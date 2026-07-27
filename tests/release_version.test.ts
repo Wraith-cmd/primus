@@ -52,14 +52,14 @@ MARKETING_VERSION = 0.20.0;
 CURRENT_PROJECT_VERSION = 4;
 MARKETING_VERSION = 0.20.0;`;
 
-const INDEX_HTML = `<a href="https://updates.worldofclaudecraft.com/desktop/world-of-claudecraft-0.20.0-mac-universal.dmg">Download</a>
-<a href="https://updates.worldofclaudecraft.com/desktop/world-of-claudecraft-0.20.0-linux-x86_64.AppImage">Download</a>
-<a href="https://updates.worldofclaudecraft.com/desktop/world-of-claudecraft-0.20.0-win.exe">Download</a>
+const INDEX_HTML = `<a href="https://updates.worldofclaudecraft.com/desktop/primus-0.20.0-mac-universal.dmg">Download</a>
+<a href="https://updates.worldofclaudecraft.com/desktop/primus-0.20.0-linux-x86_64.AppImage">Download</a>
+<a href="https://updates.worldofclaudecraft.com/desktop/primus-0.20.0-win.exe">Download</a>
 <div id="game-version">v0.10</div>`;
 
 // play.html omits Linux but carries the macOS and Windows links.
-const PLAY_HTML = `<a href="https://updates.worldofclaudecraft.com/desktop/world-of-claudecraft-0.20.0-mac-universal.dmg">Download</a>
-<a href="https://updates.worldofclaudecraft.com/desktop/world-of-claudecraft-0.20.0-win.exe">Download</a>
+const PLAY_HTML = `<a href="https://updates.worldofclaudecraft.com/desktop/primus-0.20.0-mac-universal.dmg">Download</a>
+<a href="https://updates.worldofclaudecraft.com/desktop/primus-0.20.0-win.exe">Download</a>
 <div id="game-version">v0.10</div>`;
 
 const DESKTOP_TS = `export const DESKTOP_VERSION = '0.20.0';
@@ -128,25 +128,25 @@ describe('release version transforms', () => {
 
   it('updates macOS desktop artifact links', () => {
     const out = setDesktopDownloadVersion(INDEX_HTML, '0.21.0', 'index.html');
-    expect(out).toContain('world-of-claudecraft-0.21.0-mac-universal.dmg');
-    expect(out).not.toContain('world-of-claudecraft-0.20.0-mac-universal.dmg');
+    expect(out).toContain('primus-0.21.0-mac-universal.dmg');
+    expect(out).not.toContain('primus-0.20.0-mac-universal.dmg');
   });
 
   it('updates Linux AppImage artifact links where present', () => {
     const out = setDesktopDownloadVersion(INDEX_HTML, '0.21.0', 'index.html');
-    expect(out).toContain('world-of-claudecraft-0.21.0-linux-x86_64.AppImage');
-    expect(out).not.toContain('world-of-claudecraft-0.20.0-linux-x86_64.AppImage');
+    expect(out).toContain('primus-0.21.0-linux-x86_64.AppImage');
+    expect(out).not.toContain('primus-0.20.0-linux-x86_64.AppImage');
   });
 
   it('updates Windows installer artifact links', () => {
     const out = setDesktopDownloadVersion(INDEX_HTML, '0.21.0', 'index.html');
-    expect(out).toContain('world-of-claudecraft-0.21.0-win.exe');
-    expect(out).not.toContain('world-of-claudecraft-0.20.0-win.exe');
+    expect(out).toContain('primus-0.21.0-win.exe');
+    expect(out).not.toContain('primus-0.20.0-win.exe');
   });
 
   it('tolerates pages without a Linux link (play.html)', () => {
     const out = setDesktopDownloadVersion(PLAY_HTML, '0.21.0', 'play.html');
-    expect(out).toContain('world-of-claudecraft-0.21.0-mac-universal.dmg');
+    expect(out).toContain('primus-0.21.0-mac-universal.dmg');
     expect(out).not.toContain('AppImage');
   });
 
@@ -202,12 +202,10 @@ describe('planReleaseVersion', () => {
     expect(JSON.parse(plan.packageLock).packages[''].version).toBe('0.21.0');
     expect(plan.gradle).toContain('versionName "0.21.0"');
     expect(plan.pbxproj.match(/MARKETING_VERSION = 0\.21\.0;/g)).toHaveLength(2);
-    expect(plan.htmlFiles['index.html']).toContain('world-of-claudecraft-0.21.0-mac-universal.dmg');
-    expect(plan.htmlFiles['index.html']).toContain(
-      'world-of-claudecraft-0.21.0-linux-x86_64.AppImage',
-    );
-    expect(plan.htmlFiles['index.html']).toContain('world-of-claudecraft-0.21.0-win.exe');
-    expect(plan.htmlFiles['play.html']).toContain('world-of-claudecraft-0.21.0-win.exe');
+    expect(plan.htmlFiles['index.html']).toContain('primus-0.21.0-mac-universal.dmg');
+    expect(plan.htmlFiles['index.html']).toContain('primus-0.21.0-linux-x86_64.AppImage');
+    expect(plan.htmlFiles['index.html']).toContain('primus-0.21.0-win.exe');
+    expect(plan.htmlFiles['play.html']).toContain('primus-0.21.0-win.exe');
     expect(plan.htmlFiles['play.html']).toContain('<div id="game-version">v0.21.0</div>');
     expect(plan.desktopModule).toContain("export const DESKTOP_VERSION = '0.21.0';");
     expect(plan.readmeFiles['README.md']).toContain('version-0.21.0-blue');

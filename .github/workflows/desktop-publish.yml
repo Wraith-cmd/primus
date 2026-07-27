@@ -136,10 +136,10 @@ jobs:
         run: |
           VERSION="$(node -p "require('./package.json').version")"
           FILES=(
-            "world-of-claudecraft-${VERSION}-linux-x86_64.AppImage"
-            "world-of-claudecraft-${VERSION}-linux-arm64.AppImage"
-            "world-of-claudecraft-${VERSION}-linux-amd64.deb"
-            "world-of-claudecraft-${VERSION}-linux-arm64.deb"
+            "primus-${VERSION}-linux-x86_64.AppImage"
+            "primus-${VERSION}-linux-arm64.AppImage"
+            "primus-${VERSION}-linux-amd64.deb"
+            "primus-${VERSION}-linux-arm64.deb"
             "SHA256SUMS-linux"
             "latest-linux.yml"
             "latest-linux-arm64.yml"
@@ -191,10 +191,10 @@ jobs:
             aws s3 cp "release/$1" "s3://${R2_BUCKET}/desktop/$1" \
               --endpoint-url "$ENDPOINT" --content-type "$2" --cache-control "$3"
           }
-          put "world-of-claudecraft-${VERSION}-linux-x86_64.AppImage" application/octet-stream "public,max-age=31536000,immutable"
-          put "world-of-claudecraft-${VERSION}-linux-arm64.AppImage" application/octet-stream "public,max-age=31536000,immutable"
-          put "world-of-claudecraft-${VERSION}-linux-amd64.deb" application/vnd.debian.binary-package "public,max-age=31536000,immutable"
-          put "world-of-claudecraft-${VERSION}-linux-arm64.deb" application/vnd.debian.binary-package "public,max-age=31536000,immutable"
+          put "primus-${VERSION}-linux-x86_64.AppImage" application/octet-stream "public,max-age=31536000,immutable"
+          put "primus-${VERSION}-linux-arm64.AppImage" application/octet-stream "public,max-age=31536000,immutable"
+          put "primus-${VERSION}-linux-amd64.deb" application/vnd.debian.binary-package "public,max-age=31536000,immutable"
+          put "primus-${VERSION}-linux-arm64.deb" application/vnd.debian.binary-package "public,max-age=31536000,immutable"
           put "SHA256SUMS-linux" text/plain "no-cache,max-age=60"
           put "latest-linux.yml" text/yaml "no-cache,max-age=60"
           put "latest-linux-arm64.yml" text/yaml "no-cache,max-age=60"
@@ -275,9 +275,9 @@ jobs:
         run: |
           VERSION="$(node -p "require('./package.json').version")"
           FILES=(
-            "world-of-claudecraft-${VERSION}-mac-universal.dmg"
-            "world-of-claudecraft-${VERSION}-mac-universal.zip"
-            "world-of-claudecraft-${VERSION}-mac-universal.zip.blockmap"
+            "primus-${VERSION}-mac-universal.dmg"
+            "primus-${VERSION}-mac-universal.zip"
+            "primus-${VERSION}-mac-universal.zip.blockmap"
             "SHA256SUMS-mac"
             "latest-mac.yml"
           )
@@ -327,9 +327,9 @@ jobs:
             aws s3 cp "release/$1" "s3://${R2_BUCKET}/desktop/$1" \
               --endpoint-url "$ENDPOINT" --content-type "$2" --cache-control "$3"
           }
-          put "world-of-claudecraft-${VERSION}-mac-universal.dmg" application/x-apple-diskimage "public,max-age=31536000,immutable"
-          put "world-of-claudecraft-${VERSION}-mac-universal.zip" application/zip "public,max-age=31536000,immutable"
-          put "world-of-claudecraft-${VERSION}-mac-universal.zip.blockmap" application/octet-stream "public,max-age=31536000,immutable"
+          put "primus-${VERSION}-mac-universal.dmg" application/x-apple-diskimage "public,max-age=31536000,immutable"
+          put "primus-${VERSION}-mac-universal.zip" application/zip "public,max-age=31536000,immutable"
+          put "primus-${VERSION}-mac-universal.zip.blockmap" application/octet-stream "public,max-age=31536000,immutable"
           put "SHA256SUMS-mac" text/plain "no-cache,max-age=60"
           put "latest-mac.yml" text/yaml "no-cache,max-age=60"
           echo "Published macOS ${VERSION} to https://updates.worldofclaudecraft.com/desktop/"
@@ -542,7 +542,7 @@ jobs:
             aws s3 cp "release/$1" "s3://${R2_BUCKET}/desktop/$1" \
               --endpoint-url "$ENDPOINT" --content-type "$2" --cache-control "$3"
           }
-          for file in release/world-of-claudecraft-"${VERSION}"-win-*.zip; do
+          for file in release/primus-"${VERSION}"-win-*.zip; do
             put "$(basename "$file")" application/zip "public,max-age=31536000,immutable"
           done
           FEED_FILES="$(node -e '

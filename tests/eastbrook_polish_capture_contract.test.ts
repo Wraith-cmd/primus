@@ -359,7 +359,7 @@ describe('Eastbrook polish capture contract', () => {
       mode: 'composite-sha256',
       algorithm: 'sha256',
       baselineRevision: EASTBROOK_POLISH_BASELINE_REVISION,
-      fingerprint: '2dd868144d11ce0dbd3c234be1e22baf7562a0420feba95c3fafeee9fb8bff14',
+      fingerprint: 'e0ac6bb8e397dca4a96e961a2f80bcad374383394799860f5dc03aa9363210a7',
       components: {
         captureContract: {
           id: 'polish-v2',

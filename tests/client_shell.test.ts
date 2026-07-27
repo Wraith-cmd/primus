@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
@@ -738,11 +738,11 @@ describe('client HTML shell', () => {
       '<meta name="robots" content="index, follow, max-image-preview:large" />',
     );
     expect(html).toContain('<link rel="canonical" href="https://worldofclaudecraft.com/" />');
-    expect(html).toContain('<meta property="og:site_name" content="World of ClaudeCraft" />');
+    expect(html).toContain('<meta property="og:site_name" content="PRIMUS" />');
     expect(html).toContain('"alternateName": "World of Claudecraft"');
-    expect(html).toContain('"https://github.com/levy-street/world-of-claudecraft"');
+    expect(html).toContain('"https://github.com/levy-street/primus"');
     expect(mainTs).toContain("alternateName: 'World of Claudecraft'");
-    expect(mainTs).toContain("'https://github.com/levy-street/world-of-claudecraft'");
+    expect(mainTs).toContain("'https://github.com/levy-street/primus'");
     expect(robotsTxt.trim()).toBe(
       'User-agent: *\nAllow: /\n\nSitemap: https://worldofclaudecraft.com/sitemap.xml\nSitemap: https://worldofclaudecraft.com/sitemap-characters.xml',
     );
@@ -790,14 +790,11 @@ describe('client HTML shell', () => {
     expect(supportHtml).toContain('href="https://discord.com/invite/worldofclaudecraft"');
     expect(supportHtml).toContain('href="/data-deletion">Data Deletion page</a>');
     expect(supportHtml).toContain('"@type": "ContactPage"');
-    expect(html).toContain(
-      'href="/World-of-ClaudeCraft-Whitepaper-v1.0.pdf" class="footer-link" data-i18n="footer.whitepaper"',
-    );
-    expect(html.indexOf('data-i18n="footer.whitepaper"')).toBeLessThan(
-      html.indexOf('data-i18n="footer.terms"'),
-    );
-    expect(existsSync(whitepaperUrl)).toBe(true);
-    expect(statSync(whitepaperUrl).size).toBeGreaterThan(0);
+    // The Whitepaper footer link and its PDF went out with the web3 layer: the
+    // footer must not link it, and the asset must not ship.
+    expect(html).not.toContain('data-i18n="footer.whitepaper"');
+    expect(html).not.toContain('World-of-ClaudeCraft-Whitepaper-v1.0.pdf');
+    expect(existsSync(whitepaperUrl)).toBe(false);
     expect(html).toContain('href="/terms" class="footer-link" data-i18n="footer.terms"');
     expect(html).toContain('href="/privacy" class="footer-link" data-i18n="footer.privacy"');
     expect(viteConfig).toContain("['/privacy', '/privacy.html']");

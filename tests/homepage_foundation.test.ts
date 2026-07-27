@@ -21,7 +21,7 @@ describe('i18n Translation Foundation', () => {
     expect(getLanguage()).toBe('en');
     expect(t('nav.home')).toBe('Home');
     expect(t('stats.playersOnline')).toBe('Players Online');
-    expect(t('footer.copyright')).toBe('2026 World of ClaudeCraft');
+    expect(t('footer.copyright')).toBe('2026 PRIMUS');
     expect(t('footer.githubLabel')).toBe('Open Source Project');
     expect(t('nav.highscores')).toBe('High Scores');
     expect(t('nav.wiki')).toBe('Wiki');

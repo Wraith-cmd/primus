@@ -47,6 +47,7 @@ vi.mock('../../server/discord', () => ({
 }));
 vi.mock('../../server/discord_activity', () => ({ drainActivity: vi.fn() }));
 vi.mock('../../server/discord_relay', () => ({ drainRelay: vi.fn() }));
+
 import type * as http from 'node:http';
 import { MEMBERS_META_BATCH } from '../../bot/logic';
 import { pool } from '../../server/db';

@@ -29,6 +29,7 @@ import { localPartyMemberIds } from './game/corpse_loot_availability';
 import { shouldClearAutorunOnDeath } from './game/death_input_reset';
 import { initDesktopDownload } from './game/desktop_download';
 import { initDesktopShellIntegration } from './game/desktop_shell_integration';
+import { newDoubleTap, registerTap } from './game/double_tap_core';
 import { takeEditorPlaytestRequest } from './game/editor_playtest';
 import {
   clearEntryProbe,
@@ -3531,6 +3532,21 @@ function wireOfflinePersistence(
     if (document.visibilityState === 'hidden') save();
   });
   window.setInterval(save, OFFLINE_AUTOSAVE_MS);
+
+  // Escape-Escape: the deliberate "save right now" gesture. The sim cannot pause
+  // (it ticks), so the safe exit is a committed save rather than a freeze. The
+  // first Escape keeps doing its ordinary job (closing a window, opening the
+  // menu); only the second one inside the window commits, and the listener runs
+  // at capture so it sees the key even when a window has focus.
+  const escapes = newDoubleTap();
+  window.addEventListener(
+    'keydown',
+    (e) => {
+      if (e.code !== 'Escape' || e.repeat) return;
+      if (registerTap(escapes, Date.now())) save();
+    },
+    true,
+  );
 }
 
 // ---------------------------------------------------------------------------

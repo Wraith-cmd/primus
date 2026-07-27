@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import { HEAL_PCT_BY_URGENCY } from '../src/sim/companions/heal_triage';
 import { updateDelveCompanion } from '../src/sim/delves/companion';
 import { Sim } from '../src/sim/sim';
 import { terrainHeight } from '../src/sim/world';
@@ -396,25 +397,64 @@ describe('delve companions', () => {
   // Direct module-import tests: drive the moved updateDelveCompanion(ctx, companion)
   // straight against the live SimContext, proving src/sim/delves/companion.ts is the
   // owner (no Sim method involved) across the heal, heel, and combat arms.
-  it('(module) heals the lowest-HP owner by the rank-scaled percent', () => {
+  it('(module) heals the lowest-HP owner by the rank-scaled triage percent', () => {
     const sim = makeSim();
     sim.setPlayerLevel(10);
     teleport(sim, 0, 0);
     const meta = (sim as any).players.get(sim.playerId);
-    meta.companionUpgrades.companion_tessa = 2; // DELVE_COMPANION_HEAL_PCT[2] = 0.08
+    meta.companionUpgrades.companion_tessa = 2; // rank multiplier 1.33
     sim.enterDelve('collapsed_reliquary', 'normal');
     const run = sim.delveRunForPlayer(sim.playerId)!;
     const companion = sim.entities.get(run.companion!.entityId)!;
     const p = sim.player;
+    // Half health is the 'urgent' band (below URGENT_FRAC, above EMERGENCY_FRAC).
     p.hp = Math.max(1, Math.round(p.maxHp * 0.5));
     companion.pos = { ...p.pos }; // within DELVE_COMPANION_HEAL_RANGE
     companion.prevPos = { ...companion.pos };
     companion.wanderTimer = 0; // heal cadence due this call
     const before = p.hp;
     updateDelveCompanion((sim as any).ctx, companion);
-    const expected = Math.min(p.maxHp - before, Math.round(p.maxHp * 0.08));
+    const expected = Math.min(
+      p.maxHp - before,
+      Math.round(p.maxHp * HEAL_PCT_BY_URGENCY.urgent * 1.33),
+    );
     expect(expected).toBeGreaterThan(0);
     expect(p.hp).toBe(before + expected);
+  });
+
+  it('(module) answers an emergency immediately instead of waiting out an interval', () => {
+    const sim = makeSim();
+    sim.setPlayerLevel(10);
+    teleport(sim, 0, 0);
+    sim.enterDelve('collapsed_reliquary', 'normal');
+    const run = sim.delveRunForPlayer(sim.playerId)!;
+    const companion = sim.entities.get(run.companion!.entityId)!;
+    const p = sim.player;
+    p.hp = Math.max(1, Math.round(p.maxHp * 0.1)); // emergency band
+    companion.pos = { ...p.pos };
+    companion.prevPos = { ...companion.pos };
+    companion.wanderTimer = 0;
+    updateDelveCompanion((sim as any).ctx, companion);
+    // An emergency heal leaves the next one available at once, so a second spike
+    // in the same second is still answered.
+    expect(companion.wanderTimer).toBe(0);
+  });
+
+  it('(module) does not waste a heal on a topped-up party', () => {
+    const sim = makeSim();
+    sim.setPlayerLevel(10);
+    teleport(sim, 0, 0);
+    sim.enterDelve('collapsed_reliquary', 'normal');
+    const run = sim.delveRunForPlayer(sim.playerId)!;
+    const companion = sim.entities.get(run.companion!.entityId)!;
+    const p = sim.player;
+    p.hp = p.maxHp;
+    companion.pos = { ...p.pos };
+    companion.prevPos = { ...companion.pos };
+    companion.wanderTimer = 0;
+    updateDelveCompanion((sim as any).ctx, companion);
+    expect(p.hp).toBe(p.maxHp);
+    expect(companion.wanderTimer).toBeGreaterThan(0); // re-checks on the poll
   });
 
   it('(module) heels toward the owner when not in combat', () => {

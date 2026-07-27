@@ -14,10 +14,10 @@
 // Sim (foreign quest/delve callers). The heal is a DIRECT hp mutation + heal/spellfx
 // emit (no aura). `src/sim`-pure: no DOM/Three/Math.random.
 
+import { type HealCandidate, planHeal } from '../companions/heal_triage';
 import * as deedsMod from '../deeds';
 import type { SimContext } from '../sim_context';
 import {
-  DELVE_COMPANION_HEAL_INTERVAL,
   DELVE_COMPANION_MAX_RANK,
   DT,
   dist2d,
@@ -30,11 +30,17 @@ import {
 
 const DELVE_COMPANION_HEAL_RANGE = 22;
 const DELVE_COMPANION_FOLLOW = 4;
-// Tessa heals a PERCENT of the target's max HP each tick, indexed by rank (1-3), so
-// her output stays relevant as player HP grows, the old flat `8 + rank*4` decayed to
-// noise by level 9. Tuned (combat spec) so L7 Normal is sustainable, L7 Heroic is not
-// savable by Tessa alone, and L9 Heroic is sustainable from rank 2.
-const DELVE_COMPANION_HEAL_PCT = [0, 0.06, 0.08, 0.1];
+// Heal size is a PERCENT of the target's max HP so output stays relevant as player
+// health grows (the old flat `8 + rank*4` decayed to noise by level 9). The percent
+// now comes from the triage plan's urgency band; rank multiplies it.
+// Rank multiplies the triage plan instead of replacing it, so an upgraded
+// companion heals harder at every urgency band. Ratios mirror the old flat
+// per-rank table (0.06 / 0.08 / 0.10) so rank progression feels unchanged.
+const COMPANION_RANK_HEAL_MULT = [0, 1, 1.33, 1.67];
+// How often triage re-checks when nobody needs healing. Short enough that a
+// sudden spike is seen almost at once, long enough that an idle companion is
+// not re-scanning the party every tick.
+const COMPANION_TRIAGE_POLL_SECONDS = 0.5;
 
 export function updateDelveCompanion(ctx: SimContext, companion: Entity): void {
   const owner = companion.ownerId !== null ? ctx.entities.get(companion.ownerId) : null;
@@ -147,40 +153,59 @@ export function updateDelveCompanion(ctx: SimContext, companion: Entity): void {
     companion.swingTimer = Math.max(0, (companion.swingTimer ?? 0) - DT);
   }
 
+  // Healing is triage-driven, not interval-driven: the plan's urgency sets both
+  // the heal size and how soon the next one may fire, so a spike on the tank is
+  // answered immediately instead of waiting out a fixed cooldown. When nobody
+  // needs help the companion re-checks on a short poll rather than committing to
+  // a long sleep it cannot wake from.
   companion.wanderTimer = (companion.wanderTimer ?? 0) - DT;
   if (companion.wanderTimer <= 0) {
-    companion.wanderTimer = DELVE_COMPANION_HEAL_INTERVAL;
     const rank = ctx.players.get(owner.id)?.companionUpgrades[run.companion.companionId] ?? 1;
-    let target: Entity = owner;
-    let lowest = owner.hp / owner.maxHp;
+    const candidates: HealCandidate[] = [];
+    if (!owner.dead) {
+      candidates.push({
+        id: owner.id,
+        hpFrac: owner.hp / Math.max(1, owner.maxHp),
+        distance: dist2d(companion.pos, owner.pos),
+        isTank: true, // the owner holds the pull in a solo delve
+      });
+    }
     if (run.partyKey) {
       for (const pid of ctx.partyMembersForKey(run.partyKey)) {
+        if (pid === owner.id) continue;
         const ally = ctx.entities.get(pid);
         if (!ally || ally.dead) continue;
-        const frac = ally.hp / ally.maxHp;
-        if (frac < lowest && dist2d(companion.pos, ally.pos) <= DELVE_COMPANION_HEAL_RANGE) {
-          lowest = frac;
-          target = ally;
-        }
+        candidates.push({
+          id: ally.id,
+          hpFrac: ally.hp / Math.max(1, ally.maxHp),
+          distance: dist2d(companion.pos, ally.pos),
+        });
       }
     }
-    if (
-      target.hp < target.maxHp &&
-      dist2d(companion.pos, target.pos) <= DELVE_COMPANION_HEAL_RANGE
-    ) {
-      const pct =
-        DELVE_COMPANION_HEAL_PCT[Math.min(rank, DELVE_COMPANION_MAX_RANK)] ??
-        DELVE_COMPANION_HEAL_PCT[1];
-      const healed = Math.min(target.maxHp - target.hp, Math.round(target.maxHp * pct));
-      target.hp += healed;
-      ctx.emit({ type: 'heal', targetId: target.id, amount: healed });
-      ctx.emit({
-        type: 'spellfx',
-        sourceId: companion.id,
-        targetId: target.id,
-        school: 'holy',
-        fx: 'tick',
-      });
+    const plan = planHeal(candidates, DELVE_COMPANION_HEAL_RANGE);
+    const target = plan.targetId !== null ? ctx.entities.get(plan.targetId) : null;
+    if (target && !target.dead) {
+      // Rank scales the whole plan rather than replacing it, so an upgraded
+      // companion heals harder at every urgency instead of flattening the bands.
+      const rankMult = COMPANION_RANK_HEAL_MULT[Math.min(rank, DELVE_COMPANION_MAX_RANK)] ?? 1;
+      const healed = Math.min(
+        target.maxHp - target.hp,
+        Math.round(target.maxHp * plan.healFrac * rankMult),
+      );
+      if (healed > 0) {
+        target.hp += healed;
+        ctx.emit({ type: 'heal', targetId: target.id, amount: healed });
+        ctx.emit({
+          type: 'spellfx',
+          sourceId: companion.id,
+          targetId: target.id,
+          school: 'holy',
+          fx: 'tick',
+        });
+      }
+      companion.wanderTimer = plan.nextIntervalSeconds;
+    } else {
+      companion.wanderTimer = COMPANION_TRIAGE_POLL_SECONDS;
     }
   }
   if (combatTarget) return;

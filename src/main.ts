@@ -80,6 +80,7 @@ import { diagonalMovementVisualFacing } from './game/movement_visual';
 import { music } from './game/music';
 import { tryNearbyInteraction } from './game/nearby_interaction';
 import { isOfflineModeAvailable } from './game/offline_mode_gate';
+import { loadOffline, saveOffline } from './game/offline_save';
 import { createPerfMonitor } from './game/perf';
 import { initPerfNudge } from './game/perf_nudge';
 import { startPerfReporter } from './game/perf_reporter';
@@ -3420,6 +3421,17 @@ async function startOffline(
   // Editor play-test: route terrain + props at the custom world too (the renderer
   // reaches it by module global), in addition to the Sim reading cfg.world.
   if (world) setActiveWorldContent(world);
+  // A saved offline character for this exact class + name is restored instead of
+  // rolled fresh. Class and name are the identity here (there is no account), so
+  // typing a different name deliberately starts a new character and leaves the
+  // old save alone. The editor play-test path (a custom `world` or a seed
+  // override) always starts clean: that world is not the saved one.
+  const saveSlot = world || seedOverride !== undefined ? null : localStorageOrNull();
+  const restored = saveSlot ? loadOffline(saveSlot) : null;
+  const resume =
+    restored && restored.playerClass === playerClass && restored.playerName === name
+      ? restored
+      : null;
   const sim = new Sim({
     seed: seedOverride ?? WORLD_SEED,
     playerClass,
@@ -3427,8 +3439,10 @@ async function startOffline(
     devCommands: import.meta.env.DEV,
     valeCupShowcase: true, // idle Sowfield auto-runs a bot exhibition to watch/bet on
     world,
+    noPlayer: resume !== null,
   });
-  sim.setPlayerSkin(sim.playerId, skin);
+  if (resume) sim.addPlayer(playerClass, name, { state: resume.state });
+  sim.setPlayerSkin(sim.playerId, resume ? resume.skin : skin);
   // Dev convenience: ?mech drops an offline session straight into the Combat Mech
   // cosmetic body holding a spread of class-usable weapons, to eyeball the held
   // weapon model on the mech (swap them in the bag to see each one). DEV builds
@@ -3466,9 +3480,57 @@ async function startOffline(
     for (const id of usable) sim.addItem(id, 1, sim.playerId);
     if (usable[0]) sim.equipItem(usable[0], sim.playerId);
   }
-  // Offline characters are not persisted (a fresh name is typed each session),
-  // so the only stable handle is class + name. Keybinds scope to that pair.
+  // Offline characters persist locally (see wireOfflinePersistence), and the
+  // stable handle stays class + name: keybinds scope to that pair.
+  wireOfflinePersistence(sim, playerClass, name, skin, seedOverride ?? WORLD_SEED);
   void startGame(sim, sim, null, `offline:${playerClass}:${name}`, true);
+}
+
+// Offline autosave. Upstream threw the offline character away on unload; this
+// fork treats offline as the primary mode, so the character has to survive an
+// alt-tab, a reload, and a browser restart.
+//
+// Saving is cheap (one serializeCharacter plus a localStorage write) and the sim
+// is authoritative in offline mode, so we save on every edge that plausibly
+// precedes losing the tab rather than trying to be clever about which one wins:
+// blur, tab hide, pagehide, and a slow periodic tick as the backstop for a crash
+// or a force quit that fires no event at all.
+const OFFLINE_AUTOSAVE_MS = 30_000;
+
+function wireOfflinePersistence(
+  sim: Sim,
+  playerClass: PlayerClass,
+  name: string,
+  skin: number,
+  seed: number,
+): void {
+  const storage = localStorageOrNull();
+  if (!storage) return; // private browsing: play on, just without a save slot
+
+  let warned = false;
+  const save = (): void => {
+    const state = sim.serializeCharacter(sim.playerId);
+    if (!state) return;
+    const ok = saveOffline(storage, {
+      playerClass,
+      playerName: name,
+      skin,
+      seed,
+      state,
+      savedAt: Date.now(),
+    });
+    if (!ok && !warned) {
+      warned = true;
+      console.warn('offline save refused by storage (quota or private mode)');
+    }
+  };
+
+  window.addEventListener('blur', save);
+  window.addEventListener('pagehide', save);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') save();
+  });
+  window.setInterval(save, OFFLINE_AUTOSAVE_MS);
 }
 
 // ---------------------------------------------------------------------------

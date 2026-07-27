@@ -160,7 +160,9 @@ const kaykit = (attack: string[], idle = 'Idle'): ClipMap => ({
   //   Spellcast_Shoot 0.93s  a thrust: the RELEASE, fired when the cast lands
   //   Spellcast_Raise 2.10s  slow and deliberate: the only real channel pose
   cast: 'Spellcast_Raise',
-  castShoot: 'Spellcast_Raise',
+  // Offensive casts keep their own gesture: collapsing all three onto one clip
+  // threw away the differentiation and made every hard cast identical again.
+  castShoot: 'Spellcast_Shoot',
   castRaise: 'Spellcast_Raise',
   /** One-shot on cast completion (the release), and on an instant cast. */
   castRelease: 'Spellcast_Shoot',

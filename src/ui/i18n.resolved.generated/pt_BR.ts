@@ -751,8 +751,7 @@ export const pt_BR: EnTranslations = {
       "showTargetOfTarget": "Mostrar Alvo do Alvo",
       "showAttackButton": "Exibir Botão de Ataque",
       "mobileCameraJoystick": "Joystick da câmera",
-      "mobileLeftHanded": "Layout para canhotos",
-      "showWalletOnCharacterScreen": "Mostrar carteira na tela de personagens"
+      "mobileLeftHanded": "Layout para canhotos"
     },
     "talentRows": {
       "tab": "Escolhas",

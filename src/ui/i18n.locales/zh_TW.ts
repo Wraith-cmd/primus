@@ -657,7 +657,6 @@ export const zh_TW: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.lockCursorOnRotate': '旋轉時鎖定游標',
   'hudChrome.options.keybindHelpLockCursorOnRotate':
     '拖曳旋轉鏡頭時將滑鼠游標保持在視窗內，使其無法到達螢幕邊緣或移動到另一台顯示器。若你偏好自由游標，請關閉此選項。',
-  'hudChrome.options.showWalletOnCharacterScreen': '在角色畫面顯示錢包',
   'hudChrome.options.showDevBadges': '顯示開發者徽章',
   'hudChrome.options.showOwnNameplate': '顯示我的姓名板',
   'hudChrome.options.showPlayerNameplates': '顯示玩家姓名板',

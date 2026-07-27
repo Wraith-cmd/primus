@@ -47,7 +47,7 @@ describe('moderation action labels', () => {
 
   it('keeps the sanction/relief badge variants', () => {
     expect(moderationActionVariant('ban')).toBe('bad');
-    expect(moderationActionVariant('daily_rewards_ip_ban')).toBe('bad');
+    expect(moderationActionVariant('block')).toBe('bad');
     expect(moderationActionVariant('suspend')).toBe('warn');
     expect(moderationActionVariant('unban')).toBe('success');
     expect(moderationActionVariant('unblock')).toBe('success');

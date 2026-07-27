@@ -6235,7 +6235,6 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.keybindHelpLockCursorOnRotate':
     'Menjaga kursor mouse tetap di dalam jendela saat Anda menyeret untuk memutar kamera, sehingga tidak mencapai tepi layar atau berpindah ke monitor lain. Matikan jika Anda lebih suka kursor bebas.',
   'hudChrome.options.lockCursorOnRotate': 'Kunci Kursor Saat Memutar',
-  'hudChrome.options.showWalletOnCharacterScreen': 'Tampilkan Dompet di Layar Karakter',
   'hudChrome.options.uiScale': 'Skala UI',
   'hudChrome.paperdoll.unequipAria': 'Lepas {item}',
   'hudChrome.paperdoll.unequipHint': 'Klik ×, klik kanan, atau seret ke tas untuk melepas',

@@ -751,8 +751,7 @@ export const id_ID: EnTranslations = {
       "showTargetOfTarget": "Tampilkan Sasaran dari Sasaran",
       "showAttackButton": "Tampilkan Tombol Serang",
       "mobileCameraJoystick": "Joystick kamera",
-      "mobileLeftHanded": "Tata letak kidal",
-      "showWalletOnCharacterScreen": "Tampilkan Dompet di Layar Karakter"
+      "mobileLeftHanded": "Tata letak kidal"
     },
     "talentRows": {
       "tab": "Pilihan",

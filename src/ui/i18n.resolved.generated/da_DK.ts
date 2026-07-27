@@ -751,8 +751,7 @@ export const da_DK: EnTranslations = {
       "showTargetOfTarget": "Vis målets mål",
       "showAttackButton": "Vis angrebsknap",
       "mobileCameraJoystick": "Kamera joystick",
-      "mobileLeftHanded": "Venstrehånds layout",
-      "showWalletOnCharacterScreen": "Vis pengepung på karakterskærm"
+      "mobileLeftHanded": "Venstrehånds layout"
     },
     "talentRows": {
       "tab": "Valg",

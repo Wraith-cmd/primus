@@ -751,8 +751,7 @@ export const ja_JP: EnTranslations = {
       "showTargetOfTarget": "ターゲットのターゲットを表示",
       "showAttackButton": "攻撃ボタンを表示",
       "mobileCameraJoystick": "カメラスティック",
-      "mobileLeftHanded": "左利き用レイアウト",
-      "showWalletOnCharacterScreen": "キャラクター画面にウォレットを表示"
+      "mobileLeftHanded": "左利き用レイアウト"
     },
     "talentRows": {
       "tab": "選択",

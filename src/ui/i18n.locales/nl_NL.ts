@@ -6329,7 +6329,6 @@ export const nl_NL: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.keybindHelpLockCursorOnRotate':
     'Houdt de muisaanwijzer binnen het venster terwijl je sleept om de camera te draaien, zodat deze de schermrand niet kan bereiken of naar een ander beeldscherm kan gaan. Schakel uit als je liever een vrije aanwijzer hebt.',
   'hudChrome.options.lockCursorOnRotate': 'Aanwijzer vergrendelen tijdens draaien',
-  'hudChrome.options.showWalletOnCharacterScreen': 'Portemonnee tonen op personagescherm',
   'hudChrome.options.uiScale': 'UI-schaal',
   'hudChrome.paperdoll.unequipAria': '{item} afdoen',
   'hudChrome.paperdoll.unequipHint':

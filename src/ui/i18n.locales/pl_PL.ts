@@ -6311,7 +6311,6 @@ export const pl_PL: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.keybindHelpLockCursorOnRotate':
     'Utrzymuje kursor myszy wewnątrz okna podczas przeciągania w celu obracania kamery, aby nie mógł dotrzeć do krawędzi ekranu ani przejść na inny monitor. Wyłącz, jeśli wolisz swobodny kursor.',
   'hudChrome.options.lockCursorOnRotate': 'Blokuj kursor podczas obracania',
-  'hudChrome.options.showWalletOnCharacterScreen': 'Pokaż sakiewkę na ekranie postaci',
   'hudChrome.options.uiScale': 'Skala interfejsu',
   'hudChrome.paperdoll.unequipAria': 'Zdejmij {item}',
   'hudChrome.paperdoll.unequipHint':

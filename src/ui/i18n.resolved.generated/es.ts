@@ -751,8 +751,7 @@ export const es: EnTranslations = {
       "showTargetOfTarget": "Mostrar el objetivo del objetivo",
       "showAttackButton": "Mostrar boton de ataque",
       "mobileCameraJoystick": "Palanca de mando de la cámara",
-      "mobileLeftHanded": "Diseño para zurdos",
-      "showWalletOnCharacterScreen": "Mostrar cartera en la pantalla de personajes"
+      "mobileLeftHanded": "Diseño para zurdos"
     },
     "talentRows": {
       "tab": "Opciones",

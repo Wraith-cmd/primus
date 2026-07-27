@@ -751,8 +751,7 @@ export const fr_FR: EnTranslations = {
       "showTargetOfTarget": "Afficher la cible de la cible",
       "showAttackButton": "Afficher le bouton d'attaque",
       "mobileCameraJoystick": "Manette de caméra",
-      "mobileLeftHanded": "Disposition pour gaucher",
-      "showWalletOnCharacterScreen": "Afficher le portefeuille sur l’écran des personnages"
+      "mobileLeftHanded": "Disposition pour gaucher"
     },
     "talentRows": {
       "tab": "Choix",

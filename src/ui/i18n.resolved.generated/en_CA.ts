@@ -5117,7 +5117,7 @@ export const en_CA: EnTranslations = {
     "applicationCategory": "Game",
     "operatingSystem": "Web browser",
     "officialLabel": "Official PRIMUS website",
-    "officialBody": "worldofclaudecraft.com is the official free browser MMO for the Claudemoon world. Play online with a persistent character, explore solo offline, read the wiki, and follow verified community links from this site."
+    "officialBody": "PRIMUS is a private classic-style browser MMO. Play solo offline with a persistent character, or host a small world for friends."
   },
   "a11y": {
     "goHome": "Go to homepage",

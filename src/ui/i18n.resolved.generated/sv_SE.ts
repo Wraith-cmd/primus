@@ -751,8 +751,7 @@ export const sv_SE: EnTranslations = {
       "showTargetOfTarget": "Visa målets mål",
       "showAttackButton": "Visa attackknapp",
       "mobileCameraJoystick": "Kamera joystick",
-      "mobileLeftHanded": "Vänsterhänt layout",
-      "showWalletOnCharacterScreen": "Visa plånbok på karaktärsskärmen"
+      "mobileLeftHanded": "Vänsterhänt layout"
     },
     "talentRows": {
       "tab": "Val",

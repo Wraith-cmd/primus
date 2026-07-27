@@ -60,7 +60,6 @@ import {
   pl_PL,
   pt_BR,
   ru_RU,
-  type SupportedLanguage,
   setLanguage,
   supportedLanguages,
   sv_SE,

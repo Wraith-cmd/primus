@@ -751,8 +751,7 @@ export const zh_TW: EnTranslations = {
       "showTargetOfTarget": "顯示目標的目標",
       "showAttackButton": "顯示攻擊按鈕",
       "mobileCameraJoystick": "攝影機搖桿",
-      "mobileLeftHanded": "左手配置",
-      "showWalletOnCharacterScreen": "在角色畫面顯示錢包"
+      "mobileLeftHanded": "左手配置"
     },
     "talentRows": {
       "tab": "抉擇",

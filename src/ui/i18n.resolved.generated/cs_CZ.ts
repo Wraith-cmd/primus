@@ -751,8 +751,7 @@ export const cs_CZ: EnTranslations = {
       "showTargetOfTarget": "Zobrazit cíl cíle",
       "showAttackButton": "Zobrazit tlačítko útoku",
       "mobileCameraJoystick": "Joystick kamery",
-      "mobileLeftHanded": "Rozvržení pro leváky",
-      "showWalletOnCharacterScreen": "Zobrazit peněženku na obrazovce postavy"
+      "mobileLeftHanded": "Rozvržení pro leváky"
     },
     "talentRows": {
       "tab": "Volby",

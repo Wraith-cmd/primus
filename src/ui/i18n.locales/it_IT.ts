@@ -2421,7 +2421,6 @@ export const it_IT: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.clickMoveRight': 'Clic destro',
   'hudChrome.options.footstepSounds': 'Suoni dei passi',
   'hudChrome.options.interfaceSounds': "Suoni dell'interfaccia e di risposta",
-  'hudChrome.options.showWalletOnCharacterScreen': 'Mostra portafoglio nella schermata personaggi',
   'hudChrome.options.uiScale': "Scala dell'interfaccia",
   'hudChrome.options.highContrastBackground': 'Sfondo a contrasto elevato',
   'hudChrome.options.showItemLevel': 'Mostra livello oggetto',

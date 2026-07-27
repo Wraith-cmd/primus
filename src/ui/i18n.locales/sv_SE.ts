@@ -6087,7 +6087,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.keybindHelpLockCursorOnRotate':
     'Håller muspekaren inuti fönstret medan du drar för att rotera kameran, så att den inte kan nå skärmkanten eller flytta till en annan skärm. Stäng av om du föredrar en fri pekare.',
   'hudChrome.options.lockCursorOnRotate': 'Lås pekare under rotation',
-  'hudChrome.options.showWalletOnCharacterScreen': 'Visa plånbok på karaktärsskärmen',
   'hudChrome.options.uiScale': 'Gränssnittsskala',
   'hudChrome.paperdoll.unequipAria': 'Ta av {item}',
   'hudChrome.paperdoll.unequipHint':

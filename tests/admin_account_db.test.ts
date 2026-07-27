@@ -25,11 +25,7 @@ vi.mock('../server/realm', () => ({
   REALM: 'test-realm',
 }));
 
-import {
-  accountDetail,
-  listAccounts,
-  listModerationActions,
-} from '../server/admin_db';
+import { accountDetail, listAccounts, listModerationActions } from '../server/admin_db';
 
 describe('admin account detail query', () => {
   beforeEach(() => {

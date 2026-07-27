@@ -522,4 +522,3 @@ describe('moderation report helpers', () => {
     expect(client.release).toHaveBeenCalledTimes(1);
   });
 });
-

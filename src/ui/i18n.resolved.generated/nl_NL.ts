@@ -751,8 +751,7 @@ export const nl_NL: EnTranslations = {
       "showTargetOfTarget": "Doelwit van doelwit tonen",
       "showAttackButton": "Aanvalsknop Tonen",
       "mobileCameraJoystick": "Camerajoystick",
-      "mobileLeftHanded": "Linkshandige indeling",
-      "showWalletOnCharacterScreen": "Portemonnee tonen op personagescherm"
+      "mobileLeftHanded": "Linkshandige indeling"
     },
     "talentRows": {
       "tab": "Keuzes",

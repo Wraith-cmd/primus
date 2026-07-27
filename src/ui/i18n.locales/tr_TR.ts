@@ -6156,7 +6156,6 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.keybindHelpLockCursorOnRotate':
     'Kamerayı döndürmek için sürüklerken fare imlecini pencerenin içinde tutar, böylece ekran kenarına ulaşamaz veya başka bir monitöre geçemez. Serbest imleç tercih ediyorsanız kapatın.',
   'hudChrome.options.lockCursorOnRotate': 'Döndürürken İmleci Kilitle',
-  'hudChrome.options.showWalletOnCharacterScreen': 'Cüzdanı Karakter Ekranında Göster',
   'hudChrome.options.uiScale': 'Arayüz Ölçeği',
   'hudChrome.paperdoll.unequipAria': '{item} eşyasını çıkar',
   'hudChrome.paperdoll.unequipHint':

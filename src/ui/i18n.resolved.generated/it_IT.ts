@@ -751,8 +751,7 @@ export const it_IT: EnTranslations = {
       "showTargetOfTarget": "Mostra il bersaglio del bersaglio",
       "showAttackButton": "Mostra Pulsante Attacco",
       "mobileCameraJoystick": "Joystick della fotocamera",
-      "mobileLeftHanded": "Disposizione per mancini",
-      "showWalletOnCharacterScreen": "Mostra portafoglio nella schermata personaggi"
+      "mobileLeftHanded": "Disposizione per mancini"
     },
     "talentRows": {
       "tab": "Scelte",

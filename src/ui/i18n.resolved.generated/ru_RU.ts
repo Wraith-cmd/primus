@@ -751,8 +751,7 @@ export const ru_RU: EnTranslations = {
       "showTargetOfTarget": "Показывать цель цели",
       "showAttackButton": "Показывать кнопку атаки",
       "mobileCameraJoystick": "Джойстик камеры",
-      "mobileLeftHanded": "Раскладка для левшей",
-      "showWalletOnCharacterScreen": "Показывать кошелек на экране персонажей"
+      "mobileLeftHanded": "Раскладка для левшей"
     },
     "talentRows": {
       "tab": "Выбор",

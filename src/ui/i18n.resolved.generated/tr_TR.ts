@@ -751,8 +751,7 @@ export const tr_TR: EnTranslations = {
       "showTargetOfTarget": "Hedefin Hedefini Göster",
       "showAttackButton": "Saldırı Düğmesini Göster",
       "mobileCameraJoystick": "Kamera joystick'i",
-      "mobileLeftHanded": "Solak düzen",
-      "showWalletOnCharacterScreen": "Cüzdanı Karakter Ekranında Göster"
+      "mobileLeftHanded": "Solak düzen"
     },
     "talentRows": {
       "tab": "Seçimler",

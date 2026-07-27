@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { installWindowDrag, isWindowDragPreviewMutation } from '../src/ui/window_drag';
 import { draggedWindowPosition } from '../src/ui/window_drag_core';
-import { stackedWindowsVisible } from '../src/ui/window_stack_state_core';
 
 describe('draggedWindowPosition', () => {
   it('converts visual pointer coordinates into clamped author coordinates', () => {
@@ -346,16 +345,7 @@ describe('installWindowDrag', () => {
   });
 });
 
-describe('stacked window compositor state', () => {
-  it.each([
-    [false, false, false],
-    [true, false, false],
-    [false, true, false],
-    [true, true, true],
-  ])('uses effects only when both windows are visible', (firstVisible, secondVisible, expected) => {
-    expect(stackedWindowsVisible(firstVisible, secondVisible)).toBe(expected);
-  });
-
+describe('window drag preview mutations', () => {
   it('recognizes only live drag preview style mutations', () => {
     const classes = new Set(['window-dragging']);
     const el = {

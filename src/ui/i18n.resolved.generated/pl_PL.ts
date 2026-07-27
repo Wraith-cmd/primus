@@ -751,8 +751,7 @@ export const pl_PL: EnTranslations = {
       "showTargetOfTarget": "Pokaż cel celu",
       "showAttackButton": "Pokaż Przycisk Ataku",
       "mobileCameraJoystick": "Joystick aparatu",
-      "mobileLeftHanded": "Układ leworęczny",
-      "showWalletOnCharacterScreen": "Pokaż sakiewkę na ekranie postaci"
+      "mobileLeftHanded": "Układ leworęczny"
     },
     "talentRows": {
       "tab": "Wybory",

@@ -751,8 +751,7 @@ export const ko_KR: EnTranslations = {
       "showTargetOfTarget": "대상의 대상 표시",
       "showAttackButton": "공격 버튼 표시",
       "mobileCameraJoystick": "카메라 조이스틱",
-      "mobileLeftHanded": "왼손잡이 레이아웃",
-      "showWalletOnCharacterScreen": "캐릭터 화면에 지갑 표시"
+      "mobileLeftHanded": "왼손잡이 레이아웃"
     },
     "talentRows": {
       "tab": "선택",

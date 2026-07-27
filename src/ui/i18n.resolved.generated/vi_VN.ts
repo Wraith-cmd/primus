@@ -751,8 +751,7 @@ export const vi_VN: EnTranslations = {
       "showTargetOfTarget": "Hiện Mục Tiêu Của Mục Tiêu",
       "showAttackButton": "Hiển Thị Nút Tấn Công",
       "mobileCameraJoystick": "Cần điều khiển máy ảnh",
-      "mobileLeftHanded": "Bố cục thuận tay trái",
-      "showWalletOnCharacterScreen": "Hiện Ví Tiền Ở Màn Hình Nhân Vật"
+      "mobileLeftHanded": "Bố cục thuận tay trái"
     },
     "talentRows": {
       "tab": "Lựa chọn",

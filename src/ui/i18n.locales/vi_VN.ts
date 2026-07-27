@@ -6281,7 +6281,6 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.keybindHelpLockCursorOnRotate':
     'Giữ con trỏ chuột bên trong cửa sổ khi bạn kéo để xoay camera, để nó không thể chạm tới mép màn hình hoặc di chuyển sang màn hình khác. Hãy tắt nếu bạn thích con trỏ tự do.',
   'hudChrome.options.lockCursorOnRotate': 'Khóa Con Trỏ Khi Xoay',
-  'hudChrome.options.showWalletOnCharacterScreen': 'Hiện Ví Tiền Ở Màn Hình Nhân Vật',
   'hudChrome.options.uiScale': 'Tỷ Lệ Giao Diện',
   'hudChrome.paperdoll.unequipAria': 'Tháo {item}',
   'hudChrome.paperdoll.unequipHint': 'Nhấp ×, nhấp chuột phải, hoặc kéo vào túi để tháo trang bị',

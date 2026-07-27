@@ -3768,7 +3768,6 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.showOwnNameplate': 'Zobrazit mou jmenovku',
   'hudChrome.options.showPlayerNameplates': 'Zobrazit jmenovky hráčů',
   'hudChrome.options.showSecondaryActionBar': 'Zobrazit sekundární akční lištu',
-  'hudChrome.options.showWalletOnCharacterScreen': 'Zobrazit peněženku na obrazovce postavy',
   'hudChrome.options.startAttackOnAbility': 'Automatický útok při použití schopnosti',
   'hudChrome.options.targetFrameScale': 'Měřítko rámu cíle',
   'hudChrome.options.uiScale': 'Měřítko UI',

@@ -1261,12 +1261,22 @@
                 <!-- enabled state: turn it off (password-gated) -->
                 <form id="account-2fa-disable-form" class="account-form" novalidate hidden>
                   <p class="account-hint" data-i18n="hudChrome.account.twoFactorDisableHint">Enter your password to turn two-factor off. Your recovery codes will be discarded.</p>
+                  <div class="auth-field">
+                    <label for="account-2fa-disable-pass" class="auth-label" data-i18n="hudChrome.account.currentPassword">Current password</label>
+                    <input id="account-2fa-disable-pass" type="password" maxlength="128" autocomplete="current-password" />
+                  </div>
                   <button type="submit" class="btn btn-danger" data-i18n="hudChrome.account.twoFactorDisableBtn">Turn Off Two-Factor</button>
                 </form>
 
               </div>
 
               <!-- GDPR data export -->
+              <div id="account-export" class="account-form">
+                <h4 class="account-form-title" data-i18n="hudChrome.account.exportTitle">Export My Data</h4>
+                <p class="account-hint" data-i18n="hudChrome.account.exportHint">Download a copy of your account and characters as a JSON file. We also email you a confirmation.</p>
+                <button type="button" class="btn btn-secondary" id="account-export-btn" data-i18n="hudChrome.account.exportBtn">Download My Data</button>
+                <div id="account-export-msg" class="auth-field-msg" aria-live="polite"></div>
+              </div>
             </section>
 
             <!-- Wallet / $WOC -->

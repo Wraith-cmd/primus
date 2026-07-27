@@ -43,27 +43,15 @@ export const MODERATION_ACTION_LABEL_KEYS: Record<string, string> = {
   note: 'moderationHistory.actionNote',
   force_rename: 'moderationHistory.actionForceRename',
   reset_password: 'moderationHistory.actionResetPassword',
-  daily_rewards_ban: 'moderationHistory.actionDailyRewardsBan',
-  daily_rewards_unban: 'moderationHistory.actionDailyRewardsUnban',
-  daily_rewards_ip_ban: 'moderationHistory.actionDailyRewardsIpBan',
-  daily_rewards_ip_unban: 'moderationHistory.actionDailyRewardsIpUnban',
   set_ai: 'moderationHistory.actionSetAi',
   set_streamer: 'moderationHistory.actionSetStreamer',
   block: 'moderationHistory.actionIpBlock',
   unblock: 'moderationHistory.actionIpUnblock',
 };
 
-const BAD_ACTIONS = new Set(['ban', 'block', 'daily_rewards_ban', 'daily_rewards_ip_ban']);
+const BAD_ACTIONS = new Set(['ban', 'block']);
 const WARN_ACTIONS = new Set(['suspend', 'chat_mute', 'reset_password', 'kick', 'kill', 'jail']);
-const GOOD_ACTIONS = new Set([
-  'unban',
-  'unsuspend',
-  'chat_unmute',
-  'unjail',
-  'unblock',
-  'daily_rewards_unban',
-  'daily_rewards_ip_unban',
-]);
+const GOOD_ACTIONS = new Set(['unban', 'unsuspend', 'chat_unmute', 'unjail', 'unblock']);
 
 export function moderationActionLabel(action: string): string {
   const key = MODERATION_ACTION_LABEL_KEYS[action];

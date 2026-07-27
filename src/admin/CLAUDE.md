@@ -42,11 +42,8 @@ type-checked by `npm run check:admin` (svelte-check over `tsconfig.admin.json`).
 Recent surfaces follow the same shape, permission-gated per page: `SuspiciousPlayers` +
 `DetectionCalibration` (`botdetector.read`; pure stats in `histogram_stats.ts`, exports in
 `calibration_export.ts`/`suspicious_sessions_export.ts`), `TickPerf` (`ops.perf`; on-demand
-`POST /perf/tick/capture`), `ModerationHistoryPage` (`moderation.read`), timed
-daily-rewards bans (optional duration in hours, blank means permanent) and account notes
-(`moderation.act`), reset-password (`accounts.password`), and the AccountModal Reward
-Points event ledger (`accounts.read`; pure presentation in `daily_reward_event_log.ts`,
-pinned by `tests/admin/daily_reward_event_log.test.ts`).
+`POST /perf/tick/capture`), `ModerationHistoryPage` (`moderation.read`), account notes
+(`moderation.act`), and reset-password (`accounts.password`).
 
 ## i18n: operators are users, so all rendered text routes through `t()`
 Admin has its OWN sparse-overlay catalog, independent of the game. Author English in

@@ -734,6 +734,7 @@ export const sv_SE: EnTranslations = {
       "showOwnNameplate": "Visa min namnskylt",
       "showPlayerNameplates": "Visa spelares namnskyltar",
       "uiScale": "Gränssnittsskala",
+      "shiftMode": "Shift Mode (Mute + FPS Cap)",
       "playerFrameScale": "Spelarramens skala",
       "targetFrameScale": "Målramens skala",
       "aurasOnPlayerFrame": "Förstärkningar på spelarramen",
@@ -6927,6 +6928,18 @@ export const sv_SE: EnTranslations = {
       "bear_form": {
         "name": "Bruinform",
         "description": "Skiftar gestalt till en björn: rustning +130 %, kraftigt ökad attackkraft, dina attacker bygger raseri och genererar 30 % mer hot. Kasta igen för att återgå till besvärjarform."
+      },
+      "mangle": {
+        "name": "Ravage",
+        "description": "Ravage the enemy for weapon damage plus {damage}, generating 10 rage and a high amount of threat. Bruin Form only."
+      },
+      "thrash": {
+        "name": "Rending Storm",
+        "description": "Thrash all nearby enemies for {damage} damage and leave them bleeding, generating 6 rage. Causes extra threat. Bruin Form only."
+      },
+      "ironfur": {
+        "name": "Ironpelt",
+        "description": "Your hide hardens, increasing armor by {buff}% for {duration} sec. Stacks up to 4 times, each application keeping its own duration. Bruin Form only."
       },
       "maul": {
         "name": "Benkross",

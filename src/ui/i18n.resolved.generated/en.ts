@@ -734,6 +734,7 @@ export const en: EnTranslations = {
       "showOwnNameplate": "Show My Nameplate",
       "showPlayerNameplates": "Show Player Nameplates",
       "uiScale": "UI Scale",
+      "shiftMode": "Shift Mode (Mute + FPS Cap)",
       "playerFrameScale": "Player Frame Scale",
       "targetFrameScale": "Target Frame Scale",
       "aurasOnPlayerFrame": "Buffs on the Player Frame",
@@ -6926,7 +6927,19 @@ export const en: EnTranslations = {
       },
       "bear_form": {
         "name": "Bruin Form",
-        "description": "Shapeshift into a bear: armor +130%, greatly increased attack power, your attacks build rage and generate 30% more threat. Cast again to return to caster form."
+        "description": "Shapeshift into a bear: armor +130%, greatly increased attack power, your attacks build rage and generate 300% more threat, freeing that rage to be spent on staying alive. Cast again to return to caster form."
+      },
+      "mangle": {
+        "name": "Ravage",
+        "description": "Ravage the enemy for weapon damage plus {damage}, generating 10 rage and a high amount of threat. Bruin Form only."
+      },
+      "thrash": {
+        "name": "Rending Storm",
+        "description": "Thrash all nearby enemies for {damage} damage and leave them bleeding, generating 6 rage. Causes extra threat. Bruin Form only."
+      },
+      "ironfur": {
+        "name": "Ironpelt",
+        "description": "Your hide hardens, increasing armor by {buff}% for {duration} sec. Stacks up to 4 times, each application keeping its own duration. Bruin Form only."
       },
       "maul": {
         "name": "Bonecrush",
@@ -7358,7 +7371,7 @@ export const en: EnTranslations = {
       },
       "frenzied_regeneration": {
         "name": "Savage Mending",
-        "description": "Restores 180 health over 10 sec. Bruin Form only. (Druid talent)"
+        "description": "Heals you for 50% of all damage you took in the last 5 sec, spread over 3 sec, and never less than 5% of your maximum health. Bruin Form only."
       },
       "frost_trap": {
         "name": "Rime Snare",

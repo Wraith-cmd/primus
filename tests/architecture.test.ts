@@ -235,6 +235,9 @@ const UI_PURE_CORES = [
   'src/ui/chat_bubble_style.ts',
   'src/game/ui_effects_profile.ts',
   'src/game/ui_tier_knobs.ts',
+  // Shift mode's pure half (audio-mix derivation + render-loop pacing); another
+  // import-free game leaf, consumed by the thin src/game/shift_mode.ts controller.
+  'src/game/shift_mode_core.ts',
 ].map((rel) => join(repoRoot, rel));
 
 // Pure logic cores that live in src/render (the painter half is Three-side):

@@ -86,6 +86,10 @@ const EFFECT_CLASS: Record<AbilityEffect['type'], AutoAttackClass> = {
   aoeKnockback: 'other',
   aoeAllyDamage: 'other',
   selfBuff: 'other',
+  // Guardian Druid rage spenders: an armor buff and a self heal, neither of
+  // which touches a target.
+  stackingSelfBuff: 'other',
+  recentDamageHeal: 'other',
   petBuff: 'other',
   applyDebuff: 'other',
   finisherHaste: 'other',

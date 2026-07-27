@@ -295,6 +295,7 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.partyFrames.showAuras': 'Показывать усиления и ослабления',
   'hudChrome.partyFrames.showSelf': 'Показывать вашу рамку',
   'hudChrome.frameReset.label': 'Сбросить положение рамок',
+  'hudChrome.options.shiftMode': 'Тихий режим (без звука, лимит FPS)',
   'hudChrome.options.playerFrameScale': 'Размер рамки игрока',
   'hudChrome.options.targetFrameScale': 'Размер рамки цели',
   'hudChrome.options.aurasOnPlayerFrame': 'Баффы у рамки игрока',
@@ -2371,6 +2372,15 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.bear_form.name': 'Облик бурого',
   'entities.abilities.bear_form.description':
     'Вы принимаете облик медведя: броня +130%, значительно повышенная сила атаки, ваши атаки накапливают ярость и создают на 30% больше угрозы. Примените снова, чтобы вернуться к облику заклинателя.',
+  'entities.abilities.mangle.name': 'Терзание',
+  'entities.abilities.mangle.description':
+    'Терзает врага, нанося урон оружия плюс $d, дает 10 ярости и много угрозы. Только в форме медведя.',
+  'entities.abilities.thrash.name': 'Буря ударов',
+  'entities.abilities.thrash.description':
+    'Бьет всех врагов рядом на $d урона и вызывает кровотечение, дает 6 ярости. Создает дополнительную угрозу. Только в форме медведя.',
+  'entities.abilities.ironfur.name': 'Железная шкура',
+  'entities.abilities.ironfur.description':
+    'Шкура твердеет, повышая броню на $b% на $t сек. Складывается до 4 раз, каждое применение со своей длительностью. Только в форме медведя.',
   'entities.abilities.maul.name': 'Костолом',
   'entities.abilities.maul.description':
     'Свирепая атака, увеличивающая урон в ближнем бою на {damage} и создающая много угрозы. Срабатывает при следующем взмахе. Только в облике бурого.',

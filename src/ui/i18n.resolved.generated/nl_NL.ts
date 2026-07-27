@@ -734,6 +734,7 @@ export const nl_NL: EnTranslations = {
       "showOwnNameplate": "Mijn naambordje tonen",
       "showPlayerNameplates": "Spelersnamen Tonen",
       "uiScale": "UI-schaal",
+      "shiftMode": "Shift Mode (Mute + FPS Cap)",
       "playerFrameScale": "Schaal spelerframe",
       "targetFrameScale": "Schaal doelwitframe",
       "aurasOnPlayerFrame": "Buffs op het spelerframe",
@@ -6927,6 +6928,18 @@ export const nl_NL: EnTranslations = {
       "bear_form": {
         "name": "Bruingedaante",
         "description": "Verander in een beer: pantser +130%, sterk verhoogde aanvalskracht, je aanvallen bouwen woede op en genereren 30% meer dreiging. Spreek opnieuw om terug te keren naar je oorspronkelijke gedaante."
+      },
+      "mangle": {
+        "name": "Ravage",
+        "description": "Ravage the enemy for weapon damage plus {damage}, generating 10 rage and a high amount of threat. Bruin Form only."
+      },
+      "thrash": {
+        "name": "Rending Storm",
+        "description": "Thrash all nearby enemies for {damage} damage and leave them bleeding, generating 6 rage. Causes extra threat. Bruin Form only."
+      },
+      "ironfur": {
+        "name": "Ironpelt",
+        "description": "Your hide hardens, increasing armor by {buff}% for {duration} sec. Stacks up to 4 times, each application keeping its own duration. Bruin Form only."
       },
       "maul": {
         "name": "Botverbrijzelen",

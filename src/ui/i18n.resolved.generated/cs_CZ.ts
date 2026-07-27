@@ -734,6 +734,7 @@ export const cs_CZ: EnTranslations = {
       "showOwnNameplate": "Zobrazit mou jmenovku",
       "showPlayerNameplates": "Zobrazit jmenovky hráčů",
       "uiScale": "Měřítko UI",
+      "shiftMode": "Shift Mode (Mute + FPS Cap)",
       "playerFrameScale": "Měřítko rámu hráče",
       "targetFrameScale": "Měřítko rámu cíle",
       "aurasOnPlayerFrame": "Buffy na rámu hráče",
@@ -6927,6 +6928,18 @@ export const cs_CZ: EnTranslations = {
       "bear_form": {
         "name": "Medvědí podoba",
         "description": "Proměníš se v medvěda: zbroj +130 %, výrazně zvýšená síla útoku, tvoje útoky budují vztek a vytvářejí o 30 % více hrozby. Sesláním znovu se vrátíš do podoby sesilatele."
+      },
+      "mangle": {
+        "name": "Ravage",
+        "description": "Ravage the enemy for weapon damage plus {damage}, generating 10 rage and a high amount of threat. Bruin Form only."
+      },
+      "thrash": {
+        "name": "Rending Storm",
+        "description": "Thrash all nearby enemies for {damage} damage and leave them bleeding, generating 6 rage. Causes extra threat. Bruin Form only."
+      },
+      "ironfur": {
+        "name": "Ironpelt",
+        "description": "Your hide hardens, increasing armor by {buff}% for {duration} sec. Stacks up to 4 times, each application keeping its own duration. Bruin Form only."
       },
       "maul": {
         "name": "Drcení kostí",

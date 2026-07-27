@@ -1,6 +1,11 @@
-// Rewind damage history: a per-player, bounded ring of the REAL HP loss each
-// player took, tagged by sim tick. It backs Chronomancy's Rewind (combat/rewind.ts),
-// which restores a fraction of the damage a group/raid took over a short window.
+// Recent-damage history: a per-player, bounded ring of the REAL HP loss each
+// player took, tagged by sim tick. Two consumers read it, both of which pay back
+// a fraction of the damage taken over a short look-back window:
+//   - Chronomancy's Rewind (combat/rewind.ts), across a group/raid;
+//   - the Guardian Druid's Savage Mending (Legion Frenzied Regeneration), on the
+//     caster alone, via the `recentDamageHeal` effect in combat/effect_dispatch.ts.
+// It is the ONLY rolling damage-taken state in the sim: `PlayerMeta.counters
+// .damageTaken` is a lifetime cumulative total and answers a different question.
 //
 // Determinism: entries are tagged with the integer sim tick (DT = 1/20), never a
 // wall clock; there is no rng here and no module-global state. The ring is pruned

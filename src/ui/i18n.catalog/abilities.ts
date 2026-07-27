@@ -1201,7 +1201,22 @@ const classAbilityNamesEn = {
       [
         'bear_form',
         'Bruin Form',
-        'Shapeshift into a bear: armor +130%, greatly increased attack power, your attacks build rage and generate 30% more threat. Cast again to return to caster form.',
+        'Shapeshift into a bear: armor +130%, greatly increased attack power, your attacks build rage and generate 300% more threat, freeing that rage to be spent on staying alive. Cast again to return to caster form.',
+      ],
+      [
+        'mangle',
+        'Ravage',
+        'Ravage the enemy for weapon damage plus {damage}, generating 10 rage and a high amount of threat. Bruin Form only.',
+      ],
+      [
+        'thrash',
+        'Rending Storm',
+        'Thrash all nearby enemies for {damage} damage and leave them bleeding, generating 6 rage. Causes extra threat. Bruin Form only.',
+      ],
+      [
+        'ironfur',
+        'Ironpelt',
+        'Your hide hardens, increasing armor by {buff}% for {duration} sec. Stacks up to 4 times, each application keeping its own duration. Bruin Form only.',
       ],
       [
         'maul',
@@ -1710,7 +1725,7 @@ const classAbilityNamesEn = {
       [
         'frenzied_regeneration',
         'Savage Mending',
-        'Restores 180 health over 10 sec. Bruin Form only. (Druid talent)',
+        'Heals you for 50% of all damage you took in the last 5 sec, spread over 3 sec, and never less than 5% of your maximum health. Bruin Form only.',
       ],
       [
         'frost_trap',

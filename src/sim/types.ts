@@ -1980,6 +1980,10 @@ export type AbilityEffect =
       stunSec?: number;
       softCap?: number;
       rageOnHit?: { base: number; perTarget: number; capTargets: number };
+      // Rending Storm (Legion Thrash): every enemy the sweep actually STRIKES is
+      // also left bleeding. A physical dot aura per struck target, keyed off the
+      // ability id, refreshing (never stacking) on re-cast like every other dot.
+      bleed?: { total: number; duration: number; interval: number };
     }
   | { type: 'aoeHeal'; min: number; max: number; radius: number }
   | {
@@ -2107,6 +2111,32 @@ export type AbilityEffect =
       internalCooldown?: number;
       auraId?: string;
       auraName?: string;
+    }
+  // Independent-duration stacking self buff (Ironpelt, the Legion Ironfur
+  // shape). Unlike `selfBuff`, re-casting does NOT refresh one aura: each
+  // application lands as its own aura with its own timer, up to `maxStacks`, so
+  // the stacks decay one by one in the order they were spent. Slot-id allocation
+  // lives in combat/aura_stacking.ts; the stat pass sums the kind as usual, so
+  // the chosen `kind` MUST be one recalcPlayerStats folds additively.
+  | {
+      type: 'stackingSelfBuff';
+      kind: AuraKind;
+      value: number;
+      duration: number;
+      maxStacks: number;
+    }
+  // Savage Mending (the Legion Frenzied Regeneration shape): heal back `pct` of
+  // the REAL HP loss the caster took over the last `windowSeconds`, paid out as
+  // a HoT over `duration`, never less than `minPctMaxHp` of maximum health so it
+  // is not a wasted global on a fresh pull. Reads the rolling per-tick ring in
+  // combat/damage_history.ts (sim-clock driven, never wall-clock).
+  | {
+      type: 'recentDamageHeal';
+      pct: number;
+      windowSeconds: number;
+      minPctMaxHp: number;
+      duration: number;
+      interval: number;
     }
   | { type: 'petBuff'; kind: AuraKind; value: number; duration: number }
   | { type: 'applyDebuff'; kind: AuraKind; value: number; duration: number }

@@ -93,6 +93,7 @@ import {
   Settings,
 } from './game/settings';
 import { sfx } from './game/sfx';
+import { ShiftMode } from './game/shift_mode';
 import { initSoftwareRenderNotice } from './game/software_render_notice';
 import {
   decideSpawnCinematic,
@@ -1456,6 +1457,11 @@ async function startGame(
             }
             break;
           }
+          case 'shiftMode':
+            // Live toggle of the mute + FPS cap, no menu round-trip: applySetting
+            // persists the flip and pushes it at the audio buses and the pacer.
+            applySetting('shiftMode', !settings.get('shiftMode'));
+            break;
           case 'chat':
             openChat();
             break;
@@ -1782,6 +1788,29 @@ async function startGame(
   // snapshots the live WebGL canvas) out of an already memory-tight scene.
   applyBrowserEffects(settings.get('browserEffects'));
 
+  // Shift mode (battery + discretion): mutes every audio bus and paces the render
+  // loop, driven by the `shiftMode` setting, its Interface-panel row, and its own
+  // rebindable key. It reads the STORED volumes and never writes them, so the
+  // three volume cases below hand it the live push instead of calling the audio
+  // singletons directly (a slider moved while shift mode is on must persist
+  // without unmuting, and turning shift mode off must not unmute a bus the player
+  // muted by hand). Logic lives in game/shift_mode(.ts|_core.ts).
+  const shiftMode = new ShiftMode({
+    storedVolumes: () => ({
+      sfx: settings.get('sfxVolume'),
+      music: settings.get('musicVolume'),
+      voice: settings.get('voiceVolume'),
+    }),
+    sinks: {
+      setSfxVolume: (v) => {
+        audio.setVolume(v);
+        sfx.setVolume(v);
+      },
+      setMusicVolume: (v) => music.setVolume(v),
+      setVoiceVolume: (v) => voice.setVolume(v),
+    },
+  });
+
   function applySetting(key: keyof GameSettings, value: number | boolean): void {
     if (key === 'mouseCamera') {
       const v = settings.set('mouseCamera', !!value);
@@ -1902,6 +1931,10 @@ async function startGame(
       perfOverlay.setEnabled(settings.set('showFps', !!value));
       return;
     }
+    if (key === 'shiftMode') {
+      shiftMode.setEnabled(settings.set('shiftMode', !!value));
+      return;
+    }
     if (key === 'showDevBadges') {
       renderer.showDevBadges = settings.set('showDevBadges', !!value);
       return;
@@ -1955,15 +1988,14 @@ async function startGame(
       case 'touchLookSpeed':
         input.setTouchLookSpeed(v);
         break;
+      // The three volume buses go through shift mode, which resolves the LIVE mix
+      // from the value just stored above: while shift mode is on the push is 0 and
+      // the player's choice is still persisted, so releasing shift mode restores
+      // exactly what they last set.
       case 'sfxVolume':
-        audio.setVolume(v);
-        sfx.setVolume(v);
-        break;
       case 'musicVolume':
-        music.setVolume(v);
-        break;
       case 'voiceVolume':
-        voice.setVolume(v);
+        shiftMode.applyAudio();
         break;
       case 'brightness':
         renderer.setBrightness(v);
@@ -2874,6 +2906,10 @@ async function startGame(
 
   function frame(now: number): void {
     requestAnimationFrame(frame);
+    // Shift mode's frame cap: skip the whole frame (sim catch-up rides `last`,
+    // which only advances on a frame that actually ran, so dt stays correct).
+    // Always true while shift mode is off.
+    if (!shiftMode.allowFrame(now)) return;
     let frameDt = (now - last) / 1000;
     last = now;
     if (frameDt > 0.25) frameDt = 0.25;

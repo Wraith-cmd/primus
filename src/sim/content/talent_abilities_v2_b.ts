@@ -133,21 +133,11 @@ export const TALENT_ABILITIES_V2_B = {
     description:
       'Living sap wells up in you for 10 sec, restoring 20 of your current resource in waves: mana, Rage, or Energy, and shifting forms does not break it. Sleep, stun, or stasis stills the sap. (Druid talent)',
   },
-  frenzied_regeneration: {
-    id: 'frenzied_regeneration',
-    name: 'Savage Mending',
-    class: 'druid',
-    learnLevel: 10,
-    cost: 10,
-    castTime: 0,
-    cooldown: 60,
-    range: 0,
-    school: 'nature',
-    requiresTarget: false,
-    requiresForm: 'bear',
-    effects: [{ type: 'hot', total: 180, duration: 10, interval: 2 }],
-    description: 'Restores 180 health over 10 sec. Bruin Form only. (Druid talent)',
-  },
+  // frenzied_regeneration (Savage Mending) is no longer a talent-only grant: the
+  // Legion-era Guardian rework promoted it into the baseline Bruin Form kit (see
+  // src/sim/content/classes.ts) and reshaped it from a flat 180-health HoT into a
+  // payback of the damage taken in the last 5 sec. The druid row-17 option now
+  // SHARPENS it (a cooldown cut) instead of granting it.
   berserk: {
     id: 'berserk',
     name: 'Red Haze',

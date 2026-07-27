@@ -181,6 +181,8 @@ const BIND_ACTION_LABEL_KEYS: Partial<Record<string, TranslationKey>> = {
   crafting: 'hudChrome.crafting.title',
   deeds: 'hudChrome.deeds.title',
   professions: 'hudChrome.professions.title',
+  // Same label as the Interface-panel toggle: one switch, one name everywhere.
+  shiftMode: 'hudChrome.options.shiftMode',
 };
 
 /**

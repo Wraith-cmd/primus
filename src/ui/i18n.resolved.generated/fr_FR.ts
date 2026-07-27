@@ -734,6 +734,7 @@ export const fr_FR: EnTranslations = {
       "showOwnNameplate": "Afficher ma plaque de nom",
       "showPlayerNameplates": "Afficher les plaques de noms des joueurs",
       "uiScale": "Échelle de l’interface",
+      "shiftMode": "Shift Mode (Mute + FPS Cap)",
       "playerFrameScale": "Échelle du cadre du joueur",
       "targetFrameScale": "Échelle du cadre de la cible",
       "aurasOnPlayerFrame": "Améliorations sur le cadre du joueur",
@@ -6927,6 +6928,18 @@ export const fr_FR: EnTranslations = {
       "bear_form": {
         "name": "Forme de Bruin",
         "description": "Vous change en ours: armure +130%, puissance d'attaque fortement augmentée, vos attaques génèrent de la rage et 30% de menace en plus. Relancez pour reprendre votre forme de lanceur."
+      },
+      "mangle": {
+        "name": "Ravage",
+        "description": "Ravage the enemy for weapon damage plus {damage}, generating 10 rage and a high amount of threat. Bruin Form only."
+      },
+      "thrash": {
+        "name": "Rending Storm",
+        "description": "Thrash all nearby enemies for {damage} damage and leave them bleeding, generating 6 rage. Causes extra threat. Bruin Form only."
+      },
+      "ironfur": {
+        "name": "Ironpelt",
+        "description": "Your hide hardens, increasing armor by {buff}% for {duration} sec. Stacks up to 4 times, each application keeping its own duration. Bruin Form only."
       },
       "maul": {
         "name": "Brise-os",

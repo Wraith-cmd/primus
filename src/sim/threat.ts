@@ -1,8 +1,9 @@
 // Classic-MMO-style threat. Values follow the community-verified classic-era
 // research (Kenco's threat research / the classic warrior threat tables):
 //  - threat = (damage * abilityMult + flat bonus) * stance/form modifiers
-//  - Defensive Stance and Bear Form multiply threat by 1.3, Cat Form by 0.71,
-//    Righteous Fury multiplies HOLY damage threat by 1.6
+//  - Defensive Stance multiplies threat by 1.3 and Cat Form by 0.71, Righteous
+//    Fury multiplies HOLY damage threat by 1.6; Bruin Form is the Legion-era
+//    outlier and carries its whole budget passively (see BEAR_FORM_THREAT_MULT)
 //  - each point of effective healing = 0.5 threat, split among all enemies
 //    in combat with the healer's party
 //  - a mob switches targets only when an attacker in melee range exceeds
@@ -22,7 +23,16 @@ export const SUMMONED_ADD_THREAT_SEED = 750;
 export const RANGED_SWITCH_MULT = 1.3;
 export const HEAL_THREAT_FACTOR = 0.5;
 export const DEFENSIVE_STANCE_THREAT_MULT = 1.3;
-export const BEAR_FORM_THREAT_MULT = 1.3;
+// Bruin Form is the one LEGION-era tank kit in the game (the warrior and paladin
+// stay on the classic 1.3 / 1.6 numbers above). In Legion, Guardian rage buys
+// MITIGATION (Ironpelt, Savage Mending), not aggro, so the form has to carry the
+// whole threat budget by itself instead of being topped up by Bonecrush spam.
+// 4.0 is deliberately not Legion's literal 750%: it reproduces the DESIGN (rage
+// is free for defence, threat is not something the tank thinks about) while
+// staying in the same universe as the other two tank kits and the 110%/130%
+// pull-over thresholds, which a 7.5x would turn into noise. Roughly: 1.3x plus
+// the ~2.5x a Bonecrush-every-swing rotation used to add, plus headroom.
+export const BEAR_FORM_THREAT_MULT = 4.0;
 export const CAT_FORM_THREAT_MULT = 0.71;
 export const RIGHTEOUS_FURY_THREAT_MULT = 1.6; // holy school only
 export const TAUNT_FORCE_SECONDS = 3;

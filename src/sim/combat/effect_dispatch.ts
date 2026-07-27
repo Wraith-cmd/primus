@@ -55,12 +55,14 @@ import {
   hasSweepingStrikes,
   sweepStrikeDamage,
 } from './area_echo';
+import { allocateIndependentStackAuraId } from './aura_stacking';
 import {
   damageBreakThreshold,
   hasUnbreakableMovementLock,
   isRootedOrChilled,
   isUnbreakableControlAura,
 } from './cc';
+import { damageTakenWithin } from './damage_history';
 import {
   ARCANE_SURGE_ID,
   aetherSurgeAddStack,
@@ -1388,6 +1390,26 @@ export function runEffects(
             // healing at the reduced 15% rate. Non-arcane AoE is unaffected.
             true,
           );
+          // Paired bleed rider (Rending Storm): each enemy actually struck is
+          // also left bleeding, mirroring the single-target 'dot' case. No rng,
+          // and no Attack Power rider: the sweep's direct hit already took the
+          // AoE coefficient above, so scaling the bleed too would double-dip
+          // exactly like the `hybrid` guard on the 'dot' case prevents.
+          if (eff.bleed && !m.dead) {
+            const bleedTicks = Math.max(1, Math.round(eff.bleed.duration / eff.bleed.interval));
+            ctx.applyAura(m, {
+              id: `${ability.id}_bleed`,
+              name: ability.name,
+              kind: 'dot',
+              remaining: eff.bleed.duration,
+              duration: eff.bleed.duration,
+              value: Math.max(1, Math.round(eff.bleed.total / bleedTicks)),
+              tickInterval: eff.bleed.interval,
+              tickTimer: eff.bleed.interval,
+              sourceId: p.id,
+              school: 'physical',
+            });
+          }
           // Paired stun rider (Faultline): each enemy actually struck is also
           // stunned, mirroring the single-target 'stun' case (shared PvP DR,
           // no rng drawn; diminishedCrowdControlDuration is deterministic).
@@ -2301,6 +2323,62 @@ export function runEffects(
           ctx.playerMods(meta),
           meta.equipmentInstance,
         );
+        break;
+      }
+      // Ironpelt (Legion Ironfur): each cast is its OWN aura with its OWN timer,
+      // so the stacks fall off one at a time in the order they were bought
+      // instead of one shared duration being refreshed. The slot ids come from
+      // combat/aura_stacking.ts (lowest free slot; at the cap, the stack with the
+      // least time left is the one refreshed), and recalcPlayerStats sums the
+      // kind across every live sibling, so the armor total needs no extra math.
+      case 'stackingSelfBuff': {
+        ctx.applyAura(p, {
+          id: allocateIndependentStackAuraId(p.auras, ability.id, eff.maxStacks),
+          name: ability.name,
+          kind: eff.kind,
+          remaining: eff.duration,
+          duration: eff.duration,
+          value: eff.value,
+          sourceId: p.id,
+          school: ability.school,
+        });
+        recalcPlayerStats(
+          p,
+          meta.cls,
+          meta.equipment,
+          ctx.playerMods(meta),
+          meta.equipmentInstance,
+        );
+        break;
+      }
+      // Savage Mending (Legion Frenzied Regeneration): pay back a fraction of the
+      // REAL HP loss of the last few seconds, as a HoT, with a max-health floor so
+      // a fresh pull still gets something. The look-back reads the rolling per-tick
+      // ring (combat/damage_history.ts) in TICKS off the sim clock, never a wall
+      // clock, and draws no rng.
+      case 'recentDamageHeal': {
+        const recent = damageTakenWithin(
+          p,
+          ctx.tickCount,
+          Math.round(eff.windowSeconds / DT),
+        );
+        const total = Math.max(
+          Math.round(p.maxHp * eff.minPctMaxHp),
+          Math.round(recent * eff.pct),
+        );
+        const ticks = Math.max(1, Math.round(eff.duration / eff.interval));
+        ctx.applyAura(p, {
+          id: ability.id,
+          name: ability.name,
+          kind: 'hot',
+          remaining: eff.duration,
+          duration: eff.duration,
+          value: Math.max(1, Math.round(total / ticks)),
+          tickInterval: eff.interval,
+          tickTimer: eff.interval,
+          sourceId: p.id,
+          school: ability.school,
+        });
         break;
       }
       case 'petBuff': {

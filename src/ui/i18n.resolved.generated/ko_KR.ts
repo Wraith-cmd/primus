@@ -734,6 +734,7 @@ export const ko_KR: EnTranslations = {
       "showOwnNameplate": "내 이름표 표시",
       "showPlayerNameplates": "플레이어 이름표 표시",
       "uiScale": "UI 배율",
+      "shiftMode": "조용 모드 (음소거 및 FPS 제한)",
       "playerFrameScale": "플레이어 프레임 크기",
       "targetFrameScale": "대상 프레임 크기",
       "aurasOnPlayerFrame": "버프를 플레이어 프레임에 표시",
@@ -6927,6 +6928,18 @@ export const ko_KR: EnTranslations = {
       "bear_form": {
         "name": "큰곰 변신",
         "description": "곰으로 변신합니다. 방어도 +130%, 전투력이 크게 증가하고, 공격이 분노와 30% 더 많은 위협 수준을 생성합니다. 다시 시전하면 시전자 형태로 돌아갑니다."
+      },
+      "mangle": {
+        "name": "찢기",
+        "description": "적을 찢어 무기 피해에 더해 $d 의 피해를 입히고, 분노 10 과 높은 위협 수준을 생성합니다. 곰 형태 전용."
+      },
+      "thrash": {
+        "name": "강타의 폭풍",
+        "description": "주위의 모든 적에게 $d 의 피해를 입히고 출혈시키며, 분노 6 을 생성합니다. 추가 위협 수준을 발생시킵니다. 곰 형태 전용."
+      },
+      "ironfur": {
+        "name": "무쇠 가죽",
+        "description": "가죽을 단단하게 하여 방어도를 $b% 만큼 $t 초 동안 증가시킵니다. 최대 4 번까지 중첩되며, 각 적용은 고유한 지속시간을 유지합니다. 곰 형태 전용."
       },
       "maul": {
         "name": "뼈 분쇄",

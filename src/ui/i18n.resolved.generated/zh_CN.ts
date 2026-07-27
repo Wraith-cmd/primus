@@ -734,6 +734,7 @@ export const zh_CN: EnTranslations = {
       "showOwnNameplate": "显示我的姓名板",
       "showPlayerNameplates": "显示玩家姓名板",
       "uiScale": "界面缩放",
+      "shiftMode": "静音模式（静音并限制帧率）",
       "playerFrameScale": "玩家框缩放",
       "targetFrameScale": "目标框缩放",
       "aurasOnPlayerFrame": "增益显示在玩家框",
@@ -6927,6 +6928,18 @@ export const zh_CN: EnTranslations = {
       "bear_form": {
         "name": "巨熊形态",
         "description": "变形为熊：护甲 +130%，攻击强度大幅提高，你的攻击会产生怒气并额外产生 30% 威胁值。再次施放可返回施法者形态。"
+      },
+      "mangle": {
+        "name": "裂伤",
+        "description": "撕裂敌人，造成武器伤害外加 $d 点伤害，产生 10 点怒气和大量仇恨。仅限熊形态。"
+      },
+      "thrash": {
+        "name": "横扫风暴",
+        "description": "横扫周围所有敌人，造成 $d 点伤害并使其流血，产生 6 点怒气。额外提高仇恨。仅限熊形态。"
+      },
+      "ironfur": {
+        "name": "铁皮",
+        "description": "硬化皮毛，护甲提高 $b%，持续 $t 秒。最多叠加 4 层，每层独立计时。仅限熊形态。"
       },
       "maul": {
         "name": "碎骨击",

@@ -315,6 +315,7 @@ const GENERAL_KEYS = [
   'frostedPanels',
   'highContrastText',
   'reduceMotion',
+  'shiftMode',
   'invertLookY',
   'landingHighContrast',
   'showDevBadges',

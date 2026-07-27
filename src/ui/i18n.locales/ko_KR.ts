@@ -298,6 +298,7 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.partyFrames.showAuras': '버프 및 디버프 표시',
   'hudChrome.partyFrames.showSelf': '내 프레임 표시',
   'hudChrome.frameReset.label': '프레임 위치 초기화',
+  'hudChrome.options.shiftMode': '조용 모드 (음소거 및 FPS 제한)',
   'hudChrome.options.playerFrameScale': '플레이어 프레임 크기',
   'hudChrome.options.targetFrameScale': '대상 프레임 크기',
   'hudChrome.options.aurasOnPlayerFrame': '버프를 플레이어 프레임에 표시',
@@ -2336,6 +2337,15 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.bear_form.name': '큰곰 변신',
   'entities.abilities.bear_form.description':
     '곰으로 변신합니다. 방어도 +130%, 전투력이 크게 증가하고, 공격이 분노와 30% 더 많은 위협 수준을 생성합니다. 다시 시전하면 시전자 형태로 돌아갑니다.',
+  'entities.abilities.mangle.name': '찢기',
+  'entities.abilities.mangle.description':
+    '적을 찢어 무기 피해에 더해 $d 의 피해를 입히고, 분노 10 과 높은 위협 수준을 생성합니다. 곰 형태 전용.',
+  'entities.abilities.thrash.name': '강타의 폭풍',
+  'entities.abilities.thrash.description':
+    '주위의 모든 적에게 $d 의 피해를 입히고 출혈시키며, 분노 6 을 생성합니다. 추가 위협 수준을 발생시킵니다. 곰 형태 전용.',
+  'entities.abilities.ironfur.name': '무쇠 가죽',
+  'entities.abilities.ironfur.description':
+    '가죽을 단단하게 하여 방어도를 $b% 만큼 $t 초 동안 증가시킵니다. 최대 4 번까지 중첩되며, 각 적용은 고유한 지속시간을 유지합니다. 곰 형태 전용.',
   'entities.abilities.maul.name': '뼈 분쇄',
   'entities.abilities.maul.description':
     '근접 피해를 {damage}만큼 증가시키고 많은 위협 수준을 생성하는 난폭한 공격입니다. 다음 무기 공격 시 발동됩니다. 큰곰 변신 전용.',

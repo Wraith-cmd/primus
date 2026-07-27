@@ -2806,6 +2806,10 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   claw: r('nature', 'leafGreen', ['claw_slash'], ['motion']),
   ferocious_bite: r('blood', 'blood', ['fang'], ['drips']),
   swipe: r('earth', 'earthBrown', ['claw_slash'], ['arcs']),
+  // Legion-era Guardian kit: two rage generators, two rage spenders.
+  mangle: r('blood', 'earthBrown', ['claw_slash', { p: 'fang', ...BR }], ['drips']),
+  thrash: r('earth', 'blood', ['claw_slash', { p: 'paw', ...TR }], ['drips', 'motion']),
+  ironfur: r('earth', 'steel', ['shield', { p: 'paw', ...BR }], ['glow']),
   regrowth: r('nature', 'leafGreen', ['heart', { p: 'leaf', ...BR }], ['sparkle']),
   barkskin: r('earth', 'earthBrown', ['shield', { p: 'leaf', ...BR }]),
   primal_reflexes: r('nature', 'leafGreen', ['paw', { p: 'eye', ...TR }], ['motion', 'glow']),

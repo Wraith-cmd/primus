@@ -2221,7 +2221,7 @@ export const DRUID_CHOICE_ROWS: ClassChoiceRows = {
     {
       level: 17,
       theme: 'survival',
-      decision: 'Oakhide-fed instant spell vs active bear healing vs hit-fed rage shield',
+      decision: 'Oakhide-fed instant spell vs faster bear healing vs hit-fed rage shield',
       options: [
         {
           id: 'dru_r17_improved_barkskin',
@@ -2246,11 +2246,15 @@ export const DRUID_CHOICE_ROWS: ClassChoiceRows = {
           },
         },
         {
+          // Savage Mending joined the baseline Bruin Form kit in the Legion-era
+          // Guardian rework, so this option sharpens it instead of granting it:
+          // halving the cooldown roughly doubles how much of the damage a bear
+          // eats it can pay back over a fight.
           id: 'dru_r17_frenzied_regeneration',
           name: 'Savage Mending',
-          description: 'Grants Savage Mending.',
+          description: "Savage Mending's cooldown is reduced by 50%.",
           icon: 'frenzied_regeneration',
-          effect: { grant: { ability: 'frenzied_regeneration' } },
+          effect: { ability: [{ ability: 'frenzied_regeneration', cooldownPct: -0.5 }] },
         },
         {
           // Phase-2 defensive pass: the rage kick stays (the least-lazy of the

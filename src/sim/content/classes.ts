@@ -462,6 +462,14 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'hurricane',
       'skull_bash',
       'primal_reflexes',
+      // Legion-era Guardian kit (appended in learn order). Bruin Form now mints
+      // rage from Ravage/Rending Storm and SPENDS it on mitigation (Ironpelt,
+      // Savage Mending) rather than on aggro; the threat budget moved into the
+      // passive form multiplier (BEAR_FORM_THREAT_MULT in src/sim/threat.ts).
+      'mangle',
+      'thrash',
+      'ironfur',
+      'frenzied_regeneration',
     ],
     color: 0xff8c1a,
   },
@@ -4516,7 +4524,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     requiresTarget: false,
     effects: [{ type: 'selfBuff', kind: 'form_bear', value: 0.65, duration: 3600 }],
     description:
-      'Shapeshift into a bear: armor +130%, greatly increased attack power, your attacks build rage and generate 30% more threat. Cast again to return to caster form.',
+      'Shapeshift into a bear: armor +130%, greatly increased attack power, your attacks build rage and generate 300% more threat, freeing that rage to be spent on staying alive. Cast again to return to caster form.',
   },
   bear_charge: {
     id: 'bear_charge',
@@ -4783,6 +4791,136 @@ export const ABILITIES: Record<string, AbilityDef> = {
     usableInForm: true,
     effects: [{ type: 'selfBuff', kind: 'buff_dodge', value: 0.5, duration: 6 }],
     description: 'Your instincts sharpen, increasing your chance to dodge by 50% for 6 sec.',
+  },
+  // ------------------------------------------------------------------
+  // Legion-era Guardian kit. Two short-cooldown rage GENERATORS (Ravage,
+  // Rending Storm) feeding two rage SPENDERS that buy mitigation rather than
+  // aggro (Ironpelt, Savage Mending). Threat is not part of the rage budget any
+  // more: it rides the passive form multiplier (src/sim/threat.ts).
+  // ------------------------------------------------------------------
+  mangle: {
+    id: 'mangle',
+    name: 'Ravage',
+    class: 'druid',
+    learnLevel: 12,
+    cost: 0,
+    castTime: 0,
+    cooldown: 6,
+    range: 0,
+    school: 'physical',
+    requiresTarget: true,
+    requiresForm: 'bear',
+    threat: { mult: 2 }, // the bear's threat button, on top of the form multiplier
+    effects: [
+      { type: 'weaponStrike', bonus: 14 },
+      { type: 'gainResource', amount: 10 },
+    ],
+    ranks: [
+      {
+        rank: 2,
+        level: 18,
+        cost: 0,
+        effects: [
+          { type: 'weaponStrike', bonus: 24 },
+          { type: 'gainResource', amount: 10 },
+        ],
+      },
+    ],
+    description:
+      'Ravage the enemy for weapon damage plus $d, generating 10 rage and a high amount of threat. Bruin Form only.',
+  },
+  thrash: {
+    id: 'thrash',
+    name: 'Rending Storm',
+    class: 'druid',
+    learnLevel: 14,
+    cost: 0,
+    castTime: 0,
+    cooldown: 6,
+    range: 0,
+    school: 'physical',
+    requiresTarget: false,
+    requiresForm: 'bear',
+    threat: { mult: 1.75 }, // matches Sweeping Claws: an AoE hold button
+    effects: [
+      {
+        type: 'aoeDamage',
+        min: 9,
+        max: 12,
+        radius: 8,
+        bleed: { total: 24, duration: 12, interval: 3 },
+      },
+      { type: 'gainResource', amount: 6 },
+    ],
+    ranks: [
+      {
+        rank: 2,
+        level: 20,
+        cost: 0,
+        effects: [
+          {
+            type: 'aoeDamage',
+            min: 15,
+            max: 19,
+            radius: 8,
+            bleed: { total: 40, duration: 12, interval: 3 },
+          },
+          { type: 'gainResource', amount: 6 },
+        ],
+      },
+    ],
+    description:
+      'Thrash all nearby enemies for $d damage and leave them bleeding, generating 6 rage. Causes extra threat. Bruin Form only.',
+  },
+  ironfur: {
+    id: 'ironfur',
+    name: 'Ironpelt',
+    class: 'druid',
+    learnLevel: 16,
+    cost: 20,
+    castTime: 0,
+    cooldown: 0,
+    range: 0,
+    school: 'physical',
+    requiresTarget: false,
+    offGcd: true,
+    requiresForm: 'bear',
+    // Independent-duration stacks: every cast is its own aura with its own
+    // timer, so banked rage buys a real armor spike that then decays one stack
+    // at a time (combat/aura_stacking.ts allocates the slot ids).
+    effects: [
+      { type: 'stackingSelfBuff', kind: 'buff_armor_pct', value: 12, duration: 7, maxStacks: 4 },
+    ],
+    description:
+      'Your hide hardens, increasing armor by $b% for $t sec. Stacks up to 4 times, each application keeping its own duration. Bruin Form only.',
+  },
+  frenzied_regeneration: {
+    id: 'frenzied_regeneration',
+    name: 'Savage Mending',
+    class: 'druid',
+    learnLevel: 16,
+    cost: 20,
+    castTime: 0,
+    cooldown: 24,
+    range: 0,
+    school: 'nature',
+    requiresTarget: false,
+    requiresForm: 'bear',
+    // The Legion shape, not the WotLK flat heal-over-time: what it returns is a
+    // fraction of the punishment you just absorbed, read off the rolling
+    // damage-taken ring (combat/damage_history.ts).
+    effects: [
+      {
+        type: 'recentDamageHeal',
+        pct: 0.5,
+        windowSeconds: 5,
+        minPctMaxHp: 0.05,
+        duration: 3,
+        interval: 1,
+      },
+    ],
+    description:
+      'Heals you for 50% of all damage you took in the last 5 sec, spread over 3 sec, and never less than 5% of your maximum health. Bruin Form only.',
   },
   starfire: {
     id: 'starfire',

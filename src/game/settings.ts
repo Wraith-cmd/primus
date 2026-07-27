@@ -228,6 +228,14 @@ export const BOOL_SETTINGS = {
   // off by default: show a small frames-per-second readout in the corner for
   // players tuning their graphics settings.
   showFps: { def: false },
+  // off by default: one switch for battery and discretion. While on, every audio
+  // bus is silenced and the render loop is paced to SHIFT_MODE_FPS_CAP, so the
+  // game can run on a handheld or in a background window without draining the
+  // battery or announcing itself. Also toggleable live from its own rebindable
+  // key. The stored volumes are never rewritten: the live mix is DERIVED from
+  // them (game/shift_mode_core.ts resolveAudioMix), so turning this back off
+  // restores exactly what the player had, a hand-muted bus included.
+  shiftMode: { def: false },
   // on by default: show the developer badge (nameplate glyph + name outline,
   // inspect-window block, player card, and the Developers leaderboard tab).
   // Purely a local display preference: the badge is still earned and broadcast

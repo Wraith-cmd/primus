@@ -91,7 +91,8 @@ export interface InputCallbacks {
       | 'deeds'
       | 'professions'
       | 'crafting'
-      | 'sheathe',
+      | 'sheathe'
+      | 'shiftMode',
   ): void;
   onEmoteWheel(open: boolean): void;
   onClickPick(x: number, y: number, button: number): void;
@@ -1048,6 +1049,9 @@ export class Input {
         return;
       case 'sheathe':
         this.cb.onUiKey('sheathe');
+        return;
+      case 'shiftMode':
+        this.cb.onUiKey('shiftMode');
         return;
     }
   }

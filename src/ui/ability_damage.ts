@@ -163,6 +163,9 @@ export function abilityOverTimeEffect(
  *  the player actually knows. Null when the ability has none. */
 export function abilityBuffValue(res: ResolvedAbility): number | null {
   for (const eff of res.effects) {
+    // Ironpelt's independent-duration stacks carry the PER-STACK value, which is
+    // what its tooltip quotes ("armor by 12%"); the stack cap is prose.
+    if (eff.type === 'stackingSelfBuff') return eff.value;
     if (eff.type === 'selfBuff' || eff.type === 'buffTarget') {
       // form_fireball carries a 1+fraction speed multiplier; the tooltip's $b%
       // wants the whole-percent bonus (1.4 -> 40).

@@ -9,25 +9,145 @@
 // Reproducibility is checked by tests/i18n_resolved_equivalence.test.ts.
 
 export const pending: Record<string, readonly string[]> = {
-  "es": [],
-  "es_ES": [],
-  "fr_FR": [],
-  "fr_CA": [],
+  "es": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
+  "es_ES": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
+  "fr_FR": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
+  "fr_CA": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
   "en_CA": [],
-  "it_IT": [],
-  "de_DE": [],
+  "it_IT": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
+  "de_DE": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
   "zh_CN": [],
   "zh_TW": [],
   "ko_KR": [],
   "ja_JP": [],
-  "pt_BR": [],
+  "pt_BR": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
   "ru_RU": [],
-  "cs_CZ": [],
-  "nl_NL": [],
-  "pl_PL": [],
-  "id_ID": [],
-  "tr_TR": [],
-  "sv_SE": [],
-  "vi_VN": [],
-  "da_DK": []
+  "cs_CZ": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
+  "nl_NL": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
+  "pl_PL": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
+  "id_ID": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
+  "tr_TR": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
+  "sv_SE": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
+  "vi_VN": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ],
+  "da_DK": [
+    "entities.abilities.ironfur.description",
+    "entities.abilities.ironfur.name",
+    "entities.abilities.mangle.description",
+    "entities.abilities.mangle.name",
+    "entities.abilities.thrash.description",
+    "entities.abilities.thrash.name",
+    "hudChrome.options.shiftMode"
+  ]
 };

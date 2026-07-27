@@ -262,6 +262,18 @@ export const BIND_ACTIONS: BindAction[] = [
     kind: 'edge',
     defaults: ['Shift+KeyP'],
   },
+  // Shift mode (mute + FPS cap) parks on the shifted layer of KeyM, like Deeds
+  // does on Z and Damage Meters on H: every bare letter default is already
+  // claimed, bare M stays the World Map, and "M for mute" is the mnemonic. Bare
+  // M is an EDGE action, so unlike a shifted movement key this never doubles up
+  // with a held action. Rebindable like any other action.
+  {
+    id: 'shiftMode',
+    label: 'Shift Mode (Mute + FPS Cap)',
+    category: 'Interface',
+    kind: 'edge',
+    defaults: ['Shift+KeyM'],
+  },
   {
     id: 'chat',
     label: 'Open Chat',

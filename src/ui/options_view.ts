@@ -419,6 +419,11 @@ export function buildInterfaceControls(s: OptionsSettingsSource): OptionsControl
       boolToggle(s, 'frostedPanels', 'hud.options.frostedPanels'),
       boolToggle(s, 'highContrastText', 'hud.options.highContrastText'),
       boolToggle(s, 'reduceMotion', 'hud.options.reduceMotion'),
+      // Battery + discretion: mutes every audio bus and paces the render loop to
+      // SHIFT_MODE_FPS_CAP. Sits with the comfort toggles because it is the same
+      // kind of presentational, gameplay-neutral switch; it also has its own
+      // rebindable key so it can be flipped mid-session without opening the menu.
+      boolToggle(s, 'shiftMode', 'hudChrome.options.shiftMode'),
       // Camera comfort (mouse-look direction), so it sits with the comfort
       // toggles rather than the Combat tab's attack/action-bar cluster.
       boolToggle(s, 'invertLookY', 'hud.options.invertLookY'),

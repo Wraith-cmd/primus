@@ -291,6 +291,7 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.partyFrames.showAuras': '显示增益和减益',
   'hudChrome.partyFrames.showSelf': '显示你的框体',
   'hudChrome.frameReset.label': '重置框体位置',
+  'hudChrome.options.shiftMode': '静音模式（静音并限制帧率）',
   'hudChrome.options.playerFrameScale': '玩家框缩放',
   'hudChrome.options.targetFrameScale': '目标框缩放',
   'hudChrome.options.aurasOnPlayerFrame': '增益显示在玩家框',
@@ -2249,6 +2250,15 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.bear_form.name': '巨熊形态',
   'entities.abilities.bear_form.description':
     '变形为熊：护甲 +130%，攻击强度大幅提高，你的攻击会产生怒气并额外产生 30% 威胁值。再次施放可返回施法者形态。',
+  'entities.abilities.mangle.name': '裂伤',
+  'entities.abilities.mangle.description':
+    '撕裂敌人，造成武器伤害外加 $d 点伤害，产生 10 点怒气和大量仇恨。仅限熊形态。',
+  'entities.abilities.thrash.name': '横扫风暴',
+  'entities.abilities.thrash.description':
+    '横扫周围所有敌人，造成 $d 点伤害并使其流血，产生 6 点怒气。额外提高仇恨。仅限熊形态。',
+  'entities.abilities.ironfur.name': '铁皮',
+  'entities.abilities.ironfur.description':
+    '硬化皮毛，护甲提高 $b%，持续 $t 秒。最多叠加 4 层，每层独立计时。仅限熊形态。',
   'entities.abilities.maul.name': '碎骨击',
   'entities.abilities.maul.description':
     '一次猛击攻击，使近战伤害提高 {damage}，并产生大量威胁值。在你的下一次挥击时触发。仅限巨熊形态。',

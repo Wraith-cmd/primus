@@ -734,6 +734,7 @@ export const ja_JP: EnTranslations = {
       "showOwnNameplate": "自分のネームプレートを表示",
       "showPlayerNameplates": "プレイヤーのネームプレートを表示",
       "uiScale": "UIスケール",
+      "shiftMode": "サイレントモード（ミュートとFPS制限）",
       "playerFrameScale": "プレイヤーフレームの大きさ",
       "targetFrameScale": "ターゲットフレームの大きさ",
       "aurasOnPlayerFrame": "バフをプレイヤーフレームに表示",
@@ -6927,6 +6928,18 @@ export const ja_JP: EnTranslations = {
       "bear_form": {
         "name": "ブルーインフォーム",
         "description": "熊に変身します。アーマー +130%、攻撃力が大きく増加し、攻撃が怒りを生成し、脅威生成が30%増加します。再度使用すると術者形態に戻ります。"
+      },
+      "mangle": {
+        "name": "切り裂き",
+        "description": "敵を切り裂き、武器ダメージに加えて $d のダメージを与え、レイジを 10 と高い脅威度を生成する。ブルーインフォーム専用。"
+      },
+      "thrash": {
+        "name": "乱撃の嵐",
+        "description": "周囲の敵全てに $d のダメージを与えて出血させ、レイジを 6 生成する。追加の脅威度を発生させる。ブルーインフォーム専用。"
+      },
+      "ironfur": {
+        "name": "鉄皮",
+        "description": "皮膚を硬化させ、アーマーを $b% 上昇させる、$t 秒間。最大 4 回まで重複し、各適用が独自の持続時間を保つ。ブルーインフォーム専用。"
       },
       "maul": {
         "name": "骨砕き",

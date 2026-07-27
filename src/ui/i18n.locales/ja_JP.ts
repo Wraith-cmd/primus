@@ -296,6 +296,7 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.partyFrames.showAuras': 'バフとデバフを表示',
   'hudChrome.partyFrames.showSelf': '自分のフレームを表示',
   'hudChrome.frameReset.label': 'フレーム位置をリセット',
+  'hudChrome.options.shiftMode': 'サイレントモード（ミュートとFPS制限）',
   'hudChrome.options.playerFrameScale': 'プレイヤーフレームの大きさ',
   'hudChrome.options.targetFrameScale': 'ターゲットフレームの大きさ',
   'hudChrome.options.aurasOnPlayerFrame': 'バフをプレイヤーフレームに表示',
@@ -2347,6 +2348,15 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.bear_form.name': 'ブルーインフォーム',
   'entities.abilities.bear_form.description':
     '熊に変身します。アーマー +130%、攻撃力が大きく増加し、攻撃が怒りを生成し、脅威生成が30%増加します。再度使用すると術者形態に戻ります。',
+  'entities.abilities.mangle.name': '切り裂き',
+  'entities.abilities.mangle.description':
+    '敵を切り裂き、武器ダメージに加えて $d のダメージを与え、レイジを 10 と高い脅威度を生成する。ブルーインフォーム専用。',
+  'entities.abilities.thrash.name': '乱撃の嵐',
+  'entities.abilities.thrash.description':
+    '周囲の敵全てに $d のダメージを与えて出血させ、レイジを 6 生成する。追加の脅威度を発生させる。ブルーインフォーム専用。',
+  'entities.abilities.ironfur.name': '鉄皮',
+  'entities.abilities.ironfur.description':
+    '皮膚を硬化させ、アーマーを $b% 上昇させる、$t 秒間。最大 4 回まで重複し、各適用が独自の持続時間を保つ。ブルーインフォーム専用。',
   'entities.abilities.maul.name': '骨砕き',
   'entities.abilities.maul.description':
     '近接ダメージを {damage} 増加させ、大量の脅威を発生させる猛攻です。次のスイングで発動します。ブルーインフォーム専用。',

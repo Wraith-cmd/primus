@@ -44,7 +44,13 @@ const NUMBER_ALLOWLIST: Record<string, number[]> = {
   // Valor Roar's Protection-only damage reduction is applied when the party
   // maximum-health aura is created, rather than stored on its shared effect.
   rallying_cry: [5],
-  bear_form: [30, 130],
+  // "armor +130%" is the recalcPlayerStats multiplier (2.3) in entity.ts and
+  // "300% more threat" is BEAR_FORM_THREAT_MULT (4.0) in threat.ts, the
+  // Legion-era Guardian number; neither lives on the form effect.
+  bear_form: [300, 130],
+  // "generating 10/6 rage": Ravage and Rending Storm quote their own
+  // gainResource riders, which the resolver already collects, so no entry is
+  // needed for those. Ironpelt's "up to 4 times" is its maxStacks, likewise.
   // "compelled to attack you for 3 sec": the taunt compel window in threat.ts.
   taunt: [3],
   holy_taunt: [3],

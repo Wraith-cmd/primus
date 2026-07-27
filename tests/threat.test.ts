@@ -134,7 +134,12 @@ describe('threat from damage', () => {
     expect(sim.player.auras.some((a) => a.kind === 'defensive_stance')).toBe(false);
   });
 
-  it('bear form multiplies threat by 1.3', () => {
+  it('bruin form carries the Legion-era Guardian threat budget passively (x4)', () => {
+    // The other two tank kits stay on their classic numbers (Defensive Stance
+    // 1.3, Righteous Fury 1.6); the bear is the one Legion kit, where rage buys
+    // mitigation instead of aggro, so the FORM has to do the holding.
+    expect(BEAR_FORM_THREAT_MULT).toBe(4);
+    expect(BEAR_FORM_THREAT_MULT).toBeGreaterThan(DEFENSIVE_STANCE_THREAT_MULT);
     const sim = makeSim('druid');
     sim.setPlayerLevel(10);
     sim.castAbility('bear_form');

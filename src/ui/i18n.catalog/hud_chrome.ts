@@ -669,6 +669,10 @@ export const hudChromeStrings = {
     // Interface panel: global HUD zoom slider, and the mirror of the landing
     // page's high-contrast backdrop toggle.
     uiScale: 'UI Scale',
+    // Interface panel toggle (off by default) + the Key Bindings row for the same
+    // switch: silence every audio bus and cap the frame rate, for playing on
+    // battery or beside other people. See src/game/shift_mode_core.ts.
+    shiftMode: 'Shift Mode (Mute + FPS Cap)',
     // Interface panel sliders: scale just the player / target unit frame
     // (wordy, M16: the five non-Latin fills land in the same change as each).
     playerFrameScale: 'Player Frame Scale',

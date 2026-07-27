@@ -220,6 +220,28 @@ describe('locomotion animation state', () => {
     };
     expect(desiredBaseState(state, true)).toBe('spin');
   });
+
+  it('splits the cast pose by gesture so a bolt and a heal do not animate alike', () => {
+    const casting = { ...BASE_ANIM_STATE, casting: true };
+    expect(desiredBaseState({ ...casting, castStyle: 'shoot' }, true)).toBe('castShoot');
+    expect(desiredBaseState({ ...casting, castStyle: 'raise' }, true)).toBe('castRaise');
+  });
+
+  it('keeps the shared channel pose for an unclassified or absent cast style', () => {
+    const casting = { ...BASE_ANIM_STATE, casting: true };
+    expect(desiredBaseState(casting, true)).toBe('cast');
+    expect(desiredBaseState({ ...casting, castStyle: 'channel' }, true)).toBe('cast');
+  });
+
+  it('keeps the whirl override ahead of a styled cast', () => {
+    const state = {
+      ...BASE_ANIM_STATE,
+      casting: true,
+      castStyle: 'shoot' as const,
+      spinning: true,
+    };
+    expect(desiredBaseState(state, true)).toBe('spin');
+  });
 });
 
 describe('pickProxyHeight (corpse pick-capsule flatten, issue 1486)', () => {

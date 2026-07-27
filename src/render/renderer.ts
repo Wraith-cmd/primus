@@ -84,6 +84,7 @@ import {
   preloadTrainingDummyAssets,
   trainingDummyAssetsReady,
 } from './characters/assets';
+import { castStyleForAbility } from './characters/cast_style_core';
 import { skinCount, visualKeyFor } from './characters/manifest';
 import {
   playerRangedAttackAlreadyStarted,
@@ -5696,6 +5697,7 @@ export class Renderer {
       st.dead = visuallyDead;
       const waterJetVisualChannel = this.waterJetVisualChannels.has(e.id);
       st.casting = (e.castingAbility !== null || waterJetVisualChannel) && !visuallyDead;
+      st.castStyle = castStyleForAbility(e.castingAbility);
       st.spinning =
         st.casting &&
         e.castingAbility !== null &&

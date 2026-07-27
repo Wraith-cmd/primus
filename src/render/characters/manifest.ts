@@ -29,8 +29,12 @@ export interface ClipMap {
   death: string;
   /** hit-react one-shots (optional — spider/raptor rigs have none) */
   hit?: string[];
-  /** looping cast channel */
+  /** looping cast channel (the shared default gesture) */
   cast?: string;
+  /** cast pose for offensive spells (bolts, dots, debuffs); falls back to `cast` */
+  castShoot?: string;
+  /** cast pose for beneficial spells (heals, shields, buffs); falls back to `cast` */
+  castRaise?: string;
   sitDown?: string;
   sitIdle?: string;
   /** swim base (prone pitch is procedural on top) */
@@ -147,6 +151,10 @@ const kaykit = (attack: string[], idle = 'Idle'): ClipMap => ({
   hit: ['Hit_A'],
   death: 'Death_A',
   cast: 'Spellcasting',
+  // The rig ships these two alongside `Spellcasting`; they were previously only
+  // reachable through emotes, which is why every spell looked the same.
+  castShoot: 'Spellcast_Shoot',
+  castRaise: 'Spellcast_Raise',
   sitDown: 'Sit_Floor_Down',
   sitIdle: 'Sit_Floor_Idle',
   swim: 'Lie_Idle',

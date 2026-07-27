@@ -1241,6 +1241,10 @@ export class CharacterVisual {
         return this.action(c.run) ?? this.action(c.walk);
       case 'cast':
         return this.action(c.cast) ?? this.action(c.idle);
+      case 'castShoot':
+        return this.action(c.castShoot) ?? this.action(c.cast) ?? this.action(c.idle);
+      case 'castRaise':
+        return this.action(c.castRaise) ?? this.action(c.cast) ?? this.action(c.idle);
       case 'spin':
         return this.action(c.attack[0]) ?? this.action(c.idle);
       case 'swim':
@@ -1379,6 +1383,8 @@ function clipNamesOf(def: VisualDef): string[] {
     ...Object.values(c.attackByHand ?? {}),
     ...(c.hit ?? []),
     c.cast,
+    c.castShoot,
+    c.castRaise,
     c.sitDown,
     c.sitIdle,
     c.swim,

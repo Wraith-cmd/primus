@@ -13,6 +13,10 @@ export interface AnimState {
   reverseBackpedal?: boolean;
   dead: boolean;
   casting: boolean;
+  /** Which spellcast gesture the in-progress cast plays. Resolved from the
+   *  ability by cast_style_core; absent (or 'channel') keeps the historical
+   *  single pose every cast used to share. */
+  castStyle?: CastStyle;
   /** Channeling a self-centered whirl such as Bladestorm. This wins over the
    *  generic cast and locomotion poses. */
   spinning?: boolean;
@@ -20,12 +24,19 @@ export interface AnimState {
   sitting: boolean;
 }
 
+/** The spellcast gesture families the rigs carry. `channel` is the original
+ *  shared pose (KayKit `Spellcasting`); the other two split offensive casts
+ *  from beneficial ones so a bolt and a heal no longer look identical. */
+export type CastStyle = 'channel' | 'shoot' | 'raise';
+
 export type BaseState =
   | 'idle'
   | 'walk'
   | 'walkBack'
   | 'run'
   | 'cast'
+  | 'castShoot'
+  | 'castRaise'
   | 'spin'
   | 'swim'
   | 'sit'
@@ -94,7 +105,11 @@ export function desiredBaseState(s: AnimState, hasWalkBackClip: boolean): BaseSt
   if (s.swimming) return 'swim';
   if (s.airborne) return 'jump';
   if (s.spinning) return 'spin';
-  if (s.casting) return 'cast';
+  if (s.casting) {
+    if (s.castStyle === 'shoot') return 'castShoot';
+    if (s.castStyle === 'raise') return 'castRaise';
+    return 'cast';
+  }
   if (s.sitting) return 'sit';
   if (s.moving) {
     if (s.backwards && hasWalkBackClip && !s.reverseBackpedal) return 'walkBack';

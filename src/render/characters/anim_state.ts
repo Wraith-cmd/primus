@@ -17,6 +17,10 @@ export interface AnimState {
    *  ability by cast_style_core; absent (or 'channel') keeps the historical
    *  single pose every cast used to share. */
   castStyle?: CastStyle;
+  /** Total seconds of the in-progress cast (0 when not hard-casting). The cast
+   *  clip is stretched to cover exactly this, so a cast plays ONE gesture rather
+   *  than looping a short clip. */
+  castTotal?: number;
   /** Channeling a self-centered whirl such as Bladestorm. This wins over the
    *  generic cast and locomotion poses. */
   spinning?: boolean;
@@ -116,6 +120,23 @@ export function desiredBaseState(s: AnimState, hasWalkBackClip: boolean): BaseSt
     return s.running ? 'run' : 'walk';
   }
   return 'idle';
+}
+
+/** Playback rate that makes one pass of a `clipSeconds` cast clip cover the whole
+ *  `castTotal`. Returns 1 when either is unknown, so a caller with no timing
+ *  falls back to native speed rather than freezing or racing.
+ *
+ *  This is the fix for the stutter: the rig's cast clips are 0.67s to 2.10s, so
+ *  playing one at native speed under a 2.5s cast restarts it mid-gesture. The
+ *  clamp keeps a very short cast from flickering through a long clip and a very
+ *  long one from crawling to a visual halt. */
+export const CAST_TIME_SCALE_MIN = 0.25;
+export const CAST_TIME_SCALE_MAX = 4;
+
+export function castTimeScale(clipSeconds: number, castTotal: number | undefined): number {
+  if (!castTotal || castTotal <= 0 || clipSeconds <= 0) return 1;
+  const raw = clipSeconds / castTotal;
+  return Math.max(CAST_TIME_SCALE_MIN, Math.min(CAST_TIME_SCALE_MAX, raw));
 }
 
 export function locomotionTimeScale(

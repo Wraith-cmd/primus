@@ -2,6 +2,9 @@ import { describe, expect, it } from 'vitest';
 import {
   type AnimState,
   advanceSwimBlend,
+  CAST_TIME_SCALE_MAX,
+  CAST_TIME_SCALE_MIN,
+  castTimeScale,
   desiredBaseState,
   isSwimmingAtDepth,
   locomotionTimeScale,
@@ -268,5 +271,27 @@ describe('pickProxyHeight (corpse pick-capsule flatten, issue 1486)', () => {
     // A larger creature keeps a proportionally larger (but still sub-standing) flat
     // footprint so its corpse is not an unclickable sliver.
     expect(pickProxyHeight(3.0, 1.0, true)).toBe(2.0);
+  });
+});
+
+describe('cast clip time scaling', () => {
+  it('stretches one clip pass to cover the whole cast', () => {
+    // Spellcast_Raise is 2.10s; a 2.10s cast should play it at native speed.
+    expect(castTimeScale(2.1, 2.1)).toBeCloseTo(1, 5);
+    // A slower cast plays the clip slower so it does not finish early and loop.
+    expect(castTimeScale(2.1, 4.2)).toBeCloseTo(0.5, 5);
+    // A quicker cast plays it faster so it finishes with the cast.
+    expect(castTimeScale(2.1, 1.05)).toBeCloseTo(2, 5);
+  });
+
+  it('falls back to native speed when the cast length is unknown', () => {
+    expect(castTimeScale(2.1, undefined)).toBe(1);
+    expect(castTimeScale(2.1, 0)).toBe(1);
+    expect(castTimeScale(0, 2.5)).toBe(1);
+  });
+
+  it('clamps so a very long or very short cast never freezes or flickers', () => {
+    expect(castTimeScale(0.67, 600)).toBe(CAST_TIME_SCALE_MIN);
+    expect(castTimeScale(2.1, 0.05)).toBe(CAST_TIME_SCALE_MAX);
   });
 });

@@ -35,6 +35,10 @@ export interface ClipMap {
   castShoot?: string;
   /** cast pose for beneficial spells (heals, shields, buffs); falls back to `cast` */
   castRaise?: string;
+  /** one-shot fired the moment a hard cast completes (the release gesture) */
+  castRelease?: string;
+  /** one-shot for an instant cast, which never shows a channel pose at all */
+  castInstant?: string;
   sitDown?: string;
   sitIdle?: string;
   /** swim base (prone pitch is procedural on top) */
@@ -150,11 +154,17 @@ const kaykit = (attack: string[], idle = 'Idle'): ClipMap => ({
   attack,
   hit: ['Hit_A'],
   death: 'Death_A',
-  cast: 'Spellcasting',
-  // The rig ships these two alongside `Spellcasting`; they were previously only
-  // reachable through emotes, which is why every spell looked the same.
-  castShoot: 'Spellcast_Shoot',
+  // Cast poses, assigned by MEASURED clip length (see docs note below), then
+  // time-scaled so one pass covers the whole cast instead of looping:
+  //   Spellcasting    0.67s  too short to channel; it is the instant-cast punch
+  //   Spellcast_Shoot 0.93s  a thrust: the RELEASE, fired when the cast lands
+  //   Spellcast_Raise 2.10s  slow and deliberate: the only real channel pose
+  cast: 'Spellcast_Raise',
+  castShoot: 'Spellcast_Raise',
   castRaise: 'Spellcast_Raise',
+  /** One-shot on cast completion (the release), and on an instant cast. */
+  castRelease: 'Spellcast_Shoot',
+  castInstant: 'Spellcasting',
   sitDown: 'Sit_Floor_Down',
   sitIdle: 'Sit_Floor_Idle',
   swim: 'Lie_Idle',

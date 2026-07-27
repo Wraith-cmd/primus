@@ -3,7 +3,7 @@
 // capped at 5, "View all updates on GitHub" link) into the character-select
 // stage, in the slot where the class-details sheet used to sit. Cold path
 // (painted once per character-select entry), so raw DOM writes are fine here
-// (the store_promo_card.ts / dialog_root.ts cold-window convention, not the
+// (the dialog_root.ts cold-window convention, not the
 // per-frame PainterHost elider). All feed logic and markup builders are pure
 // and live in ./news_feed; this module owns only the fetch loop and the
 // last-seen persistence.

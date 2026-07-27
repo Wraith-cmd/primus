@@ -41,7 +41,6 @@ function makeHarness(
     window: window as unknown as Window,
     storage,
     isMobileLayout: () => options.mobile ?? false,
-    hasStorePromoCard: () => false,
     uiScale: () => 1,
   });
   return { controller, document, window, wrap, tabs, frame, input, storage };

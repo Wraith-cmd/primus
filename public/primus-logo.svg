@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" width="640" height="200" role="img" aria-label="PRIMUS">
+  <rect width="640" height="200" fill="#12100c"/>
+  <rect x="10" y="10" width="620" height="180" fill="none" stroke="#c9a227" stroke-width="4"/>
+  <text x="320" y="122" font-family="Georgia, 'Times New Roman', serif" font-size="86" font-weight="bold"
+        letter-spacing="14" text-anchor="middle" fill="#e8d9a0">PRIMUS</text>
+</svg>

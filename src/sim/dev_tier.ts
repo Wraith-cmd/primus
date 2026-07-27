@@ -17,7 +17,7 @@
 //
 // This pure, host-agnostic module exists so the server, the HUD presentation
 // code, and any tooling can agree on the cosmetic tier index without importing
-// across host boundaries. It mirrors src/sim/holder_tier.ts and
+// across host boundaries. It mirrors
 // src/sim/discord_tier.ts in shape.
 
 export interface DevTierCore {

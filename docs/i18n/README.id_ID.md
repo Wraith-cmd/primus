@@ -103,8 +103,7 @@ Masuk online hanya lewat Discord dan email, persis seperti alur web: email/passw
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 Arahkan shell ke API lain dengan `VITE_DESKTOP_API_ORIGIN`, misalnya server lokal atau host staging:

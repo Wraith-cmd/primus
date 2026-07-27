@@ -82,11 +82,7 @@ async function characterize(
 const SECRET_ENV = {
   restartCountdown: 'RESTART_COUNTDOWN_SECRET',
   discordBot: 'DISCORD_BOT_SECRET',
-  dailyReward: 'WOC_DAILY_REWARD_SERVICE_SECRET',
 } as const;
-// The daily-reward gate's request header (presented only by the two gate-pass
-// cases below; every reject case omits it, like the other two gates).
-const DAILY_REWARD_HEADER = 'x-woc-daily-reward-secret';
 // A non-empty value to turn a secret-gated feature ON without presenting the
 // matching request secret, so the gate answers 401 (not 404 feature-off). The
 // value never reaches the wire, so its content is irrelevant.
@@ -307,12 +303,10 @@ describe('characterization: internal handleInternalApi', () => {
     });
   });
 
-  // The ten /internal/discord/* routes and the method each is documented under.
+  // The eight /internal/discord/* routes and the method each is documented under.
   // The DISCORD_BOT_SECRET gate in handleDiscordInternal runs BEFORE any route or
   // method branch, so the 401 (and the 404 feature-off) contract is identical for
-  // all ten; we capture each route so the security gate is documented per route.
-  // (The two daily-rewards-winners routes postdate the original characterization
-  // capture; their goldens were backfilled under the same shared-gate rationale.)
+  // all eight; we capture each route so the security gate is documented per route.
   const DISCORD_ROUTES = [
     { method: 'GET', path: '/internal/discord/flex', name: 'discord_flex' },
     { method: 'GET', path: '/internal/discord/roles', name: 'discord_roles' },
@@ -322,21 +316,11 @@ describe('characterization: internal handleInternalApi', () => {
     { method: 'GET', path: '/internal/discord/relay', name: 'discord_relay' },
     { method: 'GET', path: '/internal/discord/activity', name: 'discord_activity' },
     { method: 'POST', path: '/internal/discord/members-meta', name: 'discord_members_meta' },
-    {
-      method: 'GET',
-      path: '/internal/discord/daily-rewards-winners',
-      name: 'discord_daily_rewards_winners',
-    },
-    {
-      method: 'POST',
-      path: '/internal/discord/daily-rewards-winners/mark',
-      name: 'discord_daily_rewards_winners_mark',
-    },
   ] as const;
 
   // Feature-off gate, captured PER ROUTE: with DISCORD_BOT_SECRET unset, the whole
   // /internal/discord/* surface answers 404 unknown endpoint at the shared gate.
-  // Looping all ten (mirroring the 401 loop below) freezes each route's feature-off
+  // Looping all eight (mirroring the 401 loop below) freezes each route's feature-off
   // baseline, so a later change that moves any one off the shared gate is caught.
   for (const route of DISCORD_ROUTES) {
     it(`${route.method} ${route.path} (bot secret unset) -> 404 unknown endpoint`, async () => {
@@ -350,7 +334,7 @@ describe('characterization: internal handleInternalApi', () => {
     });
   }
 
-  // 401 not-authenticated gate for each of the ten routes: DISCORD_BOT_SECRET
+  // 401 not-authenticated gate for each of the eight routes: DISCORD_BOT_SECRET
   // set, the x-woc-discord-secret request header absent. The gate precedes the db.
   for (const route of DISCORD_ROUTES) {
     it(`${route.method} ${route.path} (bot secret set, no header) -> 401 not authenticated`, async () => {
@@ -372,90 +356,6 @@ describe('characterization: internal handleInternalApi', () => {
       'unknown_endpoint_404',
       makeReq({ method: 'GET', url: '/internal/no-such-op' }),
     );
-  });
-});
-
-// -----------------------------------------------------------------------------
-// internal handleDailyRewardInternalApi (/internal/daily-rewards/*): the
-// late-arrival backfill (the family arrived with the v0.19.0 merge, after
-// the original characterization capture, so its legacy contract is frozen here
-// write-if-absent before the default flipped to 'new'). The x-woc-daily-reward-secret gate FAILS
-// CLOSED, unlike the two gates above: an unset env secret answers 401 not
-// authenticated (never the feature-off 404), and there is no
-// RESTART_COUNTDOWN_SECRET fallback. The gate spans the whole prefix BEFORE
-// path/method resolution.
-// -----------------------------------------------------------------------------
-describe('characterization: internal handleDailyRewardInternalApi (late-arrival backfill)', () => {
-  const OPS_ROUTES = [
-    { path: '/internal/daily-rewards/finalize', name: 'daily_rewards_finalize' },
-    { path: '/internal/daily-rewards/pending-payouts', name: 'daily_rewards_pending_payouts' },
-    { path: '/internal/daily-rewards/payout-history', name: 'daily_rewards_payout_history' },
-    { path: '/internal/daily-rewards/leaderboard', name: 'daily_rewards_leaderboard' },
-    { path: '/internal/daily-rewards/mark-payout', name: 'daily_rewards_mark_payout' },
-    { path: '/internal/daily-rewards/void-payout', name: 'daily_rewards_void_payout' },
-    { path: '/internal/daily-rewards/restore-payout', name: 'daily_rewards_restore_payout' },
-  ] as const;
-
-  // Fail-closed gate, captured PER ROUTE: with the env secret UNSET the family
-  // answers 401 not authenticated (the deploy/discord gates would say 404 here).
-  for (const route of OPS_ROUTES) {
-    it(`POST ${route.path} (secret unset) -> fail-closed 401 not authenticated`, async () => {
-      await withEnv(SECRET_ENV.dailyReward, undefined, async () => {
-        await characterize(
-          FIXTURE_SUBDIR.internal,
-          `${route.name}_secret_unset_401`,
-          makeReq({ method: 'POST', url: route.path }),
-        );
-      });
-    });
-  }
-
-  // 401 with the env secret SET and the request header absent (same body as the
-  // unset case: the fail-closed gate is 401 on both reject paths).
-  for (const route of OPS_ROUTES) {
-    it(`POST ${route.path} (secret set, no header) -> 401 not authenticated`, async () => {
-      await withEnv(SECRET_ENV.dailyReward, GATE_ENABLED_VALUE, async () => {
-        await characterize(
-          FIXTURE_SUBDIR.internal,
-          `${route.name}_no_secret_401`,
-          makeReq({ method: 'POST', url: route.path }),
-        );
-      });
-    });
-  }
-
-  // Two GATE-PASS contract points that stay db-free:
-  // a wrong method resolves inside the family (gate first, then no branch
-  // matches) to the in-family 404 unknown endpoint, never a 405;
-  it('GET /internal/daily-rewards/pending-payouts (correct secret) -> in-family 404 unknown endpoint', async () => {
-    await withEnv(SECRET_ENV.dailyReward, GATE_ENABLED_VALUE, async () => {
-      await characterize(
-        FIXTURE_SUBDIR.internal,
-        'daily_rewards_pending_payouts_get_404',
-        makeReq({
-          method: 'GET',
-          url: '/internal/daily-rewards/pending-payouts',
-          headers: { [DAILY_REWARD_HEADER]: GATE_ENABLED_VALUE },
-        }),
-      );
-    });
-  });
-
-  // and mark-payout validates its payout target BEFORE the first query, so the
-  // empty-body 400 freezes the handler's validation prose through the real gate.
-  it('POST /internal/daily-rewards/mark-payout (correct secret, empty body) -> 400 invalid payout target', async () => {
-    await withEnv(SECRET_ENV.dailyReward, GATE_ENABLED_VALUE, async () => {
-      await characterize(
-        FIXTURE_SUBDIR.internal,
-        'daily_rewards_mark_payout_empty_400',
-        makeReq({
-          method: 'POST',
-          url: '/internal/daily-rewards/mark-payout',
-          headers: { [DAILY_REWARD_HEADER]: GATE_ENABLED_VALUE },
-          body: {},
-        }),
-      );
-    });
   });
 });
 

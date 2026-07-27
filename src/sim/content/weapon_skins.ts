@@ -3,7 +3,7 @@
 // the mechanical catalog. Player-visible names, looks, and lore live in
 // src/ui/i18n.catalog/armory.ts. The economy service is authoritative for price
 // and availability. Skins are ACCOUNT-wide unlocks bought
-// with Claudium through the economy service; the skin id doubles as the economy
+// The skin id doubles as the catalog
 // SKU item id (kind 'skin'), so ids here must stay in lockstep with the service
 // catalog. Cosmetic only: a skin never changes weapon stats, reach, or speed.
 //

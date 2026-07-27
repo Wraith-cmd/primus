@@ -176,50 +176,6 @@ describe('ensureSchema wires every schema module at boot', () => {
     expect(setLocalIdx).toBeLessThan(lockIdx);
   });
 
-  it('applies payout void metadata and append-only moderation audit storage', async () => {
-    await ensureSchema();
-    const applied = h.calls.join('\n');
-    expect(applied).toContain(
-      'ALTER TABLE daily_reward_payouts ADD COLUMN IF NOT EXISTS void_reason TEXT',
-    );
-    expect(applied).toContain(
-      'ALTER TABLE daily_reward_payouts ADD COLUMN IF NOT EXISTS voided_by_id TEXT',
-    );
-    expect(applied).toContain(
-      'ALTER TABLE daily_reward_payouts ADD COLUMN IF NOT EXISTS voided_by_username TEXT',
-    );
-    expect(applied).toContain(
-      'ALTER TABLE daily_reward_payouts ADD COLUMN IF NOT EXISTS voided_at TIMESTAMPTZ',
-    );
-    expect(applied).toContain('CREATE TABLE IF NOT EXISTS daily_reward_payout_moderation_audit');
-    expect(applied).toContain("action TEXT NOT NULL CHECK (action IN ('void', 'restore'))");
-    expect(applied).toContain('actor_id TEXT NOT NULL');
-    expect(applied).toContain('actor_username TEXT NOT NULL');
-    expect(applied).toContain(
-      'ALTER TABLE daily_reward_payouts ADD COLUMN IF NOT EXISTS signed_transaction TEXT',
-    );
-    expect(applied).toContain('CREATE TABLE IF NOT EXISTS daily_reward_payout_attempts');
-    expect(applied).toContain("kind TEXT NOT NULL CHECK (kind IN ('payout', 'resend'))");
-    expect(applied).toContain(
-      'ALTER TABLE daily_reward_payout_attempts ADD COLUMN IF NOT EXISTS operation_id TEXT',
-    );
-    expect(applied).toContain(
-      'CREATE UNIQUE INDEX IF NOT EXISTS daily_reward_payout_attempts_operation',
-    );
-    expect(applied).toContain('tx_signature TEXT NOT NULL UNIQUE');
-  });
-
-  it('applies timed Daily Rewards bans without changing the exclusion-view shape', async () => {
-    await ensureSchema();
-    const applied = h.calls.join('\n');
-    expect(applied).toContain(
-      'ALTER TABLE daily_reward_bans ADD COLUMN IF NOT EXISTS expires_at TIMESTAMPTZ',
-    );
-    expect(applied).toContain('CREATE OR REPLACE VIEW daily_reward_excluded_accounts AS');
-    expect(applied).toContain('expires_at IS NULL OR expires_at > now()');
-    expect(applied).toContain('SELECT account_id, reason');
-  });
-
   it('applies the bank-system tables (character_leases, bank_ledger) idempotently', async () => {
     // Bank system tables: the per-character load lease and the append-only
     // bank op ledger both live inline in the core SCHEMA string. Pin them by name so
@@ -339,25 +295,17 @@ describe('ensureSchema wires every schema module at boot', () => {
     expect(carcassCheck).toBeGreaterThan(sessionLock);
     expect(carcassCheck).toBeLessThan(concurrentIndex);
     expect(h.calls.some((sql) => sql.includes('DROP INDEX CONCURRENTLY'))).toBe(false);
-    const rewardEventsIndex = h.calls.findIndex((sql) =>
-      sql.includes(
-        'CREATE INDEX CONCURRENTLY IF NOT EXISTS daily_reward_events_account_day_created_id',
-      ),
-    );
-    expect(rewardEventsIndex).toBeGreaterThan(concurrentIndex);
-    expect(rewardEventsIndex).toBeLessThan(sessionUnlock);
-    expect(h.calls[rewardEventsIndex]).toContain('WHERE points > 0');
-    // The open-sessions partial index builds third, still inside the session
+    // The open-sessions partial index builds second, still inside the session
     // lock; its partial predicate is what keeps the index tiny (open sessions
     // are a sliver of the table), so pin it alongside the ordering.
     const openIdx = h.calls.findIndex((sql) =>
       sql.includes('CREATE INDEX CONCURRENTLY IF NOT EXISTS play_sessions_open_character'),
     );
-    expect(openIdx).toBeGreaterThan(rewardEventsIndex);
+    expect(openIdx).toBeGreaterThan(concurrentIndex);
     expect(openIdx).toBeLessThan(sessionUnlock);
     expect(h.calls[openIdx]).toContain('WHERE ended_at IS NULL');
     // The client-perf worst-10s ranking index (packet 0 ruling R7) builds
-    // fourth, still inside the session lock and never as boot DDL; its
+    // third, still inside the session lock and never as boot DDL; its
     // columns must exist by then (the ALTERs ride the committed transaction).
     const worst10sIdx = h.calls.findIndex((sql) =>
       sql.includes('CREATE INDEX CONCURRENTLY IF NOT EXISTS client_perf_reports_worst10s_created'),
@@ -442,12 +390,10 @@ describe('ensureSchema wires every schema module at boot', () => {
     expect(unlock).toBeGreaterThan(failedCreate);
   });
 
-  it('applies the play-session retention schema after the metrics schema and before the relocated exclusion view', async () => {
-    // The exclusion view's association arm reads account_ip_associations, which
-    // PLAY_SESSION_RETENTION_SCHEMA creates, so on a FRESH boot the view must be
-    // created after the retention schema (the view moved out of the core SCHEMA
-    // constant for exactly this dependency). All of it runs before COMMIT, inside
-    // the one boot transaction.
+  it('applies the play-session retention schema after the metrics schema, inside the boot transaction', async () => {
+    // PLAY_SESSION_RETENTION_SCHEMA rolls up the metrics tables, so on a FRESH
+    // boot it must be applied after the metrics schema. All of it runs before
+    // COMMIT, inside the one boot transaction.
     await ensureSchema();
     const metricsIdx = h.calls.findIndex((sql) =>
       sql.includes('CREATE TABLE IF NOT EXISTS player_account_facts'),
@@ -455,18 +401,10 @@ describe('ensureSchema wires every schema module at boot', () => {
     const retentionIdx = h.calls.findIndex((sql) =>
       sql.includes('CREATE TABLE IF NOT EXISTS play_session_totals'),
     );
-    const viewIdx = h.calls.findIndex((sql) =>
-      sql.includes('CREATE OR REPLACE VIEW daily_reward_excluded_accounts'),
-    );
     const commitIdx = h.calls.indexOf('COMMIT');
     expect(metricsIdx).toBeGreaterThan(-1);
     expect(retentionIdx).toBeGreaterThan(metricsIdx);
-    expect(viewIdx).toBeGreaterThan(retentionIdx);
-    expect(commitIdx).toBeGreaterThan(viewIdx);
-    // The relocated view actually carries the association arm (not a stale copy
-    // that predates the fold-forward retention).
-    expect(h.calls[viewIdx]).toContain('account_ip_associations');
-    expect(h.calls[viewIdx]).toContain('JOIN daily_reward_ip_bans');
+    expect(commitIdx).toBeGreaterThan(retentionIdx);
   });
 
   it('the play-session retention DDL is entirely guarded, additive, and non-destructive', async () => {
@@ -504,7 +442,6 @@ describe('ensureSchema wires every schema module at boot', () => {
     // append, never reorder.
     expect(CONCURRENT_INDEX_MIGRATIONS.map((m) => m.name)).toEqual([
       'play_sessions_account_started_id',
-      'daily_reward_events_account_day_created_id',
       'play_sessions_open_character',
       'client_perf_reports_worst10s_created',
     ]);

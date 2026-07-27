@@ -363,258 +363,7 @@ export const it_IT: EnTranslations = {
       "title": "Emote",
       "done": "Fine"
     },
-    "dailyRewards": {
-      "title": "Ricompense giornaliere",
-      "close": "Chiudi ricompense giornaliere",
-      "loading": "Caricamento delle ricompense giornaliere...",
-      "error": "Impossibile caricare le ricompense giornaliere.",
-      "disabled": "Le ricompense giornaliere sono attualmente disattivate. Annunceremo gli aggiornamenti di questa funzionalità nel canale Discord.",
-      "intro": "Detieni abbastanza WOC nel tuo portafoglio verificato per sbloccare le ricompense giornaliere. Guadagna punti con un giro giornaliero e incarichi a rotazione, poi scala la classifica giornaliera per aggiudicarti una parte del montepremi.",
-      "disclaimer": "Il prezzo di WOC può muoversi rapidamente. Consigliamo di detenere più del minimo di 20 USD, così le normali oscillazioni di prezzo non ti escludono. Questo non è un consiglio finanziario.",
-      "prize": "Montepremi",
-      "reset": "Azzeramento",
-      "endsIn": "Termina tra {time}",
-      "remainingLessThanMinute": "<1m",
-      "remainingMinutes": "{minutes}m",
-      "remainingHoursMinutes": "{hours}h {minutes}m",
-      "remainingDaysHours": "{days} g {hours} h",
-      "score": "Punteggio",
-      "walletValue": "Valore del portafoglio (WOC)",
-      "usd": "{amount} USD",
-      "sol": "{amount} SOL",
-      "unknown": "Sconosciuto",
-      "spinTitle": "Giro giornaliero",
-      "spinDialogTitle": "Giro della ricompensa giornaliera",
-      "spinClose": "Chiudi giro giornaliero",
-      "spinReady": "Un giro è pronto.",
-      "spinClaimed": "Ottenuti: +{points} punti.",
-      "spinResult": "+{points} punti",
-      "spinButton": "Gira",
-      "tasks": "Incarichi",
-      "taskMultiplier": "Moltiplicatore x{multiplier}",
-      "oneVsOneExcluded": "Le partite 1 contro 1 non assegnano punti per le ricompense giornaliere.",
-      "pointsGained": "{points} punti ricompense giornaliere ottenuti.",
-      "showChestButton": "Mostra forziere",
-      "hideChestButton": "Nascondi forziere",
-      "hideChestConfirmTitle": "Nascondere il forziere delle ricompense giornaliere?",
-      "hideChestConfirmBody": "Questo rimuove la scorciatoia del forziere dalla tua interfaccia. Ricompense, idoneità e questo pannello restano disponibili; puoi ripristinare la scorciatoia dalle Opzioni.",
-      "hideChestConfirmOk": "Nascondi forziere",
-      "hideChestConfirmCancel": "Annulla",
-      "leaderboard": "Classifica giornaliera",
-      "totalPlayer": "{count} giocatore oggi",
-      "totalPlayers": "{count} giocatori oggi",
-      "history": "Vincitori precedenti",
-      "noLeaders": "Ancora nessun punto.",
-      "noHistory": "Ancora nessun pagamento.",
-      "walletConnectTitle": "Verifica portafoglio",
-      "walletConnectBody": "Verifica un portafoglio Solana con WOC per sbloccare le ricompense giornaliere.",
-      "walletConnectButton": "Verifica portafoglio",
-      "walletHoldTitle": "Detieni WOC",
-      "walletHoldBody": "Detieni almeno {amount} USD in WOC per sbloccare le ricompense giornaliere.",
-      "walletPriceBody": "Il prezzo di WOC non è disponibile al momento. Ricontrolla a breve.",
-      "reason": {
-        "eligible": "Ricompense sbloccate.",
-        "no_wallet": "Collega un portafoglio con almeno 20 USD in WOC.",
-        "under_minimum": "Il portafoglio è sotto il minimo di 20 USD in WOC.",
-        "price_unavailable": "Il prezzo di WOC non è disponibile, le ricompense sono temporaneamente bloccate.",
-        "banned": "Sei escluso dalle Ricompense giornaliere. Motivo: {reason}",
-        "bannedUntil": "Sei escluso dalle Ricompense giornaliere per altri {remaining}. L’accesso sarà ripristinato {until}. Motivo: {reason}"
-      }
-    },
     "wocStore": {
-      "title": "Negozio WOC",
-      "close": "Chiudi il negozio WOC",
-      "tabsLabel": "Sezioni del negozio WOC",
-      "storeTab": "Negozio",
-      "rewardsTab": "Premi giornalieri",
-      "loading": "Caricamento del negozio WOC...",
-      "error": "Il negozio WOC non è al momento disponibile. Per favore riprova a breve.",
-      "balance": "Saldo Claudium",
-      "buyClaudium": "Acquista Claudium",
-      "owned": "In possesso",
-      "needMoreTitle": "Servono altri Claudium",
-      "needMoreBody": "Ti servono altri {shortfall} Claudium per acquistare {item}.",
-      "cancel": "Annulla",
-      "confirmTitle": "Conferma l'acquisto del cosmetico",
-      "confirmBody": "Acquistare {item} per {cost} Claudium?",
-      "confirmPurchase": "Acquista",
-      "priceChanged": "Il prezzo è cambiato prima del completamento dell'acquisto. Controlla il prezzo aggiornato e conferma di nuovo.",
-      "armoryEyebrow": "Stagione 1",
-      "armoryTitle": "L'Armeria",
-      "armoryBody": "Aspetti per armi in edizione limitata dall'Armeria della Stagione 1. Disponibili per tutto l'account, puramente cosmetici e visibili a chiunque ti circondi.",
-      "wallet": {
-        "title": "Portafoglio Solana",
-        "unlinked": "Connetti un'app portafoglio, poi firma una volta per collegare il suo indirizzo pubblico al tuo account WoC. Non riceviamo mai la tua frase di recupero o chiave privata.",
-        "connectedUnlinked": "L'app del portafoglio è connessa a questo browser, ma il suo indirizzo pubblico non è ancora collegato al tuo account WoC.",
-        "linkedDisconnected": "Il tuo indirizzo pubblico è collegato. Riconnetti l'app del portafoglio quando vuoi pagare con SOL o WOC.",
-        "linkedConnected": "Il tuo portafoglio collegato è connesso e pronto per acquisti con SOL o WOC.",
-        "mismatched": "È connesso un portafoglio diverso. Verificalo per sostituire l'indirizzo collegato, oppure riconnetti il portafoglio collegato.",
-        "connect": "Collega portafoglio",
-        "verify": "Verifica e collega",
-        "reconnect": "Riconnetti portafoglio",
-        "manage": "Gestisci portafoglio"
-      },
-      "collectionLine": "Collezione {collection}",
-      "collections": {
-        "guildmark": "Marchio della gilda",
-        "emberwrought": "Forgiato nella Brace",
-        "hoarfrost": "Brina",
-        "fallen_star": "Stella Caduta"
-      },
-      "skins": {
-        "guildmark_arming_sword": {
-          "name": "Spada da armamento del marchio della gilda",
-          "look": "Lama in acciaio azzurrato, guardia a coda di pesce in bronzo, impugnatura in pelle tinta verde acqua, piccolo sigillo della gilda stampato.",
-          "lore": "Se una lama comune è anonima, questa porta una firma. Un armaiolo ottiene il diritto di incidere il proprio marchio sul ricasso solo quando il Mercante del Mercato Mondiale garantisce per il suo acciaio, e quello del fabbro Haldren è garantito. Brunita contro l'umidità della Valle e bilanciata al capello. Paghi il marchio quanto la spada, e ne vale la pena."
-        },
-        "brasscap_axe": {
-          "name": "Ascia con cappuccio in ottone",
-          "look": "Punta in acciaio lucido, cappuccio e lancette in ottone su manico in frassino laccato, rivestimento ordinato, timbro del produttore.",
-          "lore": "Un'ascia stampata è un vanto che puoi tenere. Il cappuccio e le linguette di ottone sono metà armatura e metà firma: impediscono che l'impugnatura si spezzi e catturano la luce della taverna, così tutti sanno che hai comprato un'opera dell'armaiolo Hode, non un pezzo di seconda mano della milizia. \"Se taglia, lo vendo\", dice il fabbro dell'Highwatch. Questo taglia."
-        },
-        "tempered_flanged_mace": {
-          "name": "Mazza flangiata temperata",
-          "look": "Testa a sei flange in acciaio temperato blu, collare e pomo in ottone, impugnatura in cuoio rosso vino.",
-          "lore": "Sei flange di acciaio azzurrato e temperato, ciascuna rettificata per aprire un elmo, ricoperte di ottone e avvolte in pelle rosso vino. Gli armaioli del regno non creano armi brutte, anche quando il lavoro è brutale. Questo è stato commissionato tramite il mercato mondiale, non tirato fuori da uno scaffale; da qualche parte c'è un registro con il nome di un orgoglioso acquirente e la somma che ha pagato a Hode per averlo."
-        },
-        "guildmark_dirk": {
-          "name": "Marchio della Gilda Dirk",
-          "look": "Pugnale sottile in acciaio temperato, guardia e dado del pomello in bronzo, impugnatura del cordone verde scuro, sigillo stampato.",
-          "lore": "Ciò che porta un uomo affermato quando la spada resta a casa: sottile, temperato e impresso con lo stesso marchio che certifica una lama intera, indossato alla cintura come un sigillo affilato. Discreto per tutti, tranne per chi sa leggere la prova di un armaiolo. Il Quartiermastro Bree ne tiene un cassetto a Highwatch per gli ufficiali che si sono guadagnati il rispetto della muraglia."
-        },
-        "brasscrown_staff": {
-          "name": "Bastone da passeggio della Corona d'Ottone",
-          "look": "Bastone in legno duro sormontato da un terminale a corona in ottone tornito, puntale in ottone, fascia in pelle tinta.",
-          "lore": "Trasformato in legno duro stagionato e coronato da un terminale in ottone, i fabbri Eastbrook hanno fuso a centinaia ma perfetti uno per uno. Appartiene al tipo di viaggiatore che vuole essere preso sul serio sia al cancello di Fenbridge che al muro di Highwatch. Un bastone da passeggio che non ha mai veramente avuto bisogno di camminare; la fascia in tinta si abbina ad un cappotto di cui si può intuire il prezzo."
-        },
-        "lacquered_wand": {
-          "name": "Asta laccata",
-          "look": "Bacchetta sottile laccata rosso intenso, due fasce in ottone lucido, piccola punta arrotondata in ottone.",
-          "lore": "Lacca rosso intenso in sette cappotti pazienti, fasciata due volte in ottone lucido: il tipo di bacchetta che un mago siepe compra al Mercato Mondiale una volta che ha iniziato a caricare monete vere e vuole guardarla. Incanala la Luce non meglio di un bastone di betulla. Ma brilla magnificamente sul bancone del Mercante, e si è sempre creduto a metà della magia minore."
-        },
-        "fletcher_s_guild_bow": {
-          "name": "Arco della Gilda dei Frecciai",
-          "look": "Arco ricurvo in noce laccato, puntali dei flettenti in ottone, corda di lino cerato e marchio della gilda sull'impugnatura.",
-          "lore": "La cosa più simile a una gilda che esista nel reame è il marchio di un frecciaio sull'impugnatura, una promessa su ciò che racchiude, come il sigillo di un vignaiolo su una botte. Noce laccato, ottone sui puntali e una corda di lino cerato che non si sfilaccia sotto la pioggia di Mirefen. Ogni giuntura giustifica il prezzo. Tendilo una volta oltre il Folto delle vedove e non avrai più dubbi."
-        },
-        "cinderbrand_sword": {
-          "name": "Marchiobrace",
-          "look": "Lama in acciaio forgiato scuro, piena di rune color ambra brillante, crepe dovute al calore, una gemma fumante nella guardia.",
-          "lore": "La prima lama temprata non nell'acqua, ma nelle Braci Benedette raccolte a Stormcrag, carboni che i fabbri di Highwatch giurano \"brucino azzurri e puri, perché la montagna ricorda il suo antico giuramento\". Racchiuso nella scanalatura, quel fuoco arde color brace e non muore; le rune restano calde al tocco nella notte più fredda sulla muraglia. Marchiobrace non deve mai essere accesa. Semplicemente si rifiuta di spegnersi."
-        },
-        "emberbite_axe": {
-          "name": "Morsobrace",
-          "look": "Ascia di ferro annerito con incrinature color arancio che brillano attraverso la punta, una gemma di carbone accumulato, filamenti di calore.",
-          "lore": "L'armaiolo Hode ha inserito un carbone ardente di fuoco di montagna nel cuore del morso, quindi il bordo non si raffredda mai veramente tra un colpo e l'altro. Le crepe respirano arancione durante il rallentamento, come se il colpo risvegliasse qualcosa che la prima forgiatura aveva lasciato addormentato nel ferro. Dicono che un elementale di Stormcrag abbia rinunciato alla brace per questo; dicono un sacco di cose a Highwatch quando il vento è alto."
-        },
-        "smoulderfall_mace": {
-          "name": "Caduta fumante",
-          "look": "Flange di ferro scuro che brillano di un arancione acceso lungo le fessure interne, una gemma dal nucleo fuso nella testa.",
-          "lore": "Una mazza che trasporta il proprio focolare: una pietra dal nucleo fuso scheggiata dal sigillo del Sanctum che è stata \"lavorata con il fuoco di montagna\", incastonata ardente nella testa. Le flange rimangono calde al tatto e più calde dove atterrano; un sergente di Highwatch giura che un colpo lascerà un livido che brillerà debolmente fino al mattino. Il fuoco della montagna, finalmente fatto per spezzare invece che per sigillare."
-        },
-        "ashspark_dagger": {
-          "name": "Pugnale di Ashscintilla",
-          "look": "Lama corta annerita venata di un brillante arancione brace, una piccola gemma fumante nel pomo, cenere e scintilla.",
-          "lore": "Una lama da vicolo con il fuoco della montagna contrabbandato nella pietra del pomo, una battuta sommessa di un armaiolo: persino un tagliaborse può portare con sé una brace della prima forgiatura. Annerita e venata d'arancio, resta sempre un po' troppo calda nel fodero. Sguainala al buio sotto Highwatch e il bagliore illuminerà la tua mano quanto basta per trovare un varco nella guardia di un uomo."
-        },
-        "forgeheart_staff": {
-          "name": "Bastone di Forgeheart",
-          "look": "Bastone rivestito di ferro coronato da un nucleo di brace splendente ingabbiata, rune di brace lungo il fusto, un crescente luccichio di calore.",
-          "lore": "Un carbone vivo del fuoco della montagna, ingabbiato nel ferro sulla corona. Il Maestro del sapere Caddis lo considera la prova che il fuoco della prima forgiatura può essere vincolato al servizio, non soltanto alla custodia dei sigilli. Un tremolio di calore sale in un nastro sottile e infinito; a un mago che lo porta non manca mai né una forgia né un fuoco di guardia. Si sussurra che la brace provenga dal respiro di Voskar Aladibrace e che da allora non si sia mai raffreddata."
-        },
-        "emberwrought_wand": {
-          "name": "Bacchetta forgiata in brace",
-          "look": "Bacchetta di metallo annerito con sulla punta un carbone ardente in artigli di ferro, sottili crepe dovute al calore, calda luce interiore.",
-          "lore": "La bacchetta che ha dato il nome al grado. Quando un armaiolo di Alta Guardia per primo mise un carbone di fuoco di montagna in artigli di ferro e lo fece rispondere a una mano mortale, anche gli Sacerdote della Luce smisero di chiamarla eresia e iniziarono a chiamarla utile. Caldo, paziente e silenziosamente pericoloso: la brace sulla sua punta brucia, ininterrotta, da prima che il suo proprietario prendesse fiato."
-        },
-        "cinderlatch_crossbow": {
-          "name": "Fermobrace",
-          "look": "Balestra d'acciaio annerito, bagliore arancione che filtra dalle fessure nel pungolo, carbone fumante nella barra del timone.",
-          "lore": "Il più strano tra gli oggetti forgiati nella brace: il fuoco della montagna riversato in una macchina. Il bagliore arancione filtra dalle fessure dell'arco, mentre un carbone fumante nel fusto impedisce alla corda di irrigidirsi nel freddo di Thornpeak o nell'umidità di Mirefen. I suoi dardi lasciano la scanalatura già caldi e colpiscono ancora più roventi. La risposta di un cacciatore per una muraglia dove neppure il nemico sente il freddo."
-        },
-        "ice_fang_sword": {
-          "name": "Zanna di ghiaccio",
-          "look": "Lama curva di ghiaccio glaciale pallido, cristalli di brina frastagliati lungo la spina dorsale, un nucleo ghiacciato di colore ciano brillante nella guardia trasversale di ghiacciolo più piena.",
-          "lore": "Il pezzo forte della serie gelata, il primo che ogni collezionista desidera. Zanna di Ghiaccio fu scolpita, non forgiata, da una zanna del ghiacciaio che corona Thornpeak sopra Highwatch; il nucleo ciano arde di un freddo pari alla luce del Glimmermere. Ricopre di brina persino l'aria che taglia. Le guardie della muraglia giurano che un soldato la portasse la notte in cui le alte nevi respinsero il Culto del Wyrm e \"regalò alla muraglia un altro inverno\"."
-        },
-        "glaciersplit_axe": {
-          "name": "Spaccatura del ghiacciaio",
-          "look": "Testa di ghiacciaio blu traslucido, interno incrinato che brilla di ciano, cristalli di brina irti, un manico che lascia dietro di sé vapore freddo.",
-          "lore": "Ricavata dal cuore azzurro del ghiacciaio di Thornpeak, dove due secoli di ghiaccio hanno compresso il freddo finché non ha cominciato a brillare da solo. Lascia una scia di vapore anche a riposo, e il suo schianto ricorda un crepaccio che si apre sotto la Cresta del braccatore. Highwatch affida i suoi caduti al ghiaccio lassù: questa è un'arma fatta per tenere a bada il disgelo e qualunque cosa possa risvegliare."
-        },
-        "rimecrusher_mace": {
-          "name": "Frantoio",
-          "look": "Grappolo di cristalli di ghiaccio frastagliati attorno a un nucleo ciano brillante, brina che striscia lungo un manico argentato.",
-          "lore": "Non scolpito ma cresciuto: il ghiaccio di Thornpeak si avvolse attorno a un freddo nucleo ciano finché non divenne duro come il miglior acciaio di Hode. La brina si insinua lungo il manico argentato verso la mano e non arriva mai del tutto. Dove colpisce, l'acqua gela; dove riposa, la terra imbianca. Il freddo mortale delle vette, reso abbastanza piccolo da dondolarsi contro le cose che si arrampicano sulla parete."
-        },
-        "frostbite_dagger": {
-          "name": "Ago di brina",
-          "look": "Pugnale malvagiamente sottile di ghiaccio blu chiaro, una vena ciano brillante al centro, cristalli di ghiaccio aghiformi, impugnatura di brina.",
-          "lore": "Sottile come un respiro trattenuto e fredda il doppio: una scheggia del ghiacciaio di Thornpeak affilata fino a lasciare una sola vena luminosa, così tagliente che la ferita gela prima che il sangue si ricordi di scorrere. Il nome viene dal gelo sepolcrale che i morti portano giù dalle vette. Non serve mai affilarla: il ghiaccio non perde il filo, osserva asciutto il Maestro del sapere Caddis, aspetta soltanto."
-        },
-        "hoarfrost_vigil_staff": {
-          "name": "Veglia della brina",
-          "look": "Bastone argentato coronato da un frammento fluttuante di brillante ghiaccio ciano che ruota lentamente, irradiando cristalli e vapore freddo.",
-          "lore": "Il bastone della guardia che non dorme mai sulla muraglia di Highwatch. La corona è una scheggia di ghiaccio ciano del lago montano, sospesa libera dall'argento e capace di ruotare lentamente da sola: sempre, giurano le guardie, verso il freddo che si raccoglie sotto le vette. Portare la Veglia significa sostenere duecento anni di guardia in una sola notte e promettere di non distogliere lo sguardo."
-        },
-        "everwinter_wand": {
-          "name": "Frammento di Sempreinverno",
-          "look": "Un singolo picco di brillante ghiacciaio azzurro, brina che fiorisce da un collare d'argento, debole nebbia fredda.",
-          "lore": "Una punta di ghiaccio glaciale luminoso, che si dice provenga dal profondo laghetto sotto il Sanctum, dove il freddo della montagna ha i denti. La brina fiorisce senza fine dal collare d'argento e non si scioglie mai, né al fuoco né d'estate. I maghi la tengono vicina per il gelo che presta alle loro opere, ma la allontanano nelle notti in cui sembra inclinarsi verso la cripta di Nythraxis e mettersi in ascolto."
-        },
-        "winterbite": {
-          "name": "Morso invernale",
-          "look": "Arco di acciaio argentato e ghiaccio azzurro, nucleo ciano ghiacciato e luminoso nell'impugnatura, freccia di ghiaccio massiccio incoccata e vapore freddo.",
-          "lore": "Un arco di acciaio argentato e ghiaccio di Thornpeak, con l'impugnatura illuminata da un freddo nucleo ciano che congela la freccia alla corda. Incocca un dardo di ghiaccio glaciale che si riforma a ogni tiro; sulla muraglia l'arciere non porta una faretra, soltanto il freddo. Highwatch resistette a un assedio sulla Cresta del braccatore grazie a un arco simile: un solo arciere, si dice, e frecce per un intero inverno, sempre già pronte."
-        },
-        "solheim_sword": {
-          "name": "Solheim, L'ultima luce dell'alba",
-          "look": "Spadone forgiato da una stella caduta, nucleo d'oro fuso che divide la lama, acciaio nero cosmo bordato di luce stellare, frammenti dorati che orbitano attorno alla guardia, nastro aurora.",
-          "lore": "Quando la stella cadde dal cielo occidentale ed \"esplose come una fucina\" oltre il Boschetto della Vedova, fratello Aldric estrasse il suo cuore ancora fumante dal cratere Mirefen e implorò i fabbri del regno di lavorare \"una cosa che non appartiene a questo mondo\". Ne hanno fatto uno spadone: Solheim. Il suo nucleo d'oro fuso divide la lama nera del cosmo come l'alba che squarcia un cielo notturno, e schegge di metallo stellare orbitano attorno alla guardia su sentieri non tracciati da mano. Ne è stato forgiato solo uno. Non ce ne sarà un altro."
-        },
-        "skyrender_axe": {
-          "name": "Squarciacielo, Ferita del Firmamento",
-          "look": "La testa sembra un pezzo strappato di cielo notturno, crepe d'oro fuso e incisioni di costellazioni, frammenti di luce stellare sospesi, uno scintillio di aurora che segue il bordo.",
-          "lore": "Battuto dal bordo del cratere, dove la stella caduta strappò da Mirefen il riflesso del cielo e lasciò una ferita che ancora fuma. La testa sembra un pezzo di notte lacerata: crepe d'oro fuso, costellazioni che nessuno studioso di Highwatch riesce a nominare, un'aurora che sanguina dal bordo a ogni oscillazione. Il fratello Aldric lo benedisse e non lo toccò. Sollevarlo significa tenere il buco lasciato dal cielo."
-        },
-        "starfall_mace": {
-          "name": "Caduta Stellare, Giudizio dei Cieli",
-          "look": "Nucleo stellare prigioniero d'oro fuso circondato da frammenti orbitanti, flange nere come il cosmo venate di luce stellare, aurora che fuoriesce dalle cuciture.",
-          "lore": "Un nucleo stellare catturato un istante prima di morire, circondato dai detriti caduti con esso, congelato a un centimetro dall'oblio. Le sue flange nere come il cosmo scorrono con la luce stellare intrappolata, e l'aurora fuoriesce dalle giunture quando viene sollevata. I vecchi Sacerdote della Luce chiamavano una stella cadente un giudizio, un verdetto emesso dall'alto che nessuno scudo doveva fermare, e la chiamavano in onore di quella caduta su Mirefen."
-        },
-        "astravyr_dagger": {
-          "name": "Astravyr, Zanna della Stella Caduta",
-          "look": "Un frammento di stella caduta, un bordo luminoso d'oro fuso su un metallo nero cosmo, un granello di stella luminoso che orbita attorno al pomo, una sottile scia di aurora.",
-          "lore": "Il pezzo più piccolo della stella che Aldric ha recuperato dal cratere e, secondo alcuni calcoli, il più pericoloso. Un singolo frammento di quel cuore ultraterreno, il suo bordo d'oro fuso che cavalca il metallo nero cosmo, un granello di stella solitario che circonda il pomo come una luna che ha perso il suo mondo. Non pesa quasi nulla e separa quasi tutto. Abbastanza piccolo da nascondersi, abbastanza luminoso da essere trovato nell'oscurità con la propria luce."
-        },
-        "cosmarch_staff": {
-          "name": "Marciacosmo, Guglia del Vuoto Infinito",
-          "look": "Grappolo orbitante di frammenti di stelle dorati attorno a un nucleo d'oro fuso, un albero nero cosmo inciso con costellazioni, nastri di aurora che si avvolgono verso l'alto.",
-          "lore": "Un'asta di metallo stellare coronata da un nucleo d'oro fuso e un anello di schegge dorate che marciano attorno ad essa in un'orbita lenta e infinita: un piccolo cosmo, inciso con costellazioni che non corrispondono al cielo sopra Thornpeak. L'aurora si snoda per tutta la sua lunghezza come fumo che ha dimenticato di salire. Coloro che lo sopportavano affermavano di poter sentire il vuoto che lo attraversava, nel modo in cui Ysolei semplicemente \"beve la luce della luna\": paziente, fredda e guardando indietro."
-        },
-        "emberwish_wand": {
-          "name": "Desideriobrace, Favilla del Sole Morente",
-          "look": "Prigioniero di particelle di stella morente in oro fuso avvolte in scintille orbitanti, asta nera come il cosmo incisa con costellazioni luminose.",
-          "lore": "Non la stella caduta in sé, ma l'ultimo granello di una stella morente: un'unica brace d'oro fuso di un sole già spento, avvolta nelle scintille che erano la sua luce finale. Sul suo fusto nero come il cosmo sono incise le costellazioni che lo hanno visto morire. I contadini di Mirefen dicono che esaudisce un desiderio a chiunque lo tenga al tramonto; dicono anche che ogni anima che lo possedeva desiderava più tempo, e che la Luna Annegata non ne concesse a nessuno di loro."
-        },
-        "encore_bow": {
-          "name": "Encore, la seconda stella cadente",
-          "look": "Cannone stellare comicamente sovradimensionato: una canna nero cosmo incisa con costellazioni dorate luminose, una volata a campana svasata con un guscio di cometa in oro fuso inserito all'interno, raccordi in ottone, calcio a spalla in legno.",
-          "lore": "I fabbri che lavorarono la stella caduta ne ricavarono sei reliquie e si ritrovarono ancora con un barile di metallo stellare, quando ormai gli apprendisti avevano le proprie idee. Dall'incudine uscì il primo cannone del reame o la sua più piccola macchina d'assedio: un cannone da spalla che, più che sparare, richiede una seconda stella con tanto di bersaglio. Fratello Aldric rifiutò di benedirlo: qualcosa di tanto rumoroso era già stato notato dal cielo. I cacciatori lo adorano. Nulla sulla sua traiettoria ha mai condiviso l'entusiasmo."
-        },
-        "meteorlatch_crossbow": {
-          "name": "Fermometeora, Ultimo Giudizio del Cielo",
-          "look": "Metallo stellare meteoritico, nucleo d'oro fuso lungo la barra, arti neri come il cosmo incisi con costellazioni, un dardo incoccato di puro fuoco stellare.",
-          "lore": "Forgiato con metallo stellare meteorico grezzo mentre il cratere Mirefen ancora brillava, detriti \"troppo caldi da maneggiare\", martellati in arti di nero cosmo inciso con costellazioni, un nucleo di oro fuso appoggiato lungo la barra. Non scaglia alcun fulmine ma ne evoca uno: un raggio di fuoco stellare, scagliato come un verdetto e che atterra come la fine di uno. Quando Highwatch temeva che perfino la corona immortale di Nythraxis potesse non essere la cosa peggiore sotto le vette, questa era l'arma che volevano sulle mura. Mira bene."
-        }
-      },
-      "seasonOne": "Stagione 1",
-      "rarity": {
-        "uncommon": "Non comune",
-        "rare": "Raro",
-        "epic": "Epico",
-        "legendary": "Leggendario"
-      },
       "wtype": {
         "sword": "Spada",
         "axe": "Ascia",
@@ -625,73 +374,7 @@ export const it_IT: EnTranslations = {
         "bow": "Arco",
         "crossbow": "Balestra",
         "polearm": "Arma inastata"
-      },
-      "badge": {
-        "flagship": "Pezzo forte",
-        "hero": "Eroe"
-      },
-      "inspectAria": "Esamina {item}",
-      "viewModeLabel": "Modalità di anteprima",
-      "tryOn": "Provalo",
-      "weaponOnly": "Solo arma",
-      "sceneLabel": "Illuminazione della scena",
-      "scene": {
-        "day": "Giorno",
-        "dusk": "Crepuscolo",
-        "night": "Notte"
-      },
-      "lore": "Storia",
-      "buySkin": "Acquista aspetto",
-      "unavailable": "Non disponibile",
-      "applied": "Applicato",
-      "apply": "Applica aspetto",
-      "detach": "Rimuovi aspetto",
-      "equipHint": "Equipaggia un'arma di tipo {type} per applicare questo aspetto."
-    },
-    "claudium": {
-      "title": "Claudium",
-      "open": "Apri Claudium",
-      "close": "Chiudi Claudium",
-      "loading": "Caricamento di Claudium...",
-      "balanceLabel": "Saldo",
-      "balanceUnit": "{amount} Claudium",
-      "solBalance": "SOL: {amount}",
-      "usdcBalance": "Saldo USDC: {amount}",
-      "wocBalance": "WOC: {amount}",
-      "unavailable": "Il negozio Claudium non è disponibile al momento. Il tuo saldo e i tuoi acquisti non subiranno modifiche. Riprova tra poco.",
-      "disclosure": "Claudium è una valuta virtuale a senso unico: puoi acquistarlo con denaro reale e spenderlo in cosmetici. Non può essere riscattato, trasferito o convertito in denaro.",
-      "buyTitle": "Acquista Claudium",
-      "railLabel": "Metodo di pagamento",
-      "railStripe": "Carta",
-      "railSol": "SOL",
-      "railUsdc": "USDC",
-      "railWoc": "WOC",
-      "railWocDiscount": "20% di sconto",
-      "railWocUnavailable": "I prezzi WOC non sono disponibili al momento.",
-      "railNativeUnavailable": "SOL/WOC non disponibile.",
-      "amountLabel": "Quantità",
-      "showAmounts": "Mostra tutti gli importi di Claudium",
-      "hideAmounts": "Nascondi importi extra di Claudium",
-      "skuRow": "{usd} per {claudium} Claudium",
-      "buyButton": "Acquista",
-      "buyUnavailable": "L'acquisto non è disponibile al momento.",
-      "storeTitle": "Negozio di cosmetici",
-      "storeEmpty": "Nessun cosmetico è disponibile al momento.",
-      "storeCost": "{amount} Claudium",
-      "spendButton": "Riscatta",
-      "kindCosmetic": "Cosmetico",
-      "kindSkin": "Aspetto",
-      "kindItem": "Oggetto",
-      "checkoutTitle": "Completa l'acquisto",
-      "checkoutClose": "Chiudi il pagamento",
-      "checkoutLoading": "Caricamento del pagamento...",
-      "checkoutPending": "Transazione in corso. Conferma nel tuo portafoglio e mantieni questo pannello aperto.",
-      "checkoutPendingButton": "In elaborazione",
-      "checkoutFailed": "Impossibile caricare il pagamento. Riprova.",
-      "checkoutUnavailable": "L'acquisto di Claudium non è disponibile al momento.",
-      "checkoutWalletRequired": "Collega un portafoglio Solana prima di acquistare Claudium con criptovaluta.",
-      "checkoutWalletUnsupported": "Questo portafoglio non può firmare e inviare transazioni Solana.",
-      "checkoutNotSettled": "La transazione è stata inviata, ma Claudium non è ancora stato accreditato. Riprova tra poco."
+      }
     },
     "theme": {
       "preset": "Tema dell'interfaccia",
@@ -773,7 +456,6 @@ export const it_IT: EnTranslations = {
     "mobile": {
       "jump": "Salta",
       "leaderboard": "Classifica",
-      "dailyRewards": "Negozio",
       "deeds": "Imprese",
       "professions": "Professioni",
       "nameplates": "Nomi",
@@ -1048,8 +730,6 @@ export const it_IT: EnTranslations = {
       "clickFeedback": "Indicatore di clic",
       "lockCursorOnRotate": "Blocca cursore durante la rotazione",
       "keybindHelpLockCursorOnRotate": "Mantiene il cursore del mouse dentro la finestra mentre trascini per ruotare la telecamera, così non può raggiungere il bordo dello schermo o passare a un altro monitor. Disattiva l'opzione se preferisci un cursore libero.",
-      "showWalletOnCharacterScreen": "Mostra portafoglio nella schermata personaggi",
-      "showWalletOnPlayerCard": "Mostra portafoglio nella scheda giocatore",
       "showDevBadges": "Mostra distintivi sviluppatore",
       "showOwnNameplate": "Mostra la mia targhetta",
       "showPlayerNameplates": "Mostra targhe dei giocatori",
@@ -1070,9 +750,9 @@ export const it_IT: EnTranslations = {
       "showThirdActionBar": "Mostra la terza barra delle azioni",
       "showTargetOfTarget": "Mostra il bersaglio del bersaglio",
       "showAttackButton": "Mostra Pulsante Attacco",
-      "showDailyRewardsChest": "Mostra forziere delle ricompense giornaliere",
       "mobileCameraJoystick": "Joystick della fotocamera",
-      "mobileLeftHanded": "Disposizione per mancini"
+      "mobileLeftHanded": "Disposizione per mancini",
+      "showWalletOnCharacterScreen": "Mostra portafoglio nella schermata personaggi"
     },
     "talentRows": {
       "tab": "Scelte",
@@ -1178,9 +858,6 @@ export const it_IT: EnTranslations = {
         "backgrounded": "In secondo piano",
         "offline": "Offline"
       }
-    },
-    "playerCard": {
-      "showWalletBadge": "Mostra distintivo portafoglio"
     },
     "landing": {
       "highContrast": "Contrasto elevato",
@@ -4762,170 +4439,6 @@ export const it_IT: EnTranslations = {
       "failed": "Impossibile salvare la tua email. Riprova."
     }
   },
-  "wallet": {
-    "label": "Portafoglio $WOC",
-    "connect": "Verifica portafoglio",
-    "connectTitle": "Verifica il tuo portafoglio Solana",
-    "connectAria": "Verifica il tuo portafoglio Solana",
-    "verify": "Verifica portafoglio",
-    "verifyNew": "Verifica nuovo portafoglio",
-    "verifyTitle": "Scegli un portafoglio e firma una volta per verificare che ne sei il proprietario.",
-    "verifyAria": "Scegli un portafoglio e firma una volta per verificare che ne sei il proprietario",
-    "verifyAddressAria": "Firma per verificare il portafoglio {address} per il tuo account",
-    "appConnected": "App connessa",
-    "connectApp": "Connetti app",
-    "connectAppTitle": "Connetti l'app del portafoglio su questo browser",
-    "connectAppAria": "Connetti l'app del portafoglio su questo browser",
-    "verifying": "Verifica...",
-    "verifyingTitle": "La verifica del portafoglio è in corso.",
-    "switch": "Cambia",
-    "switchTitle": "Verifica un altro portafoglio",
-    "switchAria": "Verifica un altro portafoglio",
-    "unlink": "Scollega",
-    "unlinkTitle": "Rimuovi la verifica del portafoglio da questo account",
-    "unlinkAria": "Rimuovi la verifica del portafoglio da questo account",
-    "signOut": "Disconnetti",
-    "signOutTitle": "Disconnetti l'app del portafoglio su questo browser",
-    "signOutAria": "Disconnetti l'app del portafoglio su questo browser",
-    "hide": "Nascondi",
-    "hideTitle": "Nascondi la riga del portafoglio in questa schermata",
-    "hideAria": "Nascondi la riga del portafoglio in questa schermata",
-    "hiddenNotice": "Riga del portafoglio nascosta. Riattivala in gioco da Opzioni > Interfaccia.",
-    "linkedTitle": "Portafoglio verificato per il tuo account. Fai clic per gestire l'app del portafoglio.",
-    "linkedDisconnectedTitle": "Il portafoglio resta verificato per il tuo account. Riconnettiti per gestire l'app del portafoglio.",
-    "linkedDisconnectedAria": "Il portafoglio resta verificato per il tuo account. Riconnettiti per gestire l'app del portafoglio.",
-    "linkTitle": "Fai clic per firmare e collegare questo portafoglio al tuo account.",
-    "connectedTitle": "Connesso. Accedi per collegare questo portafoglio al tuo account.",
-    "balanceTitle": "Saldo $WOC del portafoglio Solana verificato",
-    "balanceAria": "Saldo del portafoglio Solana verificato: {balance}",
-    "balancePreviewTitle": "Anteprima del saldo $WOC del portafoglio connesso",
-    "balancePreviewAria": "Anteprima del saldo del portafoglio connesso: {balance}. Collega il portafoglio per verificare il distintivo da titolare.",
-    "balanceAmount": "{amount} $WOC",
-    "bagConnect": "Collega portafoglio",
-    "bagLink": "Verifica portafoglio",
-    "bagReconnect": "Riconnetti portafoglio",
-    "connected": "Connesso: {address}",
-    "connectedWithBalance": "Connesso: {balance} - {address}",
-    "connectedLinked": "Verificato: {address}",
-    "connectedLinkedWithBalance": "Verificato: {balance} - {address}",
-    "helpDisconnected": "Verifica un portafoglio Solana per abilitare il distintivo da titolare e i badge della scheda giocatore. Non servono transazioni né SOL.",
-    "helpLoginToLink": "{address} connesso. Accedi per collegarlo al tuo account.",
-    "helpLoginToLinkWithBalance": "{address} connesso con {balance}. Accedi per collegarlo al tuo account.",
-    "helpReadyToLink": "Portafoglio selezionato: {address}. Firma una volta per verificare distintivo da titolare e schede giocatore.",
-    "helpReadyToLinkWithBalance": "Portafoglio selezionato: {address} con {balance}. Firma una volta per verificare distintivo da titolare e schede giocatore.",
-    "helpLinked": "I vantaggi da titolare sono attivi. L'app del portafoglio è connessa su questo browser.",
-    "helpLinkedWithBalance": "I vantaggi da titolare sono attivi. L'app del portafoglio è connessa su questo browser.",
-    "helpLinkedDisconnected": "I vantaggi da titolare sono attivi. Connetti l'app quando devi firmare o spendere.",
-    "helpLinkedDisconnectedWithBalance": "I vantaggi da titolare sono attivi. Connetti l'app quando devi firmare o spendere.",
-    "extensionHelp": "Per vedere un portafoglio qui, tieni attiva un'estensione portafoglio del browser come Solflare Wallet.",
-    "mobileAppHelp": "Scegli Phantom o Solflare. La tua app portafoglio chiederà approvazione. Tieni aperto questo gioco e tornaci quando hai finito.",
-    "standaloneAppHelp": "Le connessioni portafoglio non sono ancora disponibili nell'app dalla Schermata Home. Apri World of ClaudeCraft in Safari o Chrome per usare Phantom o Solflare.",
-    "openAppTitle": "Continua in {wallet}",
-    "openAppHelp": "Apri {wallet} per esaminare questa richiesta. Tieni aperta questa scheda del gioco mentre l'app portafoglio è attiva.",
-    "openAppButton": "Apri {wallet}",
-    "manualReturnBrowserHelp": "Dopo l'approvazione, torna a questa scheda del gioco. Se iOS apre un altro browser, chiudilo e torna manualmente al browser originale.",
-    "manualReturnStandaloneHelp": "Dopo l'approvazione, torna a World of ClaudeCraft dalla tua Schermata Home. Se iOS apre un browser, chiudilo e riapri manualmente l'app dalla Schermata Home.",
-    "preparingAppButton": "Preparazione di {wallet}...",
-    "walletAppUnavailable": "{wallet} non ha potuto essere preparato. Chiudi questa finestra e riprova.",
-    "flowConnect": "Scegli un portafoglio. La verifica continua automaticamente.",
-    "flowSign": "Firma il messaggio di verifica nell'app del portafoglio. Non servono transazioni né SOL.",
-    "flowVerify": "Verifica della proprietà del portafoglio...",
-    "linkFailed": "Verifica del portafoglio non riuscita.",
-    "verifyFailed": "Verifica del portafoglio non riuscita.",
-    "unlinkFailed": "Impossibile scollegare il portafoglio.",
-    "browser": {
-      "eyebrow": "Autorizzazione portafoglio desktop",
-      "title": "Connetti un portafoglio Solana",
-      "linkBody": "Scegli un'estensione portafoglio in questo browser. Firmerai un messaggio di verifica, poi tornerai all'app desktop.",
-      "paymentBody": "Scegli il portafoglio collegato al tuo account e approva la transazione in questo browser.",
-      "extensionHelp": "Nessuna estensione portafoglio compatibile trovata. Installa o sblocca Phantom, Solflare o un altro portafoglio Solana per browser, poi riprova.",
-      "safety": "World of ClaudeCraft non chiede mai la tua frase di recupero o chiave privata.",
-      "continueWith": "Continua con {wallet}",
-      "reviewTitle": "Revisione nel tuo portafoglio",
-      "reviewBody": "Segui la richiesta di {wallet}. Mantieni aperta questa pagina del browser.",
-      "completeTitle": "Autorizzazione portafoglio completata",
-      "completeBody": "Puoi tornare all'app desktop di World of ClaudeCraft.",
-      "returnButton": "Torna all'app desktop",
-      "failed": "Autorizzazione portafoglio non riuscita o scaduta. Torna all'app desktop e riprova.",
-      "retry": "Riprova"
-    },
-    "holder": "Titolare $WOC",
-    "holderTierTitle": "Titolare $WOC di rango {tier}",
-    "holderTiers": {
-      "ember": {
-        "name": "Brace",
-        "flavor": "La scintilla è accesa."
-      },
-      "coinbearer": {
-        "name": "Portamonete",
-        "flavor": "La prima moneta nel forziere di guerra."
-      },
-      "coppercrest": {
-        "name": "Cresta di rame",
-        "flavor": "Rame su rame, il tuo nome inizia a girare."
-      },
-      "silverbound": {
-        "name": "Vincolato d'argento",
-        "flavor": "Vincolato nell'argento, la borsa cresce."
-      },
-      "gilded": {
-        "name": "Dorato",
-        "flavor": "Dorato e sorridente."
-      },
-      "vaultwarden": {
-        "name": "Custode del caveau",
-        "flavor": "Ora custodisci un vero caveau: lo 0,01% di tutto $WOC."
-      },
-      "whale": {
-        "name": "Balena",
-        "flavor": "Sei entrato in acque profonde: lo 0,1% dell'offerta."
-      },
-      "leviathan": {
-        "name": "Leviatano",
-        "flavor": "I mercati sentono ogni tuo movimento: l'1% dell'offerta."
-      },
-      "tidelord": {
-        "name": "Signore delle maree",
-        "flavor": "La marea risponde al tuo richiamo: il 2% dell'offerta."
-      },
-      "stormcaller": {
-        "name": "Evocatore di tempeste",
-        "flavor": "Le tempeste si radunano nel tuo nome: il 3% dell'offerta."
-      },
-      "krakencrown": {
-        "name": "Corona del kraken",
-        "flavor": "Incoronato dagli abissi: il 4% dell'offerta."
-      },
-      "titanforged": {
-        "name": "Forgiato tra i titani",
-        "flavor": "Forgiato tra i titani: il 5% dell'offerta."
-      },
-      "starhoard": {
-        "name": "Tesoro stellare",
-        "flavor": "Un tesoro che piega la luce delle stelle: il 6% dell'offerta."
-      },
-      "voidwarden": {
-        "name": "Guardiano del vuoto",
-        "flavor": "Custode sull'orlo del vuoto: il 7% dell'offerta."
-      },
-      "realmshaper": {
-        "name": "Plasmatore del reame",
-        "flavor": "Ridai forma al reame: l'8% dell'offerta."
-      },
-      "worldforger": {
-        "name": "Forgiatore di mondi",
-        "flavor": "Forgi un mondo tutto tuo: il 9% dell'offerta."
-      },
-      "worldbearer": {
-        "name": "Portamondi",
-        "flavor": "Porti con te un pezzo del mondo: il 10% dell'offerta."
-      },
-      "sovereign": {
-        "name": "Sovrano",
-        "flavor": "Il regno si inginocchia: l'intera offerta."
-      }
-    }
-  },
   "playerCard": {
     "shareButton": "Condividi scheda giocatore",
     "title": "Scheda giocatore",
@@ -4949,8 +4462,7 @@ export const it_IT: EnTranslations = {
     "footerHandleWithRecruits": "@{handle} - {recruited}",
     "footerCta": "Forgia la tua leggenda: {siteUrl}",
     "arenaStat": "Arena",
-    "shareTierBit": ", titolare $WOC di rango {tier}",
-    "shareText": "Sto forgiando la mia leggenda in World of ClaudeCraft: livello {level} {className}{tierBit}. Unisciti al mio mondo:",
+    "shareText": "Sto forgiando la mia leggenda in World of ClaudeCraft: livello {level} {className}. Unisciti al mio mondo:",
     "nativeShareTitle": "Mondo di ClaudeCraft",
     "fileNameFallback": "giocatore",
     "actionShareX": "Condividi su X",

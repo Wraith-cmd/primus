@@ -103,8 +103,7 @@ World of ClaudeCraft는 세 주요 데스크톱 플랫폼 모두에 완전한 �
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 `VITE_DESKTOP_API_ORIGIN`으로 셸이 다른 API를 바라보게 할 수 있습니다. 예를 들어 로컬 서버나 스테이징 호스트로:

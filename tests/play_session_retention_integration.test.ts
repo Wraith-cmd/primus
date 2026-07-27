@@ -32,30 +32,10 @@ if (DB_URL) process.env.DATABASE_URL = DB_URL;
 
 describeDb('play session retention fold (real Postgres)', () => {
   let pool: Pool;
-  // banForAccount's per-account eligibility SQL, exported as a constant from
-  // ../server/daily_rewards_db in the same change that adds the exclusion
-  // view's account_ip_associations arm. Read via dynamic import so a missing
-  // export fails only its own case instead of the whole file.
-  let banForAccountSql: string | undefined;
-
   beforeAll(async () => {
     pool = new Pool({ connectionString: DB_URL, max: 2 });
     await pool.query(`DROP SCHEMA IF EXISTS ${SCHEMA} CASCADE`);
     await pool.query(`CREATE SCHEMA ${SCHEMA}`);
-
-    // The REAL exclusion-view DDL, exported from server/db.ts as its own
-    // constant (its association arm reads a table the core SCHEMA precedes,
-    // so ensureSchema applies it after the retention schema; this suite does
-    // the same below). Never sliced from the raw db.ts source, which carries
-    // template tokens; a regressed export fails the pin here decisively.
-    const core = (await import('../server/db')) as {
-      DAILY_REWARD_EXCLUDED_ACCOUNTS_VIEW_SQL?: string;
-    };
-    const exclusionViewDdl = core.DAILY_REWARD_EXCLUDED_ACCOUNTS_VIEW_SQL;
-    expect(typeof exclusionViewDdl).toBe('string');
-    const rewards = await import('../server/daily_rewards_db');
-    banForAccountSql = (rewards as { DAILY_REWARD_BAN_FOR_ACCOUNT_SQL?: string })
-      .DAILY_REWARD_BAN_FOR_ACCOUNT_SQL;
 
     const db = await scopedClient();
     try {
@@ -86,26 +66,10 @@ describeDb('play session retention fold (real Postgres)', () => {
           ip_address TEXT,
           user_agent TEXT
         );
-        CREATE TABLE daily_reward_bans (
-          account_id INT PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE,
-          reason TEXT NOT NULL,
-          admin_account_id INT REFERENCES accounts(id) ON DELETE SET NULL,
-          created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-          updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-          expires_at TIMESTAMPTZ
-        );
-        CREATE TABLE daily_reward_ip_bans (
-          ip_address TEXT PRIMARY KEY,
-          reason TEXT NOT NULL,
-          admin_account_id INT REFERENCES accounts(id) ON DELETE SET NULL,
-          created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-          updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
-        );
       `);
       await db.query(PLAYER_METRICS_SCHEMA);
       await db.query(PLAYER_METRICS_CONCURRENT_INDEX_SQL);
       await db.query(PLAY_SESSION_RETENTION_SCHEMA);
-      await db.query(String(exclusionViewDdl));
     } finally {
       db.release();
     }
@@ -123,7 +87,6 @@ describeDb('play session retention fold (real Postgres)', () => {
       await db.query(
         `TRUNCATE play_session_totals, account_ip_associations,
                   player_activity_daily, player_business_daily, player_account_facts,
-                  daily_reward_bans, daily_reward_ip_bans,
                   play_sessions, characters, accounts RESTART IDENTITY CASCADE`,
       );
     } finally {
@@ -608,84 +571,6 @@ describeDb('play session retention fold (real Postgres)', () => {
       expect(rows).toEqual(snapshot);
     } finally {
       reverify.release();
-    }
-  });
-
-  it('keeps the ban-evasion lookback alive across the fold horizon', {
-    timeout: 20_000,
-  }, async () => {
-    const db = await scopedClient();
-    let accountId: number;
-    try {
-      accountId = Number(
-        (
-          await db.query(
-            `INSERT INTO accounts (username, last_login_ip)
-               VALUES ('mallory', '203.0.113.9') RETURNING id`,
-          )
-        ).rows[0].id,
-      );
-      // The account's ONLY session from the banned IP: older than the
-      // retention window, younger than the association aging bound.
-      await db.query(
-        `INSERT INTO play_sessions (account_id, character_id, started_at, ended_at, ip_address)
-           VALUES ($1, NULL, now() - interval '200 days',
-                   now() - interval '200 days' + interval '1200 seconds', '198.51.100.7')`,
-        [accountId],
-      );
-      await db.query(
-        `INSERT INTO daily_reward_ip_bans (ip_address, reason)
-           VALUES ('198.51.100.7', 'evasion ring')`,
-      );
-    } finally {
-      db.release();
-    }
-
-    expect(await foldToExhaustion(180, 1000)).toBe(1);
-
-    const verify = await scopedClient();
-    try {
-      // The view's first three arms cannot match this account: no account
-      // ban row, a DIFFERENT last_login_ip, and no surviving play_sessions
-      // row from the banned IP. Only an account_ip_associations arm can
-      // still name it, so the exclusion below proves that fourth arm works.
-      const armProbes = await verify.query(
-        `SELECT
-             (SELECT count(*)::int FROM daily_reward_bans WHERE account_id = $1)
-               AS account_bans,
-             (SELECT last_login_ip FROM accounts WHERE id = $1) AS last_login_ip,
-             (SELECT count(*)::int FROM play_sessions
-               WHERE account_id = $1 AND ip_address = '198.51.100.7') AS banned_ip_sessions,
-             (SELECT count(*)::int FROM account_ip_associations
-               WHERE account_id = $1 AND ip_address = '198.51.100.7') AS associations`,
-        [accountId],
-      );
-      expect(armProbes.rows[0]).toEqual({
-        account_bans: 0,
-        last_login_ip: '203.0.113.9',
-        banned_ip_sessions: 0,
-        associations: 1,
-      });
-
-      const excluded = await verify.query(
-        'SELECT account_id, reason FROM daily_reward_excluded_accounts WHERE account_id = $1',
-        [accountId],
-      );
-      expect(
-        excluded.rows.map((row) => ({
-          accountId: Number(row.account_id),
-          reason: row.reason,
-        })),
-      ).toEqual([{ accountId, reason: 'evasion ring' }]);
-
-      // The per-account eligibility probe must not free an evader whose
-      // sessions aged out: it needs the same association lookback the view
-      // gained. A missing export fails here decisively, never silently.
-      expect(typeof banForAccountSql).toBe('string');
-      const ban = await verify.query(String(banForAccountSql), [accountId]);
-      expect(ban.rows.map((row) => ({ reason: row.reason }))).toEqual([{ reason: 'evasion ring' }]);
-    } finally {
-      verify.release();
     }
   });
 

@@ -103,8 +103,7 @@ L'accesso online avviene solo con Discord ed email, esattamente come nel flusso 
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 Punta la shell verso un'API diversa con `VITE_DESKTOP_API_ORIGIN`, per esempio un server locale o un host di staging:

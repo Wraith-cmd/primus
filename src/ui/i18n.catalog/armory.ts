@@ -1,5 +1,10 @@
 // Authoritative English copy for the Season 1 Armory. The sim catalog owns
 // mechanical IDs/models/rarity only; player-visible prose belongs here.
+//
+// No longer merged into `en` by ./index.ts: the paid Armory store UI is gone, so
+// these strings are not TranslationKeys today. The weapon skins themselves are
+// still live sim/render content, so the copy is kept here (and pinned by
+// tests/weapon_skins.test.ts) for whatever surface renders them next.
 
 export const armoryCollectionStrings = {
   guildmark: 'Guildmark',

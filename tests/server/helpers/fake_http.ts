@@ -7,8 +7,8 @@
 // enforces (no second writeHead, no write or end after end). makeReq builds an
 // http.IncomingMessage on a node stream Readable carrying method, url, headers
 // (a default host) and socket.remoteAddress. Both are a strict SUPERSET of the
-// ad-hoc makeRes()/makeReq() copies in woc_balance / wallet_server / discord_server
-// tests, so a later phase can re-point those at this one helper. Full
+// ad-hoc makeRes()/makeReq() copies in the per-domain server tests, so a later
+// phase can re-point those at this one helper. Full
 // ServerResponse / IncomingMessage conformance is impractical, so a single
 // `as unknown as` cast bridges each fake to its node type at the boundary.
 

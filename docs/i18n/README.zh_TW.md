@@ -103,8 +103,7 @@ World of ClaudeCraft 以完整的桌面應用程式形式發布，涵蓋三大�
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 用 `VITE_DESKTOP_API_ORIGIN` 讓外殼指向不同的 API，例如一台本地伺服器或一台預備主機：

@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { logRequireCandidates } from '../electron/logging.cjs';
-import { updaterRequireCandidates } from '../electron/updater.cjs';
 
 // A packaged app must load its main-process deps ONLY from the in-asar vendor
 // bundle: the bare-specifier fallback walks Node's module paths out of the
@@ -10,18 +9,6 @@ import { updaterRequireCandidates } from '../electron/updater.cjs';
 // live. This pins the packaged-only order so a refactor cannot silently
 // reintroduce the fallback for packaged builds.
 describe('vendor require candidates (packaged builds never leave the asar)', () => {
-  it('updater: packaged is vendor-only; unpackaged may fall back to node_modules', () => {
-    expect(updaterRequireCandidates(true)).toEqual(['./vendor/electron_updater.cjs']);
-    expect(updaterRequireCandidates(false)).toEqual([
-      './vendor/electron_updater.cjs',
-      'electron-updater',
-    ]);
-    expect(updaterRequireCandidates(undefined)).toEqual([
-      './vendor/electron_updater.cjs',
-      'electron-updater',
-    ]);
-  });
-
   it('logging: packaged is vendor-only; unpackaged may fall back to node_modules', () => {
     expect(logRequireCandidates(true)).toEqual(['./vendor/electron_log_main.cjs']);
     expect(logRequireCandidates(false)).toEqual([

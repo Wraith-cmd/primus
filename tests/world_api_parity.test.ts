@@ -49,7 +49,6 @@ import type { IWorldChat } from '../src/world_api/chat';
 import { isOverheadEmoteId, OVERHEAD_EMOTES } from '../src/world_api/chat';
 import type { IWorldCombat } from '../src/world_api/combat';
 import type { IWorldCosmetics } from '../src/world_api/cosmetics';
-import type { IWorldDailyRewards } from '../src/world_api/daily_rewards';
 import type { IWorldDeeds } from '../src/world_api/deeds';
 import type { IWorldDelves } from '../src/world_api/delves';
 import type { IWorldDuelArena } from '../src/world_api/duel_arena';
@@ -318,11 +317,6 @@ export const IWORLD_MEMBERS = [
   { name: 'guildLeaderboard', kind: 'method' }, // async
   { name: 'devLeaderboard', kind: 'method' }, // async
   { name: 'prestige', kind: 'method' },
-  // --- daily WOC-holder rewards (IWorldDailyRewards; all async) ---
-  { name: 'dailyRewards', kind: 'method' },
-  { name: 'dailyRewardLeaderboard', kind: 'method' },
-  { name: 'spinDailyReward', kind: 'method' },
-  { name: 'dailyRewardHistory', kind: 'method' },
   // --- talents & specializations (reads + commands) ---
   { name: 'talents', kind: 'data' },
   { name: 'talentSpec', kind: 'data' },
@@ -467,9 +461,9 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
     // plus the release's Card Duel facet, the Professions 2.0 identity
     // surface, the mobile-station pair (placeMobileStation +
     // activeMobileStationCraft), and the commissions unbindItem command.
-    expect(IWORLD_MEMBERS.length).toBe(256);
+    expect(IWORLD_MEMBERS.length).toBe(252);
     expect(DATA_MEMBERS.length).toBe(69);
-    expect(METHOD_MEMBERS.length).toBe(187);
+    expect(METHOD_MEMBERS.length).toBe(183);
   });
   it('has no duplicate member names', () => {
     const names = IWORLD_MEMBERS.map((m) => m.name);
@@ -536,9 +530,6 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'craftSkills',
       'craftingIdentity',
       'cupInfo',
-      'dailyRewardHistory',
-      'dailyRewardLeaderboard',
-      'dailyRewards',
       'deedStats',
       'deedsEarned',
       'deedsLeaderboard',
@@ -698,7 +689,6 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'setSpec',
       'setTownFocus',
       'socialInfo',
-      'spinDailyReward',
       'startAutoAttack',
       'stationPlacements',
       'stopAutoAttack',
@@ -852,9 +842,6 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'convertPartyToRaid',
       'convertRaidToParty',
       'craftItem',
-      'dailyRewardHistory',
-      'dailyRewardLeaderboard',
-      'dailyRewards',
       'deedsLeaderboard',
       'deedsRarity',
       'deleteLoadout',
@@ -973,7 +960,6 @@ describe('IWORLD_MEMBERS is the pinned IWorld contract (anti-loosening)', () => 
       'setPetMode',
       'setSpec',
       'setTownFocus',
-      'spinDailyReward',
       'startAutoAttack',
       'stopAutoAttack',
       'submitLootRoll',
@@ -1366,16 +1352,6 @@ const FACET_DELVES = [
 ] as const satisfies readonly (keyof IWorldDelves)[];
 type _ExhaustDelves = AssertNever<Exclude<keyof IWorldDelves, (typeof FACET_DELVES)[number]>>;
 
-const FACET_DAILY_REWARDS = [
-  'dailyRewards',
-  'dailyRewardLeaderboard',
-  'spinDailyReward',
-  'dailyRewardHistory',
-] as const satisfies readonly (keyof IWorldDailyRewards)[];
-type _ExhaustDailyRewards = AssertNever<
-  Exclude<keyof IWorldDailyRewards, (typeof FACET_DAILY_REWARDS)[number]>
->;
-
 const FACET_TELEMETRY = ['reportTelemetry'] as const satisfies readonly (keyof IWorldTelemetry)[];
 type _ExhaustTelemetry = AssertNever<
   Exclude<keyof IWorldTelemetry, (typeof FACET_TELEMETRY)[number]>
@@ -1479,7 +1455,6 @@ const FACET_MEMBER_ARRAYS: Readonly<Record<string, readonly string[]>> = {
   bank: FACET_BANK,
   dungeons: FACET_DUNGEONS,
   delves: FACET_DELVES,
-  dailyRewards: FACET_DAILY_REWARDS,
   telemetry: FACET_TELEMETRY,
   professions: FACET_PROFESSIONS,
   valeCup: FACET_VALE_CUP,
@@ -1490,7 +1465,7 @@ const FACET_MEMBER_ARRAYS: Readonly<Record<string, readonly string[]>> = {
 
 describe('W1: aggregate IWorld member set equals the disjoint union of the 28 facets', () => {
   it('pins the facet count at 28', () => {
-    expect(Object.keys(FACET_MEMBER_ARRAYS).length).toBe(29);
+    expect(Object.keys(FACET_MEMBER_ARRAYS).length).toBe(28);
   });
 
   it('each facet array is non-empty and internally duplicate-free', () => {
@@ -1500,7 +1475,7 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 28 fa
     }
   });
 
-  it('the 27 facet arrays are pairwise disjoint (no member filed in two facets)', () => {
+  it('the 28 facet arrays are pairwise disjoint (no member filed in two facets)', () => {
     const entries = Object.entries(FACET_MEMBER_ARRAYS);
     const overlaps: string[] = [];
     for (let i = 0; i < entries.length; i++) {
@@ -1518,8 +1493,8 @@ describe('W1: aggregate IWorld member set equals the disjoint union of the 28 fa
 
   it('the union of the facets equals the pinned IWORLD_MEMBERS set', () => {
     const union = Object.values(FACET_MEMBER_ARRAYS).flatMap((arr) => [...arr]);
-    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(256);
-    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(256);
+    expect(union.length, 'union size before dedup (catches a duplicated member)').toBe(252);
+    expect(new Set(union).size, 'union size after dedup (catches a duplicated member)').toBe(252);
     const sortedUnion = [...union].sort();
     const pinned = IWORLD_MEMBERS.map((m) => m.name).sort();
     expect(sortedUnion).toEqual(pinned);

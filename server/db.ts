@@ -18,7 +18,6 @@ import { CONCURRENT_INDEX_MIGRATIONS } from './concurrent_indexes';
 import type { RankedDeedsAccount } from './deeds_board';
 import { DISCORD_SCHEMA } from './discord_db';
 import { GITHUB_SCHEMA } from './github_db';
-import { isUniqueViolation } from './http_util';
 import { MAPS_SCHEMA } from './maps_db';
 import {
   LEGACY_MARKET_KEY,
@@ -172,9 +171,9 @@ const LIFETIME_XP_EXPR = "((state->>'lifetimeXp')::bigint)";
 // The one eligibility predicate every public board query embeds VERBATIM (via
 // a JOIN or EXISTS over `accounts a`): banned and currently-suspended accounts
 // are delisted from every player-derived board, and an expired suspension
-// relists on its own. Exported so the board queries here, the daily-rewards
-// board reads (daily_rewards_db.ts), and the moderation guard test all bind to
-// the same fragment. Static text, never interpolated with user input.
+// relists on its own. Exported so the board queries here and the moderation
+// guard test all bind to the same fragment. Static text, never interpolated
+// with user input.
 export const ELIGIBLE_ACCOUNT_SQL =
   'a.banned_at IS NULL AND (a.suspended_until IS NULL OR a.suspended_until <= now())';
 
@@ -290,8 +289,8 @@ ALTER TABLE accounts ADD COLUMN IF NOT EXISTS created_user_agent TEXT;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS last_login_ip TEXT;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS last_login_user_agent TEXT;
 ALTER TABLE accounts ADD COLUMN IF NOT EXISTS cosmetics JSONB NOT NULL DEFAULT '{}'::jsonb;
--- Paid weapon ownership and loadouts live outside accounts.cosmetics. Older game
--- binaries replace that JSON document wholesale, so keeping paid state there would
+-- Weapon skin ownership and loadouts live outside accounts.cosmetics. Older game
+-- binaries replace that JSON document wholesale, so keeping that state there would
 -- let a rolling deploy or rollback erase entitlements. The one-time backfill reads
 -- the legacy keys for accounts that received them before this table existed; once a
 -- row exists here it is authoritative and old binaries cannot mutate it.
@@ -714,30 +713,9 @@ ALTER TABLE client_perf_reports ADD COLUMN IF NOT EXISTS worst_10s_frame_p95_ms 
 -- against the server allowlist in perf_report.ts before storage (filter,
 -- dedupe, cap 3). Pre-column and healthy rows both read as the empty array.
 ALTER TABLE client_perf_reports ADD COLUMN IF NOT EXISTS suggestion_ids TEXT[] NOT NULL DEFAULT '{}';
--- Non-custodial Solana wallet links (PRD: docs/prd/woc/wallet-link.md). One
--- wallet per account (account_id is the PK) and one account per wallet (pubkey
--- is UNIQUE). The server never holds keys; ownership is proven by a signed
--- challenge (see wallet_link_challenges) and this table is just the mirror.
-CREATE TABLE IF NOT EXISTS wallet_links (
-  account_id INT PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE,
-  pubkey TEXT NOT NULL UNIQUE,
-  linked_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
--- Single-use, short-lived sign-to-link challenges. The full message the wallet
--- must sign is stored server-side so the client cannot choose what gets signed;
--- consuming a challenge deletes it (replay protection).
-CREATE TABLE IF NOT EXISTS wallet_link_challenges (
-  nonce TEXT PRIMARY KEY,
-  account_id INT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
-  address TEXT NOT NULL,
-  message TEXT NOT NULL,
-  expires_at TIMESTAMPTZ NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-CREATE INDEX IF NOT EXISTS wallet_link_challenges_account ON wallet_link_challenges(account_id);
--- Steam account links (the deeds achievement mirror). Copies the wallet_links
--- shape: one Steam account per WoCC account (account_id is the PK) and one
--- WoCC account per Steam id (steam_id is UNIQUE). A row is a cosmetic-mirror
+-- Steam account links (the deeds achievement mirror). One Steam account per
+-- WoCC account (account_id is the PK) and one WoCC account per Steam id
+-- (steam_id is UNIQUE). A row is a cosmetic-mirror
 -- pointer only, proven by a server-verified session ticket at link time
 -- (server/steam/): it is NEVER an identity or session source, and login stays
 -- email + Discord only. Accessors live in server/steam/steam_db.ts. Purely
@@ -748,152 +726,6 @@ CREATE TABLE IF NOT EXISTS steam_links (
   steam_id TEXT NOT NULL UNIQUE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
-CREATE TABLE IF NOT EXISTS daily_reward_days (
-  day TEXT NOT NULL,
-  realm TEXT NOT NULL DEFAULT '${REALM_SQL_DEFAULT}',
-  prize_pool_usd NUMERIC NOT NULL,
-  woc_usd_price NUMERIC,
-  finalized_at TIMESTAMPTZ,
-  discord_announced_at TIMESTAMPTZ,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  PRIMARY KEY (day, realm)
-);
-ALTER TABLE daily_reward_days ADD COLUMN IF NOT EXISTS discord_announced_at TIMESTAMPTZ;
-CREATE TABLE IF NOT EXISTS daily_reward_scores (
-  day TEXT NOT NULL,
-  realm TEXT NOT NULL DEFAULT '${REALM_SQL_DEFAULT}',
-  account_id INT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
-  points INT NOT NULL DEFAULT 0,
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  PRIMARY KEY (day, realm, account_id)
-);
-CREATE INDEX IF NOT EXISTS daily_reward_scores_rank
-  ON daily_reward_scores(day, realm, points DESC, updated_at ASC);
-CREATE TABLE IF NOT EXISTS daily_reward_bans (
-  account_id INT PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE,
-  reason TEXT NOT NULL,
-  admin_account_id INT REFERENCES accounts(id) ON DELETE SET NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-ALTER TABLE daily_reward_bans ADD COLUMN IF NOT EXISTS expires_at TIMESTAMPTZ;
-CREATE TABLE IF NOT EXISTS daily_reward_ip_bans (
-  ip_address TEXT PRIMARY KEY,
-  reason TEXT NOT NULL,
-  admin_account_id INT REFERENCES accounts(id) ON DELETE SET NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-CREATE TABLE IF NOT EXISTS daily_reward_events (
-  id BIGSERIAL PRIMARY KEY,
-  day TEXT NOT NULL,
-  realm TEXT NOT NULL DEFAULT '${REALM_SQL_DEFAULT}',
-  account_id INT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
-  kind TEXT NOT NULL,
-  points INT NOT NULL,
-  idempotency_key TEXT NOT NULL,
-  meta JSONB NOT NULL DEFAULT '{}'::jsonb,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  UNIQUE (day, realm, account_id, idempotency_key)
-);
-CREATE TABLE IF NOT EXISTS daily_reward_spins (
-  day TEXT NOT NULL,
-  realm TEXT NOT NULL DEFAULT '${REALM_SQL_DEFAULT}',
-  account_id INT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
-  outcome_key TEXT NOT NULL,
-  points INT NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  PRIMARY KEY (day, realm, account_id)
-);
-CREATE TABLE IF NOT EXISTS daily_reward_tasks (
-  day TEXT NOT NULL,
-  realm TEXT NOT NULL DEFAULT '${REALM_SQL_DEFAULT}',
-  task_id TEXT NOT NULL,
-  task_type TEXT NOT NULL DEFAULT 'manual',
-  title TEXT NOT NULL,
-  description TEXT NOT NULL DEFAULT '',
-  points INT NOT NULL,
-  base_points INT NOT NULL DEFAULT 0,
-  sort_order INT NOT NULL DEFAULT 0,
-  active BOOLEAN NOT NULL DEFAULT TRUE,
-  config JSONB NOT NULL DEFAULT '{}'::jsonb,
-  PRIMARY KEY (day, realm, task_id)
-);
-ALTER TABLE daily_reward_tasks ADD COLUMN IF NOT EXISTS task_type TEXT NOT NULL DEFAULT 'manual';
-ALTER TABLE daily_reward_tasks ADD COLUMN IF NOT EXISTS base_points INT NOT NULL DEFAULT 0;
-ALTER TABLE daily_reward_tasks ADD COLUMN IF NOT EXISTS config JSONB NOT NULL DEFAULT '{}'::jsonb;
-UPDATE daily_reward_tasks SET base_points = points WHERE base_points = 0 AND points > 0;
-CREATE TABLE IF NOT EXISTS daily_reward_task_completions (
-  day TEXT NOT NULL,
-  realm TEXT NOT NULL DEFAULT '${REALM_SQL_DEFAULT}',
-  account_id INT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
-  task_id TEXT NOT NULL,
-  points INT NOT NULL,
-  completed_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  PRIMARY KEY (day, realm, account_id, task_id)
-);
-CREATE TABLE IF NOT EXISTS daily_reward_payouts (
-  day TEXT NOT NULL,
-  realm TEXT NOT NULL DEFAULT '${REALM_SQL_DEFAULT}',
-  rank INT NOT NULL,
-  account_id INT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
-  username TEXT NOT NULL,
-  wallet_pubkey TEXT,
-  points INT NOT NULL,
-  prize_percent NUMERIC NOT NULL,
-  prize_usd NUMERIC NOT NULL,
-  status TEXT NOT NULL DEFAULT 'pending',
-  tx_signature TEXT,
-  error TEXT,
-  paid_at TIMESTAMPTZ,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  PRIMARY KEY (day, realm, rank)
-);
-ALTER TABLE daily_reward_payouts ADD COLUMN IF NOT EXISTS void_reason TEXT;
-ALTER TABLE daily_reward_payouts ADD COLUMN IF NOT EXISTS voided_by_id TEXT;
-ALTER TABLE daily_reward_payouts ADD COLUMN IF NOT EXISTS voided_by_username TEXT;
-ALTER TABLE daily_reward_payouts ADD COLUMN IF NOT EXISTS voided_at TIMESTAMPTZ;
-ALTER TABLE daily_reward_payouts ADD COLUMN IF NOT EXISTS signed_transaction TEXT;
-CREATE INDEX IF NOT EXISTS daily_reward_payouts_status
-  ON daily_reward_payouts(status, day DESC, realm);
-CREATE TABLE IF NOT EXISTS daily_reward_payout_moderation_audit (
-  id BIGSERIAL PRIMARY KEY,
-  day TEXT NOT NULL,
-  realm TEXT NOT NULL,
-  rank INT NOT NULL,
-  account_id INT NOT NULL,
-  action TEXT NOT NULL CHECK (action IN ('void', 'restore')),
-  previous_status TEXT NOT NULL,
-  next_status TEXT NOT NULL,
-  reason TEXT NOT NULL,
-  actor_id TEXT NOT NULL,
-  actor_username TEXT NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-CREATE INDEX IF NOT EXISTS daily_reward_payout_moderation_target
-  ON daily_reward_payout_moderation_audit(day, realm, rank, created_at DESC);
-CREATE TABLE IF NOT EXISTS daily_reward_payout_attempts (
-  id BIGSERIAL PRIMARY KEY,
-  day TEXT NOT NULL,
-  realm TEXT NOT NULL,
-  rank INT NOT NULL,
-  kind TEXT NOT NULL CHECK (kind IN ('payout', 'resend')),
-  operation_id TEXT,
-  status TEXT NOT NULL CHECK (status IN ('prepared', 'paid', 'failed')),
-  tx_signature TEXT NOT NULL UNIQUE,
-  signed_transaction TEXT,
-  error TEXT,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  FOREIGN KEY (day, realm, rank) REFERENCES daily_reward_payouts(day, realm, rank)
-);
-CREATE INDEX IF NOT EXISTS daily_reward_payout_attempts_target
-  ON daily_reward_payout_attempts(day, realm, rank, created_at DESC);
-ALTER TABLE daily_reward_payout_attempts ADD COLUMN IF NOT EXISTS operation_id TEXT;
-CREATE UNIQUE INDEX IF NOT EXISTS daily_reward_payout_attempts_operation
-  ON daily_reward_payout_attempts(day, realm, rank, kind, operation_id)
-  WHERE operation_id IS NOT NULL;
 -- Shareable player cards (docs/prd/woc/player-card.md). One card per character;
 -- the PNG is composited client-side and stored here as bytes so any realm
 -- process (all share this database) can serve /p/<slug> and the OG image. slug
@@ -984,39 +816,6 @@ CREATE INDEX IF NOT EXISTS character_deeds_character_earned
   ON character_deeds(character_id, earned_at DESC);
 `;
 
-// Kept out of SCHEMA on purpose: the association arm reads
-// account_ip_associations, which PLAY_SESSION_RETENTION_SCHEMA creates, and
-// SCHEMA executes before it on a fresh database. ensureSchema applies this
-// constant right after the retention schema, inside the same transaction.
-export const DAILY_REWARD_EXCLUDED_ACCOUNTS_VIEW_SQL = `
--- Exclusion arms stay OR-free so each rides its own index path (an OR inside a
--- join arm forces a nested loop with a re-probed subquery); any new exclusion
--- source joins as another UNION arm, never as an OR in an existing arm. The ban
--- arm's expiry predicate is what un-bans an expired timed ban. The association
--- arm covers sessions the retention fold has already deleted: an account's
--- account-to-IP link lives on in account_ip_associations after its raw
--- play_sessions rows fold away, so an IP ban keeps excluding the account; the
--- join is index-served by account_ip_associations_ip.
-CREATE OR REPLACE VIEW daily_reward_excluded_accounts AS
-SELECT account_id, reason FROM daily_reward_bans
- WHERE expires_at IS NULL OR expires_at > now()
-UNION
-SELECT a.id AS account_id, ib.reason
-  FROM accounts a
-  JOIN daily_reward_ip_bans ib
-    ON ib.ip_address = a.last_login_ip
-UNION
-SELECT ps.account_id, ib.reason
-  FROM play_sessions ps
-  JOIN daily_reward_ip_bans ib
-    ON ib.ip_address = ps.ip_address
-UNION
-SELECT assoc.account_id, ib.reason
-  FROM account_ip_associations assoc
-  JOIN daily_reward_ip_bans ib
-    ON ib.ip_address = assoc.ip_address;
-`;
-
 const SCHEMA_ADVISORY_LOCK_KEY = 0x57_4f_43_01; // "WOC\x01"
 
 export async function ensureSchema(): Promise<void> {
@@ -1058,10 +857,6 @@ export async function ensureSchema(): Promise<void> {
     // totals + the account-to-IP association ledger). FK-references
     // accounts(id), so it runs after SCHEMA.
     await client.query(PLAY_SESSION_RETENTION_SCHEMA);
-    // The daily-reward exclusion view joins account_ip_associations in its
-    // association arm, so it is created after the retention schema above; on a
-    // fresh database SCHEMA alone could not create it.
-    await client.query(DAILY_REWARD_EXCLUDED_ACCOUNTS_VIEW_SQL);
     await client.query(SOCIAL_SCHEMA);
     await client.query(OAUTH_SCHEMA);
     // Discord integration tables (links, oauth states, pending logins, reward
@@ -1219,9 +1014,9 @@ export interface RequestMetadata {
 export interface AccountCosmetics {
   completedQuestIds: string[];
   mechChromaIds: string[];
-  // Season 1 Armory weapon skins: owned skin ids (granted on Claudium spend,
-  // reconciled from the economy service) and the applied-skin-per-weapon-type
-  // loadout. Account-wide by design; characters never carry either.
+  // Season 1 Armory weapon skins: owned skin ids and the
+  // applied-skin-per-weapon-type loadout. Account-wide by design; characters
+  // never carry either.
   weaponSkinIds: string[];
   weaponSkinLoadout: Record<string, string>;
 }
@@ -1385,7 +1180,7 @@ export async function revokeAccountMechChroma(
   return normalizeAccountCosmeticsRow(res.rows[0]);
 }
 
-/** Additive union in the rollback-safe paid-entitlement row. */
+/** Additive union in the rollback-safe skin-entitlement row. */
 export async function grantAccountWeaponSkins(
   accountId: number,
   skinIds: string[],
@@ -1414,7 +1209,7 @@ export async function grantAccountWeaponSkins(
   return normalizeAccountCosmeticsRow(res.rows[0]);
 }
 
-/** Replace the applied-skin-per-weapon-type loadout in the paid-state row. */
+/** Replace the applied-skin-per-weapon-type loadout in the skin-state row. */
 export async function setAccountWeaponSkinLoadout(
   accountId: number,
   loadout: Record<string, string>,
@@ -2070,87 +1865,6 @@ export async function exportAccountData(
   };
 }
 
-// ── Non-custodial Solana wallet links ──────────────────────────────────────
-
-export interface WalletLinkRow {
-  account_id: number;
-  pubkey: string;
-  linked_at: string;
-}
-
-export async function createWalletChallenge(
-  nonce: string,
-  accountId: number,
-  address: string,
-  message: string,
-  ttlMinutes = 10,
-): Promise<void> {
-  await pool.query(
-    `INSERT INTO wallet_link_challenges (nonce, account_id, address, message, expires_at)
-     VALUES ($1, $2, $3, $4, now() + ($5 || ' minutes')::interval)`,
-    [nonce, accountId, address, message, String(ttlMinutes)],
-  );
-}
-
-// Atomically consume a challenge: returns the stored address+message if the
-// nonce belongs to this account and is unexpired, deleting the row so a
-// signature can never be replayed against it twice.
-export async function consumeWalletChallenge(
-  nonce: string,
-  accountId: number,
-): Promise<{ address: string; message: string } | null> {
-  const res = await pool.query(
-    `DELETE FROM wallet_link_challenges
-     WHERE nonce = $1 AND account_id = $2 AND expires_at > now()
-     RETURNING address, message`,
-    [nonce, accountId],
-  );
-  return res.rows[0] ?? null;
-}
-
-export async function pruneWalletChallenges(): Promise<void> {
-  await pool.query('DELETE FROM wallet_link_challenges WHERE expires_at <= now()');
-}
-
-export async function walletForAccount(accountId: number): Promise<WalletLinkRow | null> {
-  const res = await pool.query(
-    'SELECT account_id, pubkey, linked_at FROM wallet_links WHERE account_id = $1',
-    [accountId],
-  );
-  return res.rows[0] ?? null;
-}
-
-export async function accountForWallet(pubkey: string): Promise<number | null> {
-  const res = await pool.query('SELECT account_id FROM wallet_links WHERE pubkey = $1', [pubkey]);
-  return res.rows[0]?.account_id ?? null;
-}
-
-// One wallet per account (account_id PK) and one account per wallet (pubkey
-// UNIQUE). Upserts the caller's link; returns false when the wallet is already
-// owned by a different account so the handler can surface a 409.
-export async function linkWalletToAccount(accountId: number, pubkey: string): Promise<boolean> {
-  const owner = await accountForWallet(pubkey);
-  if (owner !== null && owner !== accountId) return false;
-  try {
-    await pool.query(
-      `INSERT INTO wallet_links (account_id, pubkey) VALUES ($1, $2)
-       ON CONFLICT (account_id) DO UPDATE SET pubkey = EXCLUDED.pubkey, linked_at = now()`,
-      [accountId, pubkey],
-    );
-  } catch (err) {
-    // TOCTOU: another account claimed this pubkey between the check above and
-    // here. The pubkey column is UNIQUE (not the ON CONFLICT target), so that
-    // races to a 23505: treat it as "already owned" (409), not a 500.
-    if (isUniqueViolation(err)) return false;
-    throw err;
-  }
-  return true;
-}
-
-export async function unlinkWallet(accountId: number): Promise<void> {
-  await pool.query('DELETE FROM wallet_links WHERE account_id = $1', [accountId]);
-}
-
 // ── Shareable player cards + referrals ─────────────────────────────────────
 
 export interface PlayerCardRow {
@@ -2272,12 +1986,11 @@ export async function referralCountForAccount(accountId: number): Promise<number
 
 // The account facts that drive the bank bonus-slot registry (server/bank_entitlements.ts),
 // read in ONE round trip because this runs at every fresh join. Cross-table reads are
-// fine from here (discord_links DDL lives in server/discord_db.ts, wallet_links + referrals
+// fine from here (discord_links DDL lives in server/discord_db.ts, referrals
 // above): the query is the natural home for the join. A missing account returns all-false/0
 // (the FROM accounts row is absent, so res.rows[0] is undefined and the fallback applies).
 //   - emailVerified: the RESOLVED criterion, email_verified_at IS NOT NULL, never email-present.
-//   - discordLinked / walletLinked: a link ROW is the whole proof. NEVER a balance, holder tier,
-//     or any chain state (the $WOC PRDs pin cosmetic-only; a wallet's contents are out of scope).
+//   - discordLinked: a link ROW is the whole proof.
 //   - qualifiedReferrals: referrals this account referred whose referee owns ANY character at
 //     level >= 10 (the denormalized characters.level; deliberately realm-agnostic, referrals are
 //     account-global; the characters_account index covers the probe). Counted RAW; the cap is
@@ -2287,7 +2000,6 @@ export async function bankBonusFactsForAccount(accountId: number): Promise<BankB
     `SELECT
        (a.email_verified_at IS NOT NULL) AS email_verified,
        EXISTS(SELECT 1 FROM discord_links dl WHERE dl.account_id = $1) AS discord_linked,
-       EXISTS(SELECT 1 FROM wallet_links wl WHERE wl.account_id = $1) AS wallet_linked,
        (SELECT count(*)::int FROM referrals r
           WHERE r.referrer_account_id = $1
             AND EXISTS(
@@ -2302,7 +2014,6 @@ export async function bankBonusFactsForAccount(accountId: number): Promise<BankB
   return {
     emailVerified: !!row?.email_verified,
     discordLinked: !!row?.discord_linked,
-    walletLinked: !!row?.wallet_linked,
     qualifiedReferrals: row?.qualified_referrals ?? 0,
   };
 }

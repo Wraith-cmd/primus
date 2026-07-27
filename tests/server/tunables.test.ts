@@ -80,7 +80,7 @@ import {
   WOC_BALANCE_MAX_PER_MINUTE,
 } from '../../server/ratelimit';
 
-// db.ts / player_card.ts / reports.ts / daily_rewards.ts evaluate a module-scope
+// db.ts / player_card.ts / reports.ts evaluate a module-scope
 // DATABASE_URL (throws if unset) and construct a pg Pool (no connection on
 // construction). Provide a dummy URL so the dynamic imports below do not throw.
 process.env.DATABASE_URL ||= 'postgres://test:test@127.0.0.1:5433/wocc_phase1_test';
@@ -297,23 +297,6 @@ describe('byte caps + page sizes hold their literal values', () => {
     expect(DEFAULT_JSON_BODY_MAX_BYTES).toBe(65_536); // 64 KiB
   });
 
-  it('daily-rewards paginated decode defaults', async () => {
-    const {
-      DAILY_DEFAULT_PAGE,
-      DAILY_PLAYER_LEADERBOARD_PAGE_SIZE,
-      DAILY_HISTORY_LIMIT,
-      DAILY_OPS_PENDING_PAYOUTS_LIMIT,
-      DAILY_OPS_PAYOUT_HISTORY_LIMIT,
-      DAILY_OPS_LEADERBOARD_PAGE_SIZE,
-    } = await import('../../server/daily_rewards');
-    expect(DAILY_DEFAULT_PAGE).toBe(0);
-    expect(DAILY_PLAYER_LEADERBOARD_PAGE_SIZE).toBe(20);
-    expect(DAILY_HISTORY_LIMIT).toBe(30);
-    expect(DAILY_OPS_PENDING_PAYOUTS_LIMIT).toBe(20);
-    expect(DAILY_OPS_PAYOUT_HISTORY_LIMIT).toBe(100);
-    expect(DAILY_OPS_LEADERBOARD_PAGE_SIZE).toBe(50);
-  });
-
   it('inbound gate constants + desktop-login TTL', () => {
     expect(MSG_RATE_BURST).toBe(180);
     expect(MSG_RATE_REFILL_PER_SECOND).toBe(120);
@@ -463,7 +446,6 @@ describe('no consolidated tunable literal is duplicated at a call site', () => {
   const mainSrc = read('server/main.ts');
   const dbSrc = read('server/db.ts');
   const reportsSrc = read('server/reports.ts');
-  const dailySrc = read('server/daily_rewards.ts');
   const retentionSrc = read('server/play_session_retention_db.ts');
 
   // Slice a function BODY: from its declaration to the next top-level export,
@@ -741,24 +723,5 @@ describe('no consolidated tunable literal is duplicated at a call site', () => {
     const ratelimitSrc = read('server/ratelimit.ts');
     expect(ratelimitSrc).toContain('maxPerMinute = AUTH_MAX_PER_MINUTE');
     expect(ratelimitSrc).not.toContain('maxPerMinute = 20');
-  });
-
-  it('the daily-rewards decode call sites reference named constants, not raw defaults', () => {
-    expect(dailySrc).toContain('|| DAILY_DEFAULT_PAGE');
-    expect(dailySrc).toContain('|| DAILY_PLAYER_LEADERBOARD_PAGE_SIZE');
-    expect(dailySrc).toContain('|| DAILY_HISTORY_LIMIT');
-    expect(dailySrc).toContain('|| DAILY_OPS_PENDING_PAYOUTS_LIMIT');
-    expect(dailySrc).toContain('|| DAILY_OPS_PAYOUT_HISTORY_LIMIT');
-    expect(dailySrc).toContain('|| DAILY_OPS_LEADERBOARD_PAGE_SIZE');
-    expect(dailySrc).not.toContain("get('pageSize')) || 20");
-    expect(dailySrc).not.toContain("get('pageSize')) || 50");
-    expect(dailySrc).not.toContain("get('page')) || 0");
-    expect(dailySrc).not.toContain("get('limit')) || 30");
-    expect(dailySrc).not.toContain("get('limit')) || 20");
-    expect(dailySrc).not.toContain("get('limit')) || 100");
-    // Generic ban: ANY decode default in this module must be a named constant, so
-    // a NEW query param with a re-typed numeric fallback is caught, not just the
-    // six spellings above.
-    expect(dailySrc).not.toMatch(/get\('[^']+'\)\)\s*\|\|\s*\d/);
   });
 });

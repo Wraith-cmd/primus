@@ -99,7 +99,7 @@ const FIXED_NOW_MS = 1_700_000_000_000;
 type DbOverrides = Parameters<typeof setReportsDbForTests>[0];
 
 // ---------------------------------------------------------------------------
-// Local builders (redefined per-file, mirroring tests/server/wallet.test.ts).
+// Local builders (redefined per-file, mirroring tests/server/account.test.ts).
 // ---------------------------------------------------------------------------
 
 /** A not-locked moderation status (the AccountModerationStatus happy-path shape). */
@@ -432,7 +432,7 @@ describe('POST /api/reports rate limiter (coded 429)', () => {
 // readBody (no withBody), so a malformed body throws inside readBody and surfaces as
 // 500 application/problem+json (internal.error) through the shared withErrors
 // boundary, vs the legacy outer-catch 500 { error: 'internal error' } (same 500
-// STATUS, different body shape). Sibling to walletBodyValidationRemap.
+// STATUS, different body shape). Sibling to accountBodyValidationRemap.
 // ---------------------------------------------------------------------------
 
 describe('POST /api/reports body-read 500 remap (reportsBodyValidationRemap deviation)', () => {

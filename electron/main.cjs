@@ -24,9 +24,11 @@ const {
   withCspHeader,
   ALLOWED_PERMISSIONS,
 } = require('./shell_guards.cjs');
-const { resolveDesktopConfig, walletConnectionSupported } = require('./desktop_config.cjs');
-const { createSteamShell } = require('./steam.cjs');
-const { PRODUCTION_API_ORIGIN } = require('./update_guard.cjs');
+const {
+  PRODUCTION_API_ORIGIN,
+  resolveDesktopConfig,
+  walletConnectionSupported,
+} = require('./desktop_config.cjs');
 const {
   MAX_FORWARDED_ERRORS,
   MAX_MIRRORED_CONSOLE_LINES,
@@ -37,7 +39,6 @@ const {
 const { initLogging } = require('./logging.cjs');
 const { DEFAULT_SHELL_STRINGS, sanitizeShellStrings } = require('./shell_strings.cjs');
 const { attachRendererCrashRecovery, installProcessCrashGuards } = require('./crash_guard.cjs');
-const { initUpdater } = require('./updater.cjs');
 const {
   forceHighPerformanceGpu,
   PRIME_RELAUNCH_MARKER,
@@ -82,11 +83,10 @@ let pendingWalletHandoffCode = null;
 // 'console-message' handler in createMainWindow).
 let consoleLinesMirrored = 0;
 
-// Which distribution this build is (website download vs Steam depot), whether
-// the auto-updater may run, and the optional crash-minidump submit URL. The
-// stamp is read from the PACKAGED package.json (electron-builder extraMetadata
-// wrote wocDesktop there); a bare `electron .` checkout has no stamp and
-// resolves to website-with-updater-off.
+// The web origins this build talks to and the optional crash-minidump submit
+// URL. The stamp is read from the PACKAGED package.json (electron-builder
+// extraMetadata wrote wocDesktop there); a bare `electron .` checkout has no
+// stamp and falls back to the production origin.
 function readPackagedMetadata() {
   try {
     return JSON.parse(fs.readFileSync(path.join(app.getAppPath(), 'package.json'), 'utf8'));
@@ -117,10 +117,10 @@ const desktopLoginOrigin = desktopConfig.loginOrigin.replace(/\/+$/, '');
 // build time, https-only) they upload compressed and rate-limited. No extra
 // user data rides along: the report carries only process/version metadata.
 crashReporter.start({
-  productName: 'World of ClaudeCraft',
+  productName: 'PRIMUS',
   // companyName is deprecated in Electron 43; the metadata field survives as
   // the _companyName global extra.
-  globalExtra: { _companyName: 'World of ClaudeCraft' },
+  globalExtra: { _companyName: 'PRIMUS' },
   submitURL: desktopConfig.crashSubmitUrl || undefined,
   uploadToServer: desktopConfig.crashSubmitUrl !== '',
   compress: true,
@@ -237,7 +237,7 @@ function createMainWindow() {
     height: 900,
     minWidth: 1024,
     minHeight: 720,
-    title: 'World of ClaudeCraft',
+    title: 'PRIMUS',
     backgroundColor: '#05070a',
     icon: path.join(__dirname, '..', 'build', 'icon.png'),
     webPreferences: {
@@ -427,47 +427,10 @@ function handleDeepLink(url) {
 // or foreign-origin sender is rejected with null.
 const trustedSender = (event) => isTrustedSender(event.senderFrame, appOrigins);
 
-// Steam link tickets (electron/steam.cjs). Inert on website builds: the shell
-// only lazy-requires steamworks.js when the distribution stamp says 'steam'
-// (or the unpackaged WOC_STEAM_DEV=1 dev loop), and getLinkTicket() answers
-// null on every failure path instead of throwing across IPC.
-const steamShell = createSteamShell({
-  distribution: desktopConfig.distribution,
-  packagedMetadata,
-  env: process.env,
-  isPackaged: app.isPackaged,
-  log,
-});
-
-ipcMain.handle('desktop-steam-link-ticket', async (event) => {
-  if (!trustedSender(event)) return null;
-  return await steamShell.getLinkTicket();
-});
-
-// The renderer signals that a link attempt has settled (POST /api/steam/link
-// resolved or rejected) so the shell can CancelAuthTicket the live handle
-// promptly (Valve's contract), rather than waiting for the next mint or process
-// exit. Idempotent; inert on website builds (no live handle ever exists).
-ipcMain.handle('desktop-steam-link-settled', (event) => {
-  if (!trustedSender(event)) return null;
-  steamShell.cancelLinkTicket();
-  return null;
-});
-
-// Whether this shell can mint link tickets at all (steam distribution or the
-// unpackaged dev loop): the renderer hides the Link button when false instead
-// of offering a click whose ticket can never exist (website builds). Computed
-// without loading steamworks.js.
-ipcMain.handle('desktop-steam-capability', (event) => {
-  if (!trustedSender(event)) return false;
-  return steamShell.enabled;
-});
-
-// WalletConnect is available in the website-distributed desktop shell but is
-// intentionally absent from Steam until that distribution enables it.
+// WalletConnect is available in every build of this desktop shell.
 ipcMain.handle('desktop-wallet-capability', (event) => {
   if (!trustedSender(event)) return false;
-  return walletConnectionSupported(desktopConfig);
+  return walletConnectionSupported();
 });
 
 ipcMain.handle('desktop-login-open-browser', (event) => {
@@ -606,9 +569,6 @@ app.whenReady().then(() => {
     platform: process.platform,
     arch: process.arch,
     packaged: app.isPackaged,
-    distribution: desktopConfig.distribution,
-    updaterEnabled: desktopConfig.updaterEnabled,
-    updateChannel: desktopConfig.updateChannel,
     crashUpload: desktopConfig.crashSubmitUrl !== '',
     crashDumpDir: app.getPath('crashDumps'),
     logFile: logFilePath,
@@ -616,51 +576,6 @@ app.whenReady().then(() => {
   registerAppProtocol();
   lockDownPermissions();
   createMainWindow();
-
-  // Keep 'desktop-update-install' answerable whenever the real updater did NOT
-  // claim it, so a renderer installUpdate() resolves null instead of rejecting
-  // with "No handler registered". Registered when the updater is off (Steam/dev)
-  // AND when an updater-enabled build could not load its updater bundle. The
-  // try/catch guards the (practically impossible) double-registration race.
-  const registerDisabledUpdateInstall = () => {
-    try {
-      ipcMain.handle('desktop-update-install', (event) => {
-        if (!trustedSender(event)) return null;
-        log.warn('[updater] install requested but auto-update is unavailable on this build');
-        return null;
-      });
-    } catch (err) {
-      log.warn('[updater] disabled-install handler already registered', err?.message ?? err);
-    }
-  };
-
-  // Auto-update, website distribution only (desktop_config.cjs gates on
-  // packaged + channel; Steam updates via SteamPipe depots, dev has nothing to
-  // update). A failed init degrades to a log line: the game must still run.
-  if (desktopConfig.updaterEnabled) {
-    let updater = null;
-    try {
-      updater = initUpdater({
-        ipcMain,
-        log,
-        getWindow: () => mainWindow,
-        isTrusted: trustedSender,
-        isPackaged: app.isPackaged,
-        // The normalized origin this install talks to and the update channel
-        // derived from it (electron/update_guard.cjs): the updater reads only
-        // its own track's feed and refuses cross-origin artifacts.
-        apiOrigin,
-        updateChannel: desktopConfig.updateChannel,
-      });
-    } catch (err) {
-      log.error('[updater] init failed', err);
-    }
-    // initUpdater returns null (without registering its handler) when the
-    // updater bundle is missing or broken; keep the channel answerable then.
-    if (!updater) registerDisabledUpdateInstall();
-  } else {
-    registerDisabledUpdateInstall();
-  }
 
   const initialDeepLink = process.argv.find((arg) => arg.startsWith(`${deepLinkProtocol}://`));
   if (initialDeepLink) handleDeepLink(initialDeepLink);

@@ -1,4 +1,12 @@
-# Desktop release runbook (Electron: website download + Steam)
+# Desktop release runbook (Electron)
+
+> **This fork: Steam and auto-update are removed.** The Steam depot channel
+> (`electron:build:steam`, `steamworks.js`, `electron/steam.cjs`) and the in-app
+> auto-updater (`electron-updater`, `electron/updater.cjs`, the generic publish
+> feed) no longer exist in this tree. `npm run electron:dev`, `electron:pack`,
+> and `electron:build` are the surviving commands; every Steam or update-feed
+> section below is retained for historical reference only and does not describe
+> the current build.
 
 How to build, sign, publish, and verify the World of ClaudeCraft desktop app.
 The longer companion explainer (what shipped, per-platform update/signing

@@ -36,7 +36,6 @@ describe('loadConfig', () => {
     expect(cfg.githubToken).toBe('');
     expect(cfg.chatLogRetentionDays).toBe(90);
     expect(cfg.perfReportRetentionDays).toBe(14);
-    expect(cfg.dailyRewardEventsRetentionDays).toBe(400);
     expect(cfg.onlineSamplesRetentionDays).toBe(90);
     expect(cfg.sitePresenceRetentionDays).toBe(90);
     expect(cfg.playSessionRetentionDays).toBe(180);
@@ -237,13 +236,8 @@ describe('loadConfig', () => {
     expect(loadConfig({ ...MIN_ENV, MAX_PLAYERS_PER_REALM: ' 0 ' }).maxPlayersPerRealm).toBe(0);
   });
 
-  it('reads the six retention day keys on the chat-log contract: empty is the default, whitespace is keep-forever', () => {
+  it('reads the five retention day keys on the chat-log contract: empty is the default, whitespace is keep-forever', () => {
     const cases = [
-      {
-        key: 'DAILY_REWARD_EVENTS_RETENTION_DAYS',
-        field: 'dailyRewardEventsRetentionDays',
-        dflt: 400,
-      },
       { key: 'ONLINE_SAMPLES_RETENTION_DAYS', field: 'onlineSamplesRetentionDays', dflt: 90 },
       { key: 'SITE_PRESENCE_RETENTION_DAYS', field: 'sitePresenceRetentionDays', dflt: 90 },
       { key: 'PLAY_SESSION_RETENTION_DAYS', field: 'playSessionRetentionDays', dflt: 180 },

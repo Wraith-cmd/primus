@@ -103,8 +103,7 @@ Online sign-in is Discord and email only, exactly the web flow: email/password l
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 Point the shell at a different API with `VITE_DESKTOP_API_ORIGIN`, for example a local server or a staging host:

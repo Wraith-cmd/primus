@@ -15,11 +15,6 @@ import {
   CLIENT_PERF_WORST10S_INVALID_INDEX_DROP_SQL,
 } from './client_perf_indexes';
 import {
-  DAILY_REWARD_EVENTS_CONCURRENT_INDEX_SQL,
-  DAILY_REWARD_EVENTS_INVALID_INDEX_CHECK_SQL,
-  DAILY_REWARD_EVENTS_INVALID_INDEX_DROP_SQL,
-} from './daily_rewards_schema';
-import {
   PLAY_SESSIONS_OPEN_INDEX_SQL,
   PLAY_SESSIONS_OPEN_INVALID_INDEX_CHECK_SQL,
   PLAY_SESSIONS_OPEN_INVALID_INDEX_DROP_SQL,
@@ -41,12 +36,6 @@ export const CONCURRENT_INDEX_MIGRATIONS: readonly ConcurrentIndexMigration[] = 
     createSql: PLAYER_METRICS_CONCURRENT_INDEX_SQL,
     checkSql: PLAYER_METRICS_INVALID_INDEX_CHECK_SQL,
     dropSql: PLAYER_METRICS_INVALID_INDEX_DROP_SQL,
-  },
-  {
-    name: 'daily_reward_events_account_day_created_id',
-    createSql: DAILY_REWARD_EVENTS_CONCURRENT_INDEX_SQL,
-    checkSql: DAILY_REWARD_EVENTS_INVALID_INDEX_CHECK_SQL,
-    dropSql: DAILY_REWARD_EVENTS_INVALID_INDEX_DROP_SQL,
   },
   {
     name: 'play_sessions_open_character',

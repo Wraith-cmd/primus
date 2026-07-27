@@ -103,8 +103,7 @@ World of ClaudeCraft, üç büyük masaüstü platformunun hepsi için eksiksiz 
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 Kabuğu `VITE_DESKTOP_API_ORIGIN` ile farklı bir API'ye yönelt, örneğin yerel bir sunucuya veya bir hazırlık ana bilgisayarına:

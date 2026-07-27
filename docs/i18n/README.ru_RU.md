@@ -103,8 +103,7 @@ World of ClaudeCraft поставляется как полноценное де
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 Направьте оболочку на другой API через `VITE_DESKTOP_API_ORIGIN`, например на локальный сервер или на стенд:

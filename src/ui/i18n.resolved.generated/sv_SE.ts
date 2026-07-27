@@ -363,258 +363,7 @@ export const sv_SE: EnTranslations = {
       "title": "Gester",
       "done": "Klar"
     },
-    "dailyRewards": {
-      "title": "Dagliga belöningar",
-      "close": "Stäng dagliga belöningar",
-      "loading": "Laddar dagliga belöningar...",
-      "error": "Kunde inte ladda dagliga belöningar.",
-      "disabled": "Dagliga belöningar är för närvarande inaktiverade. Vi meddelar uppdateringar om den här funktionen i Discord-kanalen.",
-      "intro": "Håll tillräckligt med WOC i din verifierade plånbok för att låsa upp dagliga belöningar. Tjäna poäng med ett dagligt snurr och roterande uppgifter, och klättra sedan på den dagliga topplistan för en andel av prispotten.",
-      "disclaimer": "WOC-priset kan röra sig snabbt. Vi rekommenderar att du håller mer än miniminivån på 20 USD så att vanliga prissvängningar inte låser dig ute. Detta är inte finansiell rådgivning.",
-      "prize": "Prispott",
-      "reset": "Återställning",
-      "endsIn": "Slutar om {time}",
-      "remainingLessThanMinute": "<1 min",
-      "remainingMinutes": "{minutes} min",
-      "remainingHoursMinutes": "{hours} h {minutes} min",
-      "remainingDaysHours": "{days} dagar {hours} timmar",
-      "score": "Poäng",
-      "walletValue": "Plånbokens värde (WOC)",
-      "usd": "{amount} USD",
-      "sol": "{amount} SOL",
-      "unknown": "Okänd",
-      "spinTitle": "Dagligt snurr",
-      "spinDialogTitle": "Dagligt belöningssnurr",
-      "spinClose": "Stäng dagligt snurr",
-      "spinReady": "Ett snurr är redo.",
-      "spinClaimed": "Hämtad: +{points} poäng.",
-      "spinResult": "+{points} poäng",
-      "spinButton": "Snurra",
-      "tasks": "Uppgifter",
-      "taskMultiplier": "x{multiplier} multiplikator",
-      "oneVsOneExcluded": "1 mot 1-matcher ger inga poäng för dagliga belöningar.",
-      "pointsGained": "{points} poäng för dagliga belöningar intjänade.",
-      "showChestButton": "Visa kista",
-      "hideChestButton": "Dölj kista",
-      "hideChestConfirmTitle": "Dölj kistan för dagliga belöningar?",
-      "hideChestConfirmBody": "Detta tar bort kistgenvägen från ditt HUD. Belöningar, behörighet och den här panelen finns kvar; du kan ta tillbaka genvägen från Alternativ.",
-      "hideChestConfirmOk": "Dölj kista",
-      "hideChestConfirmCancel": "Avbryt",
-      "leaderboard": "Daglig topplista",
-      "totalPlayer": "{count} spelare i dag",
-      "totalPlayers": "{count} spelare i dag",
-      "history": "Tidigare vinnare",
-      "noLeaders": "Inga poäng ännu.",
-      "noHistory": "Inga utbetalningar ännu.",
-      "walletConnectTitle": "Verifiera plånbok",
-      "walletConnectBody": "Verifiera en Solana-plånbok med WOC för att låsa upp dagliga belöningar.",
-      "walletConnectButton": "Verifiera plånbok",
-      "walletHoldTitle": "Håll WOC",
-      "walletHoldBody": "Håll minst {amount} USD i WOC för att låsa upp dagliga belöningar.",
-      "walletPriceBody": "WOC-prissättningen är otillgänglig just nu. Kom tillbaka snart.",
-      "reason": {
-        "eligible": "Belöningar upplåsta.",
-        "no_wallet": "Anslut en plånbok med minst 20 USD i WOC.",
-        "under_minimum": "Plånboken är under WOC-miniminivån på 20 USD.",
-        "price_unavailable": "WOC-priset är otillgängligt, belöningar är tillfälligt låsta.",
-        "banned": "Du är avstängd från dagliga belöningar. Orsak: {reason}",
-        "bannedUntil": "Du är avstängd från dagliga belöningar i ytterligare {remaining}. Åtkomsten återkommer {until}. Orsak: {reason}"
-      }
-    },
     "wocStore": {
-      "title": "WOC-butik",
-      "close": "Stäng WOC-butiken",
-      "tabsLabel": "Delar av WOC-butiken",
-      "storeTab": "Butik",
-      "rewardsTab": "Dagliga belöningar",
-      "loading": "Laddar WOC-butiken...",
-      "error": "WOC-butiken är inte tillgänglig just nu. Försök igen om en stund.",
-      "balance": "Claudium-saldo",
-      "buyClaudium": "Köp Claudium",
-      "owned": "I din ägo",
-      "needMoreTitle": "Mer Claudium krävs",
-      "needMoreBody": "Du behöver {shortfall} mer Claudium för att köpa {item}.",
-      "cancel": "Avbryt",
-      "confirmTitle": "Bekräfta köp av kosmetika",
-      "confirmBody": "Köpa {item} för {cost} Claudium?",
-      "confirmPurchase": "Köp",
-      "priceChanged": "Priset ändrades innan köpet slutfördes. Granska det uppdaterade priset och bekräfta igen.",
-      "armoryEyebrow": "Säsong 1",
-      "armoryTitle": "Vapenhuset",
-      "armoryBody": "Begränsade vapenskins från säsong 1-vapenhuset. De gäller för hela kontot, är helt kosmetiska och visas för alla i din omgivning.",
-      "wallet": {
-        "title": "Solana-plånbok",
-        "unlinked": "Anslut en plånboksapp och signera sedan en gång för att länka dess offentliga adress till ditt WoC-konto. Vi tar aldrig emot din återställningsfras eller privata nyckel.",
-        "connectedUnlinked": "Plånboksappen är ansluten till denna webbläsare, men dess offentliga adress är ännu inte länkad till ditt WoC-konto.",
-        "linkedDisconnected": "Din offentliga adress är länkad. Återanslut den plånboksappen när du vill betala med SOL eller WOC.",
-        "linkedConnected": "Din länkade plånboksapp är ansluten och redo för SOL- eller WOC-köp.",
-        "mismatched": "En annan plånbok är ansluten. Verifiera den för att ersätta den länkade adressen, eller återanslut den länkade plånboken.",
-        "connect": "Anslut plånbok",
-        "verify": "Verifiera och länka",
-        "reconnect": "Återanslut plånbok",
-        "manage": "Hantera plånbok"
-      },
-      "collectionLine": "{collection}-samlingen",
-      "collections": {
-        "guildmark": "Gillesmärke",
-        "emberwrought": "Glödsmidd",
-        "hoarfrost": "Rimfrost",
-        "fallen_star": "Fallen stjärna"
-      },
-      "skins": {
-        "guildmark_arming_sword": {
-          "name": "Gillesmärkt Väpnarsvärd",
-          "look": "Blånat stålblad, korsskydd för fisksvans i brons, krickfärgat lädergrepp, liten stämplad guild sigil.",
-          "lore": "Där smidesbladet är anonymt är detta signerat. En rustningsman förtjänar rätten att sänka sitt märke i ricasson först när världsmarknadens handlare går i god för sitt stål och Smith Haldrens märke går i god för. Blånad mot Vales fuktiga, balanserad till ett hårstrå. Du betalar för stämpeln lika mycket som svärdet, och det är värt det."
-        },
-        "brasscap_axe": {
-          "name": "Mässingshätteyxa",
-          "look": "Bits av polerat stål, mässingslock och långets på lackat askskaft, snyggt omslag, tillverkarstämpel.",
-          "lore": "En stämplad yxa är ett skryt du kan hålla. Mässingsmössan och langets är halvt rustning, hälften signatur: de hindrar skaftet från att splittras och de fångar krogljuset så att alla vet att du köpte Armorer Hodes verk, inte en milis-hand-me-down. \"Om det skär, säljer jag det\", säger Highwatch-smeden. Den här skär."
-        },
-        "tempered_flanged_mace": {
-          "name": "Härdad Flänsklubba",
-          "look": "Sexflänsad härdat blå stålhuvud, mässingskrage och axel, vinrött lädergrepp.",
-          "lore": "Sex flänsar av blånat, härdat stål, var och en slipad för att öppna ett rodret, täckta i mässing och lindade i vinrött läder. Rikets pansarmän tillverkar inte fula vapen även när arbetet är brutalt. Den här beställdes genom världsmarknaden, inte drogs från ett ställ; någonstans finns det en reskontra med en stolt köpares namn och summan han betalade Hode för det."
-        },
-        "guildmark_dirk": {
-          "name": "Gillesmärkt Dirk",
-          "look": "Smal dirk i härdat stål, bronsskydd och mutter, mörkgrönt snörgrepp, stämplad sigil.",
-          "lore": "Vilken gjord man bär när svärdet stannar hemma: smal, tempererad, stämplad med samma märke som intygar ett helt blad, bärs på bältet som en signet med kant. Underskattat för alla utom de som kan läsa en rustningsmans bevis. Quartermaster Bree har en låda med dem på Highwatch för officerare som har förtjänat murens respekt."
-        },
-        "brasscrown_staff": {
-          "name": "Mässingskronans Vandringsstav",
-          "look": "Lövträstav toppad med en svarvad mässingskrona, mässingshylsa, färgat läderband.",
-          "lore": "Svängd av kryddat lövträ och krönt med en mässingsfinal som Eastbrook-smederna gjutna i hundra men perfekt av en. Det tillhör den sortens resenär som vill bli tagen på allvar vid både Fenbridges gate och Highwatchs mur. En käpp som aldrig riktigt har behövt gå; det färgade bandet matchar en kappa du kan gissa priset på."
-        },
-        "lacquered_wand": {
-          "name": "Lackerad Stav",
-          "look": "Smal djupröd lackerad stav, två polerade mässingsband, liten rundad mässingsspets.",
-          "lore": "Djupröd lack i sju tålmodiga rockar, bandade två gånger i polerad mässing: den typ av trollstav som en häckmagare köper från världsmarknaden när de väl har börjat ladda äkta mynt och vill titta på det. Den kanaliserar ljuset inte bättre än en björkpinne. Men det lyser magnifikt över köpmannens disk, och hälften av mindre magi har alltid trotts."
-        },
-        "fletcher_s_guild_bow": {
-          "name": "Pilmakarskråets Båge",
-          "look": "Lackad valnötsbåge, lemspetsar i mässing, vaxat linnesnöre, en guildstämpel på stigaren.",
-          "lore": "Det närmaste riket har ett skrå är en fletchers stämpel på risern, ett löfte om vad som finns inuti, hur en vinodlare förseglar ett fat. Lackerad valnöt, mässing vid benspetsarna, ett vaxat linnesnöre som inte fransar sig genom ett Mirefen-regn. Varje led argumenterar för priset. Dra den en gång förbi änkesnåret och argumentet vinner."
-        },
-        "cinderbrand_sword": {
-          "name": "Glödbrand",
-          "look": "Blad av mörkt smidd stål, fylligare fylld med glödande glödorange runor, värmesprickor, en pyrande pärla i skyddet.",
-          "lore": "Det första bladet släckte inte i vatten utan i Blessed Embers krattade från Stormcrag, kolen som Highwatch-smederna svär \"bränna blått och rent, eftersom berget minns sin gamla ed.\" Banken in i den fylligare, den glöder glödorange och kommer inte att dö; runorna håller sig varma till bar hand på väggens kallaste natt. Cinderbrand behöver aldrig belysning. Den vägrar helt enkelt gå ut."
-        },
-        "emberbite_axe": {
-          "name": "Glödbett",
-          "look": "Yxa av svärtat järn med glödorange sprickor som glöder genom bettet, en kolpärla, värmebitar.",
-          "lore": "Armorer Hode arbetade med ett levande kol av bergseld i hjärtat av biten, så kanten svalnar aldrig riktigt mellan slagen. Sprickorna andas orange på nedgången, som om strejken väcker något som det första smidet lämnade och sov i järnet. De säger att en Stormcrag-elemental gav upp glöden för det; de säger väldigt många saker på Highwatch när det blåser."
-        },
-        "smoulderfall_mace": {
-          "name": "Glödfall",
-          "look": "Mörka järnflänsar som lyser glödorange längs sina inre sprickor, en pärla med smält kärna i huvudet.",
-          "lore": "En mace som bär sin egen härd: en sten med smält kärna avhuggen från Sanctum-sälen som var 'smidd med bergseld', som glödde i huvudet. Flänsarna förblir varma vid beröring och varmare där de landar; en Highwatch-sergeant svär att ett slag från den lämnar ett blåmärke som lyser svagt till morgonen. Bergets eld gjorde äntligen till att bryta i stället för att täta."
-        },
-        "ashspark_dagger": {
-          "name": "Askgnistkniv",
-          "look": "Kort svärtat blad ådrat med glödande glöd-orange, en liten pyrande pärla i stift, aska och gnista.",
-          "lore": "En bakvägsklinga med bergets eld insmugglad in i sin klacksten, en rustningsmans tysta skämt: till och med en pungväska kan bära en glöd av det första smidet. Svärtad, ådrad med orange, alltid en nyans för varm i slidan. Rita den i mörkret under Highwatch och glöden tänder din hand precis tillräckligt för att hitta luckan i en mans vakt."
-        },
-        "forgeheart_staff": {
-          "name": "Smedjehjärtats Stav",
-          "look": "Järnskodd stav krönt med en burad glödande glödkärna, glödrunor uppför skaftet, stigande värmeskimmer.",
-          "lore": "Ett levande kol av bergseld i bur i järn vid sin krona. Loremaster Caddis kallar det bevis på att elden från det första smidet kan bindas till att tjäna, inte bara för att försegla. Värmeskimmer stiger ur den i ett tunt, ändlöst band; en magiker som bär en vill aldrig ha en smedja eller en vakteld. Glöden, viskar de, drogs från glödvingen Voskars egna andetag, och den har inte svalnat sedan dess."
-        },
-        "emberwrought_wand": {
-          "name": "Glödsmidd Trollstav",
-          "look": "Svartmetalltrollstav spetsad med glödande glödkol i järnklor, hårfäste värmesprickor, varmt inre ljus.",
-          "lore": "Trollstaven som döpte betyget. När en Highwatch pansarmakare först satte ett kol av bergseld i järnklor och fick det att svara på en dödlig hand, slutade till och med Prästs of the Light att kalla det kätteri och började kalla det användbart. Varm, tålmodig och tyst farlig: glöden i spetsen har bränt, obruten, sedan innan dess ägare drog andan."
-        },
-        "cinderlatch_crossbow": {
-          "name": "Glödlås",
-          "look": "Armborst i svärtat stål, glödorange glöd som sipprar från sprickor i stöttan, ett pyrande kol i rorkulten.",
-          "lore": "Det märkligaste av det glödsmidda: bergets eld strömmade in i en maskin. Apelsin sipprar från sprickor i rodret, och ett rykande kol i rorkulten hindrar snöret från att någonsin stelna i Thornpeaks kyla eller Mirefens fukt. Dess bultar lämnar spåret redan varmt och landar varmare. En jägares svar på en mur där fienden inte heller känner kylan."
-        },
-        "ice_fang_sword": {
-          "name": "Ishuggtand",
-          "look": "Böjt blad av blek glaciäris, taggiga rimkristaller längs ryggraden, en glödande cyan frusen kärna i den fylligare, istappars tvärskyddet.",
-          "lore": "Flaggskeppet för den frysta sorten, och den bit som varje samlare når först. Ice Fang ristades, inte smidd, från en huggtand på glaciären som täcker Thornpeak ovanför Highwatch, dess cyankärna brinner kallt som ljuset från Glimmermere. Den rimmar själva luften den skär. Väggvakten svär att en soldat bar den natten när de höga snön höll Wyrmcult tillbaka och \"köpte muren en vinter.\""
-        },
-        "glaciersplit_axe": {
-          "name": "Glaciärklyvare",
-          "look": "Huvud av genomskinlig blå glaciär-is, sprucken inre glödande cyan, frostkristaller som strular, en skaft släpande kall ånga.",
-          "lore": "Huggen från Thornpeak-glaciärens blåa hjärta, där två århundraden av is har pressat kylan tills den lyser av sig själv. Den släpar efter ånga även i vila, och sprickan när den landar är en spricka som öppnar sig under Smygjagaer Ridge. Highwatch ger sina fall till isen där uppe; så det här är ett vapen som är tänkt att hålla tjällossningen, och vad töningen än skulle väcka, på avstånd."
-        },
-        "rimecrusher_mace": {
-          "name": "Rimkross",
-          "look": "En klunga av taggiga iskristaller runt en glödande cyankärna, rimfrost kryper nerför en försilvrad skaft.",
-          "lore": "Inte huggen men odlad: Thornpeak-isen slingrade sig runt en kall cyankärna tills den stelnade lika hårt som Hodes bästa stål. Rimfrosten kryper nerför den silverfärgade skaftet mot handen och kommer aldrig riktigt fram. Där det slår till fryser vattnet; där den vilar bleker marken. Topparnas gravkyla, gjorda tillräckligt små för att svänga mot sakerna som klättrar på väggen."
-        },
-        "frostbite_dagger": {
-          "name": "Rimnål",
-          "look": "Oväldigt tunn dolk av klarblå is, en glödande cyan ven i mitten, nålfrostkristaller, rimfrostfäste.",
-          "lore": "Tunn som ett uppehållet andetag och dubbelt så kall: en splinta av Thornpeak-glaciären finslipad till en enda glödande ven, så angelägen att såret fryses till innan blodet kommer ihåg att rinna. Dess namn är lånat från den gravkyla som de döda bär ner från topparna. Den behöver aldrig skärpas; isen mattas inte, konstaterar Loremaster Caddis torrt, den bara väntar."
-        },
-        "hoarfrost_vigil_staff": {
-          "name": "Rimfrostvaka",
-          "look": "Försilvrad stav krönt med en flytande, långsamt roterande skärva av glödande cyan is, utstrålande kristaller och kall ånga.",
-          "lore": "Personalen på klockan som aldrig sover på Highwatchs vägg. Dess krona är en skärva av cyan tjärris som flyter fri från silvret och vänder sig, sakta, av sig själv: alltid, svär vakten, mot kylan som samlas under topparna. Att bära Vigil är att stå tvåhundra års vakt på en enda natt, och lova att inte titta bort."
-        },
-        "everwinter_wand": {
-          "name": "Evigvinterns Skärva",
-          "look": "En enda spik av glödande cyan glaciäris, rimfrost som blommar från en silverkrage, svag kall dimma.",
-          "lore": "En spik av glödande glaciäris, som sägs vara bruten från den djupa tjärnen nedanför Sanctum, där bergets kyla har tänder. Rimfrost blommar oändligt från sin silverkrage och smälter aldrig, varken av eld eller vid sommar. Magikers håller det nära för kylan det lånar deras arbete, och håller det långt på nätterna som det verkar luta sig mot Nythraxis krypta, och lyssna."
-        },
-        "winterbite": {
-          "name": "Vinterbett",
-          "look": "Försilvrat stål och blå-is båge, en glödande cyan frusen kärna i stigaren, en nockad pil av solid is, kall ånga.",
-          "lore": "En båge av försilvrat stål och Thornpeak-is, dess stigare upplyst av en kall cyan kärna som fryser pilen till snöret. Det knackar ett schakt av fast glaciär-is som reformerar varje dragning; bågskytten bär inget koger på väggen, bara kylan. Highwatch höll Smygjagaer Ridge genom en belägring med en liknande: en enda bågeskytt, säger de, och en vinter med pilar som alltid redan fanns där."
-        },
-        "solheim_sword": {
-          "name": "Solheim, gryningens sista ljus",
-          "look": "Storsvärd smidd av en fallen stjärna, kärna av smält guld som delar bladet, kosmossvart stål kantat i stjärnljus, gyllene skärvor som kretsar kring skyddet, norrskensband.",
-          "lore": "När stjärnan föll från den västra himlen och 'brast som en smedja' bortom Änkesnåret, drog broder Aldric sitt fortfarande glödande hjärta från Mirefen-kratern och bad rikets smeder att arbeta 'en sak som inte tillhör denna värld'. De gjorde ett stort svärd av det: Solheim. Dess smälta guldkärna delar det kosmossvarta bladet som en gryning som spricker en natthimmel, och skärvor av stjärnmetall kretsar runt vakten på vägar utan handfast. Endast en har någonsin förfalskats. Det blir ingen annan."
-        },
-        "skyrender_axe": {
-          "name": "Himmelsrivare, Firmamentets Sår",
-          "look": "Huvudet som ett sönderrivet stycke natthimmel, sprickor i smält guld och etsningar av stjärnbild, skärvor av stjärnljus som svävar, ett norrskensskimmer som svävar längs kanten.",
-          "lore": "Slås från kraterns kant, där den fallna stjärnan slet ut himlens egen reflektion ur Mirefen och lämnade ett sår som fortfarande ångar. Huvudet ser ut som en bit sönderriven natt: sprickor i smält guld, konstellationer som ingen forskare på Highwatch kan nämna, ett norrsken som blöder från kanten med varje sväng. Broder Aldric välsignade den och ville inte röra den. Att lyfta det är att hålla hålet himlen kvar."
-        },
-        "starfall_mace": {
-          "name": "Stjärnfall, himlens dom",
-          "look": "Infångad stjärnkärna av smält guld omgiven av kretsande fragment, kosmossvarta flänsar med stjärnljus, norrsken som rinner ut från sömmarna.",
-          "lore": "En stjärnkärna fångade ögonblicket innan den dog, omringad av skräpet som föll med den, frusna en tum från glömskan. Dess kosmossvarta flänsar löper med instängt stjärnljus, och norrsken rinner ut från sömmarna när den höjs. Ljusets gamla Präst kallade en fallande stjärna för en dom, en dom avkunnad från ovan att ingen sköld var menad att stoppa, och döpte detta efter den som kom ner på Mirefen."
-        },
-        "astravyr_dagger": {
-          "name": "Astravyr, Den Fallna Stjärnans Huggtand",
-          "look": "En flisa av en fallen stjärna, glödande kant av smält guld på kosmossvart metall, ett ljust stjärnskott som kretsar kring kulan, ett tunt norrskensspår.",
-          "lore": "Den minsta biten av stjärnan Aldric hämtades från kratern, och enligt vissa beräkningar den farligaste. En enda flisa av det där andra världsliga hjärtat, dess smälta guldkant som rider på kosmossvart metall, en ensam stjärna som cirkulerar runt klotet som en måne som förlorade sin värld. Den väger nästan ingenting och delar nästan vad som helst. Liten nog att gömma sig, tillräckligt ljus för att hitta i mörkret av sitt eget ljus."
-        },
-        "cosmarch_staff": {
-          "name": "Cosmarch, Den Oändliga Tomhetens Spira",
-          "look": "En kretsande klunga av gyllene stjärnskärvor runt en kärna av smält guld, konstellationsetsad kosmossvart skaft, norrskensband som slingrar sig uppåt.",
-          "lore": "Ett skaft av stjärnmetall krönt med en kärna av smält guld och en ring av gyllene skärvor som marscherar runt den i långsam, oändlig omloppsbana: ett litet kosmos, etsat med konstellationer som inte matchar någon himmel över Thornpeak. Aurora slingrar sig upp på längden som rök som glömt att stiga. De som bar det hävdade att de kunde känna tomrummet som vänder sig genom det, på det sätt som Ysoleis bara \"dricker månskenet\": tålmodig och kall, och ser tillbaka."
-        },
-        "emberwish_wand": {
-          "name": "Glödönskan, Den Döende Solens Gnista",
-          "look": "Infångad smält-guld döende stjärna inklädd i kretsande gnistor, kosmossvart skaft etsat med glödande konstellationer.",
-          "lore": "Inte den fallna stjärnan i sig utan den sista fläcken av en döende: en enda glöd av en sol i smält guld som redan slocknat, insvept i gnistor som var dess slutliga ljus. Dess kosmossvarta skaft är etsat med konstellationerna som såg den dö. Mirefen-torparna säger att den ger en önskan till den som håller den i sann skymning; de säger också att varje själ som höll den önskade sig mer tid och att den drunknade månen inte gav någon av dem någon."
-        },
-        "encore_bow": {
-          "name": "Encore, Den Andra Fallande Stjärnan",
-          "look": "Komiskt överdimensionerad stjärnkanon: en kosmossvart pipa etsat med glödande gyllene konstellationer, en utsvängd klockmunkorg med ett kometskal av smält guld som sitter inuti, mässingsbeslag, en axelstock av trä.",
-          "lore": "Smederna som bearbetade den fallna stjärnan gjorde sex reliker av den och hade fortfarande en tunnas stjärnmetall över, och då hade lärlingarna åsikter. Det som kom från städet är antingen rikets första pistol eller dess minsta belägringsmotor: en axelkanon som inte så mycket tappar ett skott som begär en andra stjärna, riktad. Broder Aldric vägrade att välsigna den och resonerade att allt så högt redan har märkts av himlen. Jägares älskar det. Inget downrange någonsin har."
-        },
-        "meteorlatch_crossbow": {
-          "name": "Meteorlås, Himlens Sista Dom",
-          "look": "Meteorisk stjärnmetall, smält guldkärna längs med rorkulten, kosmossvarta lemmar etsade med konstellationer, en knackad bult av ren sjöstjärna.",
-          "lore": "Smidd av rå, meteorisk stjärnmetall medan Mirefen-kratern fortfarande glödde, skräp \"för varmt att hantera\", hamrade in i lemmar av kosmossvart etsade med konstellationer, en kärna av smält guld låg längs med rorkulten. Den knackar ingen bult utan frammanar en: ett skaft av sjöstjärna, löst som en dom och landar som slutet på en. När Highwatch fruktade att ens Nythraxis dödlösa krona kanske inte var det värsta under topparna, var det här vapnet de ville ha på väggen. Sikta det väl."
-        }
-      },
-      "seasonOne": "Säsong 1",
-      "rarity": {
-        "uncommon": "Ovanlig",
-        "rare": "Sällsynt",
-        "epic": "Episk",
-        "legendary": "Legendarisk"
-      },
       "wtype": {
         "sword": "Svärd",
         "axe": "Yxa",
@@ -625,73 +374,7 @@ export const sv_SE: EnTranslations = {
         "bow": "Båge",
         "crossbow": "Armborst",
         "polearm": "Stångvapen"
-      },
-      "badge": {
-        "flagship": "Flaggskepp",
-        "hero": "Hjälte"
-      },
-      "inspectAria": "Inspektera {item}",
-      "viewModeLabel": "Förhandsgranskningsläge",
-      "tryOn": "Prova",
-      "weaponOnly": "Endast vapen",
-      "sceneLabel": "Förhandsvisningens ljus",
-      "scene": {
-        "day": "Dag",
-        "dusk": "Skymning",
-        "night": "Natt"
-      },
-      "lore": "Bakgrundshistoria",
-      "buySkin": "Köp skin",
-      "unavailable": "Inte tillgänglig",
-      "applied": "Aktivt",
-      "apply": "Använd skin",
-      "detach": "Ta bort skin",
-      "equipHint": "Utrusta ett vapen av typen {type} för att använda detta skin."
-    },
-    "claudium": {
-      "title": "Claudium",
-      "open": "Öppna Claudium",
-      "close": "Stäng Claudium",
-      "loading": "Laddar Claudium...",
-      "balanceLabel": "Saldo",
-      "balanceUnit": "{amount} Claudium",
-      "solBalance": "SOL: {amount}",
-      "usdcBalance": "USDC: {amount}",
-      "wocBalance": "WOC: {amount}",
-      "unavailable": "Claudium-butiken är inte tillgänglig just nu. Ditt saldo och dina köp påverkas inte. Försök igen om en stund.",
-      "disclosure": "Claudium är en virtuell valuta som bara går åt ett håll: köp den för pengar och använd den till kosmetika. Den kan inte växlas in, överföras eller betalas ut.",
-      "buyTitle": "Köp Claudium",
-      "railLabel": "Betalningsmetod",
-      "railStripe": "Kort",
-      "railSol": "SOL",
-      "railUsdc": "USDC",
-      "railWoc": "WOC",
-      "railWocDiscount": "20% rabatt",
-      "railWocUnavailable": "WOC-priser är inte tillgängliga just nu.",
-      "railNativeUnavailable": "SOL/WOC är avstängt.",
-      "amountLabel": "Belopp",
-      "showAmounts": "Visa alla Claudium-belopp",
-      "hideAmounts": "Dölj extra Claudium-belopp",
-      "skuRow": "{usd} för {claudium} Claudium",
-      "buyButton": "Köp",
-      "buyUnavailable": "Det går inte att genomföra köp just nu.",
-      "storeTitle": "Kosmetisk butik",
-      "storeEmpty": "Inga kosmetika är tillgängliga just nu.",
-      "storeCost": "{amount} Claudium",
-      "spendButton": "Lös in",
-      "kindCosmetic": "Kosmetisk",
-      "kindSkin": "Skin",
-      "kindItem": "Föremål",
-      "checkoutTitle": "Slutför köp",
-      "checkoutClose": "Stäng betalningsfönstret",
-      "checkoutLoading": "Laddar kassan...",
-      "checkoutPending": "Transaktion pågår. Bekräfta i din plånbok och håll denna panel öppen.",
-      "checkoutPendingButton": "Bearbetar",
-      "checkoutFailed": "Det gick inte att ladda kassan. Försök igen.",
-      "checkoutUnavailable": "Det Claudium-köpet är inte tillgängligt just nu.",
-      "checkoutWalletRequired": "Anslut en Solana-plånbok innan du köper Claudium med krypto.",
-      "checkoutWalletUnsupported": "Denna plånbok kan inte signera och skicka Solana-transaktioner.",
-      "checkoutNotSettled": "Transaktionen skickades men Claudium har inte krediterats ännu. Försök snart igen."
+      }
     },
     "theme": {
       "preset": "Gränssnittstema",
@@ -773,7 +456,6 @@ export const sv_SE: EnTranslations = {
     "mobile": {
       "jump": "Hoppa",
       "leaderboard": "Ranking",
-      "dailyRewards": "Butik",
       "deeds": "Bedrifter",
       "professions": "Yrken",
       "nameplates": "Namn",
@@ -1048,8 +730,6 @@ export const sv_SE: EnTranslations = {
       "clickFeedback": "Klickmarkör",
       "lockCursorOnRotate": "Lås pekare under rotation",
       "keybindHelpLockCursorOnRotate": "Håller muspekaren inuti fönstret medan du drar för att rotera kameran, så att den inte kan nå skärmkanten eller flytta till en annan skärm. Stäng av om du föredrar en fri pekare.",
-      "showWalletOnCharacterScreen": "Visa plånbok på karaktärsskärmen",
-      "showWalletOnPlayerCard": "Visa plånbok på spelarkortet",
       "showDevBadges": "Visa utvecklarmärken",
       "showOwnNameplate": "Visa min namnskylt",
       "showPlayerNameplates": "Visa spelares namnskyltar",
@@ -1070,9 +750,9 @@ export const sv_SE: EnTranslations = {
       "showThirdActionBar": "Visa tredje åtgärdsfältet",
       "showTargetOfTarget": "Visa målets mål",
       "showAttackButton": "Visa attackknapp",
-      "showDailyRewardsChest": "Visa kistan för dagliga belöningar",
       "mobileCameraJoystick": "Kamera joystick",
-      "mobileLeftHanded": "Vänsterhänt layout"
+      "mobileLeftHanded": "Vänsterhänt layout",
+      "showWalletOnCharacterScreen": "Visa plånbok på karaktärsskärmen"
     },
     "talentRows": {
       "tab": "Val",
@@ -1178,9 +858,6 @@ export const sv_SE: EnTranslations = {
         "backgrounded": "I bakgrunden",
         "offline": "Offline"
       }
-    },
-    "playerCard": {
-      "showWalletBadge": "Visa plånboksmärke"
     },
     "landing": {
       "highContrast": "Hög kontrast",
@@ -4762,170 +4439,6 @@ export const sv_SE: EnTranslations = {
       "failed": "Det gick inte att spara din e-postadress. Försök igen."
     }
   },
-  "wallet": {
-    "label": "$WOC-plånbok",
-    "connect": "Verifiera plånbok",
-    "connectTitle": "Verifiera din Solana-plånbok",
-    "connectAria": "Verifiera din Solana-plånbok",
-    "verify": "Verifiera plånbok",
-    "verifyNew": "Verifiera ny plånbok",
-    "verifyTitle": "Välj en plånbok och signera en gång för att verifiera ägande.",
-    "verifyAria": "Välj en plånbok och signera en gång för att verifiera ägande",
-    "verifyAddressAria": "Signera för att verifiera plånboken {address} för ditt konto",
-    "appConnected": "App ansluten",
-    "connectApp": "Anslut app",
-    "connectAppTitle": "Anslut plånboksappen i den här webbläsaren",
-    "connectAppAria": "Anslut plånboksappen i den här webbläsaren",
-    "verifying": "Verifierar...",
-    "verifyingTitle": "Plånboksverifiering pågår.",
-    "switch": "Byt",
-    "switchTitle": "Verifiera en annan plånbok",
-    "switchAria": "Verifiera en annan plånbok",
-    "unlink": "Avlänka",
-    "unlinkTitle": "Ta bort plånboksverifieringen från det här kontot",
-    "unlinkAria": "Ta bort plånboksverifieringen från det här kontot",
-    "signOut": "Koppla från",
-    "signOutTitle": "Koppla från plånboksappen i den här webbläsaren",
-    "signOutAria": "Koppla från plånboksappen i den här webbläsaren",
-    "hide": "Dölj",
-    "hideTitle": "Dölj plånboksraden på den här skärmen",
-    "hideAria": "Dölj plånboksraden på den här skärmen",
-    "hiddenNotice": "Plånboksraden är dold. Aktivera den igen i spelet via Alternativ > Gränssnitt.",
-    "linkedTitle": "Plånboken är verifierad för ditt konto. Klicka för att hantera plånboksappen.",
-    "linkedDisconnectedTitle": "Plånboken är fortfarande verifierad för ditt konto. Återanslut för att hantera plånboksappen.",
-    "linkedDisconnectedAria": "Plånboken är fortfarande verifierad för ditt konto. Återanslut för att hantera plånboksappen.",
-    "linkTitle": "Klicka för att signera och länka den här plånboken till ditt konto.",
-    "connectedTitle": "Ansluten. Logga in för att länka plånboken till ditt konto.",
-    "balanceTitle": "Verifierat $WOC-saldo i Solana-plånbok",
-    "balanceAria": "Verifierat Solana-plånbokssaldo: {balance}",
-    "balancePreviewTitle": "Förhandsvisning av ansluten plånboks $WOC-saldo",
-    "balancePreviewAria": "Förhandsvisning av ansluten plånboks saldo: {balance}. Länka plånboken för att verifiera innehavarmärket.",
-    "balanceAmount": "{amount} $WOC",
-    "bagConnect": "Länka plånbok",
-    "bagLink": "Verifiera plånbok",
-    "bagReconnect": "Återanslut plånbok",
-    "connected": "Ansluten: {address}",
-    "connectedWithBalance": "Ansluten: {balance} - {address}",
-    "connectedLinked": "Verifierad: {address}",
-    "connectedLinkedWithBalance": "Verifierad: {balance} - {address}",
-    "helpDisconnected": "Verifiera en Solana-plånbok för att aktivera innehavarmärke och spelarkortsmärken. Ingen transaktion eller SOL krävs.",
-    "helpLoginToLink": "Ansluten {address}. Logga in för att länka den till ditt konto.",
-    "helpLoginToLinkWithBalance": "Ansluten {address} med {balance}. Logga in för att länka den till ditt konto.",
-    "helpReadyToLink": "Plånbok vald: {address}. Signera en gång för att verifiera innehavarmärke och spelarkort.",
-    "helpReadyToLinkWithBalance": "Plånbok vald: {address} med {balance}. Signera en gång för att verifiera innehavarmärke och spelarkort.",
-    "helpLinked": "Innehavarförmåner är aktiva. Plånboksappen är ansluten i den här webbläsaren.",
-    "helpLinkedWithBalance": "Innehavarförmåner är aktiva. Plånboksappen är ansluten i den här webbläsaren.",
-    "helpLinkedDisconnected": "Innehavarförmåner är aktiva. Anslut appen när du behöver signera eller spendera.",
-    "helpLinkedDisconnectedWithBalance": "Innehavarförmåner är aktiva. Anslut appen när du behöver signera eller spendera.",
-    "extensionHelp": "För att se en plånbok här, håll ett webbläsartillägg för plånböcker som Solflare Wallet aktivt.",
-    "mobileAppHelp": "Välj Phantom eller Solflare. Din plånboksapp ber om godkännande. Håll det här spelet öppet och återgå till det när du är klar.",
-    "standaloneAppHelp": "Plånboksanslutningar är ännu inte tillgängliga i hemskärmsappen. Öppna World of ClaudeCraft i Safari eller Chrome för att använda Phantom eller Solflare.",
-    "openAppTitle": "Fortsätt i {wallet}",
-    "openAppHelp": "Öppna {wallet} för att granska denna begäran. Håll denna spelflik öppen medan plånboksappen är aktiv.",
-    "openAppButton": "Öppna {wallet}",
-    "manualReturnBrowserHelp": "Efter godkännande, återgå till denna spelflik. Om iOS öppnar en annan webbläsare, stäng den och återgå till den ursprungliga webbläsaren manuellt.",
-    "manualReturnStandaloneHelp": "Efter godkännande, återgå till World of ClaudeCraft från din hemskärm. Om iOS öppnar en webbläsare, stäng den och öppna hemskärmsappen manuellt igen.",
-    "preparingAppButton": "Förbereder {wallet}...",
-    "walletAppUnavailable": "{wallet} kunde inte förberedas. Stäng det här fönstret och försök igen.",
-    "flowConnect": "Välj en plånbok. Verifieringen fortsätter automatiskt.",
-    "flowSign": "Signera verifieringsmeddelandet i din plånboksapp. Ingen transaktion eller SOL krävs.",
-    "flowVerify": "Verifierar plånboksägande...",
-    "linkFailed": "Plånboksverifieringen misslyckades.",
-    "verifyFailed": "Plånboksverifieringen misslyckades.",
-    "unlinkFailed": "Det gick inte att avlänka plånboken.",
-    "browser": {
-      "eyebrow": "Skrivbordsplånboksbehörighet",
-      "title": "Anslut en Solana-plånbok",
-      "linkBody": "Välj ett plånbokstillägg i denna webbläsare. Du signerar ett verifieringsmeddelande och återvänder sedan till skrivbordsappen.",
-      "paymentBody": "Välj plånboken länkad till ditt konto och godkänn transaktionen i denna webbläsare.",
-      "extensionHelp": "Inget kompatibelt plånbokstillägg hittades. Installera eller lås upp Phantom, Solflare eller en annan Solana-webbläsarplånbok och försök sedan igen.",
-      "safety": "World of ClaudeCraft ber aldrig om din återställningsfras eller privata nyckel.",
-      "continueWith": "Fortsätt med {wallet}",
-      "reviewTitle": "Granska i din plånbok",
-      "reviewBody": "Följ uppmaningen från {wallet}. Håll denna webbläsarsida öppen.",
-      "completeTitle": "Plånboksbehörighet slutförd",
-      "completeBody": "Du kan återvända till skrivbordsappen för World of ClaudeCraft.",
-      "returnButton": "Återgå till skrivbordsappen",
-      "failed": "Plånboksbehörighet misslyckades eller gick ut. Återgå till skrivbordsappen och försök igen.",
-      "retry": "Försök igen"
-    },
-    "holder": "$WOC-innehavare",
-    "holderTierTitle": "{tier} $WOC-innehavare",
-    "holderTiers": {
-      "ember": {
-        "name": "Glöd",
-        "flavor": "Gnistan är tänd."
-      },
-      "coinbearer": {
-        "name": "Myntbärare",
-        "flavor": "Första myntet i krigskassan."
-      },
-      "coppercrest": {
-        "name": "Kopparkam",
-        "flavor": "Kopparmynt staplade, ditt namn på allas läppar."
-      },
-      "silverbound": {
-        "name": "Silverbunden",
-        "flavor": "Bunden i silver, bygger upp pungen."
-      },
-      "gilded": {
-        "name": "Förgylld",
-        "flavor": "Förgylld och leende."
-      },
-      "vaultwarden": {
-        "name": "Valvväktare",
-        "flavor": "Vaktar nu ett verkligt valv: 0,01 % av allt $WOC."
-      },
-      "whale": {
-        "name": "Val",
-        "flavor": "Djupet delar sig när du simmar: 0,1 % av tillgången."
-      },
-      "leviathan": {
-        "name": "Leviatan",
-        "flavor": "Marknaderna känner när du rör dig: 1 % av tillgången."
-      },
-      "tidelord": {
-        "name": "Tidvattenherre",
-        "flavor": "Tidvattnet lyder din kallelse: 2 % av tillgången."
-      },
-      "stormcaller": {
-        "name": "Stormkallare",
-        "flavor": "Stormar samlas vid ditt namn: 3 % av tillgången."
-      },
-      "krakencrown": {
-        "name": "Krakenkrona",
-        "flavor": "Krönt av djupet: 4 % av tillgången."
-      },
-      "titanforged": {
-        "name": "Titansmidd",
-        "flavor": "Smidd bland titaner: 5 % av tillgången."
-      },
-      "starhoard": {
-        "name": "Stjärnskatt",
-        "flavor": "En skatt som böjer stjärnljuset: 6 % av tillgången."
-      },
-      "voidwarden": {
-        "name": "Tomhetsväktare",
-        "flavor": "Väktare vid tomhetens rand: 7 % av tillgången."
-      },
-      "realmshaper": {
-        "name": "Rikesformare",
-        "flavor": "Du omformar riket: 8 % av tillgången."
-      },
-      "worldforger": {
-        "name": "Världssmidare",
-        "flavor": "Smider en egen värld: 9 % av tillgången."
-      },
-      "worldbearer": {
-        "name": "Världsbärare",
-        "flavor": "Du bär en bit av världen: 10 % av tillgången."
-      },
-      "sovereign": {
-        "name": "Härskare",
-        "flavor": "Riket böjer knä: hela tillgången."
-      }
-    }
-  },
   "playerCard": {
     "shareButton": "Dela spelarkort",
     "title": "Spelarkort",
@@ -4949,8 +4462,7 @@ export const sv_SE: EnTranslations = {
     "footerHandleWithRecruits": "@{handle} - {recruited}",
     "footerCta": "Skapa din legend: {siteUrl}",
     "arenaStat": "Arena",
-    "shareTierBit": ", {tier}-rankad $WOC-innehavare",
-    "shareText": "Jag skapar min legend i World of ClaudeCraft: Nivå {level} {className}{tierBit}. Gå med i min värld:",
+    "shareText": "Jag skapar min legend i World of ClaudeCraft: Nivå {level} {className}. Gå med i min värld:",
     "nativeShareTitle": "World of ClaudeCraft",
     "fileNameFallback": "spelare",
     "actionShareX": "Dela på X",

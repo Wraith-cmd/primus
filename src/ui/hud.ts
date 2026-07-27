@@ -16,7 +16,6 @@ import {
   targetFrameNonSelfIntervalMs,
 } from '../game/ui_tier_knobs';
 import { voice, voiceDistanceGain } from '../game/voice';
-import type { ClaudiumStoreItem } from '../net/economy_sdk';
 import { castBarState, consumeBarState } from '../render/cast_bar';
 import { CharacterPreview, type PreviewFramingName } from '../render/characters';
 import { preloadMechAssets } from '../render/characters/assets';
@@ -107,7 +106,6 @@ import { isAtSowfield } from '../sim/vale_cup_layout';
 import { worldBossIdFromLockout } from '../sim/world_boss';
 import {
   type CharacterProfile,
-  type DailyRewardStatus,
   type IWorld,
   isOverheadEmoteId,
   OVERHEAD_EMOTES,
@@ -150,9 +148,6 @@ import {
   resolvePlayerSocialFlags,
   serializeIgnoreList,
 } from './chat_ignore_core';
-import { ClaudiumLauncherBalance } from './claudium_launcher_balance_core';
-import type { ClaudiumRail, ClaudiumSnapshot } from './claudium_window';
-import { ClaudiumWindow } from './claudium_window';
 import { formatClockTime } from './clock';
 import { CombatAnnouncer } from './combat_announcer';
 import {
@@ -180,8 +175,6 @@ import {
 } from './craft_celebration_view';
 import { buildCraftingView, craftingReagentSig, craftLearnHints } from './crafting_view';
 import { renderCraftingWindow, stationNameText } from './crafting_window';
-import { shouldRefreshDailyRewardsLauncher } from './daily_rewards_launcher_core';
-import { DailyRewardsWindow } from './daily_rewards_window';
 import { decorativeArtImg } from './decorative_art';
 import {
   deedBroadcastLine,
@@ -483,8 +476,6 @@ import {
   statNameKey,
   statTooltipHtml,
 } from './stat_tooltip_view';
-import { mountStorePromoCard, type StorePromoCardController } from './store_promo_card';
-import { recordStoreStackSample } from './store_stack_diag';
 import { nearestSubzone } from './subzone';
 import { swingTimerState } from './swing_timer';
 import { SwingTimerPainter } from './swing_timer_painter';
@@ -518,15 +509,6 @@ import { ValeCupIndicator } from './vale_cup_indicator';
 import { buildVcupIndicatorView } from './vale_cup_indicator_view';
 import { ValeCupWindow, vcupNationName } from './vale_cup_window';
 import { nextVoicedYell, type VoicedYellState, voicedYellGain } from './voice_events';
-import {
-  onWalletUiChange,
-  verifiedWocBalance,
-  walletConnectionView,
-  walletDisplayAvailable,
-  walletUiEnabled,
-  wocBalance,
-  wocBalanceVerified,
-} from './wallet_balance';
 import { type WeaponProcEffectDesc, weaponProcLines } from './weapon_proc_view';
 import { weaponTypeLabelKey } from './weapon_type_label';
 import {
@@ -536,7 +518,6 @@ import {
 } from './window_drag';
 import { makeWindowFocus } from './window_focus';
 import { installWindowResize, markResizableWindow } from './window_resize';
-import { stackedWindowsVisible } from './window_stack_state_core';
 import { installWorldDropTarget } from './world_drop_target';
 import { formatXp, xpBarView } from './xp_bar';
 import { XpBarPainter } from './xp_bar_painter';
@@ -557,10 +538,6 @@ export interface OptionsHooks {
   // fans out woc:languagechange). onStatus receives localized progress/error text for an
   // aria-live element. Resolves false if the locale failed to load (active locale kept).
   changeLanguage(lang: SupportedLanguage, onStatus?: (msg: string) => void): Promise<boolean>;
-  // Re-fetch the connected/linked wallet's $WOC balance (server cache-bypassed) so the
-  // bag footer and player card reflect on-chain token changes. No-op when the wallet
-  // feature is off or no wallet is connected/linked.
-  refreshWocBalance(): void;
   // Account deed-broadcast opt-out seam (accounts.deed_broadcasts): whether a
   // marquee deed unlock fans out to guildmates and followers. main.ts wires the
   // REST read/write pair ONLINE ONLY; the options row renders only when the
@@ -600,35 +577,7 @@ export interface ReportHooks {
   submitByName?(targetName: string, reason: string, details: string): Promise<void>;
 }
 
-/**
- * Online-only glue that backs the Claudium store window. main.ts wires this from
- * the client economy SDK (which hits the game server's /api/claudium/* routes).
- * snapshot() reads the current service state; buy()/spend() begin the client-signed
- * purchase / cosmetic-redeem flows. All values originate in the economy service.
- */
-export interface ClaudiumHooks {
-  balance(): Promise<number | null>;
-  storeSnapshot(): Promise<{
-    available: boolean;
-    balance: number | null;
-    storeItems: readonly ClaudiumStoreItem[];
-  }>;
-  snapshot(): Promise<ClaudiumSnapshot>;
-  buy(rail: ClaudiumRail, sku: string): Promise<void>;
-  spend(
-    itemId: string,
-    kind: 'cosmetic' | 'skin' | 'item',
-    expectedCostClaudium: number,
-  ): Promise<{
-    granted: boolean;
-    balance: number | null;
-    costClaudium: number | null;
-    reason: string | null;
-  }>;
-}
-
 export interface HudFeatures {
-  dailyRewardsEnabled: boolean;
   devCommandsEnabled?: boolean;
   constrainedMemory?: boolean;
 }
@@ -1442,13 +1391,6 @@ export class Hud {
   private lastHudFastAt = 0;
   private lastHudMediumAt = 0;
   private lastHudSlowAt = 0;
-  private dailyRewardsButtonEl: HTMLButtonElement | null = null;
-  private storePromoCard: StorePromoCardController | null = null;
-  // Mobile More-tray entry mirroring the desktop chest button's hidden/spin-ready
-  // state (folded off the top-right rail so it never overlaps the buff/debuff bars).
-  private mobileDailyRewardsButtonEl: HTMLButtonElement | null = null;
-  private dailyRewardsLauncherSeq = 0;
-  private lastDailyRewardsLauncherRefreshAt = 0;
   // Per-element tier cadence stamps (graphics-tier knobs). Each gates a non-self /
   // canvas redraw to a slower interval on the LOW static preset; on every other tier the
   // interval is 0 (cadenceDue is always true), so these are no-ops and the path is the
@@ -1504,7 +1446,7 @@ export class Hud {
     private sim: IWorld,
     private renderer: Renderer,
     private keybinds: Keybinds,
-    private readonly features: HudFeatures = { dailyRewardsEnabled: true },
+    private readonly features: HudFeatures = {},
   ) {
     this.localIgnoredNames = this.loadLocalIgnoredNames();
     this.meters = new Meters(sim);
@@ -1682,11 +1624,6 @@ export class Hud {
       preview: () => this.charPreview,
       openFocusTrap: (root) => this.focusManager.open({ root }),
       options: {
-        refreshBalance: () => this.optionsHooks?.refreshWocBalance(),
-        showWallet: () => this.optionsHooks?.settings.get('showWalletOnPlayerCard') ?? true,
-        setShowWallet: (show) => {
-          this.optionsHooks?.onSettingChange('showWalletOnPlayerCard', show);
-        },
         showDevBadges: () => this.optionsHooks?.settings.get('showDevBadges') ?? true,
       },
       slotName: itemSlotName,
@@ -1727,7 +1664,6 @@ export class Hud {
       window,
       storage: localStorage,
       isMobileLayout: () => this.isMobileLayout(),
-      hasStorePromoCard: () => this.storePromoCard !== null,
       uiScale: getUiScale,
     });
     this.chatWindow = new ChatWindowController({
@@ -1769,16 +1705,6 @@ export class Hud {
     this.refreshKeybindLabels();
     this.buildXpTicks();
     document.addEventListener('woc:languagechange', () => this.refreshLocalizedDynamicUi());
-    // re-render the bag footer (and re-composite an open player card) when the
-    // connected wallet's $WOC balance changes
-    onWalletUiChange(() => {
-      // Footer-only, as this comment always claimed: the balance lands asynchronously
-      // with no user action behind it, so a full rebuild would drop the bag-search
-      // caret and strand a hovered tooltip. Cold-load-safe gate (#1538) too.
-      if (bagsWindowShown($('#bags').style.display)) this.bagsWindow.refreshMoneyRow();
-      this.playerCard.refresh();
-      this.claudiumWindow.onWalletChanged();
-    });
     $('#pf-name').textContent = sim.player.name;
     this.drawPlayerFramePortrait();
     // Character GLBs preload after the HUD mounts; once the real 3D portraits are
@@ -1896,37 +1822,6 @@ export class Hud {
         ev.stopPropagation();
         this.showRaidLockoutTooltip();
       });
-    }
-    const dailyRewardsButton = document.getElementById(
-      'daily-rewards-button',
-    ) as HTMLButtonElement | null;
-    const mobileDailyRewardsButton = document.getElementById(
-      'mobile-daily-rewards',
-    ) as HTMLButtonElement | null;
-    if (!this.dailyRewardsEnabled()) {
-      dailyRewardsButton?.setAttribute('hidden', '');
-      mobileDailyRewardsButton?.setAttribute('hidden', '');
-      $('#daily-rewards-window').style.display = 'none';
-    } else if (dailyRewardsButton) {
-      this.dailyRewardsButtonEl = dailyRewardsButton;
-      this.mobileDailyRewardsButtonEl = mobileDailyRewardsButton;
-      dailyRewardsButton.innerHTML =
-        '<img class="daily-rewards-icon" src="/ui/daily-rewards/treasure_chest.webp" alt="" draggable="false" decoding="async">';
-      this.syncDailyRewardsSurfaceLabels();
-      dailyRewardsButton.classList.remove('spin-ready');
-      this.applyDailyRewardsChestButtonVisibility();
-      dailyRewardsButton.addEventListener('pointerdown', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        if (event.button !== 0) return;
-        this.toggleDailyRewards();
-      });
-      dailyRewardsButton.addEventListener('pointerup', (event) => event.stopPropagation());
-      dailyRewardsButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-      });
-      this.refreshDailyRewardsLauncher(true);
     }
     this.clock24 = (() => {
       try {
@@ -2440,13 +2335,6 @@ export class Hud {
         document.body.classList.contains('char-bags-paired'),
       ),
     );
-    const storeWindow = document.getElementById('daily-rewards-window') as HTMLElement | null;
-    const claudiumWindow = document.getElementById('claudium-window') as HTMLElement | null;
-    const storeVisible = !!storeWindow && this.isWindowVisible(storeWindow);
-    const claudiumVisible = !!claudiumWindow && this.isWindowVisible(claudiumWindow);
-    const storeStacked = stackedWindowsVisible(storeVisible, claudiumVisible);
-    document.body.classList.toggle('store-stack-open', storeStacked);
-    recordStoreStackSample(storeVisible, claudiumVisible, storeStacked);
     const mapWindow = document.getElementById('map-window');
     const questLogWindow = document.getElementById('quest-log-window');
     document.body.classList.toggle(
@@ -2506,7 +2394,7 @@ export class Hud {
   private bringWindowToFront(el: HTMLElement): void {
     // The confirm/input prompt is the topmost modal by definition and never
     // joins the 50-89 window band: banding it (a pointerdown raise, or the
-    // normalize sweep) drops it BEHIND the armory inspect overlay (z 90), so a
+    // normalize sweep) drops it BEHIND the scoped-overlay band (z 90), so a
     // real mouse press on the dialog demotes it mid-click and its own OK
     // button becomes unclickable (the "phantom dead confirm" bug).
     if (el.id === 'confirm-dialog') {
@@ -2776,14 +2664,6 @@ export class Hud {
         break;
       case 'leaderboard-window':
         this.leaderboardWindow.close();
-        break;
-      case 'daily-rewards-window':
-        this.dailyRewardsWindow.close();
-        break;
-      case 'claudium-window':
-        // Route through the painter so focus returns to the opener (WCAG 2.2 AA)
-        // and the refresh state resets, consistent with the toggle / X close path.
-        this.claudiumWindow.close();
         break;
       case 'emote-editor':
         this.closeEmoteEditor();
@@ -3650,16 +3530,12 @@ export class Hud {
   });
   // Bags window painter (bags_view.ts core + bags_window.ts painter). It composes
   // the shared presentation bag (icon/money/tooltip) and adds the inventory-cluster
-  // surface: world reads, cross-window mode flags + commands, pet-feed / drag /
-  // wallet plumbing. The cross-window modes stay HUD state, read each click.
+  // surface: world reads, cross-window mode flags + commands, and pet-feed / drag
+  // plumbing. The cross-window modes stay HUD state, read each click.
   private readonly bagsWindow = new BagsWindow({
     ...this.presentationBag,
     root: () => $('#bags'),
     world: () => this.sim,
-    wocBalanceHtml: () => this.wocBalanceHtml(),
-    claudiumLauncherHtml: () => this.claudiumLauncherHtml(),
-    openClaudium: () => this.toggleClaudium(),
-    openWallet: () => window.dispatchEvent(new CustomEvent('woc:wallet-verify')),
     hideTooltip: () => this.hideTooltip(),
     consumePeek: () => this.peekGuard.consume(),
     cancelPetFeed: () => this.cancelPetFeed(),
@@ -4054,101 +3930,6 @@ export class Hud {
     onVisibilityChange: () => this.syncAnyWindowOpenState(),
     showDevBadges: () => this.optionsHooks?.settings.get('showDevBadges') ?? true,
   });
-  // Daily rewards window painter. It owns the async rewards reads, spin action,
-  // focus opener, and a low-rate refresh while open. All closures are lazy.
-  private readonly dailyRewardsWindow = new DailyRewardsWindow({
-    root: () => $('#daily-rewards-window'),
-    world: () => this.sim,
-    closeOthers: () => this.closeOtherWindows('#daily-rewards-window'),
-    // A status delivered by the window's render or spin is as fresh as a launcher
-    // fetch: invalidate any in-flight launcher fetch (seq bump) so a slower older
-    // response cannot overwrite it, and stamp the throttle so the next slowHud
-    // tick does not redundantly re-fetch.
-    onStatus: (status) => {
-      this.dailyRewardsLauncherSeq++;
-      this.lastDailyRewardsLauncherRefreshAt = performance.now();
-      this.applyDailyRewardsLauncherStatus(status);
-    },
-    onClose: () => this.refreshDailyRewardsLauncher(true),
-    onWalletConnect: () => {
-      window.dispatchEvent(new CustomEvent('woc:wallet-verify'));
-    },
-    storeEnabled: () => this.claudiumHooks !== null,
-    storeSnapshot: async () => {
-      const snapshot = await this.claudiumHooks?.storeSnapshot();
-      if (!snapshot) return { available: false, balance: null, items: [] };
-      this.claudiumBalance.set(snapshot.balance);
-      return {
-        available: snapshot.available,
-        balance: snapshot.balance,
-        items: [...snapshot.storeItems],
-      };
-    },
-    spendStoreItem: async (itemId, kind, expectedCostClaudium) => {
-      const result = await this.claudiumHooks?.spend(itemId, kind, expectedCostClaudium);
-      if (result?.balance !== null && result?.balance !== undefined) {
-        this.claudiumBalance.set(result.balance);
-      }
-      return (
-        result ?? {
-          granted: false,
-          balance: null,
-          costClaudium: null,
-          reason: 'unavailable',
-        }
-      );
-    },
-    openClaudium: () => this.toggleClaudium(),
-    confirmDialog: (title, body, okText, cancelText, onOk) =>
-      this.confirmDialog(title, body, okText, cancelText, onOk),
-    ...this.windowFocus('#daily-rewards-window'),
-    onVisibilityChange: () => this.syncAnyWindowOpenState(),
-  });
-  // Claudium (server-authoritative soft currency) window. main.ts injects the
-  // economy hooks when online via attachClaudium; until then (and offline) the
-  // hooks are null and the window renders its clean disabled/empty state. The
-  // window computes NOTHING; every number rides in through these hooks.
-  private claudiumHooks: ClaudiumHooks | null = null;
-  // The launcher's Claudium balance and its throttled read live in their own
-  // host-agnostic module (claudium_launcher_balance_core.ts). The HUD keeps only the
-  // wiring: what a read is, and what converging the display means. onChanged fires
-  // for EVERY balance write, which is what makes a store spend catch an open bag up
-  // (#2414), and ONLY when the number moved, which is what stops a poll that
-  // returned the value already on screen from rewriting the footer (#2411).
-  private readonly claudiumBalance = new ClaudiumLauncherBalance({
-    enabled: () => this.claudiumHooks !== null,
-    read: () => this.claudiumHooks?.balance() ?? Promise.resolve(null),
-    onChanged: () => {
-      // Footer-only, and on the cold-load-safe gate (#1538). A balance lands on its
-      // own schedule with no user action behind it, so a full renderBags() here
-      // would tear the window down under a player who is mid-drag, hovering a
-      // tooltip, or typing in bag search.
-      if (bagsWindowShown($('#bags').style.display)) this.bagsWindow.refreshMoneyRow();
-    },
-    now: () => Date.now(),
-  });
-  private readonly claudiumWindow = new ClaudiumWindow({
-    root: () => $('#claudium-window'),
-    closeOthers: () => this.closeOtherWindows('#claudium-window'),
-    snapshot: async () => {
-      const snapshot =
-        (await this.claudiumHooks?.snapshot()) ??
-        ({
-          balance: null,
-          skus: [],
-          nativeRails: { sol: false, usdc: false, woc: false },
-        } satisfies ClaudiumSnapshot);
-      this.claudiumBalance.set(snapshot.balance);
-      return snapshot;
-    },
-    buy: (rail, sku) => this.claudiumHooks?.buy(rail, sku) ?? Promise.resolve(),
-    onWalletConnect: () => {
-      window.dispatchEvent(new CustomEvent('woc:wallet-verify'));
-    },
-    walletState: () => walletConnectionView(),
-    ...this.windowFocus('#claudium-window'),
-    onVisibilityChange: () => this.syncAnyWindowOpenState(),
-  });
   // Spellbook window painter (spellbook_view.ts core + spellbook_window.ts painter).
   // The window renders ability rows (not item rows), so it composes no presentation
   // bag; it reads the class kit + bar state from the world and routes the hotbar /
@@ -4285,42 +4066,6 @@ export class Hud {
     if (parts.silver > 0 || parts.gold > 0) html += coin(parts.silver, 's', 'itemUi.money.silver');
     html += coin(parts.copper, 'c', 'itemUi.money.copper');
     return `<span class="money-inline" aria-label="${esc(formatLocalizedMoney(copper, 'long'))}">${html}</span>`;
-  }
-
-  // The connected wallet's $WOC balance, shown left of the coins in the bag.
-  // Unlinked balances are a local preview; verified balances belong to the
-  // account-linked wallet and may drive public holder claims elsewhere.
-  private wocBalanceHtml(): string {
-    if (!walletUiEnabled()) return '';
-    const state = walletConnectionView();
-    const bal = wocBalance();
-    if (bal === null) {
-      const label =
-        state.kind === 'linked_disconnected'
-          ? t('wallet.bagReconnect')
-          : state.kind === 'connected_unlinked' || state.kind === 'mismatched'
-            ? t('wallet.bagLink')
-            : t('wallet.bagConnect');
-      return `<button type="button" class="woc-balance woc-wallet-action" data-wallet-action aria-label="${esc(label)}"><span class="woc-coin" aria-hidden="true"></span>${esc(label)}</button>`;
-    }
-    const amount = formatNumber(bal, { maximumFractionDigits: 2 });
-    const balance = t('wallet.balanceAmount', { amount });
-    const verified = wocBalanceVerified();
-    const title = verified ? t('wallet.balanceTitle') : t('wallet.balancePreviewTitle');
-    const aria = verified
-      ? t('wallet.balanceAria', { balance })
-      : t('wallet.balancePreviewAria', { balance });
-    const tag = verified ? 'span' : 'button type="button" data-wallet-action';
-    return `<${tag} class="woc-balance ${verified ? 'is-verified' : 'is-preview'}" title="${esc(title)}" aria-label="${esc(aria)}"><span class="woc-coin" aria-hidden="true"></span>${esc(balance)}</${verified ? 'span' : 'button'}>`;
-  }
-
-  private claudiumLauncherHtml(): string {
-    if (!this.claudiumHooks) return '';
-    this.claudiumBalance.refresh();
-    const balance = this.claudiumBalance.balance;
-    const label = balance === null ? '--' : formatNumber(balance, { maximumFractionDigits: 0 });
-    const aria = t('hudChrome.claudium.open');
-    return `<button type="button" class="claudium-launcher" data-claudium-launcher title="${esc(aria)}" aria-label="${esc(aria)}"><img class="claudium-coin" src="/claudium/icons/claudium_coin_64.webp" alt=""><span class="claudium-launcher-balance">${esc(label)}</span></button>`;
   }
 
   // One-line aura effect summary HTML for the buff/debuff tooltip: the pure descriptor
@@ -5024,14 +4769,6 @@ export class Hud {
   }
 
   private refreshLocalizedDynamicUi(): void {
-    this.syncDailyRewardsSurfaceLabels();
-    this.storePromoCard?.relocalize({
-      open: t('hudChrome.wocStore.title'),
-      close: t('hudChrome.wocStore.close'),
-      season: t('hudChrome.wocStore.seasonOne'),
-      title: t('hudChrome.wocStore.armoryTitle'),
-      cta: t('hudChrome.wocStore.title'),
-    });
     this.refreshKeybindLabels();
     this.updateQuestTracker();
     this.updateDelveTracker();
@@ -7001,101 +6738,6 @@ export class Hud {
     return coerceFxTier(document.documentElement.dataset.fxLevel);
   }
 
-  private dailyRewardsEnabled(): boolean {
-    return this.features.dailyRewardsEnabled;
-  }
-
-  private syncDailyRewardsSurfaceLabels(): void {
-    const storeEnabled = this.claudiumHooks !== null;
-    const titleKey = storeEnabled ? 'hudChrome.wocStore.title' : 'hudChrome.dailyRewards.title';
-    const labelKey = storeEnabled ? 'hudChrome.wocStore.storeTab' : 'hudChrome.dailyRewards.title';
-    const title = t(titleKey);
-    for (const button of [this.dailyRewardsButtonEl, this.mobileDailyRewardsButtonEl]) {
-      if (!button) continue;
-      button.setAttribute('data-i18n-title', titleKey);
-      button.setAttribute('data-i18n-aria', titleKey);
-      button.title = title;
-      button.setAttribute('aria-label', title);
-    }
-    const label = this.mobileDailyRewardsButtonEl?.querySelector<HTMLElement>('.mobile-label');
-    if (label) {
-      label.setAttribute('data-i18n', labelKey);
-      label.textContent = t(labelKey);
-    }
-  }
-
-  private showDailyRewardsChestButton(): boolean {
-    return this.optionsHooks?.settings.get('showDailyRewardsChest') ?? true;
-  }
-
-  private applyDailyRewardsChestButtonVisibility(show = this.showDailyRewardsChestButton()): void {
-    const button = this.dailyRewardsButtonEl;
-    if (!button) return;
-    const visible = this.dailyRewardsEnabled() && show;
-    button.toggleAttribute('hidden', !visible);
-    if (!visible) button.classList.remove('spin-ready');
-    // The mobile More-tray entry is a menu row, not floating chrome: it stays
-    // reachable whenever the feature itself is on, regardless of the
-    // showDailyRewardsChestButton preference (which only declutters the rail).
-    if (!this.dailyRewardsEnabled())
-      this.mobileDailyRewardsButtonEl?.classList.remove('spin-ready');
-  }
-
-  private setDailyRewardsChestButtonPreference(show: boolean): void {
-    if (this.optionsHooks) {
-      this.optionsHooks.onSettingChange('showDailyRewardsChest', show);
-      return;
-    }
-    this.setDailyRewardsChestButtonVisible(show);
-  }
-
-  setDailyRewardsChestButtonVisible(show: boolean): void {
-    this.applyDailyRewardsChestButtonVisibility(show);
-    if (show) this.refreshDailyRewardsLauncher(true);
-  }
-
-  private applyDailyRewardsLauncherStatus(status: DailyRewardStatus): void {
-    if (!this.dailyRewardsEnabled()) return;
-    const button = this.dailyRewardsButtonEl;
-    const spinReady =
-      status.enabled !== false && (!status.eligibility.eligible || !status.spin.claimed);
-    this.mobileDailyRewardsButtonEl?.classList.toggle('spin-ready', spinReady);
-    if (!button) return;
-    if (!this.showDailyRewardsChestButton()) {
-      button.hidden = true;
-      button.classList.remove('spin-ready');
-      return;
-    }
-    button.hidden = false;
-    button.classList.toggle('spin-ready', spinReady);
-  }
-
-  private refreshDailyRewardsLauncher(force = false): void {
-    if (!this.dailyRewardsEnabled()) return;
-    const button = this.dailyRewardsButtonEl;
-    const mobileButton = this.mobileDailyRewardsButtonEl;
-    if (!button && !mobileButton) return;
-    this.applyDailyRewardsChestButtonVisibility();
-    const now = performance.now();
-    // Slow closed-window poll; the why and the arithmetic live in the core.
-    if (!shouldRefreshDailyRewardsLauncher(force, now, this.lastDailyRewardsLauncherRefreshAt)) {
-      return;
-    }
-    this.lastDailyRewardsLauncherRefreshAt = now;
-    const seq = ++this.dailyRewardsLauncherSeq;
-    void this.sim
-      .dailyRewards()
-      .then((status) => {
-        if (seq !== this.dailyRewardsLauncherSeq) return;
-        this.applyDailyRewardsLauncherStatus(status);
-      })
-      .catch(() => {
-        if (seq !== this.dailyRewardsLauncherSeq) return;
-        button?.classList.remove('spin-ready');
-        mobileButton?.classList.remove('spin-ready');
-      });
-  }
-
   update(): void {
     const sim = this.sim;
     const p = sim.player;
@@ -7128,7 +6770,6 @@ export class Hud {
     this.tutorial.update(sim, this.renderer, this.keybinds);
     this.lootRolls.update(now);
     if (slowHud) this.updateRaidLockoutBadge();
-    if (slowHud) this.refreshDailyRewardsLauncher();
     this.maybeRestoreActionBarLayout();
     this.syncActiveHotbarForm();
     this.syncSlotMap(); // picks up newly learned abilities mid-session
@@ -10607,7 +10248,7 @@ export class Hud {
       onClose: () => this.closeProfessionTutorial(),
     });
     this.bringWindowToFront(el);
-    // Above the mobile sheet (z-95) and the armory inspect overlay (z-90): the
+    // Above the mobile sheet (z-95) and the scoped-overlay band (z-90): the
     // scoped-popup floor, so the one-shot never opens buried.
     el.style.zIndex = String(Math.max(Number(el.style.zIndex) || 0, 96));
     this.professionTutorialTrap = this.focusManager.open({ root: () => el });
@@ -11147,11 +10788,6 @@ export class Hud {
         count: formatNumber(Number(match[2]), { maximumFractionDigits: 0 }),
       });
     }
-    match = /^(\d+) daily rewards points gained\.$/.exec(text);
-    if (match)
-      return t('hudChrome.dailyRewards.pointsGained', {
-        points: formatNumber(Number(match[1]), { maximumFractionDigits: 0 }),
-      });
     // Server-sent friends/guild/who/world messages arrive as 'log' events; fall
     // back to the shared server-message localizer (same as localizeErrorText /
     // localizeLootText) so they are not displayed in raw English.
@@ -12121,11 +11757,6 @@ export class Hud {
     // Dock the char-sheet pairing when its companion opens (the touch cluster).
     this.syncCharBagsPairing();
     audio.bagOpen();
-    // Pull a fresh on-chain $WOC balance for the footer; the async result repaints
-    // the footer (not the whole bag) via the onWalletUiChange listener wired in the
-    // ctor. The display is set to 'flex' above precisely so that listener's
-    // bagsWindowShown gate sees an open window when the balance lands.
-    this.optionsHooks?.refreshWocBalance();
   }
 
   // Called when an authoritative inventory delta lands (online snapshots
@@ -12162,9 +11793,6 @@ export class Hud {
 
   onCosmeticsChanged(): void {
     this.renderCharIfOpen();
-    // A grant or apply from another session on the account (or a server
-    // correction of an optimistic apply) must refresh an open armory too.
-    this.dailyRewardsWindow.onCosmeticsChanged();
   }
 
   private renderCharIfOpen(): void {
@@ -12264,7 +11892,7 @@ export class Hud {
       previewKey?: string;
       mainhand: string | null;
       offhand: string | null;
-      /** The active Armory weapon-skin cosmetic (null = the item's own model). */
+      /** The active weapon-skin cosmetic (null = the item's own model). */
       weaponSkinId: string | null;
       framing: PreviewFramingName;
     },
@@ -12307,7 +11935,7 @@ export class Hud {
       previewKey,
       mainhand,
       offhand: this.sim.equipment.offhand ?? null,
-      // The paperdoll wears the same Armory skin the world renders: resolved
+      // The paperdoll wears the same weapon skin the world renders: resolved
       // through the one shared rule (class + equipped mainhand + loadout).
       weaponSkinId: resolveActiveWeaponSkin(
         cls,
@@ -12563,8 +12191,8 @@ export class Hud {
     document.body.appendChild(el);
     this.bringWindowToFront(el);
     // A confirm prompt is the topmost modal by definition: the window band tops
-    // out at 89 and the armory inspect overlay sits at 90, so floor it above
-    // both or a purchase confirmation opens invisibly underneath.
+    // out at 89 and the scoped-overlay band sits at 90, so floor it above
+    // both or a confirmation opens invisibly underneath.
     el.style.zIndex = String(Math.max(Number(el.style.zIndex) || 0, 95));
     this.confirmTrap = this.focusManager.open({ root: () => el });
     bindDialogKeyActivation(el);
@@ -12804,65 +12432,6 @@ export class Hud {
   // which consumes the paged leaderboard() and owns the page index + focus.
   toggleLeaderboard(): void {
     this.leaderboardWindow.toggle();
-  }
-
-  toggleDailyRewards(): void {
-    if (!this.dailyRewardsEnabled()) return;
-    this.dailyRewardsWindow.toggle();
-    // Close refreshes via onClose; force only the open direction here. The open
-    // force stays as the fallback for tabs that render without a status fetch
-    // (the store tab), where no onStatus push would arrive.
-    if (this.dailyRewardsWindow.isOpen) this.refreshDailyRewardsLauncher(true);
-  }
-
-  openWocStore(): void {
-    if (!this.dailyRewardsEnabled()) return;
-    this.dailyRewardsWindow.openStore();
-    this.refreshDailyRewardsLauncher(true);
-  }
-
-  /** Inject the online economy hooks that back the Claudium window (main.ts, online only). */
-  attachClaudium(hooks: ClaudiumHooks): void {
-    this.claudiumHooks = hooks;
-    this.syncDailyRewardsSurfaceLabels();
-    this.claudiumBalance.reset();
-    this.claudiumBalance.refresh(true);
-  }
-
-  attachStorePromoCard(): void {
-    if (this.storePromoCard || !this.claudiumHooks) return;
-    const host = document.getElementById('chatlog-wrap');
-    if (!host) return;
-    this.storePromoCard = mountStorePromoCard(host, {
-      labels: {
-        open: t('hudChrome.wocStore.title'),
-        close: t('hudChrome.wocStore.close'),
-        season: t('hudChrome.wocStore.seasonOne'),
-        title: t('hudChrome.wocStore.armoryTitle'),
-        cta: t('hudChrome.wocStore.title'),
-      },
-      returnFocusTo: () => document.getElementById('daily-rewards-button'),
-      onOpenStore: () => this.openWocStore(),
-      onDismiss: () => {
-        this.storePromoCard = null;
-      },
-    });
-    this.chatGeometry.reapply();
-  }
-
-  /**
-   * Open or close the Claudium store. Always renders: with no hooks (offline or the
-   * service off) the window shows its clean disabled state, never a boot crash.
-   */
-  toggleClaudium(): void {
-    if (!this.claudiumHooks) return;
-    this.claudiumWindow.toggle();
-  }
-
-  async refreshClaudium(): Promise<void> {
-    this.claudiumBalance.refresh(true);
-    if (!this.claudiumWindow.isOpen) return;
-    await this.claudiumWindow.render();
   }
 
   // -------------------------------------------------------------------------
@@ -13367,8 +12936,8 @@ export class Hud {
    *  and class — rendered locally from their entity's class + skin. */
   /**
    * The out-of-range Player Info card: the same #inspect-window, painted from the
-   * public character sheet. Deliberately thinner than openInspect: no worn gear,
-   * no wallet balance, no Discord/GitHub identity. Those live on the per-entity
+   * public character sheet. Deliberately thinner than openInspect: no worn gear
+   * and no Discord/GitHub identity. Those live on the per-entity
    * wire and stay proximity-gated, so standing next to someone still shows you
    * strictly more than looking their name up from chat.
    */
@@ -13608,7 +13177,7 @@ export class Hud {
 
   /**
    * Player Info for a name. In view we have the live entity, so open the full
-   * inspect card (gear + $WOC/Discord/dev flair, all of which ride the
+   * inspect card (gear + Discord/dev flair, all of which ride the
    * proximity-gated entity wire). Out of view, fall back to the PUBLIC character
    * sheet, which is the same subset the crawlable /c/<name> page already serves,
    * so looking someone up from chat exposes nothing new about them.

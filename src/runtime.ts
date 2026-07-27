@@ -45,14 +45,6 @@ export function runtimeWebSocketUrl(
   return `${proto}://${host}/ws`;
 }
 
-// One auto-update event forwarded by the shell (electron/update_events.cjs
-// whitelists the payloads; 'progress' carries percent, the others version).
-export interface DesktopUpdateEvent {
-  type: 'available' | 'progress' | 'downloaded';
-  version?: string;
-  percent?: number;
-}
-
 // One main-world uncaught error relayed to the shell's log file
 // (src/game/desktop_error_relay.ts builds it; the shell clamps + validates).
 export interface DesktopRendererErrorReport {
@@ -74,27 +66,26 @@ export interface DesktopBridge {
   // Optional: these shipped after the three login methods, so an older
   // installed shell may not expose them; feature-check before use. The bridge
   // detection below deliberately requires only the login trio, or a shell
-  // predating an update feature would lose LOGIN too.
+  // predating a later feature would lose LOGIN too.
   setShellStrings?(strings: Record<string, string>): Promise<null>;
   reportRendererError?(report: DesktopRendererErrorReport): void;
-  onUpdateEvent?(callback: (event: DesktopUpdateEvent) => void): () => void;
-  installUpdate?(): Promise<null>;
-  // A Steam link ticket (hex) for POST /api/steam/link, or null when Steam is
-  // unavailable (website build, Steam not running, ticket failure). Feature-
-  // check before use like the other post-trio methods.
+  // The Steam link-ticket trio. This desktop shell has no Steam integration, so
+  // it exposes none of them and src/ui/steam_link.ts falls back to the web
+  // behavior (link status and Unlink, no Link button). They stay declared
+  // because the client is served to any shell that does expose them, and every
+  // call site feature-checks first.
+  //
+  // steamLinkTicket: a link ticket (hex) for POST /api/steam/link, or null.
   steamLinkTicket?(): Promise<string | null>;
-  // Whether the shell can mint link tickets at all (false on packaged website
-  // builds, where every steamLinkTicket call answers null). Absent on older
-  // shells that predate the capability probe: fall back to steamLinkTicket
-  // presence there. Feature-check before use like the other post-trio methods.
+  // steamLinkSupported: whether the shell can mint link tickets at all. Absent
+  // on shells predating the capability probe: fall back to steamLinkTicket
+  // presence there.
   steamLinkSupported?(): Promise<boolean>;
-  // Website-distributed desktop builds may connect external wallets. Steam
-  // builds return false so wallet code and controls remain absent there.
-  walletConnectionSupported?(): Promise<boolean>;
-  // Signals that the link POST settled (success or failure) so the shell can
-  // cancel the outstanding Steam auth ticket promptly (Valve's CancelAuthTicket
-  // contract). Absent on older shells: feature-check before use.
+  // steamLinkSettled: signals that the link POST settled (success or failure)
+  // so the shell can cancel the outstanding auth ticket promptly.
   steamLinkSettled?(): Promise<unknown>;
+  // Whether this desktop build may connect external wallets.
+  walletConnectionSupported?(): Promise<boolean>;
 }
 
 export function desktopBridge(): DesktopBridge | null {

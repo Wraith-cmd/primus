@@ -609,60 +609,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.nameplate.mobLevel': '{level}',
   'hudChrome.specPanel.specUnlockBanner': '¡Especialización Desbloqueada!',
   'hudChrome.specPanel.specUnlockHint': 'Pulsa N para elegir tu especialización.',
-  'hudChrome.wocStore.wallet.connect': 'Conectar cartera',
-  'hudChrome.wocStore.wallet.connectedUnlinked':
-    'La aplicación de cartera está conectada a este navegador, pero su dirección pública aún no está vinculada a tu cuenta de WoC.',
-  'hudChrome.wocStore.wallet.linkedConnected':
-    'Tu aplicación de cartera vinculada está conectada y lista para compras con SOL o WOC.',
-  'hudChrome.wocStore.wallet.linkedDisconnected':
-    'Tu dirección pública está vinculada. Vuelve a conectar esa aplicación de cartera cuando quieras pagar con SOL o WOC.',
-  'hudChrome.wocStore.wallet.manage': 'Gestionar cartera',
-  'hudChrome.wocStore.wallet.mismatched':
-    'Hay una cartera diferente conectada. Verifícala para reemplazar la dirección vinculada, o vuelve a conectar la cartera vinculada.',
-  'hudChrome.wocStore.wallet.reconnect': 'Volver a conectar cartera',
-  'hudChrome.wocStore.wallet.title': 'Cartera de Solana',
-  'hudChrome.wocStore.wallet.unlinked':
-    'Conecta una aplicación de cartera y firma una vez para vincular su dirección pública a tu cuenta de WoC. Nunca recibimos tu frase de recuperación ni tu clave privada.',
-  'hudChrome.wocStore.wallet.verify': 'Verificar y vincular',
-  'wallet.bagConnect': 'Vincular cartera',
-  'wallet.bagLink': 'Verificar cartera',
-  'wallet.bagReconnect': 'Volver a conectar cartera',
-  'wallet.browser.completeBody':
-    'Puedes volver a la aplicación de escritorio de World of ClaudeCraft.',
-  'wallet.browser.completeTitle': 'Autorización de cartera completada',
-  'wallet.browser.continueWith': 'Continuar con {wallet}',
-  'wallet.browser.extensionHelp':
-    'No se encontró ninguna extensión de cartera compatible. Instala o desbloquea Phantom, Solflare u otra cartera de Solana para el navegador, luego vuelve a intentarlo.',
-  'wallet.browser.eyebrow': 'Autorización de cartera de escritorio',
-  'wallet.browser.failed':
-    'La autorización de la cartera falló o caducó. Vuelve a la aplicación de escritorio e inténtalo de nuevo.',
-  'wallet.browser.linkBody':
-    'Elige una extensión de cartera en este navegador. Firmarás un mensaje de verificación y luego volverás a la aplicación de escritorio.',
-  'wallet.browser.paymentBody':
-    'Elige la cartera vinculada a tu cuenta y aprueba la transacción en este navegador.',
-  'wallet.browser.retry': 'Reintentar',
-  'wallet.browser.returnButton': 'Volver a la aplicación de escritorio',
-  'wallet.browser.reviewBody':
-    'Sigue el mensaje de {wallet}. Mantén esta página del navegador abierta.',
-  'wallet.browser.reviewTitle': 'Revisar en tu cartera',
-  'wallet.browser.safety':
-    'World of ClaudeCraft nunca solicita tu frase de recuperación ni tu clave privada.',
-  'wallet.browser.title': 'Conectar una Cartera de Solana',
-  'wallet.manualReturnBrowserHelp':
-    'Tras la aprobación, vuelve a esta pestaña del juego. Si iOS abre otro navegador, ciérralo y regresa manualmente al navegador original.',
-  'wallet.manualReturnStandaloneHelp':
-    'Tras la aprobación, vuelve a World of ClaudeCraft desde tu pantalla de inicio. Si iOS abre un navegador, ciérralo y vuelve a abrir la aplicación de la pantalla de inicio manualmente.',
-  'wallet.mobileAppHelp':
-    'Elige Phantom o Solflare. Tu aplicación de cartera pedirá aprobación. Mantén este juego abierto y vuelve a él cuando termines.',
-  'wallet.openAppButton': 'Abrir {wallet}',
-  'wallet.openAppHelp':
-    'Abre {wallet} para revisar esta solicitud. Mantén esta pestaña del juego abierta mientras la aplicación de cartera esté activa.',
-  'wallet.openAppTitle': 'Continuar en {wallet}',
-  'wallet.preparingAppButton': 'Preparando {wallet}...',
-  'wallet.standaloneAppHelp':
-    'Las conexiones de cartera aún no están disponibles en la aplicación de la pantalla de inicio. Abre World of ClaudeCraft en Safari o Chrome para usar Phantom o Solflare.',
-  'wallet.walletAppUnavailable':
-    'No se pudo preparar {wallet}. Cierra esta ventana e inténtalo de nuevo.',
   'entities.abilities.primal_reflexes.description':
     'Tus instintos se agudizan, aumentando tu probabilidad de esquivar un 50% durante 6 segundos.',
   'entities.abilities.primal_reflexes.name': 'Reflejos Primigenios',
@@ -1068,7 +1014,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'guide.valeCupPage.spectateBody':
     'En el estadio se juega un partido a la vez, y cualquiera puede acercarse y mirar desde las gradas.',
   'hudChrome.keybinds.valecup': 'Copa del Valle',
-  'hudChrome.mobile.dailyRewards': 'Tienda',
   'hudChrome.perf.labels.predLead': 'Adelanto de predicción',
   'hudChrome.townFocus.budgetLabel': 'Puntos restantes: {remaining} / {budget}',
   'hudChrome.townFocus.decreaseAria': 'Reducir el enfoque en {component}',
@@ -1937,19 +1882,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.calendar.result.removed': 'El evento se retiró del calendario.',
   'hudChrome.calendar.title': 'Calendario de Eventos',
   'hudChrome.calendar.titlePlaceholder': 'Título del evento',
-  'hudChrome.dailyRewards.disclaimer':
-    'El precio de WOC puede moverse deprisa. Recomendamos mantener más del mínimo de $20 USD para que las oscilaciones normales del precio no te bloqueen el acceso. Esto no es asesoramiento financiero.',
-  'hudChrome.dailyRewards.hideChestConfirmBody':
-    'Esto quita el acceso directo del cofre de tu interfaz. Las recompensas, los requisitos y este panel siguen disponibles; puedes recuperar el acceso directo desde Opciones.',
-  'hudChrome.dailyRewards.hideChestConfirmCancel': 'Cancelar',
-  'hudChrome.dailyRewards.hideChestConfirmOk': 'Ocultar cofre',
-  'hudChrome.dailyRewards.hideChestConfirmTitle': '¿Ocultar el cofre de recompensas diarias?',
-  'hudChrome.dailyRewards.pointsGained': '{points} puntos de recompensas diarias obtenidos.',
-  'hudChrome.dailyRewards.taskMultiplier': 'Multiplicador x{multiplier}',
-  'hudChrome.dailyRewards.oneVsOneExcluded':
-    'Las partidas 1 contra 1 no otorgan puntos de recompensas diarias.',
-  'hudChrome.dailyRewards.totalPlayer': '{count} jugador hoy',
-  'hudChrome.dailyRewards.totalPlayers': '{count} jugadores hoy',
   'hudChrome.death.resurrectAtCorpse': 'Resucitar en el cadáver',
   'hudChrome.death.resurrectAtHealer': 'El Guardián Pálido (Tañido del Guardián)',
   'hudChrome.death.spiritHealerAlive':
@@ -2000,7 +1932,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.mailbox.toPlaceholder': 'Nombre del personaje',
   'hudChrome.mailbox.truncated': 'Se muestran las {shown} cartas más recientes de {total}.',
   'hudChrome.mailbox.unreadBadge': 'Sin leer',
-  'hudChrome.options.showDailyRewardsChest': 'Mostrar cofre de recompensas diarias',
   'hudChrome.options.showOwnNameplate': 'Mostrar mi placa de nombre',
   'hudChrome.options.walkByAutoloot': 'Saqueo automático al pasar',
   'hudChrome.party.inviteUsage': '¿Invitar a quién? Uso: /invite <nombre>.',
@@ -2035,8 +1966,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'sim.delve.riteSequenceReady': 'Los santuarios quedan a oscuras. Repite la secuencia.',
   'sim.delve.riteWrong': 'Un chasquido áspero de campana. El agua negra salpica a tus pies.',
   'sim.delve.ropesSealed': 'Deberías intentar tirar de las cuerdas de las campanas.',
-  'wallet.extensionHelp':
-    'Para ver una cartera aquí, mantén activa una extensión de cartera del navegador como Solflare Wallet.',
   'worldContent.delveReliquaryInteract': 'Relicario Ahogado: pulsa F para comenzar el rito',
   'worldContent.delveRiteShrineBellInteract': 'Santuario de la Campana: pulsa F para tañerla',
   'worldContent.delveRiteShrineCandleInteract': 'Santuario de la Vela: pulsa F para tocarlo',
@@ -2353,8 +2282,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.footstepSounds': 'Sonidos de pasos',
   'hudChrome.options.interfaceSounds': 'Sonidos de interfaz y respuesta',
   'hudChrome.options.showWalletOnCharacterScreen': 'Mostrar cartera en la pantalla de personajes',
-  'hudChrome.options.showWalletOnPlayerCard': 'Mostrar cartera en la tarjeta de jugador',
-  'hudChrome.playerCard.showWalletBadge': 'Mostrar insignia de cartera',
   'hudChrome.options.uiScale': 'Escala de la interfaz',
   'hudChrome.options.playerFrameScale': 'Escala del marco del jugador',
   'hudChrome.options.targetFrameScale': 'Escala del marco del objetivo',
@@ -2568,120 +2495,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'auth.enterWorld': 'Entrar al Mundo',
   'auth.offlineCharacter': 'Personaje en Solitario',
   'auth.create': 'Crear',
-  'wallet.label': 'Cartera $WOC',
-  'wallet.connect': 'Verificar cartera',
-  'wallet.connectTitle': 'Verifica tu cartera de Solana',
-  'wallet.connectAria': 'Verifica tu cartera de Solana',
-  'wallet.verify': 'Verificar cartera',
-  'wallet.verifyNew': 'Verificar nueva cartera',
-  'wallet.verifyTitle': 'Elige una cartera y firma una vez para verificar que eres su propietario.',
-  'wallet.verifyAria': 'Elige una cartera y firma una vez para verificar que eres su propietario',
-  'wallet.verifyAddressAria': 'Firma para verificar la cartera {address} en tu cuenta',
-  'wallet.appConnected': 'App conectada',
-  'wallet.connectApp': 'Conectar app',
-  'wallet.connectAppTitle': 'Conecta la app de cartera en este navegador',
-  'wallet.connectAppAria': 'Conecta la app de cartera en este navegador',
-  'wallet.verifying': 'Verificando...',
-  'wallet.verifyingTitle': 'La verificación de cartera está en curso.',
-  'wallet.switch': 'Cambiar',
-  'wallet.switchTitle': 'Verificar otra cartera',
-  'wallet.switchAria': 'Verificar otra cartera',
-  'wallet.unlink': 'Desvincular',
-  'wallet.unlinkTitle': 'Eliminar la verificación de cartera de esta cuenta',
-  'wallet.unlinkAria': 'Eliminar la verificación de cartera de esta cuenta',
-  'wallet.signOut': 'Desconectar',
-  'wallet.signOutTitle': 'Desconectar la app de cartera en este navegador',
-  'wallet.signOutAria': 'Desconectar la app de cartera en este navegador',
-  'wallet.hide': 'Ocultar',
-  'wallet.hideTitle': 'Ocultar la fila de cartera en esta pantalla',
-  'wallet.hideAria': 'Ocultar la fila de cartera en esta pantalla',
-  'wallet.hiddenNotice':
-    'Fila de cartera oculta. Vuelve a activarla dentro del juego desde Opciones > Interfaz.',
-  'wallet.linkedTitle':
-    'Cartera verificada para tu cuenta. Haz clic para gestionar la app de cartera.',
-  'wallet.linkedDisconnectedTitle':
-    'La cartera sigue verificada para tu cuenta. Vuelve a conectar para gestionar la app de cartera.',
-  'wallet.linkedDisconnectedAria':
-    'La cartera sigue verificada para tu cuenta. Vuelve a conectar para gestionar la app de cartera.',
-  'wallet.linkTitle': 'Haz clic para firmar y vincular esta cartera a tu cuenta.',
-  'wallet.connectedTitle': 'Conectada. Inicia sesión para vincular esta cartera a tu cuenta.',
-  'wallet.balanceTitle': 'Saldo de $WOC de la cartera de Solana verificada',
-  'wallet.balanceAria': 'Saldo de la cartera de Solana verificada: {balance}',
-  'wallet.balancePreviewTitle': 'Vista previa del saldo de $WOC de la cartera conectada',
-  'wallet.balancePreviewAria':
-    'Vista previa del saldo de la cartera conectada: {balance}. Vincula la cartera para verificar el distintivo de titular.',
-  'wallet.balanceAmount': '{amount} $WOC',
-  'wallet.connected': 'Conectada: {address}',
-  'wallet.connectedWithBalance': 'Conectada: {balance} - {address}',
-  'wallet.connectedLinked': 'Verificada: {address}',
-  'wallet.connectedLinkedWithBalance': 'Verificada: {balance} - {address}',
-  'wallet.helpDisconnected':
-    'Verifica una cartera de Solana para activar el distintivo de titular y las insignias de tarjeta de jugador. No requiere transacción ni SOL.',
-  'wallet.helpLoginToLink': '{address} conectada. Inicia sesión para vincularla a tu cuenta.',
-  'wallet.helpLoginToLinkWithBalance':
-    '{address} conectada con {balance}. Inicia sesión para vincularla a tu cuenta.',
-  'wallet.helpReadyToLink':
-    'Cartera seleccionada: {address}. Firma una vez para verificar el distintivo de titular y las tarjetas de jugador.',
-  'wallet.helpReadyToLinkWithBalance':
-    'Cartera seleccionada: {address} con {balance}. Firma una vez para verificar el distintivo de titular y las tarjetas de jugador.',
-  'wallet.helpLinked':
-    'Las ventajas de titular están activas. La app de cartera está conectada en este navegador.',
-  'wallet.helpLinkedWithBalance':
-    'Las ventajas de titular están activas. La app de cartera está conectada en este navegador.',
-  'wallet.helpLinkedDisconnected':
-    'Las ventajas de titular están activas. Conecta la app cuando necesites firmar o gastar.',
-  'wallet.helpLinkedDisconnectedWithBalance':
-    'Las ventajas de titular están activas. Conecta la app cuando necesites firmar o gastar.',
-  'wallet.flowConnect': 'Elige una cartera. La verificación continúa automáticamente.',
-  'wallet.flowSign':
-    'Firma el mensaje de verificación en tu app de cartera. No requiere transacción ni SOL.',
-  'wallet.flowVerify': 'Verificando la propiedad de la cartera...',
-  'wallet.linkFailed': 'La verificación de cartera falló.',
-  'wallet.verifyFailed': 'La verificación de cartera falló.',
-  'wallet.unlinkFailed': 'No se pudo desvincular la cartera.',
-  'wallet.holder': 'Titular de $WOC',
-  'wallet.holderTierTitle': 'Titular de $WOC de nivel {tier}',
-  'wallet.holderTiers.ember.name': 'Ascua',
-  'wallet.holderTiers.ember.flavor': 'La chispa está encendida.',
-  'wallet.holderTiers.coinbearer.name': 'Portamonedas',
-  'wallet.holderTiers.coinbearer.flavor': 'La primera moneda en el cofre de guerra.',
-  'wallet.holderTiers.coppercrest.name': 'Cresta de cobre',
-  'wallet.holderTiers.coppercrest.flavor': 'Cobre sobre cobre, tu nombre empieza a sonar.',
-  'wallet.holderTiers.silverbound.name': 'Ligado a la plata',
-  'wallet.holderTiers.silverbound.flavor': 'Ligado en plata, la bolsa crece.',
-  'wallet.holderTiers.gilded.name': 'Dorado',
-  'wallet.holderTiers.gilded.flavor': 'Dorado y sonriente.',
-  'wallet.holderTiers.vaultwarden.name': 'Guardián de la bóveda',
-  'wallet.holderTiers.vaultwarden.flavor':
-    'Ahora custodias una bóveda real: el 0,01 % del suministro de $WOC.',
-  'wallet.holderTiers.whale.name': 'Ballena',
-  'wallet.holderTiers.whale.flavor': 'Entras en aguas profundas: el 0,1 % del suministro.',
-  'wallet.holderTiers.leviathan.name': 'Leviatán',
-  'wallet.holderTiers.leviathan.flavor':
-    'Los mercados sienten cada movimiento tuyo: el 1 % del suministro.',
-  'wallet.holderTiers.tidelord.name': 'Señor de las mareas',
-  'wallet.holderTiers.tidelord.flavor': 'La marea responde a tu llamada: el 2 % del suministro.',
-  'wallet.holderTiers.stormcaller.name': 'Invocador de tormentas',
-  'wallet.holderTiers.stormcaller.flavor':
-    'Las tormentas se reúnen ante tu nombre: el 3 % del suministro.',
-  'wallet.holderTiers.krakencrown.name': 'Corona del kraken',
-  'wallet.holderTiers.krakencrown.flavor': 'Coronado por las profundidades: el 4 % del suministro.',
-  'wallet.holderTiers.titanforged.name': 'Forjado entre titanes',
-  'wallet.holderTiers.titanforged.flavor': 'Forjado entre titanes: el 5 % del suministro.',
-  'wallet.holderTiers.starhoard.name': 'Tesoro estelar',
-  'wallet.holderTiers.starhoard.flavor':
-    'Un tesoro que dobla la luz de las estrellas: el 6 % del suministro.',
-  'wallet.holderTiers.voidwarden.name': 'Guardián del vacío',
-  'wallet.holderTiers.voidwarden.flavor': 'Vigía al borde del vacío: el 7 % del suministro.',
-  'wallet.holderTiers.realmshaper.name': 'Modelador del reino',
-  'wallet.holderTiers.realmshaper.flavor': 'Remodelas el reino: el 8 % del suministro.',
-  'wallet.holderTiers.worldforger.name': 'Forjador de mundos',
-  'wallet.holderTiers.worldforger.flavor': 'Forjas un mundo propio: el 9 % del suministro.',
-  'wallet.holderTiers.worldbearer.name': 'Portamundos',
-  'wallet.holderTiers.worldbearer.flavor':
-    'Cargas con una parte del mundo: el 10 % del suministro.',
-  'wallet.holderTiers.sovereign.name': 'Soberano',
-  'wallet.holderTiers.sovereign.flavor': 'El reino hinca la rodilla: el suministro completo.',
   'playerCard.shareButton': 'Compartir tarjeta de jugador',
   'playerCard.title': 'Tarjeta de jugador',
   'playerCard.close': 'Cerrar tarjeta de jugador',
@@ -2705,9 +2518,8 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'playerCard.footerHandleWithRecruits': '@{handle} - {recruited}',
   'playerCard.footerCta': 'Forja tu leyenda: {siteUrl}',
   'playerCard.arenaStat': 'Arena',
-  'playerCard.shareTierBit': ', titular de $WOC de rango {tier}',
   'playerCard.shareText':
-    'Estoy forjando mi leyenda en World of ClaudeCraft: nivel {level} {className}{tierBit}. Únete a mi mundo:',
+    'Estoy forjando mi leyenda en World of ClaudeCraft: nivel {level} {className}. Únete a mi mundo:',
   'playerCard.nativeShareTitle': 'Mundo de ClaudeCraft',
   'playerCard.fileNameFallback': 'jugador',
   'playerCard.actionShareX': 'Compartir en X',
@@ -7426,54 +7238,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'desktop.update.ready':
     'La actualización {version} está lista. Se instala al salir, o reinicia ahora.',
   'desktop.update.restart': 'Reiniciar ahora',
-  'hudChrome.dailyRewards.close': 'Cerrar recompensas diarias',
-  'hudChrome.dailyRewards.endsIn': 'Termina en {time}',
-  'hudChrome.dailyRewards.error': 'No se pudieron cargar las recompensas diarias.',
-  'hudChrome.dailyRewards.history': 'Ganadores anteriores',
-  'hudChrome.dailyRewards.intro':
-    'Mantén suficiente WOC en tu cartera verificada para desbloquear las recompensas diarias. Gana puntos con un giro diario y tareas rotativas, y escala la clasificación diaria para llevarte una parte del fondo de premios.',
-  'hudChrome.dailyRewards.leaderboard': 'Clasificación diaria',
-  'hudChrome.dailyRewards.loading': 'Cargando recompensas diarias...',
-  'hudChrome.dailyRewards.noHistory': 'Aún no hay pagos.',
-  'hudChrome.dailyRewards.noLeaders': 'Aún no hay puntos.',
-  'hudChrome.dailyRewards.prize': 'Fondo de premios',
-  'hudChrome.dailyRewards.reason.eligible': 'Recompensas desbloqueadas.',
-  'hudChrome.dailyRewards.reason.no_wallet': 'Conecta una cartera con al menos $20 USD en WOC.',
-  'hudChrome.dailyRewards.reason.price_unavailable':
-    'El precio de WOC no está disponible; las recompensas están bloqueadas temporalmente.',
-  'hudChrome.dailyRewards.reason.under_minimum':
-    'La cartera está por debajo del mínimo de $20 USD en WOC.',
-  'hudChrome.dailyRewards.remainingHoursMinutes': '{hours}h {minutes}min',
-  'hudChrome.dailyRewards.remainingLessThanMinute': '<1min',
-  'hudChrome.dailyRewards.remainingMinutes': '{minutes}min',
-  'hudChrome.dailyRewards.reset': 'Reinicio',
-  'hudChrome.dailyRewards.score': 'Puntuación',
-  'hudChrome.dailyRewards.sol': '{amount} SOL',
-  'hudChrome.dailyRewards.spinButton': 'Girar',
-  'hudChrome.dailyRewards.spinClaimed': 'Reclamado: +{points} puntos.',
-  'hudChrome.dailyRewards.spinClose': 'Cerrar giro diario',
-  'hudChrome.dailyRewards.spinDialogTitle': 'Giro de recompensa diaria',
-  'hudChrome.dailyRewards.spinReady': 'Tienes un giro disponible.',
-  'hudChrome.dailyRewards.spinResult': '+{points} puntos',
-  'hudChrome.dailyRewards.spinTitle': 'Giro diario',
-  'hudChrome.dailyRewards.tasks': 'Tareas',
-  'hudChrome.dailyRewards.showChestButton': 'Mostrar cofre',
-  'hudChrome.dailyRewards.hideChestButton': 'Ocultar cofre',
-  'hudChrome.dailyRewards.title': 'Recompensas diarias',
-  'hudChrome.dailyRewards.disabled':
-    'Las recompensas diarias están desactivadas actualmente. Anunciaremos las novedades de esta función en el canal de Discord.',
-  'hudChrome.dailyRewards.unknown': 'Desconocido',
-  'hudChrome.dailyRewards.usd': '{amount} USD',
-  'hudChrome.dailyRewards.walletConnectBody':
-    'Verifica una cartera de Solana con WOC para desbloquear las recompensas diarias.',
-  'hudChrome.dailyRewards.walletConnectButton': 'Verificar cartera',
-  'hudChrome.dailyRewards.walletConnectTitle': 'Verificar cartera',
-  'hudChrome.dailyRewards.walletHoldBody':
-    'Mantén al menos {amount} USD en WOC para desbloquear las recompensas diarias.',
-  'hudChrome.dailyRewards.walletHoldTitle': 'Mantén WOC',
-  'hudChrome.dailyRewards.walletPriceBody':
-    'El precio de WOC no está disponible en este momento. Vuelve a consultarlo pronto.',
-  'hudChrome.dailyRewards.walletValue': 'Valor de cartera (WOC)',
   'hudChrome.nativeUpdate.body':
     'Ya hay disponible una nueva versión de World of ClaudeCraft. Actualiza ahora para obtener las últimas correcciones y mejoras.',
   'hudChrome.nativeUpdate.bodyWithVersion':
@@ -7979,8 +7743,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auth.appleChoiceIntro': 'Crea una cuenta nueva o vincula Apple a una que ya tengas.',
   'hudChrome.auth.appleError': 'No se pudo iniciar sesión con Apple. Inténtalo de nuevo.',
   'hudChrome.auth.appleLoginCta': 'Continuar con Apple',
-  'hudChrome.dailyRewards.reason.banned':
-    'Tienes prohibido participar en las Recompensas diarias. Motivo: {reason}',
   'hudChrome.itemHeroicTag': '[HEROICO]',
   'hudChrome.itemSoulbound': 'Ligado al alma',
   'hudChrome.keybinds.categoryPet': 'Mascota',
@@ -8210,55 +7972,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
     'Las arenas recuerdan cada victoria. Gasta tu Honor con sabiduría.',
   'entities.npcs.fury.name': 'FURIA',
   'entities.npcs.fury.title': 'Intendente de Honor',
-  'hudChrome.claudium.amountLabel': 'Cantidad',
-  'hudChrome.claudium.balanceLabel': 'Saldo',
-  'hudChrome.claudium.balanceUnit': '{amount} Claudium',
-  'hudChrome.claudium.buyButton': 'Comprar',
-  'hudChrome.claudium.buyTitle': 'Comprar Claudium',
-  'hudChrome.claudium.buyUnavailable': 'Las compras no están disponibles en este momento.',
-  'hudChrome.claudium.checkoutClose': 'Cerrar el pago',
-  'hudChrome.claudium.checkoutFailed': 'No se pudo cargar el pago. Inténtalo de nuevo.',
-  'hudChrome.claudium.checkoutLoading': 'Cargando el pago...',
-  'hudChrome.claudium.checkoutNotSettled':
-    'La transacción se envió, pero el Claudium aún no se ha abonado. Vuelve a intentarlo dentro de poco.',
-  'hudChrome.claudium.checkoutPending':
-    'Transacción en curso. Confírmala en tu cartera y mantén abierto este panel.',
-  'hudChrome.claudium.checkoutPendingButton': 'Procesando',
-  'hudChrome.claudium.checkoutTitle': 'Completar compra',
-  'hudChrome.claudium.checkoutUnavailable':
-    'Esa compra de Claudium no está disponible en este momento.',
-  'hudChrome.claudium.checkoutWalletRequired':
-    'Conecta una cartera de Solana antes de comprar Claudium con criptomonedas.',
-  'hudChrome.claudium.checkoutWalletUnsupported':
-    'Esta cartera no puede firmar ni enviar transacciones de Solana.',
-  'hudChrome.claudium.close': 'Cerrar Claudium',
-  'hudChrome.claudium.disclosure':
-    'Claudium es una moneda virtual unidireccional: se compra con dinero y se gasta en cosméticos. No se puede canjear, transferir ni convertir en dinero.',
-  'hudChrome.claudium.hideAmounts': 'Ocultar cantidades adicionales de Claudium',
-  'hudChrome.claudium.kindCosmetic': 'Cosmético',
-  'hudChrome.claudium.kindItem': 'Objeto',
-  'hudChrome.claudium.kindSkin': 'Apariencia',
-  'hudChrome.claudium.loading': 'Cargando Claudium...',
-  'hudChrome.claudium.open': 'Abrir Claudium',
-  'hudChrome.claudium.railLabel': 'Forma de pago',
-  'hudChrome.claudium.railNativeUnavailable': 'SOL/WOC no disponible.',
-  'hudChrome.claudium.railSol': 'SOL',
-  'hudChrome.claudium.railStripe': 'Tarjeta',
-  'hudChrome.claudium.railWoc': 'WOC',
-  'hudChrome.claudium.railWocDiscount': '20 % de descuento',
-  'hudChrome.claudium.railWocUnavailable':
-    'Los precios en WOC no están disponibles en este momento.',
-  'hudChrome.claudium.showAmounts': 'Mostrar todas las cantidades de Claudium',
-  'hudChrome.claudium.skuRow': '{claudium} Claudium por {usd}',
-  'hudChrome.claudium.solBalance': 'SOL: {amount}',
-  'hudChrome.claudium.spendButton': 'Canjear',
-  'hudChrome.claudium.storeCost': '{amount} Claudium',
-  'hudChrome.claudium.storeEmpty': 'No hay cosméticos disponibles en este momento.',
-  'hudChrome.claudium.storeTitle': 'Tienda de cosméticos',
-  'hudChrome.claudium.title': 'Claudium',
-  'hudChrome.claudium.unavailable':
-    'La tienda de Claudium no está disponible en este momento. Tu saldo y tus compras no se verán afectados; vuelve a intentarlo dentro de poco.',
-  'hudChrome.claudium.wocBalance': 'WOC: {amount}',
   'hudChrome.deeds.openBookHint': 'Abrir el Libro de Gestas',
   'hudChrome.statInfo.desc.warfare':
     'Aumenta un {increase}% el daño infligido a jugadores y reduce un {reduction}% el daño recibido de jugadores.',
@@ -8285,202 +7998,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaComplete': 'Fiesta completada',
   'hudChrome.warfare.reasons.fiestaKill': 'Derribo en Fiesta',
   'hudChrome.warfare.reasons.fiestaWin': 'Victoria en Fiesta',
-  'hudChrome.wocStore.applied': 'Aplicado',
-  'hudChrome.wocStore.apply': 'Aplicar apariencia',
-  'hudChrome.wocStore.armoryBody':
-    'Apariencias de armas de edición limitada de la Armería de la temporada 1. Válidas para toda la cuenta, puramente cosméticas y visibles para todos los que te rodean.',
-  'hudChrome.wocStore.armoryEyebrow': 'Temporada 1',
-  'hudChrome.wocStore.armoryTitle': 'La Armería',
-  'hudChrome.wocStore.badge.flagship': 'Emblemático',
-  'hudChrome.wocStore.badge.hero': 'Héroe',
-  'hudChrome.wocStore.balance': 'Saldo de Claudium',
-  'hudChrome.wocStore.buyClaudium': 'Comprar Claudium',
-  'hudChrome.wocStore.buySkin': 'Comprar apariencia',
-  'hudChrome.wocStore.cancel': 'Cancelar',
-  'hudChrome.wocStore.close': 'Cerrar la tienda WOC',
-  'hudChrome.wocStore.collectionLine': 'Colección {collection}',
-  'hudChrome.wocStore.collections.emberwrought': 'Forja de ascuas',
-  'hudChrome.wocStore.collections.fallen_star': 'Estrella caída',
-  'hudChrome.wocStore.collections.guildmark': 'Sello gremial',
-  'hudChrome.wocStore.collections.hoarfrost': 'Escarcha',
-  'hudChrome.wocStore.confirmBody': '¿Comprar {item} por {cost} Claudium?',
-  'hudChrome.wocStore.confirmPurchase': 'Comprar',
-  'hudChrome.wocStore.confirmTitle': 'Confirmar compra de cosmético',
-  'hudChrome.wocStore.detach': 'Quitar apariencia',
-  'hudChrome.wocStore.equipHint': 'Equipa un arma del tipo {type} para aplicar esta apariencia.',
-  'hudChrome.wocStore.error':
-    'La tienda WOC no está disponible en este momento. Vuelve a intentarlo dentro de poco.',
-  'hudChrome.wocStore.inspectAria': 'Examinar {item}',
-  'hudChrome.wocStore.loading': 'Cargando la tienda WOC...',
-  'hudChrome.wocStore.lore': 'Trasfondo',
-  'hudChrome.wocStore.needMoreBody': 'Te faltan {shortfall} Claudium para comprar {item}.',
-  'hudChrome.wocStore.needMoreTitle': 'Necesitas más Claudium',
-  'hudChrome.wocStore.owned': 'Adquirido',
-  'hudChrome.wocStore.priceChanged':
-    'El precio cambió antes de completarse la compra. Revisa el precio actualizado y vuelve a confirmar.',
-  'hudChrome.wocStore.rarity.epic': 'Épico',
-  'hudChrome.wocStore.rarity.legendary': 'Legendario',
-  'hudChrome.wocStore.rarity.rare': 'Raro',
-  'hudChrome.wocStore.rarity.uncommon': 'Poco común',
-  'hudChrome.wocStore.rewardsTab': 'Recompensas diarias',
-  'hudChrome.wocStore.scene.day': 'Día',
-  'hudChrome.wocStore.scene.dusk': 'Crepúsculo',
-  'hudChrome.wocStore.scene.night': 'Noche',
-  'hudChrome.wocStore.sceneLabel': 'Iluminación de la escena',
-  'hudChrome.wocStore.seasonOne': 'Temporada 1',
-  'hudChrome.wocStore.skins.ashspark_dagger.look':
-    'Hoja corta ennegrecida recorrida por vetas de ascua naranja brillante, una diminuta gema humeante en el pomo, ceniza y chispas.',
-  'hudChrome.wocStore.skins.ashspark_dagger.lore':
-    'Una hoja de callejón con el fuego de la montaña oculto en la piedra del pomo, la broma discreta de un armero: hasta un ratero puede llevar una ascua de la primera forja. Ennegrecida, veteada de naranja, siempre un poco demasiado caliente dentro de la vaina. Desenváinala en la oscuridad bajo Highwatch y el resplandor te iluminará la mano lo justo para encontrar un hueco en la guardia de un hombre.',
-  'hudChrome.wocStore.skins.ashspark_dagger.name': 'Puñal Chispa de Ceniza',
-  'hudChrome.wocStore.skins.astravyr_dagger.look':
-    'Una esquirla de estrella caída, con filo de oro fundido brillante sobre metal negro cósmico, una mota estelar luminosa que orbita el pomo y una fina estela de aurora.',
-  'hudChrome.wocStore.skins.astravyr_dagger.lore':
-    'La pieza más pequeña de la estrella que Aldric sacó del cráter y, según algunos, la más peligrosa. Una sola esquirla de aquel corazón de otro mundo, con su filo de oro fundido sobre metal negro cósmico y una mota estelar solitaria que rodea el pomo como una luna que perdió su mundo. Casi no pesa y corta casi cualquier cosa. Lo bastante pequeña para ocultarla y lo bastante brillante para encontrarla en la oscuridad por su propia luz.',
-  'hudChrome.wocStore.skins.astravyr_dagger.name': 'Astravyr, Colmillo de la Estrella Caída',
-  'hudChrome.wocStore.skins.brasscap_axe.look':
-    'Hoja de acero pulido, casquillo y refuerzos de latón sobre un mango de fresno lacado, envoltura pulcra y sello del artesano.',
-  'hudChrome.wocStore.skins.brasscap_axe.lore':
-    'Un hacha sellada es una fanfarronada que puedes sostener. El casquillo y los refuerzos de latón son mitad armadura, mitad firma: evitan que el mango se raje y atrapan la luz de la taberna para que todos sepan que compraste una obra del Armero Hode, no un descarte de la milicia. «Si corta, lo vendo», dice el herrero de Highwatch. Esta corta.',
-  'hudChrome.wocStore.skins.brasscap_axe.name': 'Hachuela Coronada de Latón',
-  'hudChrome.wocStore.skins.brasscrown_staff.look':
-    'Bastón de madera noble rematado por una corona torneada de latón, contera de latón y banda de cuero teñido.',
-  'hudChrome.wocStore.skins.brasscrown_staff.lore':
-    'Torneado en madera noble curada y coronado con un remate de latón que los herreros de Eastbrook funden por centenares, pero perfeccionan de uno en uno. Pertenece al tipo de viajero que quiere que lo tomen en serio tanto en la puerta de Fenbridge como en el muro de Highwatch. Un bastón que nunca ha necesitado realmente ayudar a caminar; la banda teñida combina con un abrigo cuyo precio se adivina.',
-  'hudChrome.wocStore.skins.brasscrown_staff.name': 'Bastón de Paseo con Corona de Latón',
-  'hudChrome.wocStore.skins.cinderbrand_sword.look':
-    'Hoja oscura de acero forjado, canal central lleno de runas de ascua naranja brillante, grietas de calor y una gema humeante en la guarda.',
-  'hudChrome.wocStore.skins.cinderbrand_sword.lore':
-    'La primera hoja templada no en agua, sino en Brasas Benditas recogidas de Stormcrag, los carbones que los herreros de Highwatch juran que «arden azules y limpios, porque la montaña recuerda su antiguo juramento». Guardado en el canal central, aquel fuego arde en naranja y no se extingue; las runas permanecen cálidas para una mano desnuda incluso en la noche más fría del muro. Marca de Ascua nunca necesita encenderse. Sencillamente se niega a apagarse.',
-  'hudChrome.wocStore.skins.cinderbrand_sword.name': 'Marca de Ascua',
-  'hudChrome.wocStore.skins.cinderlatch_crossbow.look':
-    'Ballesta de acero ennegrecido, con un resplandor naranja de ascua que se filtra por las grietas del arco y un carbón humeante en la cureña.',
-  'hudChrome.wocStore.skins.cinderlatch_crossbow.lore':
-    'La más extraña de las armas forjadas en ascuas: el fuego de la montaña vertido en una máquina. El naranja se filtra por las grietas del arco, y un carbón humeante en la cureña impide que la cuerda se ponga rígida con el frío de Thornpeak o la humedad de Mirefen. Sus virotes ya salen calientes del canal y llegan aún más calientes. La respuesta de un cazador para un muro donde el enemigo tampoco siente el frío.',
-  'hudChrome.wocStore.skins.cinderlatch_crossbow.name': 'Cerrojo de Ascua',
-  'hudChrome.wocStore.skins.cosmarch_staff.look':
-    'Cúmulo orbital de fragmentos estelares dorados alrededor de un núcleo de oro fundido, vara negra cósmica grabada con constelaciones y cintas de aurora que ascienden en espiral.',
-  'hudChrome.wocStore.skins.cosmarch_staff.lore':
-    'Una vara de metal estelar coronada por un núcleo de oro fundido y un anillo de fragmentos dorados que marchan a su alrededor en una órbita lenta e interminable: un pequeño cosmos grabado con constelaciones que no corresponden a ningún cielo sobre Thornpeak. La aurora trepa por su longitud como humo que olvidó elevarse. Quienes la llevaron afirmaban sentir el vacío girando a través de ella, como el lago de Ysolei «bebe la luz de la luna»: paciente, frío y devolviendo la mirada.',
-  'hudChrome.wocStore.skins.cosmarch_staff.name': 'Cosmarch, Aguja del Vacío Infinito',
-  'hudChrome.wocStore.skins.emberbite_axe.look':
-    'Hacha de hierro ennegrecido con grietas de ascua naranja que brillan a través de la hoja, una gema de carbón contenido y volutas de calor.',
-  'hudChrome.wocStore.skins.emberbite_axe.lore':
-    'El Armero Hode incrustó un carbón vivo de fuego de montaña en el corazón de la hoja, de modo que el filo nunca llega a enfriarse entre golpes. Las grietas respiran naranja en el descenso, como si el impacto despertara algo que la primera forja dejó dormido en el hierro. Dicen que un elemental de Stormcrag entregó el ascua para crearla; dicen muchas cosas en Highwatch cuando sopla el viento.',
-  'hudChrome.wocStore.skins.emberbite_axe.name': 'Mordisco de Ascua',
-  'hudChrome.wocStore.skins.emberwish_wand.look':
-    'Mota cautiva de una estrella agonizante, de oro fundido y envuelta en chispas orbitales, sobre una vara negra cósmica grabada con constelaciones brillantes.',
-  'hudChrome.wocStore.skins.emberwish_wand.lore':
-    'No es la estrella caída, sino la última mota de una moribunda: una sola ascua de oro fundido de un sol ya extinguido, envuelta en las chispas que fueron su última luz. Su vara negra cósmica lleva grabadas las constelaciones que lo vieron morir. Los campesinos de Mirefen dicen que concede un deseo a quien la sostenga en el crepúsculo verdadero; también dicen que cada alma que la sostuvo pidió más tiempo y que la Luna Ahogada no se lo concedió a ninguna.',
-  'hudChrome.wocStore.skins.emberwish_wand.name': 'Deseo de Ascua, Mota del Sol Agonizante',
-  'hudChrome.wocStore.skins.emberwrought_wand.look':
-    'Varita de metal ennegrecido rematada por un carbón de ascua brillante entre garras de hierro, con finas grietas de calor y una cálida luz interior.',
-  'hudChrome.wocStore.skins.emberwrought_wand.lore':
-    'La varita que dio nombre a la serie. Cuando un armero de Highwatch engastó por primera vez un carbón de fuego de montaña en garras de hierro y lo hizo responder a una mano mortal, hasta los Sacerdotes de la Luz dejaron de llamarlo herejía y empezaron a llamarlo útil. Cálida, paciente y discretamente peligrosa: el ascua de la punta ha ardido sin interrupción desde antes de que su dueño respirara por primera vez.',
-  'hudChrome.wocStore.skins.emberwrought_wand.name': 'Varita Forjada en Ascuas',
-  'hudChrome.wocStore.skins.encore_bow.look':
-    'Cañón estelar cómicamente enorme: un tubo negro cósmico grabado con constelaciones doradas brillantes, boca acampanada con un proyectil cometario de oro fundido en su interior, herrajes de latón y culata de madera.',
-  'hudChrome.wocStore.skins.encore_bow.lore':
-    'Los herreros que trabajaron la estrella caída fabricaron seis reliquias y aún les sobró un tubo entero de metal estelar; para entonces, los aprendices ya tenían sus propias ideas. Lo que salió del yunque es el primer fusil del reino o su máquina de asedio más pequeña: un cañón de hombro que no dispara tanto como solicita una segunda estrella, pero apuntada. El Hermano Aldric se negó a bendecirlo, pues razonó que cualquier cosa tan ruidosa ya ha llamado la atención del cielo. A los cazadores les encanta. A nada situado en su trayectoria le ha gustado jamás.',
-  'hudChrome.wocStore.skins.encore_bow.name': 'Encore, la Segunda Estrella Caída',
-  'hudChrome.wocStore.skins.everwinter_wand.look':
-    'Una sola punta de hielo glaciar cian brillante, con escarcha que brota de un collar de plata y una tenue neblina fría.',
-  'hudChrome.wocStore.skins.everwinter_wand.lore':
-    'Una punta de hielo glaciar brillante que, según dicen, se quebró del lago profundo bajo el Santuario, donde el frío de la montaña tiene dientes. La escarcha brota sin cesar de su collar de plata y nunca se derrite, ni con fuego ni en verano. Los magos la mantienen cerca por el frío que aporta a su obra, y la apartan en las noches en que parece inclinarse hacia la cripta de Nythraxis y escuchar.',
-  'hudChrome.wocStore.skins.everwinter_wand.name': 'Fragmento del Invierno Eterno',
-  'hudChrome.wocStore.skins.fletcher_s_guild_bow.look':
-    'Arco recurvo de nogal lacado, puntas de las palas de latón, cuerda de lino encerado y sello del gremio en la empuñadura.',
-  'hudChrome.wocStore.skins.fletcher_s_guild_bow.lore':
-    'Lo más parecido que tiene el reino a un gremio es el sello de un flechero en la empuñadura, una promesa sobre lo que hay dentro, como la marca con que un vinatero sella un barril. Nogal lacado, latón en las puntas de las palas y una cuerda de lino encerado que no se deshilacha bajo la lluvia de Mirefen. Cada unión justifica el precio. Ténsalo una vez más allá de la Espesura de la Viuda y el argumento queda ganado.',
-  'hudChrome.wocStore.skins.fletcher_s_guild_bow.name': 'Arco del Gremio de Flecheros',
-  'hudChrome.wocStore.skins.forgeheart_staff.look':
-    'Bastón con regatón de hierro, coronado por un núcleo de ascua brillante enjaulado, con runas de ascua por la vara y reverberación de calor ascendente.',
-  'hudChrome.wocStore.skins.forgeheart_staff.lore':
-    'Un carbón vivo de fuego de montaña enjaulado en hierro en su corona. El Maestro de saber Caddis lo considera la prueba de que el fuego de la primera forja puede obligarse a servir, no solo a sellar. Una fina cinta de reverberación térmica se eleva de él sin cesar; el mago que lleva uno nunca necesita una forja ni una hoguera de guardia. Según susurran, el ascua fue extraída del propio aliento de Voskar Aladebrasa y no se ha enfriado desde entonces.',
-  'hudChrome.wocStore.skins.forgeheart_staff.name': 'Bastón Corazón de Forja',
-  'hudChrome.wocStore.skins.frostbite_dagger.look':
-    'Daga de hielo azul transparente, siniestramente fina, con una veta cian brillante en el centro, cristales de escarcha como agujas y empuñadura cubierta de escarcha.',
-  'hudChrome.wocStore.skins.frostbite_dagger.lore':
-    'Fina como un aliento contenido y el doble de fría: una esquirla del glaciar de Thornpeak afilada hasta dejar una sola veta luminosa, tan cortante que la herida se congela antes de que la sangre recuerde correr. Su nombre procede del frío sepulcral que los muertos traen de las cumbres. Nunca necesita afilarse; el hielo no pierde el filo, observa secamente el Maestro de saber Caddis, solo espera.',
-  'hudChrome.wocStore.skins.frostbite_dagger.name': 'Aguja de Escarcha',
-  'hudChrome.wocStore.skins.glaciersplit_axe.look':
-    'Cabeza de hielo glaciar azul translúcido, con un interior agrietado que brilla en cian, erizada de cristales de escarcha y un mango que deja una estela de vapor frío.',
-  'hudChrome.wocStore.skins.glaciersplit_axe.lore':
-    'Tallada en el corazón azul del glaciar de Thornpeak, donde dos siglos de hielo han comprimido el frío hasta que brilla por sí solo. Deja una estela de vapor incluso en reposo, y su impacto suena como una grieta que se abre bajo la Cresta del Acechador. Highwatch entrega sus caídos al hielo de allí arriba; esta es, pues, un arma destinada a mantener a raya el deshielo y cuanto este pudiera despertar.',
-  'hudChrome.wocStore.skins.glaciersplit_axe.name': 'Quebraglaciares',
-  'hudChrome.wocStore.skins.guildmark_arming_sword.look':
-    'Hoja de acero azulado, cruz de bronce en cola de pez, empuñadura de cuero teñido de verde azulado y pequeño sello gremial estampado.',
-  'hudChrome.wocStore.skins.guildmark_arming_sword.lore':
-    'Mientras la hoja común es anónima, esta está firmada. Un armero se gana el derecho a estampar su marca en el recazo solo cuando el Mercader del Mercado Mundial responde por su acero, y la marca del Herrero Haldren tiene su aval. Azulada contra la humedad del Valle y equilibrada con precisión. Pagas tanto por el sello como por la espada, y lo vale.',
-  'hudChrome.wocStore.skins.guildmark_arming_sword.name': 'Espada de Armar con Sello Gremial',
-  'hudChrome.wocStore.skins.guildmark_dirk.look':
-    'Daga larga y delgada de acero templado, guarda y pomo de bronce, empuñadura de cordón verde oscuro y sello estampado.',
-  'hudChrome.wocStore.skins.guildmark_dirk.lore':
-    'La hoja que lleva alguien de posición cuando la espada se queda en casa: esbelta, templada, marcada con el mismo sello que certifica una hoja completa y prendida al cinturón como un anillo de sello con filo. Discreta para todos salvo quienes saben leer la garantía de un armero. La Intendente Bree guarda un cajón lleno en Highwatch para los oficiales que se han ganado el respeto del muro.',
-  'hudChrome.wocStore.skins.guildmark_dirk.name': 'Daga con Sello Gremial',
-  'hudChrome.wocStore.skins.hoarfrost_vigil_staff.look':
-    'Bastón plateado coronado por un fragmento flotante de hielo cian brillante que gira lentamente y emite cristales y vapor frío.',
-  'hudChrome.wocStore.skins.hoarfrost_vigil_staff.lore':
-    'El bastón de la guardia que nunca duerme en el muro de Highwatch. Su corona es un fragmento de hielo cian del lago que flota separado de la plata y gira lentamente por voluntad propia: siempre, juran los guardias, hacia el frío que se acumula bajo las cumbres. Llevar la Vigilia es hacer doscientos años de guardia en una sola noche y prometer no apartar la mirada.',
-  'hudChrome.wocStore.skins.hoarfrost_vigil_staff.name': 'Vigilia de Escarcha',
-  'hudChrome.wocStore.skins.ice_fang_sword.look':
-    'Hoja curva de hielo glacial pálido, cristales de escarcha dentados a lo largo del lomo, un núcleo congelado cian brillante en el canal central y una cruceta de carámbanos.',
-  'hudChrome.wocStore.skins.ice_fang_sword.lore':
-    'La pieza insignia de la serie helada y la primera que busca cualquier coleccionista. La espada Colmillo de Hielo no fue forjada, sino tallada en un colmillo del glaciar que corona Thornpeak sobre Highwatch, con un núcleo cian que arde tan frío como la luz reflejada en el Glimmermere. Cubre de escarcha hasta el aire que corta. La guardia del muro jura que un soldado la empuñó la noche en que las nieves altas contuvieron al Wyrmcult y «le compró un invierno al muro».',
-  'hudChrome.wocStore.skins.ice_fang_sword.name': 'Colmillo de Hielo',
-  'hudChrome.wocStore.skins.lacquered_wand.look':
-    'Varita esbelta lacada en rojo oscuro, con dos bandas de latón pulido y una pequeña punta redondeada de latón.',
-  'hudChrome.wocStore.skins.lacquered_wand.lore':
-    'Laca de color rojo oscuro aplicada con paciencia en siete capas y ceñida dos veces con latón pulido: la clase de varita que un mago rural compra en el Mercado Mundial cuando empieza a cobrar monedas de verdad y quiere que se note. No canaliza la Luz mejor que una rama de abedul. Pero reluce de maravilla sobre el mostrador del Mercader, y la mitad de la magia menor siempre ha consistido en que crean en quien la practica.',
-  'hudChrome.wocStore.skins.lacquered_wand.name': 'Vara Lacada',
-  'hudChrome.wocStore.skins.meteorlatch_crossbow.look':
-    'Metal estelar meteórico, núcleo de oro fundido a lo largo de la cureña, palas negras cósmicas grabadas con constelaciones y un virote de fuego estelar puro listo para disparar.',
-  'hudChrome.wocStore.skins.meteorlatch_crossbow.lore':
-    'Forjada con metal estelar meteórico en bruto mientras el cráter de Mirefen aún brillaba, restos «demasiado calientes para tocarlos» martillados hasta formar palas negras como el cosmos, grabadas con constelaciones, y un núcleo de oro fundido contenido a lo largo de la cureña. No carga ningún virote, sino que conjura uno: un astil de fuego estelar que sale como un veredicto y cae como el final de una sentencia. Cuando Highwatch temió que incluso la corona inmortal de Nythraxis no fuese lo peor oculto bajo las cumbres, esta era el arma que querían en el muro. Apunta bien.',
-  'hudChrome.wocStore.skins.meteorlatch_crossbow.name':
-    'Cerrojo Meteórico, Último Juicio del Cielo',
-  'hudChrome.wocStore.skins.rimecrusher_mace.look':
-    'Cúmulo de cristales de hielo dentados alrededor de un núcleo cian brillante, con escarcha que repta por un mango plateado.',
-  'hudChrome.wocStore.skins.rimecrusher_mace.lore':
-    'No fue tallada, sino cultivada: hielo de Thornpeak inducido a crecer alrededor de un núcleo cian frío hasta endurecerse tanto como el mejor acero de Hode. La escarcha baja por el mango plateado hacia la mano, pero nunca termina de alcanzarla. Donde golpea, el agua se congela; donde reposa, el suelo blanquea. El frío sepulcral de las cumbres, reducido a un tamaño que permite blandirlo contra las cosas que escalan el muro.',
-  'hudChrome.wocStore.skins.rimecrusher_mace.name': 'Rompeescarcha',
-  'hudChrome.wocStore.skins.skyrender_axe.look':
-    'Cabeza semejante a un fragmento arrancado del cielo nocturno, con grietas de oro fundido y constelaciones grabadas, esquirlas de luz estelar suspendidas y un fulgor de aurora tras el filo.',
-  'hudChrome.wocStore.skins.skyrender_axe.lore':
-    'Batida a partir del borde del cráter, donde la estrella caída arrancó del Mirefen el reflejo del propio cielo y dejó una herida que aún humea. La cabeza parece un fragmento de noche desgarrada: grietas de oro fundido, constelaciones que ningún erudito de Highwatch puede nombrar y una aurora que sangra del filo con cada golpe. El Hermano Aldric la bendijo sin tocarla. Al levantarla, sostienes el hueco que dejaron los cielos.',
-  'hudChrome.wocStore.skins.skyrender_axe.name': 'Desgarracielos, Herida del Firmamento',
-  'hudChrome.wocStore.skins.smoulderfall_mace.look':
-    'Aletas de hierro oscuro que brillan en naranja de ascua por sus grietas interiores y una gema de núcleo fundido en la cabeza.',
-  'hudChrome.wocStore.skins.smoulderfall_mace.lore':
-    'Una maza que porta su propio hogar: una piedra de núcleo fundido, desprendida del sello del Santuario que fue «forjado con fuego de montaña», engastada y brillante en la cabeza. Las aletas permanecen cálidas al tacto y más calientes donde golpean; un sargento de Highwatch jura que uno de sus golpes deja un moratón que brilla débilmente hasta el amanecer. El fuego de la montaña, creado por fin para romper en lugar de sellar.',
-  'hudChrome.wocStore.skins.smoulderfall_mace.name': 'Ocaso Humeante',
-  'hudChrome.wocStore.skins.solheim_sword.look':
-    'Mandoble forjado con una estrella caída, con un núcleo de oro fundido que divide la hoja de acero negro cósmico ribeteada de luz estelar, fragmentos dorados que orbitan la guarda y una cinta de aurora.',
-  'hudChrome.wocStore.skins.solheim_sword.lore':
-    'Cuando la estrella cayó del cielo occidental y «estalló como una forja» más allá de la Espesura de la Viuda, el Hermano Aldric sacó su corazón aún humeante del cráter de Mirefen y rogó a los herreros del reino que trabajaran «algo que no pertenece a este mundo». Hicieron con él un único mandoble: Solheim. Su núcleo de oro fundido divide la hoja negra cósmica como el alba abre el cielo nocturno, y fragmentos de metal estelar orbitan la guarda por trayectorias que ninguna mano trazó. Solo se forjó uno. No habrá otro.',
-  'hudChrome.wocStore.skins.solheim_sword.name': 'Solheim, Última Luz del Alba',
-  'hudChrome.wocStore.skins.starfall_mace.look':
-    'Núcleo estelar cautivo de oro fundido, rodeado de fragmentos orbitales, con aletas negras cósmicas recorridas por vetas de luz estelar y una aurora que se derrama por las junturas.',
-  'hudChrome.wocStore.skins.starfall_mace.lore':
-    'Un núcleo estelar atrapado en el instante anterior a morir, rodeado por los restos que cayeron con él y congelado a un dedo del olvido. Sus aletas negras cósmicas están recorridas por luz estelar cautiva, y la aurora se derrama por las junturas cuando se alza. Los antiguos Sacerdotes de la Luz llamaban juicio a una estrella fugaz, un veredicto dictado desde lo alto que ningún escudo debía detener, y bautizaron esta por la que cayó sobre Mirefen.',
-  'hudChrome.wocStore.skins.starfall_mace.name': 'Caída Estelar, Juicio de los Cielos',
-  'hudChrome.wocStore.skins.tempered_flanged_mace.look':
-    'Cabeza de acero azulado templado con seis aletas, collar y pomo de latón y empuñadura de cuero rojo vino.',
-  'hudChrome.wocStore.skins.tempered_flanged_mace.lore':
-    'Seis aletas de acero azulado y templado, cada una afilada para abrir un yelmo, rematadas en latón y envueltas en cuero rojo vino. Los armeros del reino no fabrican armas feas ni siquiera cuando el trabajo es brutal. Esta fue encargada a través del Mercado Mundial, no tomada de un estante; en algún lugar hay un libro de cuentas con el nombre de un comprador orgulloso y la suma que pagó a Hode por ella.',
-  'hudChrome.wocStore.skins.tempered_flanged_mace.name': 'Maza Aletada Templada',
-  'hudChrome.wocStore.skins.winterbite.look':
-    'Arco de acero plateado y hielo azul, con un núcleo congelado cian brillante en la empuñadura, una flecha de hielo macizo lista para disparar y vapor frío.',
-  'hudChrome.wocStore.skins.winterbite.lore':
-    'Un arco de acero plateado y hielo de Thornpeak, con la empuñadura iluminada por un núcleo cian frío que congela la flecha a la cuerda. Carga un astil de hielo glaciar macizo que vuelve a formarse con cada tensado; el arquero no lleva carcaj en el muro, solo el frío. Highwatch resistió un asedio en la Cresta del Acechador con uno como este: un solo arquero, según cuentan, y flechas para un invierno entero que parecían estar allí desde siempre.',
-  'hudChrome.wocStore.skins.winterbite.name': 'Mordisco Invernal',
-  'hudChrome.wocStore.storeTab': 'Tienda',
-  'hudChrome.wocStore.tabsLabel': 'Secciones de la tienda WOC',
-  'hudChrome.wocStore.title': 'Tienda WOC',
-  'hudChrome.wocStore.tryOn': 'Probar',
-  'hudChrome.wocStore.unavailable': 'No disponible',
-  'hudChrome.wocStore.viewModeLabel': 'Modo de vista previa',
-  'hudChrome.wocStore.weaponOnly': 'Solo arma',
   'hudChrome.wocStore.wtype.axe': 'Hacha',
   'hudChrome.wocStore.wtype.bow': 'Arco',
   'hudChrome.wocStore.wtype.crossbow': 'Ballesta',
@@ -8729,11 +8246,6 @@ export const es: Partial<Record<TranslationKey, string>> = {
   'entities.items.eastbrook_ritual_vestments.name': 'Vestiduras rituales de Eastbrook',
   'entities.items.eastbrook_warded_leggings.name': 'Perneras protegidas de Eastbrook',
   'entities.items.wardweave_cowl.name': 'Capucha de tejido protector',
-  'hudChrome.claudium.railUsdc': 'USDC',
-  'hudChrome.claudium.usdcBalance': 'Saldo en USDC: {amount}',
-  'hudChrome.dailyRewards.reason.bannedUntil':
-    'Tienes prohibido acceder a Recompensas diarias durante {remaining} más. El acceso se restablece {until}. Motivo: {reason}',
-  'hudChrome.dailyRewards.remainingDaysHours': '{days} d {hours} h',
   'hudChrome.partyFrames.style': 'Estilo del marco',
   'hudChrome.partyFrames.styleAutomatic': 'Automático',
   'hudChrome.partyFrames.styleClassic': 'Marcos de grupo clásicos',

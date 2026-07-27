@@ -103,8 +103,7 @@ El inicio de sesión en línea es solo con Discord y correo electrónico, exacta
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 Apunta el shell a otra API con `VITE_DESKTOP_API_ORIGIN`, por ejemplo un servidor local o un host de staging:

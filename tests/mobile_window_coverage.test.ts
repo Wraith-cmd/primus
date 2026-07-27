@@ -91,8 +91,6 @@ const MOBILE_WINDOW_EXCEPTIONS: Record<string, string> = {
     'small centered modal (dynamic, the first-tier profession tutorial); centered and clamped by its own base #profession-tutorial rule plus the shared .window viewport clamp, with its z-index floored above the mobile sheet (96) in JS',
   'delve-rite-panel': 'in-run gameplay overlay, not a menu window that docks to a sheet',
   'lockpick-panel': 'in-run gameplay overlay, not a menu window that docks to a sheet',
-  'daily-rewards-window':
-    'sized entirely by the shared body.mobile-touch .window sheet base (max-width/max-height) plus its own .dr-body 2-column body rule; its only id-specific mobile rule is a z-index bump, so it carries no id-scoped pin of its own',
 };
 
 // A src/styles/*.css module contains a positioning/floor rule for #id on touch when

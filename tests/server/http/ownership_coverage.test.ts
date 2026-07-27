@@ -40,8 +40,6 @@ import { compose } from '../../../server/http/compose';
 import { logger } from '../../../server/http/logger';
 import { ADMIN_AUTH_REQUIRED } from '../../../server/http/middleware/require_admin';
 import {
-  DAILY_REWARD_SECRET_ENV,
-  DAILY_REWARD_SECRET_HEADER,
   DEPLOY_SECRET_ENV,
   DEPLOY_SECRET_HEADER,
   DISCORD_SECRET_ENV,
@@ -619,20 +617,17 @@ describe('admin scope sweep: every non-login admin route rejects a read token', 
 // the open internet. It drives each route's real middleware chain twice,
 // asserting the gate short-circuits with the legacy bodies BEFORE the handler:
 //   1. env secret UNSET  -> the deploy/discord gates hide with the feature-off
-//      404 { ...error: 'unknown endpoint' } (anti-enumeration); the late-arrival
-//      daily-reward gate FAILS CLOSED with 401 { ...error: 'not authenticated' }
-//      instead (daily_rewards.ts internalAuthorized semantics, no fallback);
+//      404 { ...error: 'unknown endpoint' } (anti-enumeration);
 //   2. env secret SET + a WRONG header secret -> 401 { ...error: 'not
-//      authenticated' } on all three gates.
+//      authenticated' } on both gates.
 // A negative control proves the sweep detects a route that forgot the gate.
 // -------------------------------------------------------------------------
 
-// Every registered internal-surface route (all 14 are secret-gated; there is no
-// anonymous internal route).
+// Every registered internal-surface route (all of them are secret-gated; there is
+// no anonymous internal route).
 const internalSurfaceRoutes: RouteDef[] = apiRoutes.filter((route) => route.surface === 'internal');
 
-// The legacy fail() bodies the gates write (byte-parity with server/internal.ts
-// and server/daily_rewards.ts).
+// The legacy fail() bodies the gates write (byte-parity with server/internal.ts).
 const INTERNAL_FEATURE_OFF = { success: false, data: null, error: 'unknown endpoint' };
 const INTERNAL_NOT_AUTHENTICATED = { success: false, data: null, error: 'not authenticated' };
 
@@ -642,8 +637,7 @@ const WRONG_SECRET = 'sweep-presented-wrong-value';
 
 // Which (header, env var) pair a route's gate enforces, plus the body the gate
 // answers when its env secret is UNSET: restart-countdown carries the deploy
-// pair, the /internal/daily-rewards/* ops family the fail-closed daily-reward
-// pair (401 on unset, never 404), every discord route the bot pair.
+// pair, every discord route the bot pair.
 function gatePairFor(route: RouteDef): {
   header: string;
   envVar: string;
@@ -658,14 +652,6 @@ function gatePairFor(route: RouteDef): {
       unsetBody: INTERNAL_FEATURE_OFF,
     };
   }
-  if (route.path.startsWith('/internal/daily-rewards/')) {
-    return {
-      header: DAILY_REWARD_SECRET_HEADER,
-      envVar: DAILY_REWARD_SECRET_ENV,
-      unsetStatus: 401,
-      unsetBody: INTERNAL_NOT_AUTHENTICATED,
-    };
-  }
   return {
     header: DISCORD_SECRET_HEADER,
     envVar: DISCORD_SECRET_ENV,
@@ -674,7 +660,7 @@ function gatePairFor(route: RouteDef): {
   };
 }
 
-const SWEPT_SECRET_ENVS = [DEPLOY_SECRET_ENV, DISCORD_SECRET_ENV, DAILY_REWARD_SECRET_ENV] as const;
+const SWEPT_SECRET_ENVS = [DEPLOY_SECRET_ENV, DISCORD_SECRET_ENV] as const;
 
 describe('internal secret-gate mounting sweep: every /internal route is gated', () => {
   const savedSecrets = new Map<string, string | undefined>();
@@ -703,9 +689,8 @@ describe('internal secret-gate mounting sweep: every /internal route is gated', 
     vi.restoreAllMocks();
   });
 
-  it('selects the full 19-route internal surface (the handleInternalApi 12 + the 7 ops routes)', () => {
-    // The ops family includes finalization, four payout-service routes, and two moderation mutations.
-    expect(internalSurfaceRoutes.length).toBe(19);
+  it('selects the full 10-route internal surface (restart-countdown + the 9 Discord-bot routes)', () => {
+    expect(internalSurfaceRoutes.length).toBe(10);
   });
 
   for (const route of internalSurfaceRoutes) {
@@ -766,7 +751,7 @@ describe('internal secret-gate mounting sweep: every /internal route is gated', 
 // The admin-surface QA mandate applied to the /api surface: the authed routes the
 // late-arrival migration registered must actually MOUNT their bearer guard
 // (createActiveGuard carries no meta marker, so only a functional sweep can
-// catch a forgotten gate; an ungated github/daily-rewards read would leak
+// catch a forgotten gate; an ungated github read would leak
 // account-linked data, and an ungated desktop-login create would mint session
 // handoff codes anonymously). Each route's real middleware chain is driven with
 // NO Authorization header at all and must answer the legacy 401 db-free (the
@@ -780,17 +765,13 @@ describe('internal secret-gate mounting sweep: every /internal route is gated', 
 const API_NOT_AUTHENTICATED = { error: 'not authenticated', code: 'auth.required' };
 
 // The (method, path) pairs of the late-arrival authed /api routes, extended with
-// the v0.20.0 release-merge arrivals (the account email backfill + the
-// paginated daily leaderboard, both behind the shared active guard).
+// the v0.20.0 release-merge arrival (the account email backfill, behind the
+// shared active guard).
 const AUTHED_18B_ROUTES: ReadonlyArray<{ method: string; path: string }> = [
   { method: 'POST', path: '/api/auth/github/start' },
   { method: 'GET', path: '/api/github' },
   { method: 'DELETE', path: '/api/github' },
   { method: 'POST', path: '/api/desktop-login/create' },
-  { method: 'GET', path: '/api/daily-rewards' },
-  { method: 'POST', path: '/api/daily-rewards/spin' },
-  { method: 'GET', path: '/api/daily-rewards/history' },
-  { method: 'GET', path: '/api/daily-rewards/leaderboard' },
   { method: 'POST', path: '/api/account/email/set-initial' },
   // v0.20.0 third slice: the authed map editor routes (the two owner reads are
   // behind the shared read guard; every mutation behind the shared active
@@ -826,8 +807,8 @@ describe('/api auth-mounting sweep: every authed late-arrival route 401s an unau
     resetRateLimits();
   });
 
-  it('selects all nineteen authed routes from the registry', () => {
-    expect(authed18bRoutes.length).toBe(19);
+  it('selects all fifteen authed routes from the registry', () => {
+    expect(authed18bRoutes.length).toBe(15);
   });
 
   for (const route of authed18bRoutes) {

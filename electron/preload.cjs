@@ -109,31 +109,5 @@ contextBridge.exposeInMainWorld('wocDesktop', {
   reportRendererError: (payload) => {
     forwardRendererError(sanitizeErrorReport(payload));
   },
-  // A Steam link ticket (hex) for the account-link handshake, or null when
-  // Steam is unavailable (website build, Steam not running, ticket failure).
-  // The main-process handler never rejects; steam.cjs owns every failure arm.
-  steamLinkTicket: () => ipcRenderer.invoke('desktop-steam-link-ticket'),
-  // Whether this shell can mint link tickets at all (false on packaged
-  // website builds): the renderer hides the Link button instead of offering
-  // a click whose ticket can never exist.
-  steamLinkSupported: () => ipcRenderer.invoke('desktop-steam-capability'),
   walletConnectionSupported: () => ipcRenderer.invoke('desktop-wallet-capability'),
-  // Signal that a link attempt has settled (the server verify resolved or
-  // rejected) so the shell can cancel the Steam auth ticket (Valve's
-  // CancelAuthTicket contract). Fire-and-forget; the main handler is idempotent.
-  steamLinkSettled: () => ipcRenderer.invoke('desktop-steam-link-settled'),
-  // Auto-update events (website distribution only; the channel is simply
-  // silent on Steam/dev builds). Payloads are the whitelisted shapes built in
-  // electron/update_events.cjs.
-  onUpdateEvent: (callback) => {
-    if (typeof callback !== 'function') return () => {};
-    const listener = (_event, payload) => {
-      if (payload && typeof payload === 'object' && typeof payload.type === 'string') {
-        callback(payload);
-      }
-    };
-    ipcRenderer.on('desktop-update-event', listener);
-    return () => ipcRenderer.removeListener('desktop-update-event', listener);
-  },
-  installUpdate: () => ipcRenderer.invoke('desktop-update-install'),
 });

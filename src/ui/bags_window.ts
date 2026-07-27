@@ -131,7 +131,7 @@ const BAG_SORT_LABEL_KEYS: Record<BagSort, TranslationKey> = {
  * PainterHostPresentation bag (Hud builds it once and hands it to every window that
  * renders item rows); this composes that base and adds the inventory-cluster
  * surface: the world reads, the cross-window mode flags + commands, the pet-feed /
- * drag / wallet plumbing, and the close/teardown chrome. The module never reaches
+ * drag plumbing, and the close/teardown chrome. The module never reaches
  * into Hud directly.
  */
 export interface BagsWindowDeps extends PainterHostPresentation {
@@ -139,12 +139,6 @@ export interface BagsWindowDeps extends PainterHostPresentation {
   root(): HTMLElement;
   /** The live world (offline Sim or online ClientWorld mirror). */
   world(): IWorld;
-  /** Localized $WOC on-chain balance markup for the money footer. */
-  wocBalanceHtml(): string;
-  /** Localized launcher for the Claudium store, empty when the feature is not available. */
-  claudiumLauncherHtml(): string;
-  openClaudium(): void;
-  openWallet(): void;
   hideTooltip(): void;
   /** True when this click is the release of a long-press tooltip peek, so the
    *  stack's action (use / sell / deposit / feed) must be SUPPRESSED. Wired to the
@@ -270,34 +264,24 @@ export class BagsWindow {
     this.refreshMoneyRow();
   }
 
-  /** Rewrite ONLY the .money footer in place, re-binding its two launchers. Every
-   *  paint path runs through here (the full render(), the purse probe, and the async
-   *  $WOC / Claudium balance reads), so the latch arms on all of them.
+  /** Rewrite ONLY the .money footer in place. Every paint path runs through here (the
+   *  full render() and the purse probe), so the latch arms on all of them.
    *
    *  Deliberately does NOT restore focus across the rewrite, unlike the
-   *  deeds/professions refocus family. Two reasons, both settled on PR #2377: the
-   *  footer's launchers are BUTTONs, and input.ts leaves a focused button's Enter
-   *  default alone on the chat edge, so parking focus back on one makes the player's
-   *  next Enter open chat AND re-fire the button; and #bags is non-modal and absent
-   *  from isModalOpen(), so canUseGameKeys() stays true and Tab is swallowed by
+   *  deeds/professions refocus family: #bags is non-modal and absent from
+   *  isModalOpen(), so canUseGameKeys() stays true and Tab is swallowed by
    *  target-nearest, which means keyboard focus never lands in here to begin with. */
   private paintMoneyRow(row: HTMLElement, copper: number): void {
-    row.innerHTML = `${this.deps.wocBalanceHtml()}${this.deps.claudiumLauncherHtml()}${this.deps.moneyHtml(copper)}`;
-    row.querySelector('[data-claudium-launcher]')?.addEventListener('click', () => {
-      this.deps.openClaudium();
-    });
-    row.querySelector('[data-wallet-action]')?.addEventListener('click', () => {
-      this.deps.openWallet();
-    });
+    row.innerHTML = this.deps.moneyHtml(copper);
     this.lastMoneyCopper = copper;
   }
 
   /** The narrow repaint: find the existing footer and re-paint it. A window that has
    *  never been rendered has no .money row yet, so this is a no-op rather than a
-   *  partial paint. Public because the async $WOC / Claudium balance reads land on
-   *  their own schedule and need the same footer-only treatment: before this they
-   *  called the HUD's full renderBags() from a promise resolve, which tore the window
-   *  down under a player who had not touched anything. */
+   *  partial paint. Public because the purse probe lands on its own schedule and needs
+   *  the same footer-only treatment: before this it called the HUD's full renderBags()
+   *  from a promise resolve, which tore the window down under a player who had not
+   *  touched anything. */
   refreshMoneyRow(): void {
     const row = this.deps.root().querySelector('.money') as HTMLElement | null;
     if (!row) return;

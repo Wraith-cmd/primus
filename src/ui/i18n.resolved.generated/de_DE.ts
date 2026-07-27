@@ -363,258 +363,7 @@ export const de_DE: EnTranslations = {
       "title": "Emotes",
       "done": "Fertig"
     },
-    "dailyRewards": {
-      "title": "Tägliche Belohnungen",
-      "close": "Tägliche Belohnungen schließen",
-      "loading": "Tägliche Belohnungen werden geladen...",
-      "error": "Tägliche Belohnungen konnten nicht geladen werden.",
-      "disabled": "Tägliche Belohnungen sind derzeit deaktiviert. Neuigkeiten zu dieser Funktion geben wir im Discord-Kanal bekannt.",
-      "intro": "Halte genügend WOC in deiner verifizierten Wallet, um tägliche Belohnungen freizuschalten. Verdiene Punkte mit einem täglichen Dreh und wechselnden Aufgaben und klettere dann in der täglichen Rangliste nach oben, um einen Anteil am Preispool zu erhalten.",
-      "disclaimer": "Der WOC-Kurs kann sich schnell bewegen. Wir empfehlen, mehr als das Minimum von 20 USD zu halten, damit gewöhnliche Kursschwankungen dich nicht aussperren. Dies ist keine Finanzberatung.",
-      "prize": "Preispool",
-      "reset": "Zurücksetzen",
-      "endsIn": "Endet in {time}",
-      "remainingLessThanMinute": "<1Min",
-      "remainingMinutes": "{minutes}Min",
-      "remainingHoursMinutes": "{hours}Std {minutes}Min",
-      "remainingDaysHours": "{days} T {hours} Std",
-      "score": "Punktzahl",
-      "walletValue": "Wallet-Wert (WOC)",
-      "usd": "{amount} USD",
-      "sol": "{amount} SOL",
-      "unknown": "Unbekannt",
-      "spinTitle": "Täglicher Dreh",
-      "spinDialogTitle": "Täglicher Belohnungsdreh",
-      "spinClose": "Täglichen Dreh schließen",
-      "spinReady": "Ein Dreh ist bereit.",
-      "spinClaimed": "Erhalten: +{points} Punkte.",
-      "spinResult": "+{points} Punkte",
-      "spinButton": "Drehen",
-      "tasks": "Aufgaben",
-      "taskMultiplier": "x{multiplier}-Multiplikator",
-      "oneVsOneExcluded": "1-gegen-1-Matches gewähren keine Punkte für tägliche Belohnungen.",
-      "pointsGained": "{points} Punkte für tägliche Belohnungen erhalten.",
-      "showChestButton": "Truhe anzeigen",
-      "hideChestButton": "Truhe ausblenden",
-      "hideChestConfirmTitle": "Truhe der täglichen Belohnungen ausblenden?",
-      "hideChestConfirmBody": "Dies entfernt die Truhen-Verknüpfung aus deinem HUD. Belohnungen, Teilnahmeberechtigung und dieses Panel bleiben verfügbar; du kannst die Verknüpfung über die Optionen zurückholen.",
-      "hideChestConfirmOk": "Truhe ausblenden",
-      "hideChestConfirmCancel": "Abbrechen",
-      "leaderboard": "Tägliche Rangliste",
-      "totalPlayer": "{count} Spieler heute",
-      "totalPlayers": "{count} Spieler heute",
-      "history": "Bisherige Gewinner",
-      "noLeaders": "Noch keine Punkte.",
-      "noHistory": "Noch keine Auszahlungen.",
-      "walletConnectTitle": "Wallet verifizieren",
-      "walletConnectBody": "Verifiziere eine Solana-Wallet mit WOC, um tägliche Belohnungen freizuschalten.",
-      "walletConnectButton": "Wallet verifizieren",
-      "walletHoldTitle": "WOC halten",
-      "walletHoldBody": "Halte mindestens {amount} USD in WOC, um tägliche Belohnungen freizuschalten.",
-      "walletPriceBody": "Der WOC-Preis ist derzeit nicht verfügbar. Schau bald wieder vorbei.",
-      "reason": {
-        "eligible": "Belohnungen freigeschaltet.",
-        "no_wallet": "Verbinde eine Wallet mit mindestens 20 USD in WOC.",
-        "under_minimum": "Deine Wallet liegt unter dem Mindestwert von 20 USD in WOC.",
-        "price_unavailable": "Der WOC-Preis ist nicht verfügbar, Belohnungen sind vorübergehend gesperrt.",
-        "banned": "Du bist von den täglichen Belohnungen ausgeschlossen. Grund: {reason}",
-        "bannedUntil": "Du bist noch für {remaining} von den täglichen Belohnungen ausgeschlossen. Der Zugang wird am {until} wiederhergestellt. Grund: {reason}"
-      }
-    },
     "wocStore": {
-      "title": "WOC-Shop",
-      "close": "WOC-Shop schließen",
-      "tabsLabel": "Bereiche des WOC-Shops",
-      "storeTab": "Shop",
-      "rewardsTab": "Tägliche Belohnungen",
-      "loading": "WOC-Shop wird geladen...",
-      "error": "Der WOC-Shop ist derzeit nicht verfügbar. Bitte versuche es gleich noch einmal.",
-      "balance": "Claudium-Guthaben",
-      "buyClaudium": "Claudium kaufen",
-      "owned": "Im Besitz",
-      "needMoreTitle": "Mehr Claudium benötigt",
-      "needMoreBody": "Dir fehlen {shortfall} Claudium, um {item} zu kaufen.",
-      "cancel": "Abbrechen",
-      "confirmTitle": "Kosmetikkauf bestätigen",
-      "confirmBody": "{item} für {cost} Claudium kaufen?",
-      "confirmPurchase": "Kaufen",
-      "priceChanged": "Der Preis hat sich vor Abschluss des Kaufs geändert. Prüfe den aktualisierten Preis und bestätige den Kauf erneut.",
-      "armoryEyebrow": "Saison 1",
-      "armoryTitle": "Die Waffenkammer",
-      "armoryBody": "Limitierte Waffenskins aus der Waffenkammer von Saison 1. Accountweit, rein kosmetisch und für alle in deiner Umgebung sichtbar.",
-      "wallet": {
-        "title": "Solana-Wallet",
-        "unlinked": "Verbinde eine Wallet-App und unterschreibe einmal, um ihre öffentliche Adresse mit deinem WoC-Konto zu verknüpfen. Wir erhalten niemals deine Wiederherstellungsphrase oder deinen privaten Schlüssel.",
-        "connectedUnlinked": "Die Wallet-App ist mit diesem Browser verbunden, aber ihre öffentliche Adresse ist noch nicht mit deinem WoC-Konto verknüpft.",
-        "linkedDisconnected": "Deine öffentliche Adresse ist verknüpft. Verbinde diese Wallet-App erneut, wenn du mit SOL oder WOC bezahlen möchtest.",
-        "linkedConnected": "Deine verknüpfte Wallet-App ist verbunden und bereit für SOL- oder WOC-Käufe.",
-        "mismatched": "Eine andere Wallet ist verbunden. Verifiziere sie, um die verknüpfte Adresse zu ersetzen, oder verbinde die verknüpfte Wallet erneut.",
-        "connect": "Wallet verbinden",
-        "verify": "Verifizieren und verknüpfen",
-        "reconnect": "Wallet erneut verbinden",
-        "manage": "Wallet verwalten"
-      },
-      "collectionLine": "Kollektion: {collection}",
-      "collections": {
-        "guildmark": "Gildenzeichen",
-        "emberwrought": "Glutgeschmiedet",
-        "hoarfrost": "Raureif",
-        "fallen_star": "Gefallener Stern"
-      },
-      "skins": {
-        "guildmark_arming_sword": {
-          "name": "Gildenzeichen-Ritterschwert",
-          "look": "Klinge aus gebläutem Stahl, bronzene Parierstange in Fischschwanzform, Griff aus blaugrün gefärbtem Leder und ein kleines eingeprägtes Gildensiegel.",
-          "lore": "Wo eine gewöhnliche geschmiedete Klinge namenlos bleibt, ist diese signiert. Ein Waffenschmied verdient das Recht, sein Zeichen in die Fehlschärfe zu schlagen, erst wenn der Händler des Weltmarkts für seinen Stahl bürgt, und für Schmied Haldrens Zeichen wird gebürgt. Gegen die Feuchtigkeit des Tals gebläut und bis aufs Haar ausbalanciert. Für den Stempel zahlt man ebenso viel wie für das Schwert, und er ist es wert."
-        },
-        "brasscap_axe": {
-          "name": "Messingkappen-Beil",
-          "look": "Poliertes stählernes Axtblatt, Messingkappe und Schaftfedern an einem lackierten Eschenholzstiel, sauber gewickelter Griff und Schmiedemarke.",
-          "lore": "Eine gemarkte Axt ist eine Prahlerei, die man in der Hand halten kann. Messingkappe und Schaftfedern sind halb Rüstung, halb Signatur: Sie bewahren den Stiel vor dem Splittern und fangen das Licht der Taverne ein, damit jeder erkennt, dass du Rüstungsschmied Hodes Arbeit gekauft hast und kein ausgemustertes Milizstück. „Was schneidet, verkaufe ich“, sagt der Schmied aus Highwatch. Diese hier schneidet."
-        },
-        "tempered_flanged_mace": {
-          "name": "Gehärteter Flanschstreitkolben",
-          "look": "Sechsflanschiger Kopf aus gehärtetem Blaustahl, Kragen und Knauf aus Messing und ein Griff aus weinrotem Leder.",
-          "lore": "Sechs Flansche aus gebläutem, gehärtetem Stahl, jeder geschliffen, um einen Helm aufzubrechen, mit Messing eingefasst und in weinrotes Leder gewickelt. Die Waffenschmiede des Reiches fertigen keine hässlichen Waffen, selbst wenn deren Arbeit brutal ist. Dieses Stück wurde über den Weltmarkt in Auftrag gegeben und nicht vom Regal genommen. Irgendwo liegt ein Hauptbuch mit dem Namen eines stolzen Käufers und der Summe, die er Hode dafür zahlte."
-        },
-        "guildmark_dirk": {
-          "name": "Gildenzeichen-Dolch",
-          "look": "Schlanker Dolch aus gehärtetem Stahl, Handschutz und Knaufmutter aus Bronze, dunkelgrüner Kordelgriff und eingeprägtes Siegel.",
-          "lore": "Was ein Mann von Rang trägt, wenn das Schwert zu Hause bleibt: schlank, gehärtet und mit demselben Zeichen versehen, das eine volle Klinge auszeichnet, am Gürtel getragen wie ein Siegelring mit Schneide. Unauffällig für alle, die den Nachweis eines Waffenschmieds nicht zu lesen wissen. Quartiermeisterin Bree bewahrt in Highwatch eine Schublade davon für Offiziere auf, die sich den Respekt der Mauer verdient haben."
-        },
-        "brasscrown_staff": {
-          "name": "Messingkronen-Wanderstab",
-          "look": "Hartholzstab mit gedrechseltem Messingkronenknauf, Messingzwinge und gefärbtem Lederband.",
-          "lore": "Aus abgelagertem Hartholz gedrechselt und mit einem Messingknauf gekrönt, wie ihn die Schmiede von Eastbrook zu Hunderten gießen, aber einzeln vollenden. Er gehört Reisenden, die am Tor von Fenbridge und an der Mauer von Highwatch gleichermaßen ernst genommen werden wollen. Ein Wanderstab, der nie wirklich zum Wandern gebraucht wurde. Das gefärbte Band passt zu einem Mantel, dessen Preis man ihm ansieht."
-        },
-        "lacquered_wand": {
-          "name": "Lackierter Zauberstab",
-          "look": "Schlanker, tiefrot lackierter Zauberstab, zwei polierte Messingringe und eine kleine abgerundete Messingspitze.",
-          "lore": "Tiefroter Lack in sieben sorgfältigen Schichten, zweimal mit poliertem Messing eingefasst: die Art Zauberstab, die ein Heckenmagier auf dem Weltmarkt kauft, sobald er echte Münzen verlangt und sich damit sehen lassen will. Er leitet das Licht nicht besser als ein Birkenzweig. Doch auf der Ladentheke des Händlers glänzt er prächtig, und bei kleiner Magie war der Glaube daran schon immer die halbe Wirkung."
-        },
-        "fletcher_s_guild_bow": {
-          "name": "Gildenbogen des Pfeilmachers",
-          "look": "Lackierter Recurvebogen aus Walnussholz, Wurfarmenden aus Messing, gewachste Leinensehne und Gildenstempel auf dem Mittelstück.",
-          "lore": "Was im Reich einer Gilde am nächsten kommt, ist der Stempel eines Pfeilmachers auf dem Mittelstück, ein Versprechen über das Werk, wie das Siegel eines Winzers auf einem Fass. Lackiertes Walnussholz, Messing an den Wurfarmenden und eine gewachste Leinensehne, die selbst im Regen von Mirefen nicht ausfranst. Jede Verbindung rechtfertigt den Preis. Zieh ihn einmal jenseits des Witwendickichts, und jedes Gegenargument verstummt."
-        },
-        "cinderbrand_sword": {
-          "name": "Glutbrand",
-          "look": "Dunkle Klinge aus geschmiedetem Stahl, Hohlkehle mit glühend glutorangenen Runen, Hitzerisse und ein schwelender Edelstein in der Parierstange.",
-          "lore": "Die erste Klinge, die nicht in Wasser, sondern in Gesegneter Glut aus Stormcrag abgeschreckt wurde. Die Schmiede von Highwatch schwören, diese Kohlen „brennen blau und rein, weil der Berg sich an seinen alten Eid erinnert“. In die Hohlkehle gebettet, glimmt dieses Feuer glutorange und erlischt nicht. Selbst in der kältesten Nacht an der Mauer bleiben die Runen unter der bloßen Hand warm. Glutbrand muss nie entzündet werden. Die Klinge weigert sich schlicht, auszugehen."
-        },
-        "emberbite_axe": {
-          "name": "Glutbiss",
-          "look": "Axt aus geschwärztem Eisen, durch deren Blatt glutorangefarbene Risse schimmern, ein Edelstein wie eine gehütete Kohle und Hitzeschleier.",
-          "lore": "Rüstungsschmied Hode arbeitete eine lebende Kohle aus Bergfeuer in das Herz des Axtblatts ein, sodass die Schneide zwischen den Schlägen nie ganz abkühlt. Beim Abschwung atmen die Risse orangefarbenes Licht, als wecke der Schlag etwas, das die erste Schmiede schlafend im Eisen zurückließ. Man sagt, ein Stormcrag-Elementar habe die Glut dafür hergegeben. Wenn der Wind aufkommt, erzählt man sich in Highwatch vieles."
-        },
-        "smoulderfall_mace": {
-          "name": "Schwelsturz",
-          "look": "Dunkle Eisenflansche, die entlang ihrer inneren Risse glutorange leuchten, und ein Edelstein mit flüssigem Kern im Kopf.",
-          "lore": "Ein Streitkolben mit eigener Feuerstelle: Ein Stein mit flüssigem Kern, vom Siegel des Heiligtums abgesplittert und „mit Bergfeuer geschmiedet“, glüht in seinem Kopf. Die Flansche fühlen sich warm an und werden dort, wo sie treffen, noch heißer. Ein Sergeant aus Highwatch schwört, ein Schlag hinterlasse einen blauen Fleck, der bis zum Morgen schwach leuchtet. Das Feuer des Berges, endlich zum Brechen bestimmt statt zum Versiegeln."
-        },
-        "ashspark_dagger": {
-          "name": "Aschenfunken-Messer",
-          "look": "Kurze, geschwärzte Klinge mit glühend glutorangenen Adern, einem winzigen schwelenden Edelstein im Knauf, Asche und Funken.",
-          "lore": "Eine Gassenklinge, in deren Knaufstein das Feuer des Berges geschmuggelt wurde, ein stiller Scherz eines Waffenschmieds: Selbst ein Beutelschneider könnte eine Glut der ersten Schmiede tragen. Geschwärzt, von orangefarbenen Adern durchzogen und in der Scheide stets eine Spur zu warm. Ziehst du sie im Dunkel unter Highwatch, erhellt ihr Glühen deine Hand gerade genug, um die Lücke in der Deckung eines Mannes zu finden."
-        },
-        "forgeheart_staff": {
-          "name": "Schmiedeherz-Stab",
-          "look": "Eisenbeschlagener Stab, gekrönt von einem leuchtenden Glutkern im Käfig, Glutrunen entlang des Schafts und aufsteigendes Hitzeflimmern.",
-          "lore": "Eine lebende Kohle aus Bergfeuer, an der Krone in einen Eisenkäfig gesperrt. Lehrmeister Caddis nennt sie den Beweis, dass sich das Feuer der ersten Schmiede zum Dienen binden lässt und nicht nur zum Versiegeln. Hitzeflimmern steigt in einem dünnen, endlosen Band davon auf. Ein Magier mit diesem Stab braucht weder Schmiede noch Wachfeuer. Die Glut, so flüstert man, wurde aus Voskar Glutschwinges eigenem Atem geschöpft und ist seither nicht erkaltet."
-        },
-        "emberwrought_wand": {
-          "name": "Glutgeschmiedeter Zauberstab",
-          "look": "Zauberstab aus geschwärztem Metall mit einer glühenden Kohle in eisernen Klauen, haarfeinen Hitzerissen und warmem Licht aus seinem Inneren.",
-          "lore": "Der Zauberstab, der seiner Güteklasse den Namen gab. Als ein Waffenschmied aus Highwatch erstmals eine Kohle aus Bergfeuer in eiserne Klauen setzte und sie einer sterblichen Hand gehorchen ließ, nannten selbst die Priester des Lichts das Werk nicht länger Ketzerei, sondern nützlich. Warm, geduldig und still gefährlich: Die Glut an seiner Spitze brennt ununterbrochen, seit einer Zeit, bevor sein Besitzer den ersten Atemzug tat."
-        },
-        "cinderlatch_crossbow": {
-          "name": "Glutspanner",
-          "look": "Armbrust aus geschwärztem Stahl, glutorangefarbenes Leuchten aus Rissen in den Wurfarmen und eine glimmende Kohle im Schaft.",
-          "lore": "Die seltsamste der glutgeschmiedeten Waffen: Das Feuer des Berges wurde in eine Maschine gegossen. Orangefarbenes Licht sickert aus Rissen in den Wurfarmen, und eine glimmende Kohle im Schaft verhindert, dass die Sehne in Thornpeaks Kälte oder Mirefens Nässe je steif wird. Ihre Bolzen verlassen die Rinne bereits warm und treffen noch heißer. Die Antwort eines Jägers auf eine Mauer, an der auch der Feind die Kälte nicht spürt."
-        },
-        "ice_fang_sword": {
-          "name": "Eiszahn",
-          "look": "Gebogene Klinge aus blassem Gletschereis, gezackte Raureifkristalle entlang des Rückens, ein leuchtender cyanfarbener Frostkern in der Hohlkehle und eine Parierstange aus Eiszapfen.",
-          "lore": "Das Aushängeschild der gefrorenen Güteklasse und die Waffe, nach der jeder Sammler zuerst greift. Eiszahn wurde aus einem Fangzahn des Gletschers geschnitzt, der Thornpeak über Highwatch krönt, nicht geschmiedet. Sein cyanfarbener Kern brennt so kalt wie das Licht auf dem Glimmermere. Er bereift selbst die Luft, die er durchschneidet. Die Mauerwächter schwören, ein Soldat habe ihn in jener Nacht getragen, als der hohe Schnee den Wyrmkult zurückhielt, und damit „der Mauer einen Winter erkauft“."
-        },
-        "glaciersplit_axe": {
-          "name": "Gletscherspalter",
-          "look": "Axtkopf aus durchscheinendem blauem Gletschereis, ein rissiges, cyanfarben leuchtendes Inneres, starrende Frostkristalle und ein Stiel mit einer Spur aus kaltem Dunst.",
-          "lore": "Aus dem blauen Herzen des Thornpeak-Gletschers gehauen, wo zwei Jahrhunderte Eis die Kälte pressten, bis sie von selbst zu leuchten begann. Selbst in Ruhe zieht die Axt Dunst hinter sich her, und das Krachen ihres Aufpralls klingt wie eine Gletscherspalte, die sich unter dem Pirscherkamm öffnet. Highwatch überlässt seine Gefallenen dort oben dem Eis. Diese Waffe soll das Tauwetter und alles, was es erwecken würde, in Schach halten."
-        },
-        "rimecrusher_mace": {
-          "name": "Reifbrecher",
-          "look": "Gezackte Eiskristalle um einen leuchtenden cyanfarbenen Kern, Raureif, der an einem versilberten Stiel hinabkriecht.",
-          "lore": "Nicht geschnitzt, sondern gewachsen: Eis aus Thornpeak wurde um einen kalten cyanfarbenen Kern gezogen, bis es so hart war wie Hodes bester Stahl. Raureif kriecht am versilberten Stiel zur Hand hinab und erreicht sie doch nie ganz. Wo die Waffe trifft, gefriert Wasser. Wo sie ruht, wird der Boden weiß. Die Grabeskälte der Gipfel, klein genug gemacht, um sie gegen jene Dinge zu schwingen, die die Mauer erklimmen."
-        },
-        "frostbite_dagger": {
-          "name": "Reifnadel",
-          "look": "Unheilvoll dünner Dolch aus klarem blauem Eis, eine leuchtende cyanfarbene Ader in der Mitte, nadelfeine Frostkristalle und ein Griff aus Raureif.",
-          "lore": "Dünn wie ein angehaltener Atem und doppelt so kalt: ein Splitter des Thornpeak-Gletschers, entlang einer einzigen leuchtenden Ader geschliffen, so scharf, dass die Wunde zufriert, bevor das Blut ans Fließen denkt. Sein Name stammt von der Grabeskälte, welche die Toten von den Gipfeln herabtragen. Er muss nie geschärft werden. Eis wird nicht stumpf, bemerkt Lehrmeister Caddis trocken, es wartet nur."
-        },
-        "hoarfrost_vigil_staff": {
-          "name": "Raureifwacht",
-          "look": "Versilberter Stab, gekrönt von einem schwebenden, langsam kreisenden Splitter aus leuchtendem cyanfarbenem Eis, der Kristalle und kalten Dunst ausstrahlt.",
-          "lore": "Der Stab jener Wache, die an der Mauer von Highwatch niemals schläft. Seine Krone ist ein Splitter cyanfarbenen Bergseeeises, der frei über dem Silber schwebt und sich langsam aus eigener Kraft dreht: immer, so schwören die Wächter, zu der Kälte hin, die sich unter den Gipfeln sammelt. Die Wacht zu tragen bedeutet, in einer einzigen Nacht zweihundert Jahre Wache zu halten und zu versprechen, niemals wegzusehen."
-        },
-        "everwinter_wand": {
-          "name": "Splitter von Everwinter",
-          "look": "Eine einzelne Spitze aus leuchtendem cyanfarbenem Gletschereis, Raureif, der aus einem silbernen Kragen blüht, und schwacher kalter Nebel.",
-          "lore": "Eine Spitze aus leuchtendem Gletschereis, die angeblich aus dem tiefen Bergsee unterhalb des Heiligtums gebrochen wurde, wo die Kälte des Berges Zähne hat. Raureif blüht endlos aus ihrem silbernen Kragen und schmilzt weder im Feuer noch im Sommer. Magier halten sie wegen der Kälte nah, die sie ihrer Arbeit verleiht, und in jenen Nächten fern, in denen sie sich zur Krypta von Nythraxis zu neigen und zu lauschen scheint."
-        },
-        "winterbite": {
-          "name": "Winterbiss",
-          "look": "Bogen aus versilbertem Stahl und blauem Eis, ein leuchtender cyanfarbener Frostkern im Mittelstück, ein eingelegter Pfeil aus massivem Eis und kalter Dunst.",
-          "lore": "Ein Bogen aus versilbertem Stahl und Eis aus Thornpeak. In seinem Mittelstück leuchtet ein kalter cyanfarbener Kern, der den Pfeil an der Sehne festfriert. Bei jedem Spannen bildet sich ein neuer Pfeil aus massivem Gletschereis. Der Bogenschütze auf der Mauer trägt keinen Köcher, nur die Kälte. Mit einem solchen Bogen hielt Highwatch den Pirscherkamm während einer Belagerung: ein einziger Schütze, so sagt man, und ein Winter voller Pfeile, die schon immer dort gewesen waren."
-        },
-        "solheim_sword": {
-          "name": "Solheim, letztes Licht der Morgenröte",
-          "look": "Großschwert aus einem gefallenen Stern, ein flüssiggoldener Kern, der die kosmosschwarze, von Sternenlicht gesäumte Klinge teilt, goldene Splitter um die Parierstange und ein Polarlichtband.",
-          "lore": "Als der Stern vom westlichen Himmel fiel und jenseits des Witwendickichts „wie eine Schmiede“ zerbarst, barg Bruder Aldric sein noch schwelendes Herz aus dem Krater von Mirefen und flehte die Schmiede des Reiches an, „etwas zu bearbeiten, das nicht in diese Welt gehört“. Sie schufen daraus ein einziges Großschwert: Solheim. Sein flüssiggoldener Kern teilt die kosmosschwarze Klinge wie die Morgendämmerung den Nachthimmel, und Splitter aus Sternenmetall umkreisen die Parierstange auf Bahnen, die keine Hand bestimmte. Nur eines wurde je geschmiedet. Ein zweites wird es nicht geben."
-        },
-        "skyrender_axe": {
-          "name": "Himmelsreißer, Wunde des Firmaments",
-          "look": "Axtkopf wie ein zerrissenes Stück Nachthimmel, flüssiggoldene Risse und eingeätzte Sternbilder, schwebende Sternenlichtsplitter und Polarlichtschimmer entlang der Schneide.",
-          "lore": "Vom Kraterrand geschlagen, wo der gefallene Stern das Spiegelbild des Himmels aus Mirefen riss und eine Wunde hinterließ, die noch immer dampft. Der Axtkopf gleicht einem Stück zerrissener Nacht: flüssiggoldene Risse, Sternbilder, die kein Gelehrter in Highwatch benennen kann, und Polarlicht, das bei jedem Schwung von der Schneide blutet. Bruder Aldric segnete die Axt und weigerte sich, sie zu berühren. Wer sie hebt, hält das Loch in Händen, das der Himmel hinterließ."
-        },
-        "starfall_mace": {
-          "name": "Sternenfall, Urteil des Himmels",
-          "look": "Ein gefangener flüssiggoldener Sternenkern, umringt von kreisenden Splittern, kosmosschwarze Flansche mit Adern aus Sternenlicht und aus den Nähten strömendes Polarlicht.",
-          "lore": "Ein Sternenkern, im Augenblick vor seinem Tod eingefangen, umringt von den Trümmern, die mit ihm fielen, und einen Fingerbreit vor dem Vergessen erstarrt. In seinen kosmosschwarzen Flanschen fließt gefangenes Sternenlicht, und beim Heben strömt Polarlicht aus den Nähten. Die alten Priester des Lichts nannten einen fallenden Stern ein Urteil, einen von oben verhängten Spruch, den kein Schild aufhalten sollte, und benannten diese Waffe nach jenem Stern, der auf Mirefen niederging."
-        },
-        "astravyr_dagger": {
-          "name": "Astravyr, Fangzahn des gefallenen Sterns",
-          "look": "Ein Splitter eines gefallenen Sterns: eine flüssiggolden glühende Schneide auf kosmosschwarzem Metall, ein heller Sternenpartikel, der den Knauf umkreist, und eine feine Polarlichtspur.",
-          "lore": "Das kleinste Stück des Sterns, das Aldric aus dem Krater barg, und nach mancher Einschätzung das gefährlichste. Ein einzelner Splitter jenes fremdartigen Herzens, dessen flüssiggoldene Schneide auf kosmosschwarzem Metall ruht, während ein einsamer Sternenpartikel den Knauf umkreist wie ein Mond, der seine Welt verloren hat. Er wiegt fast nichts und durchtrennt fast alles. Klein genug, um ihn zu verbergen, und hell genug, um ihn im Dunkeln an seinem eigenen Licht zu finden."
-        },
-        "cosmarch_staff": {
-          "name": "Cosmarch, Turm der endlosen Leere",
-          "look": "Goldene Sternensplitter, die einen flüssiggoldenen Kern umkreisen, ein kosmosschwarzer Schaft mit eingeätzten Sternbildern und aufwärts windende Polarlichtbänder.",
-          "lore": "Ein Schaft aus Sternenmetall, gekrönt von einem flüssiggoldenen Kern und einem Ring goldener Splitter, die ihn langsam und endlos umkreisen: ein kleiner Kosmos, gezeichnet mit Sternbildern, die keinem Himmel über Thornpeak gleichen. Polarlicht windet sich daran empor wie Rauch, der vergessen hat aufzusteigen. Seine Träger behaupteten, sie könnten die Leere darin kreisen spüren, so wie Ysoleis See „das Mondlicht trinkt“: geduldig, kalt und zurückblickend."
-        },
-        "emberwish_wand": {
-          "name": "Glutwunsch, Funke der sterbenden Sonne",
-          "look": "Ein gefangener, flüssiggoldener Partikel eines sterbenden Sterns, umhüllt von kreisenden Funken, auf einem kosmosschwarzen Schaft mit leuchtenden Sternbildern.",
-          "lore": "Nicht der gefallene Stern selbst, sondern der letzte Partikel eines sterbenden Sterns: eine einzelne flüssiggoldene Glut einer längst erloschenen Sonne, umhüllt von den Funken ihres letzten Lichts. In den kosmosschwarzen Schaft sind die Sternbilder geätzt, die ihren Tod beobachteten. Die Bauern von Mirefen sagen, er erfülle jedem einen Wunsch, der ihn in der tiefsten Abenddämmerung hält. Sie sagen auch, jede Seele, die ihn trug, habe sich mehr Zeit gewünscht, und der Ertränkte Mond habe keinem diesen Wunsch gewährt."
-        },
-        "encore_bow": {
-          "name": "Encore, der zweite gefallene Stern",
-          "look": "Absurd überdimensionierte Sternenkanone: ein kosmosschwarzer Lauf mit leuchtend goldenen Sternbildern, eine trichterförmige Mündung mit einem flüssiggoldenen Kometengeschoss, Messingbeschläge und eine hölzerne Schulterstütze.",
-          "lore": "Die Schmiede, die den gefallenen Stern bearbeiteten, schufen sechs Relikte daraus und hatten noch immer ein ganzes Fass Sternenmetall übrig. Zu diesem Zeitpunkt hatten die Lehrlinge bereits eigene Vorstellungen. Was vom Amboss kam, ist entweder die erste Feuerwaffe des Reiches oder seine kleinste Belagerungsmaschine: eine Schulterkanone, die weniger einen Schuss abgibt, als einen zweiten, diesmal gezielten Stern anzufordern. Bruder Aldric weigerte sich, sie zu segnen. Etwas derart Lautes, so meinte er, sei dem Himmel längst aufgefallen. Jäger lieben sie. Nichts in ihrem Schussfeld tat das je."
-        },
-        "meteorlatch_crossbow": {
-          "name": "Meteorlatch, das jüngste Gericht des Himmels",
-          "look": "Meteorisches Sternenmetall, ein flüssiggoldener Kern entlang des Schafts, kosmosschwarze Wurfarme mit eingeätzten Sternbildern und ein eingelegter Bolzen aus reinem Sternenfeuer.",
-          "lore": "Aus rohem meteorischem Sternenmetall geschmiedet, während der Krater von Mirefen noch glühte. Trümmer, die „zu heiß zum Anfassen“ waren, wurden zu kosmosschwarzen Wurfarmen mit eingeätzten Sternbildern gehämmert, ein flüssiggoldener Kern in den Schaft gebettet. Die Armbrust legt keinen Bolzen ein, sondern beschwört einen: einen Schaft aus Sternenfeuer, abgeschossen wie ein Urteil und einschlagend wie dessen Vollstreckung. Als Highwatch fürchtete, selbst die todlose Krone von Nythraxis sei nicht das Schlimmste unter den Gipfeln, wollte man diese Waffe auf der Mauer. Ziele mit Bedacht."
-        }
-      },
-      "seasonOne": "Saison 1",
-      "rarity": {
-        "uncommon": "Ungewöhnlich",
-        "rare": "Selten",
-        "epic": "Episch",
-        "legendary": "Legendär"
-      },
       "wtype": {
         "sword": "Schwert",
         "axe": "Axt",
@@ -625,73 +374,7 @@ export const de_DE: EnTranslations = {
         "bow": "Bogen",
         "crossbow": "Armbrust",
         "polearm": "Stangenwaffe"
-      },
-      "badge": {
-        "flagship": "Flaggschiff",
-        "hero": "Held"
-      },
-      "inspectAria": "{item} ansehen",
-      "viewModeLabel": "Vorschaumodus",
-      "tryOn": "Ausprobieren",
-      "weaponOnly": "Nur Waffe",
-      "sceneLabel": "Szenenbeleuchtung",
-      "scene": {
-        "day": "Tag",
-        "dusk": "Dämmerung",
-        "night": "Nacht"
-      },
-      "lore": "Hintergrund",
-      "buySkin": "Skin kaufen",
-      "unavailable": "Nicht verfügbar",
-      "applied": "Angewendet",
-      "apply": "Skin anwenden",
-      "detach": "Skin entfernen",
-      "equipHint": "Rüste eine Waffe des Typs {type} aus, um diesen Skin anzuwenden."
-    },
-    "claudium": {
-      "title": "Claudium",
-      "open": "Claudium-Fenster öffnen",
-      "close": "Claudium-Fenster schließen",
-      "loading": "Claudium wird geladen...",
-      "balanceLabel": "Guthaben",
-      "balanceUnit": "{amount} Claudium",
-      "solBalance": "SOL: {amount}",
-      "usdcBalance": "USDC: {amount}",
-      "wocBalance": "WOC: {amount}",
-      "unavailable": "Der Claudium-Shop ist derzeit nicht verfügbar. Dein Guthaben und deine Käufe bleiben davon unberührt. Bitte versuche es gleich noch einmal.",
-      "disclosure": "Claudium ist eine nicht rücktauschbare Spielwährung: Du kaufst es mit echtem Geld und gibst es für kosmetische Inhalte aus. Es kann weder eingelöst noch übertragen oder ausgezahlt werden.",
-      "buyTitle": "Claudium kaufen",
-      "railLabel": "Zahlungsart",
-      "railStripe": "Karte",
-      "railSol": "SOL",
-      "railUsdc": "USDC",
-      "railWoc": "WOC",
-      "railWocDiscount": "20% Rabatt",
-      "railWocUnavailable": "WOC-Preise sind derzeit nicht verfügbar.",
-      "railNativeUnavailable": "SOL/WOC deaktiviert.",
-      "amountLabel": "Menge",
-      "showAmounts": "Alle Claudium-Mengen anzeigen",
-      "hideAmounts": "Zusätzliche Claudium-Mengen ausblenden",
-      "skuRow": "{claudium} Claudium für {usd}",
-      "buyButton": "Kaufen",
-      "buyUnavailable": "Käufe sind derzeit nicht verfügbar.",
-      "storeTitle": "Kosmetikshop",
-      "storeEmpty": "Derzeit sind keine kosmetischen Inhalte verfügbar.",
-      "storeCost": "{amount} Claudium",
-      "spendButton": "Einlösen",
-      "kindCosmetic": "Kosmetik",
-      "kindSkin": "Skin",
-      "kindItem": "Gegenstand",
-      "checkoutTitle": "Kauf abschließen",
-      "checkoutClose": "Bezahlvorgang schließen",
-      "checkoutLoading": "Bezahlvorgang wird geladen...",
-      "checkoutPending": "Die Transaktion wird verarbeitet. Bestätige sie in deiner Wallet und lass dieses Fenster geöffnet.",
-      "checkoutPendingButton": "Wird verarbeitet",
-      "checkoutFailed": "Der Bezahlvorgang konnte nicht geladen werden. Bitte versuche es erneut.",
-      "checkoutUnavailable": "Dieser Claudium-Kauf ist derzeit nicht verfügbar.",
-      "checkoutWalletRequired": "Verbinde eine Solana-Wallet, bevor du Claudium mit Kryptowährung kaufst.",
-      "checkoutWalletUnsupported": "Diese Wallet kann Solana-Transaktionen weder signieren noch senden.",
-      "checkoutNotSettled": "Die Transaktion wurde gesendet, aber das Claudium wurde noch nicht gutgeschrieben. Bitte versuche es gleich noch einmal."
+      }
     },
     "theme": {
       "preset": "Oberflächendesign",
@@ -773,7 +456,6 @@ export const de_DE: EnTranslations = {
     "mobile": {
       "jump": "Springen",
       "leaderboard": "Rangliste",
-      "dailyRewards": "Shop",
       "deeds": "Taten",
       "professions": "Berufe",
       "nameplates": "Namen",
@@ -1048,8 +730,6 @@ export const de_DE: EnTranslations = {
       "clickFeedback": "Klickmarkierung",
       "lockCursorOnRotate": "Cursor beim Drehen sperren",
       "keybindHelpLockCursorOnRotate": "Hält den Mauszeiger im Fenster, während Ihr zum Drehen der Kamera zieht, damit er nicht den Bildschirmrand erreicht oder auf einen anderen Monitor wandert. Schaltet dies aus, wenn Ihr einen freien Cursor bevorzugt.",
-      "showWalletOnCharacterScreen": "Wallet auf dem Charakterbildschirm anzeigen",
-      "showWalletOnPlayerCard": "Wallet auf der Spielerkarte anzeigen",
       "showDevBadges": "Entwicklerabzeichen anzeigen",
       "showOwnNameplate": "Eigene Namensplakette anzeigen",
       "showPlayerNameplates": "Spieler-Namensplaketten anzeigen",
@@ -1070,9 +750,9 @@ export const de_DE: EnTranslations = {
       "showThirdActionBar": "Dritte Aktionsleiste anzeigen",
       "showTargetOfTarget": "Ziel des Ziels anzeigen",
       "showAttackButton": "Angriffs-Schaltflache anzeigen",
-      "showDailyRewardsChest": "Truhe der täglichen Belohnungen anzeigen",
       "mobileCameraJoystick": "Kamera-Joystick",
-      "mobileLeftHanded": "Linkshänder-Layout"
+      "mobileLeftHanded": "Linkshänder-Layout",
+      "showWalletOnCharacterScreen": "Wallet auf dem Charakterbildschirm anzeigen"
     },
     "talentRows": {
       "tab": "Auswahl",
@@ -1178,9 +858,6 @@ export const de_DE: EnTranslations = {
         "backgrounded": "Im Hintergrund",
         "offline": "Offline"
       }
-    },
-    "playerCard": {
-      "showWalletBadge": "Wallet-Abzeichen anzeigen"
     },
     "landing": {
       "highContrast": "Hoher Kontrast",
@@ -4762,170 +4439,6 @@ export const de_DE: EnTranslations = {
       "failed": "Deine E-Mail konnte nicht gespeichert werden. Bitte versuche es erneut."
     }
   },
-  "wallet": {
-    "label": "$WOC-Wallet",
-    "connect": "Wallet verifizieren",
-    "connectTitle": "Euer Solana-Wallet verifizieren",
-    "connectAria": "Euer Solana-Wallet verifizieren",
-    "verify": "Wallet verifizieren",
-    "verifyNew": "Neues Wallet verifizieren",
-    "verifyTitle": "Wählt ein Wallet und unterschreibt einmal, um den Besitz zu bestätigen.",
-    "verifyAria": "Wählt ein Wallet und unterschreibt einmal, um den Besitz zu bestätigen",
-    "verifyAddressAria": "Unterschreiben, um Wallet {address} für Euer Konto zu verifizieren",
-    "appConnected": "App verbunden",
-    "connectApp": "App verbinden",
-    "connectAppTitle": "Wallet-App in diesem Browser verbinden",
-    "connectAppAria": "Wallet-App in diesem Browser verbinden",
-    "verifying": "Verifizierung...",
-    "verifyingTitle": "Die Wallet-Verifizierung läuft.",
-    "switch": "Wechseln",
-    "switchTitle": "Ein anderes Wallet verifizieren",
-    "switchAria": "Ein anderes Wallet verifizieren",
-    "unlink": "Trennen",
-    "unlinkTitle": "Wallet-Verifizierung von diesem Konto entfernen",
-    "unlinkAria": "Wallet-Verifizierung von diesem Konto entfernen",
-    "signOut": "Abmelden",
-    "signOutTitle": "Wallet-App in diesem Browser trennen",
-    "signOutAria": "Wallet-App in diesem Browser trennen",
-    "hide": "Ausblenden",
-    "hideTitle": "Wallet-Zeile auf diesem Bildschirm ausblenden",
-    "hideAria": "Wallet-Zeile auf diesem Bildschirm ausblenden",
-    "hiddenNotice": "Wallet-Zeile ausgeblendet. Aktiviere sie im Spiel unter Optionen > Oberfläche wieder.",
-    "linkedTitle": "Wallet für Euer Konto verifiziert. Klicken, um die Wallet-App zu verwalten.",
-    "linkedDisconnectedTitle": "Das Wallet bleibt für Euer Konto verifiziert. Verbindet Euch erneut, um die Wallet-App zu verwalten.",
-    "linkedDisconnectedAria": "Das Wallet bleibt für Euer Konto verifiziert. Verbindet Euch erneut, um die Wallet-App zu verwalten.",
-    "linkTitle": "Klicken, um zu unterschreiben und dieses Wallet mit Eurem Konto zu verknüpfen.",
-    "connectedTitle": "Verbunden. Loggt Euch ein, um dieses Wallet mit Eurem Konto zu verknüpfen.",
-    "balanceTitle": "$WOC-Guthaben des verifizierten Solana-Wallets",
-    "balanceAria": "Guthaben des verifizierten Solana-Wallets: {balance}",
-    "balancePreviewTitle": "Vorschau auf das $WOC-Guthaben des verbundenen Wallets",
-    "balancePreviewAria": "Vorschau auf das Guthaben des verbundenen Wallets: {balance}. Verknüpft das Wallet, um das Inhaber-Flair zu verifizieren.",
-    "balanceAmount": "{amount} $WOC",
-    "bagConnect": "Wallet verknüpfen",
-    "bagLink": "Wallet verifizieren",
-    "bagReconnect": "Wallet erneut verbinden",
-    "connected": "Verbunden: {address}",
-    "connectedWithBalance": "Verbunden: {balance} - {address}",
-    "connectedLinked": "Verifiziert: {address}",
-    "connectedLinkedWithBalance": "Verifiziert: {balance} - {address}",
-    "helpDisconnected": "Verifiziert ein Solana-Wallet, um Inhaber-Flair und Spielerkarten-Abzeichen zu aktivieren. Keine Transaktion und kein SOL erforderlich.",
-    "helpLoginToLink": "{address} verbunden. Loggt Euch ein, um es mit Eurem Konto zu verknüpfen.",
-    "helpLoginToLinkWithBalance": "{address} mit {balance} verbunden. Loggt Euch ein, um es mit Eurem Konto zu verknüpfen.",
-    "helpReadyToLink": "Wallet ausgewählt: {address}. Unterschreibt einmal, um Inhaber-Flair und Spielerkarten zu verifizieren.",
-    "helpReadyToLinkWithBalance": "Wallet ausgewählt: {address} mit {balance}. Unterschreibt einmal, um Inhaber-Flair und Spielerkarten zu verifizieren.",
-    "helpLinked": "Inhaberboni sind aktiv. Die Wallet-App ist in diesem Browser verbunden.",
-    "helpLinkedWithBalance": "Inhaberboni sind aktiv. Die Wallet-App ist in diesem Browser verbunden.",
-    "helpLinkedDisconnected": "Inhaberboni sind aktiv. Verbindet die App, wenn Ihr unterschreiben oder ausgeben müsst.",
-    "helpLinkedDisconnectedWithBalance": "Inhaberboni sind aktiv. Verbindet die App, wenn Ihr unterschreiben oder ausgeben müsst.",
-    "extensionHelp": "Damit hier eine Wallet erscheint, halte eine Browser-Wallet-Erweiterung wie Solflare Wallet aktiv.",
-    "mobileAppHelp": "Wähle Phantom oder Solflare. Deine Wallet-App wird um Genehmigung bitten. Halte dieses Spiel geöffnet und kehre zu ihm zurück, wenn du fertig bist.",
-    "standaloneAppHelp": "Wallet-Verbindungen sind in der Startbildschirm-App noch nicht verfügbar. Öffne World of ClaudeCraft in Safari oder Chrome, um Phantom oder Solflare zu nutzen.",
-    "openAppTitle": "Weiter in {wallet}",
-    "openAppHelp": "Öffne {wallet}, um diese Anfrage zu prüfen. Halte diesen Spieltab geöffnet, während die Wallet-App aktiv ist.",
-    "openAppButton": "{wallet} öffnen",
-    "manualReturnBrowserHelp": "Kehre nach der Genehmigung zu diesem Spieltab zurück. Falls iOS einen anderen Browser öffnet, schließe ihn und kehre manuell zum ursprünglichen Browser zurück.",
-    "manualReturnStandaloneHelp": "Kehre nach der Genehmigung von deinem Startbildschirm zu World of ClaudeCraft zurück. Falls iOS einen Browser öffnet, schließe ihn und öffne die Startbildschirm-App manuell erneut.",
-    "preparingAppButton": "{wallet} wird vorbereitet...",
-    "walletAppUnavailable": "{wallet} konnte nicht vorbereitet werden. Schließe dieses Fenster und versuche es erneut.",
-    "flowConnect": "Wählt ein Wallet. Die Verifizierung läuft automatisch weiter.",
-    "flowSign": "Unterschreibt die Verifizierungsnachricht in Eurer Wallet-App. Keine Transaktion und kein SOL erforderlich.",
-    "flowVerify": "Wallet-Besitz wird verifiziert...",
-    "linkFailed": "Wallet-Verifizierung fehlgeschlagen.",
-    "verifyFailed": "Wallet-Verifizierung fehlgeschlagen.",
-    "unlinkFailed": "Wallet konnte nicht getrennt werden.",
-    "browser": {
-      "eyebrow": "Desktop-Wallet-Autorisierung",
-      "title": "Solana-Wallet verbinden",
-      "linkBody": "Wähle eine Wallet-Erweiterung in diesem Browser. Du wirst eine Verifizierungsnachricht unterschreiben und dann zur Desktop-App zurückkehren.",
-      "paymentBody": "Wähle die mit deinem Konto verknüpfte Wallet und genehmige die Transaktion in diesem Browser.",
-      "extensionHelp": "Es wurde keine kompatible Wallet-Erweiterung gefunden. Installiere oder entsperre Phantom, Solflare oder eine andere Solana-Browser-Wallet und versuche es erneut.",
-      "safety": "World of ClaudeCraft fragt niemals nach deiner Wiederherstellungsphrase oder deinem privaten Schlüssel.",
-      "continueWith": "Weiter mit {wallet}",
-      "reviewTitle": "In deiner Wallet prüfen",
-      "reviewBody": "Folge der Aufforderung von {wallet}. Halte diese Browserseite offen.",
-      "completeTitle": "Wallet-Autorisierung abgeschlossen",
-      "completeBody": "Du kannst zur World of ClaudeCraft Desktop-App zurückkehren.",
-      "returnButton": "Zur Desktop-App zurückkehren",
-      "failed": "Wallet-Autorisierung fehlgeschlagen oder abgelaufen. Kehre zur Desktop-App zurück und versuche es erneut.",
-      "retry": "Erneut versuchen"
-    },
-    "holder": "$WOC-Inhaber",
-    "holderTierTitle": "$WOC-Inhaber mit Rang {tier}",
-    "holderTiers": {
-      "ember": {
-        "name": "Glut",
-        "flavor": "Der Funke ist entfacht."
-      },
-      "coinbearer": {
-        "name": "Münzträger",
-        "flavor": "Die erste Münze in der Kriegskasse."
-      },
-      "coppercrest": {
-        "name": "Kupferkamm",
-        "flavor": "Kupfer stapelt sich, Euer Name macht die Runde."
-      },
-      "silverbound": {
-        "name": "Silbergebunden",
-        "flavor": "In Silber gebunden, der Beutel wächst."
-      },
-      "gilded": {
-        "name": "Vergoldet",
-        "flavor": "Vergoldet und grinsend."
-      },
-      "vaultwarden": {
-        "name": "Tresorwächter",
-        "flavor": "Ihr bewacht jetzt einen echten Tresor: 0,01 % aller $WOC."
-      },
-      "whale": {
-        "name": "Wal",
-        "flavor": "Ihr schwimmt jetzt in tiefen Gewässern: 0,1 % des Angebots."
-      },
-      "leviathan": {
-        "name": "Leviathan",
-        "flavor": "Die Märkte spüren Eure Bewegungen: 1 % des Angebots."
-      },
-      "tidelord": {
-        "name": "Gezeitenfürst",
-        "flavor": "Die Gezeit folgt Eurem Ruf: 2 % des Angebots."
-      },
-      "stormcaller": {
-        "name": "Sturmrufer",
-        "flavor": "Stürme sammeln sich bei Eurem Namen: 3 % des Angebots."
-      },
-      "krakencrown": {
-        "name": "Krakenkrone",
-        "flavor": "Von der Tiefe gekrönt: 4 % des Angebots."
-      },
-      "titanforged": {
-        "name": "Titangeschmiedet",
-        "flavor": "Unter Titanen geschmiedet: 5 % des Angebots."
-      },
-      "starhoard": {
-        "name": "Sternenhort",
-        "flavor": "Ein Hort, der das Sternenlicht beugt: 6 % des Angebots."
-      },
-      "voidwarden": {
-        "name": "Leerenwächter",
-        "flavor": "Wächter am Rand der Leere: 7 % des Angebots."
-      },
-      "realmshaper": {
-        "name": "Reichsformer",
-        "flavor": "Ihr formt das Reich neu: 8 % des Angebots."
-      },
-      "worldforger": {
-        "name": "Weltenschmied",
-        "flavor": "Ihr schmiedet Eure eigene Welt: 9 % des Angebots."
-      },
-      "worldbearer": {
-        "name": "Weltenträger",
-        "flavor": "Ihr tragt ein Stück der Welt: 10 % des Angebots."
-      },
-      "sovereign": {
-        "name": "Souverän",
-        "flavor": "Das Reich beugt das Knie: das gesamte Angebot."
-      }
-    }
-  },
   "playerCard": {
     "shareButton": "Spielerkarte teilen",
     "title": "Spielerkarte",
@@ -4949,8 +4462,7 @@ export const de_DE: EnTranslations = {
     "footerHandleWithRecruits": "@{handle} - {recruited}",
     "footerCta": "Schmiedet Eure Legende: {siteUrl}",
     "arenaStat": "Arena",
-    "shareTierBit": ", $WOC-Inhaber mit Rang {tier}",
-    "shareText": "Ich schmiede meine Legende in World of ClaudeCraft: Stufe {level} {className}{tierBit}. Tritt meiner Welt bei:",
+    "shareText": "Ich schmiede meine Legende in World of ClaudeCraft: Stufe {level} {className}. Tritt meiner Welt bei:",
     "nativeShareTitle": "Welt von ClaudeCraft",
     "fileNameFallback": "spieler",
     "actionShareX": "Auf X teilen",

@@ -5,7 +5,6 @@ import {
   classDistribution,
   clientPerfRaw,
   clientPerfSummary,
-  dailyRewardPointEvents,
   levelDistribution,
   listAccounts,
   listCharacters,
@@ -48,7 +47,6 @@ import {
   updateFilterConfig,
   type WordTier,
 } from './chat_filter_db';
-import { currentDailyRewardDay } from './daily_rewards';
 import {
   accountAndScopeForToken,
   accountById,
@@ -93,8 +91,6 @@ import {
   recordPasswordReset,
   setAccountAiFlag,
   setAccountStreamerFlair,
-  setDailyRewardsBan,
-  setDailyRewardsIpBan,
 } from './moderation_db';
 import { providerUsageSnapshot } from './provider_usage';
 import { rateLimited } from './ratelimit';
@@ -131,16 +127,6 @@ const AI_FLAG_REQUIRED = 'ai must be a boolean';
 const STREAMER_FLAG_REQUIRED = 'streamer must be a boolean';
 const STREAMER_LINKS_REQUIRED = 'a links object is required';
 const ACCOUNT_FLAIR_FAILED = 'failed to update account flair';
-const DAILY_REWARD_EVENT_DAY_REQUIRED = 'a valid daily rewards date is required';
-
-async function dailyRewardEventDay(value: string | null): Promise<string | null> {
-  if (value === null) return currentDailyRewardDay();
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
-  const parsed = new Date(`${value}T00:00:00.000Z`);
-  return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value
-    ? value
-    : null;
-}
 
 /**
  * Decode the request's `links` bag, three-valued:
@@ -535,48 +521,6 @@ export async function handleAdminApi(
         return ok(res, { ok: true });
       } catch (err) {
         return fail(res, 400, err instanceof Error ? err.message : 'chat mute failed');
-      }
-    }
-    const dailyRewardsBanMatch =
-      /^\/admin\/api\/moderation\/accounts\/(\d+)\/daily-rewards-(ban|unban)$/.exec(path);
-    if (req.method === 'POST' && dailyRewardsBanMatch) {
-      const body = await readBody(req);
-      try {
-        await setDailyRewardsBan({
-          accountId: Number(dailyRewardsBanMatch[1]),
-          adminAccountId: accountId,
-          banned: dailyRewardsBanMatch[2] === 'ban',
-          reason: body.reason,
-          durationHours: body.durationHours,
-        });
-        return ok(res, { ok: true });
-      } catch (err) {
-        return fail(
-          res,
-          400,
-          err instanceof Error ? err.message : 'daily rewards moderation failed',
-        );
-      }
-    }
-    const dailyRewardsIpBanMatch =
-      /^\/admin\/api\/moderation\/accounts\/(\d+)\/daily-rewards-ip-(ban|unban)$/.exec(path);
-    if (req.method === 'POST' && dailyRewardsIpBanMatch) {
-      const body = await readBody(req);
-      try {
-        await setDailyRewardsIpBan({
-          accountId: Number(dailyRewardsIpBanMatch[1]),
-          adminAccountId: accountId,
-          ip: body.ip,
-          banned: dailyRewardsIpBanMatch[2] === 'ban',
-          reason: body.reason,
-        });
-        return ok(res, { ok: true });
-      } catch (err) {
-        return fail(
-          res,
-          400,
-          err instanceof Error ? err.message : 'daily rewards IP moderation failed',
-        );
       }
     }
     const ignoreMatch = /^\/admin\/api\/moderation\/reports\/(\d+)\/ignore$/.exec(path);
@@ -985,15 +929,6 @@ export async function handleAdminApi(
         blockedIps: getBlockedIpsForAccount(game, detail),
       });
     }
-    const dailyRewardEventsMatch = /^\/admin\/api\/accounts\/(\d+)\/daily-rewards-events$/.exec(
-      path,
-    );
-    if (dailyRewardEventsMatch) {
-      const day = await dailyRewardEventDay(url.searchParams.get('day'));
-      if (!day) return fail(res, 400, DAILY_REWARD_EVENT_DAY_REQUIRED);
-      const limit = Number(url.searchParams.get('limit') ?? '100');
-      return ok(res, await dailyRewardPointEvents(Number(dailyRewardEventsMatch[1]), day, limit));
-    }
     const detailMatch = /^\/admin\/api\/accounts\/(\d+)$/.exec(path);
     if (detailMatch) {
       const id = Number(detailMatch[1]);
@@ -1191,7 +1126,6 @@ function makeRealAdminDb() {
     classDistribution,
     clientPerfRaw,
     clientPerfSummary,
-    dailyRewardPointEvents,
     levelDistribution,
     listAccounts,
     listCharacters,
@@ -1244,8 +1178,6 @@ function makeRealAdminDb() {
     updatePasswordHash,
     revokeTokensExcept,
     recordPasswordReset,
-    setDailyRewardsBan,
-    setDailyRewardsIpBan,
     // Account flair: the two audited writes plus the read-back the live push sends
     // (the DB row, never the request body, is the source of truth for what ships).
     setAccountAiFlag,
@@ -1717,49 +1649,6 @@ async function chatMuteHandler(ctx: Ctx): Promise<void> {
   }
 }
 
-/** POST daily-rewards-ban/unban: change reward eligibility with an audited reason. */
-async function dailyRewardsBanHandler(ctx: Ctx): Promise<void> {
-  const banned = ctx.path.endsWith('/daily-rewards-ban');
-  const body = await readBody(ctx.req);
-  try {
-    await adminDb().setDailyRewardsBan({
-      accountId: adminTargetId(ctx),
-      adminAccountId: ctxAccountId(ctx),
-      banned,
-      reason: body.reason,
-      durationHours: body.durationHours,
-    });
-    return ok(ctx.res, { ok: true });
-  } catch (err) {
-    return fail(
-      ctx.res,
-      400,
-      err instanceof Error ? err.message : 'daily rewards moderation failed',
-    );
-  }
-}
-
-async function dailyRewardsIpBanHandler(ctx: Ctx): Promise<void> {
-  const banned = ctx.path.endsWith('/daily-rewards-ip-ban');
-  const body = await readBody(ctx.req);
-  try {
-    await adminDb().setDailyRewardsIpBan({
-      accountId: adminTargetId(ctx),
-      adminAccountId: ctxAccountId(ctx),
-      ip: body.ip,
-      banned,
-      reason: body.reason,
-    });
-    return ok(ctx.res, { ok: true });
-  } catch (err) {
-    return fail(
-      ctx.res,
-      400,
-      err instanceof Error ? err.message : 'daily rewards IP moderation failed',
-    );
-  }
-}
-
 /** POST /admin/api/moderation/reports/:id/ignore: resolve one open report. */
 async function ignoreReportHandler(ctx: Ctx): Promise<void> {
   const body = await readBody(ctx.req);
@@ -1874,14 +1763,6 @@ async function accountDetailHandler(ctx: Ctx): Promise<void> {
   const detail = await adminDb().accountDetail(id);
   if (!detail) return fail(ctx.res, 404, 'account not found');
   ok(ctx.res, { ...detail, online: rt.liveAccountIds().has(id) });
-}
-
-/** GET /admin/api/accounts/:id/daily-rewards-events: bounded point-award ledger. */
-async function dailyRewardPointEventsHandler(ctx: Ctx): Promise<void> {
-  const day = await dailyRewardEventDay(ctx.url.searchParams.get('day'));
-  if (!day) return fail(ctx.res, 400, DAILY_REWARD_EVENT_DAY_REQUIRED);
-  const limit = Number(ctx.url.searchParams.get('limit') ?? '100');
-  ok(ctx.res, await adminDb().dailyRewardPointEvents(adminTargetId(ctx), day, limit));
 }
 
 /**
@@ -2232,14 +2113,6 @@ export const routes: RouteDef[] = [
     handler: accountDetailHandler,
   },
   {
-    method: 'GET',
-    path: '/admin/api/accounts/:id/daily-rewards-events',
-    surface: 'admin',
-    middleware: [requireAdmin, requireAdminTarget('account')],
-    meta: adminTargetMeta('account'),
-    handler: dailyRewardPointEventsHandler,
-  },
-  {
     method: 'POST',
     path: '/admin/api/accounts/:id/reset-password',
     surface: 'admin',
@@ -2353,38 +2226,6 @@ export const routes: RouteDef[] = [
     middleware: [requireAdmin, requireAdminTarget('account')],
     meta: adminTargetMeta('account'),
     handler: chatMuteHandler,
-  },
-  {
-    method: 'POST',
-    path: '/admin/api/moderation/accounts/:id/daily-rewards-ban',
-    surface: 'admin',
-    middleware: [requireAdmin, requireAdminTarget('account')],
-    meta: adminTargetMeta('account'),
-    handler: dailyRewardsBanHandler,
-  },
-  {
-    method: 'POST',
-    path: '/admin/api/moderation/accounts/:id/daily-rewards-unban',
-    surface: 'admin',
-    middleware: [requireAdmin, requireAdminTarget('account')],
-    meta: adminTargetMeta('account'),
-    handler: dailyRewardsBanHandler,
-  },
-  {
-    method: 'POST',
-    path: '/admin/api/moderation/accounts/:id/daily-rewards-ip-ban',
-    surface: 'admin',
-    middleware: [requireAdmin, requireAdminTarget('account')],
-    meta: adminTargetMeta('account'),
-    handler: dailyRewardsIpBanHandler,
-  },
-  {
-    method: 'POST',
-    path: '/admin/api/moderation/accounts/:id/daily-rewards-ip-unban',
-    surface: 'admin',
-    middleware: [requireAdmin, requireAdminTarget('account')],
-    meta: adminTargetMeta('account'),
-    handler: dailyRewardsIpBanHandler,
   },
   {
     method: 'POST',

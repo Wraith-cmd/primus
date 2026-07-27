@@ -1,5 +1,5 @@
-// Bundle the Electron main-process runtime dependencies (electron-log,
-// electron-updater) into self-contained CommonJS files under electron/vendor/.
+// Bundle the Electron main-process runtime dependencies (electron-log) into
+// self-contained CommonJS files under electron/vendor/.
 //
 // Why: the desktop app deliberately ships NO node_modules (package.json
 // build.files has "!node_modules/**"; the repo's production dependencies are
@@ -17,10 +17,7 @@ import { buildSync } from 'esbuild';
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const outDir = path.join(root, 'electron', 'vendor');
 
-const BUNDLES = [
-  { entry: 'electron-log/main', out: 'electron_log_main.cjs' },
-  { entry: 'electron-updater', out: 'electron_updater.cjs' },
-];
+const BUNDLES = [{ entry: 'electron-log/main', out: 'electron_log_main.cjs' }];
 
 export function buildElectronVendor() {
   mkdirSync(outDir, { recursive: true });

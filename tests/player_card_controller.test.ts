@@ -31,11 +31,6 @@ vi.mock('../src/ui/hud/player_card/player_card_share', async (importOriginal) =>
   };
 });
 
-vi.mock('../src/ui/wallet_balance', () => ({
-  verifiedWocBalance: () => null,
-  walletDisplayAvailable: () => false,
-}));
-
 function world(): IWorld {
   return {
     cfg: { playerClass: 'warrior' },
@@ -73,9 +68,6 @@ function harness() {
   const release = vi.fn();
   const trap: FocusTrapHandle = { focusFirst, release };
   const options = {
-    refreshBalance: vi.fn(),
-    showWallet: vi.fn(() => true),
-    setShowWallet: vi.fn(),
     showDevBadges: vi.fn(() => false),
   };
   const controller = new PlayerCardController({
@@ -106,7 +98,6 @@ describe('PlayerCardController', () => {
 
     expect(test.controller.isOpen).toBe(true);
     expect(test.ensurePreview).toHaveBeenCalledTimes(1);
-    expect(test.options.refreshBalance).toHaveBeenCalledTimes(1);
     expect(test.focusFirst).toHaveBeenCalledWith('[data-close]');
     expect(document.querySelector('.pc-preview canvas')).not.toBeNull();
 

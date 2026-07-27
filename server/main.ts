@@ -81,19 +81,6 @@ import { createCachedRead } from './cached_read';
 import { characterSheet, SHEET_RECENT_DEEDS, type SheetRank } from './character_sheet';
 import { buildCharacterList, configureCharactersRuntime } from './characters';
 import {
-  claudiumPreAuthMutationRateLimited,
-  configureClaudiumRuntime,
-  handleClaudiumApi,
-  handleClaudiumStripeWebhook,
-} from './claudium';
-import {
-  bustDailyRewardBoardCache,
-  dailyRewardEventsCutoffDay,
-  handleDailyRewardApi,
-  handleDailyRewardInternalApi,
-} from './daily_rewards';
-import { pruneDailyRewardEventsBatch } from './daily_rewards_db';
-import {
   type ArenaLeaderRow,
   accountAndScopeForToken,
   accountById,
@@ -277,8 +264,6 @@ import {
   recordAuthFailure,
   requestIp,
   setRateLimitTier2Store,
-  walletLinkRateLimited,
-  wocBalanceRateLimited,
 } from './ratelimit';
 import { createPgRateLimitStore } from './ratelimit_db';
 import { isPublicCorsPath, publicOriginFromRequest, REALM, REALM_DIRECTORY } from './realm';
@@ -307,19 +292,7 @@ import {
   assetsListMineCore,
   assetUploadCore,
 } from './user_assets_routes';
-import {
-  configureWalletRuntime,
-  handleDesktopWalletHandoffClaim,
-  handleDesktopWalletHandoffComplete,
-  handleDesktopWalletHandoffCreate,
-  handleDesktopWalletHandoffResult,
-  handleWalletChallenge,
-  handleWalletGet,
-  handleWalletLink,
-  handleWalletUnlink,
-} from './wallet';
 import { allowedCorsOrigin, isWebClientRequest } from './web_login_guard';
-import { handleWocBalance, parseWocBalanceQuery } from './woc_balance';
 import { createWsAuth } from './ws_auth';
 import { bufferHandshakeMessages } from './ws_buffer';
 
@@ -369,8 +342,6 @@ const STATIC_PAGE_ALIASES = new Map([
   ['/social-media-links/', '/links.html'],
   ['/play', '/play.html'],
   ['/play/', '/play.html'],
-  ['/wallet-handoff', '/wallet-handoff.html'],
-  ['/wallet-handoff/', '/wallet-handoff.html'],
   ['/privacy', '/privacy.html'],
   ['/privacy/', '/privacy.html'],
   ['/terms', '/terms.html'],
@@ -725,9 +696,7 @@ async function deedsSelfRank(accountId: number): Promise<DeedsLeaderboardSelf | 
 // is now cached per format (arenaLeaderboardCache), so it is busted here too: its
 // former fleet-wide exactness becomes in-process-immediate delisting plus
 // TTL-bounded peer convergence, the same tradeoff every other board already made.
-// The daily-rewards board is cached in-process behind dailyRewardService's board
-// cache (daily_rewards_board_cache.ts, same TTL tradeoff), so it is busted below
-// with the rest. Bumping boardEpoch as well as nulling the caches closes the
+// Bumping boardEpoch as well as nulling the caches closes the
 // lost-bust race: a refresh already in flight when this fires will decline to
 // install its pre-ban snapshot (see boardEpoch), so a ban cannot be masked for up
 // to a TTL cycle.
@@ -740,7 +709,6 @@ function bustBoardCaches(): void {
   arenaLeaderboardCache['1v1'] = null;
   arenaLeaderboardCache['2v2'] = null;
   deedsBoardCache = null;
-  bustDailyRewardBoardCache();
 }
 setOnAccountModerated(bustBoardCaches);
 
@@ -1999,8 +1967,8 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       return json(res, 200, { repo: activeConfig().githubRepo, releases: entries.slice(0, limit) });
     }
     // Account self-service portal, all bearer-auth, account-scoped. Each route
-    // delegates to an exported, testable handler in server/account.ts (mirroring
-    // server/wallet.ts); main.ts only resolves the bearer account first.
+    // delegates to an exported, testable handler in server/account.ts; main.ts
+    // only resolves the bearer account first.
     if (req.method === 'GET' && url === '/api/account') {
       const accountId = await bearerActiveAccount(req, res);
       if (accountId === null) return;
@@ -2123,48 +2091,6 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       const token = new URL(req.url ?? '', 'http://localhost').searchParams.get('token') ?? '';
       return handleEmailUnsubscribe(res, token);
     }
-    // Non-custodial Solana wallet linking, all account-scoped.
-    if (req.method === 'POST' && url === '/api/desktop-wallet/create') {
-      const accountId = await bearerActiveAccount(req, res);
-      if (accountId === null) return;
-      if (!walletLinkRateLimited(req, accountId).allowed) {
-        return json(res, 429, { error: 'rate limited' });
-      }
-      return handleDesktopWalletHandoffCreate(req, res, accountId);
-    }
-    if (req.method === 'POST' && url === '/api/desktop-wallet/claim') {
-      if (!publicReadRateLimited(req).allowed) return json(res, 429, { error: 'rate_limited' });
-      return handleDesktopWalletHandoffClaim(req, res);
-    }
-    if (req.method === 'POST' && url === '/api/desktop-wallet/complete') {
-      if (!publicReadRateLimited(req).allowed) return json(res, 429, { error: 'rate_limited' });
-      return handleDesktopWalletHandoffComplete(req, res);
-    }
-    if (req.method === 'POST' && url === '/api/desktop-wallet/result') {
-      const accountId = await bearerActiveAccount(req, res);
-      if (accountId === null) return;
-      return handleDesktopWalletHandoffResult(req, res, accountId);
-    }
-    if (req.method === 'POST' && url === '/api/wallet/link/challenge') {
-      const accountId = await bearerActiveAccount(req, res);
-      if (accountId === null) return;
-      return handleWalletChallenge(req, res, accountId);
-    }
-    if (req.method === 'POST' && url === '/api/wallet/link') {
-      const accountId = await bearerActiveAccount(req, res);
-      if (accountId === null) return;
-      return handleWalletLink(req, res, accountId);
-    }
-    if (req.method === 'DELETE' && url === '/api/wallet/link') {
-      const accountId = await bearerActiveAccount(req, res);
-      if (accountId === null) return;
-      return handleWalletUnlink(req, res, accountId);
-    }
-    if (req.method === 'GET' && url === '/api/wallet') {
-      const accountId = await bearerActiveAccount(req, res);
-      if (accountId === null) return;
-      return handleWalletGet(req, res, accountId);
-    }
     if (req.method === 'POST' && url === '/api/auth/apple') {
       return handleAppleLogin(req, res, await readBody(req));
     }
@@ -2261,35 +2187,6 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse): P
       if (!githubRateLimited(req, accountId).allowed)
         return json(res, 429, { error: 'rate limited' });
       return handleGitHubUnlink(req, res, accountId);
-    }
-    // $WOC balance proxy, keeps the Solana RPC endpoint (and any key in it)
-    // server-side so it never ships in the client bundle. Public (on-chain
-    // balances are public) but narrow + IP rate-limited + per-wallet cached.
-    if (req.method === 'GET' && url === '/api/woc/balance') {
-      if (!wocBalanceRateLimited(req).allowed) {
-        recordUsageMetric('woc.balance.rate_limited');
-        return json(res, 429, { error: 'rate limited' });
-      }
-      // `fresh=1` is parsed AFTER the IP rate-limit above, so it can't be used to hammer the RPC.
-      const { owner, fresh } = parseWocBalanceQuery(req.url ?? '');
-      return handleWocBalance(res, owner, fresh);
-    }
-    if (url.startsWith('/api/daily-rewards')) {
-      const accountId = await bearerActiveAccount(req, res);
-      if (accountId === null) return;
-      return handleDailyRewardApi(req, res, accountId);
-    }
-    if (req.method === 'POST' && url === '/api/claudium/stripe/webhook') {
-      return handleClaudiumStripeWebhook(req, res);
-    }
-    if (url.startsWith('/api/claudium')) {
-      const preAuthLimit = claudiumPreAuthMutationRateLimited(req);
-      if (preAuthLimit && !preAuthLimit.allowed) {
-        return json(res, 429, { error: 'rate_limited' });
-      }
-      const accountId = await bearerActiveAccount(req, res);
-      if (accountId === null) return;
-      return handleClaudiumApi(req, res, accountId);
     }
     // Shareable player card: publish (PNG body) + referral stats for the card.
     if (req.method === 'POST' && url === '/api/card') {
@@ -2531,16 +2428,6 @@ configureAccountRuntime({
   disconnectAccount: (id, reason) => liveGame().disconnectAccount(id, reason),
 });
 
-// Inject the one main.ts-local singleton the ported wallet handlers
-// (server/wallet.ts) need but cannot import without a cycle: the live
-// authoritative Sim level the /api/card publish reads for an online character.
-// This is the exact (characterId) => game.liveLevelForCharacter(characterId) the
-// legacy /api/card arm passed to handleCardUpload; the legacy wallet/card/referral
-// arms stay intact as the flag-off rollback path.
-configureWalletRuntime({
-  liveLevelForCharacter: (characterId) => liveGame().liveLevelForCharacter(characterId),
-});
-
 // Inject the one main.ts-local singleton the ported report handler
 // (server/reports.ts) needs but cannot import without a cycle: the live report
 // target for an online player id. This is the exact (pid) =>
@@ -2559,13 +2446,6 @@ configureReportsRuntime({
 configureDiscordRuntime({
   isIpBlocked: (ip) => liveGame().isIpBlocked(ip),
   grantCosmetic: (accountId, chromaId) => liveGame().grantMechChromaToAccount(accountId, chromaId),
-});
-
-// Claudium routes mirror weapon-skin purchases into account cosmetics live (the
-// same deferred liveGame() closure pattern as the Discord hooks above).
-configureClaudiumRuntime({
-  grantWeaponSkins: (accountId, skinIds) =>
-    liveGame().grantWeaponSkinsToAccount(accountId, skinIds),
 });
 
 // configureAdminRuntime(game) and configureInternalRuntime(game) pass the live
@@ -2659,14 +2539,10 @@ let oauthApiEntry: ApiDispatcher = selectApiEntry(
   oauthLegacy,
 );
 
-// The /internal surface's flag-gated dispatcher. The delegate is the EXACT
-// legacy composite from the pre-migration ladder arm: the daily-rewards ops
-// family (/internal/daily-rewards/*, never part of handleInternalApi) is tried
-// first and short-circuits when handled; everything else falls to the legacy
+// The /internal surface's flag-gated dispatcher. The delegate is the legacy
 // handleInternalApi ladder UNCHANGED (unknown endpoints, wrong methods, HEAD, and
 // the flag-off rollback path).
 const internalLegacy: ApiDelegate = async (req, res) => {
-  if (await handleDailyRewardInternalApi(req, res)) return;
   await handleInternalApi(req, res, liveGame());
 };
 const internalApiDispatcher = createApiDispatcher({
@@ -2763,7 +2639,7 @@ function applyCorsAndPreflight(
 // /internal arms route through apiEntry / adminApiEntry / oauthApiEntry /
 // internalApiEntry (all four
 // flag-gated dispatchers) instead of calling handleApi / handleAdminApi / handleOAuth
-// / the daily-rewards+handleInternalApi composite directly; each dispatcher delegates
+// / handleInternalApi directly; each dispatcher delegates
 // its own unmatched paths to the same legacy handler, so behavior is byte-identical
 // until the ladder-deletion PR (next release).
 export function routeHttpRequest(req: http.IncomingMessage, res: http.ServerResponse): void {
@@ -2792,9 +2668,8 @@ export function routeHttpRequest(req: http.IncomingMessage, res: http.ServerResp
   else if (req.method === 'GET' && path === '/metrics')
     void handleMetricsGate(req, res, httpMetrics, activeConfig().metricsToken);
   else if (url.startsWith('/internal/')) {
-    // The flag-gated internal dispatcher; its delegate is the exact pre-migration
-    // composite (daily-rewards ops tried first, then handleInternalApi), so the
-    // 'legacy' mode and every unmatched path stay byte-identical.
+    // The flag-gated internal dispatcher; its delegate is handleInternalApi, so
+    // the 'legacy' mode and every unmatched path stay byte-identical.
     void internalApiEntry(req, res);
   } else if (url.startsWith('/admin/api/')) void adminApiEntry(req, res);
   else if (url.startsWith('/api/')) void apiEntry(req, res);
@@ -3040,16 +2915,6 @@ export async function startServer(): Promise<http.Server> {
       {
         name: 'client_perf_reports',
         pruneBatch: (n) => pruneClientPerfReportsBatch(config.perfReportRetentionDays, n),
-      },
-      {
-        name: 'daily_reward_events',
-        pruneBatch: async (n) => {
-          // The reward day rolls at a configured UTC offset, not midnight, so the
-          // cutoff comes from the reward clock (null means retention is off).
-          const cutoff = await dailyRewardEventsCutoffDay(config.dailyRewardEventsRetentionDays);
-          if (cutoff === null) return 0;
-          return pruneDailyRewardEventsBatch(cutoff, n);
-        },
       },
       {
         // The activity day is the UTC calendar day the metrics writers stamp,

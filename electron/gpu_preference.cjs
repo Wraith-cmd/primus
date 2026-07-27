@@ -90,11 +90,12 @@ const nodePath = require('node:path');
 //         unmounts and exits the moment its child (this process) exits; a child spawned from
 //         execPath loses its own binary mid-startup (measured: killing the runtime yields
 //         EIO on already-open fds). So the spawn source is env.APPIMAGE (the outer file,
-//         same source electron-updater restarts from) whenever it is set, execPath otherwise.
+//         the one an external relauncher starts from) whenever it is set, execPath otherwise.
 //     (c) THE SKIP CONDITION COVERS BOTH HALVES of the fix, env AND argv. The env half
-//         propagates by inheritance but the argv half does not: electron-updater's
-//         restart-to-update respawns the app with the CURRENT env (marker and PRIME vars
-//         included) and EMPTY argv, so a marker-only skip would leave the updated process
+//         propagates by inheritance but the argv half does not: a relaunch driven from
+//         outside this module (app.relaunch, a desktop launcher) respawns with the CURRENT
+//         env (marker and PRIME vars included) and EMPTY argv, so a marker-only skip would
+//         leave the respawned process
 //         running PRIME without --ozone-platform=x11, the exact Wayland crash-loop state
 //         documented below. Once the marker is present, the relaunch re-fires if and only
 //         if argv still lacks an explicit --ozone-platform choice; every relaunch produces
@@ -286,8 +287,8 @@ function buildLinuxPrimeEnv(existingEnv, fileExists = nodeExistsSync) {
 // Marks a process whose environment THIS module configured (as opposed to a player's own
 // prime-run/wrapper env): set on the child's env before spawn. It is deliberately NOT a
 // blanket "never relaunch again" switch, because the env half of the fix propagates by
-// inheritance while the argv half does not: electron-updater's restart-to-update respawns
-// the app with the current env (marker included) and EMPTY argv, and that process still
+// inheritance while the argv half does not: a relaunch driven from outside this module
+// respawns the app with the current env (marker included) and EMPTY argv, and that process still
 // needs --ozone-platform=x11 re-applied (see lever 3 (c)). Loop safety comes from the argv
 // check instead: every relaunch produces a child whose argv carries an explicit
 // --ozone-platform, and a marked process with one never relaunches.
@@ -296,7 +297,7 @@ const PRIME_RELAUNCH_MARKER = 'WOC_PRIME_RELAUNCHED';
 /**
  * Whether this process should re-exec itself with the Linux PRIME env applied.
  * - Marker present (this env was configured by a previous relaunch, then possibly inherited
- *   through an updater restart): relaunch only if argv still lacks an explicit
+ *   through an external relaunch): relaunch only if argv still lacks an explicit
  *   --ozone-platform choice, i.e. only to restore the argv half. Cannot loop: the relaunch
  *   always yields a child with an explicit --ozone-platform in argv.
  * - No marker: relaunch if at least one PRIME variable is missing. A player who already
@@ -352,8 +353,8 @@ function relaunchForLinuxPrime(deps = {}) {
 
   const spawnFn = deps.spawn ?? nodeSpawn;
   // In an AppImage, execPath points inside the runtime's FUSE mount, which dies the moment
-  // this process exits; the outer AppImage file (env.APPIMAGE, the same source
-  // electron-updater restarts from) survives and brings up a fresh runtime + mount.
+  // this process exits; the outer AppImage file (env.APPIMAGE, the one an external
+  // relauncher starts from) survives and brings up a fresh runtime + mount.
   const execPath = deps.execPath ?? process.execPath;
   const appImage =
     typeof env.APPIMAGE === 'string' && nodePath.isAbsolute(env.APPIMAGE) ? env.APPIMAGE : null;

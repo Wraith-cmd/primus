@@ -626,58 +626,6 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'hudChrome.nameplate.mobLevel': '{level}',
   'hudChrome.specPanel.specUnlockBanner': 'Specializace odemčena!',
   'hudChrome.specPanel.specUnlockHint': 'Stiskni N pro výběr specializace.',
-  'hudChrome.wocStore.wallet.connect': 'Připojit peněženku',
-  'hudChrome.wocStore.wallet.connectedUnlinked':
-    'Aplikace peněženky je připojena k tomuto prohlížeči, ale její veřejná adresa ještě není propojena s tvým účtem WoC.',
-  'hudChrome.wocStore.wallet.linkedConnected':
-    'Tvoje propojená aplikace peněženky je připojena a připravena na nákupy za SOL nebo WOC.',
-  'hudChrome.wocStore.wallet.linkedDisconnected':
-    'Tvoje veřejná adresa je propojena. Znovu připoj tuto aplikaci peněženky, když budeš chtít platit za SOL nebo WOC.',
-  'hudChrome.wocStore.wallet.manage': 'Spravovat peněženku',
-  'hudChrome.wocStore.wallet.mismatched':
-    'Je připojena jiná peněženka. Ověř ji pro nahrazení propojené adresy nebo znovu připoj propojenou peněženku.',
-  'hudChrome.wocStore.wallet.reconnect': 'Znovu připojit peněženku',
-  'hudChrome.wocStore.wallet.title': 'Peněženka Solana',
-  'hudChrome.wocStore.wallet.unlinked':
-    'Připoj aplikaci peněženky a jednou podpiš pro propojení její veřejné adresy s tvým účtem WoC. Nikdy nepřijmeme tvoji obnovovací frázi ani soukromý klíč.',
-  'hudChrome.wocStore.wallet.verify': 'Ověřit a propojit',
-  'wallet.bagConnect': 'Propojit peněženku',
-  'wallet.bagLink': 'Ověřit peněženku',
-  'wallet.bagReconnect': 'Znovu připojit peněženku',
-  'wallet.browser.completeBody': 'Můžeš se vrátit do desktopové aplikace World of ClaudeCraft.',
-  'wallet.browser.completeTitle': 'Autorizace peněženky dokončena',
-  'wallet.browser.continueWith': 'Pokračovat s {wallet}',
-  'wallet.browser.extensionHelp':
-    'Nebyla nalezena žádná kompatibilní rozšíření peněženky. Nainstaluj nebo odemkni Phantom, Solflare nebo jiný Solana prohlížečový wallet a zkus to znovu.',
-  'wallet.browser.eyebrow': 'Desktopová autorizace peněženky',
-  'wallet.browser.failed':
-    'Autorizace peněženky selhala nebo vypršela. Vrať se do desktopové aplikace a zkus to znovu.',
-  'wallet.browser.linkBody':
-    'Zvol rozšíření peněženky v tomto prohlížeči. Podepíšeš ověřovací zprávu a vrátíš se do desktopové aplikace.',
-  'wallet.browser.paymentBody':
-    'Zvol peněženku propojenou s tvým účtem a schval transakci v tomto prohlížeči.',
-  'wallet.browser.retry': 'Zkusit znovu',
-  'wallet.browser.returnButton': 'Vrátit se do desktopové aplikace',
-  'wallet.browser.reviewBody':
-    'Postupuj podle výzvy od {wallet}. Nechej tuto stránku prohlížeče otevřenou.',
-  'wallet.browser.reviewTitle': 'Zkontroluj ve své peněžence',
-  'wallet.browser.safety':
-    'World of ClaudeCraft nikdy nepožaduje tvoji obnovovací frázi ani soukromý klíč.',
-  'wallet.browser.title': 'Připojit peněženku Solana',
-  'wallet.manualReturnBrowserHelp':
-    'Po schválení se vrať na tuto záložku hry. Pokud iOS otevře jiný prohlížeč, zavři ho a ručně se vrať do původního prohlížeče.',
-  'wallet.manualReturnStandaloneHelp':
-    'Po schválení se vrať do World of ClaudeCraft z domovské obrazovky. Pokud iOS otevře prohlížeč, zavři ho a ručně znovu otevři aplikaci z domovské obrazovky.',
-  'wallet.mobileAppHelp':
-    'Zvol Phantom nebo Solflare. Tvoje aplikace peněženky požádá o schválení. Nechej tuto hru otevřenou a po dokončení se do ní vrať.',
-  'wallet.openAppButton': 'Otevřít {wallet}',
-  'wallet.openAppHelp':
-    'Otevři {wallet} pro kontrolu tohoto požadavku. Nechej tuto záložku hry otevřenou, zatímco je aplikace peněženky aktivní.',
-  'wallet.openAppTitle': 'Pokračovat v {wallet}',
-  'wallet.preparingAppButton': 'Připravuji {wallet}...',
-  'wallet.standaloneAppHelp':
-    'Připojení peněženky není zatím v aplikaci z domovské obrazovky dostupné. Otevři World of ClaudeCraft v Safari nebo Chrome pro použití Phantom nebo Solflare.',
-  'wallet.walletAppUnavailable': '{wallet} nelze připravit. Zavři toto okno a zkus to znovu.',
   'entities.abilities.primal_reflexes.description':
     'Tvoje instinkty se zostří a tvá šance na vyhnutí se útoku vzroste o 50 % po dobu 6 sekund.',
   'entities.abilities.primal_reflexes.name': 'Prvotní reflexy',
@@ -1075,7 +1023,6 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'guide.valeCupPage.spectateBody':
     'Na stadionu se hraje vždy jen jeden zápas a kdokoli může přijít a sledovat ho z tribun.',
   'hudChrome.keybinds.valecup': 'Pohár údolí',
-  'hudChrome.mobile.dailyRewards': 'Obchod',
   'hudChrome.perf.labels.predLead': 'Náskok predikce',
   'hudChrome.perf.labels.serverTick': 'Frekvence tiků serveru',
   'hudChrome.townFocus.budgetLabel': 'Zbývající body: {remaining} / {budget}',
@@ -2135,116 +2082,6 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
     'Vyrazí k nepříteli, vygeneruje 9 vzteku a omráčí ho na 1 s. Dosah 8-25 yardů.',
   'entities.abilities.bear_charge.description':
     'Vyrazí k nepříteli, vygeneruje 9 vzteku a omráčí ho na 1 s. Dosah 8-25 yardů. Pouze v medvědí podobě.',
-  'wallet.appConnected': 'Aplikace připojena',
-  'wallet.balanceAmount': '{amount} $WOC',
-  'wallet.balanceAria': 'Ověřený zůstatek peněženky Solana: {balance}',
-  'wallet.balancePreviewAria':
-    'Náhled zůstatku připojené peněženky: {balance}. Pro ověření odznaku držitele peněženku propoj.',
-  'wallet.balancePreviewTitle': 'Náhled zůstatku $WOC v připojené peněžence',
-  'wallet.balanceTitle': 'Ověřený zůstatek $WOC v peněžence Solana',
-  'wallet.connect': 'Ověřit peněženku',
-  'wallet.connectApp': 'Připojit aplikaci',
-  'wallet.connectAppAria': 'Připojit aplikaci peněženky v tomto prohlížeči',
-  'wallet.connectAppTitle': 'Připojit aplikaci peněženky v tomto prohlížeči',
-  'wallet.connectAria': 'Ověřit tvoji peněženku Solana',
-  'wallet.connectTitle': 'Ověřit tvoji peněženku Solana',
-  'wallet.connected': 'Připojeno: {address}',
-  'wallet.connectedLinked': 'Ověřeno: {address}',
-  'wallet.connectedLinkedWithBalance': 'Ověřeno: {balance} - {address}',
-  'wallet.connectedTitle': 'Připojeno. Přihlas se a propoj tuto peněženku se svým účtem.',
-  'wallet.connectedWithBalance': 'Připojeno: {balance} - {address}',
-  'wallet.extensionHelp':
-    'Aby se tu peněženka zobrazila, nech aktivní rozšíření prohlížeče, například Solflare Wallet.',
-  'wallet.flowConnect': 'Vyber peněženku. Ověření bude automaticky pokračovat.',
-  'wallet.flowSign':
-    'Podepiš ověřovací zprávu v aplikaci peněženky. Není potřeba žádná transakce ani SOL.',
-  'wallet.flowVerify': 'Ověřuje se vlastnictví peněženky...',
-  'wallet.helpDisconnected':
-    'Ověř peněženku Solana a zapni odznak držitele a odznaky na kartě hráče. Není potřeba žádná transakce ani SOL.',
-  'wallet.helpLinked':
-    'Výhody držitele jsou aktivní. Aplikace peněženky je v tomto prohlížeči připojena.',
-  'wallet.helpLinkedDisconnected':
-    'Výhody držitele jsou aktivní. Připoj aplikaci, až budeš potřebovat podepisovat nebo utrácet.',
-  'wallet.helpLinkedDisconnectedWithBalance':
-    'Výhody držitele jsou aktivní. Připoj aplikaci, až budeš potřebovat podepisovat nebo utrácet.',
-  'wallet.helpLinkedWithBalance':
-    'Výhody držitele jsou aktivní. Aplikace peněženky je v tomto prohlížeči připojena.',
-  'wallet.helpLoginToLink': 'Připojeno {address}. Přihlas se a propoj ji se svým účtem.',
-  'wallet.helpLoginToLinkWithBalance':
-    'Připojeno {address} se zůstatkem {balance}. Přihlas se a propoj ji se svým účtem.',
-  'wallet.helpReadyToLink':
-    'Vybraná peněženka: {address}. Jednou podepiš a ověř odznak držitele a karty hráče.',
-  'wallet.helpReadyToLinkWithBalance':
-    'Vybraná peněženka: {address} se zůstatkem {balance}. Jednou podepiš a ověř odznak držitele a karty hráče.',
-  'wallet.hiddenNotice':
-    'Řádek peněženky je skrytý. Znovu ho zapneš ve hře přes Možnosti > Rozhraní.',
-  'wallet.hide': 'Skrýt',
-  'wallet.hideAria': 'Skrýt řádek peněženky na této obrazovce',
-  'wallet.hideTitle': 'Skrýt řádek peněženky na této obrazovce',
-  'wallet.holder': 'držitel $WOC',
-  'wallet.holderTierTitle': 'Držitel $WOC: {tier}',
-  'wallet.holderTiers.coinbearer.flavor': 'První mince ve válečné truhle.',
-  'wallet.holderTiers.coinbearer.name': 'Nosič mincí',
-  'wallet.holderTiers.coppercrest.flavor': 'Měďáky se kupí a tvé jméno se šeptá.',
-  'wallet.holderTiers.coppercrest.name': 'Měděný erb',
-  'wallet.holderTiers.ember.flavor': 'Jiskra už hoří.',
-  'wallet.holderTiers.ember.name': 'Žhavý uhlík',
-  'wallet.holderTiers.gilded.flavor': 'Pozlacený a sebejistý.',
-  'wallet.holderTiers.gilded.name': 'Pozlacený',
-  'wallet.holderTiers.krakencrown.flavor': 'Korunován hlubinou: 4 % zásoby.',
-  'wallet.holderTiers.krakencrown.name': 'Koruna krakena',
-  'wallet.holderTiers.leviathan.flavor': 'Trhy cítí každý tvůj pohyb: 1 % zásoby.',
-  'wallet.holderTiers.leviathan.name': 'Leviatan',
-  'wallet.holderTiers.realmshaper.flavor': 'Přetváříš svět: 8 % zásoby.',
-  'wallet.holderTiers.realmshaper.name': 'Tvarovatel světa',
-  'wallet.holderTiers.silverbound.flavor': 'Spoutaný stříbrem, plnící měšec.',
-  'wallet.holderTiers.silverbound.name': 'Stříbrem spoutaný',
-  'wallet.holderTiers.sovereign.flavor': 'Svět kleká na koleno: celá zásoba.',
-  'wallet.holderTiers.sovereign.name': 'Suverén',
-  'wallet.holderTiers.starhoard.flavor': 'Pokladnice, která ohýbá světlo hvězd: 6 % zásoby.',
-  'wallet.holderTiers.starhoard.name': 'Hvězdný poklad',
-  'wallet.holderTiers.stormcaller.flavor': 'Bouře se stahují při tvém jménu: 3 % zásoby.',
-  'wallet.holderTiers.stormcaller.name': 'Volající bouři',
-  'wallet.holderTiers.tidelord.flavor': 'Příliv odpovídá na tvé volání: 2 % zásoby.',
-  'wallet.holderTiers.tidelord.name': 'Pán přílivu',
-  'wallet.holderTiers.titanforged.flavor': 'Kovaný mezi titány: 5 % zásoby.',
-  'wallet.holderTiers.titanforged.name': 'Titánsky kovaný',
-  'wallet.holderTiers.vaultwarden.flavor': 'Teď už střeží skutečný trezor: 0,01 % všech $WOC.',
-  'wallet.holderTiers.vaultwarden.name': 'Strážce trezoru',
-  'wallet.holderTiers.voidwarden.flavor': 'Strážce na okraji prázdnoty: 7 % zásoby.',
-  'wallet.holderTiers.voidwarden.name': 'Strážce prázdnoty',
-  'wallet.holderTiers.whale.flavor': 'Hlubiny se rozestupují, když plaveš: 0,1 % zásoby.',
-  'wallet.holderTiers.whale.name': 'Velryba',
-  'wallet.holderTiers.worldbearer.flavor': 'Neseš kus světa: 10 % zásoby.',
-  'wallet.holderTiers.worldbearer.name': 'Nosič světa',
-  'wallet.holderTiers.worldforger.flavor': 'Kuješ vlastní svět: 9 % zásoby.',
-  'wallet.holderTiers.worldforger.name': 'Kovář světa',
-  'wallet.label': '$WOC peněženka',
-  'wallet.linkFailed': 'Ověření peněženky selhalo.',
-  'wallet.linkTitle': 'Klikni, podepiš a propoj tuto peněženku se svým účtem.',
-  'wallet.linkedDisconnectedAria':
-    'Peněženka zůstává pro tvůj účet ověřená. Znovu se připoj, pokud chceš spravovat aplikaci peněženky.',
-  'wallet.linkedDisconnectedTitle':
-    'Peněženka zůstává pro tvůj účet ověřená. Znovu se připoj, pokud chceš spravovat aplikaci peněženky.',
-  'wallet.linkedTitle': 'Peněženka je ověřená pro tvůj účet. Klikni pro správu aplikace peněženky.',
-  'wallet.signOut': 'Odpojit',
-  'wallet.signOutAria': 'Odpojit aplikaci peněženky v tomto prohlížeči',
-  'wallet.signOutTitle': 'Odpojit aplikaci peněženky v tomto prohlížeči',
-  'wallet.switch': 'Změnit',
-  'wallet.switchAria': 'Ověřit jinou peněženku',
-  'wallet.switchTitle': 'Ověřit jinou peněženku',
-  'wallet.unlink': 'Odpojit od účtu',
-  'wallet.unlinkAria': 'Odebrat ověření peněženky z tohoto účtu',
-  'wallet.unlinkFailed': 'Peněženku se nepodařilo odpojit od účtu.',
-  'wallet.unlinkTitle': 'Odebrat ověření peněženky z tohoto účtu',
-  'wallet.verify': 'Ověřit peněženku',
-  'wallet.verifyAddressAria': 'Podepsat a ověřit peněženku {address} pro tvůj účet',
-  'wallet.verifyAria': 'Vyber peněženku a jednou podepiš pro ověření vlastnictví',
-  'wallet.verifyFailed': 'Ověření peněženky selhalo.',
-  'wallet.verifyNew': 'Ověřit novou peněženku',
-  'wallet.verifyTitle': 'Vyber peněženku a jednou podepiš pro ověření vlastnictví.',
-  'wallet.verifying': 'Ověřuje se...',
-  'wallet.verifyingTitle': 'Ověření peněženky probíhá.',
   'playerCard.actionCopyReferral': 'Kopírovat doporučovací odkaz',
   'playerCard.actionDownload': 'Stáhnout',
   'playerCard.actionShareNative': 'Sdílet...',
@@ -2273,8 +2110,7 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'playerCard.renderFailedStatus': 'Vykreslení karty selhalo.',
   'playerCard.shareButton': 'Sdílet kartu hráče',
   'playerCard.shareText':
-    'Kuji svou legendu ve World of ClaudeCraft: úroveň {level} {className}{tierBit}. Přidej se do mého světa:',
-  'playerCard.shareTierBit': ', držitel $WOC stupně {tier}',
+    'Kuji svou legendu ve World of ClaudeCraft: úroveň {level} {className}. Přidej se do mého světa:',
   'playerCard.statusDownloaded': 'Karta stažena.',
   'playerCard.statusGenericError': 'Něco se pokazilo.',
   'playerCard.statusOpenedXWithImage': 'Otevřeno X. Vlož obrázek karty do příspěvku.',
@@ -3759,63 +3595,6 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'hudChrome.perf.units.mb': '{value} MB',
   'hudChrome.perf.units.memPair': '{used} / {limit} MB',
   'hudChrome.perf.units.ms': '{value} ms',
-  'hudChrome.dailyRewards.close': 'Zavřít denní odměny',
-  'hudChrome.dailyRewards.disclaimer':
-    'Cena WOC se může rychle měnit. Doporučujeme držet víc než minimálních 20 USD, aby tě běžné cenové výkyvy neuzamkly ven. Toto není finanční rada.',
-  'hudChrome.dailyRewards.endsIn': 'Končí za {time}',
-  'hudChrome.dailyRewards.error': 'Denní odměny se nepodařilo načíst.',
-  'hudChrome.dailyRewards.hideChestButton': 'Skrýt truhlu',
-  'hudChrome.dailyRewards.hideChestConfirmBody':
-    'Tímto se z HUDu odebere zkratka truhly. Odměny, způsobilost i tento panel zůstanou dostupné; zkratku můžeš vrátit v Možnostech.',
-  'hudChrome.dailyRewards.hideChestConfirmCancel': 'Zrušit',
-  'hudChrome.dailyRewards.hideChestConfirmOk': 'Skrýt truhlu',
-  'hudChrome.dailyRewards.hideChestConfirmTitle': 'Skrýt truhlu denních odměn?',
-  'hudChrome.dailyRewards.history': 'Minulí vítězové',
-  'hudChrome.dailyRewards.intro':
-    'Drž dost WOC v ověřené peněžence a odemkni denní odměny. Získávej body jedním denním zatočením a rotujícími úkoly, potom stoupej v denním žebříčku o podíl z prize poolu.',
-  'hudChrome.dailyRewards.leaderboard': 'Denní žebříček',
-  'hudChrome.dailyRewards.loading': 'Načítají se denní odměny...',
-  'hudChrome.dailyRewards.noHistory': 'Zatím žádné výplaty.',
-  'hudChrome.dailyRewards.noLeaders': 'Zatím žádné body.',
-  'hudChrome.dailyRewards.pointsGained': 'Získáno {points} bodů denních odměn.',
-  'hudChrome.dailyRewards.prize': 'Prize pool',
-  'hudChrome.dailyRewards.reason.eligible': 'Odměny odemčeny.',
-  'hudChrome.dailyRewards.reason.no_wallet': 'Připoj peněženku s alespoň 20 USD ve WOC.',
-  'hudChrome.dailyRewards.reason.price_unavailable':
-    'Cena WOC není dostupná, odměny jsou dočasně uzamčené.',
-  'hudChrome.dailyRewards.reason.under_minimum': 'Peněženka je pod minimem 20 USD ve WOC.',
-  'hudChrome.dailyRewards.remainingHoursMinutes': '{hours} h {minutes} min',
-  'hudChrome.dailyRewards.remainingLessThanMinute': '<1 min',
-  'hudChrome.dailyRewards.remainingMinutes': '{minutes} min',
-  'hudChrome.dailyRewards.reset': 'Reset',
-  'hudChrome.dailyRewards.score': 'Skóre',
-  'hudChrome.dailyRewards.showChestButton': 'Zobrazit truhlu',
-  'hudChrome.dailyRewards.sol': '{amount} SOL',
-  'hudChrome.dailyRewards.spinButton': 'Zatočit',
-  'hudChrome.dailyRewards.spinClaimed': 'Vyzvednuto: +{points} bodů.',
-  'hudChrome.dailyRewards.spinClose': 'Zavřít denní zatočení',
-  'hudChrome.dailyRewards.spinDialogTitle': 'Denní zatočení odměn',
-  'hudChrome.dailyRewards.spinReady': 'Jedno zatočení je připravené.',
-  'hudChrome.dailyRewards.spinResult': '+{points} bodů',
-  'hudChrome.dailyRewards.spinTitle': 'Denní zatočení',
-  'hudChrome.dailyRewards.taskMultiplier': 'násobitel x{multiplier}',
-  'hudChrome.dailyRewards.oneVsOneExcluded': 'Zápasy 1 proti 1 neudělují body denních odměn.',
-  'hudChrome.dailyRewards.tasks': 'Úkoly',
-  'hudChrome.dailyRewards.title': 'Denní odměny',
-  'hudChrome.dailyRewards.disabled':
-    'Denní odměny jsou momentálně vypnuté. Novinky o této funkci oznámíme na kanálu Discord.',
-  'hudChrome.dailyRewards.totalPlayer': '{count} hráč dnes',
-  'hudChrome.dailyRewards.totalPlayers': '{count} hráčů dnes',
-  'hudChrome.dailyRewards.unknown': 'Neznámé',
-  'hudChrome.dailyRewards.usd': '{amount} USD',
-  'hudChrome.dailyRewards.walletConnectBody': 'Ověř peněženku Solana s WOC a odemkni denní odměny.',
-  'hudChrome.dailyRewards.walletConnectButton': 'Ověřit peněženku',
-  'hudChrome.dailyRewards.walletConnectTitle': 'Ověřit peněženku',
-  'hudChrome.dailyRewards.walletHoldBody':
-    'Drž alespoň {amount} USD ve WOC a odemkni denní odměny.',
-  'hudChrome.dailyRewards.walletHoldTitle': 'Drž WOC',
-  'hudChrome.dailyRewards.walletPriceBody': 'Cena WOC teď není dostupná. Vrať se za chvíli.',
-  'hudChrome.dailyRewards.walletValue': 'Hodnota peněženky (WOC)',
   'hudChrome.mailbox.arrivedBanner': 'Havran přistál: pošta od {name}.',
   'hudChrome.mailbox.arrivedLog': 'Máš novou poštu od {name}.',
   'hudChrome.mailbox.attachmentsBadge': 'Balík přiložen',
@@ -3984,14 +3763,12 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
     'Drží kurzor myši uvnitř okna při tažení pro otáčení kamery, takže nemůže dojet k okraji obrazovky ani na jiný monitor. Vypni, pokud chceš volný kurzor.',
   'hudChrome.options.lockCursorOnRotate': 'Zamknout kurzor při otáčení',
   'hudChrome.options.playerFrameScale': 'Měřítko rámu hráče',
-  'hudChrome.options.showDailyRewardsChest': 'Zobrazit truhlu denních odměn',
   'hudChrome.options.showDevBadges': 'Zobrazit vývojářské odznaky',
   'hudChrome.options.showItemLevel': 'Zobrazit úroveň předmětu',
   'hudChrome.options.showOwnNameplate': 'Zobrazit mou jmenovku',
   'hudChrome.options.showPlayerNameplates': 'Zobrazit jmenovky hráčů',
   'hudChrome.options.showSecondaryActionBar': 'Zobrazit sekundární akční lištu',
   'hudChrome.options.showWalletOnCharacterScreen': 'Zobrazit peněženku na obrazovce postavy',
-  'hudChrome.options.showWalletOnPlayerCard': 'Zobrazit peněženku na kartě hráče',
   'hudChrome.options.startAttackOnAbility': 'Automatický útok při použití schopnosti',
   'hudChrome.options.targetFrameScale': 'Měřítko rámu cíle',
   'hudChrome.options.uiScale': 'Měřítko UI',
@@ -4360,7 +4137,6 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'hudChrome.loot.takeLootButton': 'Sebrat kořist',
   'hudChrome.loot.takeLootTooltip': 'Sebrat veškerou kořist',
   'hudChrome.loot.unifiedPressHint': 'Stiskni pro sebrání',
-  'hudChrome.playerCard.showWalletBadge': 'Zobrazit odznak peněženky',
   'hudChrome.rest.resting': 'Odpočinek',
   'hudChrome.spectate.banner': 'Sleduješ {name}',
   'hudChrome.talents.defaultBuildName': 'Sestava {n}',
@@ -7970,7 +7746,6 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'hudChrome.auth.appleChoiceIntro': 'Vytvoř nový účet, nebo propoj Apple s účtem, který už máš.',
   'hudChrome.auth.appleError': 'Přihlášení přes Apple se nezdařilo. Zkus to znovu.',
   'hudChrome.auth.appleLoginCta': 'Pokračovat přes Apple',
-  'hudChrome.dailyRewards.reason.banned': 'Máš zákaz účasti v denních odměnách. Důvod: {reason}',
   'hudChrome.keybinds.categoryPet': 'Mazlíček',
   'hudChrome.keybinds.petAggressive': 'Mazlíček: Agresivní',
   'hudChrome.keybinds.petAttack': 'Mazlíček: Útok',
@@ -8186,53 +7961,6 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.fury.greeting': 'Písky si pamatují každé vítězství. Utrácej svou čest moudře.',
   'entities.npcs.fury.name': 'FÚRIE',
   'entities.npcs.fury.title': 'Intendant cti',
-  'hudChrome.claudium.amountLabel': 'Množství',
-  'hudChrome.claudium.balanceLabel': 'Zůstatek',
-  'hudChrome.claudium.balanceUnit': '{amount} Claudium',
-  'hudChrome.claudium.buyButton': 'Koupit',
-  'hudChrome.claudium.buyTitle': 'Koupit Claudium',
-  'hudChrome.claudium.buyUnavailable': 'Nákup nyní není dostupný.',
-  'hudChrome.claudium.checkoutClose': 'Zavřít platbu',
-  'hudChrome.claudium.checkoutFailed': 'Platbu se nepodařilo načíst. Zkus to znovu.',
-  'hudChrome.claudium.checkoutLoading': 'Načítání platby…',
-  'hudChrome.claudium.checkoutNotSettled':
-    'Transakce byla odeslána, ale Claudium zatím nebylo připsáno. Zkus to za chvíli znovu.',
-  'hudChrome.claudium.checkoutPending':
-    'Transakce probíhá. Potvrď ji v peněžence a nech tento panel otevřený.',
-  'hudChrome.claudium.checkoutPendingButton': 'Zpracovává se',
-  'hudChrome.claudium.checkoutTitle': 'Dokončit nákup',
-  'hudChrome.claudium.checkoutUnavailable': 'Tento nákup Claudium nyní není dostupný.',
-  'hudChrome.claudium.checkoutWalletRequired':
-    'Před nákupem Claudium za kryptoměnu připoj peněženku Solana.',
-  'hudChrome.claudium.checkoutWalletUnsupported':
-    'Tato peněženka neumí podepisovat a odesílat transakce Solana.',
-  'hudChrome.claudium.close': 'Zavřít Claudium',
-  'hudChrome.claudium.disclosure':
-    'Claudium je jednosměrná herní měna: kupuje se za peníze a utrácí za kosmetické předměty. Nelze ji směnit zpět, převést ani vyplatit v hotovosti.',
-  'hudChrome.claudium.hideAmounts': 'Skrýt další nabídky Claudium',
-  'hudChrome.claudium.kindCosmetic': 'Kosmetika',
-  'hudChrome.claudium.kindItem': 'Předmět',
-  'hudChrome.claudium.kindSkin': 'Vzhled',
-  'hudChrome.claudium.loading': 'Načítání Claudium…',
-  'hudChrome.claudium.open': 'Otevřít Claudium',
-  'hudChrome.claudium.railLabel': 'Způsob platby',
-  'hudChrome.claudium.railNativeUnavailable': 'SOL/WOC nedostupné',
-  'hudChrome.claudium.railSol': 'SOL',
-  'hudChrome.claudium.railStripe': 'Karta',
-  'hudChrome.claudium.railWoc': 'WOC',
-  'hudChrome.claudium.railWocDiscount': 'Sleva 20 %',
-  'hudChrome.claudium.railWocUnavailable': 'Cena ve WOC nyní není dostupná.',
-  'hudChrome.claudium.showAmounts': 'Zobrazit všechny nabídky Claudium',
-  'hudChrome.claudium.skuRow': '{claudium} Claudium za {usd}',
-  'hudChrome.claudium.solBalance': 'SOL: {amount}',
-  'hudChrome.claudium.spendButton': 'Uplatnit',
-  'hudChrome.claudium.storeCost': '{amount} Claudium',
-  'hudChrome.claudium.storeEmpty': 'Žádná kosmetika nyní není dostupná.',
-  'hudChrome.claudium.storeTitle': 'Obchod s kosmetikou',
-  'hudChrome.claudium.title': 'Claudium',
-  'hudChrome.claudium.unavailable':
-    'Obchod Claudium nyní není dostupný. Tvůj zůstatek ani nákupy to neovlivní, zkus to za chvíli znovu.',
-  'hudChrome.claudium.wocBalance': 'WOC: {amount}',
   'hudChrome.deeds.openBookHint': 'Otevřít Knihu skutků',
   'hudChrome.statInfo.desc.warfare':
     'Zvýší poškození způsobené hráčům o {increase} % a sníží poškození utrpěné od hráčů o {reduction} %.',
@@ -8257,201 +7985,6 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaComplete': 'Dokončení Fiesty',
   'hudChrome.warfare.reasons.fiestaKill': 'Vyřazení ve Fiestě',
   'hudChrome.warfare.reasons.fiestaWin': 'Vítězství ve Fiestě',
-  'hudChrome.wocStore.applied': 'Použito',
-  'hudChrome.wocStore.apply': 'Použít vzhled',
-  'hudChrome.wocStore.armoryBody':
-    'Omezené vzhledy zbraní ze Zbrojnice 1. sezóny. Platí pro celý účet, jsou čistě kosmetické a uvidí je všichni kolem tebe.',
-  'hudChrome.wocStore.armoryEyebrow': '1. sezóna',
-  'hudChrome.wocStore.armoryTitle': 'Zbrojnice',
-  'hudChrome.wocStore.badge.flagship': 'Vlajkový',
-  'hudChrome.wocStore.badge.hero': 'Hrdinský',
-  'hudChrome.wocStore.balance': 'Zůstatek Claudium',
-  'hudChrome.wocStore.buyClaudium': 'Koupit Claudium',
-  'hudChrome.wocStore.buySkin': 'Koupit vzhled',
-  'hudChrome.wocStore.cancel': 'Zrušit',
-  'hudChrome.wocStore.close': 'Zavřít obchod WOC',
-  'hudChrome.wocStore.collectionLine': 'Kolekce {collection}',
-  'hudChrome.wocStore.collections.emberwrought': 'Žárem kované',
-  'hudChrome.wocStore.collections.fallen_star': 'Padlá hvězda',
-  'hudChrome.wocStore.collections.guildmark': 'Cechovní značka',
-  'hudChrome.wocStore.collections.hoarfrost': 'Jinovatka',
-  'hudChrome.wocStore.confirmBody': 'Koupit {item} za {cost} Claudium?',
-  'hudChrome.wocStore.confirmPurchase': 'Koupit',
-  'hudChrome.wocStore.confirmTitle': 'Potvrdit nákup kosmetiky',
-  'hudChrome.wocStore.detach': 'Odebrat vzhled',
-  'hudChrome.wocStore.equipHint': 'Tento vzhled lze použít po nasazení předmětu typu {type}.',
-  'hudChrome.wocStore.error': 'Obchod WOC nyní není dostupný. Zkus to za chvíli znovu.',
-  'hudChrome.wocStore.inspectAria': 'Prohlédnout {item}',
-  'hudChrome.wocStore.loading': 'Načítání obchodu WOC…',
-  'hudChrome.wocStore.lore': 'Příběh',
-  'hudChrome.wocStore.needMoreBody':
-    'K nákupu předmětu {item} potřebuješ ještě {shortfall} Claudium.',
-  'hudChrome.wocStore.needMoreTitle': 'Je potřeba více Claudium',
-  'hudChrome.wocStore.owned': 'Vlastníš',
-  'hudChrome.wocStore.priceChanged':
-    'Cena se před dokončením nákupu změnila. Zkontroluj novou cenu a nákup znovu potvrď.',
-  'hudChrome.wocStore.rarity.epic': 'Epický',
-  'hudChrome.wocStore.rarity.legendary': 'Legendární',
-  'hudChrome.wocStore.rarity.rare': 'Vzácný',
-  'hudChrome.wocStore.rarity.uncommon': 'Neobvyklý',
-  'hudChrome.wocStore.rewardsTab': 'Denní odměny',
-  'hudChrome.wocStore.scene.day': 'Den',
-  'hudChrome.wocStore.scene.dusk': 'Soumrak',
-  'hudChrome.wocStore.scene.night': 'Noc',
-  'hudChrome.wocStore.sceneLabel': 'Osvětlení scény',
-  'hudChrome.wocStore.seasonOne': '1. sezóna',
-  'hudChrome.wocStore.skins.ashspark_dagger.look':
-    'Krátká černěná čepel protkaná žhavě oranžovými žilkami, v hlavici drobný doutnající drahokam, popel a jiskry.',
-  'hudChrome.wocStore.skins.ashspark_dagger.lore':
-    'Čepel ze zadní uličky, v jejímž kameni hlavice je propašovaný horský oheň. Tichý žert zbrojíře: i kapsář může nosit uhlík prvního kování. Je černěná, protkaná oranžovými žilkami a v pochvě vždy o něco teplejší, než by měla být. Tas ji za tmy pod Highwatchem a záře ti osvítí ruku právě natolik, abys našel mezeru v soupeřově krytu.',
-  'hudChrome.wocStore.skins.ashspark_dagger.name': 'Popelojiskrná kudla',
-  'hudChrome.wocStore.skins.astravyr_dagger.look':
-    'Úlomek padlé hvězdy s roztaveně zlatým ostřím na kosmicky černém kovu, kolem hlavice obíhá jasná hvězdná jiskra a za čepelí zůstává tenká stopa polární záře.',
-  'hudChrome.wocStore.skins.astravyr_dagger.lore':
-    'Nejmenší kus hvězdy, který Aldric vytáhl z kráteru, a podle některých také nejnebezpečnější. Jediný střípek onoho nadpozemského srdce, roztaveně zlaté ostří na kosmicky černém kovu a osamělá hvězdná jiskra kroužící kolem hlavice jako měsíc, který ztratil svůj svět. Téměř nic neváží a téměř vše rozřízne. Je dost malý, aby se ukryl, a dost jasný, aby se ve tmě našel podle vlastního světla.',
-  'hudChrome.wocStore.skins.astravyr_dagger.name': 'Astravyr, tesák padlé hvězdy',
-  'hudChrome.wocStore.skins.brasscap_axe.look':
-    'Leštěné ocelové ostří, mosazná hlavice a výztuhy na lakovaném jasanovém topůrku, úhledné ovinutí a značka výrobce.',
-  'hudChrome.wocStore.skins.brasscap_axe.lore':
-    'Sekera se značkou je chlouba, kterou můžeš držet v ruce. Mosazná hlavice a výztuhy jsou napůl zbrojí a napůl podpisem: chrání topůrko před rozštípnutím a zachytávají světlo hospody, aby každý viděl, že sis koupil práci zbrojíře Hodea, ne odloženou výzbroj milice. „Když to seká, prodávám to,“ říká kovář z Highwatche. Tahle seká.',
-  'hudChrome.wocStore.skins.brasscap_axe.name': 'Sekyrka s mosaznou hlavicí',
-  'hudChrome.wocStore.skins.brasscrown_staff.look':
-    'Hůl z tvrdého dřeva zakončená soustruženou mosaznou korunou, mosaznou botkou a páskem barvené kůže.',
-  'hudChrome.wocStore.skins.brasscrown_staff.lore':
-    'Je vysoustružená z vyzrálého tvrdého dřeva a korunovaná mosaznou hlavicí, jakých eastbrookští kováři odlévají stovky, ale každou dovedou k dokonalosti. Patří cestovateli, který chce budit respekt u brány Fenbridge stejně jako u zdi Highwatche. Vycházková hůl, která nikdy doopravdy chodit nemusela. Barvený kožený pásek ladí s kabátem, jehož cenu si snadno domyslíš.',
-  'hudChrome.wocStore.skins.brasscrown_staff.name': 'Vycházková hůl s mosaznou korunou',
-  'hudChrome.wocStore.skins.cinderbrand_sword.look':
-    'Tmavá čepel z kované oceli, žlábek vyplněný žhavě oranžovými runami, praskliny od žáru a v záštitě doutnající drahokam.',
-  'hudChrome.wocStore.skins.cinderbrand_sword.lore':
-    'První čepel zakalená nikoli ve vodě, ale v Požehnaných uhlících vyhrabaných na Bouřném štítu. Kováři z Highwatche přísahají, že ty uhlíky „hoří modře a čistě, protože hora pamatuje svou dávnou přísahu“. Oheň uložený do žlábku doutná oranžově a neumírá. Runy hřejí do holé dlaně i za nejchladnější noci na zdi. Žhavou značku není třeba zapalovat. Ona zkrátka odmítá zhasnout.',
-  'hudChrome.wocStore.skins.cinderbrand_sword.name': 'Žhavá značka',
-  'hudChrome.wocStore.skins.cinderlatch_crossbow.look':
-    'Kuše z černěné oceli, z prasklin lučiště prosakuje žhavě oranžové světlo a v pažbě doutná uhlík.',
-  'hudChrome.wocStore.skins.cinderlatch_crossbow.lore':
-    'Nejpodivnější ze žárem kovaných zbraní: horský oheň nalitý do stroje. Z prasklin lučiště prosakuje oranžová záře a doutnající uhlík v pažbě brání tětivě ztuhnout v chladu Thornpeaku i vlhku Mirefenu. Šipky opouštějí drážku už teplé a dopadají ještě teplejší. Odpověď lovce na zeď, u níž ani nepřítel necítí chlad.',
-  'hudChrome.wocStore.skins.cinderlatch_crossbow.name': 'Žhavý zámek',
-  'hudChrome.wocStore.skins.cosmarch_staff.look':
-    'Kolem roztaveně zlatého jádra obíhá shluk zlatých hvězdných střepů, kosmicky černý dřík je leptaný souhvězdími a vzhůru se vinou stuhy polární záře.',
-  'hudChrome.wocStore.skins.cosmarch_staff.lore':
-    'Dřík z hvězdného kovu korunovaný roztaveně zlatým jádrem a prstencem zlatých střepů, které kolem něj kráčejí po pomalé, nekonečné oběžné dráze. Malý vesmír, vyrytý souhvězdími, jež neodpovídají žádné obloze nad Thornpeakem. Polární záře stoupá po celé délce jako kouř, který zapomněl stoupat. Ti, kdo hůl nesli, tvrdili, že v ní cítili otáčení prázdnoty, stejně jako Ysoleino pleso „pije měsíční světlo“: trpělivě, chladně a s pohledem upřeným zpět.',
-  'hudChrome.wocStore.skins.cosmarch_staff.name': 'Kosmopochod, věž nekonečné prázdnoty',
-  'hudChrome.wocStore.skins.emberbite_axe.look':
-    'Sekera z černěného železa s žhavě oranžovými prasklinami v ostří, drahokamem připomínajícím doutnající uhlík a chvějícím se horkým vzduchem.',
-  'hudChrome.wocStore.skins.emberbite_axe.lore':
-    'Zbrojíř Hode zasadil do srdce ostří živý uhlík horského ohně, takže čepel mezi údery nikdy zcela nevychladne. Praskliny při švihu vydechnou oranžovou záři, jako by rána budila něco, co první kování zanechalo spát v železe. Říká se, že uhlík odevzdal elementál z Bouřného štítu. Když se na Highwatchi zvedne vítr, říká se mnoho věcí.',
-  'hudChrome.wocStore.skins.emberbite_axe.name': 'Uhlíkový skus',
-  'hudChrome.wocStore.skins.emberwish_wand.look':
-    'Zajatá roztaveně zlatá jiskra umírající hvězdy zahalená obíhajícími jiskrami, kosmicky černý dřík je leptaný zářícími souhvězdími.',
-  'hudChrome.wocStore.skins.emberwish_wand.lore':
-    'Ne samotná padlá hvězda, ale poslední jiskra umírající: jediný roztaveně zlatý uhlík slunce, které už vyhaslo, obklopený jiskrami jeho posledního světla. Kosmicky černý dřík nese souhvězdí, která sledovala jeho smrt. Sedláci z Mirefenu tvrdí, že za pravého soumraku splní svému držiteli jedno přání. Také tvrdí, že každá duše, která jej držela, si přála více času a Utopený měsíc žádné z nich nevyhověl.',
-  'hudChrome.wocStore.skins.emberwish_wand.name': 'Žhavé přání, jiskra umírajícího slunce',
-  'hudChrome.wocStore.skins.emberwrought_wand.look':
-    'Hůlka z černěného kovu zakončená žhavým uhlíkem sevřeným železnými drápy, jemné praskliny od žáru a teplé vnitřní světlo.',
-  'hudChrome.wocStore.skins.emberwrought_wand.lore':
-    'Hůlka, která dala jméno celé třídě. Když zbrojíř z Highwatche poprvé sevřel uhlík horského ohně do železných drápů a přiměl jej poslouchat smrtelnou ruku, dokonce i kněží Světla tomu přestali říkat kacířství a začali tomu říkat užitečný nástroj. Je teplá, trpělivá a tiše nebezpečná. Uhlík na jejím konci hoří bez přestání od doby před prvním nádechem jejího majitele.',
-  'hudChrome.wocStore.skins.emberwrought_wand.name': 'Žárem kovaná hůlka',
-  'hudChrome.wocStore.skins.encore_bow.look':
-    'Komicky přerostlé hvězdné dělo: kosmicky černá hlaveň leptaná zlatými souhvězdími, rozšířené ústí se vsazeným roztaveně zlatým kometovým nábojem, mosazné kování a dřevěná ramenní pažba.',
-  'hudChrome.wocStore.skins.encore_bow.lore':
-    'Kováři, kteří opracovali padlou hvězdu, z ní vytvořili šest relikvií a stále jim zbývalo hvězdného kovu na celou hlaveň. Učni už tou dobou měli vlastní nápady. Z kovadliny vzešla buď první palná zbraň říše, nebo její nejmenší obléhací stroj: ramenní dělo, které ani tak nevystřeluje, jako spíš žádá o druhou hvězdu, tentokrát zamířenou. Bratr Aldric je odmítl požehnat s tím, že něčeho tak hlasitého si nebesa jistě všimla sama. Lovci je zbožňují. Nikdo, kdo mu stál v cestě, ještě ne.',
-  'hudChrome.wocStore.skins.encore_bow.name': 'Přídavek, druhá padající hvězda',
-  'hudChrome.wocStore.skins.everwinter_wand.look':
-    'Jediný hrot zářícího azurového ledovcového ledu, ze stříbrné objímky kvete jinovatka a kolem se drží slabá chladná mlha.',
-  'hudChrome.wocStore.skins.everwinter_wand.lore':
-    'Hrot zářícího ledovcového ledu, údajně odlomený z hlubokého plesa pod Svatyní, kde má horský chlad zuby. Ze stříbrné objímky bez ustání kvete jinovatka a nikdy netaje, ani v ohni, ani v létě. Mágové jej drží blízko kvůli chladu, který propůjčuje jejich kouzlům. Za nocí, kdy se zdá, že se naklání k Nythraxisově kryptě a naslouchá, jej raději drží dál od sebe.',
-  'hudChrome.wocStore.skins.everwinter_wand.name': 'Střep věčné zimy',
-  'hudChrome.wocStore.skins.fletcher_s_guild_bow.look':
-    'Lakovaný ořechový reflexní luk, mosazné konce ramen, tětiva z voskovaného lnu a cechovní značka na středu.',
-  'hudChrome.wocStore.skins.fletcher_s_guild_bow.lore':
-    'Nejblíž skutečnému cechu má v říši značka šípaře na středu luku. Je to slib o tom, co se skrývá uvnitř, podobně jako vinařova pečeť na sudu. Lakovaný ořech, mosaz na koncích ramen a tětiva z voskovaného lnu, která se neroztřepí ani v mirefenském dešti. Každý spoj obhajuje svou cenu. Jednou jej napni za Vdoviným houštím a spor je rozhodnut.',
-  'hudChrome.wocStore.skins.fletcher_s_guild_bow.name': 'Luk cechu šípařů',
-  'hudChrome.wocStore.skins.forgeheart_staff.look':
-    'Železem okovaná hůl korunovaná klecí se zářícím žhavým jádrem, po dříku stoupají ohnivé runy a nad ním se chvěje horký vzduch.',
-  'hudChrome.wocStore.skins.forgeheart_staff.lore':
-    'Živý uhlík horského ohně uvězněný v železe na vrcholu hole. Kronikář Caddis jej považuje za důkaz, že oheň prvního kování lze spoutat ke službě, nejen k pečetění. V tenké, nekonečné stuze z něj stoupá chvění horkého vzduchu. Mág, který jej nese, nepotřebuje výheň ani strážní oheň. Šeptá se, že uhlík pochází z vlastního dechu Voskara Žhavokřídlého a od té doby nevychladl.',
-  'hudChrome.wocStore.skins.forgeheart_staff.name': 'Hůl srdce výhně',
-  'hudChrome.wocStore.skins.frostbite_dagger.look':
-    'Zlověstně tenká dýka z čirého modrého ledu, středem vede zářící azurová žíla, ostří lemují jehličky mrazu a jílec pokrývá jinovatka.',
-  'hudChrome.wocStore.skins.frostbite_dagger.lore':
-    'Tenká jako zadržený dech a dvakrát chladnější. Střep thornpeakského ledovce vybroušený do jediné zářící žíly, tak ostrý, že rána zamrzne dřív, než si krev vzpomene téct. Jméno si vypůjčila od hrobového chladu, který mrtví snášejí z vrcholků. Nikdy nepotřebuje brousit. Led se netupí, podotýká suše kronikář Caddis, jen čeká.',
-  'hudChrome.wocStore.skins.frostbite_dagger.name': 'Jehla jinovatky',
-  'hudChrome.wocStore.skins.glaciersplit_axe.look':
-    'Hlava z průsvitného modrého ledovcového ledu, popraskané nitro září azurově, kolem trčí krystaly mrazu a za topůrkem se táhne studená pára.',
-  'hudChrome.wocStore.skins.glaciersplit_axe.lore':
-    'Vytesaná z modrého srdce thornpeakského ledovce, kde dvě století ledu stlačovala chlad, až začal sám zářit. I v klidu za ní táhne pára a praskot jejího dopadu zní jako rozsedlina otevírající se pod Stopařovým hřebenem. Highwatch své padlé odevzdává ledu tam nahoře. Tato zbraň má udržet oblevu a vše, co by obleva mohla probudit, v bezpečné vzdálenosti.',
-  'hudChrome.wocStore.skins.glaciersplit_axe.name': 'Štěpič ledovců',
-  'hudChrome.wocStore.skins.guildmark_arming_sword.look':
-    'Modřená ocelová čepel, bronzová záštita ve tvaru rybího ocasu, rukojeť z modrozelené kůže a drobná vyražená cechovní značka.',
-  'hudChrome.wocStore.skins.guildmark_arming_sword.lore':
-    'Zatímco běžná kovaná čepel zůstává bezejmenná, tato je podepsaná. Zbrojíř získá právo vyrazit svou značku k záštitě teprve tehdy, když se za jeho ocel zaručí obchodník Světového trhu, a za značku kováře Haldrena se zaručil. Modřená proti vlhku údolí a vyvážená na vlásek. Za značku platíš stejně jako za meč a stojí to za to.',
-  'hudChrome.wocStore.skins.guildmark_arming_sword.name': 'Poboční meč s cechovní značkou',
-  'hudChrome.wocStore.skins.guildmark_dirk.look':
-    'Štíhlá dýka z kalené oceli, bronzová záštita a matice hlavice, rukojeť ovinutá tmavozelenou šňůrou a vyražená značka.',
-  'hudChrome.wocStore.skins.guildmark_dirk.lore':
-    'Tohle nosí vážený muž, když meč zůstane doma. Štíhlá kalená čepel se stejnou značkou, která potvrzuje kvalitu celého meče, zavěšená u pasu jako pečetní prsten s ostřím. Nenápadná pro každého kromě těch, kdo umějí číst zbrojířův důkaz. Intendantka Bree jich na Highwatchi schovává zásuvku pro důstojníky, kteří si vysloužili úctu zdi.',
-  'hudChrome.wocStore.skins.guildmark_dirk.name': 'Dýka s cechovní značkou',
-  'hudChrome.wocStore.skins.hoarfrost_vigil_staff.look':
-    'Postříbřená hůl korunovaná volně plovoucím, pomalu se otáčejícím střepem zářícího azurového ledu, z něhož vyrůstají krystaly a proudí chladná pára.',
-  'hudChrome.wocStore.skins.hoarfrost_vigil_staff.lore':
-    'Hůl hlídky, která na zdi Highwatche nikdy nespí. Její korunou je střep azurového ledu z plesa, který se vznáší bez dotyku se stříbrem a pomalu se otáčí vlastní silou. Stráž přísahá, že vždy míří k chladu shromažďujícímu se pod vrcholky. Nést Stráž znamená odsloužit dvě stě let hlídky za jedinou noc a slíbit, že neodvrátíš zrak.',
-  'hudChrome.wocStore.skins.hoarfrost_vigil_staff.name': 'Jinovatková stráž',
-  'hudChrome.wocStore.skins.ice_fang_sword.look':
-    'Zakřivená čepel z bledého ledovcového ledu, podél hřbetu zubaté krystaly jinovatky, ve žlábku zářící azurové zmrzlé jádro a záštita z rampouchů.',
-  'hudChrome.wocStore.skins.ice_fang_sword.lore':
-    'Vlajková zbraň zmrzlé kolekce a kus, po kterém každý sběratel sáhne jako první. Ledový tesák nebyl vykován, ale vyřezán z výběžku ledovce, který korunuje Thornpeak nad Highwatchem. Jeho azurové jádro plane chladem jako světlo Třpytivého plesa. Jinovatkou pokrývá i vzduch, který rozsekne. Strážci zdi přísahají, že jej jeden voják nesl v noci, kdy vysoký sníh zadržel kult draka, a „koupil zdi jednu zimu“.',
-  'hudChrome.wocStore.skins.ice_fang_sword.name': 'Ledový tesák',
-  'hudChrome.wocStore.skins.lacquered_wand.look':
-    'Štíhlá hůlka s hluboce červeným lakem, dvěma pásky leštěné mosazi a drobnou zaoblenou mosaznou špičkou.',
-  'hudChrome.wocStore.skins.lacquered_wand.lore':
-    'Sedm trpělivých vrstev hluboce červeného laku, dvakrát obepnutých leštěnou mosazí. Takovou hůlku si potulný mág koupí na Světovém trhu, jakmile začne za kouzla účtovat skutečné mince a chce podle toho vypadat. Světlo vede stejně dobře jako březový proutek. Na obchodníkově pultu se však nádherně leskne a polovina drobné magie vždy spočívala v tom, že jí ostatní uvěří.',
-  'hudChrome.wocStore.skins.lacquered_wand.name': 'Lakovaná hůlka',
-  'hudChrome.wocStore.skins.meteorlatch_crossbow.look':
-    'Meteorický hvězdný kov, roztaveně zlaté jádro podél pažby, kosmicky černá ramena leptaná souhvězdími a natažená šipka čistého hvězdného ohně.',
-  'hudChrome.wocStore.skins.meteorlatch_crossbow.lore':
-    'Byla vykována ze surového meteorického kovu, dokud mirefenský kráter ještě zářil. Trosky „příliš žhavé na dotek“ byly roztepány do kosmicky černých ramen leptaných souhvězdími a podél pažby spočinulo roztaveně zlaté jádro. Nevkládá se do ní šipka, sama ji vyvolá: dřík hvězdného ohně vypuštěný jako rozsudek a dopadající jako jeho vykonání. Když se Highwatch obával, že ani nesmrtelná koruna Nythraxise nemusí být tím nejhorším pod vrcholky, chtěl mít na zdi právě tuto zbraň. Miř dobře.',
-  'hudChrome.wocStore.skins.meteorlatch_crossbow.name': 'Hvězdný zámek, poslední soud oblohy',
-  'hudChrome.wocStore.skins.rimecrusher_mace.look':
-    'Shluk zubatých ledových krystalů kolem zářícího azurového jádra, jinovatka se plíží po postříbřeném toporu.',
-  'hudChrome.wocStore.skins.rimecrusher_mace.lore':
-    'Nebyl vytesán, ale vypěstován. Thornpeakský led rostl kolem studeného azurového jádra, dokud neztvrdl jako nejlepší Hodeova ocel. Jinovatka se plíží po postříbřeném toporu k ruce a nikdy k ní docela nedorazí. Kam udeří, tam voda zamrzne. Kde spočine, tam zem zbělá. Hrobový chlad vrcholků, zmenšený natolik, aby se jím dalo udeřit vše, co šplhá na zeď.',
-  'hudChrome.wocStore.skins.rimecrusher_mace.name': 'Drtič jinovatky',
-  'hudChrome.wocStore.skins.skyrender_axe.look':
-    'Hlava jako utržený kus noční oblohy, roztaveně zlaté praskliny a rytiny souhvězdí, vznášející se střepy hvězdného světla a stopa polární záře za ostřím.',
-  'hudChrome.wocStore.skins.skyrender_axe.lore':
-    'Vykovaná z okraje kráteru, kde padlá hvězda vyrvala z Mirefenu odraz samotné oblohy a zanechala ránu, která se dodnes kouří. Hlava připomíná kus utržené noci: roztaveně zlaté praskliny, souhvězdí, jež žádný učenec z Highwatche neumí pojmenovat, a polární záře krvácející z ostří při každém švihu. Bratr Aldric jí požehnal, ale odmítl se jí dotknout. Zvednout ji znamená držet otvor, který po sobě zanechala nebesa.',
-  'hudChrome.wocStore.skins.skyrender_axe.name': 'Trhač nebes, rána oblohy',
-  'hudChrome.wocStore.skins.smoulderfall_mace.look':
-    'Tmavé železné lamely žhnou uvnitř prasklin oranžově a v hlavě spočívá drahokam s roztaveným jádrem.',
-  'hudChrome.wocStore.skins.smoulderfall_mace.lore':
-    'Palcát s vlastním ohništěm. Kámen s roztaveným jádrem, odštípnutý z pečeti Svatyně, která byla „ukována horským ohněm“, září zasazený v hlavě. Lamely jsou teplé na dotek a ještě teplejší v místě dopadu. Seržant z Highwatche přísahá, že rána zanechá modřinu, která slabě svítí až do rána. Horský oheň byl konečně určen k rozbíjení místo pečetění.',
-  'hudChrome.wocStore.skins.smoulderfall_mace.name': 'Doutnající pád',
-  'hudChrome.wocStore.skins.solheim_sword.look':
-    'Velký meč vykovaný z padlé hvězdy, roztaveně zlaté jádro dělí čepel, kosmicky černou ocel lemuje světlo hvězd, kolem záštity obíhají zlaté střepy a za zbraní vlaje stuha polární záře.',
-  'hudChrome.wocStore.skins.solheim_sword.lore':
-    'Když hvězda spadla ze západní oblohy a za Vdoviným houštím „praskla jako výheň“, bratr Aldric vytáhl její stále doutnající srdce z mirefenského kráteru a prosil kováře říše, aby zpracovali „věc, která nepatří do tohoto světa“. Vytvořili z ní jediný velký meč: Solheim. Roztaveně zlaté jádro půlí kosmicky černou čepel jako úsvit praskající noční oblohou a střepy hvězdného kovu obíhají záštitu po drahách, které neurčila žádná ruka. Byl vykován jediný. Další nebude.',
-  'hudChrome.wocStore.skins.solheim_sword.name': 'Solheim, poslední světlo úsvitu',
-  'hudChrome.wocStore.skins.starfall_mace.look':
-    'Zajaté roztaveně zlaté hvězdné jádro obklopené obíhajícími úlomky, kosmicky černé lamely protkané světlem hvězd a polární záře vytékající ze spojů.',
-  'hudChrome.wocStore.skins.starfall_mace.lore':
-    'Hvězdné jádro zachycené v okamžiku před smrtí, obklopené troskami, které s ním padaly, a zmrazené na dosah od zapomnění. Kosmicky černými lamelami proudí uvězněné světlo hvězd a při pozvednutí ze spojů vytéká polární záře. Staří kněží Světla nazývali padající hvězdu soudem, rozsudkem seslaným shůry, který neměl zastavit žádný štít. Tento palcát pojmenovali po hvězdě, která dopadla na Mirefen.',
-  'hudChrome.wocStore.skins.starfall_mace.name': 'Pád hvězdy, soud nebes',
-  'hudChrome.wocStore.skins.tempered_flanged_mace.look':
-    'Hlava z kalené modřené oceli se šesti lamelami, mosazná objímka a hlavice, rukojeť z vínově rudé kůže.',
-  'hudChrome.wocStore.skins.tempered_flanged_mace.lore':
-    'Šest lamel z modřené kalené oceli, každá nabroušená k otevření helmy, zakončená mosazí a ovinutá vínově rudou kůží. Zbrojíři říše nevyrábějí ošklivé zbraně, ani když je jejich práce brutální. Tento kus byl objednán přes Světový trh, ne sejmut z police. Někde leží účetní kniha se jménem hrdého kupce a částkou, kterou zaplatil Hodeovi.',
-  'hudChrome.wocStore.skins.tempered_flanged_mace.name': 'Kalený křidélkový palcát',
-  'hudChrome.wocStore.skins.winterbite.look':
-    'Luk z postříbřené oceli a modrého ledu, ve středu září azurové zmrzlé jádro, na tětivě čeká šíp z pevného ledu a kolem proudí studená pára.',
-  'hudChrome.wocStore.skins.winterbite.lore':
-    'Luk z postříbřené oceli a thornpeakského ledu, jehož střed osvětluje studené azurové jádro, které přimrazí šíp k tětivě. S každým natažením se znovu vytvoří šíp z pevného ledovcového ledu. Lučištník na zdi nenosí toulec, jen chlad. Highwatch s podobným lukem udržel Stopařův hřeben během obléhání. Jediný lučištník, říká se, a zásoba šípů na celou zimu, které byly vždy připravené.',
-  'hudChrome.wocStore.skins.winterbite.name': 'Zimní skus',
-  'hudChrome.wocStore.storeTab': 'Obchod',
-  'hudChrome.wocStore.tabsLabel': 'Sekce obchodu WOC',
-  'hudChrome.wocStore.title': 'Obchod WOC',
-  'hudChrome.wocStore.tryOn': 'Vyzkoušet',
-  'hudChrome.wocStore.unavailable': 'Nedostupné',
-  'hudChrome.wocStore.viewModeLabel': 'Režim náhledu',
-  'hudChrome.wocStore.weaponOnly': 'Jen zbraň',
   'hudChrome.wocStore.wtype.axe': 'Sekera',
   'hudChrome.wocStore.wtype.bow': 'Luk',
   'hudChrome.wocStore.wtype.crossbow': 'Kuše',
@@ -8595,11 +8128,6 @@ export const cs_CZ: Partial<Record<TranslationKey, string>> = {
   'entities.items.eastbrook_ritual_vestments.name': 'Eastbrookská rituální roucha',
   'entities.items.eastbrook_warded_leggings.name': 'Eastbrookské chráněné nohavice',
   'entities.items.wardweave_cowl.name': 'Kápě z ochranné tkaniny',
-  'hudChrome.claudium.railUsdc': 'USDC',
-  'hudChrome.claudium.usdcBalance': 'USDC: {amount}',
-  'hudChrome.dailyRewards.reason.bannedUntil':
-    'Ještě {remaining} máš zákaz přístupu k denním odměnám. Přístup se vrátí {until}. Důvod: {reason}',
-  'hudChrome.dailyRewards.remainingDaysHours': '{days} d {hours} h',
   'hudChrome.partyFrames.columns': 'Sloupce raidu',
   'hudChrome.partyFrames.healthCurrent': 'Aktuální',
   'hudChrome.partyFrames.healthCurrentMax': 'Aktuální / Maximum',

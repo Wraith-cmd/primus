@@ -184,201 +184,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.abilities.voidfeast.description':
     '魔法効果（敵の有益効果または味方の有害効果）を貪り、自分の最大体力の6%を回復する。',
   'hudChrome.abilityError.shieldRequired': '盾を装備する必要があります。',
-  'hudChrome.wocStore.title': 'WOCストア',
-  'hudChrome.wocStore.close': 'WOCストアを閉じる',
-  'hudChrome.wocStore.tabsLabel': 'WOCストアのセクション',
-  'hudChrome.wocStore.storeTab': 'ストア',
-  'hudChrome.wocStore.rewardsTab': 'デイリー報酬',
-  'hudChrome.wocStore.loading': 'WOCストアを読み込み中…',
-  'hudChrome.wocStore.error': 'WOCストアは現在利用できません。しばらくしてからお試しください。',
-  'hudChrome.wocStore.balance': 'Claudium残高',
-  'hudChrome.wocStore.buyClaudium': 'Claudiumを購入',
-  'hudChrome.wocStore.owned': '所有済み',
-  'hudChrome.wocStore.needMoreTitle': 'Claudiumが不足しています',
-  'hudChrome.wocStore.needMoreBody': '{item}の購入にはあと{shortfall} Claudium必要です。',
-  'hudChrome.wocStore.cancel': 'キャンセル',
-  'hudChrome.wocStore.confirmTitle': '外見の購入を確認',
-  'hudChrome.wocStore.confirmBody': '{item}を{cost} Claudiumで購入しますか？',
-  'hudChrome.wocStore.confirmPurchase': '購入',
-  'hudChrome.wocStore.priceChanged':
-    '購入が完了する前に価格が変更されました。更新後の価格を確認し、もう一度確定してください。',
-  'hudChrome.wocStore.armoryEyebrow': 'シーズン1',
-  'hudChrome.wocStore.armoryTitle': '武器庫',
-  'hudChrome.wocStore.armoryBody':
-    'シーズン1武器庫の限定武器スキン。アカウント共有の純粋な装飾で、周囲のプレイヤー全員に表示されます。',
-  'hudChrome.wocStore.wallet.title': 'Solanaウォレット',
-  'hudChrome.wocStore.wallet.unlinked':
-    'ウォレットアプリを接続し、一度署名して公開アドレスをWoCアカウントにリンクしてください。リカバリーフレーズや秘密鍵を受け取ることはありません。',
-  'hudChrome.wocStore.wallet.connectedUnlinked':
-    'ウォレットアプリはこのブラウザに接続されていますが、公開アドレスはまだWoCアカウントにリンクされていません。',
-  'hudChrome.wocStore.wallet.linkedDisconnected':
-    '公開アドレスはリンク済みです。SOLまたはWOCで支払うときに、そのウォレットアプリを再接続してください。',
-  'hudChrome.wocStore.wallet.linkedConnected':
-    'リンク済みのウォレットアプリが接続され、SOLまたはWOCで購入できます。',
-  'hudChrome.wocStore.wallet.mismatched':
-    '別のウォレットが接続されています。認証してリンク済みアドレスを置き換えるか、リンク済みウォレットを再接続してください。',
-  'hudChrome.wocStore.wallet.connect': 'ウォレットを接続',
-  'hudChrome.wocStore.wallet.verify': '認証してリンク',
-  'hudChrome.wocStore.wallet.reconnect': 'ウォレットを再接続',
-  'hudChrome.wocStore.wallet.manage': 'ウォレットを管理',
-  'wallet.bagConnect': 'ウォレットをリンク',
-  'wallet.bagLink': 'ウォレットを認証',
-  'wallet.bagReconnect': 'ウォレットを再接続',
-  'hudChrome.wocStore.collectionLine': '{collection}コレクション',
-  'hudChrome.wocStore.collections.guildmark': 'ギルドマーク',
-  'hudChrome.wocStore.collections.emberwrought': '残り火鍛造',
-  'hudChrome.wocStore.collections.hoarfrost': '白霜',
-  'hudChrome.wocStore.collections.fallen_star': '墜星',
-  'hudChrome.wocStore.skins.guildmark_arming_sword.name': 'ギルドマーク・アーミングソード',
-  'hudChrome.wocStore.skins.guildmark_arming_sword.look':
-    '青焼き鋼の刀身、青銅の魚尾型クロスガード、青緑に染めた革巻きの柄、小さく刻印されたギルドの紋章。',
-  'hudChrome.wocStore.skins.guildmark_arming_sword.lore':
-    '名もなき鍛造刀とは違い、この剣には署名がある。刀匠がリカッソに自らの印を打つ権利を得るのは、World MarketのMerchantがその鋼を保証してからだ。そしてSmith Haldrenの印には、その保証がある。Valeの湿気に耐える青焼き仕上げ、髪一本ほどの狂いもない均衡。剣と同じほど刻印にも金を払うが、それだけの価値はある。',
-  'hudChrome.wocStore.skins.brasscap_axe.name': 'ブラスキャップ・ハチェット',
-  'hudChrome.wocStore.skins.brasscap_axe.look':
-    '磨き鋼の刃、漆塗りのトネリコ柄を守る真鍮の頭金とランゲット、整った柄巻き、職人の刻印。',
-  'hudChrome.wocStore.skins.brasscap_axe.lore':
-    '刻印入りの斧は、手に取れる自慢そのものだ。真鍮の頭金とランゲットは半ば防具、半ば署名。柄が割れるのを防ぎ、酒場の灯を受けて輝くから、民兵のお下がりではなくArmorer Hodeの仕事を買ったのだと誰にでも分かる。「斬れるなら売る」とHighwatchの鍛冶師は言う。この斧は、斬れる。',
-  'hudChrome.wocStore.skins.tempered_flanged_mace.name': '焼入れフランジドメイス',
-  'hudChrome.wocStore.skins.tempered_flanged_mace.look':
-    '六枚のフランジを備えた焼入れ青鋼の頭部、真鍮の口金と柄頭、葡萄酒色の革巻き。',
-  'hudChrome.wocStore.skins.tempered_flanged_mace.lore':
-    '青く焼き入れた鋼の六枚刃は、どれも兜を割り開くために研がれ、真鍮をかぶせて葡萄酒色の革で巻かれている。仕事が残酷でも、この王国の刀匠は醜い武器を作らない。棚から取った品ではなく、World Marketを通じて注文された一本。どこかの帳簿には、誇らしげな買い手の名と、Hodeに支払った額が記されている。',
-  'hudChrome.wocStore.skins.guildmark_dirk.name': 'ギルドマーク・ダーク',
-  'hudChrome.wocStore.skins.guildmark_dirk.look':
-    '細身の焼入れ鋼のダーク、青銅の鍔と柄頭ナット、深緑の組紐巻き、刻印された紋章。',
-  'hudChrome.wocStore.skins.guildmark_dirk.lore':
-    '剣を家に置く日に一人前の男が帯びるもの。細身で鍛えられ、長剣と同じ品質を証す印を打ち、刃のある印章のように腰に下げる。刀匠の証を読める者以外には慎ましく映る。Quartermaster Breeは、城壁の敬意を勝ち取った士官のため、Highwatchの引き出し一段をこれで満たしている。',
-  'hudChrome.wocStore.skins.brasscrown_staff.name': 'ブラスクラウン・ウォーキングスタッフ',
-  'hudChrome.wocStore.skins.brasscrown_staff.look':
-    '堅木の杖に旋盤仕上げの真鍮製冠形石突、真鍮の先金、染め革の帯。',
-  'hudChrome.wocStore.skins.brasscrown_staff.lore':
-    '乾燥させた堅木を削り出し、Eastbrookの鍛冶師たちが百個単位で鋳ながら、一つずつ完璧に仕上げる真鍮の冠を載せた杖。Fenbridgeの門でもHighwatchの城壁でも、一目置かれたい旅人にふさわしい。歩く必要など本当は一度もなかったような杖で、染め革の帯は値段を想像できる上着とよく似合う。',
-  'hudChrome.wocStore.skins.lacquered_wand.name': '漆塗りのロッド',
-  'hudChrome.wocStore.skins.lacquered_wand.look':
-    '深紅の漆を施した細身のワンド、二本の磨き真鍮帯、小さく丸い真鍮の先端。',
-  'hudChrome.wocStore.skins.lacquered_wand.lore':
-    '根気よく七層重ねた深紅の漆に、磨いた真鍮を二筋。野辺の魔術師が本物の金貨を取るようになり、見栄えも整えたくなった頃にWorld Marketで買う類のワンドだ。Lightを導く力は白樺の枝と変わらない。それでもMerchantのカウンター越しには見事に輝く。ささやかな魔法の半分は、昔から信じてもらうことなのだから。',
-  'hudChrome.wocStore.skins.fletcher_s_guild_bow.name': 'Fletcherギルドの弓',
-  'hudChrome.wocStore.skins.fletcher_s_guild_bow.look':
-    '漆塗りのウォールナット製リカーブボウ、真鍮のリム先、蝋引き亜麻弦、ライザーのギルド刻印。',
-  'hudChrome.wocStore.skins.fletcher_s_guild_bow.lore':
-    'この王国でギルドに最も近いものは、ライザーにあるFletcherの刻印だ。酒造家が樽に封をするように、中身を保証する約束である。漆塗りのウォールナット、リム先の真鍮、Mirefenの雨でもほつれない蝋引き亜麻弦。すべての継ぎ目がその値段を主張する。Widow Thicketを越えて一度引けば、その主張が正しいと分かる。',
-  'hudChrome.wocStore.skins.cinderbrand_sword.name': 'シンダーブランド',
-  'hudChrome.wocStore.skins.cinderbrand_sword.look':
-    '黒い鍛鋼の刀身、樋を満たす燃える橙色のルーンと熱亀裂、鍔で燻る宝石。',
-  'hudChrome.wocStore.skins.cinderbrand_sword.lore':
-    '水ではなくStormcragから掻き集めたBlessed Embersで初めて焼き入れされた刀身。Highwatchの鍛冶師は、その炭が「山が古き誓いを覚えているから、青く清らかに燃える」と誓う。樋に封じた火は橙色に燻り、決して消えない。城壁の最も寒い夜でも、ルーンは素手に温かい。Cinderbrandに火を点ける必要はない。ただ、消えることを拒むのだ。',
-  'hudChrome.wocStore.skins.emberbite_axe.name': 'エンバーバイト',
-  'hudChrome.wocStore.skins.emberbite_axe.look':
-    '黒鉄の斧、刃から透けて燃える橙色の亀裂、熾火を宿す宝石、立ちのぼる熱気。',
-  'hudChrome.wocStore.skins.emberbite_axe.lore':
-    'Armorer Hodeは山火の生きた炭を刃の芯に埋め込み、一撃と次の一撃の間にも刃が冷えきらぬようにした。振り下ろすたび亀裂が橙色に息づき、最初の鍛造が鉄の中に眠らせた何かを打撃が起こすようだ。Stormcragの精霊がこの残り火を手放したのだという。風の強いHighwatchでは、ほかにも実に多くの話が語られる。',
-  'hudChrome.wocStore.skins.smoulderfall_mace.name': 'スモルダーフォール',
-  'hudChrome.wocStore.skins.smoulderfall_mace.look':
-    '内側の亀裂が燃える橙色に輝く黒鉄のフランジ、頭部に据えた溶融核の宝石。',
-  'hudChrome.wocStore.skins.smoulderfall_mace.lore':
-    '自ら炉を携えるメイス。「山火で鍛えられた」Sanctumの封印から欠き取った溶融核の石が、頭部で輝く。フランジは触れて温かく、命中した場所ではさらに熱い。Highwatchの軍曹は、これで殴られた痣は朝までかすかに光ると断言する。かつて封じるための山の火が、ついに壊すためのものとなった。',
-  'hudChrome.wocStore.skins.ashspark_dagger.name': 'Ashsparkシヴ',
-  'hudChrome.wocStore.skins.ashspark_dagger.look':
-    '燃える橙色の筋が走る短い黒刃、柄頭で燻る小さな宝石、舞う灰と火花。',
-  'hudChrome.wocStore.skins.ashspark_dagger.lore':
-    '柄頭石に山火を忍ばせた裏路地の刃。最初の鍛造の残り火くらいは追い剥ぎでも携えられる、という刀匠の静かな冗談だ。黒く、橙色の筋が走り、鞘の中でも常に少し熱すぎる。Highwatchの下の闇で抜けば、その光が男の構えの隙を見つけるのに十分なだけ手元を照らす。',
-  'hudChrome.wocStore.skins.forgeheart_staff.name': 'Forgeheartステイヴ',
-  'hudChrome.wocStore.skins.forgeheart_staff.look':
-    '鉄の石突を備え、檻に収めた輝く残り火を冠する杖。軸を昇る火のルーンと熱の揺らめき。',
-  'hudChrome.wocStore.skins.forgeheart_staff.lore':
-    '冠の鉄檻に閉じ込めた、山火の生きた炭。Loremaster Caddisは、最初の鍛造の火が封印だけでなく奉仕のためにも縛れる証だという。熱の揺らめきが細く果てない帯となって立ちのぼり、これを持つ魔術師は鍛冶炉にも番火にも困らない。残り火はVoskar the Emberwing自身の吐息から抜き取られ、それ以来冷めていないと囁かれる。',
-  'hudChrome.wocStore.skins.emberwrought_wand.name': 'Emberwroughtワンド',
-  'hudChrome.wocStore.skins.emberwrought_wand.look':
-    '鉄の爪に輝く熾火を挟んだ黒金属のワンド、髪筋ほどの熱亀裂、内側からの温かな光。',
-  'hudChrome.wocStore.skins.emberwrought_wand.lore':
-    'この等級に名を与えたワンド。Highwatchの刀匠が初めて山火の炭を鉄の爪に据え、人の手に応えさせたとき、LightのPriestたちさえ異端と呼ぶのをやめ、役に立つと呼び始めた。温かく、辛抱強く、静かに危険。その先端の残り火は、持ち主が生まれる前から途切れず燃え続けている。',
-  'hudChrome.wocStore.skins.cinderlatch_crossbow.name': 'シンダーラッチ',
-  'hudChrome.wocStore.skins.cinderlatch_crossbow.look':
-    '黒鋼のクロスボウ、弓部の亀裂から滲む燃える橙色の光、台木で燻る炭。',
-  'hudChrome.wocStore.skins.cinderlatch_crossbow.lore':
-    '残り火鍛造の中でも最も奇妙なもの。山火を機械へ流し込んだ。弓部の亀裂から橙色が滲み、台木で燻る炭がThornpeakの寒さでもMirefenの湿気でも弦を硬くさせない。ボルトは溝を出るときすでに温かく、着弾時にはさらに熱い。敵もまた寒さを感じない城壁に対する、狩人の答えである。',
-  'hudChrome.wocStore.skins.ice_fang_sword.name': 'Ice Fang',
-  'hudChrome.wocStore.skins.ice_fang_sword.look':
-    '淡い氷河氷の湾曲刀、峰に並ぶ鋸歯状の霧氷結晶、樋で輝く青緑の凍結核、氷柱の鍔。',
-  'hudChrome.wocStore.skins.ice_fang_sword.lore':
-    '凍結等級の象徴であり、収集家がまず手を伸ばす逸品。Ice Fangは鍛えられたのではなく、Highwatchの上にそびえるThornpeakの氷河の牙から削り出された。青緑の核はGlimmermereの反射光のように冷たく燃え、斬った空気そのものを霧氷で覆う。大雪がWyrmcultを退けた夜、兵士がこれを携え「城壁に一冬を買った」と衛兵たちは誓う。',
-  'hudChrome.wocStore.skins.glaciersplit_axe.name': 'グレイシャースプリット',
-  'hudChrome.wocStore.skins.glaciersplit_axe.look':
-    '半透明の青い氷河氷の斧頭、青緑に輝くひび割れた内部、逆立つ霜の結晶、冷気を引く柄。',
-  'hudChrome.wocStore.skins.glaciersplit_axe.lore':
-    '二世紀の氷が冷気を自ら輝くまで圧し固めた、Thornpeak氷河の青い心臓部から切り出された。静止していても霧を引き、命中する音はStalker Ridgeの下で裂け目が開くようだ。Highwatchは死者をあの氷へ委ねる。ゆえにこれは、雪解けと、雪解けが目覚めさせるものを寄せつけないための武器である。',
-  'hudChrome.wocStore.skins.rimecrusher_mace.name': 'ライムクラッシャー',
-  'hudChrome.wocStore.skins.rimecrusher_mace.look':
-    '輝く青緑の核を囲む鋭い氷晶の房、銀色の柄を這い下りる白霜。',
-  'hudChrome.wocStore.skins.rimecrusher_mace.lore':
-    '削ったのではなく育てたもの。Thornpeakの氷を冷たい青緑の核の周りに導き、Hode自慢の鋼ほど硬く結晶させた。白霜は銀色の柄を手元へ這うが、決して届ききらない。打てば水が凍り、置けば地が白む。峰の墓場の冷気を、城壁を登るものへ振るえるほど小さくした武器だ。',
-  'hudChrome.wocStore.skins.frostbite_dagger.name': 'ライムニードル',
-  'hudChrome.wocStore.skins.frostbite_dagger.look':
-    '透明な青氷の凶悪なまでに細い短剣、中央を走る輝く青緑の脈、針状の霜結晶、白霜の柄。',
-  'hudChrome.wocStore.skins.frostbite_dagger.lore':
-    '息を止めた瞬間ほど薄く、その倍も冷たい。Thornpeak氷河の欠片を一本の輝く脈まで研ぎ澄まし、血が流れることを思い出す前に傷口を凍らせるほど鋭い。その名は死者が峰から運び下ろす墓の冷気にちなむ。研ぐ必要はない。氷は鈍らない、ただ待つだけだとLoremaster Caddisは素っ気なく記している。',
-  'hudChrome.wocStore.skins.hoarfrost_vigil_staff.name': 'ホアフロスト・ヴィジル',
-  'hudChrome.wocStore.skins.hoarfrost_vigil_staff.look':
-    '銀色の杖の上に浮かび、ゆっくり回る輝く青緑の氷片。放射状の結晶と冷たい霧。',
-  'hudChrome.wocStore.skins.hoarfrost_vigil_staff.lore':
-    'Highwatchの城壁で眠らぬ見張りの杖。冠には青緑の山湖氷の欠片が銀から離れて浮かび、ひとりでにゆっくり回る。衛兵によれば、常に峰の下へ集う寒気を指すという。Vigilを携えることは、一夜で二百年の見張りに立ち、決して目を逸らさぬと誓うことだ。',
-  'hudChrome.wocStore.skins.everwinter_wand.name': 'エヴァーウィンターの欠片',
-  'hudChrome.wocStore.skins.everwinter_wand.look':
-    '輝く青緑の氷河氷の一本角、銀の口金から咲く白霜、かすかな冷たい霧。',
-  'hudChrome.wocStore.skins.everwinter_wand.lore':
-    '山の寒さが牙を持つSanctumの下の深い山湖から折り取られたという、輝く氷河氷の角。銀の口金から白霜が絶えず咲き、火にも夏にも溶けない。魔術師は術に貸す冷気ゆえ近くに置き、Nythraxisの地下墓所へ傾いて耳を澄ますような夜には、遠ざけておく。',
-  'hudChrome.wocStore.skins.winterbite.name': 'ウィンターバイト',
-  'hudChrome.wocStore.skins.winterbite.look':
-    '銀鋼と青氷の弓、ライザーで輝く青緑の凍結核、つがえられた固い氷の矢、冷たい霧。',
-  'hudChrome.wocStore.skins.winterbite.lore':
-    '銀鋼とThornpeakの氷で作られた弓。ライザーの冷たい青緑の核が矢を弦へ凍りつかせる。引くたびに氷河氷の矢が再び形づくられるため、城壁の射手が携えるのは矢筒ではなく寒気だけ。Highwatchは同じ弓でStalker Ridgeの包囲を耐え抜いたという。射手は一人、そして初めからそこにあった一冬分の矢。',
-  'hudChrome.wocStore.skins.solheim_sword.name': 'Solheim、暁の最後の光',
-  'hudChrome.wocStore.skins.solheim_sword.look':
-    '墜星から鍛えた大剣、刀身を裂く溶融金の核、星明かりの刃を持つ宇宙黒の鋼、鍔を巡る金の破片、極光の帯。',
-  'hudChrome.wocStore.skins.solheim_sword.lore':
-    '星が西の空から落ち、Widow Thicketの彼方で「炉のように爆ぜた」とき、Brother AldricはMirefenのクレーターからまだ燻る心臓を引き出し、王国の鍛冶師に「この世のものではない物」を鍛えてくれと懇願した。生まれた大剣はただ一振り、Solheim。溶融金の核が夜空を割る暁のように宇宙黒の刀身を裂き、星鉄の破片は誰の手も定めぬ軌道で鍔を巡る。二振り目が作られることはない。',
-  'hudChrome.wocStore.skins.skyrender_axe.name': 'Skyrender、天空の傷',
-  'hudChrome.wocStore.skins.skyrender_axe.look':
-    '引き裂かれた夜空のような斧頭、溶融金の亀裂と星座の刻印、浮かぶ星光の破片、刃を引く極光。',
-  'hudChrome.wocStore.skins.skyrender_axe.lore':
-    '墜星がMirefenから空そのものの映り込みを引き裂き、今も蒸気を上げる傷を残したクレーターの縁から打ち出された。斧頭は破れた夜の一片に見える。溶融金の亀裂、Highwatchの学者にも名づけられぬ星座、振るたび刃から流血のようにこぼれる極光。Brother Aldricは祝福したが、触れようとはしなかった。掲げる者は、天が残した穴を手にする。',
-  'hudChrome.wocStore.skins.starfall_mace.name': 'Starfall、天の裁き',
-  'hudChrome.wocStore.skins.starfall_mace.look':
-    '周回する破片に囲まれた溶融金の星核、星明かりの脈が走る宇宙黒のフランジ、継ぎ目から溢れる極光。',
-  'hudChrome.wocStore.skins.starfall_mace.lore':
-    '死の直前に捉えられた星核。ともに落ちた残骸に囲まれ、消滅まであと一寸のところで凍りついている。宇宙黒のフランジには閉じ込めた星明かりが走り、掲げれば継ぎ目から極光が溢れる。古いLightのPriestたちは流星を裁き、いかなる盾も止めるべきでない天上からの宣告と呼び、Mirefenへ下った一星にちなんでこれを名づけた。',
-  'hudChrome.wocStore.skins.astravyr_dagger.name': 'Astravyr、墜星の牙',
-  'hudChrome.wocStore.skins.astravyr_dagger.look':
-    '墜星の薄片、宇宙黒の金属に輝く溶融金の刃、柄頭を巡る明るい星粒、細い極光の尾。',
-  'hudChrome.wocStore.skins.astravyr_dagger.lore':
-    'Aldricがクレーターから運び出した星の最小の欠片であり、見方によっては最も危険なもの。異世界の心臓の薄片ひとつ、宇宙黒の金属に沿う溶融金の刃、世界を失った月のように柄頭を巡る孤独な星粒。重さはほとんどなく、ほとんど何でも切り分ける。隠せるほど小さく、自らの光で闇の中から見つけられるほど明るい。',
-  'hudChrome.wocStore.skins.cosmarch_staff.name': 'Cosmarch、果てなき虚空の尖塔',
-  'hudChrome.wocStore.skins.cosmarch_staff.look':
-    '溶融金の核を巡る金色の星片、星座を刻んだ宇宙黒の軸、上へ巻きつく極光の帯。',
-  'hudChrome.wocStore.skins.cosmarch_staff.lore':
-    '星鉄の軸に溶融金の核を冠し、金の破片がゆっくり果てなく巡る小宇宙。そこに刻まれた星座はThornpeakのどの空にも一致しない。立ち昇ることを忘れた煙のように、極光が全長へ巻きつく。これを担った者は、Ysoleiの湖が「月明かりを飲む」ように、虚空が杖の中で回るのを感じたという。辛抱強く、冷たく、こちらを見返しながら。',
-  'hudChrome.wocStore.skins.emberwish_wand.name': 'Emberwish、死にゆく太陽の火種',
-  'hudChrome.wocStore.skins.emberwish_wand.look':
-    '周回する火花に包まれた、捕らわれの溶融金の死に星。輝く星座を刻んだ宇宙黒の軸。',
-  'hudChrome.wocStore.skins.emberwish_wand.lore':
-    '墜星そのものではなく、死にゆく星の最後の一粒。すでに消えた太陽の溶融金の残り火を、最後の光だった火花が包む。宇宙黒の軸には、その死を見届けた星座が刻まれている。Mirefenの小作人は、真の黄昏にこれを持つ者の願いを一つ叶えるという。同時に、手にした魂は誰もが「もっと時間を」と願い、Drowned Moonは誰にも与えなかったとも語る。',
-  'hudChrome.wocStore.skins.encore_bow.name': 'Encore、二つ目の墜星',
-  'hudChrome.wocStore.skins.encore_bow.look':
-    '滑稽なほど巨大な星砲。輝く金の星座を刻んだ宇宙黒の砲身、溶融金の彗星弾を収めた朝顔形の砲口、真鍮金具、木製の銃床。',
-  'hudChrome.wocStore.skins.encore_bow.lore':
-    '墜星を加工した鍛冶師は六つの遺物を作ってなお、樽一本分の星鉄を余らせた。その頃には徒弟たちにも意見があった。金床から生まれたのは王国初の銃か、最小の攻城兵器か。射撃というより、狙いをつけた二つ目の星を呼び寄せる肩撃ち砲だ。これほど轟くものはすでに天に気づかれているとしてBrother Aldricは祝福を断った。狩人たちは愛用する。射線の先にいるものは、決してそうではない。',
-  'hudChrome.wocStore.skins.meteorlatch_crossbow.name': 'Meteorlatch、空の最後の裁き',
-  'hudChrome.wocStore.skins.meteorlatch_crossbow.look':
-    '隕鉄、台木に沿う溶融金の核、星座を刻んだ宇宙黒の弓部、つがえられた純粋な星火のボルト。',
-  'hudChrome.wocStore.skins.meteorlatch_crossbow.lore':
-    'Mirefenのクレーターがまだ輝いていた頃、生の隕鉄から鍛えられた。「熱すぎて持てない」残骸を叩き、星座を刻んだ宇宙黒の弓部とし、台木に沿って溶融金の核を封じた。ボルトをつがえるのではなく召喚する。宣告のように放たれ、その終わりのように着弾する星火の矢だ。Nythraxisの不死の王冠すら峰の下で最悪のものではないとHighwatchが恐れたとき、城壁に望んだ武器がこれだった。狙いを違えるな。',
-  'hudChrome.wocStore.seasonOne': 'シーズン1',
-  'hudChrome.wocStore.rarity.uncommon': 'アンコモン',
-  'hudChrome.wocStore.rarity.rare': 'レア',
-  'hudChrome.wocStore.rarity.epic': 'エピック',
-  'hudChrome.wocStore.rarity.legendary': 'レジェンダリー',
   'hudChrome.wocStore.wtype.sword': '剣',
   'hudChrome.wocStore.wtype.axe': '斧',
   'hudChrome.wocStore.wtype.mace': 'メイス',
@@ -388,70 +193,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.wocStore.wtype.bow': '弓',
   'hudChrome.wocStore.wtype.crossbow': 'クロスボウ',
   'hudChrome.wocStore.wtype.polearm': 'ポールアーム',
-  'hudChrome.wocStore.badge.flagship': 'フラッグシップ',
-  'hudChrome.wocStore.badge.hero': 'ヒーロー',
-  'hudChrome.wocStore.inspectAria': '{item}を詳しく見る',
-  'hudChrome.wocStore.viewModeLabel': 'プレビューモード',
-  'hudChrome.wocStore.tryOn': '試着する',
-  'hudChrome.wocStore.weaponOnly': '武器のみ',
-  'hudChrome.wocStore.sceneLabel': 'シーンライティング',
-  'hudChrome.wocStore.scene.day': '昼',
-  'hudChrome.wocStore.scene.dusk': '夕暮れ',
-  'hudChrome.wocStore.scene.night': '夜',
-  'hudChrome.wocStore.lore': '伝承',
-  'hudChrome.wocStore.buySkin': 'スキンを購入',
-  'hudChrome.wocStore.unavailable': '利用不可',
-  'hudChrome.wocStore.applied': '適用中',
-  'hudChrome.wocStore.apply': 'スキンを適用',
-  'hudChrome.wocStore.detach': 'スキンを解除',
-  'hudChrome.wocStore.equipHint': 'このスキンを適用するには{type}を装備してください。',
-  'hudChrome.claudium.title': 'Claudium',
-  'hudChrome.claudium.open': 'Claudiumを開く',
-  'hudChrome.claudium.close': 'Claudiumを閉じる',
-  'hudChrome.claudium.loading': 'Claudiumを読み込み中…',
-  'hudChrome.claudium.balanceLabel': '残高',
-  'hudChrome.claudium.balanceUnit': '{amount} Claudium',
-  'hudChrome.claudium.unavailable':
-    'Claudiumストアは現在利用できません。残高と購入内容に影響はありません。しばらくしてからお試しください。',
-  'hudChrome.claudium.disclosure':
-    'Claudiumは一方向のゲーム内通貨です。現金で購入して外見アイテムに使用でき、換金、譲渡、払い戻しはできません。',
-  'hudChrome.claudium.buyTitle': 'Claudiumを購入',
-  'hudChrome.claudium.railLabel': '支払い方法',
-  'hudChrome.claudium.railNativeUnavailable': 'SOL/WOCは利用不可',
-  'hudChrome.claudium.railSol': 'SOL',
-  'hudChrome.claudium.railStripe': 'カード',
-  'hudChrome.claudium.railWoc': 'WOC',
-  'hudChrome.claudium.railWocDiscount': '20%オフ',
-  'hudChrome.claudium.solBalance': 'SOL：{amount}',
-  'hudChrome.claudium.wocBalance': 'WOC：{amount}',
-  'hudChrome.claudium.railWocUnavailable': 'WOC価格は現在利用できません。',
-  'hudChrome.claudium.amountLabel': '数量',
-  'hudChrome.claudium.showAmounts': 'すべてのClaudium数量を表示',
-  'hudChrome.claudium.hideAmounts': '追加のClaudium数量を隠す',
-  'hudChrome.claudium.skuRow': '{usd}で{claudium} Claudium',
-  'hudChrome.claudium.buyUnavailable': '現在購入できません。',
-  'hudChrome.claudium.storeTitle': '外見アイテムストア',
-  'hudChrome.claudium.storeEmpty': '現在利用できる外見アイテムはありません。',
-  'hudChrome.claudium.storeCost': '{amount} Claudium',
-  'hudChrome.claudium.spendButton': '交換',
-  'hudChrome.claudium.kindCosmetic': '外見アイテム',
-  'hudChrome.claudium.kindItem': 'アイテム',
-  'hudChrome.claudium.kindSkin': 'スキン',
-  'hudChrome.claudium.buyButton': '購入',
-  'hudChrome.claudium.checkoutTitle': '購入を完了',
-  'hudChrome.claudium.checkoutClose': '決済を閉じる',
-  'hudChrome.claudium.checkoutLoading': '決済を読み込み中…',
-  'hudChrome.claudium.checkoutPending':
-    '取引を処理中です。ウォレットで確認し、このパネルを開いたままにしてください。',
-  'hudChrome.claudium.checkoutPendingButton': '処理中',
-  'hudChrome.claudium.checkoutFailed': '決済を読み込めませんでした。もう一度お試しください。',
-  'hudChrome.claudium.checkoutUnavailable': 'そのClaudium購入は現在利用できません。',
-  'hudChrome.claudium.checkoutWalletRequired':
-    '暗号資産でClaudiumを購入する前にSolanaウォレットを接続してください。',
-  'hudChrome.claudium.checkoutWalletUnsupported':
-    'このウォレットではSolana取引の署名と送信ができません。',
-  'hudChrome.claudium.checkoutNotSettled':
-    '取引は送信されましたが、Claudiumはまだ反映されていません。しばらくしてからお試しください。',
   'hudChrome.itemHeroicTag': '[ヒロイック]',
   'hudChrome.readyCheck.notInPartyError':
     '準備確認を開始するにはパーティーに参加している必要があります。',
@@ -508,64 +249,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   // Guild roster last-seen (M16 non-Latin fill)
   'hudChrome.social.lastSeen': '最終ログイン: {when}',
   'hudChrome.social.lastSeenNever': 'なし',
-  'hudChrome.dailyRewards.title': 'デイリー報酬',
-  'hudChrome.dailyRewards.close': 'デイリー報酬を閉じる',
-  'hudChrome.dailyRewards.loading': 'デイリー報酬を読み込み中...',
-  'hudChrome.dailyRewards.error': 'デイリー報酬を読み込めませんでした。',
-  'hudChrome.dailyRewards.disabled':
-    'デイリー報酬は現在無効です。この機能に関する更新は Discord チャンネルでお知らせします。',
-  'hudChrome.dailyRewards.intro':
-    '認証済みウォレットに十分なWOCを保有すると、デイリー報酬が解放されます。1日1回のスピンとローテーションするタスクでポイントを獲得し、デイリーランキングを駆け上がって賞金プールの分け前を狙いましょう。',
-  'hudChrome.dailyRewards.disclaimer':
-    'WOC価格は大きく変動する場合があります。通常の価格変動で報酬がロックされないよう、$20 USDの最低額より多めに保有することをおすすめします。これは金融助言ではありません。',
-  'hudChrome.dailyRewards.prize': '賞金プール',
-  'hudChrome.dailyRewards.reset': 'リセット',
-  'hudChrome.dailyRewards.score': 'スコア',
-  'hudChrome.dailyRewards.walletValue': 'ウォレット価値 (WOC)',
-  'hudChrome.dailyRewards.unknown': '不明',
-  'hudChrome.dailyRewards.spinTitle': 'デイリースピン',
-  'hudChrome.dailyRewards.spinDialogTitle': 'デイリー報酬スピン',
-  'hudChrome.dailyRewards.spinClose': 'デイリースピンを閉じる',
-  'hudChrome.dailyRewards.spinReady': 'スピンが1回可能です。',
-  'hudChrome.dailyRewards.spinClaimed': '獲得: +{points} ポイント。',
-  'hudChrome.dailyRewards.spinResult': '+{points} ポイント',
-  'hudChrome.dailyRewards.spinButton': 'スピン',
-  'hudChrome.dailyRewards.tasks': 'タスク',
-  'hudChrome.dailyRewards.taskMultiplier': '{multiplier}倍倍率',
-  'hudChrome.dailyRewards.oneVsOneExcluded': '1対1の試合ではデイリー報酬ポイントを獲得できません。',
-  'hudChrome.dailyRewards.pointsGained': '{points} デイリー報酬ポイントを獲得しました。',
-  'hudChrome.dailyRewards.showChestButton': '宝箱を表示',
-  'hudChrome.dailyRewards.hideChestButton': '宝箱を隠す',
-  'hudChrome.dailyRewards.hideChestConfirmTitle': 'デイリー報酬の宝箱を非表示にしますか？',
-  'hudChrome.dailyRewards.hideChestConfirmBody':
-    'HUDから宝箱のショートカットが削除されます。報酬、受給資格、このパネルは引き続き利用できます。ショートカットはオプションから再表示できます。',
-  'hudChrome.dailyRewards.hideChestConfirmOk': '宝箱を隠す',
-  'hudChrome.dailyRewards.hideChestConfirmCancel': 'キャンセル',
-  'hudChrome.dailyRewards.leaderboard': 'デイリーランキング',
-  'hudChrome.dailyRewards.totalPlayer': '本日のプレイヤー {count} 人',
-  'hudChrome.dailyRewards.totalPlayers': '本日のプレイヤー {count} 人',
-  'hudChrome.dailyRewards.history': '過去の当選者',
-  'hudChrome.dailyRewards.noLeaders': 'まだポイントがありません。',
-  'hudChrome.dailyRewards.noHistory': 'まだ支払いがありません。',
-  'hudChrome.dailyRewards.walletConnectTitle': 'ウォレットを認証',
-  'hudChrome.dailyRewards.walletConnectBody':
-    'WOCを保有するSolanaウォレットを認証して、デイリー報酬を解放しましょう。',
-  'hudChrome.dailyRewards.walletConnectButton': 'ウォレットを認証',
-  'hudChrome.dailyRewards.walletHoldTitle': 'WOCを保有',
-  'hudChrome.dailyRewards.walletHoldBody':
-    'デイリー報酬を解放するには、少なくとも {amount} USD 相当のWOCを保有してください。',
-  'hudChrome.dailyRewards.walletPriceBody':
-    '現在WOCの価格を取得できません。しばらくしてから再度ご確認ください。',
-  'hudChrome.dailyRewards.reason.eligible': '報酬が解放されました。',
-  'hudChrome.dailyRewards.reason.no_wallet':
-    '$20 USD 相当以上のWOCを保有するウォレットを接続してください。',
-  'hudChrome.dailyRewards.reason.under_minimum':
-    'ウォレットが最低額の $20 USD 相当のWOCを下回っています。',
-  'hudChrome.dailyRewards.reason.price_unavailable':
-    'WOCの価格を取得できないため、報酬は一時的にロックされています。',
-  'hudChrome.dailyRewards.reason.banned': 'デイリー報酬への参加が禁止されています。理由: {reason}',
-  'hudChrome.dailyRewards.reason.bannedUntil':
-    'デイリー報酬への参加はあと{remaining}禁止されています。解除日時: {until}。理由: {reason}',
   'hudChrome.keybinds.discord': 'Discord',
   'hudChrome.spectate.banner': '{name}を観戦中',
   'hudChrome.readyCheck.prompt': '{name} が準備確認を開始しました。準備はいいですか？',
@@ -995,17 +678,14 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.options.keybindHelpLockCursorOnRotate':
     'ドラッグでカメラを回転させている間、マウスカーソルをウィンドウ内に固定し、画面の端や別のモニターに移動しないようにします。自由なカーソルを好む場合はオフにしてください。',
   'hudChrome.options.showWalletOnCharacterScreen': 'キャラクター画面にウォレットを表示',
-  'hudChrome.options.showWalletOnPlayerCard': 'プレイヤーカードにウォレットを表示',
   'hudChrome.options.showDevBadges': '開発者バッジを表示',
   'hudChrome.options.showOwnNameplate': '自分のネームプレートを表示',
   'hudChrome.options.showPlayerNameplates': 'プレイヤーのネームプレートを表示',
-  'hudChrome.playerCard.showWalletBadge': 'ウォレットバッジを表示',
   'hudChrome.options.uiScale': 'UIスケール',
   'hudChrome.options.highContrastBackground': '高コントラスト背景',
   'hudChrome.options.showItemLevel': 'アイテムレベルを表示',
   'hudChrome.options.showSecondaryActionBar': 'セカンダリアクションバーを表示',
   'hudChrome.options.showThirdActionBar': '3本目のアクションバーを表示',
-  'hudChrome.options.showDailyRewardsChest': 'デイリー報酬の宝箱を表示',
   'hudChrome.options.mobileCameraJoystick': 'カメラスティック',
   'hudChrome.options.mobileLeftHanded': '左利き用レイアウト',
   'hudChrome.options.itemLevelLine': 'アイテムレベル {level}',
@@ -1226,152 +906,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'auth.twoFactorPlaceholder': '6桁のコードまたはリカバリーコード',
   'auth.twoFactorHint':
     '認証アプリに表示されたコード、またはリカバリーコードのいずれかを入力してください。',
-  'wallet.label': '$WOC ウォレット',
-  'wallet.connect': 'ウォレット認証',
-  'wallet.connectTitle': 'Solanaウォレットを認証',
-  'wallet.connectAria': 'Solanaウォレットを認証',
-  'wallet.verify': 'ウォレット認証',
-  'wallet.verifyNew': '新しいウォレットを認証',
-  'wallet.verifyTitle': 'ウォレットを選択し、一度署名して所有権を認証します。',
-  'wallet.verifyAria': 'ウォレットを選択し、一度署名して所有権を認証',
-  'wallet.verifyAddressAria': 'アカウントのウォレット {address} を認証するために署名',
-  'wallet.appConnected': 'アプリ接続済み',
-  'wallet.connectApp': 'アプリを接続',
-  'wallet.connectAppTitle': 'このブラウザでウォレットアプリを接続',
-  'wallet.connectAppAria': 'このブラウザでウォレットアプリを接続',
-  'wallet.verifying': '認証中...',
-  'wallet.verifyingTitle': 'ウォレット認証を実行中です。',
-  'wallet.switch': '切替',
-  'wallet.switchTitle': '別のウォレットを認証',
-  'wallet.switchAria': '別のウォレットを認証',
-  'wallet.unlink': '連携解除',
-  'wallet.unlinkTitle': 'このアカウントからウォレット認証を削除',
-  'wallet.unlinkAria': 'このアカウントからウォレット認証を削除',
-  'wallet.signOut': '接続解除',
-  'wallet.signOutTitle': 'このブラウザでウォレットアプリの接続を解除',
-  'wallet.signOutAria': 'このブラウザでウォレットアプリの接続を解除',
-  'wallet.hide': '非表示',
-  'wallet.hideTitle': 'この画面でウォレット行を非表示にする',
-  'wallet.hideAria': 'この画面でウォレット行を非表示にする',
-  'wallet.hiddenNotice':
-    'ウォレット行を非表示にしました。ゲーム内のオプション > インターフェイスから再度有効にできます。',
-  'wallet.linkedTitle':
-    'ウォレットはアカウントで認証済みです。クリックしてウォレットアプリを管理します。',
-  'wallet.linkedDisconnectedTitle':
-    'ウォレットはアカウントで認証されたままです。ウォレットアプリを管理するには再接続してください。',
-  'wallet.linkedDisconnectedAria':
-    'ウォレットはアカウントで認証されたままです。ウォレットアプリを管理するには再接続してください。',
-  'wallet.linkTitle': 'クリックして署名し、このウォレットをアカウントに連携します。',
-  'wallet.connectedTitle':
-    '接続済みです。ログインすると、このウォレットをアカウントに連携できます。',
-  'wallet.balanceTitle': '認証済みSolanaウォレットの$WOC残高',
-  'wallet.balanceAria': '認証済みSolanaウォレット残高: {balance}',
-  'wallet.balancePreviewTitle': '接続中ウォレットの$WOC残高プレビュー',
-  'wallet.balancePreviewAria':
-    '接続中ウォレット残高プレビュー: {balance}。ウォレットを連携するとホルダー表示を認証できます。',
-  'wallet.balanceAmount': '{amount} $WOC',
-  'wallet.connected': '接続済み: {address}',
-  'wallet.connectedWithBalance': '接続済み: {balance} - {address}',
-  'wallet.connectedLinked': '認証済み: {address}',
-  'wallet.connectedLinkedWithBalance': '認証済み: {balance} - {address}',
-  'wallet.helpDisconnected':
-    'Solanaウォレットを認証して、ホルダー表示とプレイヤーカードのバッジを有効にします。トランザクションや SOL は不要です。',
-  'wallet.helpLoginToLink': '{address} に接続済みです。ログインするとアカウントに連携できます。',
-  'wallet.helpLoginToLinkWithBalance':
-    '{address} に接続済み、残高は {balance} です。ログインするとアカウントに連携できます。',
-  'wallet.helpReadyToLink':
-    '選択中のウォレット: {address}。一度署名すると、ホルダー表示とプレイヤーカードを認証できます。',
-  'wallet.helpReadyToLinkWithBalance':
-    '選択中のウォレット: {address}、残高は {balance} です。一度署名すると、ホルダー表示とプレイヤーカードを認証できます。',
-  'wallet.helpLinked': 'ホルダー特典が有効です。このブラウザでウォレットアプリが接続されています。',
-  'wallet.helpLinkedWithBalance':
-    'ホルダー特典が有効です。このブラウザでウォレットアプリが接続されています。',
-  'wallet.helpLinkedDisconnected':
-    'ホルダー特典が有効です。署名や支払いが必要なときはアプリを接続してください。',
-  'wallet.helpLinkedDisconnectedWithBalance':
-    'ホルダー特典が有効です。署名や支払いが必要なときはアプリを接続してください。',
-  'wallet.extensionHelp':
-    'ここにウォレットを表示するには、Solflare Wallet などのブラウザ用ウォレット拡張機能を有効にしておいてください。',
-  'wallet.mobileAppHelp':
-    'Phantom または Solflare を選択してください。ウォレットアプリで承認を求められます。ゲームを開いたままにし、完了後に戻ってください。',
-  'wallet.standaloneAppHelp':
-    'ホーム画面アプリでは、まだウォレットに接続できません。Phantom または Solflare を使用するには、Safari か Chrome で World of ClaudeCraft を開いてください。',
-  'wallet.openAppTitle': '{wallet} で続行',
-  'wallet.openAppHelp':
-    '{wallet} を開いてこのリクエストを確認してください。ウォレットアプリの使用中も、このゲームタブを開いたままにしてください。',
-  'wallet.openAppButton': '{wallet} を開く',
-  'wallet.manualReturnBrowserHelp':
-    '承認後、このゲームタブに戻ってください。iOS で別のブラウザが開いた場合は閉じ、元のブラウザに手動で戻ってください。',
-  'wallet.manualReturnStandaloneHelp':
-    '承認後、ホーム画面から World of ClaudeCraft に戻ってください。iOS でブラウザが開いた場合は閉じ、ホーム画面のアプリをもう一度開いてください。',
-  'wallet.preparingAppButton': '{wallet} を準備中...',
-  'wallet.walletAppUnavailable':
-    '{wallet} を準備できませんでした。このウィンドウを閉じて、もう一度お試しください。',
-  'wallet.flowConnect': 'ウォレットを選択してください。認証は自動的に続行されます。',
-  'wallet.flowSign':
-    'ウォレットアプリで認証メッセージに署名してください。トランザクションや SOL は不要です。',
-  'wallet.flowVerify': 'ウォレット所有権を認証中...',
-  'wallet.linkFailed': 'ウォレット認証に失敗しました。',
-  'wallet.verifyFailed': 'ウォレット認証に失敗しました。',
-  'wallet.browser.eyebrow': 'デスクトップウォレット認証',
-  'wallet.browser.title': 'Solanaウォレットを接続',
-  'wallet.browser.linkBody':
-    'このブラウザでウォレット拡張機能を選択してください。確認メッセージに署名した後、デスクトップアプリに戻ります。',
-  'wallet.browser.paymentBody':
-    'アカウントにリンクされたウォレットを選択し、このブラウザで取引を承認してください。',
-  'wallet.browser.extensionHelp':
-    '対応するウォレット拡張機能が見つかりません。Phantom、Solflare、または別のSolanaブラウザウォレットをインストールまたはロック解除して、再試行してください。',
-  'wallet.browser.safety':
-    'World of ClaudeCraftがリカバリーフレーズや秘密鍵を求めることはありません。',
-  'wallet.browser.continueWith': '{wallet}で続行',
-  'wallet.browser.reviewTitle': 'ウォレットで確認',
-  'wallet.browser.reviewBody':
-    '{wallet}の指示に従ってください。このブラウザページは開いたままにしてください。',
-  'wallet.browser.completeTitle': 'ウォレット認証が完了しました',
-  'wallet.browser.completeBody': 'World of ClaudeCraftデスクトップアプリに戻れます。',
-  'wallet.browser.returnButton': 'デスクトップアプリに戻る',
-  'wallet.browser.failed':
-    'ウォレット認証に失敗したか期限切れです。デスクトップアプリに戻って再試行してください。',
-  'wallet.browser.retry': '再試行',
-  'wallet.unlinkFailed': 'ウォレット連携を解除できませんでした。',
-  'wallet.holder': '$WOCホルダー',
-  'wallet.holderTierTitle': '{tier} $WOCホルダー',
-  'wallet.holderTiers.ember.name': '残り火',
-  'wallet.holderTiers.ember.flavor': '火花が灯りました。',
-  'wallet.holderTiers.coinbearer.name': 'コインベアラー',
-  'wallet.holderTiers.coinbearer.flavor': '軍資金庫に最初の一枚。',
-  'wallet.holderTiers.coppercrest.name': '銅の紋章',
-  'wallet.holderTiers.coppercrest.flavor': '銅貨は積み上がり、あなたの名が語られます。',
-  'wallet.holderTiers.silverbound.name': '銀の誓約',
-  'wallet.holderTiers.silverbound.flavor': '銀に結ばれ、資産を築いています。',
-  'wallet.holderTiers.gilded.name': '黄金',
-  'wallet.holderTiers.gilded.flavor': '黄金に輝き、笑みを浮かべています。',
-  'wallet.holderTiers.vaultwarden.name': '宝物庫の番人',
-  'wallet.holderTiers.vaultwarden.flavor': '今や本物の金庫を守っています: $WOC 全体の 0.01%。',
-  'wallet.holderTiers.whale.name': 'クジラ',
-  'wallet.holderTiers.whale.flavor': '泳げば深みが割れます: 供給量の 0.1%。',
-  'wallet.holderTiers.leviathan.name': 'リヴァイアサン',
-  'wallet.holderTiers.leviathan.flavor': 'あなたが動けば市場が感じ取ります: 供給量の 1%。',
-  'wallet.holderTiers.tidelord.name': '潮の君主',
-  'wallet.holderTiers.tidelord.flavor': '潮があなたの呼び声に応えます: 供給量の 2%。',
-  'wallet.holderTiers.stormcaller.name': '嵐呼び',
-  'wallet.holderTiers.stormcaller.flavor': 'あなたの名に嵐が集います: 供給量の 3%。',
-  'wallet.holderTiers.krakencrown.name': 'クラーケンの冠',
-  'wallet.holderTiers.krakencrown.flavor': '深海に冠を授けられています: 供給量の 4%。',
-  'wallet.holderTiers.titanforged.name': 'タイタン鍛造',
-  'wallet.holderTiers.titanforged.flavor': 'タイタンたちの間で鍛えられました: 供給量の 5%。',
-  'wallet.holderTiers.starhoard.name': '星の秘蔵',
-  'wallet.holderTiers.starhoard.flavor': '星光を曲げるほどの宝庫です: 供給量の 6%。',
-  'wallet.holderTiers.voidwarden.name': '虚空の番人',
-  'wallet.holderTiers.voidwarden.flavor': '虚空の縁を守っています: 供給量の 7%。',
-  'wallet.holderTiers.realmshaper.name': '領域形成者',
-  'wallet.holderTiers.realmshaper.flavor': 'あなたは領域を作り変えます: 供給量の 8%。',
-  'wallet.holderTiers.worldforger.name': '世界鍛造者',
-  'wallet.holderTiers.worldforger.flavor': '自分だけの世界を鍛えています: 供給量の 9%。',
-  'wallet.holderTiers.worldbearer.name': '世界を担う者',
-  'wallet.holderTiers.worldbearer.flavor': 'あなたは世界の一片を背負っています: 供給量の 10%。',
-  'wallet.holderTiers.sovereign.name': '君主',
-  'wallet.holderTiers.sovereign.flavor': 'レルムが膝をつきます: 供給量のすべて。',
   'playerCard.shareButton': 'プレイヤーカードを共有',
   'playerCard.title': 'プレイヤーカード',
   'playerCard.close': 'プレイヤーカードを閉じる',
@@ -1395,9 +929,8 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'playerCard.footerHandleWithRecruits': '@{handle} - {recruited}',
   'playerCard.footerCta': 'あなたの伝説を鍛えよう: {siteUrl}',
   'playerCard.arenaStat': 'アリーナ',
-  'playerCard.shareTierBit': ', {tier}ランクの$WOCホルダー',
   'playerCard.shareText':
-    'World of ClaudeCraftで伝説を鍛えています: レベル{level} {className}{tierBit}。私のワールドに参加してください:',
+    'World of ClaudeCraftで伝説を鍛えています: レベル{level} {className}。私のワールドに参加してください:',
   'playerCard.nativeShareTitle': 'ClaudeCraftの世界',
   'playerCard.fileNameFallback': 'プレイヤー',
   'playerCard.actionShareX': 'Xで共有',
@@ -4408,7 +3941,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.mobile.hotbarPageAria': '次のスキルセットを表示',
   'hudChrome.mobile.jump': 'ジャンプ',
   'hudChrome.mobile.leaderboard': 'ランキング',
-  'hudChrome.mobile.dailyRewards': 'ストア',
   'hudChrome.mobile.deeds': '功績',
   'hudChrome.mobile.nameplates': 'ネームプレート',
   'hudChrome.mobile.targetCycle': 'ターゲット切替',
@@ -6962,13 +6494,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'entities.delves.drowned_litany.enterText': 'あなたは沼地の果てへ、溺れし神殿へと降りていく。',
   'entities.delves.drowned_litany.leaveText':
     'あなたは沼地の果てへ登り、ハルヴェン修道士のもとへ戻る。',
-  'hudChrome.dailyRewards.endsIn': '終了まで{time}',
-  'hudChrome.dailyRewards.remainingHoursMinutes': '{hours}時間{minutes}分',
-  'hudChrome.dailyRewards.remainingDaysHours': '{days}日{hours}時間',
-  'hudChrome.dailyRewards.remainingLessThanMinute': '1分未満',
-  'hudChrome.dailyRewards.remainingMinutes': '{minutes}分',
-  'hudChrome.dailyRewards.sol': '{amount} SOL',
-  'hudChrome.dailyRewards.usd': '{amount} USD',
   'guide.professions.intro':
     '戦闘やクエストだけでなく、この世界は大地を耕し鍛冶場に立つあなたにも報いてくれます。原材料を採集し、十の製作職を通じてそれを装備や品物へと変え、それらの職が体現する十のアーキタイプのひとつとして自らのアイデンティティを築いていきます。',
   'guide.professions.harvestTitle': '狩りそのものを採取する',
@@ -8259,8 +7784,6 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     'サーバーのチート機能には引き続き ALLOW_DEV_COMMANDS=1 が必要です。',
   'devCommand.subtitle': '現在のワールドをサーバー権限でテストするための操作です。',
   'devCommand.title': 'コマンドセンター',
-  'hudChrome.claudium.railUsdc': 'USDC',
-  'hudChrome.claudium.usdcBalance': 'USDC：{amount}',
   'hudChrome.partyFrames.healthNone': 'なし',
   'hudChrome.partyFrames.sortName': '名前',
   'hudChrome.partyFrames.sortRole': 'ロール',

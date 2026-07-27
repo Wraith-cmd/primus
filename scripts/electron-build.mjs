@@ -1,32 +1,20 @@
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   azureSignOptionsFromEnv,
   desktopBuilderConfig,
-  isChannelFeedFile,
   keyVaultSignConfigFromEnv,
-  stampChannelFeedFiles,
 } from './electron-builder-config.mjs';
 import { buildElectronVendor } from './electron-vendor.mjs';
 
-// Usage: node scripts/electron-build.mjs [pack|build] [website|steam]
+// Usage: node scripts/electron-build.mjs [pack|build]
 //  - pack: --dir only (fast local verification); build: full installers.
-//  - website (default): the direct-download channel; keeps the publish feed, so
-//    the packaged app self-updates via electron-updater.
-//  - steam: the SteamPipe channel; publish nulled, 'dir' targets per OS, output
-//    in release-steam/, and the runtime stamp turns the in-app updater OFF
-//    (Steam depots are the only update path there; see docs/desktop-release.md).
 const mode = process.argv[2] ?? 'build';
 if (!['pack', 'build'].includes(mode)) {
   console.error(`unknown electron build mode: ${mode}`);
-  process.exit(1);
-}
-const distribution = process.argv[3] ?? 'website';
-if (!['website', 'steam'].includes(distribution)) {
-  console.error(`unknown desktop distribution: ${distribution}`);
   process.exit(1);
 }
 
@@ -107,13 +95,12 @@ run(npmCommand, ['run', 'build']);
 // the main-process runtime deps are esbuild-bundled into electron/vendor/ here.
 buildElectronVendor();
 
-// Derive the per-channel electron-builder config from package.json's "build"
-// block and hand it over as an explicit --config file (which REPLACES the
-// package.json block, so the derived config is always a superset of it).
+// Derive the electron-builder config from package.json's "build" block and
+// hand it over as an explicit --config file (which REPLACES the package.json
+// block, so the derived config is always a superset of it).
 const base = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8')).build;
 const config = desktopBuilderConfig({
   base,
-  distribution,
   mode,
   apiOrigin,
   loginOrigin,
@@ -122,43 +109,10 @@ const config = desktopBuilderConfig({
   // The Azure Key Vault certificate route (the AzureSignTool hook); the config
   // derivation prefers azureSign when both credential sets are present.
   keyVaultSign: process.platform === 'win32' ? keyVaultSignConfigFromEnv(process.env) : null,
-  // The update track defaults from apiOrigin (production origin publishes the
-  // 'latest' feed, anything else 'dev'); WOC_UPDATE_CHANNEL=dev stages a
-  // production-origin artifact on the dev track for update-pipeline testing.
-  // The one dangerous combination, 'latest' with a non-production origin,
-  // makes desktopBuilderConfig throw before anything is built. Set-but-empty
-  // means "unset" (derive from the origin), hence || rather than ??.
-  updateChannel: process.env.WOC_UPDATE_CHANNEL || null,
-  // The real Steamworks app id for a depot build (stamped into wocDesktop for
-  // electron/steam.cjs). desktopBuilderConfig refuses a steam channel build
-  // without a numeric id, so a depot can never silently ship on the Spacewar
-  // dev id (480); website builds ignore it.
-  steamAppId: process.env.WOC_STEAM_APP_ID || '',
-  // steamworks.js is an optionalDependency, so guard the steam channel against a
-  // tree where its native install silently failed: the depot would otherwise
-  // ship without Steam. desktopBuilderConfig invokes this only for the steam
-  // channel, so website builds never touch node_modules here.
-  steamworksInstalled: () =>
-    existsSync(path.join(root, 'node_modules/steamworks.js/package.json')) &&
-    existsSync(path.join(root, 'node_modules/steamworks.js/dist')),
 });
 const configDir = mkdtempSync(path.join(tmpdir(), 'woc-eb-'));
 const configPath = path.join(configDir, 'electron-builder.json');
 writeFileSync(configPath, JSON.stringify(config, null, 2));
-
-// Feed files accumulate across local builds sharing one output dir, and a
-// stale one from a differently-baked earlier build would be re-stamped below
-// with THIS build's origin, misdescribing the artifact it points at. Remove
-// both channels' feed files up front; electron-builder regenerates the
-// current channel's set.
-const outDir = path.join(root, config.directories?.output ?? 'release');
-if (config.publish?.channel && existsSync(outDir)) {
-  for (const name of readdirSync(outDir)) {
-    if (!isChannelFeedFile(name, 'latest') && !isChannelFeedFile(name, 'dev')) continue;
-    rmSync(path.join(outDir, name));
-    console.log(`[electron-build] removed stale feed file ${name}`);
-  }
-}
 
 // --publish never: artifact upload is a deliberate, documented manual step
 // (docs/desktop-release.md); without this, electron-builder auto-publishes on
@@ -174,25 +128,3 @@ run(electronBuilderCommand, [
 // The derived config holds no secrets, but do not litter the tmpdir on the
 // success path (run() exits the process on failure, skipping this).
 rmSync(configDir, { recursive: true, force: true });
-
-// Stamp every emitted update-feed file with the baked API origin so the
-// running app can refuse a cross-track artifact (electron/update_guard.cjs).
-// Steam builds publish nothing and pack builds emit no feed files, so this is
-// a no-op there.
-const feedChannel = config.publish?.channel;
-if (feedChannel) {
-  const stamped = stampChannelFeedFiles({
-    outDir,
-    channel: feedChannel,
-    apiOrigin,
-    fs: { existsSync, readdirSync, readFileSync, writeFileSync },
-    joinPath: path.join,
-  });
-  for (const name of stamped) console.log(`[electron-build] stamped wocApiOrigin into ${name}`);
-  if (mode === 'build' && stamped.length === 0) {
-    console.warn(
-      `[electron-build] no ${feedChannel}*.yml feed files found in ${outDir}; ` +
-        'nothing stamped (expected for target sets with no updatable artifact)',
-    );
-  }
-}

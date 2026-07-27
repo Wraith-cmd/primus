@@ -83,10 +83,6 @@ import {
   type CraftingIdentityView,
   type CraftResultView,
   type CupInfo,
-  type DailyRewardHistory,
-  type DailyRewardLeaderboardPage,
-  type DailyRewardSpinResult,
-  type DailyRewardStatus,
   type DeedsLeaderboardPage,
   type DeedsRarity,
   type DelveCompanionInfo,
@@ -517,71 +513,6 @@ export class Api {
     this.username = data.username;
   }
 
-  async createDesktopWalletHandoff(
-    action: { kind: 'link' } | { kind: 'transaction'; reference: string; expectedAddress: string },
-  ): Promise<{ code: string; expiresInMs: number }> {
-    const data = await this.post(
-      '/api/desktop-wallet/create',
-      action,
-      DESKTOP_API_ORIGIN || this.base,
-    );
-    return {
-      code: typeof data.code === 'string' ? data.code : '',
-      expiresInMs: typeof data.expiresInMs === 'number' ? data.expiresInMs : 0,
-    };
-  }
-
-  async desktopWalletHandoffResult(code: string): Promise<
-    | { status: 'missing' | 'pending' }
-    | {
-        status: 'complete';
-        result:
-          | { kind: 'link'; address: string; nonce: string; signature: string }
-          | { kind: 'transaction'; address: string; signature: string };
-      }
-  > {
-    const data = await this.post(
-      '/api/desktop-wallet/result',
-      { code },
-      DESKTOP_API_ORIGIN || this.base,
-    );
-    if (data.status !== 'complete' || !data.result || typeof data.result !== 'object') {
-      return { status: data.status === 'pending' ? 'pending' : 'missing' };
-    }
-    const result = data.result as Record<string, unknown>;
-    if (
-      result.kind === 'link' &&
-      typeof result.address === 'string' &&
-      typeof result.nonce === 'string' &&
-      typeof result.signature === 'string'
-    ) {
-      return {
-        status: 'complete',
-        result: {
-          kind: 'link',
-          address: result.address,
-          nonce: result.nonce,
-          signature: result.signature,
-        },
-      };
-    }
-    if (
-      result.kind === 'transaction' &&
-      typeof result.address === 'string' &&
-      typeof result.signature === 'string'
-    ) {
-      return {
-        status: 'complete',
-        result: {
-          kind: 'transaction',
-          address: result.address,
-          signature: result.signature,
-        },
-      };
-    }
-    return { status: 'missing' };
-  }
-
   // ── Persistent session (home-page account portal) ──────────────────────────
   // The bearer token + username are cached in localStorage so a reload restores
   // the logged-in nav state. The token is always re-validated server-side via
@@ -825,26 +756,10 @@ export class Api {
     }
   }
 
-  // ── Non-custodial Solana wallet linking ───────────────────────────────────
   // Step 1: ask the server for the exact message to sign for this address.
-  async walletLinkChallenge(address: string): Promise<{ nonce: string; message: string }> {
-    return this.post('/api/wallet/link/challenge', { address });
-  }
 
-  // Step 2: submit the wallet's signature; server verifies + persists the link.
-  async linkWallet(address: string, signature: string, nonce: string): Promise<{ pubkey: string }> {
-    return this.post('/api/wallet/link', { address, signature, nonce });
-  }
 
-  // Current account's linked wallet (null when none).
-  async linkedWallet(): Promise<{ pubkey: string; linkedAt: string } | null> {
-    const data = await this.get('/api/wallet');
-    return data.wallet ?? null;
-  }
 
-  async unlinkWallet(): Promise<void> {
-    await this.delete('/api/wallet/link', {});
-  }
 
   // ── Discord link/login + status ────────────────────────────────────────────
   // Returns the discord.com authorize URL the browser navigates to (login = new
@@ -2404,8 +2319,6 @@ export class ClientWorld implements IWorld {
           ),
         );
         e.skinCatalog = w.cat === 'mech' ? 'mech' : 'class';
-        e.holderTier = w.ht ?? 0; // $WOC holder-tier flair (cosmetic, server-set)
-        e.holderBalance = typeof w.hb === 'number' ? w.hb : undefined; // exact $WOC, for inspect
         e.discordTier = w.dt ?? 0; // Discord status-tier flair (cosmetic, server-set)
         e.discordAvatar = typeof w.dav === 'string' ? w.dav : undefined; // Discord PFP (linked)
         e.discordName = typeof w.dnm === 'string' ? w.dnm : undefined; // Discord handle/nickname
@@ -3864,7 +3777,7 @@ export class ClientWorld implements IWorld {
   }
   // Reads the EXISTING public character sheet, the same one behind the
   // unauthenticated /c/:name page, so a chat-name lookup exposes nothing that
-  // was not already crawlable. The richer in-view inspect card (wallet balance,
+  // was not already crawlable. The richer in-view inspect card (
   // Discord/GitHub flair, gear) stays on the proximity-gated entity wire.
   async characterProfile(name: string): Promise<CharacterProfile | null> {
     const wanted = name.trim();
@@ -4305,68 +4218,6 @@ export class ClientWorld implements IWorld {
     } catch {
       return empty;
     }
-  }
-
-  async dailyRewards(): Promise<DailyRewardStatus> {
-    const res = await fetch(apiUrl('/api/daily-rewards', this.base), {
-      headers: { Authorization: `Bearer ${this.token}` },
-    });
-    if (!res.ok) throw new Error('daily rewards unavailable');
-    return (await res.json()) as DailyRewardStatus;
-  }
-
-  async dailyRewardLeaderboard(
-    page = 0,
-    pageSize = LEADERBOARD_PAGE_SIZE,
-  ): Promise<DailyRewardLeaderboardPage> {
-    const empty: DailyRewardLeaderboardPage = {
-      day: '',
-      leaders: [],
-      page: 0,
-      pageCount: 1,
-      total: 0,
-      pageSize,
-    };
-    try {
-      const res = await fetch(
-        apiUrl(`/api/daily-rewards/leaderboard?page=${page}&pageSize=${pageSize}`, this.base),
-        { headers: { Authorization: `Bearer ${this.token}` } },
-      );
-      if (!res.ok) return empty;
-      const data = await res.json();
-      return {
-        day: data.day ?? '',
-        leaders: data.leaders ?? [],
-        page: data.page ?? page,
-        pageCount: data.pageCount ?? 1,
-        total: data.total ?? data.leaders?.length ?? 0,
-        pageSize: data.pageSize ?? pageSize,
-      };
-    } catch {
-      return empty;
-    }
-  }
-
-  async spinDailyReward(): Promise<DailyRewardSpinResult> {
-    const res = await fetch(apiUrl('/api/daily-rewards/spin', this.base), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.token}`,
-      },
-      body: '{}',
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error ?? 'daily spin unavailable');
-    return data as DailyRewardSpinResult;
-  }
-
-  async dailyRewardHistory(): Promise<DailyRewardHistory> {
-    const res = await fetch(apiUrl('/api/daily-rewards/history', this.base), {
-      headers: { Authorization: `Bearer ${this.token}` },
-    });
-    if (!res.ok) return { payouts: [] };
-    return (await res.json()) as DailyRewardHistory;
   }
 
   prestige(): void {

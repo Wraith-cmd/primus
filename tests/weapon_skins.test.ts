@@ -19,7 +19,6 @@ import {
 import { ITEMS } from '../src/sim/data';
 import { armoryCollectionStrings, armorySkinStrings } from '../src/ui/i18n.catalog/armory';
 import { ITEM_WEAPON_VARIANTS } from '../src/ui/weapon_variants';
-import { armorySkinArt } from '../src/ui/woc_store_view';
 
 const ROOT = join(__dirname, '..');
 
@@ -57,8 +56,6 @@ describe('season 1 weapon skin catalog', () => {
   it('every skin ships its rarity-themed store thumbnail (scripts/armory_thumbs.mjs)', () => {
     for (const skin of WEAPON_SKIN_LIST) {
       expect(existsSync(join(ROOT, `public/ui/store/armory/${skin.id}.webp`)), skin.id).toBe(true);
-      // The store card art url stays in lockstep with the shipped file.
-      expect(armorySkinArt(skin.id)).toBe(`/ui/store/armory/${skin.id}.webp`);
     }
   });
 

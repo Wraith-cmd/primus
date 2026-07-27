@@ -665,58 +665,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.nameplate.mobLevel': '{level}',
   'hudChrome.specPanel.specUnlockBanner': 'Specialisering upplåst!',
   'hudChrome.specPanel.specUnlockHint': 'Tryck N för att välja din specialisering.',
-  'hudChrome.wocStore.wallet.connect': 'Anslut plånbok',
-  'hudChrome.wocStore.wallet.connectedUnlinked':
-    'Plånboksappen är ansluten till denna webbläsare, men dess offentliga adress är ännu inte länkad till ditt WoC-konto.',
-  'hudChrome.wocStore.wallet.linkedConnected':
-    'Din länkade plånboksapp är ansluten och redo för SOL- eller WOC-köp.',
-  'hudChrome.wocStore.wallet.linkedDisconnected':
-    'Din offentliga adress är länkad. Återanslut den plånboksappen när du vill betala med SOL eller WOC.',
-  'hudChrome.wocStore.wallet.manage': 'Hantera plånbok',
-  'hudChrome.wocStore.wallet.mismatched':
-    'En annan plånbok är ansluten. Verifiera den för att ersätta den länkade adressen, eller återanslut den länkade plånboken.',
-  'hudChrome.wocStore.wallet.reconnect': 'Återanslut plånbok',
-  'hudChrome.wocStore.wallet.title': 'Solana-plånbok',
-  'hudChrome.wocStore.wallet.unlinked':
-    'Anslut en plånboksapp och signera sedan en gång för att länka dess offentliga adress till ditt WoC-konto. Vi tar aldrig emot din återställningsfras eller privata nyckel.',
-  'hudChrome.wocStore.wallet.verify': 'Verifiera och länka',
-  'wallet.bagConnect': 'Länka plånbok',
-  'wallet.bagLink': 'Verifiera plånbok',
-  'wallet.bagReconnect': 'Återanslut plånbok',
-  'wallet.browser.completeBody': 'Du kan återvända till skrivbordsappen för World of ClaudeCraft.',
-  'wallet.browser.completeTitle': 'Plånboksbehörighet slutförd',
-  'wallet.browser.continueWith': 'Fortsätt med {wallet}',
-  'wallet.browser.extensionHelp':
-    'Inget kompatibelt plånbokstillägg hittades. Installera eller lås upp Phantom, Solflare eller en annan Solana-webbläsarplånbok och försök sedan igen.',
-  'wallet.browser.eyebrow': 'Skrivbordsplånboksbehörighet',
-  'wallet.browser.failed':
-    'Plånboksbehörighet misslyckades eller gick ut. Återgå till skrivbordsappen och försök igen.',
-  'wallet.browser.linkBody':
-    'Välj ett plånbokstillägg i denna webbläsare. Du signerar ett verifieringsmeddelande och återvänder sedan till skrivbordsappen.',
-  'wallet.browser.paymentBody':
-    'Välj plånboken länkad till ditt konto och godkänn transaktionen i denna webbläsare.',
-  'wallet.browser.retry': 'Försök igen',
-  'wallet.browser.returnButton': 'Återgå till skrivbordsappen',
-  'wallet.browser.reviewBody': 'Följ uppmaningen från {wallet}. Håll denna webbläsarsida öppen.',
-  'wallet.browser.reviewTitle': 'Granska i din plånbok',
-  'wallet.browser.safety':
-    'World of ClaudeCraft ber aldrig om din återställningsfras eller privata nyckel.',
-  'wallet.browser.title': 'Anslut en Solana-plånbok',
-  'wallet.manualReturnBrowserHelp':
-    'Efter godkännande, återgå till denna spelflik. Om iOS öppnar en annan webbläsare, stäng den och återgå till den ursprungliga webbläsaren manuellt.',
-  'wallet.manualReturnStandaloneHelp':
-    'Efter godkännande, återgå till World of ClaudeCraft från din hemskärm. Om iOS öppnar en webbläsare, stäng den och öppna hemskärmsappen manuellt igen.',
-  'wallet.mobileAppHelp':
-    'Välj Phantom eller Solflare. Din plånboksapp ber om godkännande. Håll det här spelet öppet och återgå till det när du är klar.',
-  'wallet.openAppButton': 'Öppna {wallet}',
-  'wallet.openAppHelp':
-    'Öppna {wallet} för att granska denna begäran. Håll denna spelflik öppen medan plånboksappen är aktiv.',
-  'wallet.openAppTitle': 'Fortsätt i {wallet}',
-  'wallet.preparingAppButton': 'Förbereder {wallet}...',
-  'wallet.standaloneAppHelp':
-    'Plånboksanslutningar är ännu inte tillgängliga i hemskärmsappen. Öppna World of ClaudeCraft i Safari eller Chrome för att använda Phantom eller Solflare.',
-  'wallet.walletAppUnavailable':
-    '{wallet} kunde inte förberedas. Stäng det här fönstret och försök igen.',
   'entities.abilities.primal_reflexes.description':
     'Dina instinkter skärps och ökar din chans att undvika anfall med 50% i 6 sek.',
   'entities.abilities.primal_reflexes.name': 'Ursinnesreflexer',
@@ -1108,7 +1056,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'guide.valeCupPage.spectateBody':
     'En match i taget spelas på stadion, och vem som helst kan gå fram och titta från läktarna.',
   'hudChrome.keybinds.valecup': 'Dalcupen',
-  'hudChrome.mobile.dailyRewards': 'Butik',
   'hudChrome.perf.labels.predLead': 'Prediktionsförsprång',
   'hudChrome.townFocus.budgetLabel': 'Poäng kvar: {remaining} / {budget}',
   'hudChrome.townFocus.decreaseAria': 'Minska fokus på {component}',
@@ -1954,19 +1901,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.calendar.result.removed': 'Evenemanget togs bort från kalendern.',
   'hudChrome.calendar.title': 'Evenemangskalender',
   'hudChrome.calendar.titlePlaceholder': 'Evenemangstitel',
-  'hudChrome.dailyRewards.disclaimer':
-    'WOC-priset kan röra sig snabbt. Vi rekommenderar att du håller mer än miniminivån på 20 USD så att vanliga prissvängningar inte låser dig ute. Detta är inte finansiell rådgivning.',
-  'hudChrome.dailyRewards.hideChestConfirmBody':
-    'Detta tar bort kistgenvägen från ditt HUD. Belöningar, behörighet och den här panelen finns kvar; du kan ta tillbaka genvägen från Alternativ.',
-  'hudChrome.dailyRewards.hideChestConfirmCancel': 'Avbryt',
-  'hudChrome.dailyRewards.hideChestConfirmOk': 'Dölj kista',
-  'hudChrome.dailyRewards.hideChestConfirmTitle': 'Dölj kistan för dagliga belöningar?',
-  'hudChrome.dailyRewards.pointsGained': '{points} poäng för dagliga belöningar intjänade.',
-  'hudChrome.dailyRewards.taskMultiplier': 'x{multiplier} multiplikator',
-  'hudChrome.dailyRewards.oneVsOneExcluded':
-    '1 mot 1-matcher ger inga poäng för dagliga belöningar.',
-  'hudChrome.dailyRewards.totalPlayer': '{count} spelare i dag',
-  'hudChrome.dailyRewards.totalPlayers': '{count} spelare i dag',
   'hudChrome.death.resurrectAtCorpse': 'Återuppstå vid liket',
   'hudChrome.death.resurrectAtHealer': 'Den bleka väktaren (Väktartullen)',
   'hudChrome.death.spiritHealerAlive':
@@ -2024,7 +1958,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.mobTooltip.levelFamily': 'Nivå {level} {family}',
   'hudChrome.options.aurasOnPlayerFrame': 'Förstärkningar på spelarramen',
   'hudChrome.options.playerFrameScale': 'Spelarramens skala',
-  'hudChrome.options.showDailyRewardsChest': 'Visa kistan för dagliga belöningar',
   'hudChrome.options.showOwnNameplate': 'Visa min namnskylt',
   'hudChrome.options.targetFrameScale': 'Målramens skala',
   'hudChrome.options.walkByAutoloot': 'Automatisk plundring i förbifarten',
@@ -2066,8 +1999,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'sim.delve.riteSequenceReady': 'Helgedomarna slocknar. Upprepa sekvensen.',
   'sim.delve.riteWrong': 'Ett skarpt, sprucket klockslag. Svart vatten stänker vid dina fötter.',
   'sim.delve.ropesSealed': 'Du borde pröva att dra i klockrepen.',
-  'wallet.extensionHelp':
-    'För att se en plånbok här, håll ett webbläsartillägg för plånböcker som Solflare Wallet aktivt.',
   'worldContent.delveReliquaryInteract': 'Det dränkta relikvariet: Tryck på F för att inleda riten',
   'worldContent.delveRiteShrineBellInteract': 'Klockhelgedom: Tryck på F för att ringa i den',
   'worldContent.delveRiteShrineCandleInteract': 'Ljushelgedom: Tryck på F för att röra vid den',
@@ -6157,7 +6088,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
     'Håller muspekaren inuti fönstret medan du drar för att rotera kameran, så att den inte kan nå skärmkanten eller flytta till en annan skärm. Stäng av om du föredrar en fri pekare.',
   'hudChrome.options.lockCursorOnRotate': 'Lås pekare under rotation',
   'hudChrome.options.showWalletOnCharacterScreen': 'Visa plånbok på karaktärsskärmen',
-  'hudChrome.options.showWalletOnPlayerCard': 'Visa plånbok på spelarkortet',
   'hudChrome.options.uiScale': 'Gränssnittsskala',
   'hudChrome.paperdoll.unequipAria': 'Ta av {item}',
   'hudChrome.paperdoll.unequipHint':
@@ -6222,7 +6152,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.perf.units.mb': '{value} MB',
   'hudChrome.perf.units.memPair': '{used} / {limit} MB',
   'hudChrome.perf.units.ms': '{value} ms',
-  'hudChrome.playerCard.showWalletBadge': 'Visa plånboksmärke',
   'hudChrome.plurals.characterCount.few': '{count} rollfigurer',
   'hudChrome.plurals.characterCount.many': '{count} rollfigurer',
   'hudChrome.plurals.characterCount.one': '{count} rollfigur',
@@ -6691,8 +6620,7 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'playerCard.renderFailedStatus': 'Kortrenderingen misslyckades.',
   'playerCard.shareButton': 'Dela spelarkort',
   'playerCard.shareText':
-    'Jag skapar min legend i World of ClaudeCraft: Nivå {level} {className}{tierBit}. Gå med i min värld:',
-  'playerCard.shareTierBit': ', {tier}-rankad $WOC-innehavare',
+    'Jag skapar min legend i World of ClaudeCraft: Nivå {level} {className}. Gå med i min värld:',
   'playerCard.statusDownloaded': 'Kortet nedladdat.',
   'playerCard.statusGenericError': 'Något gick fel.',
   'playerCard.statusOpenedXWithImage': 'Öppnade X. Klistra in kortbilden i inlägget.',
@@ -6912,115 +6840,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'stats.playersOnline': 'Spelare online',
   'stats.realmName': 'Världens namn',
   'stats.title': 'Världsstatus',
-  'wallet.appConnected': 'App ansluten',
-  'wallet.balanceAmount': '{amount} $WOC',
-  'wallet.balanceAria': 'Verifierat Solana-plånbokssaldo: {balance}',
-  'wallet.balancePreviewAria':
-    'Förhandsvisning av ansluten plånboks saldo: {balance}. Länka plånboken för att verifiera innehavarmärket.',
-  'wallet.balancePreviewTitle': 'Förhandsvisning av ansluten plånboks $WOC-saldo',
-  'wallet.balanceTitle': 'Verifierat $WOC-saldo i Solana-plånbok',
-  'wallet.connect': 'Verifiera plånbok',
-  'wallet.connectApp': 'Anslut app',
-  'wallet.connectAppAria': 'Anslut plånboksappen i den här webbläsaren',
-  'wallet.connectAppTitle': 'Anslut plånboksappen i den här webbläsaren',
-  'wallet.connectAria': 'Verifiera din Solana-plånbok',
-  'wallet.connectTitle': 'Verifiera din Solana-plånbok',
-  'wallet.connected': 'Ansluten: {address}',
-  'wallet.connectedLinked': 'Verifierad: {address}',
-  'wallet.connectedLinkedWithBalance': 'Verifierad: {balance} - {address}',
-  'wallet.connectedTitle': 'Ansluten. Logga in för att länka plånboken till ditt konto.',
-  'wallet.connectedWithBalance': 'Ansluten: {balance} - {address}',
-  'wallet.flowConnect': 'Välj en plånbok. Verifieringen fortsätter automatiskt.',
-  'wallet.flowSign':
-    'Signera verifieringsmeddelandet i din plånboksapp. Ingen transaktion eller SOL krävs.',
-  'wallet.flowVerify': 'Verifierar plånboksägande...',
-  'wallet.helpDisconnected':
-    'Verifiera en Solana-plånbok för att aktivera innehavarmärke och spelarkortsmärken. Ingen transaktion eller SOL krävs.',
-  'wallet.helpLinked':
-    'Innehavarförmåner är aktiva. Plånboksappen är ansluten i den här webbläsaren.',
-  'wallet.helpLinkedDisconnected':
-    'Innehavarförmåner är aktiva. Anslut appen när du behöver signera eller spendera.',
-  'wallet.helpLinkedDisconnectedWithBalance':
-    'Innehavarförmåner är aktiva. Anslut appen när du behöver signera eller spendera.',
-  'wallet.helpLinkedWithBalance':
-    'Innehavarförmåner är aktiva. Plånboksappen är ansluten i den här webbläsaren.',
-  'wallet.helpLoginToLink': 'Ansluten {address}. Logga in för att länka den till ditt konto.',
-  'wallet.helpLoginToLinkWithBalance':
-    'Ansluten {address} med {balance}. Logga in för att länka den till ditt konto.',
-  'wallet.helpReadyToLink':
-    'Plånbok vald: {address}. Signera en gång för att verifiera innehavarmärke och spelarkort.',
-  'wallet.helpReadyToLinkWithBalance':
-    'Plånbok vald: {address} med {balance}. Signera en gång för att verifiera innehavarmärke och spelarkort.',
-  'wallet.hiddenNotice':
-    'Plånboksraden är dold. Aktivera den igen i spelet via Alternativ > Gränssnitt.',
-  'wallet.hide': 'Dölj',
-  'wallet.hideAria': 'Dölj plånboksraden på den här skärmen',
-  'wallet.hideTitle': 'Dölj plånboksraden på den här skärmen',
-  'wallet.holder': '$WOC-innehavare',
-  'wallet.holderTierTitle': '{tier} $WOC-innehavare',
-  'wallet.holderTiers.coinbearer.flavor': 'Första myntet i krigskassan.',
-  'wallet.holderTiers.coinbearer.name': 'Myntbärare',
-  'wallet.holderTiers.coppercrest.flavor': 'Kopparmynt staplade, ditt namn på allas läppar.',
-  'wallet.holderTiers.coppercrest.name': 'Kopparkam',
-  'wallet.holderTiers.ember.flavor': 'Gnistan är tänd.',
-  'wallet.holderTiers.ember.name': 'Glöd',
-  'wallet.holderTiers.gilded.flavor': 'Förgylld och leende.',
-  'wallet.holderTiers.gilded.name': 'Förgylld',
-  'wallet.holderTiers.krakencrown.flavor': 'Krönt av djupet: 4 % av tillgången.',
-  'wallet.holderTiers.krakencrown.name': 'Krakenkrona',
-  'wallet.holderTiers.leviathan.flavor': 'Marknaderna känner när du rör dig: 1 % av tillgången.',
-  'wallet.holderTiers.leviathan.name': 'Leviatan',
-  'wallet.holderTiers.realmshaper.flavor': 'Du omformar riket: 8 % av tillgången.',
-  'wallet.holderTiers.realmshaper.name': 'Rikesformare',
-  'wallet.holderTiers.silverbound.flavor': 'Bunden i silver, bygger upp pungen.',
-  'wallet.holderTiers.silverbound.name': 'Silverbunden',
-  'wallet.holderTiers.sovereign.flavor': 'Riket böjer knä: hela tillgången.',
-  'wallet.holderTiers.sovereign.name': 'Härskare',
-  'wallet.holderTiers.starhoard.flavor': 'En skatt som böjer stjärnljuset: 6 % av tillgången.',
-  'wallet.holderTiers.starhoard.name': 'Stjärnskatt',
-  'wallet.holderTiers.stormcaller.flavor': 'Stormar samlas vid ditt namn: 3 % av tillgången.',
-  'wallet.holderTiers.stormcaller.name': 'Stormkallare',
-  'wallet.holderTiers.tidelord.flavor': 'Tidvattnet lyder din kallelse: 2 % av tillgången.',
-  'wallet.holderTiers.tidelord.name': 'Tidvattenherre',
-  'wallet.holderTiers.titanforged.flavor': 'Smidd bland titaner: 5 % av tillgången.',
-  'wallet.holderTiers.titanforged.name': 'Titansmidd',
-  'wallet.holderTiers.vaultwarden.flavor': 'Vaktar nu ett verkligt valv: 0,01 % av allt $WOC.',
-  'wallet.holderTiers.vaultwarden.name': 'Valvväktare',
-  'wallet.holderTiers.voidwarden.flavor': 'Väktare vid tomhetens rand: 7 % av tillgången.',
-  'wallet.holderTiers.voidwarden.name': 'Tomhetsväktare',
-  'wallet.holderTiers.whale.flavor': 'Djupet delar sig när du simmar: 0,1 % av tillgången.',
-  'wallet.holderTiers.whale.name': 'Val',
-  'wallet.holderTiers.worldbearer.flavor': 'Du bär en bit av världen: 10 % av tillgången.',
-  'wallet.holderTiers.worldbearer.name': 'Världsbärare',
-  'wallet.holderTiers.worldforger.flavor': 'Smider en egen värld: 9 % av tillgången.',
-  'wallet.holderTiers.worldforger.name': 'Världssmidare',
-  'wallet.label': '$WOC-plånbok',
-  'wallet.linkFailed': 'Plånboksverifieringen misslyckades.',
-  'wallet.linkTitle': 'Klicka för att signera och länka den här plånboken till ditt konto.',
-  'wallet.linkedDisconnectedAria':
-    'Plånboken är fortfarande verifierad för ditt konto. Återanslut för att hantera plånboksappen.',
-  'wallet.linkedDisconnectedTitle':
-    'Plånboken är fortfarande verifierad för ditt konto. Återanslut för att hantera plånboksappen.',
-  'wallet.linkedTitle':
-    'Plånboken är verifierad för ditt konto. Klicka för att hantera plånboksappen.',
-  'wallet.signOut': 'Koppla från',
-  'wallet.signOutAria': 'Koppla från plånboksappen i den här webbläsaren',
-  'wallet.signOutTitle': 'Koppla från plånboksappen i den här webbläsaren',
-  'wallet.switch': 'Byt',
-  'wallet.switchAria': 'Verifiera en annan plånbok',
-  'wallet.switchTitle': 'Verifiera en annan plånbok',
-  'wallet.unlink': 'Avlänka',
-  'wallet.unlinkAria': 'Ta bort plånboksverifieringen från det här kontot',
-  'wallet.unlinkFailed': 'Det gick inte att avlänka plånboken.',
-  'wallet.unlinkTitle': 'Ta bort plånboksverifieringen från det här kontot',
-  'wallet.verify': 'Verifiera plånbok',
-  'wallet.verifyAddressAria': 'Signera för att verifiera plånboken {address} för ditt konto',
-  'wallet.verifyAria': 'Välj en plånbok och signera en gång för att verifiera ägande',
-  'wallet.verifyFailed': 'Plånboksverifieringen misslyckades.',
-  'wallet.verifyNew': 'Verifiera ny plånbok',
-  'wallet.verifyTitle': 'Välj en plånbok och signera en gång för att verifiera ägande.',
-  'wallet.verifying': 'Verifierar...',
-  'wallet.verifyingTitle': 'Plånboksverifiering pågår.',
   'wiki.cta': 'Bläddra i wikin',
   'wiki.desc': 'Upptäck rikets hemligheter, klassguider och strategier.',
   'wiki.title': 'Spelwiki och guide',
@@ -7293,53 +7112,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'desktop.update.ready':
     'Uppdatering {version} är klar. Den installeras när du avslutar, eller starta om nu.',
   'desktop.update.restart': 'Starta om nu',
-  'hudChrome.dailyRewards.close': 'Stäng dagliga belöningar',
-  'hudChrome.dailyRewards.endsIn': 'Slutar om {time}',
-  'hudChrome.dailyRewards.error': 'Kunde inte ladda dagliga belöningar.',
-  'hudChrome.dailyRewards.history': 'Tidigare vinnare',
-  'hudChrome.dailyRewards.intro':
-    'Håll tillräckligt med WOC i din verifierade plånbok för att låsa upp dagliga belöningar. Tjäna poäng med ett dagligt snurr och roterande uppgifter, och klättra sedan på den dagliga topplistan för en andel av prispotten.',
-  'hudChrome.dailyRewards.leaderboard': 'Daglig topplista',
-  'hudChrome.dailyRewards.loading': 'Laddar dagliga belöningar...',
-  'hudChrome.dailyRewards.noHistory': 'Inga utbetalningar ännu.',
-  'hudChrome.dailyRewards.noLeaders': 'Inga poäng ännu.',
-  'hudChrome.dailyRewards.prize': 'Prispott',
-  'hudChrome.dailyRewards.reason.eligible': 'Belöningar upplåsta.',
-  'hudChrome.dailyRewards.reason.no_wallet': 'Anslut en plånbok med minst 20 USD i WOC.',
-  'hudChrome.dailyRewards.reason.price_unavailable':
-    'WOC-priset är otillgängligt, belöningar är tillfälligt låsta.',
-  'hudChrome.dailyRewards.reason.under_minimum': 'Plånboken är under WOC-miniminivån på 20 USD.',
-  'hudChrome.dailyRewards.remainingHoursMinutes': '{hours} h {minutes} min',
-  'hudChrome.dailyRewards.remainingLessThanMinute': '<1 min',
-  'hudChrome.dailyRewards.remainingMinutes': '{minutes} min',
-  'hudChrome.dailyRewards.reset': 'Återställning',
-  'hudChrome.dailyRewards.score': 'Poäng',
-  'hudChrome.dailyRewards.sol': '{amount} SOL',
-  'hudChrome.dailyRewards.spinButton': 'Snurra',
-  'hudChrome.dailyRewards.spinClaimed': 'Hämtad: +{points} poäng.',
-  'hudChrome.dailyRewards.spinClose': 'Stäng dagligt snurr',
-  'hudChrome.dailyRewards.spinDialogTitle': 'Dagligt belöningssnurr',
-  'hudChrome.dailyRewards.spinReady': 'Ett snurr är redo.',
-  'hudChrome.dailyRewards.spinResult': '+{points} poäng',
-  'hudChrome.dailyRewards.spinTitle': 'Dagligt snurr',
-  'hudChrome.dailyRewards.tasks': 'Uppgifter',
-  'hudChrome.dailyRewards.showChestButton': 'Visa kista',
-  'hudChrome.dailyRewards.hideChestButton': 'Dölj kista',
-  'hudChrome.dailyRewards.title': 'Dagliga belöningar',
-  'hudChrome.dailyRewards.disabled':
-    'Dagliga belöningar är för närvarande inaktiverade. Vi meddelar uppdateringar om den här funktionen i Discord-kanalen.',
-  'hudChrome.dailyRewards.unknown': 'Okänd',
-  'hudChrome.dailyRewards.usd': '{amount} USD',
-  'hudChrome.dailyRewards.walletConnectBody':
-    'Verifiera en Solana-plånbok med WOC för att låsa upp dagliga belöningar.',
-  'hudChrome.dailyRewards.walletConnectButton': 'Verifiera plånbok',
-  'hudChrome.dailyRewards.walletConnectTitle': 'Verifiera plånbok',
-  'hudChrome.dailyRewards.walletHoldBody':
-    'Håll minst {amount} USD i WOC för att låsa upp dagliga belöningar.',
-  'hudChrome.dailyRewards.walletHoldTitle': 'Håll WOC',
-  'hudChrome.dailyRewards.walletPriceBody':
-    'WOC-prissättningen är otillgänglig just nu. Kom tillbaka snart.',
-  'hudChrome.dailyRewards.walletValue': 'Plånbokens värde (WOC)',
   'hudChrome.nativeUpdate.body':
     'En ny version av World of ClaudeCraft är tillgänglig. Uppdatera nu för de senaste korrigeringarna och förbättringarna.',
   'hudChrome.nativeUpdate.bodyWithVersion':
@@ -7853,7 +7625,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
     'Skapa ett nytt konto eller länka Apple till ett konto du redan har.',
   'hudChrome.auth.appleError': 'Det gick inte att logga in med Apple. Försök igen.',
   'hudChrome.auth.appleLoginCta': 'Fortsätt med Apple',
-  'hudChrome.dailyRewards.reason.banned': 'Du är avstängd från dagliga belöningar. Orsak: {reason}',
   'hudChrome.itemHeroicTag': '[HEROISK]',
   'hudChrome.itemSoulbound': 'Själabunden',
   'hudChrome.keybinds.categoryPet': 'Djur',
@@ -8097,53 +7868,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.npcs.fury.greeting': 'Sanden minns varje seger. Spendera din ära väl.',
   'entities.npcs.fury.name': 'RASERI',
   'entities.npcs.fury.title': 'Hederskvartermästare',
-  'hudChrome.claudium.amountLabel': 'Belopp',
-  'hudChrome.claudium.balanceLabel': 'Saldo',
-  'hudChrome.claudium.balanceUnit': '{amount} Claudium',
-  'hudChrome.claudium.buyButton': 'Köp',
-  'hudChrome.claudium.buyTitle': 'Köp Claudium',
-  'hudChrome.claudium.buyUnavailable': 'Det går inte att genomföra köp just nu.',
-  'hudChrome.claudium.checkoutClose': 'Stäng betalningsfönstret',
-  'hudChrome.claudium.checkoutFailed': 'Det gick inte att ladda kassan. Försök igen.',
-  'hudChrome.claudium.checkoutLoading': 'Laddar kassan...',
-  'hudChrome.claudium.checkoutNotSettled':
-    'Transaktionen skickades men Claudium har inte krediterats ännu. Försök snart igen.',
-  'hudChrome.claudium.checkoutPending':
-    'Transaktion pågår. Bekräfta i din plånbok och håll denna panel öppen.',
-  'hudChrome.claudium.checkoutPendingButton': 'Bearbetar',
-  'hudChrome.claudium.checkoutTitle': 'Slutför köp',
-  'hudChrome.claudium.checkoutUnavailable': 'Det Claudium-köpet är inte tillgängligt just nu.',
-  'hudChrome.claudium.checkoutWalletRequired':
-    'Anslut en Solana-plånbok innan du köper Claudium med krypto.',
-  'hudChrome.claudium.checkoutWalletUnsupported':
-    'Denna plånbok kan inte signera och skicka Solana-transaktioner.',
-  'hudChrome.claudium.close': 'Stäng Claudium',
-  'hudChrome.claudium.disclosure':
-    'Claudium är en virtuell valuta som bara går åt ett håll: köp den för pengar och använd den till kosmetika. Den kan inte växlas in, överföras eller betalas ut.',
-  'hudChrome.claudium.hideAmounts': 'Dölj extra Claudium-belopp',
-  'hudChrome.claudium.kindCosmetic': 'Kosmetisk',
-  'hudChrome.claudium.kindItem': 'Föremål',
-  'hudChrome.claudium.kindSkin': 'Skin',
-  'hudChrome.claudium.loading': 'Laddar Claudium...',
-  'hudChrome.claudium.open': 'Öppna Claudium',
-  'hudChrome.claudium.railLabel': 'Betalningsmetod',
-  'hudChrome.claudium.railNativeUnavailable': 'SOL/WOC är avstängt.',
-  'hudChrome.claudium.railSol': 'SOL',
-  'hudChrome.claudium.railStripe': 'Kort',
-  'hudChrome.claudium.railWoc': 'WOC',
-  'hudChrome.claudium.railWocDiscount': '20% rabatt',
-  'hudChrome.claudium.railWocUnavailable': 'WOC-priser är inte tillgängliga just nu.',
-  'hudChrome.claudium.showAmounts': 'Visa alla Claudium-belopp',
-  'hudChrome.claudium.skuRow': '{usd} för {claudium} Claudium',
-  'hudChrome.claudium.solBalance': 'SOL: {amount}',
-  'hudChrome.claudium.spendButton': 'Lös in',
-  'hudChrome.claudium.storeCost': '{amount} Claudium',
-  'hudChrome.claudium.storeEmpty': 'Inga kosmetika är tillgängliga just nu.',
-  'hudChrome.claudium.storeTitle': 'Kosmetisk butik',
-  'hudChrome.claudium.title': 'Claudium',
-  'hudChrome.claudium.unavailable':
-    'Claudium-butiken är inte tillgänglig just nu. Ditt saldo och dina köp påverkas inte. Försök igen om en stund.',
-  'hudChrome.claudium.wocBalance': 'WOC: {amount}',
   'hudChrome.deeds.openBookHint': 'Öppna Bedrifternas bok',
   'hudChrome.statInfo.desc.warfare':
     'Ökar skadan mot spelare med {increase}% och minskar skadan från spelare med {reduction}%.',
@@ -8169,200 +7893,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'hudChrome.warfare.reasons.fiestaComplete': 'Fiesta avklarad',
   'hudChrome.warfare.reasons.fiestaKill': 'Fiesta-nedtagning',
   'hudChrome.warfare.reasons.fiestaWin': 'Fiesta-seger',
-  'hudChrome.wocStore.applied': 'Aktivt',
-  'hudChrome.wocStore.apply': 'Använd skin',
-  'hudChrome.wocStore.armoryBody':
-    'Begränsade vapenskins från säsong 1-vapenhuset. De gäller för hela kontot, är helt kosmetiska och visas för alla i din omgivning.',
-  'hudChrome.wocStore.armoryEyebrow': 'Säsong 1',
-  'hudChrome.wocStore.armoryTitle': 'Vapenhuset',
-  'hudChrome.wocStore.badge.flagship': 'Flaggskepp',
-  'hudChrome.wocStore.badge.hero': 'Hjälte',
-  'hudChrome.wocStore.balance': 'Claudium-saldo',
-  'hudChrome.wocStore.buyClaudium': 'Köp Claudium',
-  'hudChrome.wocStore.buySkin': 'Köp skin',
-  'hudChrome.wocStore.cancel': 'Avbryt',
-  'hudChrome.wocStore.close': 'Stäng WOC-butiken',
-  'hudChrome.wocStore.collectionLine': '{collection}-samlingen',
-  'hudChrome.wocStore.collections.emberwrought': 'Glödsmidd',
-  'hudChrome.wocStore.collections.fallen_star': 'Fallen stjärna',
-  'hudChrome.wocStore.collections.guildmark': 'Gillesmärke',
-  'hudChrome.wocStore.collections.hoarfrost': 'Rimfrost',
-  'hudChrome.wocStore.confirmBody': 'Köpa {item} för {cost} Claudium?',
-  'hudChrome.wocStore.confirmPurchase': 'Köp',
-  'hudChrome.wocStore.confirmTitle': 'Bekräfta köp av kosmetika',
-  'hudChrome.wocStore.detach': 'Ta bort skin',
-  'hudChrome.wocStore.equipHint': 'Utrusta ett vapen av typen {type} för att använda detta skin.',
-  'hudChrome.wocStore.error': 'WOC-butiken är inte tillgänglig just nu. Försök igen om en stund.',
-  'hudChrome.wocStore.inspectAria': 'Inspektera {item}',
-  'hudChrome.wocStore.loading': 'Laddar WOC-butiken...',
-  'hudChrome.wocStore.lore': 'Bakgrundshistoria',
-  'hudChrome.wocStore.needMoreBody': 'Du behöver {shortfall} mer Claudium för att köpa {item}.',
-  'hudChrome.wocStore.needMoreTitle': 'Mer Claudium krävs',
-  'hudChrome.wocStore.owned': 'I din ägo',
-  'hudChrome.wocStore.priceChanged':
-    'Priset ändrades innan köpet slutfördes. Granska det uppdaterade priset och bekräfta igen.',
-  'hudChrome.wocStore.rarity.epic': 'Episk',
-  'hudChrome.wocStore.rarity.legendary': 'Legendarisk',
-  'hudChrome.wocStore.rarity.rare': 'Sällsynt',
-  'hudChrome.wocStore.rarity.uncommon': 'Ovanlig',
-  'hudChrome.wocStore.rewardsTab': 'Dagliga belöningar',
-  'hudChrome.wocStore.scene.day': 'Dag',
-  'hudChrome.wocStore.scene.dusk': 'Skymning',
-  'hudChrome.wocStore.scene.night': 'Natt',
-  'hudChrome.wocStore.sceneLabel': 'Förhandsvisningens ljus',
-  'hudChrome.wocStore.seasonOne': 'Säsong 1',
-  'hudChrome.wocStore.skins.ashspark_dagger.look':
-    'Kort svärtat blad ådrat med glödande glöd-orange, en liten pyrande pärla i stift, aska och gnista.',
-  'hudChrome.wocStore.skins.ashspark_dagger.lore':
-    'En bakvägsklinga med bergets eld insmugglad in i sin klacksten, en rustningsmans tysta skämt: till och med en pungväska kan bära en glöd av det första smidet. Svärtad, ådrad med orange, alltid en nyans för varm i slidan. Rita den i mörkret under Highwatch och glöden tänder din hand precis tillräckligt för att hitta luckan i en mans vakt.',
-  'hudChrome.wocStore.skins.ashspark_dagger.name': 'Askgnistkniv',
-  'hudChrome.wocStore.skins.astravyr_dagger.look':
-    'En flisa av en fallen stjärna, glödande kant av smält guld på kosmossvart metall, ett ljust stjärnskott som kretsar kring kulan, ett tunt norrskensspår.',
-  'hudChrome.wocStore.skins.astravyr_dagger.lore':
-    'Den minsta biten av stjärnan Aldric hämtades från kratern, och enligt vissa beräkningar den farligaste. En enda flisa av det där andra världsliga hjärtat, dess smälta guldkant som rider på kosmossvart metall, en ensam stjärna som cirkulerar runt klotet som en måne som förlorade sin värld. Den väger nästan ingenting och delar nästan vad som helst. Liten nog att gömma sig, tillräckligt ljus för att hitta i mörkret av sitt eget ljus.',
-  'hudChrome.wocStore.skins.astravyr_dagger.name': 'Astravyr, Den Fallna Stjärnans Huggtand',
-  'hudChrome.wocStore.skins.brasscap_axe.look':
-    'Bits av polerat stål, mässingslock och långets på lackat askskaft, snyggt omslag, tillverkarstämpel.',
-  'hudChrome.wocStore.skins.brasscap_axe.lore':
-    'En stämplad yxa är ett skryt du kan hålla. Mässingsmössan och langets är halvt rustning, hälften signatur: de hindrar skaftet från att splittras och de fångar krogljuset så att alla vet att du köpte Armorer Hodes verk, inte en milis-hand-me-down. "Om det skär, säljer jag det", säger Highwatch-smeden. Den här skär.',
-  'hudChrome.wocStore.skins.brasscap_axe.name': 'Mässingshätteyxa',
-  'hudChrome.wocStore.skins.brasscrown_staff.look':
-    'Lövträstav toppad med en svarvad mässingskrona, mässingshylsa, färgat läderband.',
-  'hudChrome.wocStore.skins.brasscrown_staff.lore':
-    'Svängd av kryddat lövträ och krönt med en mässingsfinal som Eastbrook-smederna gjutna i hundra men perfekt av en. Det tillhör den sortens resenär som vill bli tagen på allvar vid både Fenbridges gate och Highwatchs mur. En käpp som aldrig riktigt har behövt gå; det färgade bandet matchar en kappa du kan gissa priset på.',
-  'hudChrome.wocStore.skins.brasscrown_staff.name': 'Mässingskronans Vandringsstav',
-  'hudChrome.wocStore.skins.cinderbrand_sword.look':
-    'Blad av mörkt smidd stål, fylligare fylld med glödande glödorange runor, värmesprickor, en pyrande pärla i skyddet.',
-  'hudChrome.wocStore.skins.cinderbrand_sword.lore':
-    'Det första bladet släckte inte i vatten utan i Blessed Embers krattade från Stormcrag, kolen som Highwatch-smederna svär "bränna blått och rent, eftersom berget minns sin gamla ed." Banken in i den fylligare, den glöder glödorange och kommer inte att dö; runorna håller sig varma till bar hand på väggens kallaste natt. Cinderbrand behöver aldrig belysning. Den vägrar helt enkelt gå ut.',
-  'hudChrome.wocStore.skins.cinderbrand_sword.name': 'Glödbrand',
-  'hudChrome.wocStore.skins.cinderlatch_crossbow.look':
-    'Armborst i svärtat stål, glödorange glöd som sipprar från sprickor i stöttan, ett pyrande kol i rorkulten.',
-  'hudChrome.wocStore.skins.cinderlatch_crossbow.lore':
-    'Det märkligaste av det glödsmidda: bergets eld strömmade in i en maskin. Apelsin sipprar från sprickor i rodret, och ett rykande kol i rorkulten hindrar snöret från att någonsin stelna i Thornpeaks kyla eller Mirefens fukt. Dess bultar lämnar spåret redan varmt och landar varmare. En jägares svar på en mur där fienden inte heller känner kylan.',
-  'hudChrome.wocStore.skins.cinderlatch_crossbow.name': 'Glödlås',
-  'hudChrome.wocStore.skins.cosmarch_staff.look':
-    'En kretsande klunga av gyllene stjärnskärvor runt en kärna av smält guld, konstellationsetsad kosmossvart skaft, norrskensband som slingrar sig uppåt.',
-  'hudChrome.wocStore.skins.cosmarch_staff.lore':
-    'Ett skaft av stjärnmetall krönt med en kärna av smält guld och en ring av gyllene skärvor som marscherar runt den i långsam, oändlig omloppsbana: ett litet kosmos, etsat med konstellationer som inte matchar någon himmel över Thornpeak. Aurora slingrar sig upp på längden som rök som glömt att stiga. De som bar det hävdade att de kunde känna tomrummet som vänder sig genom det, på det sätt som Ysoleis bara "dricker månskenet": tålmodig och kall, och ser tillbaka.',
-  'hudChrome.wocStore.skins.cosmarch_staff.name': 'Cosmarch, Den Oändliga Tomhetens Spira',
-  'hudChrome.wocStore.skins.emberbite_axe.look':
-    'Yxa av svärtat järn med glödorange sprickor som glöder genom bettet, en kolpärla, värmebitar.',
-  'hudChrome.wocStore.skins.emberbite_axe.lore':
-    'Armorer Hode arbetade med ett levande kol av bergseld i hjärtat av biten, så kanten svalnar aldrig riktigt mellan slagen. Sprickorna andas orange på nedgången, som om strejken väcker något som det första smidet lämnade och sov i järnet. De säger att en Stormcrag-elemental gav upp glöden för det; de säger väldigt många saker på Highwatch när det blåser.',
-  'hudChrome.wocStore.skins.emberbite_axe.name': 'Glödbett',
-  'hudChrome.wocStore.skins.emberwish_wand.look':
-    'Infångad smält-guld döende stjärna inklädd i kretsande gnistor, kosmossvart skaft etsat med glödande konstellationer.',
-  'hudChrome.wocStore.skins.emberwish_wand.lore':
-    'Inte den fallna stjärnan i sig utan den sista fläcken av en döende: en enda glöd av en sol i smält guld som redan slocknat, insvept i gnistor som var dess slutliga ljus. Dess kosmossvarta skaft är etsat med konstellationerna som såg den dö. Mirefen-torparna säger att den ger en önskan till den som håller den i sann skymning; de säger också att varje själ som höll den önskade sig mer tid och att den drunknade månen inte gav någon av dem någon.',
-  'hudChrome.wocStore.skins.emberwish_wand.name': 'Glödönskan, Den Döende Solens Gnista',
-  'hudChrome.wocStore.skins.emberwrought_wand.look':
-    'Svartmetalltrollstav spetsad med glödande glödkol i järnklor, hårfäste värmesprickor, varmt inre ljus.',
-  'hudChrome.wocStore.skins.emberwrought_wand.lore':
-    'Trollstaven som döpte betyget. När en Highwatch pansarmakare först satte ett kol av bergseld i järnklor och fick det att svara på en dödlig hand, slutade till och med Prästs of the Light att kalla det kätteri och började kalla det användbart. Varm, tålmodig och tyst farlig: glöden i spetsen har bränt, obruten, sedan innan dess ägare drog andan.',
-  'hudChrome.wocStore.skins.emberwrought_wand.name': 'Glödsmidd Trollstav',
-  'hudChrome.wocStore.skins.encore_bow.look':
-    'Komiskt överdimensionerad stjärnkanon: en kosmossvart pipa etsat med glödande gyllene konstellationer, en utsvängd klockmunkorg med ett kometskal av smält guld som sitter inuti, mässingsbeslag, en axelstock av trä.',
-  'hudChrome.wocStore.skins.encore_bow.lore':
-    'Smederna som bearbetade den fallna stjärnan gjorde sex reliker av den och hade fortfarande en tunnas stjärnmetall över, och då hade lärlingarna åsikter. Det som kom från städet är antingen rikets första pistol eller dess minsta belägringsmotor: en axelkanon som inte så mycket tappar ett skott som begär en andra stjärna, riktad. Broder Aldric vägrade att välsigna den och resonerade att allt så högt redan har märkts av himlen. Jägares älskar det. Inget downrange någonsin har.',
-  'hudChrome.wocStore.skins.encore_bow.name': 'Encore, Den Andra Fallande Stjärnan',
-  'hudChrome.wocStore.skins.everwinter_wand.look':
-    'En enda spik av glödande cyan glaciäris, rimfrost som blommar från en silverkrage, svag kall dimma.',
-  'hudChrome.wocStore.skins.everwinter_wand.lore':
-    'En spik av glödande glaciäris, som sägs vara bruten från den djupa tjärnen nedanför Sanctum, där bergets kyla har tänder. Rimfrost blommar oändligt från sin silverkrage och smälter aldrig, varken av eld eller vid sommar. Magikers håller det nära för kylan det lånar deras arbete, och håller det långt på nätterna som det verkar luta sig mot Nythraxis krypta, och lyssna.',
-  'hudChrome.wocStore.skins.everwinter_wand.name': 'Evigvinterns Skärva',
-  'hudChrome.wocStore.skins.fletcher_s_guild_bow.look':
-    'Lackad valnötsbåge, lemspetsar i mässing, vaxat linnesnöre, en guildstämpel på stigaren.',
-  'hudChrome.wocStore.skins.fletcher_s_guild_bow.lore':
-    'Det närmaste riket har ett skrå är en fletchers stämpel på risern, ett löfte om vad som finns inuti, hur en vinodlare förseglar ett fat. Lackerad valnöt, mässing vid benspetsarna, ett vaxat linnesnöre som inte fransar sig genom ett Mirefen-regn. Varje led argumenterar för priset. Dra den en gång förbi änkesnåret och argumentet vinner.',
-  'hudChrome.wocStore.skins.fletcher_s_guild_bow.name': 'Pilmakarskråets Båge',
-  'hudChrome.wocStore.skins.forgeheart_staff.look':
-    'Järnskodd stav krönt med en burad glödande glödkärna, glödrunor uppför skaftet, stigande värmeskimmer.',
-  'hudChrome.wocStore.skins.forgeheart_staff.lore':
-    'Ett levande kol av bergseld i bur i järn vid sin krona. Loremaster Caddis kallar det bevis på att elden från det första smidet kan bindas till att tjäna, inte bara för att försegla. Värmeskimmer stiger ur den i ett tunt, ändlöst band; en magiker som bär en vill aldrig ha en smedja eller en vakteld. Glöden, viskar de, drogs från glödvingen Voskars egna andetag, och den har inte svalnat sedan dess.',
-  'hudChrome.wocStore.skins.forgeheart_staff.name': 'Smedjehjärtats Stav',
-  'hudChrome.wocStore.skins.frostbite_dagger.look':
-    'Oväldigt tunn dolk av klarblå is, en glödande cyan ven i mitten, nålfrostkristaller, rimfrostfäste.',
-  'hudChrome.wocStore.skins.frostbite_dagger.lore':
-    'Tunn som ett uppehållet andetag och dubbelt så kall: en splinta av Thornpeak-glaciären finslipad till en enda glödande ven, så angelägen att såret fryses till innan blodet kommer ihåg att rinna. Dess namn är lånat från den gravkyla som de döda bär ner från topparna. Den behöver aldrig skärpas; isen mattas inte, konstaterar Loremaster Caddis torrt, den bara väntar.',
-  'hudChrome.wocStore.skins.frostbite_dagger.name': 'Rimnål',
-  'hudChrome.wocStore.skins.glaciersplit_axe.look':
-    'Huvud av genomskinlig blå glaciär-is, sprucken inre glödande cyan, frostkristaller som strular, en skaft släpande kall ånga.',
-  'hudChrome.wocStore.skins.glaciersplit_axe.lore':
-    'Huggen från Thornpeak-glaciärens blåa hjärta, där två århundraden av is har pressat kylan tills den lyser av sig själv. Den släpar efter ånga även i vila, och sprickan när den landar är en spricka som öppnar sig under Smygjagaer Ridge. Highwatch ger sina fall till isen där uppe; så det här är ett vapen som är tänkt att hålla tjällossningen, och vad töningen än skulle väcka, på avstånd.',
-  'hudChrome.wocStore.skins.glaciersplit_axe.name': 'Glaciärklyvare',
-  'hudChrome.wocStore.skins.guildmark_arming_sword.look':
-    'Blånat stålblad, korsskydd för fisksvans i brons, krickfärgat lädergrepp, liten stämplad guild sigil.',
-  'hudChrome.wocStore.skins.guildmark_arming_sword.lore':
-    'Där smidesbladet är anonymt är detta signerat. En rustningsman förtjänar rätten att sänka sitt märke i ricasson först när världsmarknadens handlare går i god för sitt stål och Smith Haldrens märke går i god för. Blånad mot Vales fuktiga, balanserad till ett hårstrå. Du betalar för stämpeln lika mycket som svärdet, och det är värt det.',
-  'hudChrome.wocStore.skins.guildmark_arming_sword.name': 'Gillesmärkt Väpnarsvärd',
-  'hudChrome.wocStore.skins.guildmark_dirk.look':
-    'Smal dirk i härdat stål, bronsskydd och mutter, mörkgrönt snörgrepp, stämplad sigil.',
-  'hudChrome.wocStore.skins.guildmark_dirk.lore':
-    'Vilken gjord man bär när svärdet stannar hemma: smal, tempererad, stämplad med samma märke som intygar ett helt blad, bärs på bältet som en signet med kant. Underskattat för alla utom de som kan läsa en rustningsmans bevis. Quartermaster Bree har en låda med dem på Highwatch för officerare som har förtjänat murens respekt.',
-  'hudChrome.wocStore.skins.guildmark_dirk.name': 'Gillesmärkt Dirk',
-  'hudChrome.wocStore.skins.hoarfrost_vigil_staff.look':
-    'Försilvrad stav krönt med en flytande, långsamt roterande skärva av glödande cyan is, utstrålande kristaller och kall ånga.',
-  'hudChrome.wocStore.skins.hoarfrost_vigil_staff.lore':
-    'Personalen på klockan som aldrig sover på Highwatchs vägg. Dess krona är en skärva av cyan tjärris som flyter fri från silvret och vänder sig, sakta, av sig själv: alltid, svär vakten, mot kylan som samlas under topparna. Att bära Vigil är att stå tvåhundra års vakt på en enda natt, och lova att inte titta bort.',
-  'hudChrome.wocStore.skins.hoarfrost_vigil_staff.name': 'Rimfrostvaka',
-  'hudChrome.wocStore.skins.ice_fang_sword.look':
-    'Böjt blad av blek glaciäris, taggiga rimkristaller längs ryggraden, en glödande cyan frusen kärna i den fylligare, istappars tvärskyddet.',
-  'hudChrome.wocStore.skins.ice_fang_sword.lore':
-    'Flaggskeppet för den frysta sorten, och den bit som varje samlare når först. Ice Fang ristades, inte smidd, från en huggtand på glaciären som täcker Thornpeak ovanför Highwatch, dess cyankärna brinner kallt som ljuset från Glimmermere. Den rimmar själva luften den skär. Väggvakten svär att en soldat bar den natten när de höga snön höll Wyrmcult tillbaka och "köpte muren en vinter."',
-  'hudChrome.wocStore.skins.ice_fang_sword.name': 'Ishuggtand',
-  'hudChrome.wocStore.skins.lacquered_wand.look':
-    'Smal djupröd lackerad stav, två polerade mässingsband, liten rundad mässingsspets.',
-  'hudChrome.wocStore.skins.lacquered_wand.lore':
-    'Djupröd lack i sju tålmodiga rockar, bandade två gånger i polerad mässing: den typ av trollstav som en häckmagare köper från världsmarknaden när de väl har börjat ladda äkta mynt och vill titta på det. Den kanaliserar ljuset inte bättre än en björkpinne. Men det lyser magnifikt över köpmannens disk, och hälften av mindre magi har alltid trotts.',
-  'hudChrome.wocStore.skins.lacquered_wand.name': 'Lackerad Stav',
-  'hudChrome.wocStore.skins.meteorlatch_crossbow.look':
-    'Meteorisk stjärnmetall, smält guldkärna längs med rorkulten, kosmossvarta lemmar etsade med konstellationer, en knackad bult av ren sjöstjärna.',
-  'hudChrome.wocStore.skins.meteorlatch_crossbow.lore':
-    'Smidd av rå, meteorisk stjärnmetall medan Mirefen-kratern fortfarande glödde, skräp "för varmt att hantera", hamrade in i lemmar av kosmossvart etsade med konstellationer, en kärna av smält guld låg längs med rorkulten. Den knackar ingen bult utan frammanar en: ett skaft av sjöstjärna, löst som en dom och landar som slutet på en. När Highwatch fruktade att ens Nythraxis dödlösa krona kanske inte var det värsta under topparna, var det här vapnet de ville ha på väggen. Sikta det väl.',
-  'hudChrome.wocStore.skins.meteorlatch_crossbow.name': 'Meteorlås, Himlens Sista Dom',
-  'hudChrome.wocStore.skins.rimecrusher_mace.look':
-    'En klunga av taggiga iskristaller runt en glödande cyankärna, rimfrost kryper nerför en försilvrad skaft.',
-  'hudChrome.wocStore.skins.rimecrusher_mace.lore':
-    'Inte huggen men odlad: Thornpeak-isen slingrade sig runt en kall cyankärna tills den stelnade lika hårt som Hodes bästa stål. Rimfrosten kryper nerför den silverfärgade skaftet mot handen och kommer aldrig riktigt fram. Där det slår till fryser vattnet; där den vilar bleker marken. Topparnas gravkyla, gjorda tillräckligt små för att svänga mot sakerna som klättrar på väggen.',
-  'hudChrome.wocStore.skins.rimecrusher_mace.name': 'Rimkross',
-  'hudChrome.wocStore.skins.skyrender_axe.look':
-    'Huvudet som ett sönderrivet stycke natthimmel, sprickor i smält guld och etsningar av stjärnbild, skärvor av stjärnljus som svävar, ett norrskensskimmer som svävar längs kanten.',
-  'hudChrome.wocStore.skins.skyrender_axe.lore':
-    'Slås från kraterns kant, där den fallna stjärnan slet ut himlens egen reflektion ur Mirefen och lämnade ett sår som fortfarande ångar. Huvudet ser ut som en bit sönderriven natt: sprickor i smält guld, konstellationer som ingen forskare på Highwatch kan nämna, ett norrsken som blöder från kanten med varje sväng. Broder Aldric välsignade den och ville inte röra den. Att lyfta det är att hålla hålet himlen kvar.',
-  'hudChrome.wocStore.skins.skyrender_axe.name': 'Himmelsrivare, Firmamentets Sår',
-  'hudChrome.wocStore.skins.smoulderfall_mace.look':
-    'Mörka järnflänsar som lyser glödorange längs sina inre sprickor, en pärla med smält kärna i huvudet.',
-  'hudChrome.wocStore.skins.smoulderfall_mace.lore':
-    "En mace som bär sin egen härd: en sten med smält kärna avhuggen från Sanctum-sälen som var 'smidd med bergseld', som glödde i huvudet. Flänsarna förblir varma vid beröring och varmare där de landar; en Highwatch-sergeant svär att ett slag från den lämnar ett blåmärke som lyser svagt till morgonen. Bergets eld gjorde äntligen till att bryta i stället för att täta.",
-  'hudChrome.wocStore.skins.smoulderfall_mace.name': 'Glödfall',
-  'hudChrome.wocStore.skins.solheim_sword.look':
-    'Storsvärd smidd av en fallen stjärna, kärna av smält guld som delar bladet, kosmossvart stål kantat i stjärnljus, gyllene skärvor som kretsar kring skyddet, norrskensband.',
-  'hudChrome.wocStore.skins.solheim_sword.lore':
-    "När stjärnan föll från den västra himlen och 'brast som en smedja' bortom Änkesnåret, drog broder Aldric sitt fortfarande glödande hjärta från Mirefen-kratern och bad rikets smeder att arbeta 'en sak som inte tillhör denna värld'. De gjorde ett stort svärd av det: Solheim. Dess smälta guldkärna delar det kosmossvarta bladet som en gryning som spricker en natthimmel, och skärvor av stjärnmetall kretsar runt vakten på vägar utan handfast. Endast en har någonsin förfalskats. Det blir ingen annan.",
-  'hudChrome.wocStore.skins.solheim_sword.name': 'Solheim, gryningens sista ljus',
-  'hudChrome.wocStore.skins.starfall_mace.look':
-    'Infångad stjärnkärna av smält guld omgiven av kretsande fragment, kosmossvarta flänsar med stjärnljus, norrsken som rinner ut från sömmarna.',
-  'hudChrome.wocStore.skins.starfall_mace.lore':
-    'En stjärnkärna fångade ögonblicket innan den dog, omringad av skräpet som föll med den, frusna en tum från glömskan. Dess kosmossvarta flänsar löper med instängt stjärnljus, och norrsken rinner ut från sömmarna när den höjs. Ljusets gamla Präst kallade en fallande stjärna för en dom, en dom avkunnad från ovan att ingen sköld var menad att stoppa, och döpte detta efter den som kom ner på Mirefen.',
-  'hudChrome.wocStore.skins.starfall_mace.name': 'Stjärnfall, himlens dom',
-  'hudChrome.wocStore.skins.tempered_flanged_mace.look':
-    'Sexflänsad härdat blå stålhuvud, mässingskrage och axel, vinrött lädergrepp.',
-  'hudChrome.wocStore.skins.tempered_flanged_mace.lore':
-    'Sex flänsar av blånat, härdat stål, var och en slipad för att öppna ett rodret, täckta i mässing och lindade i vinrött läder. Rikets pansarmän tillverkar inte fula vapen även när arbetet är brutalt. Den här beställdes genom världsmarknaden, inte drogs från ett ställ; någonstans finns det en reskontra med en stolt köpares namn och summan han betalade Hode för det.',
-  'hudChrome.wocStore.skins.tempered_flanged_mace.name': 'Härdad Flänsklubba',
-  'hudChrome.wocStore.skins.winterbite.look':
-    'Försilvrat stål och blå-is båge, en glödande cyan frusen kärna i stigaren, en nockad pil av solid is, kall ånga.',
-  'hudChrome.wocStore.skins.winterbite.lore':
-    'En båge av försilvrat stål och Thornpeak-is, dess stigare upplyst av en kall cyan kärna som fryser pilen till snöret. Det knackar ett schakt av fast glaciär-is som reformerar varje dragning; bågskytten bär inget koger på väggen, bara kylan. Highwatch höll Smygjagaer Ridge genom en belägring med en liknande: en enda bågeskytt, säger de, och en vinter med pilar som alltid redan fanns där.',
-  'hudChrome.wocStore.skins.winterbite.name': 'Vinterbett',
-  'hudChrome.wocStore.storeTab': 'Butik',
-  'hudChrome.wocStore.tabsLabel': 'Delar av WOC-butiken',
-  'hudChrome.wocStore.title': 'WOC-butik',
-  'hudChrome.wocStore.tryOn': 'Prova',
-  'hudChrome.wocStore.unavailable': 'Inte tillgänglig',
-  'hudChrome.wocStore.viewModeLabel': 'Förhandsgranskningsläge',
-  'hudChrome.wocStore.weaponOnly': 'Endast vapen',
   'hudChrome.wocStore.wtype.axe': 'Yxa',
   'hudChrome.wocStore.wtype.bow': 'Båge',
   'hudChrome.wocStore.wtype.crossbow': 'Armborst',
@@ -8595,11 +8125,6 @@ export const sv_SE: Partial<Record<TranslationKey, string>> = {
   'entities.items.eastbrook_ritual_vestments.name': 'Östbäcks Rituella Skrud',
   'entities.items.eastbrook_warded_leggings.name': 'Östbäcks Beskyddade Benkläder',
   'entities.items.wardweave_cowl.name': 'Skyddsvävd Huva',
-  'hudChrome.claudium.railUsdc': 'USDC',
-  'hudChrome.claudium.usdcBalance': 'USDC: {amount}',
-  'hudChrome.dailyRewards.reason.bannedUntil':
-    'Du är avstängd från dagliga belöningar i ytterligare {remaining}. Åtkomsten återkommer {until}. Orsak: {reason}',
-  'hudChrome.dailyRewards.remainingDaysHours': '{days} dagar {hours} timmar',
   'hudChrome.partyFrames.columns': 'Raidkolumner',
   'hudChrome.partyFrames.healthCurrent': 'Nuvarande',
   'hudChrome.partyFrames.healthCurrentMax': 'Nuvarande / max',

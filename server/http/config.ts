@@ -26,8 +26,7 @@
 // scope: NODE_ENV has no garbage state and those guards must stay self-contained.
 //   (1) Per-request secret gates that treat env-unset as feature-off / fail-closed
 //       at request time: require_internal_secret.ts + internal.ts
-//       (RESTART_COUNTDOWN_SECRET, DISCORD_BOT_SECRET) and daily_rewards.ts
-//       (WOC_DAILY_REWARD_SERVICE_SECRET, WOC_DAILY_REWARD_SERVICE_URL).
+//       (RESTART_COUNTDOWN_SECRET, DISCORD_BOT_SECRET).
 //   (2) Per-request dev-gate reads of ALLOW_DEV_COMMANDS: the game.ts per-tick /
 //       per-command cheat gates (alongside ANTIBOT_ENFORCE, PERF_TICK_LOG,
 //       SELF_SNAPSHOT_FULL) and the two /api/perf report gates (the main.ts legacy
@@ -40,10 +39,7 @@
 //       design.
 //   (3) Domain feature-config getters that own their own env (discord.ts, github.ts
 //       OAuth, oauth.ts, native_attestation.ts, email/, auth.ts banlist,
-//       chat_filter_db.ts, woc_balance.ts, perf_report.ts, TRUSTED_PROXY_IPS in
-//       ratelimit.ts), plus daily_rewards.ts's module-load cache-TTL test knob
-//       WOC_DAILY_REWARD_CONFIG_TTL_MS (a garbage value degrades to cache-off,
-//       never breaks a request).
+//       chat_filter_db.ts, perf_report.ts, TRUSTED_PROXY_IPS in ratelimit.ts).
 //   (4) The security-header / enforce-flag middlewares keep their own
 //       `env = process.env` seam (security_headers.ts HSTS-in-prod,
 //       content_type.ts API_CONTENT_TYPE_ENFORCE, origin_check.ts
@@ -101,10 +97,9 @@ export interface Config {
   readonly githubToken: string;
   readonly chatLogRetentionDays: number;
   readonly perfReportRetentionDays: number;
-  // The six retention keys below follow the chatLogRetentionDays contract: 0 =
+  // The five retention keys below follow the chatLogRetentionDays contract: 0 =
   // keep forever, and the read is deliberately UNTRIMMED, so a whitespace-only
   // value falls to 0, the SAFE side for a destructive delete (keep, never prune).
-  readonly dailyRewardEventsRetentionDays: number;
   readonly onlineSamplesRetentionDays: number;
   readonly sitePresenceRetentionDays: number;
   // Play sessions older than this fold into the lifetime rollups and are deleted;
@@ -166,7 +161,6 @@ const DEFAULT_GITHUB_REPO = 'levy-street/world-of-claudecraft';
 const DEFAULT_GITHUB_TOKEN = '';
 const DEFAULT_CHAT_LOG_RETENTION_DAYS = 90;
 const DEFAULT_PERF_REPORT_RETENTION_DAYS = 14;
-const DEFAULT_DAILY_REWARD_EVENTS_RETENTION_DAYS = 400;
 const DEFAULT_ONLINE_SAMPLES_RETENTION_DAYS = 90;
 const DEFAULT_SITE_PRESENCE_RETENTION_DAYS = 90;
 const DEFAULT_PLAY_SESSION_RETENTION_DAYS = 180;
@@ -329,10 +323,6 @@ export function loadConfig(env: NodeJS.ProcessEnv): Config {
     perfReportRetentionDays: numberOr(
       env.PERF_REPORT_RETENTION_DAYS,
       DEFAULT_PERF_REPORT_RETENTION_DAYS,
-    ),
-    dailyRewardEventsRetentionDays: numberOr(
-      env.DAILY_REWARD_EVENTS_RETENTION_DAYS,
-      DEFAULT_DAILY_REWARD_EVENTS_RETENTION_DAYS,
     ),
     onlineSamplesRetentionDays: numberOr(
       env.ONLINE_SAMPLES_RETENTION_DAYS,

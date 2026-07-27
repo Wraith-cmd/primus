@@ -363,258 +363,7 @@ export const pt_BR: EnTranslations = {
       "title": "Emotes",
       "done": "Concluído"
     },
-    "dailyRewards": {
-      "title": "Recompensas Diárias",
-      "close": "Fechar recompensas diárias",
-      "loading": "Carregando recompensas diárias...",
-      "error": "Não foi possível carregar as recompensas diárias.",
-      "disabled": "As Recompensas Diárias estão desativadas no momento. Anunciaremos atualizações sobre este recurso no canal do Discord.",
-      "intro": "Mantenha WOC suficiente na sua carteira verificada para desbloquear as recompensas diárias. Ganhe pontos com um giro diário e tarefas rotativas, depois suba na classificação diária para ganhar uma parte da premiação.",
-      "disclaimer": "O preço do WOC pode variar rapidamente. Recomendamos manter mais do que o mínimo de $20 USD para que oscilações normais de preço não bloqueiem seu acesso. Isto não é aconselhamento financeiro.",
-      "prize": "Premiação",
-      "reset": "Reinício",
-      "endsIn": "Termina em {time}",
-      "remainingLessThanMinute": "<1min",
-      "remainingMinutes": "{minutes}min",
-      "remainingHoursMinutes": "{hours}h {minutes}min",
-      "remainingDaysHours": "{days} d {hours} h",
-      "score": "Pontuação",
-      "walletValue": "Valor da carteira (WOC)",
-      "usd": "{amount} USD",
-      "sol": "{amount} SOL",
-      "unknown": "Desconhecido",
-      "spinTitle": "Giro Diário",
-      "spinDialogTitle": "Giro de Recompensa Diária",
-      "spinClose": "Fechar giro diário",
-      "spinReady": "Um giro está disponível.",
-      "spinClaimed": "Resgatado: +{points} pontos.",
-      "spinResult": "+{points} pontos",
-      "spinButton": "Girar",
-      "tasks": "Tarefas",
-      "taskMultiplier": "Multiplicador x{multiplier}",
-      "oneVsOneExcluded": "Partidas 1 contra 1 não concedem pontos de recompensas diárias.",
-      "pointsGained": "{points} pontos de recompensas diárias ganhos.",
-      "showChestButton": "Mostrar Baú",
-      "hideChestButton": "Ocultar Baú",
-      "hideChestConfirmTitle": "Ocultar o Baú de Recompensas Diárias?",
-      "hideChestConfirmBody": "Isto remove o atalho do baú do seu HUD. As recompensas, a elegibilidade e este painel continuam disponíveis; você pode trazer o atalho de volta nas Opções.",
-      "hideChestConfirmOk": "Ocultar Baú",
-      "hideChestConfirmCancel": "Cancelar",
-      "leaderboard": "Classificação Diária",
-      "totalPlayer": "{count} jogador hoje",
-      "totalPlayers": "{count} jogadores hoje",
-      "history": "Vencedores anteriores",
-      "noLeaders": "Nenhum ponto ainda.",
-      "noHistory": "Nenhum pagamento ainda.",
-      "walletConnectTitle": "Verificar carteira",
-      "walletConnectBody": "Verifique uma carteira Solana com WOC para desbloquear as recompensas diárias.",
-      "walletConnectButton": "Verificar carteira",
-      "walletHoldTitle": "Mantenha WOC",
-      "walletHoldBody": "Mantenha pelo menos {amount} USD em WOC para desbloquear as recompensas diárias.",
-      "walletPriceBody": "O preço do WOC está indisponível no momento. Volte em instantes.",
-      "reason": {
-        "eligible": "Recompensas desbloqueadas.",
-        "no_wallet": "Conecte uma carteira com pelo menos $20 USD em WOC.",
-        "under_minimum": "A carteira está abaixo do mínimo de $20 USD em WOC.",
-        "price_unavailable": "O preço do WOC está indisponível; as recompensas estão temporariamente bloqueadas.",
-        "banned": "Você está banido das Recompensas Diárias. Motivo: {reason}",
-        "bannedUntil": "Você está banido das Recompensas Diárias por mais {remaining}. O acesso será restaurado {until}. Motivo: {reason}"
-      }
-    },
     "wocStore": {
-      "title": "Loja WOC",
-      "close": "Fechar loja WOC",
-      "tabsLabel": "Seções da loja WOC",
-      "storeTab": "Loja",
-      "rewardsTab": "Recompensas Diárias",
-      "loading": "Carregando Loja WOC...",
-      "error": "A Loja WOC não está disponível no momento. Por favor, tente novamente em breve.",
-      "balance": "Saldo de Claudium",
-      "buyClaudium": "Comprar Claudium",
-      "owned": "Adquirido",
-      "needMoreTitle": "Mais Claudium necessário",
-      "needMoreBody": "Você precisa de mais {shortfall} Claudium para comprar {item}.",
-      "cancel": "Cancelar",
-      "confirmTitle": "Confirmar compra de cosméticos",
-      "confirmBody": "Comprar {item} por {cost} Claudium?",
-      "confirmPurchase": "Comprar",
-      "priceChanged": "O preço mudou antes da compra ser concluída. Revise o preço atualizado e confirme novamente.",
-      "armoryEyebrow": "Temporada 1",
-      "armoryTitle": "O Arsenal",
-      "armoryBody": "Visuais de arma em edição limitada do Arsenal da Temporada 1. Válidos para toda a conta, puramente cosméticos e visíveis a todos ao seu redor.",
-      "wallet": {
-        "title": "Carteira Solana",
-        "unlinked": "Conecte um app de carteira e assine uma vez para vincular seu endereço público à sua conta WoC. Nunca recebemos sua frase de recuperação nem sua chave privada.",
-        "connectedUnlinked": "O app da carteira está conectado a este navegador, mas seu endereço público ainda não está vinculado à sua conta WoC.",
-        "linkedDisconnected": "Seu endereço público está vinculado. Reconecte o app da carteira quando quiser pagar com SOL ou WOC.",
-        "linkedConnected": "Sua carteira vinculada está conectada e pronta para compras com SOL ou WOC.",
-        "mismatched": "Uma carteira diferente está conectada. Verifique-a para substituir o endereço vinculado ou reconecte a carteira vinculada.",
-        "connect": "Conectar carteira",
-        "verify": "Verificar e vincular",
-        "reconnect": "Reconectar carteira",
-        "manage": "Gerenciar carteira"
-      },
-      "collectionLine": "Coleção {collection}",
-      "collections": {
-        "guildmark": "Marca da Guilda",
-        "emberwrought": "Forjada em Brasa",
-        "hoarfrost": "Geada",
-        "fallen_star": "Estrela Caída"
-      },
-      "skins": {
-        "guildmark_arming_sword": {
-          "name": "Espada de Armamento da Marca da Guilda",
-          "look": "Lâmina de aço azulado, guarda-costas em cauda de peixe de bronze, punho de couro tingido de azul-petróleo, pequeno símbolo da guilda estampado.",
-          "lore": "Enquanto uma lâmina comum é anônima, esta vem assinada. Um armeiro só conquista o direito de gravar sua marca no ricasso quando o Mercador do Mercado Mundial garante seu aço, e o do ferreiro Haldren tem essa garantia. Azulado contra a umidade do Vale e equilibrado com precisão. Você paga pela marca tanto quanto pela espada, e vale a pena."
-        },
-        "brasscap_axe": {
-          "name": "Machadinha de latão",
-          "look": "Gume de aço polido, capa e talas de latão sobre um cabo de freixo laqueado, empunhadura bem envolvida e marca do fabricante.",
-          "lore": "Um machado com marca é uma ostentação que se pode empunhar. A capa e as talas de latão são metade armadura, metade assinatura: impedem que o cabo se parta e refletem a luz da taverna para que todos saibam que você comprou uma obra do Armeiro Hode, não uma sobra da milícia. \"Se corta, eu vendo\", diz o ferreiro de Highwatch. Este corta."
-        },
-        "tempered_flanged_mace": {
-          "name": "Maça Flangeada Temperada",
-          "look": "Cabeça de aço azul temperado com seis flanges, colar e pomo de latão, punho de couro vermelho vinho.",
-          "lore": "Seis flanges de aço azulado e temperado, cada uma retificada para abrir um elmo, tampadas em latão e enroladas em couro vermelho-vinho. Os armeiros do reino não fabricam armas feias mesmo quando o trabalho é brutal. Este foi encomendado através do Mercado Mundial, e não retirado de uma prateleira; em algum lugar há um livro-razão com o nome de um orgulhoso comprador e a quantia que ele pagou a Hode por isso."
-        },
-        "guildmark_dirk": {
-          "name": "Marca da Guilda Dirk",
-          "look": "Punhal fino de aço temperado, proteção e porca com alças de bronze, cabo verde escuro, sigilo estampado.",
-          "lore": "O que um homem feito usa quando a espada fica em casa: fina, temperada, estampada com a mesma marca que certifica uma lâmina completa, usada no cinto como um sinete com fio. Discreto para todos, exceto para aqueles que conseguem ler a prova de um armeiro. O Intendente Bree mantém uma gaveta deles em Highwatch para os oficiais que conquistaram o respeito da muralha."
-        },
-        "brasscrown_staff": {
-          "name": "Cajado de Caminhada Brasscrown",
-          "look": "Bastão de madeira nobre com remate em coroa de latão torneado, ponteira de latão e pulseira de couro tingido.",
-          "lore": "Feito de madeira dura temperada e coroado com um remate de latão, os ferreiros de Eastbrook fundiram aos cem, mas perfeitos aos um. Pertence ao tipo de viajante que quer ser levado a sério tanto no portão de Fenbridge quanto no muro de Highwatch. Uma bengala que nunca precisou realmente andar; a faixa tingida combina com um casaco cujo preço você pode adivinhar."
-        },
-        "lacquered_wand": {
-          "name": "Haste Lacada",
-          "look": "Varinha delgada lacada em vermelho escuro, duas bandas de metal polidas, pequena ponta de latão arredondada.",
-          "lore": "Laca vermelha escura em sete casacos pacientes, com duas faixas em latão polido: o tipo de varinha que um mago hedge compra no Mercado Mundial quando começa a cobrar moedas de verdade e quer dar uma olhada. Ele não canaliza a Luz melhor do que um graveto de bétula. Mas ela brilha magnificamente no balcão do Mercador, e sempre se acreditou em metade da magia menor."
-        },
-        "fletcher_s_guild_bow": {
-          "name": "Arco da Guilda dos Flecheiros",
-          "look": "Arco recurvo de nogueira laqueada, pontas das lâminas em latão, corda de linho encerado e marca da guilda na empunhadura.",
-          "lore": "O mais perto que o reino chega de uma guilda é a marca de um fabricante de flechas na empunhadura, uma promessa sobre o que há ali, como o selo de um vinicultor no barril. Nogueira laqueada, latão nas pontas e uma corda de linho encerado que não desfia sob a chuva de Mirefen. Cada junção justifica o preço. Arme-o uma vez além do Matagal das viúvas e a questão estará resolvida."
-        },
-        "cinderbrand_sword": {
-          "name": "Marca de Brasa",
-          "look": "Lâmina de aço forjado escuro, cheia de runas laranja-brasa brilhantes, rachaduras de calor, uma joia fumegante na guarda.",
-          "lore": "A primeira lâmina temperada não em água, mas nas Brasas Abençoadas recolhidas de Stormcrag, carvões que os ferreiros de Highwatch juram \"arder azuis e puros, porque a montanha se lembra do antigo juramento\". Contido no sulco, o fogo fumega em laranja e não morre; as runas continuam quentes ao toque na noite mais fria da muralha. Marca de Brasa nunca precisa ser acesa. Ela simplesmente se recusa a apagar."
-        },
-        "emberbite_axe": {
-          "name": "Mordida de Brasa",
-          "look": "Machado de ferro enegrecido com rachaduras laranja-brasas brilhando através da ponta, uma gema de carvão acumulada, fios de calor.",
-          "lore": "O Armeiro Hode inseriu uma brasa viva do fogo da montanha no coração do gume, para que o fio nunca esfrie de verdade entre os golpes. As rachaduras respiram laranja durante o corte, como se o impacto despertasse algo que a primeira forja deixou adormecido no ferro. Dizem que um elemental de Stormcrag cedeu a brasa; dizem muitas coisas em Highwatch quando o vento sopra forte."
-        },
-        "smoulderfall_mace": {
-          "name": "Queda ardente",
-          "look": "Flanges de ferro escuro brilhando em laranja ao longo de suas rachaduras internas, uma gema com núcleo derretido na cabeça.",
-          "lore": "Uma maça que carrega seu próprio foco: uma pedra de núcleo derretido lascada do selo do Sanctum que foi “forjada com fogo da montanha”, brilhando na cabeça. Os flanges permanecem quentes ao toque e mais quentes no local onde pousam; um sargento da Highwatch jura que um golpe deixa um hematoma que brilha levemente até de manhã. O fogo da montanha, finalmente feito para quebrar em vez de selar."
-        },
-        "ashspark_dagger": {
-          "name": "Faca Centelha de Cinzas",
-          "look": "Lâmina curta e enegrecida com veios de laranja brilhante, uma pequena joia fumegante no punho, cinza e faísca.",
-          "lore": "Uma lâmina de beco sem saída com o fogo da montanha contrabandeado em seu punho de pedra, uma piada discreta de armeiro: até mesmo um batedor de carteiras poderia carregar uma brasa da primeira forja. Enegrecido, com veios alaranjados, sempre um tom muito quente na bainha. Desenhe-o no escuro sob Highwatch e o brilho ilumina sua mão apenas o suficiente para encontrar a brecha na guarda de um homem."
-        },
-        "forgeheart_staff": {
-          "name": "Cajado do Coração Forjado",
-          "look": "Bastão calçado de ferro coroado com um núcleo de brasa brilhante enjaulado, runas de brasa subindo pelo eixo, aumentando o brilho do calor.",
-          "lore": "Uma brasa viva do fogo da montanha, enjaulada em ferro na coroa. O Mestre do saber Caddis a considera prova de que o fogo da primeira forja pode ser obrigado a servir, não apenas a selar. Uma miragem de calor sobe em uma fita fina e infinita; um mago que o carrega nunca fica sem forja nem fogo de vigia. Dizem que a brasa veio do próprio hálito de Voskar Asa-de-brasa e nunca mais esfriou."
-        },
-        "emberwrought_wand": {
-          "name": "Varinha Forjada em Brasa",
-          "look": "Varinha de metal enegrecido com ponta de carvão brilhante em garras de ferro, rachaduras de calor, luz interior quente.",
-          "lore": "A varinha que deu nome à nota. Quando um armeiro de Alta Vigilância colocou pela primeira vez uma brasa de fogo da montanha em garras de ferro e a fez responder a uma mão mortal, até mesmo os Sacerdotes da Luz pararam de chamar isso de heresia e começaram a chamá-lo de útil. Quente, paciente e silenciosamente perigoso: a brasa em sua ponta está queimada, ininterrupta, desde antes de seu dono respirar."
-        },
-        "cinderlatch_crossbow": {
-          "name": "Trava de Brasa",
-          "look": "Besta de aço enegrecido, brilho laranja-bravo vazando das rachaduras no bastão, carvão fumegante no leme.",
-          "lore": "A mais estranha entre as armas forjadas em brasa: o fogo da montanha despejado em uma máquina. O laranja vaza pelas rachaduras do arco, e um carvão fumegante na coronha impede a corda de enrijecer no frio de Thornpeak ou na umidade de Mirefen. Seus virotes deixam o trilho já quentes e atingem ainda mais ardentes. A resposta de um caçador para uma muralha onde nem o inimigo sente frio."
-        },
-        "ice_fang_sword": {
-          "name": "Presa de Gelo",
-          "look": "Lâmina curva de gelo glacial claro, cristais de geada irregulares ao longo da espinha, um núcleo congelado ciano brilhante na proteção cruzada de gelo mais cheia.",
-          "lore": "O destaque da linha congelada e a primeira peça que qualquer colecionador procura. Presa de Gelo foi esculpida, não forjada, em uma presa da geleira que coroa Thornpeak acima de Highwatch; seu núcleo ciano queima tão frio quanto a luz do Glimmermere. Ela cobre de geada o próprio ar que corta. Os guardas da muralha juram que um soldado a carregou na noite em que as neves altas repeliram o Culto do Wyrm e \"deram à muralha mais um inverno\"."
-        },
-        "glaciersplit_axe": {
-          "name": "Fendegeleira",
-          "look": "Cabeça de gelo glacial azul translúcido, interior rachado brilhando em ciano, cristais de gelo eriçados, um cabo deixando um rastro de vapor frio.",
-          "lore": "Talhado no coração azul da geleira de Thornpeak, onde dois séculos de gelo comprimiram o frio até que ele brilhasse por conta própria. Deixa vapor no ar mesmo em repouso, e seu impacto soa como uma fenda se abrindo sob a Crista do rastreador. Highwatch entrega seus mortos ao gelo lá em cima: esta arma foi feita para conter o degelo e tudo o que ele possa despertar."
-        },
-        "rimecrusher_mace": {
-          "name": "Esmagador de Rime",
-          "look": "Aglomerado de cristais de gelo irregulares em torno de um núcleo ciano brilhante, a geada escorrendo por um cabo prateado.",
-          "lore": "Não esculpido, mas cultivado: o gelo de Thornpeak foi conduzido ao redor de um núcleo ciano até endurecer como o melhor aço de Hode. A geada desce pelo cabo prateado em direção à mão, mas nunca chega. Onde bate, a água congela; onde repousa, o chão embranquece. O frio sepulcral dos picos, reduzido ao tamanho certo para ser brandido contra as coisas que escalam a muralha."
-        },
-        "frostbite_dagger": {
-          "name": "Agulha de geada",
-          "look": "Adaga perversamente fina de gelo azul claro, uma veia ciano brilhante no centro, cristais de gelo em forma de agulha, punho de gelo.",
-          "lore": "Fino como um suspiro contido e duas vezes mais frio: uma lasca da geleira de Thornpeak afiada até restar uma única veia luminosa, tão cortante que a ferida congela antes que o sangue se lembre de correr. Seu nome vem do frio sepulcral que os mortos trazem dos picos. Nunca precisa ser afiado: o gelo não perde o fio, observa secamente o Mestre do saber Caddis, apenas espera."
-        },
-        "hoarfrost_vigil_staff": {
-          "name": "Vigília da Geada",
-          "look": "Cajado prateado coroado com um fragmento flutuante e girando lentamente de gelo ciano brilhante, irradiando cristais e vapor frio.",
-          "lore": "O cajado da vigília que nunca dorme na muralha de Highwatch. Sua coroa é uma lasca de gelo ciano do lago montano, suspensa livre da prata e capaz de girar lentamente por conta própria: sempre, juram os guardas, na direção do frio que se acumula sob os picos. Carregar a Vigília é cumprir duzentos anos de guarda em uma noite e prometer não desviar o olhar."
-        },
-        "everwinter_wand": {
-          "name": "Fragmento de Inverno Eterno",
-          "look": "Um único pico de gelo glacial ciano brilhante, geada florescendo de um colar prateado, leve névoa fria.",
-          "lore": "Um pico de gelo glacial brilhante, supostamente quebrado do lago profundo abaixo do Sanctum, onde o frio da montanha tem dentes. A geada floresce infinitamente em seu colar de prata e nunca derrete, nem pelo fogo nem pelo verão. Magos mantêm-no perto para o frio que empresta ao seu trabalho, e mantêm-no longe nas noites em que parece inclinar-se em direção à cripta de Nythraxis e escutar."
-        },
-        "winterbite": {
-          "name": "Mordida de inverno",
-          "look": "Arco de aço prateado e gelo azul, núcleo ciano congelado e luminoso na empunhadura, flecha de gelo maciço engatilhada e vapor frio.",
-          "lore": "Um arco de aço prateado e gelo de Thornpeak, com a empunhadura iluminada por um núcleo ciano gelado que congela a flecha à corda. Ele engatilha uma haste de gelo glacial que se refaz a cada disparo; na muralha, o arqueiro não leva aljava, apenas o frio. Highwatch resistiu a um cerco na Crista do rastreador com um arco assim: um único arqueiro, dizem, e flechas para um inverno inteiro, sempre já prontas."
-        },
-        "solheim_sword": {
-          "name": "Solheim, Última Luz do Amanhecer",
-          "look": "Espada larga forjada a partir de uma estrela caída, núcleo de ouro derretido dividindo a lâmina, aço negro como o cosmos contornado pela luz das estrelas, fragmentos dourados orbitando a guarda, fita de aurora.",
-          "lore": "Quando a estrela caiu do céu ocidental e “explodiu como uma forja” além do Bosque das Viúvas, o Irmão Aldric retirou seu coração ainda fumegante da cratera Mirefen e implorou aos ferreiros do reino que trabalhassem “uma coisa que não pertence a este mundo”. Eles fizeram uma grande espada: Solheim. Seu núcleo de ouro derretido divide a lâmina negra do cosmos como o amanhecer quebrando o céu noturno, e fragmentos de metal estelar orbitam o guarda em caminhos não definidos por mãos. Apenas um foi forjado. Não haverá outro."
-        },
-        "skyrender_axe": {
-          "name": "Rasga-céu, Ferida do Firmamento",
-          "look": "Cabeça como um pedaço rasgado do céu noturno, rachaduras de ouro derretido e gravuras de constelações, fragmentos de luz das estrelas pairando, um brilho de aurora arrastando a borda.",
-          "lore": "Arrancado da borda da cratera, onde a estrela caída arrancou o próprio reflexo do céu de Mirefen e deixou uma ferida que ainda fumega. A cabeça parece um pedaço de noite rasgada: rachaduras de ouro derretido, constelações que nenhum estudioso de Highwatch consegue nomear, uma aurora sangrando pela borda a cada golpe. O irmão Aldric abençoou-o e não lhe tocou. Levantá-lo é segurar o buraco que os céus deixaram."
-        },
-        "starfall_mace": {
-          "name": "Queda Estelar, Julgamento dos Céus",
-          "look": "Núcleo estelar cativo de ouro derretido rodeado por fragmentos em órbita, flanges negras como o cosmos com veios de luz estelar, aurora derramando-se das costuras.",
-          "lore": "Um núcleo de estrela capturado um instante antes de morrer, cercado pelos destroços que caíram com ele, congelado a poucos centímetros do esquecimento. Suas flanges negras como o cosmos correm com a luz das estrelas presa, e a aurora se espalha pelas costuras quando ela é levantada. Os antigos Sacerdotes da Luz chamavam uma estrela cadente de julgamento, um veredicto transmitido de cima de que nenhum escudo deveria parar, e batizaram isso em homenagem ao que desceu sobre Mirefen."
-        },
-        "astravyr_dagger": {
-          "name": "Astravyr, Presa da Estrela Caída",
-          "look": "Uma lasca de uma estrela caída, borda brilhante de ouro derretido em metal negro como o cosmos, um cisco estelar brilhante orbitando o punho, uma fina trilha de aurora.",
-          "lore": "O menor pedaço da estrela que Aldric retirou da cratera e, segundo alguns cálculos, o mais perigoso. Uma única lasca daquele coração de outro mundo, sua borda de ouro derretido cavalgando o metal negro do cosmos, uma partícula de estrela solitária circulando o punho como uma lua que perdeu seu mundo. Não pesa quase nada e parte quase tudo. Pequeno o suficiente para se esconder, brilhante o suficiente para ser encontrado no escuro por sua própria luz."
-        },
-        "cosmarch_staff": {
-          "name": "Marcha Cósmica, Pináculo do Vazio Infinito",
-          "look": "Aglomerado orbital de fragmentos de estrelas douradas em torno de um núcleo de ouro derretido, eixo negro do cosmos gravado em constelação, fitas de aurora serpenteando para cima.",
-          "lore": "Um eixo de metal estelar coroado com um núcleo de ouro derretido e um anel de fragmentos dourados que marcham ao seu redor em uma órbita lenta e infinita: um pequeno cosmos, gravado com constelações que não combinam com o céu de Thornpeak. Aurora se estende como fumaça que esqueceu de subir. Aqueles que o suportaram alegaram que podiam sentir o vazio girando através dele, da mesma forma que o mero “bebe o luar” de Ysolei: paciente, frio e olhando para trás."
-        },
-        "emberwish_wand": {
-          "name": "Desejo de Brasa, Centelha do Sol Moribundo",
-          "look": "Centelha cativa de uma estrela moribunda, feita de ouro derretido e envolta por faíscas em órbita; haste negra como o cosmos, gravada com constelações luminosas.",
-          "lore": "Não a estrela caída em si, mas o último grão de uma estrela moribunda: uma única brasa de ouro derretido de um sol já apagado, envolto nas faíscas que eram a sua luz final. Seu eixo negro como o cosmos está gravado com as constelações que o assistiram morrer. Os lavradores de Mirefen dizem que ela concede um desejo a quem a detém ao anoitecer verdadeiro; eles também dizem que todas as almas que o possuíam desejavam mais tempo, e que a Lua Afogada não concedeu nenhum a eles."
-        },
-        "encore_bow": {
-          "name": "Encore, a segunda estrela cadente",
-          "look": "Canhão estelar comicamente grande: um cano preto como o cosmos gravado com constelações douradas brilhantes, um cano de sino alargado com uma concha de cometa de ouro derretido assentada dentro, acessórios de latão, uma coronha de madeira.",
-          "lore": "Os ferreiros que trabalharam a estrela caída produziram seis relíquias e ainda ficaram com um barril de metal estelar, quando os aprendizes já tinham suas próprias ideias. Da bigorna saiu o primeiro canhão do reino ou sua menor máquina de cerco: um canhão de ombro que, mais do que disparar, pede outra estrela com destino certo. O Irmão Aldric se recusou a abençoá-lo, pois algo tão barulhento já foi notado pelo céu. Os caçadores o adoram. Nada diante do cano jamais compartilhou o entusiasmo."
-        },
-        "meteorlatch_crossbow": {
-          "name": "Trava Meteórica, Último Julgamento do Céu",
-          "look": "Metal estelar meteórico, núcleo de ouro derretido ao longo da coronha, lâminas negras como o cosmos gravadas com constelações e um virote de puro fogo estelar engatilhado.",
-          "lore": "Forjada em metal estelar meteórico bruto enquanto a cratera de Mirefen ainda brilhava, com destroços \"quentes demais para tocar\" martelados em lâminas negras como o cosmos e gravadas com constelações, além de um núcleo de ouro derretido contido na coronha. Não engatilha virote algum, mas conjura um: uma haste de fogo estelar, disparada como um veredicto e atingindo como seu desfecho. Quando Highwatch temeu que nem a coroa imortal de Nythraxis fosse a pior coisa sob os picos, esta era a arma desejada na muralha. Mire bem."
-        }
-      },
-      "seasonOne": "Temporada 1",
-      "rarity": {
-        "uncommon": "Incomum",
-        "rare": "Raro",
-        "epic": "Épico",
-        "legendary": "Lendário"
-      },
       "wtype": {
         "sword": "Espada",
         "axe": "Machado",
@@ -625,73 +374,7 @@ export const pt_BR: EnTranslations = {
         "bow": "Arco",
         "crossbow": "Besta",
         "polearm": "Arma de haste"
-      },
-      "badge": {
-        "flagship": "Destaque",
-        "hero": "Herói"
-      },
-      "inspectAria": "Inspecionar {item}",
-      "viewModeLabel": "Modo de visualização",
-      "tryOn": "Experimente",
-      "weaponOnly": "Somente arma",
-      "sceneLabel": "Iluminação de cena",
-      "scene": {
-        "day": "Dia",
-        "dusk": "Crepúsculo",
-        "night": "Noite"
-      },
-      "lore": "História",
-      "buySkin": "Comprar visual",
-      "unavailable": "Indisponível",
-      "applied": "Aplicado",
-      "apply": "Aplicar visual",
-      "detach": "Remover visual",
-      "equipHint": "Equipe uma arma do tipo {type} para aplicar este visual."
-    },
-    "claudium": {
-      "title": "Claudium",
-      "open": "Abrir Claudium",
-      "close": "Fechar Claudium",
-      "loading": "Carregando Claudium...",
-      "balanceLabel": "Saldo",
-      "balanceUnit": "{amount} Claudium",
-      "solBalance": "SOL: {amount}",
-      "usdcBalance": "Saldo em USDC: {amount}",
-      "wocBalance": "WOC: {amount}",
-      "unavailable": "A loja Claudium não está disponível no momento. Seu saldo e suas compras não serão afetados. Tente novamente em breve.",
-      "disclosure": "Claudium é uma moeda virtual de mão única: compre-a com dinheiro real e gaste-a em cosméticos. Ela não pode ser resgatada, transferida nem convertida em dinheiro.",
-      "buyTitle": "Comprar Claudium",
-      "railLabel": "Forma de pagamento",
-      "railStripe": "Cartão",
-      "railSol": "SOL",
-      "railUsdc": "USDC",
-      "railWoc": "WOC",
-      "railWocDiscount": "20% de desconto",
-      "railWocUnavailable": "O preço do WOC não está disponível no momento.",
-      "railNativeUnavailable": "SOL/WOC indisponível.",
-      "amountLabel": "Quantia",
-      "showAmounts": "Mostrar todos os valores de Claudium",
-      "hideAmounts": "Ocultar valores extras de Claudium",
-      "skuRow": "{claudium} Claudium por {usd}",
-      "buyButton": "Comprar",
-      "buyUnavailable": "A compra não está disponível no momento.",
-      "storeTitle": "Loja de cosméticos",
-      "storeEmpty": "Nenhum cosmético está disponível no momento.",
-      "storeCost": "{amount} Claudium",
-      "spendButton": "Resgatar",
-      "kindCosmetic": "Cosmético",
-      "kindSkin": "Visual",
-      "kindItem": "Item",
-      "checkoutTitle": "Concluir compra",
-      "checkoutClose": "Fechar checkout",
-      "checkoutLoading": "Carregando finalização da compra...",
-      "checkoutPending": "Transação em andamento. Confirme na sua carteira e mantenha este painel aberto.",
-      "checkoutPendingButton": "Processando",
-      "checkoutFailed": "Não foi possível carregar a finalização da compra. Tente novamente.",
-      "checkoutUnavailable": "Essa compra do Claudium não está disponível no momento.",
-      "checkoutWalletRequired": "Conecte uma carteira Solana antes de comprar Claudium com criptomoedas.",
-      "checkoutWalletUnsupported": "Esta carteira não pode assinar e enviar transações Solana.",
-      "checkoutNotSettled": "A transação foi enviada, mas Claudium ainda não foi creditado. Tente novamente em breve."
+      }
     },
     "theme": {
       "preset": "Tema da interface",
@@ -773,7 +456,6 @@ export const pt_BR: EnTranslations = {
     "mobile": {
       "jump": "Pular",
       "leaderboard": "Classificação",
-      "dailyRewards": "Loja",
       "deeds": "Feitos",
       "professions": "Profissões",
       "nameplates": "Nomes",
@@ -1048,8 +730,6 @@ export const pt_BR: EnTranslations = {
       "clickFeedback": "Marcador de clique",
       "lockCursorOnRotate": "Bloquear cursor ao girar",
       "keybindHelpLockCursorOnRotate": "Mantém o cursor do mouse dentro da janela enquanto você arrasta para girar a câmera, para que ele não alcance a borda da tela nem passe para outro monitor. Desative se preferir um cursor livre.",
-      "showWalletOnCharacterScreen": "Mostrar carteira na tela de personagens",
-      "showWalletOnPlayerCard": "Mostrar carteira no cartão de jogador",
       "showDevBadges": "Exibir Insígnias de Desenvolvedor",
       "showOwnNameplate": "Mostrar Minha Placa de Nome",
       "showPlayerNameplates": "Mostrar Placas de Nome dos Jogadores",
@@ -1070,9 +750,9 @@ export const pt_BR: EnTranslations = {
       "showThirdActionBar": "Mostrar terceira barra de ação",
       "showTargetOfTarget": "Mostrar Alvo do Alvo",
       "showAttackButton": "Exibir Botão de Ataque",
-      "showDailyRewardsChest": "Mostrar Baú de Recompensas Diárias",
       "mobileCameraJoystick": "Joystick da câmera",
-      "mobileLeftHanded": "Layout para canhotos"
+      "mobileLeftHanded": "Layout para canhotos",
+      "showWalletOnCharacterScreen": "Mostrar carteira na tela de personagens"
     },
     "talentRows": {
       "tab": "Escolhas",
@@ -1178,9 +858,6 @@ export const pt_BR: EnTranslations = {
         "backgrounded": "Em segundo plano",
         "offline": "Offline"
       }
-    },
-    "playerCard": {
-      "showWalletBadge": "Mostrar selo da carteira"
     },
     "landing": {
       "highContrast": "Alto contraste",
@@ -4762,170 +4439,6 @@ export const pt_BR: EnTranslations = {
       "failed": "Não foi possível salvar seu e-mail. Tente novamente."
     }
   },
-  "wallet": {
-    "label": "Carteira $WOC",
-    "connect": "Verificar carteira",
-    "connectTitle": "Verifique sua carteira Solana",
-    "connectAria": "Verifique sua carteira Solana",
-    "verify": "Verificar carteira",
-    "verifyNew": "Verificar nova carteira",
-    "verifyTitle": "Escolha uma carteira e assine uma vez para verificar que você é o proprietário.",
-    "verifyAria": "Escolha uma carteira e assine uma vez para verificar que você é o proprietário",
-    "verifyAddressAria": "Assine para verificar a carteira {address} na sua conta",
-    "appConnected": "App conectado",
-    "connectApp": "Conectar app",
-    "connectAppTitle": "Conecte o app da carteira neste navegador",
-    "connectAppAria": "Conecte o app da carteira neste navegador",
-    "verifying": "Verificando...",
-    "verifyingTitle": "A verificação da carteira está em andamento.",
-    "switch": "Trocar",
-    "switchTitle": "Verificar outra carteira",
-    "switchAria": "Verificar outra carteira",
-    "unlink": "Desvincular",
-    "unlinkTitle": "Remover a verificação da carteira desta conta",
-    "unlinkAria": "Remover a verificação da carteira desta conta",
-    "signOut": "Desconectar",
-    "signOutTitle": "Desconectar o app da carteira neste navegador",
-    "signOutAria": "Desconectar o app da carteira neste navegador",
-    "hide": "Ocultar",
-    "hideTitle": "Ocultar a linha da carteira nesta tela",
-    "hideAria": "Ocultar a linha da carteira nesta tela",
-    "hiddenNotice": "Linha da carteira oculta. Reative no jogo em Opções > Interface.",
-    "linkedTitle": "Carteira verificada para sua conta. Clique para gerenciar o app da carteira.",
-    "linkedDisconnectedTitle": "A carteira continua verificada para sua conta. Reconecte para gerenciar o app da carteira.",
-    "linkedDisconnectedAria": "A carteira continua verificada para sua conta. Reconecte para gerenciar o app da carteira.",
-    "linkTitle": "Clique para assinar e vincular esta carteira à sua conta.",
-    "connectedTitle": "Conectada. Entre para vincular esta carteira à sua conta.",
-    "balanceTitle": "Saldo $WOC da carteira Solana verificada",
-    "balanceAria": "Saldo da carteira Solana verificada: {balance}",
-    "balancePreviewTitle": "Prévia do saldo $WOC da carteira conectada",
-    "balancePreviewAria": "Prévia do saldo da carteira conectada: {balance}. Vincule a carteira para verificar o destaque de titular.",
-    "balanceAmount": "{amount} $WOC",
-    "bagConnect": "Vincular carteira",
-    "bagLink": "Verificar carteira",
-    "bagReconnect": "Reconectar carteira",
-    "connected": "Conectada: {address}",
-    "connectedWithBalance": "Conectada: {balance} - {address}",
-    "connectedLinked": "Verificada: {address}",
-    "connectedLinkedWithBalance": "Verificada: {balance} - {address}",
-    "helpDisconnected": "Verifique uma carteira Solana para ativar o destaque de titular e as insígnias de cartão de jogador. Não exige transação nem SOL.",
-    "helpLoginToLink": "{address} conectada. Entre para vinculá-la à sua conta.",
-    "helpLoginToLinkWithBalance": "{address} conectada com {balance}. Entre para vinculá-la à sua conta.",
-    "helpReadyToLink": "Carteira selecionada: {address}. Assine uma vez para verificar destaque de titular e cartões de jogador.",
-    "helpReadyToLinkWithBalance": "Carteira selecionada: {address} com {balance}. Assine uma vez para verificar destaque de titular e cartões de jogador.",
-    "helpLinked": "As vantagens de titular estão ativas. O app da carteira está conectado neste navegador.",
-    "helpLinkedWithBalance": "As vantagens de titular estão ativas. O app da carteira está conectado neste navegador.",
-    "helpLinkedDisconnected": "As vantagens de titular estão ativas. Conecte o app quando precisar assinar ou gastar.",
-    "helpLinkedDisconnectedWithBalance": "As vantagens de titular estão ativas. Conecte o app quando precisar assinar ou gastar.",
-    "extensionHelp": "Para ver uma carteira aqui, mantenha ativa uma extensão de carteira do navegador, como a Solflare Wallet.",
-    "mobileAppHelp": "Escolha Phantom ou Solflare. Seu app de carteira pedirá aprovação. Mantenha o jogo aberto e retorne a ele quando terminar.",
-    "standaloneAppHelp": "As conexões de carteira ainda não estão disponíveis no aplicativo da Tela Inicial. Abra o World of ClaudeCraft no Safari ou Chrome para usar Phantom ou Solflare.",
-    "openAppTitle": "Continuar em {wallet}",
-    "openAppHelp": "Abra {wallet} para revisar esta solicitação. Mantenha esta aba do jogo aberta enquanto o app da carteira estiver ativo.",
-    "openAppButton": "Abrir {wallet}",
-    "manualReturnBrowserHelp": "Após a aprovação, retorne a esta aba do jogo. Se o iOS abrir outro navegador, feche-o e retorne ao navegador original manualmente.",
-    "manualReturnStandaloneHelp": "Após a aprovação, retorne ao World of ClaudeCraft pela sua Tela Inicial. Se o iOS abrir um navegador, feche-o e reabra o aplicativo da Tela Inicial manualmente.",
-    "preparingAppButton": "Preparando {wallet}...",
-    "walletAppUnavailable": "{wallet} não pôde ser preparado. Feche esta janela e tente novamente.",
-    "flowConnect": "Escolha uma carteira. A verificação continua automaticamente.",
-    "flowSign": "Assine a mensagem de verificação no app da carteira. Não exige transação nem SOL.",
-    "flowVerify": "Verificando a propriedade da carteira...",
-    "linkFailed": "Falha na verificação da carteira.",
-    "verifyFailed": "Falha na verificação da carteira.",
-    "unlinkFailed": "Não foi possível desvincular a carteira.",
-    "browser": {
-      "eyebrow": "Autorização de carteira para desktop",
-      "title": "Conectar uma Carteira Solana",
-      "linkBody": "Escolha uma extensão de carteira neste navegador. Você assinará uma mensagem de verificação e depois retornará ao aplicativo para desktop.",
-      "paymentBody": "Escolha a carteira vinculada à sua conta e aprove a transação neste navegador.",
-      "extensionHelp": "Nenhuma extensão de carteira compatível foi encontrada. Instale ou desbloqueie Phantom, Solflare ou outra carteira Solana para navegador e tente novamente.",
-      "safety": "O World of ClaudeCraft nunca pede sua frase de recuperação nem sua chave privada.",
-      "continueWith": "Continuar com {wallet}",
-      "reviewTitle": "Revisar na sua carteira",
-      "reviewBody": "Siga o prompt de {wallet}. Mantenha esta página do navegador aberta.",
-      "completeTitle": "Autorização de carteira concluída",
-      "completeBody": "Você pode retornar ao aplicativo para desktop do World of ClaudeCraft.",
-      "returnButton": "Retornar ao aplicativo para desktop",
-      "failed": "A autorização da carteira falhou ou expirou. Retorne ao aplicativo para desktop e tente novamente.",
-      "retry": "Tentar novamente"
-    },
-    "holder": "Titular de $WOC",
-    "holderTierTitle": "Titular de $WOC de nível {tier}",
-    "holderTiers": {
-      "ember": {
-        "name": "Brasa",
-        "flavor": "A centelha está acesa."
-      },
-      "coinbearer": {
-        "name": "Porta-moedas",
-        "flavor": "A primeira moeda no baú de guerra."
-      },
-      "coppercrest": {
-        "name": "Crista de cobre",
-        "flavor": "Cobres empilhados, seu nome começa a circular."
-      },
-      "silverbound": {
-        "name": "Ligado à prata",
-        "flavor": "Ligado pela prata, a bolsa cresce."
-      },
-      "gilded": {
-        "name": "Dourado",
-        "flavor": "Dourado e sorridente."
-      },
-      "vaultwarden": {
-        "name": "Guardião do cofre",
-        "flavor": "Agora você guarda um cofre de verdade: 0,01% do suprimento de $WOC."
-      },
-      "whale": {
-        "name": "Baleia",
-        "flavor": "Você entrou em águas profundas: 0,1% do suprimento."
-      },
-      "leviathan": {
-        "name": "Leviatã",
-        "flavor": "Os mercados sentem seus movimentos: 1% do suprimento."
-      },
-      "tidelord": {
-        "name": "Senhor das marés",
-        "flavor": "A maré responde ao seu chamado: 2% do suprimento."
-      },
-      "stormcaller": {
-        "name": "Conjurador de tempestades",
-        "flavor": "As tempestades se reúnem ao seu nome: 3% do suprimento."
-      },
-      "krakencrown": {
-        "name": "Coroa do kraken",
-        "flavor": "Coroado pelas profundezas: 4% do suprimento."
-      },
-      "titanforged": {
-        "name": "Forjado entre titãs",
-        "flavor": "Forjado entre titãs: 5% do suprimento."
-      },
-      "starhoard": {
-        "name": "Tesouro estelar",
-        "flavor": "Um tesouro que entorta a luz das estrelas: 6% do suprimento."
-      },
-      "voidwarden": {
-        "name": "Guardião do vazio",
-        "flavor": "Vigia à beira do vazio: 7% do suprimento."
-      },
-      "realmshaper": {
-        "name": "Moldador do reino",
-        "flavor": "Você remodela o reino: 8% do suprimento."
-      },
-      "worldforger": {
-        "name": "Forjador de mundos",
-        "flavor": "Você forja um mundo só seu: 9% do suprimento."
-      },
-      "worldbearer": {
-        "name": "Portador do mundo",
-        "flavor": "Você carrega uma parte do mundo: 10% do suprimento."
-      },
-      "sovereign": {
-        "name": "Soberano",
-        "flavor": "O reino se ajoelha: o suprimento completo."
-      }
-    }
-  },
   "playerCard": {
     "shareButton": "Compartilhar cartão de jogador",
     "title": "Cartão de jogador",
@@ -4949,8 +4462,7 @@ export const pt_BR: EnTranslations = {
     "footerHandleWithRecruits": "@{handle} - {recruited}",
     "footerCta": "Forje sua lenda: {siteUrl}",
     "arenaStat": "Arena",
-    "shareTierBit": ", titular de $WOC de nível {tier}",
-    "shareText": "Estou forjando minha lenda em World of ClaudeCraft: nível {level} {className}{tierBit}. Entre no meu mundo:",
+    "shareText": "Estou forjando minha lenda em World of ClaudeCraft: nível {level} {className}. Entre no meu mundo:",
     "nativeShareTitle": "Mundo de ClaudeCraft",
     "fileNameFallback": "jogador",
     "actionShareX": "Compartilhar no X",

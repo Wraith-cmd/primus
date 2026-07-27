@@ -352,7 +352,7 @@ header carries its own contract.
   label key, value coercion) painted with the shared `settings_controls.ts` builders; a
   settings refresh re-runs the painter's `render()` view dispatcher, never a direct sub-panel
   repaint.
-- **window_drag.ts** (pure `window_drag_core.ts`) + **window_stack_state_core.ts** +
+- **window_drag.ts** (pure `window_drag_core.ts`) +
   **window_resize.ts** (pure
   `window_resize_core.ts`) + **movable_frame.ts** (pure
   `target_frame_pos.ts`; `frame_pos_reset.ts`): the shared SE-corner resize grip on every

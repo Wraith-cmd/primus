@@ -23,7 +23,6 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { PoolClient, QueryResult } from 'pg';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { PgDailyRewardDb } from '../../server/daily_rewards_db';
 import {
   deedsBoardRanked,
   ELIGIBLE_ACCOUNT_SQL,
@@ -177,30 +176,6 @@ describe('every ranked board query embeds the fragment', () => {
     spy.mockImplementation(() => Promise.resolve(rankRow(true)) as never);
     await expect(lifetimeXpRankForCharacter(42)).resolves.toEqual({ rank: 6, total: 10 });
   });
-
-  it('daily rewards: every ranked read agrees on one population', async () => {
-    const db = new PgDailyRewardDb();
-    const day = '2026-07-08';
-    for (const read of [
-      () => db.leaderboardTotal(day),
-      // The board-cache refresh read: every board read a player status
-      // assembles derives from this one snapshot, so it must gate on the
-      // same population as the live total and page reads.
-      () => db.leaderboardSnapshot(day),
-    ]) {
-      const sql = await capturedSql(read);
-      expect(sql).toHaveLength(1);
-      expect(sql[0]).toContain(ELIGIBLE_LITERAL);
-      expect(sql[0]).toContain('a.id = s.account_id');
-    }
-    // leaderboardPage issues the total read then the page read; both embed it.
-    const pageSql = await capturedSql(() => db.leaderboardPage(day, 0, 10));
-    expect(pageSql).toHaveLength(2);
-    for (const text of pageSql) {
-      expect(text).toContain(ELIGIBLE_LITERAL);
-      expect(text).toContain('a.id = s.account_id');
-    }
-  });
 });
 
 // ---------------------------------------------------------------------------
@@ -302,11 +277,10 @@ describe('main.ts wiring', () => {
     // "a WARM arena cache is nulled by the bust" case.
     const stripComments = (s: string): string => s.replace(/(^|[^:])\/\/.*$/gm, '$1');
     const body = stripComments(src.slice(start, src.indexOf('}', start)));
-    // Players realm + global, guilds realm + global, BOTH arena formats, the deeds
-    // board, and the daily-rewards board (instance-scoped on its service singleton,
-    // busted through the exported bust): every cached, moderation-visible scope. The
-    // arena ladder is character-faced, so it is busted here now (it used to be served
-    // uncached, with nothing to bust).
+    // Players realm + global, guilds realm + global, BOTH arena formats, and the
+    // deeds board: every cached, moderation-visible scope. The arena ladder is
+    // character-faced, so it is busted here now (it used to be served uncached,
+    // with nothing to bust).
     expect(body).toContain('leaderboardCache.realm = null');
     expect(body).toContain('leaderboardCache.global = null');
     expect(body).toContain('guildLeaderboardCache.realm = null');
@@ -314,7 +288,6 @@ describe('main.ts wiring', () => {
     expect(body).toContain("arenaLeaderboardCache['1v1'] = null");
     expect(body).toContain("arenaLeaderboardCache['2v2'] = null");
     expect(body).toContain('deedsBoardCache = null');
-    expect(body).toContain('bustDailyRewardBoardCache()');
   });
 
   it('registers exactly one moderation hook (the composite bust covers every board)', () => {

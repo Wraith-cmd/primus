@@ -38,8 +38,6 @@ export const DEVIATION_ID = {
   characterIdParamDecode: 'character-id-param-decode-422',
   companionTokenMethodFan: 'companion-token-method-fan-405',
   accountBodyValidationRemap: 'account-body-validation-remap',
-  rateLimitedBodyToCode: 'rate-limited-body-to-code',
-  walletBodyValidationRemap: 'wallet-body-validation-remap',
   reportsBodyValidationRemap: 'reports-body-validation-remap',
   newLimiterReportsCreate: 'new-limiter-reports-create',
   newLimiterDiscord: 'new-limiter-discord',
@@ -55,8 +53,6 @@ export const DEVIATION_ID = {
   githubBodyValidationRemap: 'github-body-validation-remap',
   desktopLoginBodyValidationRemap: 'desktop-login-body-validation-remap',
   desktopLoginCreateFullScope: 'desktop-login-create-full-scope',
-  dailyRewardsBodyValidationRemap: 'daily-rewards-body-validation-remap',
-  dailyRewardsOpsBodyValidationRemap: 'daily-rewards-ops-body-validation-remap',
   rateLimit429Draft11Headers: 'rate-limit-429-draft11-headers',
   securityHeadersAllSurfaces: 'security-headers-all-surfaces',
   mapsAssetsRateLimitedBodyToCode: 'maps-assets-rate-limited-body-to-code',
@@ -519,85 +515,6 @@ export const KNOWN_DEVIATIONS: readonly KnownDeviation[] = [
       'one does not).',
   },
   {
-    id: DEVIATION_ID.rateLimitedBodyToCode,
-    routes: ['/api/wallet/link/challenge', '/api/wallet/link', '/api/woc/balance', '/api/card'],
-    currentBehavior:
-      'On throttle, the wallet link-challenge, wallet link, woc balance, and card ' +
-      'routes answer 429 { error: "rate limited" } (application/json): the two ' +
-      'wallet routes self-limit inside handleWalletChallenge / handleWalletLink, and ' +
-      'the woc balance + card arms limit inline in server/main.ts, each returning the ' +
-      'same bare English prose body.',
-    intendedBehavior:
-      'The new pipeline serves these routes: the throttle is a ' +
-      'rateLimit(policy) middleware (WALLET_LINK_POLICY / WOC_BALANCE_POLICY / ' +
-      'CARD_UPLOAD_POLICY) that throws HttpError(429, "rate_limit.exceeded", ' +
-      '{ retryAfterSeconds }); the error boundary serializes it as RFC 9457 ' +
-      'application/problem+json carrying the stable machine code "rate_limit.exceeded" ' +
-      '(and a Retry-After header) instead of the bare { error: "rate limited" } prose. ' +
-      'The code already exists in error_codes.ts (harvested with the error-code catalog; ' +
-      'reused by the character-mutation limiters), so no catalog append is needed. The ' +
-      'legacy arms keep the prose body for the flag-off rollback until the legacy ladder ' +
-      'is removed; the client code-matcher (userFacingApiError) covers the problem+json body.',
-    introducedInPhase: 14,
-    reason:
-      'The migration gives the four previously-raw rate-limited responses a stable code via ' +
-      'the error model (the deliberate stable-code deliverable). The 429 divergence is ' +
-      'NOT exercised by the db-free parity corpus (runParity resets every limiter bucket ' +
-      'before each pass, so a bucket is never drained), so it is documented here rather ' +
-      'than caught by the harness. It is a sibling to newLimiterCharacterMutations (a 429 ' +
-      'that resolves to problem+json rate_limit.exceeded), except these four routes ' +
-      'already returned a 429 today (as prose), so this changes the BODY SHAPE, not ' +
-      'whether a 429 exists. Adding /api/card here also masks it in the path-scoped parity ' +
-      'filter, so the card pre-auth 413 + Connection: close byte-identity (the only one of ' +
-      'the four with a corpus fixture, card_too_large_413, which does NOT hit the limiter) ' +
-      'is re-pinned by a dedicated captureBothModes assertion in parity.test.ts and by the ' +
-      'card_route unit test. TELEMETRY drift (observability-only, flag-gated): on the new ' +
-      'path the rateLimit(policy) middleware throws before the handler runs, so the four ' +
-      'provider_usage counters the legacy arms record on a throttle ' +
-      '(wallet.challenge.rate_limited / wallet.link.rate_limited / woc.balance.rate_limited / ' +
-      'card.publish.rate_limited) are NOT emitted, and the wallet .request counters no longer ' +
-      'count a throttled attempt (the handler that records them runs after the limiter). The ' +
-      'rateLimit middleware is generic, so documenting the divergence is the correct ' +
-      'resolution rather than coupling it to route-specific metrics; the admin dashboard ' +
-      "undercounts throttled wallet/card/balance events with API_DISPATCH at 'new' (the " +
-      'production default). Structured request-layer metrics live in the /metrics ' +
-      'observability layer. No response-body or security impact.',
-  },
-  {
-    id: DEVIATION_ID.walletBodyValidationRemap,
-    routes: ['/api/wallet/link/challenge', '/api/wallet/link'],
-    currentBehavior:
-      'The wallet link-challenge and link handlers self-read their request body with ' +
-      'readBody INSIDE walletChallengeCore / walletLinkCore (no withBody middleware). On the ' +
-      'legacy handleApi ladder, a malformed JSON body or an over-cap body makes readBody ' +
-      "reject, and the reject falls to handleApi's outer catch, which answers 500 " +
-      '{ error: "internal error" } (application/json); a literal JSON null body (valid JSON) ' +
-      'is dereferenced (null.address), throwing a TypeError that falls to the same generic 500.',
-    intendedBehavior:
-      'The new pipeline serves these two routes. The migrated handlers call ' +
-      'the SAME limiter-free cores UNCHANGED (they self-read the body, so NO withBody ' +
-      'middleware is composed and there is NO 400/413 status remap: a malformed or over-cap ' +
-      'body still answers 500, and a null body still throws to 500). The ONLY divergence is ' +
-      'the 500 BODY SHAPE: the throw propagates to the withErrors boundary and ' +
-      'serializes as 500 application/problem+json (internal.error) instead of the legacy ' +
-      '500 { error: "internal error" }. Leak-free (the 500 detail is a static sentence; the ' +
-      'original error goes only to the logger). The client code-matcher covers the ' +
-      'problem+json body; the divergence becomes the real behavior when the legacy arm ' +
-      'is removed.',
-    introducedInPhase: 14,
-    reason:
-      'The migrated wallet challenge/link handlers surface an unexpected body throw (malformed ' +
-      '/ over-cap / null body) through the shared error-model boundary as 500 ' +
-      'problem+json instead of the legacy outer-catch 500 { error }. Same 500 STATUS, ' +
-      'different body shape; there is no status remap because these handlers self-read without ' +
-      'withBody. Exact sibling to accountBodyValidationRemap (the account self-read POST ' +
-      'routes); the card route does NOT get an entry because handleCardUpload CATCHES its own ' +
-      'readBinaryBody reject and answers a byte-identical 413/400 on both paths. These ' +
-      'framework-error paths are NOT exercised by the db-free parity corpus (which replays ' +
-      'valid bodies only), so the divergence is documented here rather than caught by the ' +
-      'harness.',
-  },
-  {
     id: DEVIATION_ID.reportsBodyValidationRemap,
     routes: ['/api/reports', '/api/bug-reports', '/api/perf-report', '/api/site-presence'],
     currentBehavior:
@@ -629,8 +546,8 @@ export const KNOWN_DEVIATIONS: readonly KnownDeviation[] = [
       'unexpected body throw through the shared error-model boundary as 500 ' +
       'problem+json instead of the legacy outer-catch 500 { error }. Same 500 STATUS, ' +
       'different body shape; there is no status remap because these handlers self-read ' +
-      'without withBody. Exact sibling to accountBodyValidationRemap / ' +
-      'walletBodyValidationRemap. These framework-error paths are NOT exercised by the ' +
+      'without withBody. Exact sibling to accountBodyValidationRemap. These ' +
+      'framework-error paths are NOT exercised by the ' +
       'db-free parity corpus (which replays valid bodies only), so the divergence is ' +
       'documented here rather than harness-caught. Adding /api/reports and ' +
       '/api/site-presence here also masks them in the path-scoped parity filter, so ' +
@@ -651,8 +568,8 @@ export const KNOWN_DEVIATIONS: readonly KnownDeviation[] = [
       '60s window) mounted AFTER activeGuard, throwing HttpError(429, ' +
       '"rate_limit.exceeded", { retryAfterSeconds }) serialized as RFC 9457 ' +
       'application/problem+json. The code already exists (harvested with the error-code ' +
-      'catalog, reused by the character-mutation and wallet/card ' +
-      'limiters), so no catalog append is needed. The legacy arm stays unlimited ' +
+      'catalog, reused by the character-mutation limiters), so no catalog append is ' +
+      'needed. The legacy arm stays unlimited ' +
       'for the flag-off rollback until the legacy ladder is removed.',
     introducedInPhase: 15,
     reason:
@@ -786,7 +703,7 @@ export const KNOWN_DEVIATIONS: readonly KnownDeviation[] = [
       'Same 500 STATUS, different body shape; there is no status remap because these ' +
       'handlers self-read without withBody (and readJsonBody swallows a bad body to {}, ' +
       'so no 400/413 path exists at all). Exact sibling to accountBodyValidationRemap / ' +
-      'walletBodyValidationRemap / reportsBodyValidationRemap (the callback variant ' +
+      'reportsBodyValidationRemap (the callback variant ' +
       'stays HTML per discordCallbackHtmlNotRedirect). These framework-error paths are ' +
       'NOT exercised by the db-free parity corpus (which replays valid bodies only), so ' +
       'the divergence is documented here rather than harness-caught.',
@@ -915,7 +832,7 @@ export const KNOWN_DEVIATIONS: readonly KnownDeviation[] = [
       'admin serializer, selected by meta.envelope "admin") instead of the legacy ' +
       'outer-catch 500 { ...error: "internal error" }. Same status + envelope shape, ' +
       'different error string. Exact sibling to accountBodyValidationRemap / ' +
-      'walletBodyValidationRemap / reportsBodyValidationRemap / discordBodyValidationRemap. ' +
+      'reportsBodyValidationRemap / discordBodyValidationRemap. ' +
       'The listed routes are representative (the remap applies to every admin route); the ' +
       'framework-error path is not exercised by the db-free parity corpus, documented here.',
   },
@@ -954,7 +871,7 @@ export const KNOWN_DEVIATIONS: readonly KnownDeviation[] = [
       'The migrated OAuth POST handlers surface an unexpected throw through the shared ' +
       'error-model boundary (the RFC 6749 serializer) instead of the legacy ' +
       'module-local catch. Same status + error code, an additive description field. ' +
-      'Sibling to accountBodyValidationRemap / walletBodyValidationRemap / ' +
+      'Sibling to accountBodyValidationRemap / ' +
       'reportsBodyValidationRemap / discordBodyValidationRemap / adminBodyValidationRemap. ' +
       'Not exercised by the db-free parity corpus (a real throw needs a DB failure or an ' +
       'over-cap stream), documented here and pinned with fakes in tests/server/oauth.test.ts.',
@@ -970,14 +887,12 @@ export const KNOWN_DEVIATIONS: readonly KnownDeviation[] = [
       '/internal/discord/member',
       '/internal/discord/relay',
       '/internal/discord/activity',
-      '/internal/discord/daily-rewards-winners',
-      '/internal/discord/daily-rewards-winners/mark',
       '/internal/discord/members-meta',
     ],
     currentBehavior:
       'The legacy handleInternalApi has NO outer catch. Every body read carries its own ' +
       '.catch(() => ({})) (a malformed/over-cap body coerces to {} and is not a throw ' +
-      'path), but an unexpected throw (a Postgres error, a dailyRewardService throw) ' +
+      'path), but an unexpected throw (a Postgres error, a service throw) ' +
       "escapes the whole ladder into main.ts's fire-and-forget /internal arm as an " +
       'unhandled promise rejection: the keep-alive unhandledRejection handler logs it, NO ' +
       "response is ever written, and the bot's request hangs until its client timeout.",
@@ -1118,91 +1033,10 @@ export const KNOWN_DEVIATIONS: readonly KnownDeviation[] = [
       'prose is the existing shared guard string ("this token is read-only", no ' +
       'client matcher arm today: a recorded REST error i18n adjudication).',
   },
-  {
-    id: DEVIATION_ID.dailyRewardsBodyValidationRemap,
-    routes: ['/api/daily-rewards', '/api/daily-rewards/spin', '/api/daily-rewards/history'],
-    currentBehavior:
-      'The legacy player family is served by a bare `return handleDailyRewardApi(...)` ' +
-      "inside handleApi's try (no await), so an unexpected throw (a Postgres error, a " +
-      'dailyRewardService throw past the eligibility guards) escapes the outer catch ' +
-      'as an unhandled rejection: NO response is written and the request HANGS. ' +
-      'Handler-owned bodies (the 403 wallet-lock, the 409 already-claimed, the ' +
-      'in-family 404 "unknown endpoint", the lenient Number(...)||30 history limit) ' +
-      'are unaffected.',
-    intendedBehavior:
-      'The migration registers the three player routes calling the SAME ' +
-      'handleDailyRewardApi core (no withBody: spin provably reads no body, history ' +
-      'keeps its lenient limit decode) behind the shared createActiveGuard, and routes ' +
-      'the unexpected throw to the withErrors boundary: the api-surface problem+json ' +
-      '500 plus an X-Request-Id header. Off-table shapes (wrong method, unknown ' +
-      'subpath, the no-slash /api/daily-rewardsX sibling, HEAD) stay delegate-served ' +
-      'until the legacy ladder is removed.',
-    introducedInPhase: 18,
-    reason:
-      'The late-arrival migration ports the daily-rewards player family; parity is by ' +
-      'construction ' +
-      '(the RouteDef handlers call the ladder core unchanged), so the ' +
-      'unexpected-throw class is the only divergence. Sibling to ' +
-      'internalBodyValidationRemap (the hang counterfactual). NO rate limiter is ' +
-      'added (legacy has none; the spin-throttle decision was handed to the two-tier ' +
-      'rate-limiter rework). ' +
-      'Pinned with fakes in tests/server/daily_rewards_routes.test.ts.',
-  },
-  {
-    id: DEVIATION_ID.dailyRewardsOpsBodyValidationRemap,
-    routes: [
-      '/internal/daily-rewards/finalize',
-      '/internal/daily-rewards/pending-payouts',
-      '/internal/daily-rewards/payout-history',
-      '/internal/daily-rewards/leaderboard',
-      '/internal/daily-rewards/mark-payout',
-      '/internal/daily-rewards/void-payout',
-      '/internal/daily-rewards/restore-payout',
-    ],
-    currentBehavior:
-      'The legacy ops family is the FIRST arm of the /internal composite delegate ' +
-      '(handleDailyRewardInternalApi, tried before handleInternalApi), fired ' +
-      'fire-and-forget with NO outer catch: mark-payout self-reads its body via an ' +
-      'UN-caught readBody (unlike internal.ts, which .catch(() => ({}))s every read), ' +
-      'so a malformed/over-cap body AND any DB throw in the seven handlers become an ' +
-      'unhandled rejection: NO response is written and the payout service request ' +
-      'HANGS. The gate itself is FAIL-CLOSED: an unset ' +
-      'WOC_DAILY_REWARD_SERVICE_SECRET and a wrong x-woc-daily-reward-secret header ' +
-      'both answer 401 { success: false, data: null, error: "not authenticated" } ' +
-      "(never the other internal gates' feature-off 404, never a " +
-      'RESTART_COUNTDOWN_SECRET fallback).',
-    intendedBehavior:
-      'The migration registers the five ops routes behind the new ' +
-      'requireInternalSecretFailClosed gate (same fail-closed 401 semantics, ' +
-      'per-request env read, length-guarded timingSafeEqual) with handlers calling ' +
-      'the SAME handleDailyRewardInternalApi core, and routes the rejection to the ' +
-      'withErrors boundary: the admin-shape 500 { success: false, data: null, error: ' +
-      '"internal.error" } plus an X-Request-Id header (meta.envelope "admin"). A ' +
-      'response is now always written where legacy hung. The legacy family gates the ' +
-      'WHOLE /internal/daily-rewards/ prefix BEFORE path/method resolution; on the ' +
-      'table each route gates after path match, which is invisible while the ' +
-      'composite delegate serves the unmatched remainder: at the ladder ' +
-      'deletion the family-wide pre-path 401 must be recreated or its loss ' +
-      'adjudicated deliberately (alongside oauthInternalOffTable405).',
-    introducedInPhase: 18,
-    reason:
-      'The late-arrival migration puts the ops family on the table (the initial OAuth + ' +
-      '/internal migration left it delegate-only). ' +
-      'Sibling to internalBodyValidationRemap with the same hang counterfactual, ' +
-      'SECRET-GATED: every divergence is only reachable behind the valid payout ' +
-      'secret except the 500 on a bad mark-payout body, whose legacy counterfactual ' +
-      'is also a hang. The composite delegate ordering (daily-rewards tried first) ' +
-      'is untouched and stays parity-pinned. Pinned with fakes in ' +
-      'tests/server/daily_rewards_routes.test.ts.',
-  },
   // --- The two-tier rate limiter + draft-11 429 headers ------------------------
   {
     id: DEVIATION_ID.rateLimit429Draft11Headers,
     routes: [
-      '/api/wallet/link/challenge',
-      '/api/wallet/link',
-      '/api/woc/balance',
-      '/api/card',
       '/api/characters',
       '/api/characters/:id/rename',
       '/api/characters/:id/takeover',
@@ -1211,8 +1045,7 @@ export const KNOWN_DEVIATIONS: readonly KnownDeviation[] = [
     ],
     currentBehavior:
       'Before the two-tier limiter rework, a coded 429 from a rateLimit(policy) middleware ' +
-      '(the migrated ' +
-      'wallet/woc/card, character-mutation, and reports.create limiters) is thrown as ' +
+      '(the migrated character-mutation and reports.create limiters) is thrown as ' +
       'HttpError(429, "rate_limit.exceeded", { retryAfterSeconds: 60 }) where 60 is the ' +
       'static shared-window constant, and the ONLY response header is Retry-After: 60 ' +
       '(applyImpliedHeaders derives it from params.retryAfterSeconds). No RateLimit or ' +
@@ -1245,8 +1078,8 @@ export const KNOWN_DEVIATIONS: readonly KnownDeviation[] = [
       'retry value). NOT exercised by the db-free parity corpus: runParity resets every ' +
       'limiter bucket before each pass, so a bucket is never drained and no coded 429 ' +
       'fires, and every route listed here is ALREADY path-masked in the parity filter by ' +
-      'rateLimitedBodyToCode (wallet/woc/card), newLimiterCharacterMutations (the four ' +
-      'character routes), or newLimiterReportsCreate (/api/reports), so this entry adds no ' +
+      'newLimiterCharacterMutations (the four ' +
+      'character routes) or newLimiterReportsCreate (/api/reports), so this entry adds no ' +
       'new masking and needs no new captureBothModes re-pin. Documented here and pinned ' +
       'directly on the thrown HttpError in tests/server/http/rate_limit.test.ts.',
   },
@@ -1333,7 +1166,7 @@ export const KNOWN_DEVIATIONS: readonly KnownDeviation[] = [
       'completeness of the family.',
     introducedInPhase: 24,
     reason:
-      'Sibling to rateLimitedBodyToCode (the wallet/card entry): the same coded-' +
+      'Sibling to newLimiterCharacterMutations (the coded-429 entry): the same coded-' +
       '429 body-shape change, applied to the v0.20.0 map editor family at its in-merge ' +
       'migration. The 429 divergence is NOT exercised by the db-free parity corpus ' +
       '(runParity resets every limiter bucket before each pass), so it is documented here ' +

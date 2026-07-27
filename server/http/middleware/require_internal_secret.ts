@@ -24,17 +24,6 @@ export const DEPLOY_SECRET_ENV = 'RESTART_COUNTDOWN_SECRET';
 export const DISCORD_SECRET_HEADER = 'x-woc-discord-secret';
 export const DISCORD_SECRET_ENV = 'DISCORD_BOT_SECRET';
 
-/**
- * Header + env pair for the daily-rewards payout-service gate (the
- * /internal/daily-rewards/* ops family). Unlike the two pairs above,
- * this gate FAILS CLOSED (requireInternalSecretFailClosed below): an unset env
- * secret answers 401, never the feature-off 404, and it never falls back to
- * RESTART_COUNTDOWN_SECRET (that is an unrelated ops secret whose holder must
- * not be able to call the payout endpoints).
- */
-export const DAILY_REWARD_SECRET_HEADER = 'x-woc-daily-reward-secret';
-export const DAILY_REWARD_SECRET_ENV = 'WOC_DAILY_REWARD_SERVICE_SECRET';
-
 /** The legacy fail() bodies from server/internal.ts, frozen for byte parity. */
 const FEATURE_OFF_BODY = { success: false, data: null, error: 'unknown endpoint' } as const;
 const NOT_AUTHENTICATED_BODY = { success: false, data: null, error: 'not authenticated' } as const;
@@ -72,28 +61,6 @@ export function requireInternalSecret(gate: InternalSecretGate): Middleware {
     }
     const actual = String(ctx.req.headers[gate.header] ?? '');
     if (!secretsMatch(actual, expected)) {
-      json(ctx.res, 401, NOT_AUTHENTICATED_BODY);
-      return;
-    }
-    await next();
-  };
-}
-
-/**
- * The FAIL-CLOSED variant (the daily-rewards ops family): an unset
- * env secret AND a mismatched header BOTH answer the legacy 401 { success:
- * false, data: null, error: 'not authenticated' } (daily_rewards.ts
- * internalAuthorized returns false when the env is empty, and the ladder writes
- * the same 401 for both cases). There is no feature-off 404 and no fallback
- * secret: the surface stays locked until its dedicated env secret is set. The
- * env var is read PER REQUEST and the compare reuses the same length-guarded
- * timingSafeEqual; the presented secret is never logged or echoed.
- */
-export function requireInternalSecretFailClosed(gate: InternalSecretGate): Middleware {
-  return async (ctx, next) => {
-    const expected = process.env[gate.envVar] ?? '';
-    const actual = String(ctx.req.headers[gate.header] ?? '');
-    if (!expected || !secretsMatch(actual, expected)) {
       json(ctx.res, 401, NOT_AUTHENTICATED_BODY);
       return;
     }

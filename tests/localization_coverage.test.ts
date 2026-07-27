@@ -1133,38 +1133,6 @@ describe('i18n Localization Key Coverage', () => {
     setLanguage('en');
   });
 
-  it('renders the mobile Store label in every locale', () => {
-    const expected: Record<SupportedLanguage, string> = {
-      en: 'Store',
-      en_CA: 'Store',
-      es: 'Tienda',
-      es_ES: 'Tienda',
-      fr_FR: 'Boutique',
-      fr_CA: 'Boutique',
-      it_IT: 'Negozio',
-      de_DE: 'Shop',
-      zh_CN: '商店',
-      zh_TW: '商店',
-      ko_KR: '상점',
-      ja_JP: 'ストア',
-      pt_BR: 'Loja',
-      ru_RU: 'Магазин',
-      cs_CZ: 'Obchod',
-      nl_NL: 'Winkel',
-      pl_PL: 'Sklep',
-      id_ID: 'Toko',
-      tr_TR: 'Mağaza',
-      sv_SE: 'Butik',
-      vi_VN: 'Cửa hàng',
-      da_DK: 'Butik',
-    };
-    for (const lang of supportedLanguages) {
-      setLanguage(lang);
-      expect(t('hudChrome.mobile.dailyRewards'), lang).toBe(expected[lang]);
-    }
-    setLanguage('en');
-  });
-
   it('should provide talent content translations for every supported locale', () => {
     const talentEntries = talentTranslationManifest();
     expect(talentEntries.length).toBeGreaterThan(250);

@@ -6,10 +6,6 @@ import type {
   ActiveTemporalHourglass,
   BankBonusSource,
   CraftingIdentityView,
-  DailyRewardHistory,
-  DailyRewardLeaderboardPage,
-  DailyRewardSpinResult,
-  DailyRewardStatus,
   DelveCompanionInfo,
   DelveRunInfo,
   LockpickView,
@@ -2122,7 +2118,7 @@ export class Sim {
       state?: CharacterState;
       characterId?: number;
       // Server-stamped bank bonus slots, recomputed from account facts at every
-      // join (email/Discord/wallet/referrals). Overrides the persisted value so
+      // join (email/Discord/referrals). Overrides the persisted value so
       // unlinking lowers capacity at the next login; a shrink below the used slot
       // count leaves the bank over-capacity in the tolerated bags.ts sense (new
       // deposits refuse, nothing is destroyed). Never passed offline (bonusSlots
@@ -3489,56 +3485,6 @@ export class Sim {
     return Promise.resolve(paginateDeedsLeaderboard([], page, pageSize));
   }
 
-  dailyRewards(): Promise<DailyRewardStatus> {
-    const day = '1970-01-01';
-    return Promise.resolve({
-      enabled: true,
-      day,
-      resetAt: '1970-01-02T00:00:00.000Z',
-      prizePoolUsd: 0,
-      prizePoolSol: null,
-      eligibility: {
-        eligible: false,
-        reason: 'no_wallet',
-        banReason: null,
-        walletPubkey: null,
-        wocBalance: null,
-        wocUsdPrice: null,
-        usdValue: null,
-        minUsd: 20,
-      },
-      score: 0,
-      rank: null,
-      spin: { claimed: false, points: null, outcomeKey: null, claimedAt: null },
-      tasks: [],
-      leaderboard: [],
-      leaderboardTotal: 0,
-    });
-  }
-
-  dailyRewardLeaderboard(
-    page = 0,
-    pageSize = LEADERBOARD_PAGE_SIZE,
-  ): Promise<DailyRewardLeaderboardPage> {
-    return Promise.resolve({
-      day: '1970-01-01',
-      leaders: [],
-      page: Math.max(0, Math.floor(page)),
-      pageCount: 1,
-      total: 0,
-      pageSize,
-    });
-  }
-
-  async spinDailyReward(): Promise<DailyRewardSpinResult> {
-    const status = await this.dailyRewards();
-    return { ...status, awardedPoints: 0, outcomeKey: '' };
-  }
-
-  dailyRewardHistory(): Promise<DailyRewardHistory> {
-    return Promise.resolve({ payouts: [] });
-  }
-
   get known(): ResolvedAbility[] {
     return this.primary.known;
   }
@@ -3569,7 +3515,7 @@ export class Sim {
   }
   // Offline the sandbox has no population, so there is no rarity to report:
   // always null (the facet's documented no-data value; the window hides the
-  // slot). Deterministic, no fetch, no clock (the dailyRewards stub doctrine).
+  // slot). Deterministic, no fetch, no clock.
   deedsRarity(): Promise<import('../world_api').DeedsRarity | null> {
     return Promise.resolve(null);
   }

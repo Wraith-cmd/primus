@@ -1,5 +1,5 @@
 {
-  "name": "world-of-claudecraft",
+  "name": "primus",
   "version": "0.30.0",
   "private": true,
   "license": "MIT",
@@ -9,7 +9,7 @@
   },
   "type": "module",
   "main": "electron/main.cjs",
-  "description": "World of Claudecraft: a classic-style micro-MMO + headless RL training environment",
+  "description": "PRIMUS: a private classic-style micro-MMO fork",
   "scripts": {
     "dev": "vite",
     "release:check": "node scripts/release_version.mjs check",
@@ -26,9 +26,7 @@
     "native:open:android": "npm run native:sync && npx cap open android",
     "electron:dev": "node scripts/electron-dev.mjs",
     "electron:pack": "node scripts/electron-build.mjs pack",
-    "electron:pack:steam": "node scripts/electron-build.mjs pack steam",
     "electron:build": "node scripts/electron-build.mjs build",
-    "electron:build:steam": "node scripts/electron-build.mjs build steam",
     "preview": "vite preview",
     "format": "biome format --write .",
     "format:check": "biome format .",
@@ -97,24 +95,13 @@
     "@aws-sdk/client-sesv2": "^3.1084.0",
     "@capacitor/app": "^8.1.0",
     "@capacitor/browser": "^8.0.3",
-    "@noble/curves": "^1.9.7",
-    "@reown/appkit": "1.8.22",
-    "@reown/appkit-adapter-solana": "1.8.22",
-    "@solana/wallet-standard-chains": "^1.1.2",
-    "@solana/wallet-standard-features": "^1.4.0",
-    "@wallet-standard/app": "^1.1.1",
-    "@wallet-standard/base": "^1.1.1",
-    "@wallet-standard/features": "^1.1.1",
-    "bs58": "^6.0.0",
     "electron-log": "^5.4.4",
-    "electron-updater": "^6.8.9",
     "n8ao": "^1.10.1",
     "obscenity": "^0.4.6",
     "pg": "^8.21.0",
     "postprocessing": "6.36.0",
     "prom-client": "15.1.3",
     "three": "^0.165.0",
-    "tweetnacl": "1.0.3",
     "ws": "^8.21.0"
   },
   "devDependencies": {
@@ -152,12 +139,9 @@
     "vite": "^8.0.16",
     "vitest": "4.1.10"
   },
-  "optionalDependencies": {
-    "steamworks.js": "^0.4.0"
-  },
   "build": {
-    "appId": "com.worldofclaudecraft.desktop",
-    "productName": "World of ClaudeCraft",
+    "appId": "com.primus.desktop",
+    "productName": "PRIMUS",
     "icon": "build/icon.png",
     "files": [
       "dist/**",
@@ -183,7 +167,7 @@
     },
     "protocols": [
       {
-        "name": "World of ClaudeCraft Login",
+        "name": "PRIMUS Login",
         "schemes": [
           "worldofclaudecraft"
         ]
@@ -253,11 +237,7 @@
         }
       ]
     },
-    "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
-    "publish": {
-      "provider": "generic",
-      "url": "https://updates.worldofclaudecraft.com/desktop"
-    }
+    "artifactName": "${name}-${version}-${os}-${arch}.${ext}"
   },
   "allowScripts": {
     "sharp@0.34.5": true,

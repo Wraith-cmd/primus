@@ -103,8 +103,7 @@ World of ClaudeCraft xuất xưởng dưới dạng ứng dụng desktop đầy 
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 Trỏ vỏ ứng dụng tới một API khác bằng `VITE_DESKTOP_API_ORIGIN`, ví dụ một máy chủ cục bộ hoặc một host staging:

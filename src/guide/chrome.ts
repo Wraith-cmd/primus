@@ -106,7 +106,7 @@ export function buildChrome(
     <header class="guide-header">
       <div class="guide-header-inner">
         <a class="guide-brand" href="${esc(GUIDE_BASE)}">
-          <img class="guide-brand-logo" src="/woc-logo-guide.webp" width="239" height="160" alt="${esc(t('guide.brand'))}" decoding="async" />
+          <img class="guide-brand-logo" src="/primus-logo.svg" width="239" height="160" alt="${esc(t('guide.brand'))}" decoding="async" />
         </a>
         <button type="button" class="guide-menu-toggle" aria-expanded="false" aria-controls="guide-primary-nav" aria-label="${esc(t('guide.nav.openMenu'))}">
           <span class="guide-menu-bars" aria-hidden="true"></span>

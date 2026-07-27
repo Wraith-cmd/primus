@@ -1,6 +1,6 @@
 // Thin Three/DOM painter for the overhead nameplates (v0.16.0). Owns the
 // per-entity nameplate elements (name, hp bar, marker,
-// raid mark, combo pips, holder-tier badge, overhead emote, cast bar): it
+// raid mark, combo pips, developer badge, overhead emote, cast bar): it
 // projects each rig's anchor with the camera and writes the show/hide, transform,
 // and localized content to the EntityView DOM nodes the renderer built.
 //
@@ -30,12 +30,6 @@ import {
 } from '../ui/dev_tier';
 import { discordRoleTagLabel } from '../ui/discord_role_tag';
 import { tEntity } from '../ui/entity_i18n';
-import {
-  holderTierBadgeDataUrl,
-  holderTierByIndex,
-  holderTierDisplayName,
-  holderTierIsRegalia,
-} from '../ui/holder_tier';
 import { formatNumber, getLanguage, t } from '../ui/i18n';
 import { raidMarkerDataUrl } from '../ui/icons';
 import { type IWorld, OVERHEAD_EMOTES } from '../world_api';
@@ -302,8 +296,6 @@ export class NameplatePainter {
           isAi,
         );
         v.nameEl.style.display = nameDisplay;
-        // $WOC holder-tier flair (hidden only on a suppressed self plate).
-        this.setNameplateTier(v, suppressSelf ? 0 : (e.holderTier ?? 0));
         // Developer-badge flair.
         this.setNameplateDevTier(v, suppressSelf || !showDevBadges ? 0 : (e.devTier ?? 0));
         // Linked-Discord PFP indicator.
@@ -517,31 +509,6 @@ export class NameplatePainter {
     v.aiEl.classList.toggle('ai-tag', isAi);
   }
 
-  // Show/hide the $WOC holder-tier badge on a player's nameplate. Cheap-diffed
-  // on the tier value so the badge image is only rebuilt when the tier changes.
-  private setNameplateTier(v: EntityView, tier: number): void {
-    if (tier === v.tierValue) return;
-    v.tierValue = tier;
-    const def = holderTierByIndex(tier);
-    if (def) {
-      v.tierEl.src = holderTierBadgeDataUrl(def, 32);
-      v.tierEl.title = t('wallet.holderTierTitle', { tier: holderTierDisplayName(def) });
-      // Static per-tier halo (the "stand out" knob): the tier glow hue drives a
-      // CSS drop-shadow whose strength is a named CSS tunable (--holder-halo /
-      // --holder-halo-strong), moderately stronger for the two band IV regalia.
-      // Cosmetic-only and static, written here on the tier cheap-diff (never per
-      // frame), like the src/title/display above.
-      v.tierEl.style.setProperty('--holder-glow', def.glow);
-      v.tierEl.classList.toggle('np-tier-regalia', holderTierIsRegalia(def));
-      v.tierEl.style.display = '';
-    } else {
-      v.tierEl.removeAttribute('src');
-      v.tierEl.style.removeProperty('--holder-glow');
-      v.tierEl.classList.remove('np-tier-regalia');
-      v.tierEl.style.display = 'none';
-    }
-  }
-
   // Show/hide the developer-badge on a player's nameplate. Cheap-diffed on the
   // tier value so the badge image is only rebuilt when the tier changes.
   private setNameplateDevTier(v: EntityView, tier: number): void {
@@ -551,8 +518,8 @@ export class NameplatePainter {
     if (def) {
       v.devTierEl.src = devTierBadgeDataUrl(def, 32);
       v.devTierEl.title = t('hudChrome.devBadge.badgeTitle', { tier: devTierDisplayName(def) });
-      // Static per-tier halo, mirroring the holder badge: the tier glow hue drives
-      // a CSS drop-shadow whose strength is the shared named tunable, stronger for
+      // Static per-tier halo: the tier glow hue drives a CSS drop-shadow whose
+      // strength is a named CSS blur tunable, stronger for
       // the two significant-contributor rungs (Architect, Worldwright). Cosmetic and
       // static, written on the tier cheap-diff (never per frame), like src above.
       v.devTierEl.style.setProperty('--dev-glow', def.glow);

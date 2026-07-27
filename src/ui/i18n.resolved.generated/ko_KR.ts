@@ -363,258 +363,7 @@ export const ko_KR: EnTranslations = {
       "title": "감정 표현",
       "done": "완료"
     },
-    "dailyRewards": {
-      "title": "일일 보상",
-      "close": "일일 보상 닫기",
-      "loading": "일일 보상 불러오는 중...",
-      "error": "일일 보상을 불러올 수 없습니다.",
-      "disabled": "일일 보상은 현재 비활성화되어 있습니다. 이 기능에 대한 업데이트는 Discord 채널에서 안내하겠습니다.",
-      "intro": "인증된 지갑에 충분한 WOC를 보유하여 일일 보상을 잠금 해제하세요. 하루 한 번의 스핀과 교체되는 과제로 포인트를 획득한 뒤, 일일 순위표를 올라 상금 풀의 일부를 차지하세요.",
-      "disclaimer": "WOC 가격은 빠르게 변동될 수 있습니다. 일반적인 가격 변동으로 보상이 잠기지 않도록 $20 USD 최소 기준보다 더 많이 보유하는 것을 권장합니다. 이는 금융 조언이 아닙니다.",
-      "prize": "상금 풀",
-      "reset": "초기화",
-      "endsIn": "{time} 후 종료",
-      "remainingLessThanMinute": "1분 미만",
-      "remainingMinutes": "{minutes}분",
-      "remainingHoursMinutes": "{hours}시간 {minutes}분",
-      "remainingDaysHours": "{days}일 {hours}시간",
-      "score": "점수",
-      "walletValue": "지갑 가치 (WOC)",
-      "usd": "{amount} USD",
-      "sol": "{amount} SOL",
-      "unknown": "알 수 없음",
-      "spinTitle": "일일 스핀",
-      "spinDialogTitle": "일일 보상 스핀",
-      "spinClose": "일일 스핀 닫기",
-      "spinReady": "스핀 한 번을 사용할 수 있습니다.",
-      "spinClaimed": "획득: +{points} 포인트.",
-      "spinResult": "+{points} 포인트",
-      "spinButton": "돌리기",
-      "tasks": "과제",
-      "taskMultiplier": "{multiplier}배 배율",
-      "oneVsOneExcluded": "1대1 경기에서는 일일 보상 포인트를 획득할 수 없습니다.",
-      "pointsGained": "{points} 일일 보상 포인트를 획득했습니다.",
-      "showChestButton": "보물상자 표시",
-      "hideChestButton": "보물상자 숨기기",
-      "hideChestConfirmTitle": "일일 보상 보물상자를 숨기시겠습니까?",
-      "hideChestConfirmBody": "HUD에서 보물상자 바로가기가 제거됩니다. 보상, 자격, 이 패널은 계속 이용할 수 있습니다. 바로가기는 옵션에서 다시 표시할 수 있습니다.",
-      "hideChestConfirmOk": "보물상자 숨기기",
-      "hideChestConfirmCancel": "취소",
-      "leaderboard": "일일 순위표",
-      "totalPlayer": "오늘 플레이어 {count}명",
-      "totalPlayers": "오늘 플레이어 {count}명",
-      "history": "지난 당첨자",
-      "noLeaders": "아직 포인트가 없습니다.",
-      "noHistory": "아직 지급 내역이 없습니다.",
-      "walletConnectTitle": "지갑 인증",
-      "walletConnectBody": "WOC를 보유한 Solana 지갑을 인증하여 일일 보상을 잠금 해제하세요.",
-      "walletConnectButton": "지갑 인증",
-      "walletHoldTitle": "WOC 보유",
-      "walletHoldBody": "일일 보상을 잠금 해제하려면 최소 {amount} USD 상당의 WOC를 보유하세요.",
-      "walletPriceBody": "현재 WOC 가격을 확인할 수 없습니다. 잠시 후 다시 확인하세요.",
-      "reason": {
-        "eligible": "보상이 잠금 해제되었습니다.",
-        "no_wallet": "$20 USD 상당 이상의 WOC를 보유한 지갑을 연결하세요.",
-        "under_minimum": "지갑이 최소 $20 USD WOC 기준에 미치지 못합니다.",
-        "price_unavailable": "WOC 가격을 확인할 수 없어 보상이 일시적으로 잠겨 있습니다.",
-        "banned": "일일 보상 참여가 금지되었습니다. 사유: {reason}",
-        "bannedUntil": "일일 보상 참여가 앞으로 {remaining} 동안 금지됩니다. 해제 시각: {until}. 사유: {reason}"
-      }
-    },
     "wocStore": {
-      "title": "WOC 상점",
-      "close": "WOC 상점 닫기",
-      "tabsLabel": "WOC 상점 구역",
-      "storeTab": "상점",
-      "rewardsTab": "일일 보상",
-      "loading": "WOC 상점 불러오는 중…",
-      "error": "현재 WOC 상점을 이용할 수 없습니다. 잠시 후 다시 시도해 주세요.",
-      "balance": "Claudium 잔액",
-      "buyClaudium": "Claudium 구매",
-      "owned": "보유 중",
-      "needMoreTitle": "Claudium이 더 필요합니다",
-      "needMoreBody": "{item} 구매에 Claudium {shortfall}개가 더 필요합니다.",
-      "cancel": "취소",
-      "confirmTitle": "꾸미기 상품 구매 확인",
-      "confirmBody": "{item}을(를) {cost} Claudium으로 구매할까요?",
-      "confirmPurchase": "구매",
-      "priceChanged": "구매가 완료되기 전에 가격이 변경되었습니다. 갱신된 가격을 확인한 후 다시 승인해 주세요.",
-      "armoryEyebrow": "시즌 1",
-      "armoryTitle": "무기고",
-      "armoryBody": "시즌 1 무기고의 한정 무기 스킨입니다. 계정 전체에 적용되는 순수 장식이며 주변 모든 플레이어에게 보입니다.",
-      "wallet": {
-        "title": "Solana 지갑",
-        "unlinked": "지갑 앱을 연결한 뒤 한 번 서명하여 공개 주소를 WoC 계정에 연결하세요. 복구 문구나 개인 키는 절대로 전달되지 않습니다.",
-        "connectedUnlinked": "지갑 앱이 이 브라우저에 연결되었지만 공개 주소는 아직 WoC 계정에 연결되지 않았습니다.",
-        "linkedDisconnected": "공개 주소가 연결되어 있습니다. SOL 또는 WOC로 결제할 때 해당 지갑 앱을 다시 연결하세요.",
-        "linkedConnected": "연결된 지갑 앱이 접속되어 SOL 또는 WOC 구매에 사용할 수 있습니다.",
-        "mismatched": "다른 지갑이 접속되어 있습니다. 인증하여 연결된 주소를 바꾸거나 기존에 연결된 지갑을 다시 접속하세요.",
-        "connect": "지갑 연결",
-        "verify": "인증하고 연결",
-        "reconnect": "지갑 다시 연결",
-        "manage": "지갑 관리"
-      },
-      "collectionLine": "{collection} 컬렉션",
-      "collections": {
-        "guildmark": "길드마크",
-        "emberwrought": "엠버로트",
-        "hoarfrost": "백상",
-        "fallen_star": "추락한 별"
-      },
-      "skins": {
-        "guildmark_arming_sword": {
-          "name": "길드마크 무장검",
-          "look": "푸르게 처리한 강철 칼날, 청동 물고기 꼬리형 십자 가드, 청록색으로 염색한 가죽 손잡이, 작게 찍힌 길드 문장.",
-          "lore": "단조된 칼날이 이름 없는 물건이라면, 이 검에는 서명이 있습니다. 갑옷 장인은 월드 마켓의 상인이 자신의 강철을 보증해 준 뒤에야 검신 뿌리에 표식을 새길 자격을 얻으며, 대장장이 할드렌의 표식은 정식 보증을 받았습니다. 베일의 습기를 견디도록 푸르게 처리했고, 머리카락 한 올만큼 정밀하게 균형을 맞췄습니다. 검값만큼이나 표식에 값을 치르지만, 그만한 가치가 있습니다."
-        },
-        "brasscap_axe": {
-          "name": "브라스캡 손도끼",
-          "look": "광택 낸 강철 날, 옻칠한 물푸레나무 자루의 황동 덮개와 랑게트, 단정한 감개, 제작자의 표식.",
-          "lore": "표식이 찍힌 도끼는 손에 쥘 수 있는 자랑거리입니다. 황동 덮개와 랑게트는 절반은 갑옷이고 절반은 서명입니다. 자루가 쪼개지는 것을 막고 선술집 불빛을 받아 반짝여, 모두에게 이것이 민병대에서 물려받은 물건이 아니라 갑옷 장인 호드의 작품임을 알립니다. 하이워치 대장장이는 “베기만 한다면 팔지”라고 말합니다. 이 도끼는 벱니다."
-        },
-        "tempered_flanged_mace": {
-          "name": "담금질 플랜지 철퇴",
-          "look": "여섯 갈래의 담금질한 청강철 머리, 황동 칼라와 폼멜, 와인색 가죽 손잡이.",
-          "lore": "푸르게 담금질한 강철 플랜지 여섯 개를 투구를 가를 수 있도록 하나하나 갈아내고, 황동으로 마감한 뒤 와인색 가죽을 감았습니다. 이 왕국의 갑옷 장인들은 일이 잔혹할 때조차 흉한 무기를 만들지 않습니다. 이 철퇴는 진열대에서 집어 든 것이 아니라 월드 마켓을 통해 주문 제작되었습니다. 어딘가의 장부에는 자랑스러운 구매자의 이름과 그가 호드에게 치른 금액이 적혀 있을 것입니다."
-        },
-        "guildmark_dirk": {
-          "name": "길드마크 더크",
-          "look": "가느다란 담금질 강철 더크, 청동 가드와 폼멜 너트, 짙은 녹색 끈 손잡이, 찍힌 문장.",
-          "lore": "검을 집에 두고 나온 명사가 차는 무기입니다. 가늘고 단단하며, 온전한 칼날과 같은 품질을 보증하는 표식이 찍혀 있습니다. 날이 선 인장처럼 허리띠에 차며, 갑옷 장인의 증표를 알아보는 사람에게만 그 의미가 드러납니다. 병참장교 브리는 성벽의 존경을 얻은 장교들을 위해 하이워치의 서랍 하나를 이 더크로 가득 채워 둡니다."
-        },
-        "brasscrown_staff": {
-          "name": "브라스크라운 여행 지팡이",
-          "look": "깎아 만든 황동 왕관 장식이 얹힌 견목 지팡이, 황동 페룰, 염색한 가죽 띠.",
-          "lore": "잘 말린 견목을 깎아 만들고, 이스트브룩 대장장이들이 수백 개씩 주조하면서도 하나하나 완벽하게 다듬은 황동 장식을 왕관처럼 얹었습니다. 펜브리지의 관문과 하이워치의 성벽 어디서든 진지하게 대우받고 싶은 여행자에게 어울립니다. 실제로는 걸을 필요가 전혀 없었던 듯한 여행 지팡이이며, 염색한 띠와 어울리는 외투의 가격도 짐작할 만합니다."
-        },
-        "lacquered_wand": {
-          "name": "옻칠 마법봉",
-          "look": "가느다란 진홍색 옻칠 마법봉, 광택 낸 황동 띠 두 개, 작고 둥근 황동 끝.",
-          "lore": "인내심을 들여 진홍색 옻칠을 일곱 겹 올리고 광택 낸 황동 띠 두 개를 둘렀습니다. 진짜 주화를 받기 시작한 떠돌이 마법사가 월드 마켓에서 사서 그럴듯하게 보이고 싶을 때 고르는 마법봉입니다. 빛을 다루는 능력은 자작나무 막대보다 나을 것이 없습니다. 하지만 상인의 계산대 너머에서 눈부시게 빛나며, 하찮은 마법의 절반은 언제나 믿음을 사는 일이었습니다."
-        },
-        "fletcher_s_guild_bow": {
-          "name": "화살장인 길드 활",
-          "look": "옻칠한 호두나무 리커브 활, 황동 활대 끝, 밀랍 먹인 아마실 시위, 손잡이에 찍힌 길드 표식.",
-          "lore": "이 왕국에서 길드에 가장 가까운 것은 활 손잡이에 찍힌 화살장인의 표식입니다. 포도주 장인이 술통을 봉인하듯, 그 안에 무엇이 들었는지 보증하는 약속입니다. 옻칠한 호두나무, 활대 끝의 황동, 미어펜의 비에도 해지지 않는 밀랍 먹인 아마실 시위. 모든 이음새가 그 가격을 정당화합니다. 위도우 시켓을 지나 단 한 번 당겨 보면 그 주장이 옳았음을 알게 됩니다."
-        },
-        "cinderbrand_sword": {
-          "name": "신더브랜드",
-          "look": "어두운 단조 강철 칼날, 불씨 주황빛 룬으로 채운 홈, 열기로 갈라진 균열, 가드에서 타오르는 보석.",
-          "lore": "물 대신 스톰크래그에서 긁어 모은 축복받은 불씨에 담금질한 최초의 칼날입니다. 하이워치 대장장이들은 그 숯이 “산이 옛 맹세를 기억하기 때문에 푸르고 맑게 탄다”고 맹세합니다. 칼날의 홈에 가둔 불은 불씨 같은 주황빛으로 타오르며 꺼지지 않습니다. 성벽의 가장 추운 밤에도 룬은 맨손에 따뜻합니다. 신더브랜드는 불을 붙일 필요가 없습니다. 그저 꺼지기를 거부할 뿐입니다."
-        },
-        "emberbite_axe": {
-          "name": "엠버바이트",
-          "look": "날의 균열 사이로 불씨 주황빛이 새어 나오는 검게 그을린 쇠도끼, 잔불 같은 보석, 아른거리는 열기.",
-          "lore": "갑옷 장인 호드는 살아 있는 산불의 숯을 도끼날 중심에 박아 넣어, 타격 사이에도 날이 완전히 식지 않게 했습니다. 휘두를 때 균열이 주황빛으로 숨 쉬며, 마치 첫 단조가 쇠 속에 잠재운 무언가를 타격이 깨우는 듯합니다. 스톰크래그 정령이 이 불씨를 내주었다고 합니다. 하이워치에 바람이 거세지면 별별 이야기가 다 나옵니다."
-        },
-        "smoulderfall_mace": {
-          "name": "스몰더폴",
-          "look": "안쪽 균열을 따라 불씨 주황빛으로 타오르는 어두운 철제 플랜지, 머리에 박힌 용융 핵 보석.",
-          "lore": "자신만의 화로를 품은 철퇴입니다. “산불로 빚었다”는 생텀 봉인에서 떼어 낸 용융 핵 돌을 머리에 박아 빛나게 했습니다. 플랜지는 손에 닿을 때 따뜻하고, 적중한 곳에서는 더욱 뜨겁습니다. 한 하이워치 부사관은 이 철퇴에 맞은 멍이 아침까지 희미하게 빛난다고 맹세합니다. 마침내 산의 불이 봉인이 아니라 파괴를 위해 쓰이게 되었습니다."
-        },
-        "ashspark_dagger": {
-          "name": "애시스파크 칼",
-          "look": "불씨 주황빛 맥이 흐르는 짧고 검게 그을린 칼날, 폼멜의 작은 잔불 보석, 재와 불꽃.",
-          "lore": "산의 불을 폼멜 돌에 몰래 숨긴 뒷골목 칼날로, 소매치기조차 최초 단조의 불씨를 지닐 수 있다는 갑옷 장인의 은밀한 농담입니다. 검게 그을리고 주황빛 맥이 흐르며, 칼집 속에서도 늘 조금 지나치게 따뜻합니다. 하이워치 아래 어둠 속에서 뽑으면, 그 빛이 손을 겨우 밝혀 상대의 방어 틈을 찾게 해 줍니다."
-        },
-        "forgeheart_staff": {
-          "name": "포지하트 장봉",
-          "look": "철로 덧댄 지팡이, 우리에 갇힌 빛나는 불씨 핵, 자루를 타고 오르는 불씨 룬, 피어오르는 아지랑이.",
-          "lore": "살아 있는 산불의 숯을 꼭대기의 철창에 가두었습니다. 기록학자 캐디스는 이것이 최초 단조의 불이 봉인뿐 아니라 복종하도록 묶일 수 있다는 증거라 말합니다. 얇고 끝없는 열 아지랑이가 피어오르므로, 이것을 든 마법사는 대장간의 불이나 야간 경계의 모닥불이 아쉬울 일이 없습니다. 사람들은 이 불씨가 보스카르 엠버윙의 숨결에서 뽑혔으며 그 뒤로 한 번도 식지 않았다고 속삭입니다."
-        },
-        "emberwrought_wand": {
-          "name": "엠버로트 마법봉",
-          "look": "쇠 발톱이 빛나는 불씨를 움켜쥔 검게 그을린 금속 마법봉, 실금 같은 열 균열, 따뜻한 내부 광채.",
-          "lore": "이 등급에 이름을 붙인 마법봉입니다. 하이워치 갑옷 장인이 처음으로 산불의 숯을 쇠 발톱에 끼워 인간의 손에 응답하게 만들었을 때, 빛의 사제들조차 이를 이단이라 부르기를 멈추고 쓸모 있다고 부르기 시작했습니다. 따뜻하고 끈기 있으며 조용히 위험합니다. 끝의 불씨는 주인이 태어나기 전부터 한 번도 끊이지 않고 타올랐습니다."
-        },
-        "cinderlatch_crossbow": {
-          "name": "신더래치",
-          "look": "검게 그을린 강철 석궁, 활대 균열에서 새어 나오는 불씨 주황빛, 대목 속에서 타오르는 숯.",
-          "lore": "불씨로 단조한 무기 중 가장 기묘한 작품으로, 산의 불을 기계에 부었습니다. 활대의 균열에서 주황빛이 새어 나오며, 대목 속에서 타오르는 숯은 손피크의 추위나 미어펜의 습기에도 시위가 뻣뻣해지지 않게 합니다. 화살은 이미 따뜻한 채 홈을 떠나 더 뜨거운 상태로 꽂힙니다. 추위를 느끼지 않는 적이 서 있는 성벽에 대한 사냥꾼의 해답입니다."
-        },
-        "ice_fang_sword": {
-          "name": "얼음 송곳니",
-          "look": "옅은 빙하 얼음의 곡선 칼날, 칼등을 따라 돋은 들쭉날쭉한 서리 결정, 홈 속에서 청록빛을 내는 얼어붙은 핵, 고드름 십자 가드.",
-          "lore": "얼어붙은 등급의 대표작이자 모든 수집가가 가장 먼저 손을 뻗는 작품입니다. 얼음 송곳니는 단조하지 않고, 하이워치 위 손피크를 덮은 빙하의 송곳니를 깎아 만들었습니다. 청록색 핵은 글리머미어에 반사된 빛처럼 차갑게 타오릅니다. 베어 가르는 공기마저 서리로 덮습니다. 성벽 수비대는 폭설이 웜컬트를 막아 세운 밤에 한 병사가 이것을 들고 “성벽에 겨울 하나를 사 주었다”고 맹세합니다."
-        },
-        "glaciersplit_axe": {
-          "name": "글레이셔스플릿",
-          "look": "반투명한 푸른 빙하 얼음 도끼머리, 청록빛으로 빛나는 내부 균열, 솟아난 서리 결정, 한기를 흘리는 자루.",
-          "lore": "두 세기 동안 쌓인 얼음이 스스로 빛날 때까지 추위를 짓눌러 온 손피크 빙하의 푸른 심장에서 잘라 냈습니다. 가만히 있어도 냉기를 흘리며, 내리찍는 소리는 스토커 리지 아래에서 크레바스가 벌어지는 듯합니다. 하이워치는 전사자를 그 위의 얼음에 맡깁니다. 그러니 이 무기는 해빙과, 해빙이 깨울 모든 것을 막아 내기 위한 것입니다."
-        },
-        "rimecrusher_mace": {
-          "name": "라임크러셔",
-          "look": "빛나는 청록색 핵 주위로 뻗은 들쭉날쭉한 얼음 결정 무리, 은빛 자루를 타고 내려오는 백상.",
-          "lore": "깎아 낸 것이 아니라 길러 낸 무기입니다. 손피크의 얼음을 차가운 청록색 핵 주위로 유도해 호드가 만든 최고의 강철만큼 단단하게 굳혔습니다. 백상이 은빛 자루를 따라 손 쪽으로 기어 내려오지만 끝내 닿지는 않습니다. 내려친 곳에서는 물이 얼고, 내려놓은 곳에서는 땅이 하얗게 변합니다. 봉우리를 내려오는 망자의 차가움을 성벽을 기어오르는 것들에게 휘두를 수 있을 만큼 작게 만들었습니다."
-        },
-        "frostbite_dagger": {
-          "name": "서리 바늘",
-          "look": "맑고 푸른 얼음으로 만든 사악하리만치 가느다란 단검, 중앙을 흐르는 청록빛 맥, 바늘 같은 서리 결정, 백상으로 덮인 손잡이.",
-          "lore": "참은 숨결처럼 가늘고 그보다 두 배는 차갑습니다. 손피크 빙하의 파편을 하나의 빛나는 맥이 되도록 갈아, 피가 흐를 생각을 떠올리기도 전에 상처가 얼어붙을 만큼 날카롭게 만들었습니다. 그 이름은 망자들이 봉우리에서 가져오는 무덤의 한기에서 빌렸습니다. 날을 갈 필요는 없습니다. 기록학자 캐디스가 무심하게 지적하듯, 얼음은 무뎌지지 않고 그저 기다릴 뿐입니다."
-        },
-        "hoarfrost_vigil_staff": {
-          "name": "백상의 감시",
-          "look": "천천히 회전하며 떠 있는 청록빛 얼음 파편을 왕관처럼 얹은 은빛 지팡이, 퍼져 나가는 결정과 차가운 안개.",
-          "lore": "하이워치 성벽에서 결코 잠들지 않는 경계병의 지팡이입니다. 꼭대기의 청록색 산정호수 얼음 파편은 은에서 떨어져 천천히 저절로 회전합니다. 수비대는 그것이 언제나 봉우리 아래에 모이는 추위를 향한다고 맹세합니다. 이 감시를 든다는 것은 단 하룻밤에 이백 년의 경계를 서고, 시선을 돌리지 않겠다고 약속하는 일입니다."
-        },
-        "everwinter_wand": {
-          "name": "영원한 겨울의 파편",
-          "look": "청록빛으로 빛나는 단 하나의 빙하 얼음 가시, 은 칼라에서 피어나는 백상, 희미한 냉기 안개.",
-          "lore": "산의 추위가 이빨을 드러내는 생텀 아래 깊은 산정호수에서 부러뜨렸다고 전해지는 빛나는 빙하 얼음 가시입니다. 은 칼라에서 백상이 끝없이 피어나며, 불에도 여름에도 녹지 않습니다. 마법사들은 자신의 술법에 한기를 더하려고 가까이 두지만, 니스락시스의 지하 묘지를 향해 기울며 귀 기울이는 듯한 밤에는 멀리 둡니다."
-        },
-        "winterbite": {
-          "name": "윈터바이트",
-          "look": "은빛 강철과 푸른 얼음으로 만든 활, 손잡이에서 빛나는 청록색 얼어붙은 핵, 시위에 걸린 단단한 얼음 화살, 차가운 안개.",
-          "lore": "은빛 강철과 손피크 얼음으로 만든 활로, 손잡이의 차가운 청록색 핵이 화살을 시위에 얼려 붙입니다. 당길 때마다 다시 만들어지는 단단한 빙하 얼음 화살을 메기 때문에, 성벽의 궁수는 화살통 대신 추위만 지닙니다. 하이워치는 이와 같은 활 하나로 포위전 내내 스토커 리지를 지켰습니다. 궁수 한 명과 이미 언제나 그곳에 있던 한겨울 분량의 화살만으로 해냈다고 합니다."
-        },
-        "solheim_sword": {
-          "name": "솔하임, 새벽의 마지막 빛",
-          "look": "추락한 별로 벼린 대검, 칼날을 가르는 용융 금빛 핵, 별빛으로 날을 세운 우주처럼 검은 강철, 가드를 도는 황금 파편, 오로라의 띠.",
-          "lore": "별이 서쪽 하늘에서 떨어져 위도우 시켓 너머에서 “대장간처럼 폭발했을” 때, 알드릭 수사는 미어펜 분화구에서 아직 타오르는 심장을 꺼내 왕국의 대장장이들에게 “이 세계에 속하지 않은 것”을 벼려 달라고 간청했습니다. 그들은 그것으로 단 한 자루의 대검, 솔하임을 만들었습니다. 용융 금빛 핵은 새벽이 밤하늘을 가르듯 우주처럼 검은 칼날을 쪼개고, 별 금속 파편은 누구의 손도 정하지 않은 궤도로 가드를 돕니다. 오직 하나만 만들어졌습니다. 두 번째는 없을 것입니다."
-        },
-        "skyrender_axe": {
-          "name": "스카이렌더, 창공의 상처",
-          "look": "찢어진 밤하늘 같은 도끼머리, 용융 금빛 균열과 별자리 각인, 떠 있는 별빛 파편, 날을 따라 흐르는 오로라 광채.",
-          "lore": "추락한 별이 미어펜에서 하늘의 모습마저 찢어내고 아직도 김이 오르는 상처를 남긴 분화구 가장자리에서 두드려 만들었습니다. 도끼머리는 찢어진 밤 조각처럼 보입니다. 용융 금빛 균열, 하이워치의 어떤 학자도 이름 붙이지 못한 별자리, 휘두를 때마다 날에서 흘러나오는 오로라가 있습니다. 알드릭 수사는 축복을 내렸지만 손대려 하지는 않았습니다. 이것을 들어 올리는 것은 하늘이 남긴 구멍을 손에 쥐는 일입니다."
-        },
-        "starfall_mace": {
-          "name": "스타폴, 하늘의 심판",
-          "look": "궤도를 도는 파편에 둘러싸인 포획된 용융 금빛 별의 핵, 별빛 맥이 흐르는 우주처럼 검은 플랜지, 틈에서 쏟아지는 오로라.",
-          "lore": "죽기 직전의 별의 핵을 붙잡고, 함께 추락한 잔해를 둘러 소멸에서 불과 한 치 떨어진 곳에 얼려 두었습니다. 우주처럼 검은 플랜지에는 갇힌 별빛이 흐르고, 들어 올리면 틈새에서 오로라가 쏟아집니다. 옛 빛의 사제들은 추락하는 별을 심판이라 불렀습니다. 어떤 방패도 막아서는 안 되는 위에서 내려진 판결이라 여겼으며, 미어펜에 떨어진 별을 따라 이 무기의 이름을 지었습니다."
-        },
-        "astravyr_dagger": {
-          "name": "아스트라비르, 추락한 별의 송곳니",
-          "look": "추락한 별의 조각, 우주처럼 검은 금속 위의 용융 금빛 날, 폼멜을 도는 밝은 별 티끌, 가느다란 오로라 궤적.",
-          "lore": "알드릭이 분화구에서 가져온 별의 가장 작은 조각이지만, 어떤 셈법으로는 가장 위험한 조각입니다. 이 세계에 속하지 않은 심장의 한 파편으로, 우주처럼 검은 금속 위에 용융 금빛 날이 서 있고, 세계를 잃은 달처럼 별 티끌 하나가 폼멜 주위를 돕니다. 무게는 거의 없지만 거의 무엇이든 가릅니다. 숨길 만큼 작고, 스스로 내는 빛으로 어둠 속에서 찾아낼 만큼 밝습니다."
-        },
-        "cosmarch_staff": {
-          "name": "코스마치, 끝없는 공허의 첨탑",
-          "look": "용융 금빛 핵 주위를 도는 황금 별 파편 무리, 별자리가 새겨진 우주처럼 검은 자루, 위로 감겨 오르는 오로라 띠.",
-          "lore": "별 금속 자루 위에 용융 금빛 핵을 얹고, 황금 파편의 고리가 느리고 끝없는 궤도로 그 주위를 행진합니다. 손피크의 어떤 하늘과도 맞지 않는 별자리가 새겨진 작은 우주입니다. 오로라는 위로 오르는 법을 잊은 연기처럼 길이를 따라 감깁니다. 이것을 지녔던 이들은 이솔레이의 호수가 “달빛을 마시는” 방식처럼, 끈기 있고 차가우며 이쪽을 바라보는 공허의 회전을 느낄 수 있었다고 주장했습니다."
-        },
-        "emberwish_wand": {
-          "name": "엠버위시, 죽어 가는 태양의 티끌",
-          "look": "궤도를 도는 불꽃에 싸인 포획된 용융 금빛 죽은 별의 티끌, 빛나는 별자리가 새겨진 우주처럼 검은 자루.",
-          "lore": "추락한 별 자체가 아니라 죽어 가는 별의 마지막 티끌입니다. 이미 꺼진 태양의 용융 금빛 불씨 하나를 마지막 빛이었던 불꽃이 감쌉니다. 우주처럼 검은 자루에는 그 죽음을 지켜본 별자리들이 새겨져 있습니다. 미어펜의 소작농들은 진정한 황혼에 이것을 든 자에게 소원 하나를 들어준다고 말합니다. 또한 이것을 든 모든 영혼은 더 많은 시간을 빌었지만, 드라운드 문은 그 누구의 소원도 들어주지 않았다고 말합니다."
-        },
-        "encore_bow": {
-          "name": "앙코르, 두 번째 추락한 별",
-          "look": "우스꽝스러울 만큼 거대한 별 대포, 빛나는 황금 별자리가 새겨진 우주처럼 검은 포신, 용융 금빛 혜성탄이 장전된 나팔 모양 포구, 황동 부품, 나무 견착대.",
-          "lore": "추락한 별을 다룬 대장장이들은 그것으로 유물 여섯 개를 만들고도 포신 하나 분량의 별 금속이 남았습니다. 그때쯤 도제들에게도 의견이 생겼습니다. 모루에서 나온 것은 왕국 최초의 총이거나 가장 작은 공성 병기입니다. 이 견착 대포는 탄환을 쏜다기보다 두 번째 별이 목표를 향해 떨어져 달라고 요청합니다. 알드릭 수사는 이토록 시끄러운 물건은 이미 하늘의 눈에 띄었을 것이라며 축복을 거절했습니다. 사냥꾼들은 열광합니다. 사선 끝에 선 것은 무엇도 그러지 못했습니다."
-        },
-        "meteorlatch_crossbow": {
-          "name": "미티어래치, 하늘의 마지막 심판",
-          "look": "운석의 별 금속, 대목을 따라 흐르는 용융 금빛 핵, 별자리가 새겨진 우주처럼 검은 활대, 시위에 걸린 순수한 별불 화살.",
-          "lore": "미어펜 분화구가 아직 빛날 때 “손댈 수 없을 만큼 뜨거웠던” 잔해인 순수한 운석 별 금속을 벼려 만들었습니다. 망치로 두드려 별자리가 새겨진 우주처럼 검은 활대를 만들고, 대목을 따라 용융 금빛 핵을 가두었습니다. 화살을 메는 대신 별불의 화살을 불러냅니다. 판결처럼 날아가 이야기 하나의 끝처럼 꽂힙니다. 하이워치가 니스락시스의 죽지 않는 왕관조차 봉우리 아래 최악의 것이 아닐 수 있다고 두려워했을 때, 성벽 위에 두고 싶어 했던 무기입니다. 조준을 신중히 하십시오."
-        }
-      },
-      "seasonOne": "시즌 1",
-      "rarity": {
-        "uncommon": "고급",
-        "rare": "희귀",
-        "epic": "영웅",
-        "legendary": "전설"
-      },
       "wtype": {
         "sword": "검",
         "axe": "도끼",
@@ -625,73 +374,7 @@ export const ko_KR: EnTranslations = {
         "bow": "활",
         "crossbow": "석궁",
         "polearm": "장창"
-      },
-      "badge": {
-        "flagship": "플래그십",
-        "hero": "영웅"
-      },
-      "inspectAria": "{item} 살펴보기",
-      "viewModeLabel": "미리보기 모드",
-      "tryOn": "착용해 보기",
-      "weaponOnly": "무기만 보기",
-      "sceneLabel": "장면 조명",
-      "scene": {
-        "day": "낮",
-        "dusk": "황혼",
-        "night": "밤"
-      },
-      "lore": "전승",
-      "buySkin": "스킨 구매",
-      "unavailable": "이용 불가",
-      "applied": "적용됨",
-      "apply": "스킨 적용",
-      "detach": "스킨 해제",
-      "equipHint": "이 스킨을 적용하려면 {type}을(를) 장착하세요."
-    },
-    "claudium": {
-      "title": "Claudium",
-      "open": "Claudium 열기",
-      "close": "Claudium 닫기",
-      "loading": "Claudium 불러오는 중…",
-      "balanceLabel": "잔액",
-      "balanceUnit": "{amount} Claudium",
-      "solBalance": "SOL: {amount}",
-      "usdcBalance": "USDC: {amount}",
-      "wocBalance": "WOC: {amount}",
-      "unavailable": "현재 Claudium 상점을 이용할 수 없습니다. 잔액과 구매 내역에는 영향이 없으니 잠시 후 다시 확인해 주세요.",
-      "disclosure": "Claudium은 단방향 게임 화폐입니다. 현금으로 구매해 꾸미기 상품에 사용할 수 있으며 환전, 양도 또는 현금화할 수 없습니다.",
-      "buyTitle": "Claudium 구매",
-      "railLabel": "결제 수단",
-      "railStripe": "카드",
-      "railSol": "SOL",
-      "railUsdc": "USDC",
-      "railWoc": "WOC",
-      "railWocDiscount": "20% 할인",
-      "railWocUnavailable": "현재 WOC 가격을 이용할 수 없습니다.",
-      "railNativeUnavailable": "SOL/WOC 사용 불가",
-      "amountLabel": "수량",
-      "showAmounts": "모든 Claudium 수량 표시",
-      "hideAmounts": "추가 Claudium 수량 숨기기",
-      "skuRow": "{usd}에 {claudium} Claudium",
-      "buyButton": "구매",
-      "buyUnavailable": "현재 구매할 수 없습니다.",
-      "storeTitle": "꾸미기 상점",
-      "storeEmpty": "현재 이용 가능한 꾸미기 상품이 없습니다.",
-      "storeCost": "{amount} Claudium",
-      "spendButton": "교환",
-      "kindCosmetic": "꾸미기 상품",
-      "kindSkin": "스킨",
-      "kindItem": "아이템",
-      "checkoutTitle": "구매 완료",
-      "checkoutClose": "결제 닫기",
-      "checkoutLoading": "결제 불러오는 중…",
-      "checkoutPending": "거래가 진행 중입니다. 지갑에서 확인하고 이 패널을 열어 두세요.",
-      "checkoutPendingButton": "처리 중",
-      "checkoutFailed": "결제를 불러오지 못했습니다. 다시 시도해 주세요.",
-      "checkoutUnavailable": "해당 Claudium 구매는 현재 이용할 수 없습니다.",
-      "checkoutWalletRequired": "암호화폐로 Claudium을 구매하기 전에 Solana 지갑을 연결하세요.",
-      "checkoutWalletUnsupported": "이 지갑은 Solana 거래에 서명하거나 전송할 수 없습니다.",
-      "checkoutNotSettled": "거래는 전송됐지만 Claudium이 아직 지급되지 않았습니다. 잠시 후 다시 시도해 주세요."
+      }
     },
     "theme": {
       "preset": "UI 테마",
@@ -773,7 +456,6 @@ export const ko_KR: EnTranslations = {
     "mobile": {
       "jump": "점프",
       "leaderboard": "순위",
-      "dailyRewards": "상점",
       "deeds": "업적",
       "professions": "전문 기술",
       "nameplates": "이름표",
@@ -1048,8 +730,6 @@ export const ko_KR: EnTranslations = {
       "clickFeedback": "클릭 표시",
       "lockCursorOnRotate": "회전 중 커서 고정",
       "keybindHelpLockCursorOnRotate": "드래그하여 카메라를 회전하는 동안 마우스 커서를 창 안에 유지하여 화면 가장자리에 닿거나 다른 모니터로 이동하지 않도록 합니다. 자유로운 커서를 원하면 끄세요.",
-      "showWalletOnCharacterScreen": "캐릭터 화면에 지갑 표시",
-      "showWalletOnPlayerCard": "플레이어 카드에 지갑 표시",
       "showDevBadges": "개발자 배지 표시",
       "showOwnNameplate": "내 이름표 표시",
       "showPlayerNameplates": "플레이어 이름표 표시",
@@ -1070,9 +750,9 @@ export const ko_KR: EnTranslations = {
       "showThirdActionBar": "세 번째 액션 바 표시",
       "showTargetOfTarget": "대상의 대상 표시",
       "showAttackButton": "공격 버튼 표시",
-      "showDailyRewardsChest": "일일 보상 보물상자 표시",
       "mobileCameraJoystick": "카메라 조이스틱",
-      "mobileLeftHanded": "왼손잡이 레이아웃"
+      "mobileLeftHanded": "왼손잡이 레이아웃",
+      "showWalletOnCharacterScreen": "캐릭터 화면에 지갑 표시"
     },
     "talentRows": {
       "tab": "선택",
@@ -1178,9 +858,6 @@ export const ko_KR: EnTranslations = {
         "backgrounded": "백그라운드",
         "offline": "오프라인"
       }
-    },
-    "playerCard": {
-      "showWalletBadge": "지갑 배지 표시"
     },
     "landing": {
       "highContrast": "고대비",
@@ -4762,170 +4439,6 @@ export const ko_KR: EnTranslations = {
       "failed": "이메일을 저장하지 못했습니다. 다시 시도해 주세요."
     }
   },
-  "wallet": {
-    "label": "$WOC 지갑",
-    "connect": "지갑 인증",
-    "connectTitle": "Solana 지갑 인증",
-    "connectAria": "Solana 지갑 인증",
-    "verify": "지갑 인증",
-    "verifyNew": "새 지갑 인증",
-    "verifyTitle": "지갑을 선택하고 한 번 서명해 소유권을 인증하세요.",
-    "verifyAria": "지갑을 선택하고 한 번 서명해 소유권을 인증",
-    "verifyAddressAria": "계정에 지갑 {address}을(를) 인증하려면 서명하세요",
-    "appConnected": "앱 연결됨",
-    "connectApp": "앱 연결",
-    "connectAppTitle": "이 브라우저에서 지갑 앱 연결",
-    "connectAppAria": "이 브라우저에서 지갑 앱 연결",
-    "verifying": "인증 중...",
-    "verifyingTitle": "지갑 인증이 진행 중입니다.",
-    "switch": "전환",
-    "switchTitle": "다른 지갑 인증",
-    "switchAria": "다른 지갑 인증",
-    "unlink": "연결 해제",
-    "unlinkTitle": "이 계정에서 지갑 인증 제거",
-    "unlinkAria": "이 계정에서 지갑 인증 제거",
-    "signOut": "연결 끊기",
-    "signOutTitle": "이 브라우저에서 지갑 앱 연결 끊기",
-    "signOutAria": "이 브라우저에서 지갑 앱 연결 끊기",
-    "hide": "숨기기",
-    "hideTitle": "이 화면에서 지갑 줄 숨기기",
-    "hideAria": "이 화면에서 지갑 줄 숨기기",
-    "hiddenNotice": "지갑 줄이 숨겨졌습니다. 게임 내 옵션 > 인터페이스에서 다시 켤 수 있습니다.",
-    "linkedTitle": "계정에 지갑이 인증되었습니다. 클릭해 지갑 앱을 관리하세요.",
-    "linkedDisconnectedTitle": "지갑은 계정에 계속 인증되어 있습니다. 지갑 앱을 관리하려면 다시 연결하세요.",
-    "linkedDisconnectedAria": "지갑은 계정에 계속 인증되어 있습니다. 지갑 앱을 관리하려면 다시 연결하세요.",
-    "linkTitle": "클릭해 서명하고 이 지갑을 계정에 연결하세요.",
-    "connectedTitle": "연결되었습니다. 로그인하면 이 지갑을 계정에 연결할 수 있습니다.",
-    "balanceTitle": "인증된 Solana 지갑 $WOC 잔액",
-    "balanceAria": "인증된 Solana 지갑 잔액: {balance}",
-    "balancePreviewTitle": "연결된 지갑 $WOC 잔액 미리보기",
-    "balancePreviewAria": "연결된 지갑 잔액 미리보기: {balance}. 지갑을 연결해 보유자 표시를 인증하세요.",
-    "balanceAmount": "{amount} $WOC",
-    "bagConnect": "지갑 연결",
-    "bagLink": "지갑 인증",
-    "bagReconnect": "지갑 다시 연결",
-    "connected": "연결됨: {address}",
-    "connectedWithBalance": "연결됨: {balance} - {address}",
-    "connectedLinked": "인증됨: {address}",
-    "connectedLinkedWithBalance": "인증됨: {balance} - {address}",
-    "helpDisconnected": "Solana 지갑을 인증해 보유자 표시와 플레이어 카드 배지를 활성화하세요. 트랜잭션이나 SOL은 필요 없습니다.",
-    "helpLoginToLink": "{address} 연결됨. 로그인하면 계정에 연결할 수 있습니다.",
-    "helpLoginToLinkWithBalance": "{address} 연결됨, 잔액 {balance}. 로그인하면 계정에 연결할 수 있습니다.",
-    "helpReadyToLink": "선택한 지갑: {address}. 한 번 서명해 보유자 표시와 플레이어 카드를 인증하세요.",
-    "helpReadyToLinkWithBalance": "선택한 지갑: {address}, 잔액 {balance}. 한 번 서명해 보유자 표시와 플레이어 카드를 인증하세요.",
-    "helpLinked": "보유자 혜택이 활성화되었습니다. 이 브라우저에 지갑 앱이 연결되어 있습니다.",
-    "helpLinkedWithBalance": "보유자 혜택이 활성화되었습니다. 이 브라우저에 지갑 앱이 연결되어 있습니다.",
-    "helpLinkedDisconnected": "보유자 혜택이 활성화되었습니다. 서명이나 지출이 필요할 때 앱을 연결하세요.",
-    "helpLinkedDisconnectedWithBalance": "보유자 혜택이 활성화되었습니다. 서명이나 지출이 필요할 때 앱을 연결하세요.",
-    "extensionHelp": "여기에 지갑이 표시되려면 Solflare Wallet 같은 브라우저 지갑 확장 프로그램이 활성화되어 있어야 합니다.",
-    "mobileAppHelp": "Phantom 또는 Solflare를 선택하세요. 지갑 앱에서 승인을 요청합니다. 게임을 열어 둔 채 완료 후 돌아오세요.",
-    "standaloneAppHelp": "홈 화면 앱에서는 아직 지갑 연결을 사용할 수 없습니다. Phantom 또는 Solflare를 사용하려면 Safari나 Chrome에서 World of ClaudeCraft를 여세요.",
-    "openAppTitle": "{wallet}에서 계속",
-    "openAppHelp": "{wallet}을 열어 이 요청을 확인하세요. 지갑 앱을 사용하는 동안 이 게임 탭을 열어 두세요.",
-    "openAppButton": "{wallet} 열기",
-    "manualReturnBrowserHelp": "승인 후 이 게임 탭으로 돌아오세요. iOS에서 다른 브라우저가 열리면 닫고 원래 브라우저로 직접 돌아오세요.",
-    "manualReturnStandaloneHelp": "승인 후 홈 화면에서 World of ClaudeCraft로 돌아오세요. iOS에서 브라우저가 열리면 닫고 홈 화면 앱을 다시 여세요.",
-    "preparingAppButton": "{wallet} 준비 중...",
-    "walletAppUnavailable": "{wallet}을 준비하지 못했습니다. 이 창을 닫고 다시 시도하세요.",
-    "flowConnect": "지갑을 선택하세요. 인증은 자동으로 계속됩니다.",
-    "flowSign": "지갑 앱에서 인증 메시지에 서명하세요. 트랜잭션이나 SOL은 필요 없습니다.",
-    "flowVerify": "지갑 소유권 인증 중...",
-    "linkFailed": "지갑 인증에 실패했습니다.",
-    "verifyFailed": "지갑 인증에 실패했습니다.",
-    "unlinkFailed": "지갑 연결을 해제하지 못했습니다.",
-    "browser": {
-      "eyebrow": "데스크톱 지갑 인증",
-      "title": "Solana 지갑 연결",
-      "linkBody": "이 브라우저에서 지갑 확장 프로그램을 선택하세요. 인증 메시지에 서명한 뒤 데스크톱 앱으로 돌아갑니다.",
-      "paymentBody": "계정에 연결된 지갑을 선택하고 이 브라우저에서 거래를 승인하세요.",
-      "extensionHelp": "호환되는 지갑 확장 프로그램을 찾지 못했습니다. Phantom, Solflare 또는 다른 Solana 브라우저 지갑을 설치하거나 잠금 해제한 뒤 다시 시도하세요.",
-      "safety": "World of ClaudeCraft는 복구 문구나 개인 키를 요청하지 않습니다.",
-      "continueWith": "{wallet}(으)로 계속",
-      "reviewTitle": "지갑에서 검토",
-      "reviewBody": "{wallet}의 안내를 따르세요. 이 브라우저 페이지를 열어 두세요.",
-      "completeTitle": "지갑 인증 완료",
-      "completeBody": "World of ClaudeCraft 데스크톱 앱으로 돌아갈 수 있습니다.",
-      "returnButton": "데스크톱 앱으로 돌아가기",
-      "failed": "지갑 인증에 실패했거나 만료되었습니다. 데스크톱 앱으로 돌아가 다시 시도하세요.",
-      "retry": "다시 시도"
-    },
-    "holder": "$WOC 보유자",
-    "holderTierTitle": "{tier} $WOC 보유자",
-    "holderTiers": {
-      "ember": {
-        "name": "불씨",
-        "flavor": "불씨가 피어올랐습니다."
-      },
-      "coinbearer": {
-        "name": "주화지기",
-        "flavor": "전비 상자에 첫 주화가 들어왔습니다."
-      },
-      "coppercrest": {
-        "name": "동빛 문장",
-        "flavor": "동화가 쌓이고, 당신의 이름이 오르내립니다."
-      },
-      "silverbound": {
-        "name": "은빛 결속",
-        "flavor": "은빛으로 결속되어 자산을 키워 갑니다."
-      },
-      "gilded": {
-        "name": "황금빛",
-        "flavor": "황금빛으로 빛나며 웃습니다."
-      },
-      "vaultwarden": {
-        "name": "금고 파수꾼",
-        "flavor": "이제 진짜 금고를 지킵니다: 전체 $WOC의 0.01%."
-      },
-      "whale": {
-        "name": "고래",
-        "flavor": "당신이 헤엄치면 깊은 물길도 갈라집니다: 공급량의 0.1%."
-      },
-      "leviathan": {
-        "name": "레비아탄",
-        "flavor": "당신이 움직이면 시장이 느낍니다: 공급량의 1%."
-      },
-      "tidelord": {
-        "name": "파도 군주",
-        "flavor": "파도가 당신의 부름에 응답합니다: 공급량의 2%."
-      },
-      "stormcaller": {
-        "name": "폭풍소환자",
-        "flavor": "당신의 이름에 폭풍이 모입니다: 공급량의 3%."
-      },
-      "krakencrown": {
-        "name": "크라켄 왕관",
-        "flavor": "심연이 당신에게 관을 씌웁니다: 공급량의 4%."
-      },
-      "titanforged": {
-        "name": "티탄벼림",
-        "flavor": "티탄들 사이에서 벼려졌습니다: 공급량의 5%."
-      },
-      "starhoard": {
-        "name": "별 보물고",
-        "flavor": "별빛을 휘게 하는 보물고입니다: 공급량의 6%."
-      },
-      "voidwarden": {
-        "name": "공허 파수꾼",
-        "flavor": "공허의 끝을 지킵니다: 공급량의 7%."
-      },
-      "realmshaper": {
-        "name": "영역 조형자",
-        "flavor": "당신은 영역을 다시 빚습니다: 공급량의 8%."
-      },
-      "worldforger": {
-        "name": "세계 대장장이",
-        "flavor": "당신만의 세계를 벼립니다: 공급량의 9%."
-      },
-      "worldbearer": {
-        "name": "세계 운반자",
-        "flavor": "당신은 세계의 일부를 짊어집니다: 공급량의 10%."
-      },
-      "sovereign": {
-        "name": "군주",
-        "flavor": "렐름이 무릎을 꿇습니다: 전체 공급량."
-      }
-    }
-  },
   "playerCard": {
     "shareButton": "플레이어 카드 공유",
     "title": "플레이어 카드",
@@ -4949,8 +4462,7 @@ export const ko_KR: EnTranslations = {
     "footerHandleWithRecruits": "@{handle} - {recruited}",
     "footerCta": "당신의 전설을 벼리세요: {siteUrl}",
     "arenaStat": "투기장",
-    "shareTierBit": ", {tier} 등급 $WOC 보유자",
-    "shareText": "World of ClaudeCraft에서 제 전설을 벼리고 있습니다: {level}레벨 {className}{tierBit}. 제 월드에 합류하세요:",
+    "shareText": "World of ClaudeCraft에서 제 전설을 벼리고 있습니다: {level}레벨 {className}. 제 월드에 합류하세요:",
     "nativeShareTitle": "ClaudeCraft의 세계",
     "fileNameFallback": "플레이어",
     "actionShareX": "X에 공유",

@@ -49,14 +49,6 @@ vi.mock('../../../server/internal', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../../../server/internal')>();
   return { ...actual, handleInternalApi: vi.fn(actual.handleInternalApi) };
 });
-vi.mock('../../../server/daily_rewards', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../../server/daily_rewards')>();
-  return {
-    ...actual,
-    handleDailyRewardInternalApi: vi.fn(actual.handleDailyRewardInternalApi),
-  };
-});
-
 // db.ts reads DATABASE_URL at module scope (throws if unset); a dummy pool-less URL
 // lets the bare import resolve. Every probe below returns before touching Postgres.
 process.env.DATABASE_URL ||= 'postgres://test:test@127.0.0.1:5433/wocc_phase25_dispatch_default';
@@ -76,7 +68,6 @@ let main: MainModule;
 let handleAdminApi: ReturnType<typeof vi.fn>;
 let handleOAuth: ReturnType<typeof vi.fn>;
 let handleInternalApi: ReturnType<typeof vi.fn>;
-let handleDailyRewardInternalApi: ReturnType<typeof vi.fn>;
 
 // A Dispatch over the REAL routeHttpRequest, polling res.writableEnded (mirrors
 // parity.test.ts's makeModedDispatch). The MODE is set by the caller beforehand.
@@ -111,11 +102,9 @@ beforeAll(async () => {
   const admin = await import('../../../server/admin');
   const oauth = await import('../../../server/oauth');
   const internal = await import('../../../server/internal');
-  const daily = await import('../../../server/daily_rewards');
   handleAdminApi = vi.mocked(admin.handleAdminApi);
   handleOAuth = vi.mocked(oauth.handleOAuth);
   handleInternalApi = vi.mocked(internal.handleInternalApi);
-  handleDailyRewardInternalApi = vi.mocked(daily.handleDailyRewardInternalApi);
 });
 
 afterEach(() => {
@@ -123,7 +112,6 @@ afterEach(() => {
   handleAdminApi.mockClear();
   handleOAuth.mockClear();
   handleInternalApi.mockClear();
-  handleDailyRewardInternalApi.mockClear();
 });
 
 // ---------------------------------------------------------------------------
@@ -246,32 +234,28 @@ describe('dispatch default: the /oauth entry', () => {
   });
 });
 
-describe('dispatch default: the /internal entry (the daily-rewards + handleInternalApi composite)', () => {
+describe('dispatch default: the /internal entry (handleInternalApi)', () => {
   const matched = () => makeReq({ method: 'POST', url: '/internal/restart-countdown', body: {} });
 
-  it('runs a matched internal route through the onion under the new default (composite NOT called)', async () => {
+  it('runs a matched internal route through the onion under the new default (delegate NOT called)', async () => {
     await withInternalSecretsUnset(async () => {
       main.resetApiDispatchModeForTests();
       const cap = await captureResponse(drive, matched());
       expect(cap.status).toBe(404); // feature-off gate, db-free
       expect(handleInternalApi).not.toHaveBeenCalled();
-      expect(handleDailyRewardInternalApi).not.toHaveBeenCalled();
     });
   });
 
-  it('reaches the legacy composite (handleInternalApi) under API_DISPATCH=legacy', async () => {
+  it('reaches the legacy delegate (handleInternalApi) under API_DISPATCH=legacy', async () => {
     await withInternalSecretsUnset(async () => {
       main.setApiDispatchModeForTests('legacy');
       const cap = await captureResponse(drive, matched());
       expect(cap.status).toBe(404);
-      // The composite tries handleDailyRewardInternalApi first (declines for a
-      // non-daily-rewards path), then handleInternalApi answers the feature-off 404.
-      expect(handleDailyRewardInternalApi).toHaveBeenCalledTimes(1);
       expect(handleInternalApi).toHaveBeenCalledTimes(1);
     });
   });
 
-  it('delegates an unmatched internal path to the legacy composite even under the new default', async () => {
+  it('delegates an unmatched internal path to the legacy delegate even under the new default', async () => {
     await withInternalSecretsUnset(async () => {
       main.resetApiDispatchModeForTests();
       await captureResponse(

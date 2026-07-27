@@ -142,8 +142,6 @@ export interface MobileControlCallbacks {
   onTalents(): void;
   onMap(): void;
   onLeaderboard(): void;
-  /** Open the Daily Rewards chest, folded into the More tray on mobile. */
-  onDailyRewards(): void;
   /** Open the Book of Deeds window, folded into the More tray on mobile. */
   onDeeds(): void;
   /** Open the Professions window, folded into the More tray on mobile. */
@@ -504,7 +502,6 @@ export class MobileControls {
     this.bindButton('mobile-talents', () => this.callbacks.onTalents());
     this.bindButton('mobile-map', () => this.callbacks.onMap());
     this.bindButton('mobile-leaderboard', () => this.callbacks.onLeaderboard());
-    this.bindButton('mobile-daily-rewards', () => this.callbacks.onDailyRewards());
     this.bindButton('mobile-deeds', () => this.callbacks.onDeeds());
     this.bindButton('mobile-professions', () => this.callbacks.onProfessions());
     const nameplatesBtn = document.getElementById('mobile-nameplates');

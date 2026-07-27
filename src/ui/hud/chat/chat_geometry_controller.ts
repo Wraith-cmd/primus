@@ -1,5 +1,4 @@
 import { t } from '../../i18n';
-import { storePromoReservedHeight } from '../../store_promo_card';
 import {
   CHAT_BOX_LIMITS,
   type ChatBoxGeometry,
@@ -16,7 +15,6 @@ export interface ChatGeometryControllerDeps {
   window: Window;
   storage: Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
   isMobileLayout(): boolean;
-  hasStorePromoCard(): boolean;
   uiScale(): number;
 }
 
@@ -271,7 +269,6 @@ export class ChatGeometryController {
       chromeHeight,
       scale,
       CHAT_BOX_LIMITS,
-      this.deps.hasStorePromoCard() ? (width) => storePromoReservedHeight(width, scale) : 0,
     );
     this.chatBox = placement.geo;
     const { css } = placement;

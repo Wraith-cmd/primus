@@ -103,8 +103,7 @@ Die Online-Anmeldung läuft ausschließlich über Discord und E-Mail, genau wie 
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 Richte die Hülle mit `VITE_DESKTOP_API_ORIGIN` auf eine andere API aus, zum Beispiel einen lokalen Server oder einen Staging-Host:

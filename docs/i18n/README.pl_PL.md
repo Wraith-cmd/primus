@@ -103,8 +103,7 @@ Logowanie online odbywa się wyłącznie przez Discord i e-mail, dokładnie tak 
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 Skieruj powłokę na inne API przez `VITE_DESKTOP_API_ORIGIN`, na przykład na lokalny serwer albo host stagingowy:

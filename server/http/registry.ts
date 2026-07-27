@@ -26,8 +26,6 @@ import { routes as adminRoutes } from '../admin';
 import { routes as appleAuthRoutes } from '../apple_auth';
 import { routes as authRoutes } from '../auth_routes';
 import { routes as characterRoutes } from '../characters';
-import { routes as claudiumRoutes } from '../claudium';
-import { routes as dailyRewardRoutes } from '../daily_rewards';
 import { routes as deedsRoutes } from '../deeds';
 import { routes as desktopLoginRoutes } from '../desktop_login_routes';
 import { routes as discordRoutes } from '../discord';
@@ -39,7 +37,6 @@ import { routes as oauthRoutes } from '../oauth';
 import { routes as reportsRoutes } from '../reports';
 import { routes as steamRoutes } from '../steam';
 import { routes as userAssetsRoutes } from '../user_assets_routes';
-import { routes as walletRoutes } from '../wallet';
 // new:endpoint imports appear above this line (npm run new:endpoint)
 import { type CompiledPattern, compilePattern } from './path_pattern';
 import { createRouter, type MatchResult } from './router';
@@ -77,9 +74,6 @@ export interface ApiRegistry {
  *    requireOwnedCharacter);
  *  - the account-portal surface (server/account.ts: the /api/account/* family,
  *    the companion-token method trio, and /api/email/unsubscribe);
- *  - the wallet / card / referral surface (server/wallet.ts: the wallet-link
- *    family, GET /api/wallet, the public GET /api/woc/balance, the binary POST
- *    /api/card, and GET /api/referrals);
  *  - the reports + telemetry surface (server/reports.ts: POST /api/reports,
  *    POST /api/bug-reports, and the public beacons POST /api/perf-report and
  *    POST /api/site-presence);
@@ -90,9 +84,6 @@ export interface ApiRegistry {
  *    and the GET/DELETE /api/github status + unlink pair);
  *  - the desktop-login handoff pair (server/desktop_login_routes.ts: create +
  *    exchange, on the fused register/login per-IP budget);
- *  - both daily-rewards families (server/daily_rewards.ts: the bearer-gated
- *    player routes plus the fail-closed secret-gated /internal/daily-rewards
- *    ops routes);
  *  - the custom-map family (server/maps_routes.ts: the owner list/create pair,
  *    the public browse list, the public-or-owner :id read, and the owner-gated
  *    save/delete/fork/publish/unpublish :id routes behind requireOwnedMap);
@@ -118,13 +109,10 @@ export const apiRoutes: readonly RouteDef[] = [
   ...appleAuthRoutes,
   ...characterRoutes,
   ...accountRoutes,
-  ...walletRoutes,
   ...reportsRoutes,
   ...discordRoutes,
   ...githubRoutes,
   ...desktopLoginRoutes,
-  ...claudiumRoutes,
-  ...dailyRewardRoutes,
   ...mapsRoutes,
   ...userAssetsRoutes,
   ...adminRoutes,

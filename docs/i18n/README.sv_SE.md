@@ -103,8 +103,7 @@ Online-inloggning sker endast med Discord och e-post, precis som webbflödet: e-
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 Rikta skalet mot ett annat API med `VITE_DESKTOP_API_ORIGIN`, till exempel en lokal server eller en staging-värd:

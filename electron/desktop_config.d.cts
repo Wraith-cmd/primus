@@ -2,14 +2,11 @@
 // (tests/electron_desktop_config.test.ts) type-checks its imports. Keep in sync
 // with the .cjs exports (same convention as shell_guards.d.cts).
 
-import type { UpdateChannel } from './update_guard.cjs';
-
-export type Distribution = 'website' | 'steam';
+export const PRODUCTION_API_ORIGIN: string;
 
 export interface DesktopConfigInput {
   packagedMetadata?: {
     wocDesktop?: {
-      distribution?: unknown;
       crashSubmitUrl?: unknown;
       apiOrigin?: unknown;
       loginOrigin?: unknown;
@@ -20,23 +17,15 @@ export interface DesktopConfigInput {
 }
 
 export interface DesktopConfig {
-  distribution: Distribution;
-  updaterEnabled: boolean;
   crashSubmitUrl: string;
-  updateChannel: UpdateChannel;
   apiOrigin: string;
   loginOrigin: string;
 }
 
-export function resolveDistribution(input?: DesktopConfigInput): Distribution;
 export function resolveCrashSubmitUrl(input?: DesktopConfigInput): string;
 export function resolveDesktopOrigins(input?: DesktopConfigInput): {
   apiOrigin: string;
   loginOrigin: string;
 };
-export function updaterAllowed(input: {
-  distribution: string;
-  isPackaged: boolean | undefined;
-}): boolean;
-export function walletConnectionSupported(input: { distribution: string }): boolean;
+export function walletConnectionSupported(): boolean;
 export function resolveDesktopConfig(input?: DesktopConfigInput): DesktopConfig;

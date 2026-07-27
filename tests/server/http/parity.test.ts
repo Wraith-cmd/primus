@@ -212,7 +212,6 @@ const API_REQUEST_CORPUS: readonly ApiRequestSpec[] = [
   { name: 'me_characters_get_noauth_401', method: 'GET', url: '/api/me/characters' },
   { name: 'account_get_noauth_401', method: 'GET', url: '/api/account' },
   { name: 'account_logout_post_noauth_401', method: 'POST', url: '/api/account/logout', body: {} },
-  { name: 'wallet_get_noauth_401', method: 'GET', url: '/api/wallet' },
   { name: 'referrals_get_noauth_401', method: 'GET', url: '/api/referrals' },
   { name: 'reports_post_noauth_401', method: 'POST', url: '/api/reports', body: {} },
   // The public-reads authz-gap-close: /api/search is now anonymous-friendly, so a no-token
@@ -574,16 +573,12 @@ describe('/api dispatch parity (legacy flag vs new flag)', () => {
     expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
   });
 
-  it('the card pre-auth 413 + Connection: close is identical old-vs-new (re-pins the masked /api/card)', async () => {
-    // The migration registers POST /api/card and lists it in the rateLimitedBodyToCode
-    // deviation (its 429 body becomes a code), which marks the whole /api/card path
-    // as a known deviation in the aggregate filter. The card_too_large_413 corpus
-    // request never hits the limiter (it 413s pre-auth on Content-Length), so it must
-    // stay byte-identical old-vs-new; this dedicated assertion re-pins that identity
-    // the path-scoped filter would otherwise mask (mirrors the characters no-auth
-    // re-pin above). The oversize Content-Length trips cardContentLengthGuard on the
-    // new path exactly as the legacy pre-auth check does: 413 { error: 'image too
-    // large' } with Connection: close, before auth and before any body read.
+  it('the card pre-auth 413 + Connection: close is identical old-vs-new', async () => {
+    // The card_too_large_413 corpus request never hits the limiter (it 413s pre-auth
+    // on Content-Length), so it must stay byte-identical old-vs-new; this dedicated
+    // assertion pins that identity (mirrors the characters no-auth re-pin above).
+    // The oversize Content-Length answers 413 { error: 'image too large' } with
+    // Connection: close, before auth and before any body read.
     const { oldCap, newCap } = await captureBothModes(() =>
       makeReq({
         method: 'POST',
@@ -673,12 +668,10 @@ describe('/api dispatch parity (legacy flag vs new flag)', () => {
     expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
   });
 
-  it('the card no-auth 401 is identical old-vs-new (completes the masked /api/card re-pin)', async () => {
-    // The card 413 re-pin above covers the pre-auth short-circuit, but adding /api/card to the
-    // rateLimitedBodyToCode deviation masks EVERY /api/card divergence in the aggregate filter.
-    // A normal-size card POST with no bearer passes cardContentLengthGuard and 401s at
-    // activeGuard (the same shared guard as the wallet routes), byte-identical on both paths.
-    // This dedicated assertion re-pins that 401 so the masking cannot hide an auth-shape break.
+  it('the card no-auth 401 is identical old-vs-new (completes the /api/card pin)', async () => {
+    // The card 413 pin above covers the pre-auth short-circuit; this one covers the
+    // auth leg. A normal-size card POST with no bearer passes the content-length
+    // precheck and 401s at the shared active guard, byte-identical on both paths.
     const { oldCap, newCap } = await captureBothModes(() =>
       makeReq({ method: 'POST', url: '/api/card' }),
     );
@@ -1030,9 +1023,8 @@ describe('/oauth dispatch parity (legacy flag vs new flag)', () => {
 // -----------------------------------------------------------------------------
 // /internal dual-path parity. The internal surface runs through its OWN
 // flag-gated dispatcher (main.ts internalApiEntry) whose delegate is the EXACT
-// pre-migration composite (the /internal/daily-rewards/* ops family tried first,
-// then handleInternalApi), so makeModedDispatch drives the internal surface
-// old-vs-new too. The secret gates read their env var PER REQUEST, so each case
+// pre-migration handleInternalApi ladder, so makeModedDispatch drives the internal
+// surface old-vs-new too. The secret gates read their env var PER REQUEST, so each case
 // pins its env inside the test and restores it; captureBothModes runs both passes
 // under the same env. The presence and members-meta 200s are REAL authed passes
 // through the migrated gate + handler (both are db-free: presence writes only the
@@ -1177,33 +1169,10 @@ describe('/internal dispatch parity (legacy flag vs new flag)', () => {
     expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
   });
 
-  it('a daily-rewards ops path is answered by the FIRST composite arm (its own gate 401, never the ladder 404), identical old-vs-new', async () => {
-    // The /internal/daily-rewards/* ops family must be tried BEFORE handleInternalApi:
-    // its own x-woc-daily-reward-secret gate fails CLOSED (401 'not authenticated'
-    // when its env secret is unset), whereas the ladder would answer its terminal
-    // 404 'unknown endpoint' for this path. If the composite ordering ever flipped,
-    // this pin catches it on the LEGACY pass. Since the late-arrival migration the
-    // route is ALSO on the table: under 'new' the matched RouteDef's fail-closed
-    // requireInternalSecretFailClosed gate answers the SAME 401 byte-for-byte, so
-    // the pin now proves gate-parity under 'new' AND composite ordering under
-    // 'legacy'; db-free (both gates reject before any query).
-    const { oldCap, newCap } = await captureWithEnv(
-      { WOC_DAILY_REWARD_SERVICE_SECRET: undefined },
-      () => makeReq({ method: 'POST', url: '/internal/daily-rewards/pending-payouts', body: {} }),
-    );
-    expect(oldCap.status).toBe(401);
-    expect(JSON.parse(oldCap.body as string)).toEqual({
-      success: false,
-      data: null,
-      error: 'not authenticated',
-    });
-    expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
-  });
-
-  it('an /internal path outside both families falls through the whole composite to 404, identical old-vs-new', async () => {
-    // Not daily-rewards (the ops family returns false), not a registered route: the
-    // new path delegates to the composite, which lands handleInternalApi's terminal
-    // 404 'unknown endpoint' with no gate involved, byte-identical.
+  it('an unregistered /internal path falls through the whole ladder to 404, identical old-vs-new', async () => {
+    // Not a registered route: the new path delegates to the legacy ladder, which
+    // lands handleInternalApi's terminal 404 'unknown endpoint' with no gate
+    // involved, byte-identical.
     const { oldCap, newCap } = await captureWithEnv(
       { [DEPLOY_ENV]: undefined, [DISCORD_ENV]: undefined },
       () => makeReq({ method: 'GET', url: '/internal/this-endpoint-does-not-exist' }),
@@ -1215,24 +1184,20 @@ describe('/internal dispatch parity (legacy flag vs new flag)', () => {
 });
 
 // -----------------------------------------------------------------------------
-// The release-merge late-arrival families (github, desktop-login,
-// daily-rewards), dual-path pins. Every route below carries a late-arrival known
+// The release-merge late-arrival families (github, desktop-login), dual-path
+// pins. Every route below carries a late-arrival known
 // deviation (the *BodyValidationRemap hang-counterfactual class), which MASKS
 // its whole path in the corpus-wide known-deviations filter above, so these
 // dedicated captureBothModes assertions re-pin the db-free contract points
 // byte-identical old-vs-new (the reports/discord re-pin rule; the head-parity
 // gotcha). All cases are db-free: the no-auth 401s reject a missing bearer
 // before any resolver, the github callback answers its unconfigured 503 before
-// any state read, the exchange 401 is an in-process Map miss, and the ops
-// mark-payout 400 validates before its first query.
+// any state read, and the exchange 401 is an in-process Map miss.
 // -----------------------------------------------------------------------------
 
 describe('/api + /internal late-arrival dispatch parity (legacy flag vs new flag)', () => {
   const GITHUB_ID_ENV = 'GITHUB_OAUTH_CLIENT_ID';
   const GITHUB_SECRET_ENV = 'GITHUB_OAUTH_CLIENT_SECRET';
-  const DAILY_ENV = 'WOC_DAILY_REWARD_SERVICE_SECRET';
-  const DAILY_HEADER = 'x-woc-daily-reward-secret';
-  const PARITY_SECRET = 'parity-daily-reward-secret';
 
   // The no-auth 401 pins: both paths reject a missing bearer db-free with the
   // legacy { error: 'not authenticated' } body (legacy arm: bearerActiveAccount;
@@ -1243,18 +1208,9 @@ describe('/api + /internal late-arrival dispatch parity (legacy flag vs new flag
     { method: 'GET', url: '/api/github' },
     { method: 'DELETE', url: '/api/github' },
     { method: 'POST', url: '/api/desktop-login/create', body: {} },
-    { method: 'GET', url: '/api/daily-rewards' },
-    { method: 'GET', url: '/api/daily-rewards/leaderboard' },
-    { method: 'POST', url: '/api/daily-rewards/spin', body: {} },
-    { method: 'GET', url: '/api/daily-rewards/history' },
     // The v0.20.0 account arrival rides the same masked family (the
     // accountBodyValidationRemap deviation), so its db-free 401 is re-pinned here.
     { method: 'POST', url: '/api/account/email/set-initial', body: {} },
-    // The prefix-arm oddities stay delegate-served: an unknown subpath and the
-    // no-slash sibling resolve unmatched, delegate to the ladder's startsWith
-    // arm, and 401 before the in-family 404, byte-identical.
-    { method: 'GET', url: '/api/daily-rewards/unknown-subpath' },
-    { method: 'GET', url: '/api/daily-rewardsx' },
   ];
 
   for (const { method, url, body } of NOAUTH_18B_REQUESTS) {
@@ -1268,34 +1224,6 @@ describe('/api + /internal late-arrival dispatch parity (legacy flag vs new flag
       expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
     });
   }
-
-  it('DELETE /api/daily-rewards (wrong method on a registered path) delegates to the prefix arm (auth 401, never a 405), identical old-vs-new', async () => {
-    // The registry resolves methodNotAllowed (only GET is registered) and the
-    // dispatcher DELEGATES to the legacy startsWith prefix arm, which is method-
-    // agnostic: auth first (401 db-free with no bearer), so the table router's
-    // 405 never surfaces while the ladder is retained.
-    const { oldCap, newCap } = await captureBothModes(() =>
-      makeReq({ method: 'DELETE', url: '/api/daily-rewards' }),
-    );
-    expect(oldCap.status).toBe(401);
-    expect(JSON.parse(oldCap.body as string)).toEqual({
-      error: 'not authenticated',
-      code: 'auth.required',
-    });
-    expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
-  });
-
-  it('HEAD /api/daily-rewards delegates to the legacy ladder (auth 401, no HEAD-as-GET), identical old-vs-new', async () => {
-    // The router synthesizes HEAD from the registered GET, and the dispatcher
-    // delegates a head match to the legacy ladder (the standing HEAD rule), where
-    // the prefix arm's bearerActiveAccount answers 401 with the body suppressed.
-    const { oldCap, newCap } = await captureBothModes(() =>
-      makeReq({ method: 'HEAD', url: '/api/daily-rewards' }),
-    );
-    expect(oldCap.status).toBe(401);
-    expect(newCap.status).toBe(oldCap.status);
-    expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
-  });
 
   it('GET /api/auth/github/callback with the feature unconfigured is the 503 HTML bounce, identical old-vs-new', async () => {
     // No GITHUB_OAUTH_CLIENT_ID/SECRET, so handleGitHubCallback answers the
@@ -1372,151 +1300,12 @@ describe('/api + /internal late-arrival dispatch parity (legacy flag vs new flag
     });
     expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
   });
-
-  it('POST /internal/daily-rewards/finalize with a wrong secret is the fail-closed 401, identical old-vs-new', async () => {
-    const { oldCap, newCap } = await captureWithEnv({ [DAILY_ENV]: PARITY_SECRET }, () =>
-      makeReq({
-        method: 'POST',
-        url: '/internal/daily-rewards/finalize',
-        headers: { [DAILY_HEADER]: 'wrong-secret' },
-        body: { day: '2026-07-01' },
-      }),
-    );
-    expect(oldCap.status).toBe(401);
-    expect(JSON.parse(oldCap.body as string)).toEqual({
-      success: false,
-      data: null,
-      error: 'not authenticated',
-    });
-    expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
-  });
-
-  it('POST /internal/daily-rewards/pending-payouts with a wrong secret is the fail-closed 401, identical old-vs-new', async () => {
-    const { oldCap, newCap } = await captureWithEnv({ [DAILY_ENV]: PARITY_SECRET }, () =>
-      makeReq({
-        method: 'POST',
-        url: '/internal/daily-rewards/pending-payouts',
-        headers: { [DAILY_HEADER]: 'wrong-secret' },
-        body: {},
-      }),
-    );
-    expect(oldCap.status).toBe(401);
-    expect(JSON.parse(oldCap.body as string)).toEqual({
-      success: false,
-      data: null,
-      error: 'not authenticated',
-    });
-    expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
-  });
-
-  it('POST /internal/daily-rewards/payout-history with a wrong secret is the fail-closed 401, identical old-vs-new', async () => {
-    // Its own re-pin (the dailyRewardsOpsBodyValidationRemap deviation masks this
-    // path in the corpus filter too): the wrong-secret 401 is the route's only
-    // db-free branch, byte-identical through the RouteDef gate ('new') and the
-    // composite's in-handler gate ('legacy').
-    const { oldCap, newCap } = await captureWithEnv({ [DAILY_ENV]: PARITY_SECRET }, () =>
-      makeReq({
-        method: 'POST',
-        url: '/internal/daily-rewards/payout-history',
-        headers: { [DAILY_HEADER]: 'wrong-secret' },
-        body: {},
-      }),
-    );
-    expect(oldCap.status).toBe(401);
-    expect(JSON.parse(oldCap.body as string)).toEqual({
-      success: false,
-      data: null,
-      error: 'not authenticated',
-    });
-    expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
-  });
-
-  it('POST /internal/daily-rewards/leaderboard with a wrong secret is the fail-closed 401, identical old-vs-new', async () => {
-    // The v0.20.0 ops arrival: same masked family, same re-pin as its siblings.
-    // The wrong-secret 401 is the route's only db-free branch, byte-identical
-    // through the RouteDef gate ('new') and the composite's in-handler gate
-    // ('legacy').
-    const { oldCap, newCap } = await captureWithEnv({ [DAILY_ENV]: PARITY_SECRET }, () =>
-      makeReq({
-        method: 'POST',
-        url: '/internal/daily-rewards/leaderboard',
-        headers: { [DAILY_HEADER]: 'wrong-secret' },
-        body: {},
-      }),
-    );
-    expect(oldCap.status).toBe(401);
-    expect(JSON.parse(oldCap.body as string)).toEqual({
-      success: false,
-      data: null,
-      error: 'not authenticated',
-    });
-    expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
-  });
-
-  it('GET /internal/daily-rewards/pending-payouts with the CORRECT secret stays the in-family 404 (never a 405), identical old-vs-new', async () => {
-    // Wrong method: the registry resolves methodNotAllowed (only POST is
-    // registered) and DELEGATES to the composite, whose first arm gates then
-    // answers the in-family 404 'unknown endpoint', exactly as legacy.
-    const { oldCap, newCap } = await captureWithEnv({ [DAILY_ENV]: PARITY_SECRET }, () =>
-      makeReq({
-        method: 'GET',
-        url: '/internal/daily-rewards/pending-payouts',
-        headers: { [DAILY_HEADER]: PARITY_SECRET },
-      }),
-    );
-    expect(oldCap.status).toBe(404);
-    expect(JSON.parse(oldCap.body as string)).toEqual({
-      success: false,
-      data: null,
-      error: 'unknown endpoint',
-    });
-    expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
-  });
-
-  it('POST /internal/daily-rewards/mark-payout with the correct secret and an empty body is a db-free 400 through the migrated chain, identical old-vs-new', async () => {
-    // A REAL gate-pass + handler run on both flags: markPayout validates the
-    // payout target before its first query, so the 400 'invalid payout target'
-    // admin-envelope body is db-free and proves the registered route serves the
-    // same core as the composite arm.
-    const { oldCap, newCap } = await captureWithEnv({ [DAILY_ENV]: PARITY_SECRET }, () =>
-      makeReq({
-        method: 'POST',
-        url: '/internal/daily-rewards/mark-payout',
-        headers: { [DAILY_HEADER]: PARITY_SECRET },
-        body: {},
-      }),
-    );
-    expect(oldCap.status).toBe(400);
-    expect(JSON.parse(oldCap.body as string)).toEqual({
-      success: false,
-      data: null,
-      error: 'invalid payout target',
-    });
-    expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
-  });
-
-  it('an unknown /internal/daily-rewards subpath with the correct secret delegates to the gate-then-404, identical old-vs-new', async () => {
-    // Off the route table: the dispatcher delegates, the composite's first arm
-    // gates (pass) and answers the in-family 404, byte-identical. The family-wide
-    // pre-path gate is a ladder-deletion handoff (see dailyRewardsOpsBodyValidationRemap).
-    const { oldCap, newCap } = await captureWithEnv({ [DAILY_ENV]: PARITY_SECRET }, () =>
-      makeReq({
-        method: 'POST',
-        url: '/internal/daily-rewards/this-endpoint-does-not-exist',
-        headers: { [DAILY_HEADER]: PARITY_SECRET },
-        body: {},
-      }),
-    );
-    expect(oldCap.status).toBe(404);
-    expect(newCap.status).toBe(oldCap.status);
-    expect(stableStringify(newCap)).toBe(stableStringify(oldCap));
-  });
 });
 
 // -----------------------------------------------------------------------------
 // SKIPPED requests (present in characterization.test.ts or on the surface, but not
 // replayed here) and why:
-//   - GET /api/woc/balance, GET /api/email/unsubscribe?token=<non-empty>,
+//   - GET /api/email/unsubscribe?token=<non-empty>,
 //     GET /api/search WITH a bearer, and every populated leaderboard/character/
 //     account success body: all reach pool.query against the pool-less test db (hang
 //     or pool-500), so they are not db-free contract paths. Deferred exactly as
@@ -1533,7 +1322,7 @@ describe('/api + /internal late-arrival dispatch parity (legacy flag vs new flag
 //     '/admin/api dispatch parity' block above (the 401 gate + the login db-free 401);
 //     only the authed bodies are deferred, exactly as characterization defers them.
 //   - The /oauth/* and /internal/* db-touching success paths (a real token exchange,
-//     a consent approval, the discord flex/roles/grant/member/relay/activity/winners
+//     a consent approval, the discord flex/roles/grant/member/relay/activity
 //     reads and writes, the authed restart-countdown): all reach pool.query or the
 //     singleton GameServer. Both surfaces run through their own
 //     flag-gated dispatchers, so the DB-FREE contract paths ARE replayed old-vs-new
@@ -1541,11 +1330,9 @@ describe('/api + /internal late-arrival dispatch parity (legacy flag vs new flag
 //     (including two real gate-pass 200s: presence and members-meta); only the
 //     db-touching bodies are deferred, exactly as characterization defers them, and
 //     pinned with fakes in tests/server/oauth.test.ts + tests/server/internal.test.ts.
-//   - The late-arrival authed success bodies (an authed github start/status/unlink, a
-//     desktop-login create 200 mint, the daily-rewards status/spin/history 200s, the
-//     ops pending-payouts/payout-history 200s): all resolve a bearer or read payouts
-//     against the pool-less db. The db-free contract points ARE replayed old-vs-new
-//     in the late-arrival block above (incl. one real ops gate-pass through the
-//     migrated chain: the mark-payout 400); the success bodies are pinned with fakes
-//     in tests/server/{github,desktop_login,daily_rewards_routes}.test.ts.
+//   - The late-arrival authed success bodies (an authed github start/status/unlink and
+//     a desktop-login create 200 mint): all resolve a bearer against the pool-less
+//     db. The db-free contract points ARE replayed old-vs-new in the late-arrival
+//     block above; the success bodies are pinned with fakes in
+//     tests/server/{github,desktop_login}.test.ts.
 // -----------------------------------------------------------------------------

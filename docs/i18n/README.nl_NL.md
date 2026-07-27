@@ -103,8 +103,7 @@ Online inloggen gaat alleen via Discord en e-mail, precies zoals de webflow: e-m
 ```bash
 npm run electron:dev          # Vite + Electron dev shell
 npm run electron:pack         # local unpacked desktop app
-npm run electron:build        # website-channel installers (self-updating)
-npm run electron:build:steam  # SteamPipe depot layouts (in-app updater off)
+npm run electron:build        # desktop installers
 ```
 
 Wijs de shell naar een andere API met `VITE_DESKTOP_API_ORIGIN`, bijvoorbeeld een lokale server of een staging-host:

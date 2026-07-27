@@ -89,13 +89,12 @@ describe('leaderboard_window: async + page wiring contracts (the painter half)',
   });
 
   it('stamps a render epoch and bails every stale board response against it', () => {
-    // One class-wide seq (the DailyRewardsWindow renderSeq pattern): render()
-    // bumps it before the repaint and all five board arms (players, guilds,
-    // deeds, devs, daily) re-check it after their await, so a slow response for
-    // an older tab or page never paints the shared body nor mirrors its clamped
-    // page into the wrong board's pager state.
+    // One class-wide seq: render() bumps it before the repaint and all four
+    // board arms (players, guilds, deeds, devs) re-check it after their await,
+    // so a slow response for an older tab or page never paints the shared body
+    // nor mirrors its clamped page into the wrong board's pager state.
     expect(code).toContain('const seq = ++this.renderSeq;');
-    expect(code.match(/seq !== this\.renderSeq/g)?.length).toBe(5);
+    expect(code.match(/seq !== this\.renderSeq/g)?.length).toBe(4);
   });
 
   it('mirrors the server-clamped page back into the pager state', () => {
@@ -132,7 +131,6 @@ describe('leaderboard_window: guild board tab (Players / Guilds)', () => {
     expect(code).toContain("tab('guilds', t('hudChrome.leaderboard.tabGuilds'))");
     expect(code).toContain("tab('deeds', t('hudChrome.deeds.lbTab'))");
     expect(code).toContain("tab('devs', t('hudChrome.leaderboard.tabDevs'))");
-    expect(code).toContain("tab('daily', t('hudChrome.dailyRewards.leaderboard'))");
   });
 
   it('marks the active tab with aria-selected for screen readers', () => {

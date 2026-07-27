@@ -363,258 +363,7 @@ export const vi_VN: EnTranslations = {
       "title": "Biểu Cảm",
       "done": "Xong"
     },
-    "dailyRewards": {
-      "title": "Phần Thưởng Hằng Ngày",
-      "close": "Đóng phần thưởng hằng ngày",
-      "loading": "Đang tải phần thưởng hằng ngày...",
-      "error": "Không thể tải phần thưởng hằng ngày.",
-      "disabled": "Phần Thưởng Hằng Ngày hiện đang bị tắt. Chúng tôi sẽ thông báo các cập nhật về tính năng này trong kênh Discord.",
-      "intro": "Giữ đủ WOC trong ví đã xác minh của bạn để mở khóa phần thưởng hằng ngày. Kiếm điểm bằng một lượt quay mỗi ngày và các nhiệm vụ luân phiên, rồi leo lên bảng xếp hạng hằng ngày để nhận phần chia từ quỹ giải thưởng.",
-      "disclaimer": "Giá WOC có thể biến động nhanh. Chúng tôi khuyên bạn nên giữ nhiều hơn mức tối thiểu 20 USD để những dao động giá thông thường không khóa bạn ở ngoài. Đây không phải lời khuyên tài chính.",
-      "prize": "Quỹ Giải Thưởng",
-      "reset": "Đặt Lại",
-      "endsIn": "Kết thúc sau {time}",
-      "remainingLessThanMinute": "<1p",
-      "remainingMinutes": "{minutes}p",
-      "remainingHoursMinutes": "{hours}h {minutes}p",
-      "remainingDaysHours": "{days} ngày {hours} giờ",
-      "score": "Điểm",
-      "walletValue": "Giá Trị Ví (WOC)",
-      "usd": "{amount} USD",
-      "sol": "{amount} SOL",
-      "unknown": "Không rõ",
-      "spinTitle": "Vòng Quay Hằng Ngày",
-      "spinDialogTitle": "Vòng Quay Phần Thưởng Hằng Ngày",
-      "spinClose": "Đóng lượt quay hằng ngày",
-      "spinReady": "Một lượt quay đã sẵn sàng.",
-      "spinClaimed": "Đã nhận: +{points} điểm.",
-      "spinResult": "+{points} điểm",
-      "spinButton": "Quay",
-      "tasks": "Nhiệm Vụ",
-      "taskMultiplier": "hệ số x{multiplier}",
-      "oneVsOneExcluded": "Trận đấu 1v1 không trao điểm phần thưởng hằng ngày.",
-      "pointsGained": "Nhận được {points} điểm phần thưởng hằng ngày.",
-      "showChestButton": "Hiện rương",
-      "hideChestButton": "Ẩn rương",
-      "hideChestConfirmTitle": "Ẩn Rương Phần Thưởng Hằng Ngày?",
-      "hideChestConfirmBody": "Thao tác này gỡ lối tắt rương khỏi HUD của bạn. Phần thưởng, điều kiện nhận và bảng này vẫn khả dụng; bạn có thể bật lại lối tắt từ Tùy Chọn.",
-      "hideChestConfirmOk": "Ẩn Rương",
-      "hideChestConfirmCancel": "Hủy",
-      "leaderboard": "Bảng Xếp Hạng Hằng Ngày",
-      "totalPlayer": "{count} người chơi hôm nay",
-      "totalPlayers": "{count} người chơi hôm nay",
-      "history": "Người Thắng Trước Đây",
-      "noLeaders": "Chưa có điểm nào.",
-      "noHistory": "Chưa có khoản chi trả nào.",
-      "walletConnectTitle": "Xác Minh Ví",
-      "walletConnectBody": "Xác minh một ví Solana có WOC để mở khóa phần thưởng hằng ngày.",
-      "walletConnectButton": "Xác Minh Ví",
-      "walletHoldTitle": "Giữ WOC",
-      "walletHoldBody": "Giữ ít nhất {amount} USD WOC để mở khóa phần thưởng hằng ngày.",
-      "walletPriceBody": "Hiện chưa có giá WOC. Vui lòng quay lại sau ít phút.",
-      "reason": {
-        "eligible": "Đã mở khóa phần thưởng.",
-        "no_wallet": "Kết nối một ví có ít nhất 20 USD WOC.",
-        "under_minimum": "Ví thấp hơn mức tối thiểu 20 USD WOC.",
-        "price_unavailable": "Giá WOC hiện không có sẵn, phần thưởng tạm thời bị khóa.",
-        "banned": "Bạn đã bị cấm tham gia Phần Thưởng Hằng Ngày. Lý do: {reason}",
-        "bannedUntil": "Bạn bị cấm nhận Phần Thưởng Hằng Ngày thêm {remaining}. Quyền truy cập trở lại vào {until}. Lý do: {reason}"
-      }
-    },
     "wocStore": {
-      "title": "Cửa hàng WOC",
-      "close": "Đóng cửa hàng WOC",
-      "tabsLabel": "Các phần của Cửa hàng WOC",
-      "storeTab": "Cửa hàng",
-      "rewardsTab": "Phần thưởng hàng ngày",
-      "loading": "Đang tải Cửa hàng WOC...",
-      "error": "Cửa hàng WOC hiện không khả dụng. Vui lòng thử lại trong thời gian ngắn.",
-      "balance": "Số dư Claudium",
-      "buyClaudium": "Mua Claudium",
-      "owned": "Sở hữu",
-      "needMoreTitle": "Cần thêm Claudium",
-      "needMoreBody": "Bạn cần thêm {shortfall} Claudium để mua {item}.",
-      "cancel": "Hủy",
-      "confirmTitle": "Xác nhận mua mỹ phẩm",
-      "confirmBody": "Mua {item} với giá {cost} Claudium?",
-      "confirmPurchase": "Mua",
-      "priceChanged": "Giá đã thay đổi trước khi việc mua hàng hoàn tất. Xem lại giá đã làm mới và xác nhận lại.",
-      "armoryEyebrow": "Mùa 1",
-      "armoryTitle": "Kho Vũ Khí",
-      "armoryBody": "Ngoại hình vũ khí giới hạn từ Kho Vũ Khí Mùa 1. Dùng chung toàn tài khoản, hoàn toàn mang tính thẩm mỹ và hiển thị với mọi người xung quanh bạn.",
-      "wallet": {
-        "title": "Ví Solana",
-        "unlinked": "Hãy kết nối một ứng dụng ví, rồi ký một lần để liên kết địa chỉ công khai của nó với tài khoản WoC của bạn. Chúng tôi không bao giờ nhận cụm từ khôi phục hoặc khóa riêng tư của bạn.",
-        "connectedUnlinked": "Ứng dụng ví đã kết nối với trình duyệt này, nhưng địa chỉ công khai của nó chưa được liên kết với tài khoản WoC của bạn.",
-        "linkedDisconnected": "Địa chỉ công khai của bạn đã được liên kết. Hãy kết nối lại ứng dụng ví đó khi bạn muốn thanh toán bằng SOL hoặc WOC.",
-        "linkedConnected": "Ứng dụng ví đã liên kết của bạn đã kết nối và sẵn sàng cho các giao dịch mua bằng SOL hoặc WOC.",
-        "mismatched": "Một ví khác đang kết nối. Hãy xác minh nó để thay thế địa chỉ đã liên kết, hoặc kết nối lại ví đã liên kết.",
-        "connect": "Kết nối ví",
-        "verify": "Xác minh và liên kết",
-        "reconnect": "Kết nối lại ví",
-        "manage": "Quản lý ví"
-      },
-      "collectionLine": "Bộ sưu tập {collection}",
-      "collections": {
-        "guildmark": "Nhãn hiệu bang hội",
-        "emberwrought": "Emberwrought",
-        "hoarfrost": "Sương muối",
-        "fallen_star": "Sao rơi"
-      },
-      "skins": {
-        "guildmark_arming_sword": {
-          "name": "Kiếm Guildmark",
-          "look": "Lưỡi thép xanh, thanh bảo vệ đuôi cá bằng đồng, tay cầm bằng da nhuộm màu xanh mòng két, huy hiệu bang hội được đóng dấu nhỏ.",
-          "lore": "Trường hợp lưỡi rèn được ẩn danh, cái này được ký tên. Một thợ chế tạo áo giáp chỉ có quyền đưa nhãn hiệu của mình vào ricasso khi Thương nhân của Chợ Thế giới xác nhận cho thép của anh ta và nhãn hiệu của Smith Haldren được xác nhận. Màu xanh lam trên nền ẩm ướt của xứ Vale, cân đối với một sợi tóc. Bạn trả tiền cho con tem nhiều như thanh kiếm, và nó đáng giá."
-        },
-        "brasscap_axe": {
-          "name": "Rìu Chụp Đồng",
-          "look": "Mũi thép được đánh bóng, nắp và lưỡi bằng đồng trên thân tro sơn mài, bọc gọn gàng, tem của nhà sản xuất.",
-          "lore": "Một chiếc rìu được đóng dấu là một niềm tự hào mà bạn có thể nắm giữ. Mũ đồng và langets là một nửa áo giáp, một nửa đặc trưng: chúng giữ cho một nửa không bị tách ra và bắt ánh sáng trong quán rượu để mọi người biết rằng bạn đã mua tác phẩm của Armorer Hode chứ không phải đồ cũ của dân quân. “Nếu nó cắt, tôi sẽ bán nó,” thợ rèn Highwatch nói. Cái này cắt."
-        },
-        "tempered_flanged_mace": {
-          "name": "Chùy Cánh Tôi Luyện",
-          "look": "Đầu bằng thép xanh được tôi luyện sáu mặt, cổ và chuôi bằng đồng, tay cầm bằng da màu đỏ rượu vang.",
-          "lore": "Sáu mặt bích bằng thép tôi luyện xanh, mỗi mặt được mài để mở mũ, được bọc bằng đồng và quấn bằng da màu đỏ rượu vang. Những người thợ chế tạo vũ khí của vương quốc không tạo ra những vũ khí xấu xí ngay cả khi công việc rất tàn bạo. Cái này được ủy quyền thông qua Thị trường Thế giới, không phải lấy ra khỏi giá; ở đâu đó có một cuốn sổ cái ghi tên một người mua đáng tự hào và số tiền anh ta đã trả cho Hode để mua nó."
-        },
-        "guildmark_dirk": {
-          "name": "Đoản Kiếm Guildmark",
-          "look": "Dao găm bằng thép cường lực mỏng, phần bảo vệ và đai ốc chuôi kiếm bằng đồng, tay cầm dây màu xanh đậm, dấu hiệu được đóng dấu.",
-          "lore": "Điều mà một người đàn ông tự chế mặc khi đeo thanh kiếm ở nhà: thanh mảnh, tôi luyện, được đóng dấu giống như dấu chứng nhận một lưỡi kiếm đầy đủ, đeo trên thắt lưng như một con dấu có lưỡi. Nói giảm đi cho tất cả mọi người trừ những người có thể đọc được bằng chứng của người chế tạo áo giáp. Sĩ quan quân sự Bree giữ một ngăn kéo đựng chúng ở Highwatch dành cho những sĩ quan được bức tường tôn trọng."
-        },
-        "brasscrown_staff": {
-          "name": "Trượng Bộ Hành Brasscrown",
-          "look": "Mặt trượng bằng gỗ cứng có núm vặn bằng đồng thau, vòng sắt bằng đồng, dây da nhuộm.",
-          "lore": "Được làm từ gỗ cứng dày dặn và được bọc bằng đồng thau, hàng trăm thợ rèn ở Eastbrook đã đúc được hàng trăm chiếc nhưng chỉ có một chiếc hoàn hảo. Nó thuộc loại du khách muốn được coi trọng ở cổng Fenbridge cũng như bức tường của Highwatch. Một chiếc gậy đi bộ chưa bao giờ thực sự cần thiết để đi bộ; dải băng nhuộm phù hợp với chiếc áo khoác mà bạn có thể đoán được giá của nó."
-        },
-        "lacquered_wand": {
-          "name": "Thanh sơn mài",
-          "look": "Đũa sơn mài mảnh màu đỏ đậm, hai dải đồng thau đánh bóng, đầu đũa tròn nhỏ bằng đồng.",
-          "lore": "Sơn mài màu đỏ đậm trong bảy chiếc áo khoác kiên nhẫn, được buộc hai lần bằng đồng thau bóng loáng: loại đũa phép mà một pháp sư hàng rào mua ở Chợ Thế giới sau khi họ bắt đầu tính tiền thật và muốn xem nó. Nó truyền ánh sáng không tốt hơn một cây bạch dương. Nhưng nó tỏa sáng rực rỡ khắp quầy hàng của Người buôn bán và một nửa phép thuật nhỏ luôn được tin tưởng."
-        },
-        "fletcher_s_guild_bow": {
-          "name": "Cây cung của hội Fletcher",
-          "look": "Nơ uốn cong bằng gỗ óc chó sơn mài, đầu ống bằng đồng, dây vải lanh phủ sáp, tem hội trên thanh nâng.",
-          "lore": "Thứ gần gũi nhất mà vương quốc có với một hội là một con tem của Fletcher trên nắp thùng, một lời hứa về những gì bên trong, cách một người bán rượu vang niêm phong một chiếc thùng. Gỗ óc chó sơn mài, đầu cánh bằng đồng, một sợi dây bằng vải lanh phủ sáp không bị sờn khi gặp mưa Mirefen. Mỗi khớp tranh luận về giá cả. Vẽ nó một lần qua Widow Thicket và cuộc tranh luận sẽ thắng."
-        },
-        "cinderbrand_sword": {
-          "name": "Cinderbrand",
-          "look": "Lưỡi kiếm bằng thép rèn màu sẫm, đầy những chữ rune màu cam hồng rực rỡ, những vết nứt do nhiệt, một viên ngọc đang cháy âm ỉ trên tấm chắn bảo vệ.",
-          "lore": "Lưỡi kiếm đầu tiên được tôi không phải trong nước mà ở Embers may mắn được cào từ Stormcrag, những viên than mà thợ rèn Highwatch thề rằng 'cháy xanh và sạch sẽ, bởi vì ngọn núi vẫn nhớ lời thề xưa của nó.' Ngân Hàng được đổ đầy hơn, ngọn lửa đó sẽ cháy âm ỉ màu cam hồng và sẽ không chết; những chữ rune giữ ấm cho bàn tay trần trong đêm lạnh giá nhất của bức tường. Cinderbrand không bao giờ cần ánh sáng. Nó chỉ đơn giản là từ chối đi ra ngoài."
-        },
-        "emberbite_axe": {
-          "name": "Emberbite",
-          "look": "Rìu sắt đen với những vết nứt màu cam hồng phát sáng xuyên qua lưỡi rìu, một viên đá quý bằng than đá, những tia nhiệt.",
-          "lore": "Armorer Hode đã đưa than lửa núi sống vào tâm của mũi khoan, do đó, cạnh này không bao giờ thực sự nguội đi giữa các cú đánh. Các vết nứt có màu cam khi thực hiện cú đánh xuống, như thể cú đánh đánh thức thứ gì đó mà lần rèn đầu tiên đã ngủ yên trong bàn ủi. Người ta nói rằng một nguyên tố Stormcrag đã từ bỏ cục than hồng để có được nó; họ nói rất nhiều điều ở Highwatch khi gió nổi lên."
-        },
-        "smoulderfall_mace": {
-          "name": "Smoulderfall",
-          "look": "Những mặt bích bằng sắt sẫm màu phát sáng màu cam hồng dọc theo các vết nứt bên trong, một viên ngọc nóng chảy ở phần đầu.",
-          "lore": "Một chiếc chùy có lò sưởi riêng: một viên đá có lõi nóng chảy được mài ra từ dấu ấn Sanctum được 'làm bằng lửa núi', phát sáng trên đầu. Các mặt bích giữ ấm khi chạm vào và ấm hơn ở nơi tiếp đất; một trung sĩ Highwatch thề rằng một đòn từ nó sẽ để lại vết bầm tím mờ nhạt cho đến sáng. Ngọn lửa của ngọn núi cuối cùng được tạo ra để phá vỡ chứ không phải để hàn kín."
-        },
-        "ashspark_dagger": {
-          "name": "Đoản Đao Tia Tro",
-          "look": "Lưỡi kiếm ngắn màu đen có đường vân màu cam hồng rực, một viên ngọc nhỏ đang âm ỉ ở chuôi kiếm, tro và tia lửa.",
-          "lore": "Một lưỡi kiếm trong ngõ hẻm với ngọn lửa của ngọn núi được lén nhét vào chuôi đá bằng đá, một trò đùa thầm lặng của một người thợ chế tạo áo giáp: ngay cả một chiếc ví cắt cũng có thể mang theo một viên than hồng của lần rèn đầu tiên. Màu đen, có gân màu cam, luôn có màu quá ấm ở vỏ. Vẽ nó trong bóng tối dưới Highwatch và ánh sáng chiếu vào bàn tay của bạn vừa đủ để tìm ra khoảng trống trong sự đề phòng của một người đàn ông."
-        },
-        "forgeheart_staff": {
-          "name": "Trượng Forgeheart",
-          "look": "Cây trượng bọc sắt có gắn lõi than hồng phát sáng trong lồng, than hồng chảy lên trục, tỏa nhiệt lung linh.",
-          "lore": "Một cục than sống của lửa núi được lồng sắt ở đỉnh đầu. Loremaster Caddis gọi đó là bằng chứng cho thấy ngọn lửa của lần rèn đầu tiên có thể có tác dụng chứ không chỉ để phong ấn. Ánh sáng lung linh tỏa ra từ nó thành một dải ruy băng mỏng, vô tận; một pháp sư mang theo một người không bao giờ muốn có lò rèn hay người gác lửa. Họ thì thầm, cục than hồng được rút ra từ hơi thở của chính Voskar the Emberwing, và kể từ đó nó không hề nguội đi."
-        },
-        "emberwrought_wand": {
-          "name": "Cây Đũa Phép Emberwrought",
-          "look": "Cây đũa phép bằng kim loại đen có đầu than hồng rực trong móng sắt, những vết nứt do nhiệt ở chân tóc, ánh sáng ấm áp bên trong.",
-          "lore": "Cây đũa phép đặt tên cho lớp. Khi một thợ chế tạo áo giáp của Highwatch lần đầu tiên đặt một cục than lửa vào móng vuốt sắt và bắt nó đáp trả bàn tay phàm trần, ngay cả Tu Sĩ của Ánh sáng cũng ngừng gọi nó là dị giáo và bắt đầu gọi nó là hữu ích. Ấm áp, kiên nhẫn và âm thầm nguy hiểm: cục than hồng ở đầu nó đã cháy rụi, không hề vỡ, kể từ trước khi chủ nhân của nó kịp thở."
-        },
-        "cinderlatch_crossbow": {
-          "name": "Cinderlatch",
-          "look": "Nỏ thép đen, ánh sáng màu cam hồng rỉ ra từ vết nứt trên mũi khoan, than cháy âm ỉ trong máy xới.",
-          "lore": "Điều kỳ lạ nhất trong lò rèn than hồng: lửa núi đổ vào máy. Màu cam rỉ ra từ các vết nứt trên máy xới, và than cháy âm ỉ trong máy xới giữ cho sợi dây không bao giờ bị cứng lại trong cái lạnh ở Thornpeak hoặc ẩm ướt ở Mirefen. Các bu lông của nó rời khỏi rãnh đã ấm và tiếp đất ấm hơn. Câu trả lời của người thợ săn về bức tường mà kẻ thù cũng không cảm thấy lạnh giá."
-        },
-        "ice_fang_sword": {
-          "name": "Nanh băng",
-          "look": "Lưỡi cong làm bằng băng băng nhạt, những tinh thể sương muối lởm chởm dọc theo sống lưng, một lõi đông lạnh màu lục lam phát sáng ở lớp chắn ngang đầy đặn hơn bằng băng.",
-          "lore": "Sản phẩm hàng đầu của loại đông lạnh và là sản phẩm mà mọi nhà sưu tập đều hướng tới đầu tiên. Ice Fang được chạm khắc chứ không phải rèn từ một nhánh sông băng bao phủ Thornpeak phía trên Highwatch, lõi màu lục lam của nó cháy lạnh như ánh sáng của Glimmermere. Nó tạo ra không khí mà nó cắt. Người bảo vệ tường thề rằng một người lính đã mang nó vào đêm tuyết dày đã cản trở Wyrmcult, và 'đã mua được bức tường trong mùa đông'."
-        },
-        "glaciersplit_axe": {
-          "name": "Rìu Tách Băng",
-          "look": "Phần đầu là băng băng xanh mờ, bên trong nứt nẻ màu lục lam phát sáng, những tinh thể băng giá dựng đứng, một nửa vệt hơi lạnh kéo theo.",
-          "lore": "Được đẽo từ trái tim xanh của sông băng Thornpeak, nơi hai thế kỷ băng đã ép cái lạnh cho đến khi nó tự phát sáng. Nó để lại hơi nước ngay cả khi ở trạng thái nghỉ và vết nứt khi hạ cánh là một khe hở dưới Rình Rậper Ridge. Highwatch cho nó rơi xuống băng trên đó; vì vậy đây là vũ khí dùng để ngăn chặn sự tan băng, và bất kể sự tan băng nào sẽ xảy ra."
-        },
-        "rimecrusher_mace": {
-          "name": "Chùy Nghiền Băng Rimecrusher",
-          "look": "Cụm tinh thể băng lởm chởm xung quanh lõi màu lục lam rực sáng, sương muối lan xuống một nửa màu bạc.",
-          "lore": "Không được chạm khắc nhưng đã trưởng thành: Băng Thornpeak quấn quanh lõi màu lục lam lạnh lẽo cho đến khi nó cứng lại như loại thép tốt nhất của Hode. Sương muối bò dọc theo nửa thân bạc về phía bàn tay và không bao giờ đến nữa. Nơi nó chạm tới, nước đóng băng; nơi nó nằm, mặt đất trắng xóa. Cái lạnh thấu xương của những đỉnh núi, đủ nhỏ để có thể đu đưa những vật leo lên tường."
-        },
-        "frostbite_dagger": {
-          "name": "Kim Băng Giá",
-          "look": "Con dao găm mỏng đến mức độc ác có lớp băng trong xanh, một đường gân màu lục lam phát sáng ở giữa, những tinh thể băng giá như kim, chuôi kiếm sương muối.",
-          "lore": "Mỏng như hơi thở và lạnh gấp đôi: một mảnh sông băng Thornpeak được mài giũa thành một đường mạch phát sáng duy nhất, sắc bén đến mức vết thương sẽ đông cứng lại trước khi máu kịp chảy. Tên của nó được mượn từ ngôi mộ lạnh lẽo mà người chết mang xuống khỏi đỉnh núi. Nó không bao giờ cần mài giũa; băng không buồn tẻ, Loremaster Caddis khô khốc lưu ý, nó chỉ chờ đợi."
-        },
-        "hoarfrost_vigil_staff": {
-          "name": "Trượng Canh Gác Sương Giá",
-          "look": "Quyền trượng bạc được đội một mảnh băng màu lục lam phát sáng, đang trôi nổi, quay chậm, các tinh thể tỏa ra và hơi lạnh.",
-          "lore": "Cây trượng của đội canh gác không bao giờ ngủ trên tường thành Highwatch. Vương miện của nó là một mảnh băng màu lục lam lơ lửng khỏi lớp bạc và tự xoay chậm rãi; người lính gác thề rằng nó luôn hướng về cái lạnh tụ lại dưới các đỉnh núi. Mang Vigil nghĩa là đứng gác hai trăm năm chỉ trong một đêm và hứa không rời mắt."
-        },
-        "everwinter_wand": {
-          "name": "Mảnh vỡ của Everwinter",
-          "look": "Một nhánh băng sông băng màu lục lam phát sáng, sương muối nở ra từ cổ áo bạc, sương mù lạnh lẽo.",
-          "lore": "Một nhánh băng sông băng phát sáng, được cho là bị vỡ ra từ vùng đất sâu bên dưới Sanctum, nơi cái lạnh của ngọn núi có răng. Sương muối nở không ngừng từ vòng cổ bạc của nó và không bao giờ tan, không phải do lửa hay mùa hè. Pháp Sư giữ nó ở gần vì cái lạnh mà nó mang lại cho công việc của họ, và giữ nó ở xa vào những đêm nó dường như nghiêng về phía hầm mộ của Nythraxis và lắng nghe."
-        },
-        "winterbite": {
-          "name": "Nanh Đông",
-          "look": "Thép bạc và cung băng xanh, lõi đông lạnh màu lục lam phát sáng trong ống đứng, một mũi tên có móc bằng băng rắn, hơi lạnh.",
-          "lore": "Một cây cung bằng thép bạc và băng Thornpeak, phần nâng của nó được thắp sáng bởi lõi màu lục lam lạnh lẽo có tác dụng đóng băng mũi tên vào dây. Nó tạo thành một trục băng sông băng rắn chắc cải cách mỗi lần vẽ; người bắn cung không mang theo ống tên trên tường, chỉ mang theo cái lạnh. Highwatch đã giữ Rình Rậper Ridge vượt qua một cuộc bao vây với một người giống như vậy: họ nói, một cung thủ duy nhất và những mũi tên giá trị cho cả một mùa đông luôn ở đó."
-        },
-        "solheim_sword": {
-          "name": "Solheim, Ánh sáng bình minh cuối cùng",
-          "look": "Đại kiếm được rèn từ một ngôi sao sa ngã, lõi vàng nóng chảy tách ra khỏi lưỡi kiếm, thép đen vũ trụ được viền trong ánh sao, những mảnh vàng quay quanh người bảo vệ, dải băng cực quang.",
-          "lore": "Khi ngôi sao rơi khỏi bầu trời phía tây và 'nổ tung như một lò rèn' bên ngoài Widow Thicket, Anh Aldric đã kéo trái tim vẫn còn âm ỉ của nó ra khỏi miệng núi lửa Mirefen và cầu xin những người thợ rèn của vương quốc làm việc 'một thứ không thuộc về thế giới này.' Họ đã tạo ra một thanh đại kiếm từ nó: Solheim. Lõi vàng nóng chảy của nó xẻ đôi lưỡi kiếm đen vũ trụ như bình minh làm nứt bầu trời đêm, và những mảnh kim loại hình sao quay quanh người bảo vệ trên những con đường không có bàn tay định sẵn. Chỉ có một chiếc được rèn. Sẽ không có cái khác."
-        },
-        "skyrender_axe": {
-          "name": "Skyrender, Vết Thương Thiên Không",
-          "look": "Đầu giống như một mảnh trời đêm bị xé nát, những vết nứt bằng vàng nóng chảy và những hình khắc của chòm sao, những mảnh ánh sao lơ lửng, một vệt cực quang lung linh kéo dài ở rìa.",
-          "lore": "Bị đánh từ vành miệng núi lửa, nơi ngôi sao rơi xé toạc hình ảnh phản chiếu của bầu trời ra khỏi Mirefen và để lại vết thương vẫn còn bốc hơi. Cái đầu trông giống như một mảnh màn đêm bị xé nát: những vết nứt vàng nóng chảy, những chòm sao mà không học giả nào ở Highwatch có thể đặt tên, một luồng cực quang chảy ra từ mép sau mỗi cú vung. Anh Aldric đã ban phước cho nó và không chạm vào nó. Nâng nó lên là giữ lại cái lỗ mà trời để lại."
-        },
-        "starfall_mace": {
-          "name": "Starfall, Phán Quyết Thiên Đường",
-          "look": "Lõi sao bằng vàng nóng chảy bị giam giữ được bao quanh bởi các mảnh quay quanh, các mặt bích màu đen vũ trụ có vân ánh sao, cực quang tràn ra từ các đường nối.",
-          "lore": "Một lõi sao bắt được khoảnh khắc trước khi nó chết, bao quanh bởi những mảnh vụn rơi xuống cùng với nó, đóng băng một inch từ quên lãng. Các mặt bích màu đen vũ trụ của nó chạy với ánh sáng sao bị mắc kẹt và cực quang tràn ra từ các đường nối khi nó được nâng lên. Tu Sĩ cũ của Ánh sáng gọi ngôi sao băng là một sự phán xét, một phán quyết được truyền lại từ trên cao rằng không có tấm khiên nào có ý nghĩa ngăn chặn và đặt tên này theo tên cái đã giáng xuống Mirefen."
-        },
-        "astravyr_dagger": {
-          "name": "Astravyr, Nanh Sao Rơi",
-          "look": "Một mảnh sao rơi, viền vàng nóng chảy phát sáng trên nền kim loại đen vũ trụ, một ngôi sao sáng quay quanh chuôi dao, một vệt cực quang mỏng.",
-          "lore": "Mảnh nhỏ nhất của ngôi sao Aldric đã kéo ra khỏi miệng núi lửa và theo một số tính toán thì đây là mảnh nguy hiểm nhất. Một mảnh duy nhất của trái tim thuộc thế giới khác, cạnh vàng nóng chảy của nó cưỡi trên kim loại đen vũ trụ, một ngôi sao đơn độc quay quanh chuôi kiếm như một mặt trăng mất đi thế giới. Nó gần như không nặng chút nào và có thể chia cắt hầu hết mọi thứ. Đủ nhỏ để ẩn nấp, đủ sáng để tìm thấy trong bóng tối bằng chính ánh sáng của nó."
-        },
-        "cosmarch_staff": {
-          "name": "Cosmarch, Đỉnh Hư Không Vô Tận",
-          "look": "Cụm sao vàng quay quanh lõi vàng nóng chảy, trục màu đen vũ trụ được khắc hình chòm sao, dải băng cực quang uốn lượn hướng lên trên.",
-          "lore": "Một trục kim loại hình sao có lõi vàng nóng chảy và một vòng gồm các mảnh vàng di chuyển xung quanh nó theo quỹ đạo chậm rãi, vô tận: một vũ trụ nhỏ, được khắc bằng các chòm sao không phù hợp với bầu trời trên Thornpeak. Cực quang cuộn lên theo chiều dài của nó như làn khói quên bay lên. Những người chịu đựng nó khẳng định họ có thể cảm nhận được khoảng trống xuyên qua nó, giống như cách Ysolei 'uống ánh trăng': kiên nhẫn, lạnh lùng và nhìn lại."
-        },
-        "emberwish_wand": {
-          "name": "Emberwish, Hạt Mặt Trời Chết",
-          "look": "Vi trần sao chết bằng vàng nóng chảy bị giam giữ được bao bọc trong các tia lửa quay quanh, trục màu đen vũ trụ khắc các chòm sao phát sáng.",
-          "lore": "Không phải bản thân ngôi sao sa ngã mà là hạt bụi cuối cùng của một ngôi sao đang hấp hối: một đốm than hồng vàng nóng chảy duy nhất của mặt trời đã tắt, bao bọc trong những tia lửa là ánh sáng cuối cùng của nó. Trục màu đen vũ trụ của nó được khắc các chòm sao đã chứng kiến ​​nó chết. Những người trồng trọt ở Mirefen nói rằng nó ban một điều ước cho bất cứ ai giữ nó vào lúc hoàng hôn thực sự; họ cũng nói rằng mọi linh hồn nắm giữ nó đều mong muốn có thêm thời gian, và Mặt trăng chết đuối không ban cho ai trong số họ bất kỳ điều gì."
-        },
-        "encore_bow": {
-          "name": "Encore, Ngôi Sao Rơi Thứ Hai",
-          "look": "Khẩu pháo sao cỡ lớn hài hước: nòng súng màu đen vũ trụ được khắc các chòm sao vàng rực rỡ, mõm chuông loe có vỏ sao chổi bằng vàng nóng chảy bên trong, phụ kiện bằng đồng, báng vai bằng gỗ.",
-          "lore": "Những người thợ rèn làm việc với ngôi sao sa ngã đã tạo ra sáu di vật từ nó và vẫn còn sót lại một thùng kim loại sao, và khi đó những người học việc đã có ý kiến. Thứ xuất hiện từ chiếc đe là khẩu súng đầu tiên của vương quốc hoặc động cơ bao vây nhỏ nhất của nó: một khẩu pháo đeo vai không bắn quá nhiều như yêu cầu của ngôi sao thứ hai, nhằm mục đích. Anh Aldric từ chối chúc phúc cho nó, lý luận rằng bất cứ điều gì ồn ào như vậy thì trời cũng đã để ý đến rồi. Thợ Săn yêu thích nó. Không có gì hạ cấp bao giờ có."
-        },
-        "meteorlatch_crossbow": {
-          "name": "Meteorlatch, Phán quyết cuối cùng của bầu trời",
-          "look": "Sao băng kim loại, lõi vàng nóng chảy dọc theo máy xới, các chi màu đen vũ trụ khắc các chòm sao, một tia lửa sao thuần khiết có chốt.",
-          "lore": "Được rèn từ kim loại sao băng thô trong khi miệng núi lửa Mirefen vẫn phát sáng, các mảnh vụn 'quá nóng để xử lý', được rèn thành các nhánh của vũ trụ màu đen được khắc các chòm sao, một lõi vàng nóng chảy dọc theo máy xới. Nó không chọc vào chốt mà gợi lên một điều: một trục lửa sao, lỏng lẻo như một lời phán quyết và đáp xuống như phần cuối của một tia lửa. Khi Highwatch lo sợ ngay cả chiếc vương miện bất tử của Nythraxis cũng có thể không phải là thứ tồi tệ nhất dưới đỉnh núi, thì đây chính là vũ khí mà họ muốn có trên tường thành. Hãy nhắm thật tốt."
-        }
-      },
-      "seasonOne": "Mùa 1",
-      "rarity": {
-        "uncommon": "Không phổ biến",
-        "rare": "Hiếm",
-        "epic": "Sử Thi",
-        "legendary": "Huyền thoại"
-      },
       "wtype": {
         "sword": "Gươm",
         "axe": "Rìu",
@@ -625,73 +374,7 @@ export const vi_VN: EnTranslations = {
         "bow": "Cung",
         "crossbow": "Nỏ",
         "polearm": "Vũ khí cán dài"
-      },
-      "badge": {
-        "flagship": "Chủ lực",
-        "hero": "Anh hùng"
-      },
-      "inspectAria": "Kiểm tra {item}",
-      "viewModeLabel": "Chế độ xem trước",
-      "tryOn": "Dùng thử",
-      "weaponOnly": "Chỉ vũ khí",
-      "sceneLabel": "Chiếu sáng cảnh",
-      "scene": {
-        "day": "Ngày",
-        "dusk": "Chạng vạng",
-        "night": "Đêm"
-      },
-      "lore": "Truyền thuyết",
-      "buySkin": "Mua ngoại hình",
-      "unavailable": "Không khả dụng",
-      "applied": "Đã áp dụng",
-      "apply": "Áp dụng ngoại hình",
-      "detach": "Gỡ ngoại hình",
-      "equipHint": "Hãy trang bị {type} để áp dụng ngoại hình này."
-    },
-    "claudium": {
-      "title": "Claudium",
-      "open": "Mở Claudium",
-      "close": "Đóng Claudium",
-      "loading": "Đang tải Claudium...",
-      "balanceLabel": "Số dư",
-      "balanceUnit": "{amount} Claudium",
-      "solBalance": "SOL: {amount}",
-      "usdcBalance": "USDC: {amount}",
-      "wocBalance": "WOC: {amount}",
-      "unavailable": "Cửa hàng Claudium hiện không có sẵn. Số dư và giao dịch mua hàng của bạn không bị ảnh hưởng; vui lòng kiểm tra lại trong thời gian ngắn.",
-      "disclosure": "Claudium là loại tiền mềm một chiều: mua bằng tiền và tiêu vào mỹ phẩm. Nó không thể được đổi, chuyển nhượng hoặc rút tiền mặt.",
-      "buyTitle": "Mua Claudium",
-      "railLabel": "Phương thức thanh toán",
-      "railStripe": "Thẻ",
-      "railSol": "SOL",
-      "railUsdc": "USDC",
-      "railWoc": "WOC",
-      "railWocDiscount": "Giảm 20%",
-      "railWocUnavailable": "Giá WOC hiện không có sẵn.",
-      "railNativeUnavailable": "SOL/WOC hiện không khả dụng.",
-      "amountLabel": "Số lượng",
-      "showAmounts": "Hiển thị tất cả số lượng Claudium",
-      "hideAmounts": "Ẩn số lượng Claudium bổ sung",
-      "skuRow": "{usd} đổi lấy {claudium} Claudium",
-      "buyButton": "Mua",
-      "buyUnavailable": "Mua hàng không có sẵn ngay bây giờ.",
-      "storeTitle": "Cửa hàng mỹ phẩm",
-      "storeEmpty": "Không có mỹ phẩm có sẵn ngay bây giờ.",
-      "storeCost": "{amount} Claudium",
-      "spendButton": "Đổi",
-      "kindCosmetic": "Mỹ phẩm",
-      "kindSkin": "Ngoại hình",
-      "kindItem": "Vật phẩm",
-      "checkoutTitle": "Hoàn tất mua hàng",
-      "checkoutClose": "Đóng thanh toán",
-      "checkoutLoading": "Đang tải thanh toán...",
-      "checkoutPending": "Giao dịch đang được tiến hành. Xác nhận trong ví của bạn và giữ bảng này mở.",
-      "checkoutPendingButton": "Xử lý",
-      "checkoutFailed": "Không thể tải thanh toán. Vui lòng thử lại.",
-      "checkoutUnavailable": "Việc mua Claudium đó hiện không khả dụng.",
-      "checkoutWalletRequired": "Kết nối ví Solana trước khi mua Claudium bằng tiền điện tử.",
-      "checkoutWalletUnsupported": "Ví này không thể ký và gửi giao dịch Solana.",
-      "checkoutNotSettled": "Giao dịch đã được gửi nhưng Claudium vẫn chưa được ghi có. Vui lòng thử lại trong thời gian ngắn."
+      }
     },
     "theme": {
       "preset": "Giao Diện UI",
@@ -773,7 +456,6 @@ export const vi_VN: EnTranslations = {
     "mobile": {
       "jump": "Nhảy",
       "leaderboard": "Xếp Hạng",
-      "dailyRewards": "Cửa hàng",
       "deeds": "Kỳ Công",
       "professions": "Nghề nghiệp",
       "nameplates": "Tên",
@@ -1048,8 +730,6 @@ export const vi_VN: EnTranslations = {
       "clickFeedback": "Dấu Nhấp Chuột",
       "lockCursorOnRotate": "Khóa Con Trỏ Khi Xoay",
       "keybindHelpLockCursorOnRotate": "Giữ con trỏ chuột bên trong cửa sổ khi bạn kéo để xoay camera, để nó không thể chạm tới mép màn hình hoặc di chuyển sang màn hình khác. Hãy tắt nếu bạn thích con trỏ tự do.",
-      "showWalletOnCharacterScreen": "Hiện Ví Tiền Ở Màn Hình Nhân Vật",
-      "showWalletOnPlayerCard": "Hiện Ví Tiền Trên Thẻ Người Chơi",
       "showDevBadges": "Hiện Huy Hiệu Nhà Phát Triển",
       "showOwnNameplate": "Hiện Bảng Tên Của Tôi",
       "showPlayerNameplates": "Hiện Bảng Tên Người Chơi",
@@ -1070,9 +750,9 @@ export const vi_VN: EnTranslations = {
       "showThirdActionBar": "Hiển thị thanh hành động thứ ba",
       "showTargetOfTarget": "Hiện Mục Tiêu Của Mục Tiêu",
       "showAttackButton": "Hiển Thị Nút Tấn Công",
-      "showDailyRewardsChest": "Hiện Rương Phần Thưởng Hằng Ngày",
       "mobileCameraJoystick": "Cần điều khiển máy ảnh",
-      "mobileLeftHanded": "Bố cục thuận tay trái"
+      "mobileLeftHanded": "Bố cục thuận tay trái",
+      "showWalletOnCharacterScreen": "Hiện Ví Tiền Ở Màn Hình Nhân Vật"
     },
     "talentRows": {
       "tab": "Lựa chọn",
@@ -1178,9 +858,6 @@ export const vi_VN: EnTranslations = {
         "backgrounded": "Chạy Nền",
         "offline": "Ngoại Tuyến"
       }
-    },
-    "playerCard": {
-      "showWalletBadge": "Hiện huy hiệu ví tiền"
     },
     "landing": {
       "highContrast": "Tương Phản Cao",
@@ -4762,170 +4439,6 @@ export const vi_VN: EnTranslations = {
       "failed": "Không thể lưu email của bạn. Vui lòng thử lại."
     }
   },
-  "wallet": {
-    "label": "Ví $WOC",
-    "connect": "Xác minh ví",
-    "connectTitle": "Xác minh ví Solana của bạn",
-    "connectAria": "Xác minh ví Solana của bạn",
-    "verify": "Xác minh ví",
-    "verifyNew": "Xác minh ví mới",
-    "verifyTitle": "Chọn một ví và ký một lần để xác minh quyền sở hữu.",
-    "verifyAria": "Chọn một ví và ký một lần để xác minh quyền sở hữu",
-    "verifyAddressAria": "Ký để xác minh ví {address} cho tài khoản của bạn",
-    "appConnected": "Ứng dụng đã kết nối",
-    "connectApp": "Kết nối ứng dụng",
-    "connectAppTitle": "Kết nối ứng dụng ví trên trình duyệt này",
-    "connectAppAria": "Kết nối ứng dụng ví trên trình duyệt này",
-    "verifying": "Đang xác minh...",
-    "verifyingTitle": "Quá trình xác minh ví đang diễn ra.",
-    "switch": "Đổi ví",
-    "switchTitle": "Xác minh một ví khác",
-    "switchAria": "Xác minh một ví khác",
-    "unlink": "Hủy liên kết",
-    "unlinkTitle": "Gỡ xác minh ví khỏi tài khoản này",
-    "unlinkAria": "Gỡ xác minh ví khỏi tài khoản này",
-    "signOut": "Ngắt kết nối",
-    "signOutTitle": "Ngắt kết nối ứng dụng ví trên trình duyệt này",
-    "signOutAria": "Ngắt kết nối ứng dụng ví trên trình duyệt này",
-    "hide": "Ẩn",
-    "hideTitle": "Ẩn hàng ví trên màn hình này",
-    "hideAria": "Ẩn hàng ví trên màn hình này",
-    "hiddenNotice": "Đã ẩn hàng ví. Bật lại trong trò chơi từ Tùy Chọn > Giao Diện.",
-    "linkedTitle": "Ví đã được xác minh cho tài khoản của bạn. Nhấn để quản lý ứng dụng ví.",
-    "linkedDisconnectedTitle": "Ví vẫn được xác minh cho tài khoản của bạn. Kết nối lại để quản lý ứng dụng ví.",
-    "linkedDisconnectedAria": "Ví vẫn được xác minh cho tài khoản của bạn. Kết nối lại để quản lý ứng dụng ví.",
-    "linkTitle": "Nhấn để ký và liên kết ví này với tài khoản của bạn.",
-    "connectedTitle": "Đã kết nối. Đăng nhập để liên kết ví này với tài khoản của bạn.",
-    "balanceTitle": "Số dư $WOC của ví Solana đã xác minh",
-    "balanceAria": "Số dư ví Solana đã xác minh: {balance}",
-    "balancePreviewTitle": "Xem trước số dư $WOC của ví đã kết nối",
-    "balancePreviewAria": "Xem trước số dư ví đã kết nối: {balance}. Liên kết ví để xác minh huy hiệu chủ sở hữu.",
-    "balanceAmount": "{amount} $WOC",
-    "bagConnect": "Liên kết ví",
-    "bagLink": "Xác minh ví",
-    "bagReconnect": "Kết nối lại ví",
-    "connected": "Đã kết nối: {address}",
-    "connectedWithBalance": "Đã kết nối: {balance} - {address}",
-    "connectedLinked": "Đã xác minh: {address}",
-    "connectedLinkedWithBalance": "Đã xác minh: {balance} - {address}",
-    "helpDisconnected": "Xác minh một ví Solana để bật huy hiệu chủ sở hữu và phù hiệu trên thẻ người chơi. Không cần giao dịch hay SOL.",
-    "helpLoginToLink": "Đã kết nối {address}. Đăng nhập để liên kết nó với tài khoản của bạn.",
-    "helpLoginToLinkWithBalance": "Đã kết nối {address} với {balance}. Đăng nhập để liên kết nó với tài khoản của bạn.",
-    "helpReadyToLink": "Đã chọn ví: {address}. Ký một lần để xác minh huy hiệu chủ sở hữu và thẻ người chơi.",
-    "helpReadyToLinkWithBalance": "Đã chọn ví: {address} với {balance}. Ký một lần để xác minh huy hiệu chủ sở hữu và thẻ người chơi.",
-    "helpLinked": "Đặc quyền chủ sở hữu đang hoạt động. Ứng dụng ví đã kết nối trên trình duyệt này.",
-    "helpLinkedWithBalance": "Đặc quyền chủ sở hữu đang hoạt động. Ứng dụng ví đã kết nối trên trình duyệt này.",
-    "helpLinkedDisconnected": "Đặc quyền chủ sở hữu đang hoạt động. Kết nối ứng dụng khi bạn cần ký hoặc chi tiêu.",
-    "helpLinkedDisconnectedWithBalance": "Đặc quyền chủ sở hữu đang hoạt động. Kết nối ứng dụng khi bạn cần ký hoặc chi tiêu.",
-    "extensionHelp": "Để thấy ví ở đây, hãy giữ một tiện ích ví trình duyệt như Solflare Wallet đang hoạt động.",
-    "mobileAppHelp": "Hãy chọn Phantom hoặc Solflare. Ứng dụng ví của bạn sẽ yêu cầu phê duyệt. Giữ trò chơi này mở và quay lại khi hoàn thành.",
-    "standaloneAppHelp": "Kết nối ví chưa có sẵn trong ứng dụng Màn hình chính. Hãy mở World of ClaudeCraft trong Safari hoặc Chrome để sử dụng Phantom hoặc Solflare.",
-    "openAppTitle": "Tiếp tục trong {wallet}",
-    "openAppHelp": "Hãy mở {wallet} để xem xét yêu cầu này. Giữ tab trò chơi này mở trong khi ứng dụng ví đang hoạt động.",
-    "openAppButton": "Mở {wallet}",
-    "manualReturnBrowserHelp": "Sau khi phê duyệt, hãy quay lại tab trò chơi này. Nếu iOS mở một trình duyệt khác, hãy đóng nó và quay lại trình duyệt gốc thủ công.",
-    "manualReturnStandaloneHelp": "Sau khi phê duyệt, hãy quay lại World of ClaudeCraft từ Màn hình chính của bạn. Nếu iOS mở một trình duyệt, hãy đóng nó và mở lại ứng dụng Màn hình chính thủ công.",
-    "preparingAppButton": "Đang chuẩn bị {wallet}...",
-    "walletAppUnavailable": "Không thể chuẩn bị {wallet}. Hãy đóng cửa sổ này và thử lại.",
-    "flowConnect": "Chọn một ví. Quá trình xác minh sẽ tiếp tục tự động.",
-    "flowSign": "Ký vào thông điệp xác minh trong ứng dụng ví của bạn. Không cần giao dịch hay SOL.",
-    "flowVerify": "Đang xác minh quyền sở hữu ví...",
-    "linkFailed": "Xác minh ví thất bại.",
-    "verifyFailed": "Xác minh ví thất bại.",
-    "unlinkFailed": "Không thể hủy liên kết ví.",
-    "browser": {
-      "eyebrow": "Ủy quyền ví trên máy tính",
-      "title": "Kết Nối Ví Solana",
-      "linkBody": "Hãy chọn một tiện ích mở rộng ví trong trình duyệt này. Bạn sẽ ký một tin nhắn xác minh, sau đó quay lại ứng dụng máy tính.",
-      "paymentBody": "Hãy chọn ví đã liên kết với tài khoản của bạn và phê duyệt giao dịch trong trình duyệt này.",
-      "extensionHelp": "Không tìm thấy tiện ích mở rộng ví tương thích nào. Hãy cài đặt hoặc mở khóa Phantom, Solflare hoặc ví trình duyệt Solana khác, rồi thử lại.",
-      "safety": "World of ClaudeCraft không bao giờ yêu cầu cụm từ khôi phục hoặc khóa riêng tư của bạn.",
-      "continueWith": "Tiếp tục với {wallet}",
-      "reviewTitle": "Xem xét trong ví của bạn",
-      "reviewBody": "Làm theo hướng dẫn từ {wallet}. Giữ trang trình duyệt này mở.",
-      "completeTitle": "Ủy quyền ví hoàn tất",
-      "completeBody": "Bạn có thể quay lại ứng dụng máy tính World of ClaudeCraft.",
-      "returnButton": "Quay lại ứng dụng máy tính",
-      "failed": "Ủy quyền ví thất bại hoặc đã hết hạn. Hãy quay lại ứng dụng máy tính và thử lại.",
-      "retry": "Thử Lại"
-    },
-    "holder": "Chủ sở hữu $WOC",
-    "holderTierTitle": "Chủ sở hữu $WOC bậc {tier}",
-    "holderTiers": {
-      "ember": {
-        "name": "Tàn Lửa",
-        "flavor": "Tia lửa đã được nhen."
-      },
-      "coinbearer": {
-        "name": "Người Mang Tiền",
-        "flavor": "Đồng xu đầu tiên trong rương chiến."
-      },
-      "coppercrest": {
-        "name": "Mào Đồng",
-        "flavor": "Đồng đã chất, tên người được nhắc."
-      },
-      "silverbound": {
-        "name": "Ràng Bạc",
-        "flavor": "Gắn liền với bạc, gây dựng kho báu."
-      },
-      "gilded": {
-        "name": "Mạ Vàng",
-        "flavor": "Mạ vàng và rạng rỡ."
-      },
-      "vaultwarden": {
-        "name": "Cai Ngục Kho Báu",
-        "flavor": "Giờ canh giữ một kho báu thực sự: 0,01% toàn bộ $WOC."
-      },
-      "whale": {
-        "name": "Cá Voi",
-        "flavor": "Biển sâu rẽ lối khi bạn bơi: 0,1% nguồn cung."
-      },
-      "leviathan": {
-        "name": "Leviathan",
-        "flavor": "Thị trường cảm nhận bước đi của bạn: 1% nguồn cung."
-      },
-      "tidelord": {
-        "name": "Chúa Tể Thủy Triều",
-        "flavor": "Thủy triều đáp lời gọi của bạn: 2% nguồn cung."
-      },
-      "stormcaller": {
-        "name": "Người Gọi Bão",
-        "flavor": "Bão tố tụ về danh xưng của bạn: 3% nguồn cung."
-      },
-      "krakencrown": {
-        "name": "Vương Miện Kraken",
-        "flavor": "Được biển sâu phong vương: 4% nguồn cung."
-      },
-      "titanforged": {
-        "name": "Titan Rèn",
-        "flavor": "Rèn giữa các titan: 5% nguồn cung."
-      },
-      "starhoard": {
-        "name": "Kho Sao",
-        "flavor": "Kho báu bẻ cong ánh sao: 6% nguồn cung."
-      },
-      "voidwarden": {
-        "name": "Cai Ngục Hư Không",
-        "flavor": "Người gác bên rìa hư không: 7% nguồn cung."
-      },
-      "realmshaper": {
-        "name": "Người Tạo Hình Vương Quốc",
-        "flavor": "Bạn nhào nặn lại vương quốc: 8% nguồn cung."
-      },
-      "worldforger": {
-        "name": "Người Rèn Thế Giới",
-        "flavor": "Rèn nên một thế giới của riêng bạn: 9% nguồn cung."
-      },
-      "worldbearer": {
-        "name": "Người Mang Thế Giới",
-        "flavor": "Bạn mang theo một mảnh thế giới: 10% nguồn cung."
-      },
-      "sovereign": {
-        "name": "Quân Vương",
-        "flavor": "Vương quốc quỳ gối: toàn bộ nguồn cung."
-      }
-    }
-  },
   "playerCard": {
     "shareButton": "Chia Sẻ Thẻ Người Chơi",
     "title": "Thẻ Người Chơi",
@@ -4949,8 +4462,7 @@ export const vi_VN: EnTranslations = {
     "footerHandleWithRecruits": "@{handle} - {recruited}",
     "footerCta": "Rèn nên huyền thoại của bạn: {siteUrl}",
     "arenaStat": "Đấu Trường",
-    "shareTierBit": ", người nắm giữ $WOC hạng {tier}",
-    "shareText": "Tôi đang rèn nên huyền thoại của mình trong World of ClaudeCraft: {className} cấp {level}{tierBit}. Hãy tham gia thế giới của tôi:",
+    "shareText": "Tôi đang rèn nên huyền thoại của mình trong World of ClaudeCraft: {className} cấp {level}. Hãy tham gia thế giới của tôi:",
     "nativeShareTitle": "World of ClaudeCraft",
     "fileNameFallback": "nguoichoi",
     "actionShareX": "Chia Sẻ Lên X",

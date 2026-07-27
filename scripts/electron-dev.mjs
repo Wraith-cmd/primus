@@ -75,9 +75,9 @@ async function waitForVite() {
 }
 
 try {
-  // The main process requires the electron/vendor bundles (logging, updater)
-  // even in dev, and they are gitignored generated output, so rebuild them
-  // before launching the shell.
+  // The main process requires the electron/vendor bundles (logging) even in
+  // dev, and they are gitignored generated output, so rebuild them before
+  // launching the shell.
   buildElectronVendor();
   await waitForVite();
   const prime = linuxPrimeDevConfig();

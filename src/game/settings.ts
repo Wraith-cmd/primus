@@ -228,20 +228,13 @@ export const BOOL_SETTINGS = {
   // off by default: show a small frames-per-second readout in the corner for
   // players tuning their graphics settings.
   showFps: { def: false },
-  // on by default: show the linked/connected wallet row on the character
-  // selection screen. This is only a local display preference; verification and
-  // holder perks remain active when the row is hidden.
-  showWalletOnCharacterScreen: { def: true },
-  // on by default: include verified wallet holder/balance details in newly
-  // rendered player cards. The player-card modal can toggle this per device.
-  showWalletOnPlayerCard: { def: true },
   // on by default: show the developer badge (nameplate glyph + name outline,
   // inspect-window block, player card, and the Developers leaderboard tab).
   // Purely a local display preference: the badge is still earned and broadcast
   // either way, this only controls whether THIS client renders it.
   showDevBadges: { def: true },
   // on by default: render your OWN overhead nameplate (name, level, guild, hp,
-  // $WOC holder tier, dev badge, linked-Discord PFP) exactly as other players see
+  // cosmetic flair, dev badge, linked-Discord PFP) exactly as other players see
   // it, so Discord linking and other flair changes have immediate visual feedback.
   // Purely a local display preference; players can turn it off for the classic view.
   showOwnNameplate: { def: true },
@@ -310,9 +303,6 @@ export const BOOL_SETTINGS = {
   // preference read by the HUD's target-frame update; the id it reads already rides
   // the wire, and the frame hides itself when the target-of-target is unknown.
   showTargetOfTarget: { def: false },
-  // on by default: keep the Daily Rewards chest launcher visible on the HUD. Hiding
-  // it only removes the shortcut; rewards, eligibility, and the panel remain available.
-  showDailyRewardsChest: { def: true },
   // internal, never shown in the options UI: set true once main.ts has persisted a
   // device-appropriate graphicsPreset on a player's first run (a CONCLUSIVE detection).
   // It gates firstRunGraphicsPreset so a recognized device is classified at most once and

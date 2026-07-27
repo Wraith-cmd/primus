@@ -33,7 +33,7 @@ dependency set. The one sanctioned exception is the standalone admin dashboard
 | `server/http/` | The REST request pipeline spine: table router, middleware onion, per-domain `RouteDef` tables, typed schemas, stable error codes. |
 | `headless/` + `python/` | RL env server (`env_server.ts`) + Python Gym bindings. |
 | `bot/` | Discord bot (role sync, relay, activity feed; own `CLAUDE.md`). |
-| `electron/` (+ `build/`) | Desktop (Steam) shell + packaging assets; see `docs/desktop-release.md`. |
+| `electron/` (+ `build/`) | Desktop shell + packaging assets; see `docs/desktop-release.md`. |
 | `android/` + `ios/` | Capacitor native shells (`npm run native:*`). |
 | `tests/` | Vitest suite (subdirectory map in `tests/CLAUDE.md`). |
 | `scripts/` | Asset/build/i18n/SFX tooling + browser E2E / screenshot scripts. |

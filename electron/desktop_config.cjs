@@ -1,40 +1,19 @@
 'use strict';
 
 // Pure, Node-testable resolution of the desktop shell's runtime configuration:
-// which distribution channel this build is (website download vs Steam depot),
-// whether the in-app auto-updater may run, and where crash minidumps may be
-// submitted. Lives beside shell_guards.cjs for the same reason: electron/main.cjs
-// runs outside tsc and vitest, so every decision worth pinning is made here where
+// the web origins it talks to and where crash minidumps may be submitted. Lives
+// beside shell_guards.cjs for the same reason: electron/main.cjs runs outside tsc
+// and vitest, so every decision worth pinning is made here where
 // tests/electron_desktop_config.test.ts can exercise it directly. No electron
 // imports; callers pass everything in.
 //
-// The channel is stamped into the PACKAGED package.json by scripts/electron-build.mjs
+// The values are stamped into the PACKAGED package.json by scripts/electron-build.mjs
 // (electron-builder extraMetadata writes a `wocDesktop` object), because a shipped
-// app has no build-time env: the Steam depot and the website installer are the same
-// code and differ only by this stamp. WOC_DISTRIBUTION overrides it for local
-// testing of either path in `electron .` / electron:dev.
+// app has no build-time env.
 
-const { PRODUCTION_API_ORIGIN, updateChannelForOrigin } = require('./update_guard.cjs');
-
-const DISTRIBUTIONS = new Set(['website', 'steam']);
-
-// Resolve the distribution channel. The WOC_DISTRIBUTION env override applies
-// ONLY to unpackaged checkouts (`electron .` / electron:dev): a PACKAGED
-// build's channel is its stamp, period. Honoring env on a packaged build
-// would be exactly the escape hatch updaterAllowed promises not to have
-// (WOC_DISTRIBUTION=website on a Steam install would flip the updater back
-// on). Unknown values collapse to the default rather than throwing: a
-// half-stamped build must still launch, and 'website' is the safe channel
-// (its only extra behavior, the updater, is additionally gated on isPackaged).
-function resolveDistribution({ packagedMetadata, env, isPackaged } = {}) {
-  const fromEnv = env?.WOC_DISTRIBUTION;
-  if (isPackaged !== true && typeof fromEnv === 'string' && DISTRIBUTIONS.has(fromEnv)) {
-    return fromEnv;
-  }
-  const stamped = packagedMetadata?.wocDesktop?.distribution;
-  if (typeof stamped === 'string' && DISTRIBUTIONS.has(stamped)) return stamped;
-  return 'website';
-}
+// The backend this build talks to unless a stamp or (unpackaged) env says
+// otherwise. Also electron/main.cjs's fallback when a stamped origin is garbage.
+const PRODUCTION_API_ORIGIN = 'https://worldofclaudecraft.com';
 
 // The crash-minidump submit URL, if the maintainer provisioned one at build
 // time (stamped like the distribution). WOC_CRASH_SUBMIT_URL is a DEV-ONLY
@@ -67,8 +46,8 @@ function resolveCrashSubmitUrl({ packagedMetadata, env, isPackaged } = {}) {
 // the packaged main process always agrees with the baked bundle; loginOrigin
 // is main-process-only), because a packaged build honoring VITE_DESKTOP_* from
 // runtime env would let a local env var widen the CSP or redirect the login
-// page: the same escape hatch resolveDistribution and resolveCrashSubmitUrl
-// close. Env applies to unpackaged checkouts only. Values are picked, not
+// page: the same escape hatch resolveCrashSubmitUrl closes. Env applies to
+// unpackaged checkouts only. Values are picked, not
 // sanitized; the caller (electron/main.cjs) still derives/normalizes them
 // before use, so a garbage stamp degrades to the production origin there.
 function resolveDesktopOrigins({ packagedMetadata, env, isPackaged } = {}) {
@@ -83,44 +62,25 @@ function resolveDesktopOrigins({ packagedMetadata, env, isPackaged } = {}) {
   return { apiOrigin, loginOrigin };
 }
 
-// The one gate the auto-updater honors. Steam builds MUST NOT self-update
-// (SteamPipe owns updates; Valve's guidance is explicit), and an unpackaged
-// checkout has nothing to update, so the updater runs only for a packaged
-// website build. There is deliberately no env escape hatch to force it ON in
-// a Steam build; WOC_DISTRIBUTION=website on a dev checkout still stays off
-// via isPackaged.
-function updaterAllowed({ distribution, isPackaged }) {
-  return isPackaged === true && distribution === 'website';
+// Wallet handoff is available in every build of this shell. Kept as a pure,
+// tested predicate (rather than inlined into the IPC handler) so the capability
+// stays one decision the shell answers the renderer with.
+function walletConnectionSupported() {
+  return true;
 }
 
-// Wallet handoff is intentionally limited to the website-distributed shell.
-// Keep this decision pure and tested so the Steam IPC cannot drift open.
-function walletConnectionSupported({ distribution }) {
-  return distribution === 'website';
-}
-
-// One-call summary used by electron/main.cjs at startup. updateChannel is a
-// pure function of the resolved apiOrigin (electron/update_guard.cjs): there
-// is deliberately no stamp and no env hatch for it, so a build baked with a
-// non-production origin can never read the production update feed, however it
-// was stamped or launched.
+// One-call summary used by electron/main.cjs at startup.
 function resolveDesktopConfig({ packagedMetadata, env, isPackaged } = {}) {
-  const distribution = resolveDistribution({ packagedMetadata, env, isPackaged });
-  const origins = resolveDesktopOrigins({ packagedMetadata, env, isPackaged });
   return {
-    distribution,
-    updaterEnabled: updaterAllowed({ distribution, isPackaged }),
     crashSubmitUrl: resolveCrashSubmitUrl({ packagedMetadata, env, isPackaged }),
-    updateChannel: updateChannelForOrigin(origins.apiOrigin),
-    ...origins,
+    ...resolveDesktopOrigins({ packagedMetadata, env, isPackaged }),
   };
 }
 
 module.exports = {
-  resolveDistribution,
+  PRODUCTION_API_ORIGIN,
   resolveCrashSubmitUrl,
   resolveDesktopOrigins,
-  updaterAllowed,
   walletConnectionSupported,
   resolveDesktopConfig,
 };

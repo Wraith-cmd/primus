@@ -1,5 +1,13 @@
 # Desktop ship notes: what landed, and how everything works per platform
 
+> **This fork: Steam and auto-update are removed.** The Steam depot channel
+> (`electron:build:steam`, `steamworks.js`, `electron/steam.cjs`) and the in-app
+> auto-updater (`electron-updater`, `electron/updater.cjs`, the generic publish
+> feed) no longer exist in this tree. `npm run electron:dev`, `electron:pack`,
+> and `electron:build` are the surviving commands; every Steam or update-feed
+> section below is retained for historical reference only and does not describe
+> the current build.
+
 Companion to `docs/desktop-release.md` (the terse operational runbook) and
 `ELECTRON-DESKTOP-AUDIT.md` (the decision log). This file is the explainer: what
 the production-readiness change contains, and the per-platform mechanics of

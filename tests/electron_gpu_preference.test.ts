@@ -392,8 +392,8 @@ describe('shouldRelaunchForLinuxPrime', () => {
     ).toBe(false);
   });
 
-  it('is TRUE for a marked process whose argv lost the ozone flag (updater restart)', () => {
-    // electron-updater's restart-to-update respawns with the current env (marker and PRIME
+  it('is TRUE for a marked process whose argv lost the ozone flag (external restart)', () => {
+    // An external relaunch respawns with the current env (marker and PRIME
     // vars included) but EMPTY argv; without this arm the updated process would run PRIME
     // on the session default backend, the documented Wayland crash-loop. Loop-safe: the
     // relaunch it triggers always yields a child WITH an explicit ozone arg.
@@ -482,7 +482,7 @@ describe('relaunchForLinuxPrime', () => {
     expect(unref).toHaveBeenCalled();
   });
 
-  it('re-execs a marked-but-flagless process to restore the argv half (updater restart)', () => {
+  it('re-execs a marked-but-flagless process to restore the argv half (external restart)', () => {
     // The post-auto-update state: env inherited from the relaunched child (marker and all
     // PRIME vars present), argv empty. The relaunch must fire again purely to restore
     // --ozone-platform=x11, and the marker stays set on the new child.
@@ -498,7 +498,7 @@ describe('relaunchForLinuxPrime', () => {
   it('spawns the outer AppImage (env.APPIMAGE), never execPath, inside an AppImage', () => {
     // execPath points inside the runtime's FUSE mount, which dies the moment this process
     // exits; the outer file survives and brings up a fresh runtime + mount (the same
-    // source electron-updater restarts from).
+    // source an external relauncher starts from).
     const { spawn, calls } = fakeSpawn();
     const env = { APPIMAGE: '/home/p/Applications/world-of-claudecraft.AppImage' };
     relaunchForLinuxPrime(deps({ spawn, env, execPath: '/tmp/.mount_worldXYZ/binary', argv: [] }));
@@ -840,7 +840,7 @@ describe('forceHighPerformanceGpu', () => {
 
 describe('main.cjs gpu wiring pin', () => {
   // main.cjs is the electron entry and cannot run under vitest, so pin the wiring
-  // textually (same approach as the updater wiring pin in electron_updater_track.test.ts).
+  // textually.
   const source = readFileSync(new URL('../electron/main.cjs', import.meta.url), 'utf8');
 
   it('calls forceHighPerformanceGpu at module scope, before app.whenReady', () => {

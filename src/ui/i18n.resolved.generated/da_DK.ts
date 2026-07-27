@@ -363,258 +363,7 @@ export const da_DK: EnTranslations = {
       "title": "Følelsesudtryk",
       "done": "Færdig"
     },
-    "dailyRewards": {
-      "title": "Daglige belønninger",
-      "close": "Luk daglige belønninger",
-      "loading": "Indlæser daglige belønninger...",
-      "error": "Kunne ikke indlæse daglige belønninger.",
-      "disabled": "Daglige belønninger er i øjeblikket deaktiveret. Vi annoncerer opdateringer til denne funktion i Discord-kanalen.",
-      "intro": "Behold nok WOC i din verificerede wallet for at låse daglige belønninger op. Optjen point med én daglig drejning og skiftende opgaver, og klatr så op ad den daglige resultattavle for en andel af præmiepuljen.",
-      "disclaimer": "WOC-kursen kan bevæge sig hurtigt. Vi anbefaler at holde mere end minimummet på 20 USD, så normale kursudsving ikke lukker dig ude. Dette er ikke finansiel rådgivning.",
-      "prize": "Præmiepulje",
-      "reset": "Nulstil",
-      "endsIn": "Slutter om {time}",
-      "remainingLessThanMinute": "<1m",
-      "remainingMinutes": "{minutes}m",
-      "remainingHoursMinutes": "{hours}t {minutes}m",
-      "remainingDaysHours": "{days} dage {hours} timer",
-      "score": "Score",
-      "walletValue": "Wallet-værdi (WOC)",
-      "usd": "{amount} USD",
-      "sol": "{amount} SOL",
-      "unknown": "Ukendt",
-      "spinTitle": "Daglig drejning",
-      "spinDialogTitle": "Daglig belønningsdrejning",
-      "spinClose": "Luk daglig drejning",
-      "spinReady": "Én drejning er klar.",
-      "spinClaimed": "Indløst: +{points} point.",
-      "spinResult": "+{points} point",
-      "spinButton": "Drej",
-      "tasks": "Opgaver",
-      "taskMultiplier": "x{multiplier} multiplikator",
-      "oneVsOneExcluded": "1 mod 1-kampe giver ikke point til daglige belønninger.",
-      "pointsGained": "{points} daglige belønningspoint optjent.",
-      "showChestButton": "Vis kiste",
-      "hideChestButton": "Skjul kiste",
-      "hideChestConfirmTitle": "Skjul kisten med daglige belønninger?",
-      "hideChestConfirmBody": "Dette fjerner kiste-genvejen fra dit HUD. Belønninger, adgang og dette panel forbliver tilgængelige; du kan hente genvejen tilbage fra indstillingerne.",
-      "hideChestConfirmOk": "Skjul kiste",
-      "hideChestConfirmCancel": "Annuller",
-      "leaderboard": "Daglig resultattavle",
-      "totalPlayer": "{count} spiller i dag",
-      "totalPlayers": "{count} spillere i dag",
-      "history": "Tidligere vindere",
-      "noLeaders": "Ingen point endnu.",
-      "noHistory": "Ingen udbetalinger endnu.",
-      "walletConnectTitle": "Verificer wallet",
-      "walletConnectBody": "Verificer en Solana-wallet med WOC for at låse daglige belønninger op.",
-      "walletConnectButton": "Verificer wallet",
-      "walletHoldTitle": "Behold WOC",
-      "walletHoldBody": "Behold mindst {amount} USD i WOC for at låse daglige belønninger op.",
-      "walletPriceBody": "WOC-prissætning er utilgængelig lige nu. Kom tilbage om lidt.",
-      "reason": {
-        "eligible": "Belønninger låst op.",
-        "no_wallet": "Forbind en wallet med mindst 20 USD i WOC.",
-        "under_minimum": "Wallet er under WOC-minimummet på 20 USD.",
-        "price_unavailable": "WOC-prisen er utilgængelig, belønninger er midlertidigt låst.",
-        "banned": "Du er udelukket fra daglige belønninger. Årsag: {reason}",
-        "bannedUntil": "Du er udelukket fra daglige belønninger i yderligere {remaining}. Adgangen vender tilbage {until}. Begrundelse: {reason}"
-      }
-    },
     "wocStore": {
-      "title": "WOC-butik",
-      "close": "Luk WOC-butikken",
-      "tabsLabel": "Sektioner i WOC-butikken",
-      "storeTab": "Butik",
-      "rewardsTab": "Daglige belønninger",
-      "loading": "Indlæser WOC-butikken...",
-      "error": "WOC-butikken er ikke tilgængelig lige nu. Prøv igen om lidt.",
-      "balance": "Claudium-saldo",
-      "buyClaudium": "Køb Claudium",
-      "owned": "Du ejer dette",
-      "needMoreTitle": "Mere Claudium påkrævet",
-      "needMoreBody": "Du skal bruge {shortfall} mere Claudium for at købe {item}.",
-      "cancel": "Annuller",
-      "confirmTitle": "Bekræft køb af kosmetik",
-      "confirmBody": "Køb {item} til {cost} Claudium?",
-      "confirmPurchase": "Køb",
-      "priceChanged": "Prisen ændrede sig før købet blev gennemført. Gennemgå den opdaterede pris, og bekræft igen.",
-      "armoryEyebrow": "Sæson 1",
-      "armoryTitle": "Våbenhuset",
-      "armoryBody": "Begrænsede våbenskins fra sæson 1-våbenhuset. De gælder for hele kontoen, er rent kosmetiske og vises for alle omkring dig.",
-      "wallet": {
-        "title": "Solana-pung",
-        "unlinked": "Tilslut en pung-app og underskriv derefter én gang for at knytte dens offentlige adresse til din WoC-konto. Vi modtager aldrig din genoprettelsesfrase eller private nøgle.",
-        "connectedUnlinked": "Pung-appen er tilsluttet denne browser, men dens offentlige adresse er endnu ikke knyttet til din WoC-konto.",
-        "linkedDisconnected": "Din offentlige adresse er tilknyttet. Gentilslut den pung-app, når du vil betale med SOL eller WOC.",
-        "linkedConnected": "Din tilknyttede pung-app er tilsluttet og klar til SOL- eller WOC-køb.",
-        "mismatched": "En anden pung er tilsluttet. Bekræft den for at erstatte den tilknyttede adresse, eller gentilslut den tilknyttede pung.",
-        "connect": "Tilslut pung",
-        "verify": "Bekræft og tilknyt",
-        "reconnect": "Gentilslut pung",
-        "manage": "Administrer pung"
-      },
-      "collectionLine": "{collection}-samlingen",
-      "collections": {
-        "guildmark": "Laugsmærke",
-        "emberwrought": "Glødesmedet",
-        "hoarfrost": "Rimfrost",
-        "fallen_star": "Falden Stjerne"
-      },
-      "skins": {
-        "guildmark_arming_sword": {
-          "name": "Laugsmærket Væbnersværd",
-          "look": "Blåneret stålklinge, fiskehaleformet korsgreb i bronze, blågrønt lædergreb og et lille stemplet laugssigil.",
-          "lore": "Hvor den smedede klinge er anonym, er denne signeret. En pansermester tjener kun retten til at synke sit mærke i ricassoen, når verdensmarkedets købmand vil stå inde for hans stål, og Smith Haldrens mærke står inde for. Blåt mod dalens fugt, balanceret til et hår. Du betaler for frimærket lige så meget som sværdet, og det er det værd."
-        },
-        "brasscap_axe": {
-          "name": "Messinghætte-Økse",
-          "look": "Poleret stålblad, messinghætte og skaftskinner på et lakeret asketræsskaft, sirlig omvikling og smedens stempel.",
-          "lore": "En stemplet økse er en pral, du kan holde. Messinghætten og langets er halvt rustning, halvt signatur: de forhindrer, at skaftet flækker, og de fanger værtshusets lys, så alle ved, at du har købt Armorer Hodes værk, ikke en milits, der er hånd-me-down. \"Hvis det skærer, sælger jeg det,\" siger Highwatch-smeden. Denne skærer."
-        },
-        "tempered_flanged_mace": {
-          "name": "Hærdet Flangekølle",
-          "look": "Sekskantet køllehoved af hærdet, blåneret stål, messingkrave og endeknop samt vinrødt lædergreb.",
-          "lore": "Seks flanger af blågjort, hærdet stål, hver slebet for at åbne et hjelm, dækket af messing og viklet i vinrødt læder. Rigets pansermænd laver ikke grimme våben, selv når arbejdet er brutalt. Denne blev bestilt gennem verdensmarkedet, ikke trukket fra et stativ; et eller andet sted er der en hovedbog med en stolt købers navn og den sum, han betalte Hode for det."
-        },
-        "guildmark_dirk": {
-          "name": "Laugsmærket Dirk",
-          "look": "Slank dirk i hærdet stål, bronzebeskytter og møtrik, mørkegrønt snoregreb, stemplet sigil.",
-          "lore": "Hvad en lavet mand bærer, når sværdet bliver hjemme: slank, hærdet, stemplet med det samme mærke, der attesterer en fuld klinge, båret på bæltet som et signet med en kant. Underspillet for alle undtagen dem, der kan læse en rustningsmands bevis. Kvartermester Bree opbevarer en skuffe af dem på Highwatch for officerer, der har fortjent murens respekt."
-        },
-        "brasscrown_staff": {
-          "name": "Messingkrone-Vandrestav",
-          "look": "Hårdttræsstav med en drejet messingkrone, messingdop og farvet læderbånd.",
-          "lore": "Drevet af krydret hårdttræ og kronet med en messingfinal, Eastbrook-smedene støbt i hundrede, men perfekt af den ene. Det tilhører den slags rejsende, der ønsker at blive taget seriøst ved både Fenbridges gate og Highwatchs mur. En vandrestav, der aldrig rigtig har behøvet at gå; det farvede bånd matcher en frakke du kan gætte prisen på."
-        },
-        "lacquered_wand": {
-          "name": "Lakeret Stav",
-          "look": "Slank dybrød lakeret tryllestav, to polerede messingbånd, lille afrundet messingspids.",
-          "lore": "Dybrød lak i syv omhyggelige lag, omkranset to gange af poleret messing: den slags tryllestav en landsbymagiker køber på Verdensmarkedet, når betalingen begynder at komme i rigtige mønter, og udseendet skal følge med. Den leder ikke Lyset bedre end en birkekæp. Men den stråler over Købmandens disk, og halvdelen af den mindre magi har altid været at blive troet."
-        },
-        "fletcher_s_guild_bow": {
-          "name": "Buemagerlaugets Bue",
-          "look": "Recurvebue af lakeret valnød, messingbeslåede bueender, vokset hørstreng og et laugsstempel på grebet.",
-          "lore": "Det tætteste, riget har på et laug, er et fletchers stempel på stigrøret, et løfte om, hvad der er indeni, den måde en vinbonde forsegler et fad på. Lakeret valnød, messing ved benspidserne, en vokset hørsnor, der ikke vil flosse gennem en Mirefen-regn. Hver led argumenterer for prisen. Træk den én gang forbi enkekransen, og argumentet vinder."
-        },
-        "cinderbrand_sword": {
-          "name": "Glødebrand",
-          "look": "Mørk klinge af smedet stål, blodrille fyldt med glødende glødeorange runer, varmerevner og en ulmende ædelsten i korsgrebet.",
-          "lore": "Den første klinge slukkede ikke i vand, men i Blessed Embers rivet fra Stormcrag, kullene, som Highwatch-smedene sværger 'brænder blåt og rent, fordi bjerget husker sin gamle ed'. Ilden ulmer orange og vil ikke dø; runerne holder sig varme til en bar hånd på murens koldeste nat. Cinderbrand har aldrig brug for belysning. Den nægter simpelthen at gå ud."
-        },
-        "emberbite_axe": {
-          "name": "Glødebid",
-          "look": "Økse af sortsværtet jern med glødeorange revner gennem bladet, en indkapslet glødeperle og flimrende varmedis.",
-          "lore": "Pansermester Hode arbejdede et levende kul af bjergild ind i hjertet af biten, så kanten afkøles aldrig rigtigt mellem slagene. Revnerne ånder orange på nedsvinget, som om strejken vækker noget, det første smedje efterlod sovende i jernet. De siger, at et Stormcrag-element opgav gløden for det; de siger rigtig mange ting på Highwatch, når vinden blæser."
-        },
-        "smoulderfall_mace": {
-          "name": "Ulmefald",
-          "look": "Mørke jernflanger gløder orange langs deres indre revner, en smeltet kerne i hovedet.",
-          "lore": "En mace, der bærer sit eget ildsted: en sten med smeltet kerne, der er skåret af Sanctum-sælen, der var 'smedet med bjergild', som glødede i hovedet. Flangerne forbliver varme at røre ved og varmere, hvor de lander; en Highwatch-sergent sværger, at et slag fra det efterlader et blåt mærke, der lyser svagt til morgenen. Bjergets ild gjorde endelig til at bryde frem for at forsegle."
-        },
-        "ashspark_dagger": {
-          "name": "Askegnist-Stikkniv",
-          "look": "Kort, sortsværtet klinge med glødende, glødeorange årer, en lille ulmende ædelsten i knappen, aske og gnister.",
-          "lore": "En baggydeklinge med bjergets ild smuglet ind i dens sten, en pansermesters stille vittighed: selv en pung kan bære en glød af den første smedning. Sortfarvet, året med orange, altid en nuance for varm i skeden. Tegn den i mørket under Highwatch, og gløden tænder din hånd lige nok til at finde hullet i en mands vagt."
-        },
-        "forgeheart_staff": {
-          "name": "Smedehjerte-Stav",
-          "look": "Jernskoet stav kronet med en buret glødende glødekerne, gløderuner op ad skaftet, stigende varmeglimmer.",
-          "lore": "Et levende kul af bjergbål buret i jern ved sin krone. Loremaster Caddis kalder det et bevis på, at ilden fra den første smedning kan bindes til at tjene, ikke kun til at forsegle. Varmeglimmer stiger op af den i et tyndt, endeløst bånd; en magiker, der bærer en, vil aldrig have en smedje eller et vagtbål. Gløden, hvisker de, blev trukket fra Glødende Voskars eget åndedræt, og den er ikke kølet af siden."
-        },
-        "emberwrought_wand": {
-          "name": "Glødesmedet Tryllestav",
-          "look": "Sortsværtet metaltryllestav med et glødende kul i jernklør, fine varmerevner og varmt indre lys.",
-          "lore": "Tryllestaven, der gav samlingen navn. Da en rustningssmed i Højvagten første gang satte et kul af bjergild i jernklør og fik det til at adlyde en dødelig hånd, holdt selv Lysets Præster op med at kalde det kætteri og begyndte at kalde det nyttigt. Varm, tålmodig og stille farlig: gløden i spidsen har brændt uden ophør, siden før dens ejer trak vejret."
-        },
-        "cinderlatch_crossbow": {
-          "name": "Glødelås",
-          "look": "Armbrøst af sortsværtet stål, glødeorange skær fra revner i buearmen og et ulmende kul i skæftet.",
-          "lore": "Det mærkeligste af det glødesmedede: bjergets ild strømmede ind i en maskine. Orange siver fra revner i stangen, og et ulmende kul i rorpinden forhindrer, at snoren nogensinde stivner i Thornpeaks kulde eller Mirefens fugt. Dens bolte efterlader rillen allerede varm og lander varmere. En jægers svar på en mur, hvor fjenden heller ikke mærker kulden."
-        },
-        "ice_fang_sword": {
-          "name": "Istænd",
-          "look": "Buet klinge af bleg gletsjeris, takkede rimkrystaller langs ryggen, en glødende cyan kerne i blodrillen og et korsgreb af istapper.",
-          "lore": "Flagskibet for den frosne kvalitet, og det stykke, hver samler rækker efter først. Ice Fang blev skåret, ikke smedet, fra en hugtænd på gletsjeren, der dækker Thornpeak over Highwatch, og dens cyan kerne brænder kold som lyset fra Glimmermere. Den rimer selve luften, den skærer. Vægvagten sværger, at en soldat bar den den nat, hvor høje snevejr holdt Wyrmcult tilbage, og 'købte muren en vinter'."
-        },
-        "glaciersplit_axe": {
-          "name": "Gletsjerspalter",
-          "look": "Øksehoved af gennemsigtig blå gletsjeris med cyan glød i revnerne, strittende frostkrystaller og et skaft, der efterlader kold damp.",
-          "lore": "Udhugget af Tornetop-gletsjerens blå hjerte, hvor to århundreders is har presset kulden sammen, til den lyser af sig selv. Øksen efterlader damp selv i hvile, og når den rammer, lyder det som en gletsjerspalte, der åbner sig under Snigerkammen. Højvagten overgiver sine faldne til isen deroppe. Derfor er dette et våben skabt til at holde tøbruddet, og alt det kunne vække, på afstand."
-        },
-        "rimecrusher_mace": {
-          "name": "Rimknuser",
-          "look": "Klynge af takkede iskrystaller omkring en glødende cyan kerne, rimfrost kryber ned ad en forsølvet skaft.",
-          "lore": "Ikke udskåret, men vokset: Thornpeak-is lokket rundt om en kold cyan kerne, indtil den satte sig lige så hårdt som Hodes bedste stål. Rimfrost kryber ned af den forsølvede skaft mod hånden og når aldrig helt frem. Hvor det rammer, fryser vand; hvor den hviler, bleger jorden. Toppenes gravkulde, lavet små nok til at svinge mod de ting, der klatrer op ad væggen."
-        },
-        "frostbite_dagger": {
-          "name": "Rimnål",
-          "look": "Uhyggeligt tynd dolk af klar blå is, en glødende cyan åre nede i midten, nålefrostkrystaller, rimfrostgreb.",
-          "lore": "Tynd som en tilbageholdt åndedræt og dobbelt så kold: en splint af Thornpeak-gletsjeren finpudset til en enkelt glødende vene, så ivrig efter at såret fryses til, før blodet husker at løbe. Dens navn er lånt fra den gravkulde, de døde bærer ned fra toppene. Den behøver aldrig skærpes; is bliver ikke sløv, konstaterer Loremaster Caddis tørt, den venter kun."
-        },
-        "hoarfrost_vigil_staff": {
-          "name": "Rimfrostvagt",
-          "look": "Forsølvet stav kronet med et flydende, langsomt roterende skår af glødende cyan is, udstrålende krystaller og kold damp.",
-          "lore": "Personalet på uret, der aldrig sover på Highwatchs væg. Dens krone er et skår af cyan-tjærneis, der flyder fri af sølvet og drejer sig, langsomt, af sig selv: altid, sværger vagten, mod kulden, der samler sig under toppene. At bære Vigilen er at stå to hundrede års vagt på en enkelt nat og love ikke at se væk."
-        },
-        "everwinter_wand": {
-          "name": "Evigvinters Skår",
-          "look": "En enkelt spids af glødende cyan gletsjer-is, rimfrost blomstrer fra en sølvkrave, svag kold tåge.",
-          "lore": "En spids af glødende gletsjer-is, som siges at være brudt fra den dybe tjerne under Sanctum, hvor bjergets kulde har tænder. Rimfrost blomstrer uendeligt fra sin sølvkrave og smelter aldrig, hverken ved ild eller om sommeren. Magikers holder det tæt på for kulden, det giver deres arbejde, og holder det langt om nætterne, det ser ud til at læne sig mod Nythraxis' krypt, og lytte."
-        },
-        "winterbite": {
-          "name": "Vinterbid",
-          "look": "Bue af forsølvet stål og blå is, en glødende cyan kerne i grebet, en pil af massiv is og kold damp.",
-          "lore": "En bue af forsølvet stål og Thornpeak-is, dens stigrør oplyst af en kold cyan kerne, der fryser pilen til strengen. Det knækker en skaft af fast gletsjer-is, der reformerer hvert træk; bueskytten bærer ingen kogger på væggen, kun kulden. Highwatch holdt Sniger Ridge gennem en belejring med en lignende: en enkelt buemand, siger de, og en vinters værdi af pile, der altid allerede var der."
-        },
-        "solheim_sword": {
-          "name": "Solheim, Daggryets sidste lys",
-          "look": "Storsværd smedet af en falden stjerne, smeltet guldkerne, der splitter bladet, kosmosort stål kantet i stjernelys, gyldne skår, der kredser om vagten, nordlysbånd.",
-          "lore": "Da stjernen faldt ud af den vestlige himmel og 'brød som en smedje' ud over Enkekratten, trak broder Aldric sit stadig ulmende hjerte fra Mirefen-krateret og tryglede rigets smede om at arbejde 'en ting, der ikke tilhører denne verden'. De lavede ét stort sværd af det: Solheim. Dens smeltede gyldne kerne spalter det kosmossorte blad som daggry, der slår en nattehimmel, og skår af stjernemetal kredser om vagten på stier uden håndsæt. Kun én blev nogensinde smedet. Der vil ikke være en anden."
-        },
-        "skyrender_axe": {
-          "name": "Himmelriver, Firmamentets Sår",
-          "look": "Hovedet som et revet stykke nattehimmel, smeltede guldrevner og konstellationsætsninger, stjernelysskår svævende, et nordlysglimt bagerst i kanten.",
-          "lore": "Slået fra kraterets rand, hvor den faldne stjerne rev himlens egen refleksion ud af Mirefen og efterlod et sår, der stadig damper. Hovedet ligner et stykke revet nat: smeltede guldrevner, stjernebilleder, som ingen forsker på Highwatch kan nævne, et nordlys, der bløder ud over kanten med hvert sving. Bror Aldric velsignede det og ville ikke røre det. At løfte det er at holde hullet himlen tilbage."
-        },
-        "starfall_mace": {
-          "name": "Stjernefald, Himlens Dom",
-          "look": "Fangenskab smeltet guld stjerne-kerne omkranset af kredsende fragmenter, kosmos-sorte flanger årede med stjernelys, aurora vælter ud fra sømmene.",
-          "lore": "En stjernekerne fangede det øjeblik, før den døde, omkranset med affaldet, der faldt med den, frosset en tomme fra glemslen. Dens kosmossorte flanger løber med indespærret stjernelys, og nordlys vælter ud af sømmene, når den hæves. Lysets gamle Præst'ere kaldte en faldende stjerne for en dom, en dom afsagt fra oven om, at intet skjold var beregnet til at stoppe, og opkaldte dette efter det, der kom ned på Mirefen."
-        },
-        "astravyr_dagger": {
-          "name": "Astravyr, Den Faldne Stjernes Hugtand",
-          "look": "En splint af en faldet stjerne, en glødende kant af smeltet guld på kosmossort metal, en lysende stjernegnist i kredsløb om knappen og et tyndt nordlysspor.",
-          "lore": "Det mindste stykke af stjernen Aldric blev trukket fra krateret, og efter nogle beregninger det farligste. En enkelt splint af det andet-verdslige hjerte, dets smeltede guldkant, der kører på kosmosort metal, en ensom stjerneskive, der cirkulerer rundt om stangen som en måne, der mistede sin verden. Den vejer næsten ingenting og deler næsten alt. Lille nok til at gemme sig, lys nok til at finde i mørket ved sit eget lys."
-        },
-        "cosmarch_staff": {
-          "name": "Cosmarch, Det Endeløse Tomrums Spir",
-          "look": "Kredsende klynge af gyldne stjerneskår omkring en smeltet guldkerne, stjernebillede-ætset kosmos-sort skaft, nordlysbånd, der snor sig opad.",
-          "lore": "Et skaft af stjernemetal kronet med en smeltet guldkerne og en ring af gyldne skår, der marcherer rundt om den i langsom, endeløs kredsløb: et lille kosmos, ætset med stjernebilleder, der ikke matcher nogen himmel over Thornpeak. Aurora snor sig op ad sin længde som røg, der glemte at stige. De, der bar det, hævdede, at de kunne mærke tomrummet vende sig igennem det, sådan som Ysoleis blotte 'drikker måneskin': tålmodig og kold og ser tilbage."
-        },
-        "emberwish_wand": {
-          "name": "Glødeønske, Den Døende Sols Gnist",
-          "look": "En indfanget, smeltet gylden gnist fra en døende stjerne omgivet af kredsende smågnister, på et kosmossort skaft ætset med glødende stjernebilleder.",
-          "lore": "Ikke den faldne stjerne selv, men den sidste gnist fra en døende stjerne: en enkelt glød af smeltet guld fra en sol, der allerede er slukket, omgivet af gnisterne fra dens sidste lys. Det kosmossorte skaft er ætset med de stjernebilleder, der så den dø. Mosekærs bønder siger, at den opfylder ét ønske for den, der holder den i den sande skumring. De siger også, at alle, der har holdt den, ønskede sig mere tid, og at Den Druknede Måne ikke gav nogen af dem det."
-        },
-        "encore_bow": {
-          "name": "Encore, Den Anden Faldende Stjerne",
-          "look": "Komisk overdimensioneret stjernekanon: et kosmossort løb ætset med glødende gyldne stjernebilleder, trompetformet munding med et kometprojektil af smeltet guld, messingbeslag og en trækolbe.",
-          "lore": "Smedene, der bearbejdede den faldne stjerne, lavede seks relikvier af den og havde stadig en tønde stjernemetal tilbage, og da havde lærlingene meninger. Det, der kom af ambolten, er enten rigets første pistol eller dens mindste belejringsmotor: en skulderkanon, der ikke så meget taber et skud som anmoder om en anden stjerne, sigtet. Bror Aldric nægtede at velsigne det, idet han ræsonnerede, at alt så højt allerede er blevet bemærket af himlen. Jægers elsker det. Intet downrange nogensinde har."
-        },
-        "meteorlatch_crossbow": {
-          "name": "Meteorlås, Himlens Sidste Dom",
-          "look": "Meteoritisk stjernemetal, en kerne af smeltet guld langs skæftet, kosmossorte buearme ætset med stjernebilleder og en armbrøstpil af ren stjerneild.",
-          "lore": "Smedet af råt, meteoritisk stjernemetal, mens Mosekær-krateret endnu glødede. Vragdele, der var 'for varme at håndtere', blev hamret til kosmossorte buearme ætset med stjernebilleder, med en kerne af smeltet guld langs skæftet. Den lægger ingen armbrøstpil an, men fremmaner en: et skaft af stjerneild, affyret som en dom og med nedslag som dommens fuldbyrdelse. Da Højvagten frygtede, at selv Nythraxis' udødelige krone måske ikke var det værste under tinderne, var dette våbnet, de ønskede på muren. Sigt omhyggeligt."
-        }
-      },
-      "seasonOne": "Sæson 1",
-      "rarity": {
-        "uncommon": "Ualmindelig",
-        "rare": "Sjælden",
-        "epic": "Episk",
-        "legendary": "Legendarisk"
-      },
       "wtype": {
         "sword": "Sværd",
         "axe": "Økse",
@@ -625,73 +374,7 @@ export const da_DK: EnTranslations = {
         "bow": "Bue",
         "crossbow": "Armbrøst",
         "polearm": "Stangvåben"
-      },
-      "badge": {
-        "flagship": "Flagskib",
-        "hero": "Helt"
-      },
-      "inspectAria": "Undersøg {item}",
-      "viewModeLabel": "Forhåndsvisningstilstand",
-      "tryOn": "Prøv på",
-      "weaponOnly": "Kun våben",
-      "sceneLabel": "Forhåndsvisningens belysning",
-      "scene": {
-        "day": "Dag",
-        "dusk": "Skumring",
-        "night": "Nat"
-      },
-      "lore": "Baggrundshistorie",
-      "buySkin": "Køb skin",
-      "unavailable": "Ikke tilgængelig",
-      "applied": "I brug",
-      "apply": "Anvend skin",
-      "detach": "Fjern skin",
-      "equipHint": "Udstyr et våben af typen {type} for at anvende dette skin."
-    },
-    "claudium": {
-      "title": "Claudium",
-      "open": "Åbn Claudium",
-      "close": "Luk Claudium",
-      "loading": "Indlæser Claudium...",
-      "balanceLabel": "Saldo",
-      "balanceUnit": "{amount} Claudium",
-      "solBalance": "SOL: {amount}",
-      "usdcBalance": "USDC: {amount}",
-      "wocBalance": "WOC: {amount}",
-      "unavailable": "Claudium-butikken er ikke tilgængelig lige nu. Din saldo og dine køb er ikke påvirket. Prøv igen om lidt.",
-      "disclosure": "Claudium er en virtuel valuta, der kun går én vej: Køb den for penge, og brug den på kosmetik. Den kan ikke indløses, overføres eller udbetales.",
-      "buyTitle": "Køb Claudium",
-      "railLabel": "Betalingsmetode",
-      "railStripe": "Kort",
-      "railSol": "SOL",
-      "railUsdc": "USDC",
-      "railWoc": "WOC",
-      "railWocDiscount": "20% rabat",
-      "railWocUnavailable": "WOC-priser er ikke tilgængelige lige nu.",
-      "railNativeUnavailable": "SOL/WOC er slået fra.",
-      "amountLabel": "Beløb",
-      "showAmounts": "Vis alle Claudium-beløb",
-      "hideAmounts": "Skjul ekstra Claudium-beløb",
-      "skuRow": "{usd} til {claudium} Claudium",
-      "buyButton": "Køb",
-      "buyUnavailable": "Det er ikke muligt at foretage køb lige nu.",
-      "storeTitle": "Kosmetisk butik",
-      "storeEmpty": "Ingen kosmetik er tilgængelig lige nu.",
-      "storeCost": "{amount} Claudium",
-      "spendButton": "Brug",
-      "kindCosmetic": "Kosmetisk",
-      "kindSkin": "Skin",
-      "kindItem": "Genstand",
-      "checkoutTitle": "Gennemfør køb",
-      "checkoutClose": "Luk betalingsvinduet",
-      "checkoutLoading": "Indlæser betalingsvinduet...",
-      "checkoutPending": "Transaktion i gang. Bekræft i din tegnebog, og hold dette panel åbent.",
-      "checkoutPendingButton": "Behandler",
-      "checkoutFailed": "Betalingsvinduet kunne ikke indlæses. Prøv igen.",
-      "checkoutUnavailable": "Dette Claudium-køb er ikke tilgængeligt lige nu.",
-      "checkoutWalletRequired": "Tilslut en Solana-tegnebog, før du køber Claudium med kryptovaluta.",
-      "checkoutWalletUnsupported": "Denne tegnebog kan ikke underskrive og sende Solana-transaktioner.",
-      "checkoutNotSettled": "Transaktionen blev sendt, men Claudium er endnu ikke blevet tilføjet. Prøv igen om lidt."
+      }
     },
     "theme": {
       "preset": "UI-tema",
@@ -773,7 +456,6 @@ export const da_DK: EnTranslations = {
     "mobile": {
       "jump": "Hop",
       "leaderboard": "Rangliste",
-      "dailyRewards": "Butik",
       "deeds": "Bedrifter",
       "professions": "Erhverv",
       "nameplates": "Navne",
@@ -1048,8 +730,6 @@ export const da_DK: EnTranslations = {
       "clickFeedback": "Klikmarkør",
       "lockCursorOnRotate": "Lås markør under drejning",
       "keybindHelpLockCursorOnRotate": "Holder musemarkøren inde i vinduet, mens du trækker for at dreje kameraet, så den ikke kan nå skærmkanten eller flytte til en anden skærm. Slå fra, hvis du foretrækker en fri markør.",
-      "showWalletOnCharacterScreen": "Vis pengepung på karakterskærm",
-      "showWalletOnPlayerCard": "Vis pengepung på spillerkort",
       "showDevBadges": "Vis udviklermærker",
       "showOwnNameplate": "Vis mit navneskilt",
       "showPlayerNameplates": "Vis spillernavneskilte",
@@ -1070,9 +750,9 @@ export const da_DK: EnTranslations = {
       "showThirdActionBar": "Vis tredje handlingslinje",
       "showTargetOfTarget": "Vis målets mål",
       "showAttackButton": "Vis angrebsknap",
-      "showDailyRewardsChest": "Vis kisten med daglige belønninger",
       "mobileCameraJoystick": "Kamera joystick",
-      "mobileLeftHanded": "Venstrehånds layout"
+      "mobileLeftHanded": "Venstrehånds layout",
+      "showWalletOnCharacterScreen": "Vis pengepung på karakterskærm"
     },
     "talentRows": {
       "tab": "Valg",
@@ -1178,9 +858,6 @@ export const da_DK: EnTranslations = {
         "backgrounded": "I baggrunden",
         "offline": "Offline"
       }
-    },
-    "playerCard": {
-      "showWalletBadge": "Vis pengepungsmærke"
     },
     "landing": {
       "highContrast": "Høj kontrast",
@@ -4762,170 +4439,6 @@ export const da_DK: EnTranslations = {
       "failed": "Kunne ikke gemme din e-mail. Prøv igen."
     }
   },
-  "wallet": {
-    "label": "$WOC-pung",
-    "connect": "Verificer pung",
-    "connectTitle": "Verificer din Solana-pung",
-    "connectAria": "Verificer din Solana-pung",
-    "verify": "Verificer pung",
-    "verifyNew": "Verificer ny pung",
-    "verifyTitle": "Vælg en pung og underskriv én gang for at verificere ejerskab.",
-    "verifyAria": "Vælg en pung og underskriv én gang for at verificere ejerskab",
-    "verifyAddressAria": "Underskriv for at verificere pungen {address} for din konto",
-    "appConnected": "App forbundet",
-    "connectApp": "Forbind app",
-    "connectAppTitle": "Forbind pung-appen i denne browser",
-    "connectAppAria": "Forbind pung-appen i denne browser",
-    "verifying": "Verificerer...",
-    "verifyingTitle": "Verificering af pung er i gang.",
-    "switch": "Skift",
-    "switchTitle": "Verificer en anden pung",
-    "switchAria": "Verificer en anden pung",
-    "unlink": "Frakobl",
-    "unlinkTitle": "Fjern pung-verificeringen fra denne konto",
-    "unlinkAria": "Fjern pung-verificeringen fra denne konto",
-    "signOut": "Afbryd forbindelse",
-    "signOutTitle": "Afbryd forbindelsen til pung-appen i denne browser",
-    "signOutAria": "Afbryd forbindelsen til pung-appen i denne browser",
-    "hide": "Skjul",
-    "hideTitle": "Skjul pung-rækken på denne skærm",
-    "hideAria": "Skjul pung-rækken på denne skærm",
-    "hiddenNotice": "Pung-rækken er skjult. Genaktiver den i spillet under Indstillinger > Brugerflade.",
-    "linkedTitle": "Pung verificeret for din konto. Klik for at administrere pung-appen.",
-    "linkedDisconnectedTitle": "Pungen forbliver verificeret for din konto. Genopret forbindelse for at administrere pung-appen.",
-    "linkedDisconnectedAria": "Pungen forbliver verificeret for din konto. Genopret forbindelse for at administrere pung-appen.",
-    "linkTitle": "Klik for at underskrive og tilknytte denne pung til din konto.",
-    "connectedTitle": "Forbundet. Log ind for at tilknytte denne pung til din konto.",
-    "balanceTitle": "Verificeret Solana-pungs $WOC-saldo",
-    "balanceAria": "Verificeret Solana-pungsaldo: {balance}",
-    "balancePreviewTitle": "Forhåndsvisning af forbundet pungs $WOC-saldo",
-    "balancePreviewAria": "Forhåndsvisning af forbundet pungs saldo: {balance}. Tilknyt pungen for at verificere ejer-pynt.",
-    "balanceAmount": "{amount} $WOC",
-    "bagConnect": "Tilknyt pung",
-    "bagLink": "Bekræft pung",
-    "bagReconnect": "Gentilslut pung",
-    "connected": "Forbundet: {address}",
-    "connectedWithBalance": "Forbundet: {balance} - {address}",
-    "connectedLinked": "Verificeret: {address}",
-    "connectedLinkedWithBalance": "Verificeret: {balance} - {address}",
-    "helpDisconnected": "Verificer en Solana-pung for at aktivere ejer-pynt og spillerkort-mærker. Ingen transaktion eller SOL kræves.",
-    "helpLoginToLink": "Forbundet {address}. Log ind for at tilknytte den til din konto.",
-    "helpLoginToLinkWithBalance": "Forbundet {address} med {balance}. Log ind for at tilknytte den til din konto.",
-    "helpReadyToLink": "Pung valgt: {address}. Underskriv én gang for at verificere ejer-pynt og spillerkort.",
-    "helpReadyToLinkWithBalance": "Pung valgt: {address} med {balance}. Underskriv én gang for at verificere ejer-pynt og spillerkort.",
-    "helpLinked": "Ejerfordele er aktive. Pung-app forbundet i denne browser.",
-    "helpLinkedWithBalance": "Ejerfordele er aktive. Pung-app forbundet i denne browser.",
-    "helpLinkedDisconnected": "Ejerfordele er aktive. Forbind appen, når du har brug for at underskrive eller bruge midler.",
-    "helpLinkedDisconnectedWithBalance": "Ejerfordele er aktive. Forbind appen, når du har brug for at underskrive eller bruge midler.",
-    "extensionHelp": "For at se en pung her skal du holde en browser-pungudvidelse som Solflare Wallet aktiv.",
-    "mobileAppHelp": "Vælg Phantom eller Solflare. Din pung-app beder om godkendelse. Hold dette spil åbent og vend tilbage, når du er færdig.",
-    "standaloneAppHelp": "Pungforbindelser er endnu ikke tilgængelige i startskærmsappen. Åbn World of ClaudeCraft i Safari eller Chrome for at bruge Phantom eller Solflare.",
-    "openAppTitle": "Fortsæt i {wallet}",
-    "openAppHelp": "Åbn {wallet} for at gennemgå denne anmodning. Hold denne spil-fane åben, mens pung-appen er aktiv.",
-    "openAppButton": "Åbn {wallet}",
-    "manualReturnBrowserHelp": "Efter godkendelse kan du vende tilbage til denne spil-fane. Hvis iOS åbner en anden browser, skal du lukke den og manuelt vende tilbage til den oprindelige browser.",
-    "manualReturnStandaloneHelp": "Efter godkendelse kan du vende tilbage til World of ClaudeCraft fra din startskærm. Hvis iOS åbner en browser, skal du lukke den og manuelt genåbne startskærmsappen.",
-    "preparingAppButton": "Forbereder {wallet}...",
-    "walletAppUnavailable": "{wallet} kunne ikke forberedes. Luk dette vindue og prøv igen.",
-    "flowConnect": "Vælg en pung. Verificeringen fortsætter automatisk.",
-    "flowSign": "Underskriv verificeringsbeskeden i din pung-app. Ingen transaktion eller SOL kræves.",
-    "flowVerify": "Verificerer ejerskab af pung...",
-    "linkFailed": "Verificering af pung mislykkedes.",
-    "verifyFailed": "Verificering af pung mislykkedes.",
-    "unlinkFailed": "Kunne ikke frakoble pungen.",
-    "browser": {
-      "eyebrow": "Skrivebordsappens pung-godkendelse",
-      "title": "Tilslut en Solana-pung",
-      "linkBody": "Vælg en pung-udvidelse i denne browser. Du underskriver en bekræftelsesbesked og vender derefter tilbage til skrivebordsappen.",
-      "paymentBody": "Vælg den pung, der er tilknyttet din konto, og godkend transaktionen i denne browser.",
-      "extensionHelp": "Ingen kompatibel pung-udvidelse blev fundet. Installer eller lås Phantom, Solflare eller en anden Solana-browserpung op og prøv derefter igen.",
-      "safety": "World of ClaudeCraft beder aldrig om din genoprettelsesfrase eller private nøgle.",
-      "continueWith": "Fortsæt med {wallet}",
-      "reviewTitle": "Gennemse i din pung",
-      "reviewBody": "Følg prompten fra {wallet}. Hold denne browserside åben.",
-      "completeTitle": "Pung-godkendelse fuldført",
-      "completeBody": "Du kan nu vende tilbage til World of ClaudeCraft-skrivebordsappen.",
-      "returnButton": "Vend tilbage til skrivebordsapp",
-      "failed": "Pung-godkendelse mislykkedes eller udløb. Vend tilbage til skrivebordsappen og prøv igen.",
-      "retry": "Prøv igen"
-    },
-    "holder": "$WOC-ejer",
-    "holderTierTitle": "{tier} $WOC-ejer",
-    "holderTiers": {
-      "ember": {
-        "name": "Glød",
-        "flavor": "Gnisten er tændt."
-      },
-      "coinbearer": {
-        "name": "Møntbærer",
-        "flavor": "Første mønt i krigskisten."
-      },
-      "coppercrest": {
-        "name": "Kobberkam",
-        "flavor": "Kobber stablet, dit navn nævnt."
-      },
-      "silverbound": {
-        "name": "Sølvbundet",
-        "flavor": "Bundet i sølv, opbygger beholdningen."
-      },
-      "gilded": {
-        "name": "Forgyldt",
-        "flavor": "Forgyldt og grinende."
-      },
-      "vaultwarden": {
-        "name": "Hvælvvogter",
-        "flavor": "Vogter nu et ægte hvælv: 0,01 % af alle $WOC."
-      },
-      "whale": {
-        "name": "Hval",
-        "flavor": "Dybet deler sig, når du svømmer: 0,1 % af forsyningen."
-      },
-      "leviathan": {
-        "name": "Leviathan",
-        "flavor": "Markederne mærker dig røre på dig: 1 % af forsyningen."
-      },
-      "tidelord": {
-        "name": "Tidevandsherre",
-        "flavor": "Tidevandet adlyder dit kald: 2 % af forsyningen."
-      },
-      "stormcaller": {
-        "name": "Stormkalder",
-        "flavor": "Storme samler sig ved dit navn: 3 % af forsyningen."
-      },
-      "krakencrown": {
-        "name": "Krakenkrone",
-        "flavor": "Kronet af dybet: 4 % af forsyningen."
-      },
-      "titanforged": {
-        "name": "Titansmedet",
-        "flavor": "Smedet blandt titaner: 5 % af forsyningen."
-      },
-      "starhoard": {
-        "name": "Stjerneskat",
-        "flavor": "Et skatkammer der bøjer stjernelys: 6 % af forsyningen."
-      },
-      "voidwarden": {
-        "name": "Tomhedsvogter",
-        "flavor": "Vogter ved tomhedens rand: 7 % af forsyningen."
-      },
-      "realmshaper": {
-        "name": "Rigeformer",
-        "flavor": "Du omformer riget: 8 % af forsyningen."
-      },
-      "worldforger": {
-        "name": "Verdenssmed",
-        "flavor": "Smeder en verden helt din egen: 9 % af forsyningen."
-      },
-      "worldbearer": {
-        "name": "Verdensbærer",
-        "flavor": "Du bærer et stykke af verden: 10 % af forsyningen."
-      },
-      "sovereign": {
-        "name": "Suveræn",
-        "flavor": "Riget bøjer knæ: hele forsyningen."
-      }
-    }
-  },
   "playerCard": {
     "shareButton": "Del spillerkort",
     "title": "Spillerkort",
@@ -4949,8 +4462,7 @@ export const da_DK: EnTranslations = {
     "footerHandleWithRecruits": "@{handle} - {recruited}",
     "footerCta": "Smed din legende: {siteUrl}",
     "arenaStat": "Arena",
-    "shareTierBit": ", {tier}-rangeret $WOC-ejer",
-    "shareText": "Jeg smeder min legende i World of ClaudeCraft: Niveau {level} {className}{tierBit}. Slut dig til min verden:",
+    "shareText": "Jeg smeder min legende i World of ClaudeCraft: Niveau {level} {className}. Slut dig til min verden:",
     "nativeShareTitle": "World of ClaudeCraft",
     "fileNameFallback": "spiller",
     "actionShareX": "Del på X",

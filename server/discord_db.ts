@@ -4,14 +4,13 @@
 // db.ts, keeping db.ts <-> discord_db.ts cycle-free.
 //
 // Three concerns live here:
-//  1. discord_links        - the durable 1:1 account <-> Discord identity mirror
-//                            (mirrors wallet_links), written after OAuth verify.
+//  1. discord_links        - the durable 1:1 account <-> Discord identity mirror,
+//                            written after OAuth verify.
 //  2. discord_oauth_states - single-use, short-lived OAuth `state` + PKCE verifier
-//                            rows (mirrors wallet_link_challenges), the CSRF guard.
-//  3. reward_points/ledger/swag_claims - the AUTHORED reward economy. Unlike the
-//                            chain-sourced $WOC balance, the server OWNS this
-//                            balance, so it is stored, audited (append-only
-//                            ledger), and mutated server-side only.
+//                            rows, the CSRF guard.
+//  3. reward_points/ledger/swag_claims - the AUTHORED reward economy. The server
+//                            OWNS this balance, so it is stored, audited
+//                            (append-only ledger), and mutated server-side only.
 import type { Pool } from 'pg';
 import { discordStatusIndexForPoints } from '../src/sim/discord_tier';
 import { discordAvatarUrl } from './discord_oauth';
@@ -107,7 +106,7 @@ CREATE TABLE IF NOT EXISTS swag_claims (
 CREATE INDEX IF NOT EXISTS swag_claims_account ON swag_claims(account_id);
 `;
 
-// ── Discord identity link (mirrors wallet_links) ───────────────────────────────
+// ── Discord identity link ──────────────────────────────────────────────────────
 
 export interface DiscordLinkRow {
   account_id: number;
@@ -218,7 +217,7 @@ export async function setDiscordGuildMember(
   ]);
 }
 
-// ── OAuth state (mirrors wallet_link_challenges) ──────────────────────────────
+// ── OAuth state ───────────────────────────────────────────────────────────────
 
 export interface DiscordOAuthStateRow {
   state: string;

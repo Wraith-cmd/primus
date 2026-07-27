@@ -24,7 +24,7 @@ describe('moderation action labels', () => {
     );
     expect(unlabelled, 'server action kinds missing an admin label').toEqual([]);
     // sanity: the list is actually being read, not an empty import
-    expect(MODERATION_ACTIONS.length).toBeGreaterThan(15);
+    expect(MODERATION_ACTIONS.length).toBeGreaterThan(14);
   });
 
   it('resolves every label key against the admin catalog (t() would otherwise throw)', () => {

@@ -363,258 +363,7 @@ export const nl_NL: EnTranslations = {
       "title": "Emotes",
       "done": "Klaar"
     },
-    "dailyRewards": {
-      "title": "Dagelijkse beloningen",
-      "close": "Dagelijkse beloningen sluiten",
-      "loading": "Dagelijkse beloningen worden geladen...",
-      "error": "Kon de dagelijkse beloningen niet laden.",
-      "disabled": "Dagelijkse beloningen zijn momenteel uitgeschakeld. We kondigen updates voor deze functie aan in het Discord-kanaal.",
-      "intro": "Houd genoeg WOC in je geverifieerde portemonnee om dagelijkse beloningen te ontgrendelen. Verdien punten met één dagelijkse draai en wisselende taken, en klim daarna op in de dagelijkse ranglijst voor een deel van de prijzenpot.",
-      "disclaimer": "De WOC-prijs kan snel bewegen. We raden aan meer aan te houden dan het minimum van $20 USD, zodat normale koersschommelingen je niet buitensluiten. Dit is geen financieel advies.",
-      "prize": "Prijzenpot",
-      "reset": "Reset",
-      "endsIn": "Eindigt over {time}",
-      "remainingLessThanMinute": "<1 min",
-      "remainingMinutes": "{minutes} min",
-      "remainingHoursMinutes": "{hours} u {minutes} min",
-      "remainingDaysHours": "{days} d {hours} u",
-      "score": "Score",
-      "walletValue": "Portemonneewaarde (WOC)",
-      "usd": "{amount} USD",
-      "sol": "{amount} SOL",
-      "unknown": "Onbekend",
-      "spinTitle": "Dagelijkse draai",
-      "spinDialogTitle": "Dagelijkse beloningsdraai",
-      "spinClose": "Dagelijkse draai sluiten",
-      "spinReady": "Eén draai staat klaar.",
-      "spinClaimed": "Geclaimd: +{points} punten.",
-      "spinResult": "+{points} punten",
-      "spinButton": "Draaien",
-      "tasks": "Taken",
-      "taskMultiplier": "x{multiplier} vermenigvuldiger",
-      "oneVsOneExcluded": "1-tegen-1-wedstrijden leveren geen punten voor dagelijkse beloningen op.",
-      "pointsGained": "{points} punten voor dagelijkse beloningen verdiend.",
-      "showChestButton": "Kist tonen",
-      "hideChestButton": "Kist verbergen",
-      "hideChestConfirmTitle": "Kist met dagelijkse beloningen verbergen?",
-      "hideChestConfirmBody": "Dit verwijdert de kistsnelkoppeling uit je HUD. Beloningen, geschiktheid en dit paneel blijven beschikbaar; je kunt de snelkoppeling terughalen via Opties.",
-      "hideChestConfirmOk": "Kist verbergen",
-      "hideChestConfirmCancel": "Annuleren",
-      "leaderboard": "Dagelijkse ranglijst",
-      "totalPlayer": "{count} speler vandaag",
-      "totalPlayers": "{count} spelers vandaag",
-      "history": "Eerdere winnaars",
-      "noLeaders": "Nog geen punten.",
-      "noHistory": "Nog geen uitbetalingen.",
-      "walletConnectTitle": "Portemonnee verifiëren",
-      "walletConnectBody": "Verifieer een Solana-portemonnee met WOC om dagelijkse beloningen te ontgrendelen.",
-      "walletConnectButton": "Portemonnee verifiëren",
-      "walletHoldTitle": "WOC aanhouden",
-      "walletHoldBody": "Houd minstens {amount} USD aan WOC om dagelijkse beloningen te ontgrendelen.",
-      "walletPriceBody": "WOC-prijzen zijn momenteel niet beschikbaar. Kom binnenkort terug.",
-      "reason": {
-        "eligible": "Beloningen ontgrendeld.",
-        "no_wallet": "Verbind een portemonnee met minstens $20 USD aan WOC.",
-        "under_minimum": "Portemonnee ligt onder het WOC-minimum van $20 USD.",
-        "price_unavailable": "WOC-prijs is niet beschikbaar, beloningen zijn tijdelijk vergrendeld.",
-        "banned": "Je bent uitgesloten van dagelijkse beloningen. Reden: {reason}",
-        "bannedUntil": "Je bent nog {remaining} uitgesloten van dagelijkse beloningen. De toegang wordt hersteld op {until}. Reden: {reason}"
-      }
-    },
     "wocStore": {
-      "title": "WOC-winkel",
-      "close": "WOC-winkel sluiten",
-      "tabsLabel": "Onderdelen van de WOC-winkel",
-      "storeTab": "Winkel",
-      "rewardsTab": "Dagelijkse beloningen",
-      "loading": "WOC-winkel laden...",
-      "error": "De WOC Store is momenteel niet beschikbaar. Probeer het binnenkort opnieuw.",
-      "balance": "Claudium-saldo",
-      "buyClaudium": "Claudium kopen",
-      "owned": "In bezit",
-      "needMoreTitle": "Meer Claudium vereist",
-      "needMoreBody": "Je hebt {shortfall} meer Claudium nodig om {item} te kopen.",
-      "cancel": "Annuleren",
-      "confirmTitle": "Cosmetische aankoop bevestigen",
-      "confirmBody": "{item} voor {cost} Claudium kopen?",
-      "confirmPurchase": "Kopen",
-      "priceChanged": "De prijs veranderde voordat de aankoop voltooid was. Bekijk de vernieuwde prijs en bevestig opnieuw.",
-      "armoryEyebrow": "Seizoen 1",
-      "armoryTitle": "Het Arsenaal",
-      "armoryBody": "Gelimiteerde wapenskins uit de Wapenkamer van seizoen 1. Ze gelden voor je hele account, zijn puur cosmetisch en zijn zichtbaar voor iedereen om je heen.",
-      "wallet": {
-        "title": "Solana-portemonnee",
-        "unlinked": "Verbind een portemonnee-app en teken eenmaal om het openbare adres aan je WoC-account te koppelen. We ontvangen nooit je herstelzin of privésleutel.",
-        "connectedUnlinked": "De portemonnee-app is verbonden met deze browser, maar het openbare adres is nog niet gekoppeld aan je WoC-account.",
-        "linkedDisconnected": "Je openbare adres is gekoppeld. Verbind die portemonnee-app opnieuw wanneer je met SOL of WOC wilt betalen.",
-        "linkedConnected": "Je gekoppelde portemonnee-app is verbonden en klaar voor SOL- of WOC-aankopen.",
-        "mismatched": "Er is een andere portemonnee verbonden. Verifieer hem om het gekoppelde adres te vervangen, of verbind de gekoppelde portemonnee opnieuw.",
-        "connect": "Portemonnee koppelen",
-        "verify": "Verifiëren en koppelen",
-        "reconnect": "Portemonnee opnieuw verbinden",
-        "manage": "Portemonnee beheren"
-      },
-      "collectionLine": "{collection}-collectie",
-      "collections": {
-        "guildmark": "Gildemerk",
-        "emberwrought": "Sintelgesmeed",
-        "hoarfrost": "Rijp",
-        "fallen_star": "Gevallen ster"
-      },
-      "skins": {
-        "guildmark_arming_sword": {
-          "name": "Gildemerk-Wapenzwaard",
-          "look": "Geblauwd stalen lemmet, bronzen vissenstaart pareerstang, groenblauw geverfde leren handgreep, klein gestempeld gildeteken.",
-          "lore": "Waar het gesmeed mes anoniem is, is deze gesigneerd. Een wapensmid krijgt pas het recht om zijn stempel in de ricasso te slaan als de koopman van de Wereldmarkt voor zijn staal instaat, en voor het merk van Smith Haldren. Blauwgeblakerd tegen het vocht van de Vale, tot op een haartje uitgebalanceerd. Je betaalt evenveel voor de postzegel als voor het zwaard, en het is het waard."
-        },
-        "brasscap_axe": {
-          "name": "Messingkapbijl",
-          "look": "Bit van gepolijst staal, messing dop en langets op een gelakte essenhouten heft, netjes omwikkeld, een stempel van de maker.",
-          "lore": "Een gestempelde bijl is een opschepperij die je kunt koesteren. De koperen dop en langets zijn half pantser, half signatuur: ze zorgen ervoor dat het heft niet splijt en vangen het licht van de herberg op, zodat iedereen weet dat je het werk van Armorer Hode hebt gekocht, en niet het werk van een militie. 'Als het bezuinigt, verkoop ik het', zegt de Highwatch-smid. Deze snijdt."
-        },
-        "tempered_flanged_mace": {
-          "name": "Geharde flensknots",
-          "look": "Kop van gehard blauw staal met zes flenzen, messing kraag en pommel, wijnrood leren handvat.",
-          "lore": "Zes flenzen van geblauwd, gehard staal, elk geslepen om een helm open te breken, afgewerkt met messing en omwikkeld met wijnrood leer. De pantsersmeden van het rijk maken geen lelijke wapens, zelfs niet wanneer het werk bruut is. Deze werd via de Wereldmarkt besteld en niet zomaar uit een rek gepakt. Ergens ligt een grootboek met de naam van een trotse koper en het bedrag dat hij Hode ervoor betaalde."
-        },
-        "guildmark_dirk": {
-          "name": "Gildemerk-Dirk",
-          "look": "Slanke dirk van gehard staal, bronzen beschermkap en pommelmoer, donkergroene koordgreep, gestempeld sigil.",
-          "lore": "Wat een gevestigd heer draagt wanneer het zwaard thuisblijft: slank, gehard en gestempeld met hetzelfde merk dat een volledige kling waarmerkt, aan de riem gedragen als een zegelring met een snede. Onopvallend voor iedereen behalve wie het bewijs van een pantsersmid kan lezen. Kwartiermeester Bree bewaart er in Hoogwacht een lade vol van voor officieren die het respect van de muur hebben verdiend."
-        },
-        "brasscrown_staff": {
-          "name": "Messingkroon-Wandelstaf",
-          "look": "Hardhouten staf met daarop een gedraaide koperen kroonknop, koperen ring en geverfde leren band.",
-          "lore": "Gemaakt van doorgewinterd hardhout en bekroond met een koperen kruisbloem die door de Eastbrook-smeden per honderd is gegoten, maar perfect door één. Het behoort tot het soort reiziger dat zowel bij de poort van Fenbridge als bij de muur van Highwatch serieus genomen wil worden. Een wandelstok die nooit echt heeft hoeven lopen; de geverfde band past bij een jas waarvan je de prijs wel kunt raden."
-        },
-        "lacquered_wand": {
-          "name": "Gelakte Staf",
-          "look": "Slanke, dieprood gelakte toverstaf, twee gepolijste koperen banden, kleine ronde koperen punt.",
-          "lore": "Dieprode lak in zeven geduldige jassen, tweemaal omwikkeld met gepolijst koper: het soort toverstok dat een heggenmagiër op de Wereldmarkt koopt zodra ze echte munten zijn gaan opladen en ernaar willen kijken. Het kanaliseert het licht niet beter dan een berkenstok. Maar het glanst prachtig over de toonbank van de Koopman, en de helft van de kleine magie is altijd geloofd."
-        },
-        "fletcher_s_guild_bow": {
-          "name": "Boog van het Pijlenmakersgilde",
-          "look": "Gelakte notenhouten recurvestrijkstok, messing uiteinden van de ledematen, gewaxte linnen snaar, een gildestempel op de stijgbuis.",
-          "lore": "Wat het rijk het dichtst bij een gilde brengt, is een stempel van een fletcher op de stijgleiding, een belofte over wat erin zit, zoals een wijnboer een vat verzegelt. Gelakt walnoothout, messing aan de uiteinden van de ledematen, een gewaxt linnen koord dat niet rafelt door een Mirefen-regen. Elke joint pleit voor de prijs. Trek het één keer voorbij het Widow Struikgewas en het argument wint."
-        },
-        "cinderbrand_sword": {
-          "name": "Sintelbrand",
-          "look": "Mes van donker gesmeed staal, voller gevuld met gloeiende sinteloranje runen, hittescheuren en een smeulend juweel in de beschermer.",
-          "lore": "Het eerste mes werd niet in water geblust, maar in gezegende sintels, geharkt uit Stormcrag, de kolen waarvan de Highwatch-smeden zweren dat ze 'blauw en schoon branden, omdat de berg zich zijn oude eed herinnert.' In de volle laag smeult dat vuur sinteloranje en zal niet doven; de runen blijven warm tot aan de blote hand tijdens de koudste nacht van de muur. Cinderbrand heeft nooit verlichting nodig. Het weigert eenvoudigweg om naar buiten te gaan."
-        },
-        "emberbite_axe": {
-          "name": "Sintelbeet",
-          "look": "Een bijl van zwart ijzer met oranje-oranje scheuren die door het bit heen gloeien, een steenkoolsteen, sliertjes hitte.",
-          "lore": "Armorer Hode werkte een steenkool van bergvuur in het hart van het bit, zodat de rand tussen de slagen nooit echt afkoelt. De scheuren ademen oranje tijdens de neerwaartse beweging, alsof de slag iets wakker maakt dat door het eerste smeden in het ijzer is blijven slapen. Ze zeggen dat een Stormcrag-elementaal de kolen ervoor heeft opgegeven; ze zeggen heel veel dingen bij Highwatch als de wind op is."
-        },
-        "smoulderfall_mace": {
-          "name": "Smeulval",
-          "look": "Donkere ijzeren flenzen gloeien sinteloranje langs de binnenste scheuren, een edelsteen met gesmolten kern in de kop.",
-          "lore": "Een strijdknots die zijn eigen haard draagt: een steen met gesmolten kern, afgebroken van het Sanctum-zegel en 'gesmeed met bergvuur', gloeiend in het hoofd. De flenzen blijven warm aanvoelen en warmer waar ze landen; een Highwatch-sergeant zweert dat een klap ervan een blauwe plek achterlaat die tot de ochtend zwak gloeit. Het vuur van de berg, eindelijk gemaakt om te breken in plaats van te verzegelen."
-        },
-        "ashspark_dagger": {
-          "name": "Asvonkmes",
-          "look": "Kort, zwartgeblakerd lemmet dooraderd met gloeiend sinteloranje, een klein smeulend juweeltje in de pommel, as en vonk.",
-          "lore": "Een mes uit een steegje met het vuur van de berg in de pommelsteen gesmokkeld, de stille grap van een wapensmid: zelfs een handtas zou een sintel van het eerste smeedstuk kunnen bevatten. Zwartgeblakerd, oranje geaderd, altijd een tintje te warm in de schede. Teken het in het donker onder Highwatch en de gloed verlicht je hand net genoeg om het gat in de bewaker van een man te vinden."
-        },
-        "forgeheart_staff": {
-          "name": "Smeedhartstaf",
-          "look": "Met ijzer beslagen staf bekroond met een gekooide gloeiende sintelkern, sintelrunen omhoog in de schacht, opstijgende hitte-glinstering.",
-          "lore": "Een levende steenkool van bergvuur, aan de kruin in ijzer gekooid. Loremaster Caddis noemt het het bewijs dat het vuur van het eerste smeden kan dienen om te dienen, en niet alleen om te verzegelen. Warmte-glinstering stijgt eruit op in een dun, eindeloos lint; een magiër die iemand draagt, heeft nooit behoefte aan een smederij of een wachtvuur. De sintel, zo fluisteren ze, werd uit de adem van Voskar de Sintelvleugel gehaald, en is sindsdien niet meer afgekoeld."
-        },
-        "emberwrought_wand": {
-          "name": "Sintelgesmede Toverstaf",
-          "look": "Zwartgeblakerde metalen toverstok met een gloeiende kolenkool in ijzeren klauwen, haarscheurtjes in de hitte, warm innerlijk licht.",
-          "lore": "De toverstaf die het cijfer noemde. Toen een Highwatch-wapenmaker voor het eerst een steenkool van bergvuur in ijzeren klauwen stak en deze een sterfelijke hand liet beantwoorden, noemden zelfs de Priester's van het Licht het niet langer ketterij en begonnen het nuttig te noemen. Warm, geduldig en stilletjes gevaarlijk: het kooltje aan de punt brandt al onafgebroken voordat de eigenaar ademhaalde."
-        },
-        "cinderlatch_crossbow": {
-          "name": "Sintelslot",
-          "look": "Een kruisboog van zwart staal, een sinteloranje gloed die uit de scheuren in de prikstok sijpelde, een smeulende kool in de helmstok.",
-          "lore": "Het vreemdste van de gesmeed sintels: het vuur van de berg stroomde in een machine. Sinaasappel sijpelt uit de scheuren in de prikstok, en een smeulende kool in de helmstok zorgt ervoor dat de snaar nooit verstijft in de kou van Thornpeak of de vochtigheid van Mirefen. De bouten verlaten de groef al warm en het land warmer. Het antwoord van een jager op een muur waar de vijand de kou ook niet voelt."
-        },
-        "ice_fang_sword": {
-          "name": "IJstand",
-          "look": "Gebogen blad van bleek gletsjerijs, gekartelde rijpkristallen langs de ruggengraat, een gloeiende cyaan bevroren kern in de vollere, ijspegelpareerstang.",
-          "lore": "Het vlaggenschip van de diepvriesklasse, en het stuk waar elke verzamelaar als eerste naar reikt. Ice Fang was gesneden, niet gesmeed, uit een hoektand van de gletsjer die Thornpeak boven Highwatch afdekt, waarvan de cyaan kern koud brandde als het licht van de Glimmermere. Het rijpt de lucht die het snijdt. De muurwachter zweert dat één soldaat hem heeft gedragen op de avond dat de hoge sneeuw de Wyrmcult tegenhield, en 'de muur voor een winter heeft gekocht'."
-        },
-        "glaciersplit_axe": {
-          "name": "Gletsjersplijter",
-          "look": "Een kop van doorschijnend blauw gletsjerijs, een gebarsten binnenkant van gloeiend cyaan, borstelige ijskristallen en een handvat dat koude damp achterlaat.",
-          "lore": "Gehouwen uit het blauwe hart van de Thornpeak-gletsjer, waar twee eeuwen ijs de kou hebben onderdrukt totdat deze uit zichzelf gloeit. Zelfs in rust laat hij damp achter, en de scheur waarin hij landt is een gletsjerspleet onder de Besluipener Ridge. Highwatch geeft zijn gevallenen daarboven aan het ijs; dit is dus een wapen dat bedoeld is om de dooi, en wat de dooi ook zou veroorzaken, op afstand te houden."
-        },
-        "rimecrusher_mace": {
-          "name": "Rijpverbrijzelaar",
-          "look": "Een cluster van grillige ijskristallen rond een gloeiende cyaankern, terwijl rijp langs een verzilverde steel naar beneden kruipt.",
-          "lore": "Niet uitgesneden maar gegroeid: Thornpeak-ijs lokte rond een koude cyaankern totdat het zo hard werd als Hode's beste staal. Rijm kruipt langs het verzilverde handvat naar de hand en komt nooit helemaal aan. Waar het toeslaat, bevriest het water; waar het rust, wordt de grond wit. De ernstige kou van de toppen, klein genoeg gemaakt om te slingeren naar de dingen die tegen de muur klimmen."
-        },
-        "frostbite_dagger": {
-          "name": "Rijpnaald",
-          "look": "Een griezelig dunne dolk van helderblauw ijs, een gloeiende cyaanader in het midden, naaldvorstkristallen en een rijp gevest.",
-          "lore": "Dun als een ingehouden adem en twee keer zo koud: een splinter van de Thornpeak-gletsjer aangescherpt tot een enkele gloeiende ader, zo scherp dat de wond dichtgevroren is voordat het bloed eraan denkt te stromen. De naam is ontleend aan de ernstige kou die de doden van de bergtoppen meedragen. Het hoeft nooit te worden verscherpt; ijs wordt niet dof, merkt Loremaster Caddis droogjes op, het wacht alleen maar."
-        },
-        "hoarfrost_vigil_staff": {
-          "name": "Rijpwake",
-          "look": "Verzilverde staf bekroond met een zwevende, langzaam roterende scherf van gloeiend cyaanijs, waaruit kristallen en koude damp voortkomen.",
-          "lore": "De staf van de wacht die nooit aan de muur van Highwatch slaapt. De kroon is een scherf cyaan-tarn-ijs dat vrij van het zilver drijft en langzaam uit zichzelf draait: altijd, zo zweert de bewaker, in de richting van de kou die zich onder de toppen verzamelt. Het dragen van de wake betekent tweehonderd jaar wacht houden in één nacht, en beloven niet weg te kijken."
-        },
-        "everwinter_wand": {
-          "name": "Scherf van de Eeuwige Winter",
-          "look": "Een enkele piek van gloeiend cyaan gletsjerijs, rijp die uit een zilveren kraag bloeit, zwakke koude mist.",
-          "lore": "Een piek van gloeiend gletsjerijs, naar verluidt gebroken uit het diepe bergmeer onder het Sanctum, waar de kou van de berg tanden heeft. Rijp bloeit eindeloos uit zijn zilveren kraag en smelt nooit, niet door vuur, noch door de zomer. Magiër's houden het dichtbij vanwege de kou die het hun werk leent, en houden het ver weg op de avonden dat het naar de crypte van Nythraxis lijkt te leunen en te luisteren."
-        },
-        "winterbite": {
-          "name": "Winterbeet",
-          "look": "Boog van verzilverd staal en blauw ijs, een gloeiende cyaan bevroren kern in de stijgbuis, een nokvormige pijl van massief ijs, koude damp.",
-          "lore": "Een boog van verzilverd staal en ijs uit Doorntop, met in het middenstuk een koude cyaankern die de pijl aan de pees vastvriest. De boog legt een schacht van massief gletsjerijs aan die zich bij elke trek opnieuw vormt. De schutter draagt op de muur geen pijlkoker, alleen de kou. Met zo'n boog hield Hoogwacht de Belagerrug tijdens een belegering: één schutter, zo wordt verteld, en een wintervoorraad pijlen die er altijd al waren."
-        },
-        "solheim_sword": {
-          "name": "Solheim, Laatste licht van de dageraad",
-          "look": "Een grootzwaard gesmeed uit een gevallen ster, een kern van gesmolten goud die het lemmet splijt, kosmoszwart staal met een rand in sterrenlicht, gouden scherven die rond de bewaker cirkelen, een aurora-lint.",
-          "lore": "Toen de ster uit de westelijke hemel viel en 'als een smidse' voorbij het weduwenstruikgewas barstte, trok broeder Aldric zijn nog smeulende hart uit de Mirefen-krater en smeekte de smeden van het rijk om 'iets te maken dat niet tot deze wereld behoort'. Ze hebben er één grootzwaard van gemaakt: Solheim. De gesmolten gouden kern splijt het kosmoszwarte blad als de dageraad die een nachtelijke hemel kraakt, en scherven van stermetaal cirkelen rond de bewaker op paden waar geen hand voor is ingesteld. Er is er maar één ooit vervalst. Er zal geen ander zijn."
-        },
-        "skyrender_axe": {
-          "name": "Hemelsplijter, De Wond van het Firmament",
-          "look": "Hoofd als een gescheurd stuk nachtelijke hemel, scheuren van gesmolten goud en etsen van sterrenbeelden, zwevende scherven van sterrenlicht, een aurora-glans langs de rand.",
-          "lore": "Geslagen vanaf de rand van de krater, waar de gevallen ster het spiegelbeeld van de hemel uit Mirefen scheurde en een wond achterliet die nog steeds stoomt. Het hoofd ziet eruit als een stuk verscheurde nacht: scheuren van gesmolten goud, sterrenbeelden die geen wetenschapper bij Highwatch kan noemen, een aurora die bij elke beweging van de rand bloedt. Broeder Aldric zegende het en wilde het niet aanraken. Het optillen betekent het gat vasthouden dat de hemel achterliet."
-        },
-        "starfall_mace": {
-          "name": "Sterrenval, Oordeel van de Hemel",
-          "look": "Gevangen gesmolten gouden sterkern omringd door rondcirkelende fragmenten, kosmoszwarte flenzen dooraderd met sterrenlicht, aurora die uit de naden spat.",
-          "lore": "Een sterkern werd gevangen vlak voordat hij stierf, omringd door het puin dat ermee viel, bevroren op een paar centimeter afstand van de vergetelheid. De kosmoszwarte flenzen lopen door van opgesloten sterrenlicht, en aurora komt uit de naden wanneer het omhoog wordt gebracht. De oude Priester's van het Licht noemden een vallende ster een oordeel, een oordeel van bovenaf dat geen enkel schild mocht tegenhouden, en noemden dit naar degene die op Mirefen neerkwam."
-        },
-        "astravyr_dagger": {
-          "name": "Astravyr, Hoektand van de Gevallen Ster",
-          "look": "Een stukje van een gevallen ster, een gloeiende rand van gesmolten goud op kosmoszwart metaal, een heldere sterdeeltjes die rond de pommel cirkelen, een dun auroraspoor.",
-          "lore": "Het kleinste stukje van de ster dat Aldric uit de krater haalde, en volgens sommigen het gevaarlijkste. Eén enkel stukje van dat buitenaardse hart, met de gesmolten gouden rand op kosmoszwart metaal, een eenzame sterstof die rond de pommel cirkelt als een maan die zijn wereld heeft verloren. Hij weegt bijna niets en deelt bijna alles. Klein genoeg om te verbergen, helder genoeg om in het donker door zijn eigen licht te vinden."
-        },
-        "cosmarch_staff": {
-          "name": "Cosmarch, Spits van de Eindeloze Leegte",
-          "look": "Ronddraaiende cluster van gouden sterrenscherven rond een kern van gesmolten goud, een door sterrenbeelden geëtste kosmoszwarte schacht, aurora-linten die naar boven kronkelen.",
-          "lore": "Een schacht van stermetaal bekroond met een kern van gesmolten goud en een ring van gouden scherven die er in een langzame, eindeloze baan omheen marcheren: een kleine kosmos, geëtst met sterrenbeelden die bij geen enkele hemel boven Thornpeak passen. Aurora slingert zich omhoog als rook die vergat op te stijgen. Degenen die het droegen, beweerden dat ze de leegte er doorheen konden voelen stromen, zoals Ysolei louter 'het maanlicht drinkt': geduldig en koud, en terugkijkend."
-        },
-        "emberwish_wand": {
-          "name": "Sintelwens, Vonk van de Stervende Zon",
-          "look": "Gevangen gesmolten gouden stervende sterrenstof omhuld door rondcirkelende vonken, kosmoszwarte schacht geëtst met gloeiende sterrenbeelden.",
-          "lore": "Niet de gevallen ster zelf, maar het laatste splintertje van een stervende: een enkele gesmolten gouden gloed van een zon die al is uitgedoofd, omhuld door de vonken die het laatste licht vormden. De kosmoszwarte schacht is geëtst met de sterrenbeelden die hem zagen sterven. De Mirefen-boeren zeggen dat het één wens vervult voor degene die het in de echte schemering vasthoudt; ze zeggen ook dat elke ziel die het vasthield meer tijd wenste, en dat de Verdronken Maan niemand van hen dat gunde."
-        },
-        "encore_bow": {
-          "name": "Encore, de tweede vallende ster",
-          "look": "Komisch extra groot sterrenkanon: een kosmoszwarte loop geëtst met gloeiende gouden sterrenbeelden, een uitlopende klokkenmond met daarin een gesmolten gouden komeetschelp, koperen fittingen, een houten schouderkolf.",
-          "lore": "De smeden die de gevallen ster bewerkten, maakten er zes relikwieën van en hadden nog een vat stermetaal over, en tegen die tijd hadden de leerlingen er een mening over. Wat uit het aambeeld kwam, is het eerste kanon van het rijk, of de kleinste belegeringsmachine: een schouderkanon dat niet zozeer een schot loslaat als wel een tweede ster vraagt, gericht. Broeder Aldric weigerde het te zegenen, omdat hij redeneerde dat alles wat zo luid is al door de hemel is opgemerkt. Jager's zijn er dol op. Er is niets downrange ooit gebeurd."
-        },
-        "meteorlatch_crossbow": {
-          "name": "Meteoorslot, Het Laatste Oordeel van de Hemel",
-          "look": "Meteorisch stermetaal, gesmolten gouden kern langs de helmstok, kosmoszwarte ledematen geëtst met sterrenbeelden, een nokvormige straal van puur sterrenvuur.",
-          "lore": "Gesmeed uit ruw meteorisch stermetaal terwijl de Mirefen-krater nog gloeide, puin 'te heet om te hanteren', in kosmoszwarte ledematen gehamerd met sterrenbeelden, en een gesmolten gouden kern langs de helmstok. Het slaat geen grendel, maar roept er een op: een straal van sterrenvuur, losgelaten als een vonnis en neerkomend als het einde van een. Toen Highwatch vreesde dat zelfs de onsterfelijke kroon van Nythraxis misschien niet het ergste onder de toppen zou zijn, was dit het wapen dat ze aan de muur wilden hebben. Richt het goed."
-        }
-      },
-      "seasonOne": "Seizoen 1",
-      "rarity": {
-        "uncommon": "Ongewoon",
-        "rare": "Zeldzaam",
-        "epic": "Episch",
-        "legendary": "Legendarisch"
-      },
       "wtype": {
         "sword": "Zwaard",
         "axe": "Bijl",
@@ -625,73 +374,7 @@ export const nl_NL: EnTranslations = {
         "bow": "Boog",
         "crossbow": "Kruisboog",
         "polearm": "Stangwapen"
-      },
-      "badge": {
-        "flagship": "Vlaggenschip",
-        "hero": "Held"
-      },
-      "inspectAria": "Inspecteer {item}",
-      "viewModeLabel": "Voorbeeldmodus",
-      "tryOn": "Uitproberen",
-      "weaponOnly": "Alleen wapen",
-      "sceneLabel": "Voorbeeldbelichting",
-      "scene": {
-        "day": "Dag",
-        "dusk": "Schemering",
-        "night": "Nacht"
-      },
-      "lore": "Achtergrondverhaal",
-      "buySkin": "Skin kopen",
-      "unavailable": "Niet beschikbaar",
-      "applied": "In gebruik",
-      "apply": "Skin toepassen",
-      "detach": "Skin verwijderen",
-      "equipHint": "Rust een {type} uit om deze skin aan te brengen."
-    },
-    "claudium": {
-      "title": "Claudium",
-      "open": "Claudium openen",
-      "close": "Claudium sluiten",
-      "loading": "Claudium laden...",
-      "balanceLabel": "Saldo",
-      "balanceUnit": "{amount} Claudium",
-      "solBalance": "SOL: {amount}",
-      "usdcBalance": "USDC: {amount}",
-      "wocBalance": "WOC: {amount}",
-      "unavailable": "De Claudium-winkel is momenteel niet beschikbaar. Je saldo en aankopen zijn niet aangetast. Probeer het binnenkort opnieuw.",
-      "disclosure": "Claudium is een virtuele valuta die maar één kant op gaat: koop het met geld en besteed het aan cosmetica. Het kan niet worden ingewisseld, overgedragen of uitbetaald.",
-      "buyTitle": "Claudium kopen",
-      "railLabel": "Betaalmethode",
-      "railStripe": "Kaart",
-      "railSol": "SOL",
-      "railUsdc": "USDC",
-      "railWoc": "WOC",
-      "railWocDiscount": "20% korting",
-      "railWocUnavailable": "WOC-prijzen zijn momenteel niet beschikbaar.",
-      "railNativeUnavailable": "SOL/WOC staat uit.",
-      "amountLabel": "Hoeveelheid",
-      "showAmounts": "Toon alle Claudium-bedragen",
-      "hideAmounts": "Verberg extra Claudium-bedragen",
-      "skuRow": "{usd} voor {claudium} Claudium",
-      "buyButton": "Kopen",
-      "buyUnavailable": "Aankoop is momenteel niet mogelijk.",
-      "storeTitle": "Cosmetische winkel",
-      "storeEmpty": "Er zijn momenteel geen cosmetica beschikbaar.",
-      "storeCost": "{amount} Claudium",
-      "spendButton": "Besteden",
-      "kindCosmetic": "Cosmetica",
-      "kindSkin": "Skin",
-      "kindItem": "Item",
-      "checkoutTitle": "Aankoop voltooien",
-      "checkoutClose": "Betaalvenster sluiten",
-      "checkoutLoading": "Afrekenen laden...",
-      "checkoutPending": "Transactie in behandeling. Bevestig deze in je wallet en houd dit paneel open.",
-      "checkoutPendingButton": "Bezig",
-      "checkoutFailed": "Afrekenen kon niet worden geladen. Probeer het opnieuw.",
-      "checkoutUnavailable": "Die aankoop van Claudium is momenteel niet beschikbaar.",
-      "checkoutWalletRequired": "Koppel een Solana-wallet voordat je Claudium met cryptovaluta koopt.",
-      "checkoutWalletUnsupported": "Deze wallet kan geen Solana-transacties ondertekenen en verzenden.",
-      "checkoutNotSettled": "De transactie is verzonden, maar Claudium is nog niet gecrediteerd. Probeer het binnenkort opnieuw."
+      }
     },
     "theme": {
       "preset": "UI-thema",
@@ -773,7 +456,6 @@ export const nl_NL: EnTranslations = {
     "mobile": {
       "jump": "Springen",
       "leaderboard": "Ranglijst",
-      "dailyRewards": "Winkel",
       "deeds": "Daden",
       "professions": "Beroepen",
       "nameplates": "Namen",
@@ -1048,8 +730,6 @@ export const nl_NL: EnTranslations = {
       "clickFeedback": "Klikmarkering",
       "lockCursorOnRotate": "Aanwijzer vergrendelen tijdens draaien",
       "keybindHelpLockCursorOnRotate": "Houdt de muisaanwijzer binnen het venster terwijl je sleept om de camera te draaien, zodat deze de schermrand niet kan bereiken of naar een ander beeldscherm kan gaan. Schakel uit als je liever een vrije aanwijzer hebt.",
-      "showWalletOnCharacterScreen": "Portemonnee tonen op personagescherm",
-      "showWalletOnPlayerCard": "Portemonnee tonen op spelerskaart",
       "showDevBadges": "Ontwikkelaarsinsignes tonen",
       "showOwnNameplate": "Mijn naambordje tonen",
       "showPlayerNameplates": "Spelersnamen Tonen",
@@ -1070,9 +750,9 @@ export const nl_NL: EnTranslations = {
       "showThirdActionBar": "Derde actiebalk tonen",
       "showTargetOfTarget": "Doelwit van doelwit tonen",
       "showAttackButton": "Aanvalsknop Tonen",
-      "showDailyRewardsChest": "Kist met dagelijkse beloningen tonen",
       "mobileCameraJoystick": "Camerajoystick",
-      "mobileLeftHanded": "Linkshandige indeling"
+      "mobileLeftHanded": "Linkshandige indeling",
+      "showWalletOnCharacterScreen": "Portemonnee tonen op personagescherm"
     },
     "talentRows": {
       "tab": "Keuzes",
@@ -1178,9 +858,6 @@ export const nl_NL: EnTranslations = {
         "backgrounded": "Op achtergrond",
         "offline": "Offline"
       }
-    },
-    "playerCard": {
-      "showWalletBadge": "Geldbeursbadge tonen"
     },
     "landing": {
       "highContrast": "Hoog contrast",
@@ -4762,170 +4439,6 @@ export const nl_NL: EnTranslations = {
       "failed": "Kon je e-mailadres niet opslaan. Probeer het opnieuw."
     }
   },
-  "wallet": {
-    "label": "$WOC-portemonnee",
-    "connect": "Portemonnee verifiëren",
-    "connectTitle": "Verifieer je Solana-portemonnee",
-    "connectAria": "Verifieer je Solana-portemonnee",
-    "verify": "Portemonnee verifiëren",
-    "verifyNew": "Nieuwe portemonnee verifiëren",
-    "verifyTitle": "Kies een portemonnee en onderteken één keer om eigendom te verifiëren.",
-    "verifyAria": "Kies een portemonnee en onderteken één keer om eigendom te verifiëren",
-    "verifyAddressAria": "Onderteken om portemonnee {address} voor je account te verifiëren",
-    "appConnected": "App verbonden",
-    "connectApp": "App verbinden",
-    "connectAppTitle": "Verbind de portemonnee-app in deze browser",
-    "connectAppAria": "Verbind de portemonnee-app in deze browser",
-    "verifying": "Verifiëren...",
-    "verifyingTitle": "Portemonneeverificatie is bezig.",
-    "switch": "Wisselen",
-    "switchTitle": "Verifieer een andere portemonnee",
-    "switchAria": "Verifieer een andere portemonnee",
-    "unlink": "Ontkoppelen",
-    "unlinkTitle": "Verwijder portemonneeverificatie van dit account",
-    "unlinkAria": "Verwijder portemonneeverificatie van dit account",
-    "signOut": "Verbinding verbreken",
-    "signOutTitle": "Verbreek de verbinding met de portemonnee-app in deze browser",
-    "signOutAria": "Verbreek de verbinding met de portemonnee-app in deze browser",
-    "hide": "Verbergen",
-    "hideTitle": "Verberg de portemonneerij op dit scherm",
-    "hideAria": "Verberg de portemonneerij op dit scherm",
-    "hiddenNotice": "Portemonneerij verborgen. Schakel deze in het spel weer in via Opties > Interface.",
-    "linkedTitle": "Portemonnee geverifieerd voor je account. Klik om de portemonnee-app te beheren.",
-    "linkedDisconnectedTitle": "De portemonnee blijft geverifieerd voor je account. Verbind opnieuw om de portemonnee-app te beheren.",
-    "linkedDisconnectedAria": "De portemonnee blijft geverifieerd voor je account. Verbind opnieuw om de portemonnee-app te beheren.",
-    "linkTitle": "Klik om te ondertekenen en deze portemonnee aan je account te koppelen.",
-    "connectedTitle": "Verbonden. Log in om deze portemonnee aan je account te koppelen.",
-    "balanceTitle": "Geverifieerd $WOC-saldo van Solana-portemonnee",
-    "balanceAria": "Geverifieerd Solana-portemonneesaldo: {balance}",
-    "balancePreviewTitle": "Voorbeeld van $WOC-saldo van verbonden portemonnee",
-    "balancePreviewAria": "Voorbeeld van saldo van verbonden portemonnee: {balance}. Koppel de portemonnee om houderkenmerk te verifiëren.",
-    "balanceAmount": "{amount} $WOC",
-    "bagConnect": "Portemonnee koppelen",
-    "bagLink": "Portemonnee verifiëren",
-    "bagReconnect": "Portemonnee opnieuw verbinden",
-    "connected": "Verbonden: {address}",
-    "connectedWithBalance": "Verbonden: {balance} - {address}",
-    "connectedLinked": "Geverifieerd: {address}",
-    "connectedLinkedWithBalance": "Geverifieerd: {balance} - {address}",
-    "helpDisconnected": "Verifieer een Solana-portemonnee om houderkenmerk en spelerkaartinsignes in te schakelen. Geen transactie of SOL vereist.",
-    "helpLoginToLink": "{address} verbonden. Log in om deze aan je account te koppelen.",
-    "helpLoginToLinkWithBalance": "{address} verbonden met {balance}. Log in om deze aan je account te koppelen.",
-    "helpReadyToLink": "Portemonnee geselecteerd: {address}. Onderteken één keer om houderkenmerk en spelerkaarten te verifiëren.",
-    "helpReadyToLinkWithBalance": "Portemonnee geselecteerd: {address} met {balance}. Onderteken één keer om houderkenmerk en spelerkaarten te verifiëren.",
-    "helpLinked": "Houdervoordelen zijn actief. Portemonnee-app verbonden in deze browser.",
-    "helpLinkedWithBalance": "Houdervoordelen zijn actief. Portemonnee-app verbonden in deze browser.",
-    "helpLinkedDisconnected": "Houdervoordelen zijn actief. Verbind de app wanneer je moet ondertekenen of uitgeven.",
-    "helpLinkedDisconnectedWithBalance": "Houdervoordelen zijn actief. Verbind de app wanneer je moet ondertekenen of uitgeven.",
-    "extensionHelp": "Om hier een portemonnee te zien, houd je een browserextensie voor portemonnees zoals Solflare Wallet actief.",
-    "mobileAppHelp": "Kies Phantom of Solflare. Je portemonnee-app vraagt om goedkeuring. Houd dit spel open en keer ernaar terug wanneer je klaar bent.",
-    "standaloneAppHelp": "Portemonneeverbindingen zijn nog niet beschikbaar in de beginscherm-app. Open World of ClaudeCraft in Safari of Chrome om Phantom of Solflare te gebruiken.",
-    "openAppTitle": "Doorgaan in {wallet}",
-    "openAppHelp": "Open {wallet} om dit verzoek te bekijken. Houd dit speltabblad open terwijl de portemonnee-app actief is.",
-    "openAppButton": "Open {wallet}",
-    "manualReturnBrowserHelp": "Keer na goedkeuring terug naar dit speltabblad. Als iOS een andere browser opent, sluit die dan en keer handmatig terug naar de oorspronkelijke browser.",
-    "manualReturnStandaloneHelp": "Keer na goedkeuring terug naar World of ClaudeCraft via je beginscherm. Als iOS een browser opent, sluit die dan en open de beginscherm-app handmatig opnieuw.",
-    "preparingAppButton": "{wallet} voorbereiden...",
-    "walletAppUnavailable": "{wallet} kon niet worden voorbereid. Sluit dit venster en probeer het opnieuw.",
-    "flowConnect": "Kies een portemonnee. De verificatie gaat automatisch verder.",
-    "flowSign": "Onderteken het verificatiebericht in je portemonnee-app. Geen transactie of SOL vereist.",
-    "flowVerify": "Eigendom van portemonnee verifiëren...",
-    "linkFailed": "Portemonneeverificatie mislukt.",
-    "verifyFailed": "Portemonneeverificatie mislukt.",
-    "unlinkFailed": "Kon portemonnee niet ontkoppelen.",
-    "browser": {
-      "eyebrow": "Desktop-portemonnee-autorisatie",
-      "title": "Een Solana-portemonnee verbinden",
-      "linkBody": "Kies een portemonnee-extensie in deze browser. Je tekent een verificatiebericht en keert dan terug naar de desktop-app.",
-      "paymentBody": "Kies de aan je account gekoppelde portemonnee en keur de transactie goed in deze browser.",
-      "extensionHelp": "Geen compatibele portemonnee-extensie gevonden. Installeer of ontgrendel Phantom, Solflare of een andere Solana-browserportemonnee en probeer het opnieuw.",
-      "safety": "World of ClaudeCraft vraagt nooit naar je herstelzin of privésleutel.",
-      "continueWith": "Doorgaan met {wallet}",
-      "reviewTitle": "Bekijken in je portemonnee",
-      "reviewBody": "Volg de aanwijzing van {wallet}. Houd deze browserpagina open.",
-      "completeTitle": "Portemonnee-autorisatie voltooid",
-      "completeBody": "Je kunt terugkeren naar de World of ClaudeCraft desktop-app.",
-      "returnButton": "Terug naar desktop-app",
-      "failed": "Portemonnee-autorisatie mislukt of verlopen. Keer terug naar de desktop-app en probeer het opnieuw.",
-      "retry": "Opnieuw proberen"
-    },
-    "holder": "$WOC-houder",
-    "holderTierTitle": "{tier} $WOC-houder",
-    "holderTiers": {
-      "ember": {
-        "name": "Sintel",
-        "flavor": "De vonk is ontstoken."
-      },
-      "coinbearer": {
-        "name": "Muntdrager",
-        "flavor": "De eerste munt in de oorlogskist."
-      },
-      "coppercrest": {
-        "name": "Koperkam",
-        "flavor": "Koper opgestapeld, je naam wordt genoemd."
-      },
-      "silverbound": {
-        "name": "Zilvergebonden",
-        "flavor": "Gebonden in zilver, de buidel opbouwend."
-      },
-      "gilded": {
-        "name": "Verguld",
-        "flavor": "Verguld en grijnzend."
-      },
-      "vaultwarden": {
-        "name": "Kluiswachter",
-        "flavor": "Bewaakt nu een echte kluis: 0,01% van alle $WOC."
-      },
-      "whale": {
-        "name": "Walvis",
-        "flavor": "De diepte splijt wanneer je zwemt: 0,1% van de voorraad."
-      },
-      "leviathan": {
-        "name": "Leviathan",
-        "flavor": "De markten voelen je bewegen: 1% van de voorraad."
-      },
-      "tidelord": {
-        "name": "Getijdenheer",
-        "flavor": "Het tij geeft gehoor aan je roep: 2% van de voorraad."
-      },
-      "stormcaller": {
-        "name": "Stormroeper",
-        "flavor": "Stormen verzamelen zich bij je naam: 3% van de voorraad."
-      },
-      "krakencrown": {
-        "name": "Krakenkroon",
-        "flavor": "Gekroond door de diepte: 4% van de voorraad."
-      },
-      "titanforged": {
-        "name": "Titaangesmeed",
-        "flavor": "Gesmeed onder titanen: 5% van de voorraad."
-      },
-      "starhoard": {
-        "name": "Sterrenschat",
-        "flavor": "Een schat die sterrenlicht buigt: 6% van de voorraad."
-      },
-      "voidwarden": {
-        "name": "Leegtewachter",
-        "flavor": "Hoeder aan de rand van de leegte: 7% van de voorraad."
-      },
-      "realmshaper": {
-        "name": "Rijkvormer",
-        "flavor": "Jij hervormt het rijk: 8% van de voorraad."
-      },
-      "worldforger": {
-        "name": "Wereldsmid",
-        "flavor": "Een eigen wereld smedend: 9% van de voorraad."
-      },
-      "worldbearer": {
-        "name": "Werelddrager",
-        "flavor": "Je draagt een stuk van de wereld: 10% van de voorraad."
-      },
-      "sovereign": {
-        "name": "Soeverein",
-        "flavor": "Het rijk buigt de knie: de gehele voorraad."
-      }
-    }
-  },
   "playerCard": {
     "shareButton": "Spelerskaart Delen",
     "title": "Spelerskaart",
@@ -4949,8 +4462,7 @@ export const nl_NL: EnTranslations = {
     "footerHandleWithRecruits": "@{handle} - {recruited}",
     "footerCta": "Smeed je legende: {siteUrl}",
     "arenaStat": "Arena",
-    "shareTierBit": ", {tier}-rang $WOC-houder",
-    "shareText": "Ik smeed mijn legende in World of ClaudeCraft: Niveau {level} {className}{tierBit}. Sluit je aan bij mijn wereld:",
+    "shareText": "Ik smeed mijn legende in World of ClaudeCraft: Niveau {level} {className}. Sluit je aan bij mijn wereld:",
     "nativeShareTitle": "World of ClaudeCraft",
     "fileNameFallback": "speler",
     "actionShareX": "Delen op X",

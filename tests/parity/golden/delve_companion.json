@@ -478,8 +478,8 @@
       "tick": 41,
       "time": 2.05,
       "nextId": 425,
-      "state": "f51ce72d",
-      "events": "77392800",
+      "state": "9f11971c",
+      "events": "19563729",
       "rng": {
         "draws": 12,
         "digest": "3de539dc"
@@ -578,7 +578,7 @@
           "dodgeChance": 0.063,
           "fallStartY": 55.720563,
           "fiveSecondRule": 101.05,
-          "hp": 29000,
+          "hp": 30985,
           "id": 415,
           "inCombat": true,
           "kind": "player",
@@ -654,7 +654,7 @@
           },
           "swingTimer": 1.5,
           "templateId": "acolyte_tessa",
-          "wanderTimer": 3,
+          "wanderTimer": 1.5,
           "weapon": {
             "max": 11,
             "min": 7,
@@ -721,7 +721,7 @@
       "tick": 45,
       "time": 2.25,
       "nextId": 425,
-      "state": "84424d13",
+      "state": "388f7309",
       "events": "741638a5",
       "rng": {
         "draws": 12,
@@ -732,7 +732,7 @@
       "tick": 49,
       "time": 2.45,
       "nextId": 425,
-      "state": "b9de9800",
+      "state": "353e22e2",
       "events": "741638a5",
       "rng": {
         "draws": 12,
@@ -832,7 +832,7 @@
           "dodgeChance": 0.063,
           "fallStartY": 55.2043,
           "fiveSecondRule": 101.45,
-          "hp": 29000,
+          "hp": 30985,
           "id": 415,
           "kind": "player",
           "level": 7,
@@ -905,7 +905,7 @@
           },
           "swingTimer": 0.7,
           "templateId": "acolyte_tessa",
-          "wanderTimer": 2.6,
+          "wanderTimer": 1.1,
           "weapon": {
             "max": 11,
             "min": 7,
@@ -918,7 +918,7 @@
       "tick": 50,
       "time": 2.5,
       "nextId": 425,
-      "state": "7289fc68",
+      "state": "10b5bb90",
       "events": "741638a5",
       "rng": {
         "draws": 12,
@@ -929,7 +929,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 425,
-      "state": "4d90680b",
+      "state": "c16cd9a5",
       "events": "741638a5",
       "rng": {
         "draws": 12,
@@ -1029,7 +1029,7 @@
           "dodgeChance": 0.063,
           "fallStartY": 60.199709,
           "fiveSecondRule": 101.55,
-          "hp": 29000,
+          "hp": 30985,
           "id": 415,
           "kind": "player",
           "level": 7,
@@ -1103,7 +1103,7 @@
           },
           "swingTimer": 0.5,
           "templateId": "acolyte_tessa",
-          "wanderTimer": 2.5,
+          "wanderTimer": 1,
           "weapon": {
             "max": 11,
             "min": 7,
@@ -1116,7 +1116,7 @@
       "tick": 51,
       "time": 2.55,
       "nextId": 425,
-      "state": "4d90680b",
+      "state": "c16cd9a5",
       "events": "741638a5",
       "rng": {
         "draws": 12,
@@ -1216,7 +1216,7 @@
           "dodgeChance": 0.063,
           "fallStartY": 60.199709,
           "fiveSecondRule": 101.55,
-          "hp": 29000,
+          "hp": 30985,
           "id": 415,
           "kind": "player",
           "level": 7,
@@ -1290,7 +1290,7 @@
           },
           "swingTimer": 0.5,
           "templateId": "acolyte_tessa",
-          "wanderTimer": 2.5,
+          "wanderTimer": 1,
           "weapon": {
             "max": 11,
             "min": 7,

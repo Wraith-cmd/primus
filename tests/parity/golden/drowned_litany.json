@@ -827,8 +827,8 @@
       "tick": 490,
       "time": 24.5,
       "nextId": 449,
-      "state": "8b2d5b67",
-      "events": "ae67468d",
+      "state": "8e15fc5d",
+      "events": "741638a5",
       "rng": {
         "draws": 2424,
         "digest": "f06c471b"
@@ -838,7 +838,7 @@
       "tick": 500,
       "time": 25,
       "nextId": 449,
-      "state": "4010afc9",
+      "state": "9d688c37",
       "events": "c7185058",
       "rng": {
         "draws": 2491,
@@ -849,7 +849,7 @@
       "tick": 505,
       "time": 25.25,
       "nextId": 449,
-      "state": "641d42a2",
+      "state": "0a7bb880",
       "events": "6efb0f6a",
       "rng": {
         "draws": 2511,
@@ -964,7 +964,7 @@
           "dodgeChance": 0.0665,
           "facing": -1.561597,
           "fiveSecondRule": 124.25,
-          "hp": 50000,
+          "hp": 49927,
           "id": 415,
           "inCombat": true,
           "kind": "player",
@@ -1078,7 +1078,7 @@
       "tick": 507,
       "time": 25.35,
       "nextId": 449,
-      "state": "49555d5a",
+      "state": "fa6a7464",
       "events": "741638a5",
       "rng": {
         "draws": 2521,
@@ -1193,7 +1193,7 @@
           "dodgeChance": 0.0665,
           "facing": -1.561597,
           "fiveSecondRule": 124.35,
-          "hp": 50000,
+          "hp": 49927,
           "id": 415,
           "inCombat": true,
           "kind": "player",

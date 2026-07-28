@@ -31,6 +31,17 @@ no procedural-rig path here anymore. Reads the world; never mutates the sim.
   per-frame render paths; `createCharacterVisual` returns null on such a
   failure so callers skip the view for the frame instead of stalling the
   renderer (`tests/character_visual_fail_soft.test.ts`).
+- `cast_layer_core.ts` + `cast_knobs.ts`: the procedural spell-cast pose layer.
+  The core is pure (registered in `RENDER_PURE_CORES`): cast progress 0 to 1 plus
+  a `CastLayerStyle` plus a knob struct in, additive radians out
+  (`castLayerOffsetsInto`), shaped as windup, hold, snap. `visual.ts` adds them
+  post-mixer to `spine`/`chest`/`head`/`upperarmr`/`upperarml`, the same additive
+  trick as `STOW_ARM_LIFT_RAD`; the base clip is never remixed or retimed.
+  `cast_knobs.ts` is the impure half (window + localStorage, never a `*_core`):
+  it publishes the live `window.__primusCastKnobs` the owner edits from the
+  console, with persistence, `reset()` and `dump()`. The renderer reads
+  `castLayerKnobs()` every frame, so an edit lands on the next frame with no
+  rebuild (`tests/cast_layer_core.test.ts`, `tests/cast_knobs.test.ts`).
 - `halo.ts`: the class halo (the priest's Light): `buildHalo(color, upOffset,
   radius)`, driven by `VisualDef.halo` plus the optional
   `haloUpOffset`/`haloRadius` placement overrides (defaults live here; the

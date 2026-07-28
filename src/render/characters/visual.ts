@@ -30,6 +30,13 @@ import {
   skinTexture,
   tintedFarMaterials,
 } from './assets';
+import { castLayerKnobs } from './cast_knobs';
+import {
+  type CastLayerStyle,
+  type CastPoseOffsets,
+  castLayerOffsetsInto,
+  emptyCastPoseOffsets,
+} from './cast_layer_core';
 import { buildHalo } from './halo';
 import type { EmoteClipSpec, VisualDef, WeaponLayoutOverride } from './manifest';
 import { SKIN_ATTACK_CLIP_NAMES, weaponSkinAttackClips, weaponSkinOrientPin } from './skin_attack';
@@ -99,6 +106,26 @@ const STOW_ARM_BONE = 'upperarmr';
 const STOW_ARM_LIFT_RAD = -0.85;
 const HIT_REACT_COOLDOWN = 0.9;
 
+// Procedural spell-cast pose layer (cast_layer_core.ts): the same post-mixer
+// additive trick as the sheathe lift above, spread over five bones. Names are
+// the GLTFLoader-SANITIZED forms (the KayKit Rig_Medium authors `upperarm.r`;
+// the loader strips the dot), matching STOW_ARM_BONE. Any bone that resolves to
+// null is skipped silently, so a rig without a full humanoid spine simply gets
+// less of the layer instead of throwing in a per-frame path.
+const CAST_SPINE_BONE = 'spine';
+const CAST_CHEST_BONE = 'chest';
+const CAST_HEAD_BONE = 'head';
+const CAST_ARM_MAIN_BONE = 'upperarmr';
+const CAST_ARM_OFF_BONE = 'upperarml';
+// Frame-rate-independent fade in/out of the whole layer, so entering or leaving
+// a cast never pops the rig (same exp form as advanceSwimBlend).
+const CAST_BLEND_RATE = 11;
+const CAST_BLEND_EPS = 1e-3;
+// Once the cast ends, progress is driven the rest of the way to 1 over this
+// many seconds so the release snap actually plays out even when the last
+// observed snapshot was a few frames short of completion.
+const CAST_RELEASE_TAIL_SEC = 0.16;
+
 // Lie_Idle already lays the rig flat — a touch of extra pitch reads as a
 // surface glide; clip-less rigs (creatures) get the full procedural prone
 const SWIM_PITCH_CLIP = 0.35;
@@ -122,6 +149,16 @@ const MOONKIN_TINT = new THREE.Color(0x9d6bff);
 // (the fire aura around it comes from vfx.formAura, not the material). Kept
 // dark enough that the body still shades and the flames read against it.
 const METAMORPH_TINT = new THREE.Color(0x4f2170);
+
+/** The five bones the cast layer writes to; any of them may be null on a rig
+ *  that does not have it (creature skeletons, stripped props). */
+interface CastBones {
+  spine: THREE.Object3D | null;
+  chest: THREE.Object3D | null;
+  head: THREE.Object3D | null;
+  armMain: THREE.Object3D | null;
+  armOff: THREE.Object3D | null;
+}
 
 // shared invisible click capsule — raycaster ignores `visible`, render doesn't
 let clickGeoSingleton: THREE.CylinderGeometry | null = null;
@@ -183,6 +220,15 @@ export class CharacterVisual {
   // the swap moment); -1 = inactive. Bone resolved lazily once (null = absent).
   private stowLift = { t: -1, dur: 0 };
   private stowArmBone: THREE.Object3D | null | undefined;
+  // Procedural cast layer. `castBones` is undefined until the first resolve and
+  // null when this rig has none of the five bones (then the layer is skipped for
+  // this visual's whole life). The offsets struct is caller-owned: refilled in
+  // place every frame, never reallocated.
+  private castBones: CastBones | null | undefined;
+  private castOffsets: CastPoseOffsets = emptyCastPoseOffsets();
+  private castBlend = 0;
+  private castProgress = 0;
+  private castStyle: CastLayerStyle = 'none';
   private disposed = false;
   private ghosted = false;
   private mixer: THREE.AnimationMixer;
@@ -426,12 +472,83 @@ export class CharacterVisual {
 
     this.pendingDt = Math.min(MIXER_DT_CAP, this.pendingDt + dt);
     if (animate) {
-      this.mixer.update(this.pendingDt);
+      const stepDt = this.pendingDt;
+      this.mixer.update(stepDt);
       this.pendingDt = 0;
       // AFTER the mixer wrote the sampled pose: the sheathe gesture's additive
       // arm raise (never applied on skipped-mixer frames, so it cannot accumulate).
       this.applyStowArmLift(dt);
+      // Same contract for the procedural spell-cast layer. It integrates the
+      // FULL skipped interval so a low-cadence rig's blend still runs at real
+      // time, and it too only writes on frames the mixer refreshed the pose.
+      this.applyCastLayer(stepDt, s);
     }
+  }
+
+  /** Resolve the cast-layer bones once. Null when the rig has none of them
+   *  (creature rigs, props): the layer then stays off for this visual. */
+  private resolveCastBones(): CastBones | null {
+    const spine = this.model.getObjectByName(CAST_SPINE_BONE) ?? null;
+    const chest = this.model.getObjectByName(CAST_CHEST_BONE) ?? null;
+    const head = this.model.getObjectByName(CAST_HEAD_BONE) ?? null;
+    const armMain = this.model.getObjectByName(CAST_ARM_MAIN_BONE) ?? null;
+    const armOff = this.model.getObjectByName(CAST_ARM_OFF_BONE) ?? null;
+    if (!spine && !chest && !head && !armMain && !armOff) return null;
+    return { spine, chest, head, armMain, armOff };
+  }
+
+  /**
+   * The procedural spell-cast pose layer: additive radians from the pure core
+   * (cast_layer_core.ts), added on top of the pose the mixer just wrote. The
+   * base clip is untouched, so this composes with whatever the ClipMap picked.
+   *
+   * The knobs are read LIVE every frame (`castLayerKnobs()`), which is what
+   * makes `__primusCastKnobs.armMain = -0.9` in the console show up on the next
+   * frame with no rebuild and no reload.
+   */
+  private applyCastLayer(dt: number, s: AnimState): void {
+    const style = s.castStyle ?? 'none';
+    const active = style !== 'none' && !s.dead && !this.deadLock;
+    if (active) {
+      this.castStyle = style;
+      this.castProgress = Math.min(1, Math.max(0, s.castProgress ?? 0));
+    } else if (this.castBlend > 0) {
+      // Cast over: run progress out to 1 so the release beat still fires while
+      // the blend fades, instead of freezing mid-windup.
+      this.castProgress = Math.min(1, this.castProgress + dt / CAST_RELEASE_TAIL_SEC);
+    }
+    const target = active ? 1 : 0;
+    this.castBlend =
+      target + (this.castBlend - target) * Math.exp(-CAST_BLEND_RATE * Math.max(0, dt));
+    if (this.castBlend < CAST_BLEND_EPS) {
+      this.castBlend = 0;
+      return;
+    }
+
+    if (this.castBones === undefined) this.castBones = this.resolveCastBones();
+    const bones = this.castBones;
+    if (!bones) return;
+
+    const o = castLayerOffsetsInto(
+      this.castOffsets,
+      this.castProgress,
+      this.castStyle,
+      castLayerKnobs(),
+    );
+    const w = this.castBlend;
+    // Adding to a Euler component pre-multiplies a parent-space rotation onto
+    // the sampled pose (three.js composes XYZ as Rx*Ry*Rz), which is exactly how
+    // STOW_ARM_LIFT_RAD lifts the arm: negative X swings a hanging arm forward
+    // and up, and the same sign works for BOTH arms because the axis is the
+    // parent's, not the mirrored bone's.
+    if (bones.spine) bones.spine.rotation.x += o.torsoLean * w;
+    if (bones.chest) {
+      bones.chest.rotation.y += o.torsoTwist * w;
+      bones.chest.rotation.x += o.punch * w;
+    }
+    if (bones.armMain) bones.armMain.rotation.x += o.armMain * w;
+    if (bones.armOff) bones.armOff.rotation.x += o.armOff * w;
+    if (bones.head) bones.head.rotation.x += o.headTilt * w;
   }
 
   /** Ease the extra arm raise in toward the swap moment and back out after it;

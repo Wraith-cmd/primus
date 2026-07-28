@@ -1,3 +1,5 @@
+import type { CastLayerStyle } from './cast_layer_core';
+
 /** Renderer-derived animation inputs (same facts the old pose machine used). */
 export interface AnimState {
   /** horizontal speed, world units/sec */
@@ -13,6 +15,12 @@ export interface AnimState {
   reverseBackpedal?: boolean;
   dead: boolean;
   casting: boolean;
+  /** Which procedural cast pose layer rides on top of the sampled clip this
+   *  frame (`cast_layer_core.ts`). Absent or 'none' means no layer. */
+  castStyle?: CastLayerStyle;
+  /** Cast progress for that layer: 0 at cast start, 1 at completion. Only read
+   *  when `castStyle` names a real style. */
+  castProgress?: number;
   /** Channeling a self-centered whirl such as Bladestorm. This wins over the
    *  generic cast and locomotion poses. */
   spinning?: boolean;

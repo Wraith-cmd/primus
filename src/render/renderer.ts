@@ -67,6 +67,8 @@ import {
 import {
   type AnimState,
   type CharacterVisual,
+  castLayerProgress,
+  castLayerStyleFor,
   createCharacterVisual,
   setWeaponVfxViewportHeight,
 } from './characters';
@@ -1058,6 +1060,8 @@ export class Renderer {
     reverseBackpedal: false,
     dead: false,
     casting: false,
+    castStyle: 'none',
+    castProgress: 0,
     spinning: false,
     swimming: false,
     sitting: false,
@@ -5691,6 +5695,11 @@ export class Renderer {
         st.casting &&
         e.castingAbility !== null &&
         ABILITIES[e.castingAbility]?.selfCentered === true;
+      // Procedural spell-cast pose layer (src/render/characters/cast_layer_core.ts):
+      // an additive windup/hold/snap laid over the sampled clip. A self-centered
+      // whirl already owns the whole body via the 'spin' pose, so it opts out.
+      st.castStyle = st.spinning ? 'none' : castLayerStyleFor(e);
+      st.castProgress = st.castStyle === 'none' ? 0 : castLayerProgress(e);
       st.swimming = swimming;
       st.sitting = e.kind === 'player' && (e.sitting || e.eating !== null || e.drinking !== null);
       // --- spatial movement audio (self + others) --------------------------

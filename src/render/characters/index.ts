@@ -7,6 +7,10 @@ import { logAssetMissOnce } from './asset_miss_log';
 import { mechHeldWeaponOverride, visualKeyFor } from './manifest';
 import { CharacterVisual } from './visual';
 
+// The procedural spell-cast pose layer's renderer-facing entry points (the pure
+// core; its live console knobs live in ./cast_knobs, armed by visual.ts).
+export type { CastLayerStyle, CastPoseOffsets } from './cast_layer_core';
+export { castLayerProgress, castLayerStyleFor } from './cast_layer_core';
 export { CharacterPreview } from './preview';
 export type { PreviewAppearance } from './preview_appearance';
 export type { PreviewFramingName } from './preview_framing';

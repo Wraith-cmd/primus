@@ -366,6 +366,13 @@ function makeCtx() {
     vcupShoot: vi.fn(),
     vcupSportDash: vi.fn(),
     vcupSportShove: vi.fn(),
+    // Dungeon companion party (companions/party.ts).
+    companionParties: new Map(),
+    companionCooldowns: new Map(),
+    isDungeonCompanionMob: vi.fn(() => false),
+    updateDungeonCompanion: vi.fn(),
+    recruitCompanion: vi.fn(() => false),
+    disbandCompanionParty: vi.fn(),
   };
   const ctx = createSimContext(host);
   return {

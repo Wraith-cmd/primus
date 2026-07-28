@@ -1,3 +1,4 @@
+import { HEAL_PCT_BY_URGENCY } from '../src/sim/companions/heal_triage';
 // Delve system, spatial band, lifecycle, death rules, and pet stow (Phase 1).
 
 import { describe, expect, it } from 'vitest';
@@ -1328,14 +1329,18 @@ describe('Tessa percent-of-health heal + rank cap', () => {
     return { amount, maxHp };
   }
 
-  it('rank 1 heals 6% of max HP per tick', () => {
+  // The helper wounds the owner to half health, which is the 'urgent' triage band.
+  // Heal size is that band's percent times the rank multiplier: rank no longer
+  // selects a flat percent, it scales whatever urgency triage picked.
+  it('rank 1 heals the urgent band percent of max HP', () => {
     const { amount, maxHp } = healAmountAtRank(1);
-    expect(amount).toBe(Math.round(maxHp * 0.06));
+    expect(amount).toBe(Math.round(maxHp * HEAL_PCT_BY_URGENCY.urgent * 1));
   });
 
-  it('rank 3 heals 10% of max HP per tick (scales with HP, unlike the old flat heal)', () => {
+  it('rank 3 scales the same band up (scales with HP, unlike the old flat heal)', () => {
     const { amount, maxHp } = healAmountAtRank(3);
-    expect(amount).toBe(Math.round(maxHp * 0.1));
+    expect(amount).toBe(Math.round(maxHp * HEAL_PCT_BY_URGENCY.urgent * 1.67));
+    expect(amount).toBeGreaterThan(healAmountAtRank(1).amount);
   });
 
   it('caps at rank 3; ranks 2 and 3 cost 3 then 5 Marks (no copper)', () => {

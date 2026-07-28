@@ -234,6 +234,11 @@ const CALLBACK_KEYS = [
   'vcupShoot',
   'vcupSportDash',
   'vcupSportShove',
+  // Dungeon companion party (companions/party.ts).
+  'isDungeonCompanionMob',
+  'updateDungeonCompanion',
+  'recruitCompanion',
+  'disbandCompanionParty',
 ] as const;
 
 // A fully-spied fake host. `clock` is mutable so a test can prove the context reads
@@ -530,6 +535,13 @@ function makeFakeHost() {
     vcupShoot: vi.fn(),
     vcupSportDash: vi.fn(),
     vcupSportShove: vi.fn(),
+    // Dungeon companion party (companions/party.ts).
+    companionParties: new Map(),
+    companionCooldowns: new Map(),
+    isDungeonCompanionMob: vi.fn(() => false),
+    updateDungeonCompanion: vi.fn(),
+    recruitCompanion: vi.fn(() => false),
+    disbandCompanionParty: vi.fn(),
   };
   return { host, rng, entities, clock };
 }

@@ -192,6 +192,14 @@ export function updateMob(ctx: SimContext, mob: Entity): void {
 
   if (mob.ownerId !== null) {
     if (ctx.isStunned(mob)) return;
+    // A hired dungeon companion (companions/party.ts) is asked for FIRST: it is a
+    // membership test over the live party table, and the party wears the same mob
+    // templates as the delve companion, so the template-based delve test below
+    // would otherwise claim it and hand it the wrong brain.
+    if (ctx.isDungeonCompanionMob(mob)) {
+      ctx.updateDungeonCompanion(mob);
+      return;
+    }
     if (ctx.isDelveCompanionMob(mob)) {
       ctx.updateDelveCompanion(mob);
       return;

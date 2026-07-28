@@ -87,6 +87,13 @@ import { isSpellResisted } from './combat/spell_resist';
 import { isCritImmuneTank } from './combat/tank_crit_immunity';
 import { warriorMeleeDefense } from './combat/warrior_hit_table';
 import { ensureWarriorStance } from './combat/warrior_stances';
+import type { CompanionParty } from './companions/party';
+// The dungeon companion party (a solo player's four AI allies) and the shared
+// companion reflex timers both live behind the SimContext seam; Sim owns only the
+// backing state and the thin delegates foreign callers resolve on the facade.
+import * as companionParty from './companions/party';
+import type { CompanionCooldowns } from './companions/reactions';
+import type { CompanionRole } from './companions/role_kit';
 // A3: the augment/power-up content helpers used by the Fiesta match logic
 // (AUGMENTS_BY_ID/AugmentDef/eligibleAugments/POWERUPS/PowerupDef/tierForWave)
 // moved to social/fiesta.ts with that logic; sim.ts keeps only the type used by
@@ -1625,6 +1632,13 @@ export class Sim {
   // the command clears the previous scenario instead of piling more on. Dev only.
   private devSandboxIds: number[] = [];
   private pendingMobRespawns: PendingMobRespawn[] = [];
+  // Dungeon companion parties keyed by the OWNER's entity id, and the per-companion
+  // reflex timers keyed by the COMPANION's entity id. State lives here (multi-Sim
+  // isolation); companions/party.ts + companions/reactions.ts hold the functions and
+  // reach these as live SimContext views. Session-only: never serialized, since a
+  // party exists only for the length of one dungeon run.
+  private companionParties = new Map<number, CompanionParty>();
+  private companionCooldowns = new Map<number, CompanionCooldowns>();
   private groundAoEs: GroundAoE[] = [];
   get activeFrostRings(): ActiveFrostRing[] {
     const rings: ActiveFrostRing[] = [];
@@ -2824,6 +2838,10 @@ export class Sim {
       this.ctx.abandonLockpick(leavingRun);
     this.preparePlayerLeave(pid);
     despawnMobsForDev(this.ctx, pid, 'spawned');
+    // Hired dungeon companions belong to the run, not the character: a leaver
+    // takes them with them rather than leaving four ownerless allies standing in
+    // an instance.
+    companionParty.disbandCompanionParty(this.ctx, pid);
     // leave social systems cleanly. removeFromParty lives on the PartyMachine now
     // (A1); reach it through the seam, keeping this call in its load-bearing
     // teardown position (must run while the leaver is still in players/entities).
@@ -3834,6 +3852,14 @@ export class Sim {
       get mobScanCounters() {
         return sim._mobScanCounters;
       },
+      // Dungeon companion party state (companions/party.ts + reactions.ts). Live
+      // views onto the Sim-owned maps; the modules mutate them in place.
+      get companionParties() {
+        return sim.companionParties;
+      },
+      get companionCooldowns() {
+        return sim.companionCooldowns;
+      },
       // Offline Fiesta practice-bot roster (fiesta_bots.ts mutates it in place);
       // the deeds real-bout gate reads it through the seam.
       get fiestaBotPids() {
@@ -4041,6 +4067,16 @@ export class Sim {
       // mobSwing/moveToward/isHostileTo/isRooted/moveSpeedMult/swingIntervalMult it consumes
       // stay on Sim and are bound above (M2/T1/C4a), not re-bound for the companion slice.
       updateDelveCompanion: (companion) => companionMod.updateDelveCompanion(sim.ctx, companion),
+      // Dungeon companion party: all four point AT companions/party.ts (late-bound
+      // arrows so sim.ctx resolves at call time, the delve-companion pattern).
+      // isDungeonCompanionMob is a membership test over ctx.companionParties, so
+      // locomotion.updateMob can ask it BEFORE isDelveCompanionMob (the party reuses
+      // the delve companion templates and a template test would collide).
+      isDungeonCompanionMob: (mob) => companionParty.isDungeonCompanionMob(sim.ctx, mob),
+      updateDungeonCompanion: (companion) =>
+        companionParty.updateDungeonCompanion(sim.ctx, companion),
+      recruitCompanion: (role, pid) => companionParty.recruitCompanion(sim.ctx, role, pid),
+      disbandCompanionParty: (pid) => companionParty.disbandCompanionParty(sim.ctx, pid),
       updateBossMechanics: sim.updateBossMechanics.bind(sim),
       // N1: updateNythraxisEncounter now lives in encounters/nythraxis.ts; late-bound
       // arrow (mob/locomotion.ts updateMob drives it via ctx). resetNythraxisEncounter
@@ -4589,6 +4625,16 @@ export class Sim {
     // matching on the sim clock), so appending it here cannot fork the draw order.
     this.updateDungeonFinder();
     lap?.('dfinder');
+    // The dungeon companion party lifecycle (recruit gate bookkeeping, roster
+    // pruning, disband on leaving the dungeon). It draws ZERO rng: position tests,
+    // roster filtering and map cleanup only, no combat and no spawns. Appending a
+    // zero-rng phase here therefore cannot fork the global draw order (the Vale Cup
+    // / Dungeon Finder precedent above). It must run AFTER the per-player movement
+    // phase, so the door teleport that zones the owner in is already visible this
+    // tick, and after the mob loop, so a companion that died this tick leaves the
+    // roster on the same tick it died.
+    companionParty.updateCompanionParties(this.ctx);
+    lap?.('companions');
     this.market.update();
     lap?.('market');
     this.postOffice.update();
@@ -9298,6 +9344,31 @@ export class Sim {
 
   companionUpgradesFor(pid: number): Record<string, number> {
     return runsMod.companionUpgradesFor(this.ctx, pid);
+  }
+
+  // -------------------------------------------------------------------------
+  // Dungeon companion party. Thin delegates only: the whole system lives in
+  // src/sim/companions/party.ts behind the SimContext seam. These exist because
+  // foreign callers (the chat router's /companion verb, the leave/logout
+  // teardown, and tests) resolve them on the Sim facade.
+  // -------------------------------------------------------------------------
+
+  /** Hire one AI companion. Refuses away from a dungeon entrance, in combat, or
+   *  at four. NOT a dev command: this is a normal player verb. */
+  recruitCompanion(role?: CompanionRole | null, pid?: number): boolean {
+    return companionParty.recruitCompanion(this.ctx, role, pid);
+  }
+
+  /** Send the hired companions home. Idempotent. */
+  disbandCompanionParty(pid?: number): void {
+    const r = this.resolve(pid);
+    if (r) companionParty.disbandCompanionParty(this.ctx, r.meta.entityId);
+  }
+
+  /** Read-only projection of the hired party (boundary-cloned). */
+  companionPartyFor(pid?: number): ReturnType<typeof companionParty.companionPartyWire> {
+    const r = this.resolve(pid);
+    return r ? companionParty.companionPartyWire(this.ctx, r.meta.entityId) : null;
   }
 
   craftSkillsFor(pid: number): Record<string, number> {

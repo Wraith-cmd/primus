@@ -1650,6 +1650,22 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
       {
         "id": "primal_reflexes",
         "name": "Primal Reflexes"
+      },
+      {
+        "id": "mangle",
+        "name": "Ravage"
+      },
+      {
+        "id": "thrash",
+        "name": "Rending Storm"
+      },
+      {
+        "id": "ironfur",
+        "name": "Ironpelt"
+      },
+      {
+        "id": "frenzied_regeneration",
+        "name": "Savage Mending"
       }
     ],
     "model": "player_druid",

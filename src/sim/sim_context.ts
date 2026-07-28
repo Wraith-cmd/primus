@@ -13,6 +13,9 @@
 // the browser, and the headless RL env (enforced by tests/architecture.test.ts).
 
 import type { FrozenOrbState } from './combat/frozen_orb';
+import type { CompanionParty } from './companions/party';
+import type { CompanionCooldowns } from './companions/reactions';
+import type { CompanionRole } from './companions/role_kit';
 import type { LetterDef } from './content/letters';
 import type { TalentModifiers } from './content/talents';
 import type { DeedRuntime } from './deeds';
@@ -239,6 +242,16 @@ export interface SimContextPrimitives {
   // reassigned), so a read-only live view; the fields themselves stay writable so
   // the hot paths can increment them. Feeds no gameplay branch and draws no rng.
   readonly mobScanCounters: MobScanCounters;
+  // Dungeon companion parties (src/sim/companions/party.ts), keyed by the OWNER's
+  // entity id: the four AI allies a solo player hires at a dungeon door. Sim-owned
+  // and mutated in place (set/delete on the map, push/filter on each party's
+  // members), so a live read-only view like delveRuns.
+  readonly companionParties: Map<number, CompanionParty>;
+  // Per-companion reflex timers (src/sim/companions/reactions.ts), keyed by the
+  // COMPANION's entity id: interrupt and taunt readiness on the sim clock. Shared
+  // by the delve companion and the dungeon-party companions so both spend the same
+  // cooldowns. Sim-owned, mutated in place.
+  readonly companionCooldowns: Map<number, CompanionCooldowns>;
 }
 
 // Cross-system callbacks. Each signature mirrors the still-on-`Sim` method it
@@ -857,6 +870,21 @@ export interface SimContextCallbacks {
   vcupShoot(caster: Entity, power: number, loft: number, range: number): void;
   vcupSportDash(caster: Entity, distance: number, catchBall: boolean): void;
   vcupSportShove(caster: Entity, target: Entity, distance: number): void;
+
+  // Dungeon companion party (src/sim/companions/party.ts). All four point AT the
+  // module (`Sim` keeps thin same-named delegates only because tests, the chat
+  // router, and the leave/logout teardown resolve them on the facade).
+  // `isDungeonCompanionMob` is a MEMBERSHIP test, not a template test: the party
+  // reuses the delve-companion mob templates, so mob/locomotion.ts must ask this
+  // BEFORE isDelveCompanionMob or a hired companion would be handed the delve
+  // brain. `updateDungeonCompanion` is the per-tick brain the same owned-mob
+  // branch dispatches. `recruitCompanion` is gated to dungeon entrances by
+  // role_kit's canRecruit and is NOT a dev command; `disbandCompanionParty` is the
+  // teardown removePlayer calls.
+  isDungeonCompanionMob(mob: Entity): boolean;
+  updateDungeonCompanion(companion: Entity): void;
+  recruitCompanion(role?: CompanionRole | null, pid?: number): boolean;
+  disbandCompanionParty(pid: number): void;
 }
 
 // The seam consumed by extracted modules.
@@ -1072,6 +1100,12 @@ export function createSimContext(host: SimContextHost): SimContext {
     },
     get mobScanCounters() {
       return host.mobScanCounters;
+    },
+    get companionParties() {
+      return host.companionParties;
+    },
+    get companionCooldowns() {
+      return host.companionCooldowns;
     },
     emit: host.emit,
     error: host.error,
@@ -1301,5 +1335,10 @@ export function createSimContext(host: SimContextHost): SimContext {
     vcupShoot: host.vcupShoot,
     vcupSportDash: host.vcupSportDash,
     vcupSportShove: host.vcupSportShove,
+    // Dungeon companion party (points at companions/party.ts via Sim's bindings).
+    isDungeonCompanionMob: host.isDungeonCompanionMob,
+    updateDungeonCompanion: host.updateDungeonCompanion,
+    recruitCompanion: host.recruitCompanion,
+    disbandCompanionParty: host.disbandCompanionParty,
   };
 }

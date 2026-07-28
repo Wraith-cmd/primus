@@ -8,6 +8,13 @@
 // global stream position set by where she sits in `entities.values()` order, so the
 // statement + branch + draw order here is load-bearing and preserved exactly.
 //
+// Two reflexes were added on top of the moved body, both via the shared
+// `companions/reactions.ts` wiring so she and the dungeon-party companions behave
+// the same: ground-hazard avoidance BEFORE combat movement, and an interrupt
+// whenever the policy names a target. Both draw ZERO rng, so her position in the
+// global draw order is unchanged; what changes is where she stands and whether a
+// channel completes, which is exactly the point.
+//
 // Lifecycle (spawn/despawn/identity) and the vendor upgrade/read-API stay on Sim;
 // this slice is the per-tick brain only. `mobSwing`/`moveToward` are shared entry
 // points consumed via the seam (still defined on Sim); `maybeCompanionBark` stays on
@@ -15,6 +22,7 @@
 // emit (no aura). `src/sim`-pure: no DOM/Three/Math.random.
 
 import { type HealCandidate, planHeal } from '../companions/heal_triage';
+import { companionAvoidGround, tryCompanionInterrupt } from '../companions/reactions';
 import * as deedsMod from '../deeds';
 import type { SimContext } from '../sim_context';
 import {
@@ -127,13 +135,29 @@ export function updateDelveCompanion(ctx: SimContext, companion: Entity): void {
     }
     combatTarget = best;
   }
+  // Ground-hazard avoidance runs BEFORE any combat movement (companions/
+  // ground_avoidance.ts). Standing in a fire puddle to stay in melee is the loudest
+  // "this is a bot" tell there is, so the dodge wins over closing the gap, and the
+  // anchor keeps the chosen spot inside melee reach of the target where it can. The
+  // core returns null whenever nothing hostile covers her, so a hazard-free tick is
+  // byte-identical to the pre-existing movement.
+  const reach = MELEE_RANGE * 0.9;
+  const dodged = companionAvoidGround(
+    ctx,
+    companion,
+    combatTarget ? { x: combatTarget.pos.x, z: combatTarget.pos.z, range: reach } : null,
+  );
+  // Kicking the healer add's channel is the other thing a player does and she did
+  // not (companions/interrupt_policy.ts). The policy holds the cooldown unless the
+  // cast is both dangerous and still running when the kick would land, so this is
+  // a no-op on a tick with nothing worth stopping. Draws no rng.
+  tryCompanionInterrupt(ctx, companion);
   if (combatTarget) {
     companion.inCombat = true;
-    const reach = MELEE_RANGE * 0.9;
     const cd = dist2d(companion.pos, combatTarget.pos);
     if (cd > reach) {
       companion.swingTimer = Math.max(0, (companion.swingTimer ?? 0) - DT);
-      if (!ctx.isRooted(companion)) {
+      if (!dodged && !ctx.isRooted(companion)) {
         ctx.moveToward(
           companion,
           combatTarget.pos,
@@ -209,6 +233,9 @@ export function updateDelveCompanion(ctx: SimContext, companion: Entity): void {
     }
   }
   if (combatTarget) return;
+  // A dodge already spent this tick's movement; walking back to heel now would
+  // undo it and put her straight back in the puddle.
+  if (dodged) return;
   const d = dist2d(companion.pos, owner.pos);
   if (d > PET_TELEPORT_DISTANCE) {
     companion.pos = { ...owner.pos };

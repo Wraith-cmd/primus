@@ -89,7 +89,9 @@ Each module owns the FUNCTIONS for one system; the backing STATE stays on `Sim` 
 | `instances/difficulty.ts` + `instances/heroic_vendor.ts` | heroic dungeons: tuning + `dungeonDifficulty`/`setDungeonDifficulty`, `awardHeroicMarks` and kill lockouts; the Heroic Quartermaster marks vendor |
 | `delves/runs.ts` | delve run lifecycle (`updateDelveRuns`, modules, rewards, shop) |
 | `delves/lockpick_controller.ts` | the lockpick session machine |
-| `delves/companion.ts` | `updateDelveCompanion` |
+| `delves/companion.ts` | `updateDelveCompanion` (its ground-hazard dodge + interrupt run through `companions/reactions.ts`) |
+| `companions/party.ts` | the solo player's four-companion dungeon party: `recruitCompanion` (gated to dungeon entrances by `companions/role_kit.ts` `canRecruit`, NOT a dev command), `updateDungeonCompanion` (the per-role brain, dispatched from `mob/locomotion.ts` BEFORE the delve-companion branch), and the zero-rng `updateCompanionParties` tail phase that disbands on leaving the dungeon. State (`companionParties`) stays on `Sim` |
+| `companions/reactions.ts` | the shared companion reflexes both brains run: `companionAvoidGround` (feeds `companions/ground_avoidance.ts`) and `tryCompanionInterrupt` (feeds `companions/interrupt_policy.ts`), plus the `companionCooldowns` timers on `Sim`. Draws ZERO rng |
 | `delves/drowned_litany_boss.ts` / `_rite.ts` / `_rooms.ts` | The Drowned Litany delve: room puzzles, the Sister Nhalia boss, the Rite finale (difficulty knobs in `delves/rite_tuning.ts`, shared with the HUD popup) |
 | `social/party.ts` | the party/raid machine + `partyOf` |
 | `social/dungeon_finder.ts` | the Dungeon Finder (`docs/prd/dungeon-finder.md`): the automatic role queue plus the leader-run premade board; only FORMS groups (via `PartyMachine.formDungeonFinderGroup`), draws no rng; pinned by `tests/dungeon_finder.test.ts` |
@@ -124,7 +126,10 @@ legality), `cooldown_persist.ts` (cooldown save/load), `tab_target.ts`/`assist.t
 `mob/scan_counters.ts` (the per-tick mob scan-visit tally the server reads post-tick),
 `lockpick.ts` (the minigame core behind `delves/lockpick_controller.ts`), `map_doc.ts`
 (the custom-map document/validator), `geometry2d.ts`, `market_query.ts`,
-`vendor_stack.ts`, `loot_master.ts`, `aura_classify.ts` (buff-vs-debuff, shared with the
+`vendor_stack.ts`, `loot_master.ts`, the companion decision cores
+(`companions/heal_triage.ts`, `companions/ground_avoidance.ts`,
+`companions/interrupt_policy.ts`, `companions/role_kit.ts`; wired to the world by
+`companions/reactions.ts` + `companions/party.ts`), `aura_classify.ts` (buff-vs-debuff, shared with the
 HUD), `resurrection.ts` (sickness rules shared by every death site), and the combat
 leaves `spell_resist.ts`/`ranged_shot.ts`/`aura_stacking.ts`/`aura_cancel.ts`/
 `exclusive_aura.ts`/`form_swing.ts`, `jail.ts` (moderation-jail cage layout, gate

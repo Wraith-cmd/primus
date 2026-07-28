@@ -14,6 +14,7 @@
 // at the emit site (the S3 i18n guard scans this file + chat_readouts.ts).
 
 import { type AssistCandidate, resolveAssist } from '../assist';
+import type { CompanionRole } from '../companions/role_kit';
 import { YUMI_TEMPLATE_ID } from '../content/yumi';
 import { CLASSES, zoneAt } from '../data';
 import * as deedsMod from '../deeds';
@@ -855,6 +856,27 @@ export function chat(ctx: SimContext, text: string, pid?: number): SentChat | nu
   if (meMatch) {
     const action = meMatch[1].trim();
     if (action) broadcastEmote(ctx, r.meta, r.e, action);
+    return null;
+  }
+
+  // "/hire [role]" / "/hire dismiss": hire or dismiss the dungeon companion party
+  // (companions/party.ts). Hiring is gated to dungeon entrances by role_kit's
+  // canRecruit, NOT by devCommands: this is an ordinary player verb. The verb is
+  // "hire" rather than "companion" because /companion is already claimed by the
+  // pet readout above. An unrecognized role word falls through to the auto-pick, so
+  // no literal is emitted here; every player-facing line for this verb lives at its
+  // emit site in companions/party.ts. Must precede the generic emote matcher below,
+  // which would otherwise swallow "/hire".
+  const companionMatch = /^\/hire(?:\s+(\S+))?\s*$/i.exec(raw);
+  if (companionMatch) {
+    const arg = (companionMatch[1] ?? '').toLowerCase();
+    if (arg === 'dismiss' || arg === 'disband') {
+      ctx.disbandCompanionParty(r.meta.entityId);
+      return null;
+    }
+    const role =
+      arg === 'tank' || arg === 'healer' || arg === 'dps' ? (arg as CompanionRole) : null;
+    ctx.recruitCompanion(role, r.meta.entityId);
     return null;
   }
 

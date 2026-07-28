@@ -268,7 +268,6 @@ const RENDER_PURE_CORES = [
   'src/render/terrain_region_core.ts',
   'src/render/water_core.ts',
   'src/render/warrior_cast_fx_core.ts',
-  'src/render/characters/cast_style_core.ts',
   'src/render/characters/weapon_attack_style_core.ts',
 ].map((rel) => join(repoRoot, rel));
 

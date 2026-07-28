@@ -84,7 +84,6 @@ import {
   preloadTrainingDummyAssets,
   trainingDummyAssetsReady,
 } from './characters/assets';
-import { castStyleForAbility } from './characters/cast_style_core';
 import { skinCount, visualKeyFor } from './characters/manifest';
 import {
   playerRangedAttackAlreadyStarted,
@@ -727,9 +726,6 @@ export interface EntityView {
   waterContactZ: number;
   waterContactAccum: number;
   wasAirborne: boolean;
-  /** Previous frame's cast state, so the cast->idle edge can fire the release
-   *  gesture exactly once (the death/revive edge-trigger pattern). */
-  wasCasting: boolean;
   wasSwimming: boolean;
   // consecutive frames the foot-height heuristic read airborne (debounce)
   airborneHeurFrames: number;
@@ -4530,7 +4526,6 @@ export class Renderer {
       waterContactZ: e.pos.z,
       waterContactAccum: 0,
       wasAirborne: false,
-      wasCasting: false,
       wasSwimming: false,
       airborneHeurFrames: 0,
     });
@@ -5692,16 +5687,6 @@ export class Renderer {
       st.dead = visuallyDead;
       const waterJetVisualChannel = this.waterJetVisualChannels.has(e.id);
       st.casting = (e.castingAbility !== null || waterJetVisualChannel) && !visuallyDead;
-      st.castStyle = castStyleForAbility(e.castingAbility);
-      st.castTotal = e.castTotal;
-      // Cast completion is an EDGE, not a state: fire the release one-shot on the
-      // frame the channel pose ends. An instant cast never shows a channel pose
-      // at all, so it gets its own punchier one-shot instead of nothing.
-      if (!visuallyDead) {
-        const castingNow = e.castingAbility !== null;
-        if (v.wasCasting && !castingNow) this.activeVisual(v)?.playCastRelease();
-        v.wasCasting = castingNow;
-      }
       st.spinning =
         st.casting &&
         e.castingAbility !== null &&

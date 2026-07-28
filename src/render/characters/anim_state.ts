@@ -13,14 +13,6 @@ export interface AnimState {
   reverseBackpedal?: boolean;
   dead: boolean;
   casting: boolean;
-  /** Which spellcast gesture the in-progress cast plays. Resolved from the
-   *  ability by cast_style_core; absent (or 'channel') keeps the historical
-   *  single pose every cast used to share. */
-  castStyle?: CastStyle;
-  /** Total seconds of the in-progress cast (0 when not hard-casting). The cast
-   *  clip is stretched to cover exactly this, so a cast plays ONE gesture rather
-   *  than looping a short clip. */
-  castTotal?: number;
   /** Channeling a self-centered whirl such as Bladestorm. This wins over the
    *  generic cast and locomotion poses. */
   spinning?: boolean;
@@ -28,19 +20,12 @@ export interface AnimState {
   sitting: boolean;
 }
 
-/** The spellcast gesture families the rigs carry. `channel` is the original
- *  shared pose (KayKit `Spellcasting`); the other two split offensive casts
- *  from beneficial ones so a bolt and a heal no longer look identical. */
-export type CastStyle = 'channel' | 'shoot' | 'raise';
-
 export type BaseState =
   | 'idle'
   | 'walk'
   | 'walkBack'
   | 'run'
   | 'cast'
-  | 'castShoot'
-  | 'castRaise'
   | 'spin'
   | 'swim'
   | 'sit'
@@ -109,34 +94,13 @@ export function desiredBaseState(s: AnimState, hasWalkBackClip: boolean): BaseSt
   if (s.swimming) return 'swim';
   if (s.airborne) return 'jump';
   if (s.spinning) return 'spin';
-  if (s.casting) {
-    if (s.castStyle === 'shoot') return 'castShoot';
-    if (s.castStyle === 'raise') return 'castRaise';
-    return 'cast';
-  }
+  if (s.casting) return 'cast';
   if (s.sitting) return 'sit';
   if (s.moving) {
     if (s.backwards && hasWalkBackClip && !s.reverseBackpedal) return 'walkBack';
     return s.running ? 'run' : 'walk';
   }
   return 'idle';
-}
-
-/** Playback rate that makes one pass of a `clipSeconds` cast clip cover the whole
- *  `castTotal`. Returns 1 when either is unknown, so a caller with no timing
- *  falls back to native speed rather than freezing or racing.
- *
- *  This is the fix for the stutter: the rig's cast clips are 0.67s to 2.10s, so
- *  playing one at native speed under a 2.5s cast restarts it mid-gesture. The
- *  clamp keeps a very short cast from flickering through a long clip and a very
- *  long one from crawling to a visual halt. */
-export const CAST_TIME_SCALE_MIN = 0.25;
-export const CAST_TIME_SCALE_MAX = 4;
-
-export function castTimeScale(clipSeconds: number, castTotal: number | undefined): number {
-  if (!castTotal || castTotal <= 0 || clipSeconds <= 0) return 1;
-  const raw = clipSeconds / castTotal;
-  return Math.max(CAST_TIME_SCALE_MIN, Math.min(CAST_TIME_SCALE_MAX, raw));
 }
 
 export function locomotionTimeScale(

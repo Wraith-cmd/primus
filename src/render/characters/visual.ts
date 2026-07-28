@@ -14,7 +14,6 @@ import {
   type AnimState,
   advanceSwimBlend,
   type BaseState,
-  castTimeScale,
   desiredBaseState,
   locomotionTimeScale,
   pickProxyHeight,
@@ -390,16 +389,6 @@ export class CharacterVisual {
           this.current.timeScale = timeScale;
         }
         if (this.baseState === 'spin') this.current.timeScale = SPIN_ATTACK_TIMESCALE;
-        // Stretch the cast clip so ONE pass covers the whole cast. Without this a
-        // 0.93s clip restarts twice under a 2.5s heal, which reads as a stutter
-        // rather than a gesture.
-        if (
-          this.baseState === 'cast' ||
-          this.baseState === 'castShoot' ||
-          this.baseState === 'castRaise'
-        ) {
-          this.current.timeScale = castTimeScale(this.current.getClip().duration, s.castTotal);
-        }
       }
     }
 
@@ -492,20 +481,6 @@ export class CharacterVisual {
     this.currentIsOneShot = false;
     this.currentOneShotIsEmote = false;
     this.fadeTo(this.action(this.def.clips.cast) ?? this.action(this.def.clips.idle), FADE, false);
-  }
-
-  /** One-shot release gesture, fired the moment a hard cast completes. */
-  playCastRelease(): void {
-    if (this.deadLock) return;
-    const clip = this.def.clips.castRelease;
-    if (clip && this.action(clip)) this.playOneShot(clip, 1);
-  }
-
-  /** One-shot for an instant cast, which never shows a channel pose at all. */
-  playInstantCast(): void {
-    if (this.deadLock) return;
-    const clip = this.def.clips.castInstant ?? this.def.clips.castRelease;
-    if (clip && this.action(clip)) this.playOneShot(clip, 1.15);
   }
 
   playAttack(abilityId?: string): void {
@@ -1266,10 +1241,6 @@ export class CharacterVisual {
         return this.action(c.run) ?? this.action(c.walk);
       case 'cast':
         return this.action(c.cast) ?? this.action(c.idle);
-      case 'castShoot':
-        return this.action(c.castShoot) ?? this.action(c.cast) ?? this.action(c.idle);
-      case 'castRaise':
-        return this.action(c.castRaise) ?? this.action(c.cast) ?? this.action(c.idle);
       case 'spin':
         return this.action(c.attack[0]) ?? this.action(c.idle);
       case 'swim':
@@ -1408,10 +1379,6 @@ function clipNamesOf(def: VisualDef): string[] {
     ...Object.values(c.attackByHand ?? {}),
     ...(c.hit ?? []),
     c.cast,
-    c.castShoot,
-    c.castRaise,
-    c.castRelease,
-    c.castInstant,
     c.sitDown,
     c.sitIdle,
     c.swim,

@@ -1422,6 +1422,7 @@ export const zh_TW: EnTranslations = {
       "lock": "鎖定玩家框"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "隊伍和團隊框體",
       "unlock": "移動隊伍和團隊框體",
       "lock": "鎖定隊伍和團隊框體",

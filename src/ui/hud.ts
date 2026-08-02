@@ -165,6 +165,11 @@ import {
   shouldPlayMobVoiceSfxForEntity,
   spellFxCue,
 } from './combat_sfx';
+import {
+  type CompanionFrameSource,
+  companionFrameRows,
+  companionFrameSignature,
+} from './companion_frame_view';
 import { type CardinalId, compassView } from './compass';
 import { formatMinimapCoords } from './coords';
 import {
@@ -3339,7 +3344,13 @@ export class Hud {
     {
       classCss,
       onTarget: (pid) => this.sim.targetEntity(pid),
-      onContextMenu: (pid, name, x, y) => this.openContextMenu(pid, name, x, y),
+      onContextMenu: (pid, name, x, y) => {
+        // A companion's row keys on a MOB entity id, so the player social menu
+        // (whisper / invite / inspect) would be a menu of no-ops on it. Companions
+        // have no party actions of their own, so their rows have no context menu.
+        if (this.sim.companionParty?.members.some((m) => m.entityId === pid)) return;
+        this.openContextMenu(pid, name, x, y);
+      },
       // Clique-style mouseover casts: castSlot redirects friendly abilities to
       // the hovered member while the cursor is over a party frame.
       onHover: (pid) => {
@@ -12527,10 +12538,33 @@ export class Hud {
     return document.body.classList.contains('mobile-chat-open');
   }
 
+  /** A hired companion's localized frame label. The party is built from two mob
+   *  templates, so the role is what tells three otherwise identically named rows
+   *  apart. */
+  private companionDisplayName(companion: CompanionFrameSource): string {
+    const roleKey =
+      companion.role === 'tank'
+        ? 'hudChrome.finder.roleTank'
+        : companion.role === 'healer'
+          ? 'hudChrome.finder.roleHealer'
+          : 'hudChrome.finder.roleDps';
+    return t('hudChrome.partyFrames.companionNamed', {
+      name: mobDisplayName(this.sim.entities.get(companion.entityId)?.templateId ?? ''),
+      role: t(roleKey),
+    });
+  }
+
   private updatePartyFrames(): void {
     const target =
       this.sim.player.targetId !== null ? this.sim.entities.get(this.sim.player.targetId) : null;
     const info = this.sim.partyInfo;
+    // Hired companions are MOBS with an ownerId, so they are never in partyInfo. Give
+    // them real party rows anyway: without one there is nothing to click, nothing to
+    // hover for a mouseover heal, and no health to read when one falls.
+    const companions = this.sim.companionParty?.members ?? [];
+    const nameOf = (c: CompanionFrameSource) => this.companionDisplayName(c);
+    const companionSig = companionFrameSignature(companions, nameOf, this.sim.player.pos);
+    const companionRows = companionFrameRows(companions, nameOf, this.sim.player.pos);
     // Drop the frames below the target frame only when the measured target
     // stack (frame + #tf-debuffs strip) actually overlaps their column: the
     // painter keeps --party-below-target-bottom current (measuring only when
@@ -12539,16 +12573,37 @@ export class Hud {
     const targetShown = !!target && target.kind !== 'object';
     const stackBottom = this.partyBelowTargetPainter.update(
       targetShown,
-      info?.members.length ?? 0,
+      (info?.members.length ?? 0) + companionRows.length,
       this.isMobileLayout(),
     );
     this.partyFramesPainter.setBelowTarget(targetShown && stackBottom !== null);
+    // The party-frame display options, hoisted above the no-party branch because the
+    // companion rows are painted with them too.
+    const settings = this.optionsHooks?.settings;
+    const config = {
+      showSelf: settings?.get('partyFrameShowSelf') ?? false,
+      showResource: settings?.get('partyFrameShowResource') ?? true,
+      showAbsorbs: settings?.get('partyFrameShowAbsorbs') ?? true,
+      showAuras: settings?.get('partyFrameShowAuras') ?? true,
+      presentation: Math.round(settings?.get('partyFrameStyle') ?? 0) as 0 | 1 | 2,
+      healthText: Math.round(settings?.get('partyFrameHealthText') ?? 1) as 0 | 1 | 2 | 3,
+      sort: Math.round(settings?.get('partyFrameSort') ?? 0) as 0 | 1 | 2,
+    };
     if (!info) {
-      // Clear only on the transition out of a party (matching the inline `innerHTML
-      // !== ''` guard), so a persistently party-less HUD does no per-frame work.
-      if (this.lastPartySig !== '') {
-        this.partyFramesPainter.clear();
-        this.lastPartySig = '';
+      // No social party. A solo player with hired companions still gets their frames,
+      // so the companions can be selected and healed; with neither, clear only on the
+      // transition out (matching the inline `innerHTML !== ''` guard) so a persistently
+      // frame-less HUD does no per-frame work.
+      this.partyFramesPainter.setCollapse(
+        companionRows.length > 0,
+        this.isMobileLayout(),
+        this.partyCollapsed,
+        this.isMobileChatOpen(),
+      );
+      if (this.lastPartySig !== companionSig) {
+        this.lastPartySig = companionSig;
+        if (companionRows.length > 0) this.partyFramesPainter.sync(companionRows, 0, false, config);
+        else this.partyFramesPainter.clear();
       }
       if (this.lootSettingsOpen) this.closeLootSettings();
       this.lastLootSettingsSig = '';
@@ -12591,24 +12646,11 @@ export class Hud {
     if (becameLeader && !this.lootSettingsOpen) this.openLootSettings(false);
     // Hoist the cheap signature (a single string pass, no intermediate arrays) AHEAD
     // of the selector so an unchanged party short-circuits before selectPartyFrameMembers
-    // allocates its sorted / filtered / mapped arrays.
-    const settings = this.optionsHooks?.settings;
-    const config = {
-      showSelf: settings?.get('partyFrameShowSelf') ?? false,
-      showResource: settings?.get('partyFrameShowResource') ?? true,
-      showAbsorbs: settings?.get('partyFrameShowAbsorbs') ?? true,
-      showAuras: settings?.get('partyFrameShowAuras') ?? true,
-      presentation: Math.round(settings?.get('partyFrameStyle') ?? 0) as 0 | 1 | 2,
-      healthText: Math.round(settings?.get('partyFrameHealthText') ?? 1) as 0 | 1 | 2 | 3,
-      sort: Math.round(settings?.get('partyFrameSort') ?? 0) as 0 | 1 | 2,
-    };
-    const sig = partyFrameSignature(
-      info,
-      this.sim.playerId,
-      this.sim.player.pos,
-      undefined,
-      config,
-    );
+    // allocates its sorted / filtered / mapped arrays. The companions' own signature is
+    // appended so their health and death flip the frames too.
+    const sig =
+      partyFrameSignature(info, this.sim.playerId, this.sim.player.pos, undefined, config) +
+      companionSig;
     if (sig === this.lastPartySig) return;
     this.lastPartySig = sig;
     const others = selectPartyFrameMembers(
@@ -12618,7 +12660,9 @@ export class Hud {
       undefined,
       config,
     );
-    this.partyFramesPainter.sync(others, info.leader, info.raid, config);
+    // Companions paint after the human members: they are the tail of the group, and a
+    // stable order keeps the pooled rows from reshuffling as one is hired or falls.
+    this.partyFramesPainter.sync(others.concat(companionRows), info.leader, info.raid, config);
     // Re-dock the Loot Settings panel below the (just re-synced) party frames when their
     // size changes (row count / raid grouping). Gated so the layout measure runs on a real
     // geometry change, not every combat tick; positionLootSettingsPanel honors a manual drag.

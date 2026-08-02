@@ -80,6 +80,7 @@ import {
   type CharacterProfile,
   type CharacterSearchResult,
   type ClientCommand,
+  type CompanionPartyInfo,
   type CraftingIdentityView,
   type CraftResultView,
   type CupInfo,
@@ -758,9 +759,6 @@ export class Api {
 
   // Step 1: ask the server for the exact message to sign for this address.
 
-
-
-
   // ── Discord link/login + status ────────────────────────────────────────────
   // Returns the discord.com authorize URL the browser navigates to (login = new
   // session, link = attach to the current account).
@@ -1326,6 +1324,10 @@ export class ClientWorld implements IWorld {
   // applyLockpickEvent. delveClears is a NON-IWorld mirror behind delveShopOffers. ---
   delveRun: DelveRunInfo | null = null;
   companionState: DelveCompanionInfo | null = null;
+  // The hired dungeon companions. Mirrored from the `cparty` snapshot field; a realm
+  // that does not send it leaves this null and the companion frames simply absent,
+  // which is the pre-existing online behavior rather than a regression.
+  companionParty: CompanionPartyInfo | null = null;
   // Lockpicking: rebuilt from the lockpick* events (there is no snapshot field).
   // Holds only the fog-windowed cells the server discloses.
   lockpickState: LockpickView | null = null;
@@ -2879,6 +2881,7 @@ export class ClientWorld implements IWorld {
       if (s.lrollg !== undefined) this.lootRollGroup = s.lrollg ?? [];
       if (s.drun !== undefined) this.delveRun = s.drun;
       if (s.dcompanion !== undefined) this.companionState = s.dcompanion;
+      if (s.cparty !== undefined) this.companionParty = s.cparty;
       if (s.dmarks !== undefined) this.delveMarks = s.dmarks ?? 0;
       if (s.dcomp !== undefined) this.companionUpgrades = s.dcomp ?? {};
       if (s.dclears !== undefined) this.delveClears = s.dclears ?? {};

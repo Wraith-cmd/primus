@@ -1422,6 +1422,7 @@ export const ru_RU: EnTranslations = {
       "lock": "Закрепить рамку игрока"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Рамки группы и рейда",
       "unlock": "Переместить рамки группы и рейда",
       "lock": "Закрепить рамки группы и рейда",

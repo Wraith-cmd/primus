@@ -171,7 +171,11 @@ export type {
   DungeonFinderProposalView,
   DungeonFinderQueueView,
 } from './world_api/dungeon_finder';
-export type { RaidLockout } from './world_api/dungeons';
+export type {
+  CompanionPartyInfo,
+  CompanionPartyMemberInfo,
+  RaidLockout,
+} from './world_api/dungeons';
 export type { WorldInteractionOutcome } from './world_api/interaction';
 export type { MailInfo, MailKindView, MailMessageView } from './world_api/mail';
 export type { MarketInfo, MarketListingView } from './world_api/market';

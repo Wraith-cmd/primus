@@ -1637,6 +1637,12 @@ export const hudChromeStrings = {
     lock: 'Lock player frame',
   },
   partyFrames: {
+    // A hired companion's frame label. The four-strong party is built from two mob
+    // templates, so three of its rows would otherwise carry the same name: the role
+    // disambiguates them. A token pattern so a locale owns the ORDER, never a
+    // `${name} (${role})` concat at the call site (the finder.roleCount precedent).
+    // The role words themselves reuse hudChrome.finder.roleTank / roleHealer / roleDps.
+    companionNamed: '{name} ({role})',
     section: 'Party and Raid Frames',
     unlock: 'Move party and raid frames',
     lock: 'Lock party and raid frames',

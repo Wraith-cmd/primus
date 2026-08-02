@@ -73,6 +73,20 @@ narrative order.
 
 ## Known broken
 
+- **Run mode auto-hires the companion party, and it pulls.** Reported live
+  2026-08-02. Entering Keystone Run spawns the four companions immediately
+  rather than on `/hire`, and they attack everything in sight. The assist-only
+  behavior fixed in `8f8327fa8` is either not applying on the run-mode path or
+  regressed there. Unprovoked companion aggro is one of the faults
+  `scripts/playtest_soak.mjs` already checks for, so reproduce with the soak
+  before changing behavior.
+- **Run mode ignores the owner's role when filling the party.** Reported live
+  2026-08-02: a tank owner got a tank companion. `recruitCompanion` fills around
+  `ctx.playerMods(r.meta).role`, which is null until talent points are spent;
+  run mode lands a preset max-level character at the door, so the resolved role
+  is likely absent at auto-hire time and `suggestNextRole` falls back to the
+  standard group. Same root cause as the auto-hire above: both are the run-mode
+  entry path, not `/hire` itself.
 - **Offline is SINGLE SLOT and switching characters destroys the old one.**
   There is no offline character select: online has one, offline has a single
   create screen. The save resumes only when class AND name match, so starting a

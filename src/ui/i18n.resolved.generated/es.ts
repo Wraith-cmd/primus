@@ -1422,6 +1422,7 @@ export const es: EnTranslations = {
       "lock": "Fijar marco del jugador"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Marcos de grupo y banda",
       "unlock": "Mover marcos de grupo y banda",
       "lock": "Fijar marcos de grupo y banda",

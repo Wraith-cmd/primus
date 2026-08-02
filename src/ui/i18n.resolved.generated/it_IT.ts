@@ -1422,6 +1422,7 @@ export const it_IT: EnTranslations = {
       "lock": "Blocca il riquadro del giocatore"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Riquadri gruppo e incursione",
       "unlock": "Sposta i riquadri di gruppo e incursione",
       "lock": "Blocca i riquadri di gruppo e incursione",

@@ -1422,6 +1422,7 @@ export const nl_NL: EnTranslations = {
       "lock": "Spelerframe vergrendelen"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Groeps- en raidframes",
       "unlock": "Groeps- en raidframes verplaatsen",
       "lock": "Groeps- en raidframes vergrendelen",

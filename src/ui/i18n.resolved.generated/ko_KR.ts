@@ -1422,6 +1422,7 @@ export const ko_KR: EnTranslations = {
       "lock": "플레이어 프레임 고정"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "파티 및 공격대 프레임",
       "unlock": "파티 및 공격대 프레임 이동",
       "lock": "파티 및 공격대 프레임 고정",

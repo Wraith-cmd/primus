@@ -1422,6 +1422,7 @@ export const sv_SE: EnTranslations = {
       "lock": "Lås spelarramen"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Grupp- och raidramar",
       "unlock": "Flytta grupp- och raidramar",
       "lock": "Lås grupp- och raidramar",

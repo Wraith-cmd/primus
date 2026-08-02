@@ -1422,6 +1422,7 @@ export const cs_CZ: EnTranslations = {
       "lock": "Zamknout rám hráče"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Rámečky skupiny a raidu",
       "unlock": "Přesunout rámečky skupiny a raidu",
       "lock": "Zamknout rámečky skupiny a raidu",

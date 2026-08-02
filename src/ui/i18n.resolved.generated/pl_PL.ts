@@ -1422,6 +1422,7 @@ export const pl_PL: EnTranslations = {
       "lock": "Zablokuj ramkę gracza"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Ramki grupy i rajdu",
       "unlock": "Przenieś ramki grupy i rajdu",
       "lock": "Zablokuj ramki grupy i rajdu",

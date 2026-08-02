@@ -1422,6 +1422,7 @@ export const fr_CA: EnTranslations = {
       "lock": "Verrouiller le cadre du joueur"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Cadres de groupe et de raid",
       "unlock": "Déplacer les cadres de groupe et de raid",
       "lock": "Verrouiller les cadres de groupe et de raid",

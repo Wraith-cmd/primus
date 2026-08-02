@@ -1422,6 +1422,7 @@ export const id_ID: EnTranslations = {
       "lock": "Kunci bingkai pemain"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Bingkai Grup dan Raid",
       "unlock": "Pindahkan bingkai grup dan raid",
       "lock": "Kunci bingkai grup dan raid",

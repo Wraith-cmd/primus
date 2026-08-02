@@ -1422,6 +1422,7 @@ export const pt_BR: EnTranslations = {
       "lock": "Travar quadro do jogador"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Quadros de grupo e raide",
       "unlock": "Mover quadros de grupo e raide",
       "lock": "Bloquear quadros de grupo e raide",

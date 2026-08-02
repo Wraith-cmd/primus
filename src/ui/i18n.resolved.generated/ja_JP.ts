@@ -1422,6 +1422,7 @@ export const ja_JP: EnTranslations = {
       "lock": "プレイヤーフレームを固定"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "パーティ・レイドフレーム",
       "unlock": "パーティ・レイドフレームを移動",
       "lock": "パーティ・レイドフレームを固定",

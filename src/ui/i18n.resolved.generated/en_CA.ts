@@ -1422,6 +1422,7 @@ export const en_CA: EnTranslations = {
       "lock": "Lock player frame"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Party and Raid Frames",
       "unlock": "Move party and raid frames",
       "lock": "Lock party and raid frames",

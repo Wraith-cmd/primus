@@ -1422,6 +1422,7 @@ export const tr_TR: EnTranslations = {
       "lock": "Oyuncu çerçevesini kilitle"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Grup ve Akın Çerçeveleri",
       "unlock": "Grup ve akın çerçevelerini taşı",
       "lock": "Grup ve akın çerçevelerini kilitle",

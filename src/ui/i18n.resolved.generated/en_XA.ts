@@ -1422,6 +1422,7 @@ export const en_XA: EnTranslations = {
       "lock": "[Ļóçķ þļáýéŕ ƒŕáɱé]"
     },
     "partyFrames": {
+      "companionNamed": "[{name} ({role})]",
       "section": "[Þáŕţý áñð Ŕáíð Ƒŕáɱéš]",
       "unlock": "[Ɱóʋé þáŕţý áñð ŕáíð ƒŕáɱéš]",
       "lock": "[Ļóçķ þáŕţý áñð ŕáíð ƒŕáɱéš]",

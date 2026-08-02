@@ -101,6 +101,17 @@ export interface CompanionMember {
   level: number;
 }
 
+/** One companion as `companionPartyWire` reports it: the roster record plus the live
+ *  unit-frame state a party row paints from. */
+export interface CompanionWireMember extends CompanionMember {
+  hp: number;
+  maxHp: number;
+  /** 1 when this companion is a corpse, matching PartyMemberInfo.dead's encoding. */
+  dead: number;
+  x: number;
+  z: number;
+}
+
 export interface CompanionParty {
   ownerId: number;
   /** The dungeon this party was hired at. */
@@ -549,19 +560,36 @@ export function updateDungeonCompanion(ctx: SimContext, self: Entity): void {
 }
 
 /** Read-only projection of the party for a foreign caller (tests, a readout, or
- *  a future HUD facet). Boundary-cloned so nothing outside this module can hold a
- *  live reference into `Sim` state. */
+ *  the HUD's companion party frames). Boundary-cloned so nothing outside this module
+ *  can hold a live reference into `Sim` state.
+ *
+ *  Each member carries its live unit-frame state (health, liveness, position) resolved
+ *  from the entity, not just the roster record: the party frames need it to paint a
+ *  health bar and an out-of-range cue, and this is the only seam that carries it. A
+ *  member whose entity has already left the roster is dropped rather than reported at
+ *  zero health, so a stale row never outlives the companion. */
 export function companionPartyWire(
   ctx: SimContext,
   pid: number,
-): { dungeonId: string; entered: boolean; members: CompanionMember[] } | null {
+): { dungeonId: string; entered: boolean; members: CompanionWireMember[] } | null {
   const party = ctx.companionParties.get(pid);
   if (!party) return null;
-  return {
-    dungeonId: party.dungeonId,
-    entered: party.entered,
-    members: party.members.map((m) => ({ ...m })),
-  };
+  const members: CompanionWireMember[] = [];
+  for (const m of party.members) {
+    const e = ctx.entities.get(m.entityId);
+    if (!e) continue;
+    members.push({
+      entityId: m.entityId,
+      role: m.role,
+      level: m.level,
+      hp: e.hp,
+      maxHp: e.maxHp,
+      dead: e.dead ? 1 : 0,
+      x: e.pos.x,
+      z: e.pos.z,
+    });
+  }
+  return { dungeonId: party.dungeonId, entered: party.entered, members };
 }
 
 /** How many more companions the owner may hire. */

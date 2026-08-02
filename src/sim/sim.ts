@@ -9379,6 +9379,11 @@ export class Sim {
     return r ? companionParty.companionPartyWire(this.ctx, r.meta.entityId) : null;
   }
 
+  /** The `IWorld` facade view of the hired party, for the HUD's companion frames. */
+  get companionParty(): import('../world_api').CompanionPartyInfo | null {
+    return this.primaryId === -1 ? null : this.companionPartyFor(this.primaryId);
+  }
+
   craftSkillsFor(pid: number): Record<string, number> {
     return craftSkillsFor(this.ctx, pid);
   }

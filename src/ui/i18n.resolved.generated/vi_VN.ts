@@ -1422,6 +1422,7 @@ export const vi_VN: EnTranslations = {
       "lock": "Khóa khung người chơi"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Khung Tổ Đội và Raid",
       "unlock": "Di chuyển khung tổ đội và raid",
       "lock": "Khóa khung tổ đội và raid",

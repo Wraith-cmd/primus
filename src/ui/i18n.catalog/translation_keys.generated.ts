@@ -6208,6 +6208,7 @@ export type TranslationKeyFlat =
   | 'hudChrome.party.inviteUsage'
   | 'hudChrome.party.promoteLeader'
   | 'hudChrome.partyFrames.columns'
+  | 'hudChrome.partyFrames.companionNamed'
   | 'hudChrome.partyFrames.healthCurrent'
   | 'hudChrome.partyFrames.healthCurrentMax'
   | 'hudChrome.partyFrames.healthNone'

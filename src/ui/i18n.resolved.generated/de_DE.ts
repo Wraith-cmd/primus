@@ -1422,6 +1422,7 @@ export const de_DE: EnTranslations = {
       "lock": "Spielerfenster sperren"
     },
     "partyFrames": {
+      "companionNamed": "{name} ({role})",
       "section": "Gruppen- und Schlachtzugsrahmen",
       "unlock": "Gruppen- und Schlachtzugsrahmen verschieben",
       "lock": "Gruppen- und Schlachtzugsrahmen sperren",

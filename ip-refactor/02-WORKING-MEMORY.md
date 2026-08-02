@@ -36,7 +36,8 @@
 > rows were never flipped at merge time; code-track statuses are reconciled to `merged` from tree
 > verification (exact per-slice SHAs not reconstructed). The stale `feature/ip-pivot` branch (now
 > far behind `main`) is superseded. Treat this doc as a live record with the two residuals above
-> still open, not a closed history.
+> still open, not a closed history. The full follow-up (repro, scope, acceptance) is tracked in
+> `RESIDUAL-WORKLIST.md` (repo Issues are disabled, so that doc is the tracker).
 
 | ID | Title | Track | Mode | Status | Branch @ commit |
 |----|-------|-------|------|--------|-----------------|

@@ -5,7 +5,7 @@
 | **Status** | Ready to implement (do not start slices without operator go-ahead) |
 | **Source PRD** | `docs/prd/frontier-pvp-honor.md`, section 11 Phase 1 |
 | **Scope** | Free loop skeleton ONLY: band, enter/leave via the G window, team assignment, auto-flagging, base graveyards, honor counter, honor on kills with DR, back banner, nameplate tint. NO cargo/nodes (Phase 2), NO events (Phase 3), NO $WOC (section 12, later). |
-| **Verified against** | Repository snapshot on 2026-07-03. Revalidate every anchor against the active release branch before implementation; trust symbols, not line numbers. |
+| **Verified against** | Repository snapshot on 2026-07-03; line-number anchors refreshed against the current tree on 2026-08-02. Revalidate every anchor against the active release branch before implementation; trust symbols, not line numbers. |
 | **Executor routing** | Route by slice complexity and the active session model. Use `$woc-extract-and-test` for implementation and `$woc-qa` for each completed slice. UI and render work also receives `woc_frontend` review. No slice depends on a named model. |
 
 ---
@@ -60,26 +60,26 @@ contributor tracking cargo needs anyway).
 
 | Concern | Anchor (re-find before editing) |
 |---|---|
-| `CharacterState` | `src/sim/sim.ts:780` (interface); backfill on load in `addPlayer` ~`sim.ts:1260`; save in `serializeCharacter` ~`sim.ts:5635` |
-| `isHostileTo` / `isFriendlyTo` | `src/sim/sim.ts:5861` (duel clause, then arena clause via `arenaMatches` + `isArenaCrossTeam`; `pvpController` resolves pets to owners) |
-| Band constants + routing | `src/sim/data.ts:296-398` (`ARENA_X_MIN = 4200`, `isArenaPos`, `DELVE_BAND_X_MIN` ~4773, `isDelvePos`); collision routing in `src/sim/colliders.ts:359` `resolvePosition` |
-| Death/respawn | `src/sim/entity_roster.ts:157` `releasePlayerSpirit` (arena early-return, delve branch, then overworld graveyard); frontier branch goes after the delve check |
-| Arena teleport in/out | `src/sim/social/arena.ts:686` `placeInArena` (sets `e.pos` via `ctx.groundPos`, `rebucket`); `endArenaMatch` ~`arena.ts:550` restores position. NOTE gotcha G2 |
-| Arena queue prereqs (copy the checks) | `src/sim/social/arena.ts:56-100` `arenaQueueJoin` (dead / in-match / duel / trade guards, `ctx.error(...)` pattern) |
+| `CharacterState` | `src/sim/sim.ts:1259` (interface); backfill on load in `addPlayer` ~`sim.ts:2117`; save in `serializeCharacter` ~`sim.ts:2958` |
+| `isHostileTo` / `isFriendlyTo` | `src/sim/sim.ts:7618` (duel clause, then arena clause via `arenaMatches` + `isArenaCrossTeam`; `pvpController` resolves pets to owners) |
+| Band constants + routing | `src/sim/data.ts:454-531` (`ARENA_X = 4200` at :454, `ARENA_X_MIN` derived at :459, `isArenaPos` ~:468, `DELVE_BAND_X_MIN` = 4773 ~:512, `isDelvePos` ~:524); collision routing in `src/sim/colliders.ts:513` `resolvePosition` |
+| Death/respawn | `src/sim/spirit.ts:105` `releasePlayerSpirit` (delve branch ~:116 via `releaseSpiritInDelve`, then overworld graveyard); frontier branch goes after the delve check. NOTE: this was extracted OUT of `entity_roster.ts` into `spirit.ts`; the `releaseSpiritInDelve` to model on now lives at `entity_roster.ts:260` |
+| Arena teleport in/out | `src/sim/social/arena.ts:881` `placeInArena` (sets `e.pos` via `ctx.groundPos`, `rebucket`); `endArenaMatch` ~`arena.ts:979` restores position. NOTE gotcha G2 |
+| Arena queue prereqs (copy the checks) | `src/sim/social/arena.ts:87` `arenaQueueJoin` (dead / in-match / duel / trade guards, `ctx.error(...)` pattern) |
 | Sim command surface | public methods on `Sim` delegating to module fns with `ctx` (e.g. `queueArena1v1` -> `arenaQueueJoin(this.ctx, ...)`) |
-| IWorld | `src/world_api.ts:341-510`; arena methods at 458-461, `arenaInfo` state at ~416; add frontier members beside them |
-| ClientWorld | `src/net/online.ts`; `cmd()` helper ~918 sends `{t:'cmd', ...}`; command wrappers ~1665-1694; `applySnapshot` self-state mirror ~1266 (`s.arena` pattern) |
-| Server dispatch | `server/game.ts:1351` `dispatchMessage` switch; `enter_dungeon` case ~1877 (validation-then-`sim.*` pattern); `arena_queue` ~1763 |
-| Wire entity | `server/game.ts:248-261` `identityFields` (guild rides as `gd`; add `ft`); client decode in `src/net/online.ts:1049-1170` `applyWire`; self-only state via `selfWireJson` `maybe()` ~2149 |
-| SimEvent union | `src/sim/types.ts:1393-1584`; server event routing `server/game.ts:2267-2308` (events with `pid` are personal; unanchored events broadcast) |
+| IWorld | IWorld is now split into per-domain facets re-aggregated by the `src/world_api.ts` barrel; arena members live in the `src/world_api/duel_arena.ts` facet (`arenaInfo` ~:153). Add frontier PvP members to that facet beside the arena ones, and update the parity pin `tests/world_api_parity.test.ts` in the same change |
+| ClientWorld | `src/net/online.ts`; `cmd()` helper ~1897; arena command wrapper ~3710; `applySnapshot` ~2276, self-state mirror ~2931 (`if (s.arena !== undefined)` pattern) |
+| Server dispatch | `server/game.ts:3966` `dispatchMessage` switch; `enter_dungeon` case ~5205 (validation-then-`sim.*` pattern); `arena_queue` ~4783 |
+| Wire entity | `server/game.ts:921` `identityFields` (guild rides as `gd`; add `ft`); client decode in `src/net/online.ts:2371` `applyWire` (the `gd` decode to mirror is at ~:2433); self-only state via `selfWireJson` `maybe()` ~5697 |
+| SimEvent union | `src/sim/types.ts:3247` (`type SimEvent`); server event routing `server/game.ts:6433` `routeEvents` (events with `pid` are personal; unanchored events broadcast) |
 | Parity goldens | `tests/parity/scenarios.ts` + `UPDATE_PARITY=1 npx vitest run tests/parity` writes `tests/parity/golden/*.json`; never regenerate to hide a diff |
-| Snapshot tests | `tests/snapshots.test.ts` (`DELTA_KEYS` ~23-36, `bareClient` helper ~79) |
-| Arena window UI | `src/ui/hud.ts` `toggleArena` ~5268, `renderArenaWindow` ~5300-5486, wired from `src/main.ts:1037`; DOM shell `#arena-window` in `index.html` |
+| Snapshot tests | `tests/snapshots.test.ts` (`DELTA_KEYS` ~42, `bareClient` helper ~103) |
+| Arena window UI | `src/ui/hud.ts` `toggleArena` ~8319; the arena window is now its own module: pure view `src/ui/arena_window_view.ts` `buildArenaView` ~137 + consumer `src/ui/arena_window.ts` `ArenaWindow` ~71 (replaces the old inline `renderArenaWindow`); wired from `src/main.ts` `onArena` ~1546; DOM shell `#arena-window` in `index.html` ~427 |
 | Modular window template | `src/ui/hud/vendor/vendor_view.ts` (pure view, unit-tested) + `src/ui/hud/vendor/vendor_window.ts` (thin DOM consumer) + Hud orchestrates; recipe in `src/ui/CLAUDE.md` |
-| Keybind label | `src/game/keybinds.ts:160-166` (id `arena`, label string) -> catalog key `hud.keybinds.actions.arena` in `src/ui/i18n.catalog/hud.ts` (mapping in `hud.ts:563`) |
-| Character attachments | `src/render/characters/manifest.ts` `VisualDef.attach?: AttachDef[]` (`{url, bone, ...}`); runtime swap pattern `visual.ts:439` `setWeapon`. No cloak/tabard precedent exists; weapon attach is the template |
-| Nameplates | `src/render/renderer.ts:4520-4646` (`setNameplateStatic`; player color hardcoded `'#7fb8ff'` ~4531; CSS-class pattern `np-threat` ~4610 is the preferred hook) |
-| FCT | `src/ui/hud.ts` `handleEvents` ~6082 (XP case ~6165 is the template), `fct()` ~7258 |
+| Keybind label | `src/game/keybinds.ts:201-207` (id `arena` at :201, label `'Arena (Ashen Coliseum)'` at :202) -> catalog key `hud.keybinds.actions.arena` in `src/ui/i18n.catalog/hud.ts` (label->key map in `src/ui/options_window.ts` ~140) |
+| Character attachments | `src/render/characters/manifest.ts` `VisualDef.attach?: AttachDef[]` (~:73); runtime swap pattern `visual.ts:712` `setWeapon`. No cloak/tabard precedent exists; weapon attach is the template |
+| Nameplates | `src/render/nameplate_painter.ts` (`NameplatePainter` ~:82; `setNameplateStatic` ~:466; player color hardcoded `'#7fb8ff'` ~:294; CSS-class pattern `np-threat` ~:392 is the preferred hook). NOTE: extracted OUT of `renderer.ts` into `nameplate_painter.ts` |
+| FCT | `src/ui/hud.ts` `handleEvents` ~8810 (XP case ~9016 is the template); the old `fct()` is now the `FctPainter` seam (`src/ui/fct_painter.ts`), spawned via `this.fctPainter.spawn(...)` ~8876 |
 
 ## 3. Slices
 
@@ -95,7 +95,7 @@ S4, S5, S6 are independent of each other once S1-S3 are merged.
 - `src/sim/colliders.ts` `resolvePosition`: add an `isFrontierPos` branch BEFORE
   the delve branch that clamps to the playfield rectangle
   (`FRONTIER_ORIGIN +- FRONTIER_HALF_W/H`), flat ground `y = 0` (arena-style).
-- `CharacterState` (`sim.ts:780` area): add `frontierTeam?: FrontierTeam`,
+- `CharacterState` (`sim.ts:1259` area): add `frontierTeam?: FrontierTeam`,
   `honor?: number`, `frontierReturnPos?: { x: number; z: number }`. Backfill in
   `addPlayer` (`honor` -> 0; others stay undefined); round-trip in
   `serializeCharacter`. Mirror onto `PlayerMeta` the same way `delveMarks` is.
@@ -142,21 +142,23 @@ S4, S5, S6 are independent of each other once S1-S3 are merged.
 - Acceptance: `npx vitest run tests/frontier_enter.test.ts tests/architecture.test.ts && npx vitest run tests/parity`.
 
 ### S3. Hostility clause + seam (IWorld, wire, server dispatch)
-- `isHostileTo` (`sim.ts:5861`): in the `target.kind === 'player'` block, after
+- `isHostileTo` (`sim.ts:7618`): in the `target.kind === 'player'` block, after
   the duel clause and before the arena clause, add: both `attackerPlayer` and
   `target` positions satisfy `isFrontierPos`, both have `frontierTeam` set, and
   the teams differ -> `true`. Pets already inherit via `pvpController` /
   the mob-owner clause; do not duplicate.
 - Duels: in the duel-request path, refuse with `ctx.error` if either party is
   in the frontier band (PRD 5.2).
-- `src/world_api.ts`: add beside the arena members:
+- `src/world_api/duel_arena.ts` (the faceted IWorld arena facet; the barrel
+  `src/world_api.ts` re-aggregates it): add beside the arena members:
   `frontierInfo: FrontierInfo | null` where
   `FrontierInfo = { team: FrontierTeam | null; honor: number; inZone: boolean; leaveChannelRemaining: number | null }`,
   plus `enterFrontier(): void`, `leaveFrontier(): void`. Offline `Sim` computes
-  it from live state.
+  it from live state. Add all three members to the parity pin
+  `tests/world_api_parity.test.ts` in the same change.
 - `src/net/online.ts`: `enterFrontier()` -> `this.cmd({ cmd: 'enter_frontier' })`,
   `leaveFrontier()` -> `this.cmd({ cmd: 'leave_frontier' })`; mirror
-  `frontierInfo` in `applySnapshot` following the `s.arena` pattern (~1266).
+  `frontierInfo` in `applySnapshot` following the `s.arena` pattern (~2931).
 - `server/game.ts`: `dispatchMessage` cases `enter_frontier` / `leave_frontier`
   (no geo-gate; the G window is global like arena queueing); self snapshot
   gains `frontier` via the `maybe()` pattern; `identityFields` gains
@@ -172,8 +174,8 @@ S4, S5, S6 are independent of each other once S1-S3 are merged.
 - Acceptance: `npx vitest run tests/frontier_hostility.test.ts tests/snapshots.test.ts && npx vitest run tests/parity`.
 
 ### S4. Death and respawn at team base
-- `releasePlayerSpirit` (`entity_roster.ts:157`): after the delve branch, add
-  `if (isFrontierPos(r.e.pos.x)) { releaseSpiritInFrontier(ctx, ...); return; }`
+- `releasePlayerSpirit` (`src/sim/spirit.ts:105`): after the delve branch (~:116),
+  add `if (isFrontierPos(r.e.pos.x)) { releaseSpiritInFrontier(ctx, ...); return; }`
   modeled on `releaseSpiritInDelve` but: respawn at `FRONTIER_BASES[team]`
   (full HP, standard reset), no run-fail semantics, keep the standard respawn
   emit. Players with no team somehow in-band (teleport cheats in dev) fall
@@ -210,25 +212,28 @@ S4, S5, S6 are independent of each other once S1-S3 are merged.
 - Follow the modular recipe (`src/ui/CLAUDE.md`, vendor template): new
   `src/ui/frontier_panel_view.ts` (pure view: derives labels/state from
   `FrontierInfo` + level; unit-tested) + `src/ui/frontier_panel.ts` (thin DOM
-  consumer). `renderArenaWindow` (`hud.ts:5300`) composes the section under the
-  existing queue UI; do NOT grow a new banner section.
+  consumer). Compose the section into the modular arena window (pure view
+  `src/ui/arena_window_view.ts` `buildArenaView` ~137, consumer
+  `src/ui/arena_window.ts` `ArenaWindow` ~71) under the existing queue UI; do NOT
+  grow a new banner section, and do NOT reintroduce an inline `renderArenaWindow`.
 - Content: team crest + name (or "Unassigned"), honor balance, Enter button
   (disabled with reason below level 15 or offline-dead), Leave button with
   channel countdown when in-zone.
-- Keybind label: change `keybinds.ts:162` label to `'PvP (Arena & Frontier)'`
+- Keybind label: change `keybinds.ts:202` label to `'PvP (Arena & Frontier)'`
   and update the English value of `hud.keybinds.actions.arena`; window title key
   likewise. All new UI keys go in `src/ui/i18n.catalog/hud.ts` under a
   `hud.frontier.*` block. Then `npm run i18n:scan && npm run i18n:build`,
   commit the regenerated `i18n.resolved.generated/` slices (the status summary
   is gitignored, never committed), and run the completeness test (gotcha G4).
 - FCT + events: handle `honorGain` (gold `+N Honor` float on self, XP-case
-  template at `hud.ts:6165`), `frontierEntered`/`frontierLeft` as system lines.
+  template at `hud.ts:9016`, spawned via the `FctPainter` seam
+  `this.fctPainter.spawn(...)`), `frontierEntered`/`frontierLeft` as system lines.
 - Acceptance: `npx vitest run tests/frontier_panel_view.test.ts tests/i18n_completeness.test.ts tests/localization_fixes.test.ts`; manual: `npm run dev`, press G, enter, kill, see honor float (screenshot per the headless screenshot workflow).
 
 ### S8. Back banner + nameplate team tint
 - Banner: extend the attach path so player visuals in-band get a team banner.
   No tabard precedent exists; pattern-match the weapon attach
-  (`manifest.ts` `AttachDef`, swap machinery `visual.ts:439`). If no suitable
+  (`manifest.ts` `AttachDef` ~:73, swap machinery `visual.ts:712`). If no suitable
   GLB exists in `public/`, build a small procedural plane+pole mesh in a new
   `src/render/team_banner.ts` the visual composes (repo norm: procedural
   geometry is fine). Tint azure `#2e6fd0` / crimson `#c03030`; driven by the

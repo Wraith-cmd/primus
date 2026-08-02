@@ -51,6 +51,42 @@ function standAtCryptDoor(sim: Sim): void {
   sim.player.combatTimer = 999;
 }
 
+describe('run mode lifts the dungeon door requirement', () => {
+  // Run mode is a testing surface: walking back to a portal to re-hire is
+  // friction with no design value there. Ordinary offline play keeps the rule.
+  const runSim = (): Sim =>
+    new Sim({ seed: 7, playerClass: 'druid', autoEquip: true, companionsAnywhere: true });
+
+  it('hires away from any door', () => {
+    const sim = runSim();
+    sim.setPlayerLevel(15);
+    teleport(sim, 0, 0); // nowhere near a dungeon entrance
+    sim.player.inCombat = false;
+    expect(sim.recruitCompanion('dps')).toBe(true);
+  });
+
+  it('keeps the party away from a door, which the hire gate alone would not', () => {
+    // Lifting only the hire gate would be worse than lifting neither: the party
+    // would be hired and then disbanded by updateCompanionParties on the next
+    // tick for standing away from an entrance.
+    const sim = runSim();
+    sim.setPlayerLevel(15);
+    teleport(sim, 0, 0);
+    sim.player.inCombat = false;
+    sim.recruitCompanion('dps');
+    for (let i = 0; i < 40; i++) updateCompanionParties(ctxOf(sim));
+    expect(companionPartyFor(ctxOf(sim), sim.playerId)?.members.length).toBe(1);
+  });
+
+  it('ordinary play still requires the door', () => {
+    const sim = makeSim();
+    sim.setPlayerLevel(15);
+    teleport(sim, 0, 0);
+    sim.player.inCombat = false;
+    expect(sim.recruitCompanion('dps')).toBe(false);
+  });
+});
+
 describe('companion party: the recruit gate', () => {
   let sim: Sim;
   beforeEach(() => {

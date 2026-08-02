@@ -202,6 +202,11 @@ export interface SimContextPrimitives {
   // backing field stays Sim-owned (the Market instance owns it), exposed here as a live
   // read-only view (never reassigned by the readout).
   readonly devCommands: boolean;
+  // Run mode only: lifts the dungeon-entrance gate on hiring AND on keeping the
+  // companion party (`companions/party.ts`). Both halves read this one flag,
+  // because relaxing only the hire half would let a party be hired anywhere and
+  // then disbanded on the next tick for standing away from a door.
+  readonly companionsAnywhere: boolean;
   readonly marketListings: MarketListing[];
   // Bank system: the live array of every `banker: true` NPC id, seeded by
   // the Sim ctor NPC loop. bank.ts reads it to gate deposit/withdraw/buy-slots on
@@ -1070,6 +1075,9 @@ export function createSimContext(host: SimContextHost): SimContext {
     },
     set nextLootRollId(v) {
       host.nextLootRollId = v;
+    },
+    get companionsAnywhere() {
+      return host.companionsAnywhere;
     },
     get devCommands() {
       return host.devCommands;

@@ -4311,6 +4311,13 @@ export interface SimConfig {
   playerName?: string;
   noPlayer?: boolean; // multiplayer server: start with an empty world and addPlayer() later
   devCommands?: boolean; // local dev: /dev level|tp|give chat cheats
+  // Lift the dungeon-entrance restriction on the hired companion party, for BOTH
+  // hiring and keeping it. Run mode ("Keystone Run") is a testing surface whose
+  // whole point is being dropped somewhere with a party, so making the owner
+  // walk back to a door to re-hire is pure friction there. Off everywhere else:
+  // in ordinary play the door is the rule that keeps companions a dungeon
+  // feature rather than a permanent open-world posse.
+  companionsAnywhere?: boolean;
   lockoutNowMs?: () => number; // host wall-clock for persisted raid lockouts
   // Live server: schedule the first world-boss rise at boot instead of one
   // interval out, so a freshly (re)started realm has Thunzharr up immediately.

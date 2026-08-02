@@ -227,6 +227,7 @@ function makeCtx() {
     pendingLootRolls: new Map(),
     nextLootRollId: 1,
     devCommands: false,
+    companionsAnywhere: false,
     marketListings: [],
     bankerIds: [],
     vcup: createVcState(),

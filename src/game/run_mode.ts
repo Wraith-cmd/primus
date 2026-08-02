@@ -259,6 +259,10 @@ export function startRunMode(opts: RunModeOptions): RunModeSession {
     // Run mode is a legitimate game mode, not a cheat path: the `/dev` surface
     // stays off regardless of build.
     devCommands: false,
+    // ...but it IS a testing surface, so the companion party is not chained to a
+    // dungeon door here: `/hire` works anywhere and the party is kept wherever
+    // the owner goes. Ordinary offline play keeps the door rule.
+    companionsAnywhere: true,
     noPlayer: resume !== null,
   });
   if (resume) sim.addPlayer(playerClass, RUN_CHARACTER_NAME, { state: resume.state });

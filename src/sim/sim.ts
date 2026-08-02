@@ -1628,6 +1628,9 @@ export class Sim {
   bankerIds: number[] = [];
   /** When true, /dev level|tp|give chat commands are accepted (local dev only). */
   readonly devCommands: boolean;
+  /** Run mode only: the hired companion party is not chained to a dungeon door,
+   *  for hiring OR for keeping it. See `SimConfig.companionsAnywhere`. */
+  readonly companionsAnywhere: boolean;
   // Entities spawned by the last /dev sandbox (dummy + practice bots), so re-running
   // the command clears the previous scenario instead of piling more on. Dev only.
   private devSandboxIds: number[] = [];
@@ -1699,6 +1702,7 @@ export class Sim {
 
   constructor(cfg: SimConfig) {
     this.devCommands = cfg.devCommands ?? false;
+    this.companionsAnywhere = cfg.companionsAnywhere ?? false;
     this.cfg = {
       seed: cfg.seed,
       playerClass: cfg.playerClass,
@@ -1706,6 +1710,7 @@ export class Sim {
       autoEquip: cfg.autoEquip ?? false,
       playerName: cfg.playerName ?? 'Adventurer',
       devCommands: this.devCommands,
+      companionsAnywhere: this.companionsAnywhere,
       worldBossAtBoot: cfg.worldBossAtBoot ?? false,
       lockoutNowMs: cfg.lockoutNowMs ?? (() => Math.floor(this.time * 1000)),
       raidResetMs: cfg.raidResetMs ?? ((nowMs: number) => nowMs + DEFAULT_RAID_LOCKOUT_MS),
@@ -3816,6 +3821,9 @@ export class Sim {
       // W5 chat router/readouts live views: devCommands gates the /dev chat cheats;
       // marketListings is the Market book the /listings readout filters (the Market
       // instance is constructed after this host literal, so the getter reads it lazily).
+      get companionsAnywhere() {
+        return sim.companionsAnywhere;
+      },
       get devCommands() {
         return sim.devCommands;
       },

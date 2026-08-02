@@ -192,8 +192,11 @@ export function recruitCompanion(
   const existing = ctx.companionParties.get(ownerId) ?? null;
   const dungeonId = dungeonEntranceIdAt(r.e.pos);
   const currentRoles = existing?.members.map((m) => m.role) ?? [];
+  // Run mode lifts the door requirement: it is a testing surface, and walking
+  // back to a portal to re-hire is friction with no design value there.
+  const anywhere = ctx.companionsAnywhere;
   const decision = canRecruit({
-    atDungeonEntrance: dungeonId !== null,
+    atDungeonEntrance: dungeonId !== null || anywhere,
     inCombat: r.e.inCombat,
     currentRoles,
   });
@@ -201,9 +204,13 @@ export function recruitCompanion(
     ctx.error(ownerId, refusalText(decision.refusal));
     return false;
   }
-  // canRecruit only allows the call through when it saw an entrance, so this is
-  // narrowing, not an assumption.
-  if (dungeonId === null) return false;
+  // Outside run mode, canRecruit only allows the call through when it saw an
+  // entrance, so this is narrowing rather than an assumption. With the door gate
+  // lifted there may be no entrance underfoot, and the party then keeps whatever
+  // dungeon it was already bound to; `homeDungeonId` is a readout only, so an
+  // empty binding is inert rather than dangerous.
+  if (dungeonId === null && !anywhere) return false;
+  const boundDungeonId = dungeonId ?? existing?.dungeonId ?? '';
   // The owner is the fifth member, so the group is filled AROUND their role: a
   // tank who typed /hire used to get a second tank. The role comes from the
   // resolved talent spec, which is null until points are spent, and that falls
@@ -214,13 +221,14 @@ export function recruitCompanion(
   if (!template) return false;
   const party: CompanionParty = existing ?? {
     ownerId,
-    dungeonId,
+    dungeonId: boundDungeonId,
     entered: false,
     members: [],
   };
   // Walking to a different door with a half-built party rebinds it to that door
-  // rather than leaving the run keyed to a dungeon nobody is standing at.
-  party.dungeonId = dungeonId;
+  // rather than leaving the run keyed to a dungeon nobody is standing at. With
+  // no door underfoot (run mode) the existing binding is kept.
+  party.dungeonId = boundDungeonId;
   const level = Math.max(1, r.e.level);
   const offset = COMPANION_SPAWN_OFFSETS[party.members.length % COMPANION_SPAWN_OFFSETS.length];
   const mob = createMob(
@@ -289,6 +297,10 @@ export function updateCompanionParties(ctx: SimContext): void {
       party.entered = true;
       continue;
     }
+    // Run mode keeps its party wherever the owner goes. Lifting only the HIRE
+    // gate would be worse than lifting neither: the party would be hired away
+    // from a door and then disbanded on the very next tick by this rule.
+    if (ctx.companionsAnywhere) continue;
     if (party.entered || dungeonEntranceIdAt(owner.pos) === null) {
       disbandCompanionParty(ctx, pid);
     }

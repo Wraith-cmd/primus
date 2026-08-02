@@ -349,7 +349,12 @@ export default defineConfig({
         play: fileURLToPath(new URL('play.html', import.meta.url)),
         guide: fileURLToPath(new URL('guide.html', import.meta.url)),
         editor: fileURLToPath(new URL('editor.html', import.meta.url)),
-        walletHandoff: fileURLToPath(new URL('wallet-handoff.html', import.meta.url)),
+        // walletHandoff is deliberately absent: `wallet-handoff.html` was never
+        // committed alongside the config entry that referenced it, so every
+        // `vite build` aborted resolving it and the whole production build has
+        // been red since. Only `src/wallet_handoff.css` and the Electron side
+        // (`electron/wallet_handoff.cjs`) exist. Restore this line in the same
+        // change that finally adds the page (spec: docs/prd/woc/wallet-link.md).
       },
       output: {
         // three.js almost never changes between our releases and is the single

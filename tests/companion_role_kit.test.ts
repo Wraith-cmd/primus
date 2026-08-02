@@ -2,8 +2,10 @@ import { describe, expect, it } from 'vitest';
 import {
   type CompanionRole,
   canRecruit,
+  companionTemplateFor,
   DEFAULT_COMPANION_ROLES,
   type EnemyView,
+  isPartyEngagement,
   kitFor,
   MAX_COMPANIONS,
   missingRoles,
@@ -20,6 +22,90 @@ const enemy = (id: number, extra: Partial<EnemyView> = {}): EnemyView => ({
   attackingId: null,
   heldByTank: false,
   ...extra,
+});
+
+describe('companions assist, they do not pull', () => {
+  // THE BUG: the companion brain considered EVERY hostile in range a candidate,
+  // so a hired party walked into a dungeon and started fights nobody asked for.
+  // A companion may act on a mob only when the mob is already fighting the
+  // party, or when the owner has committed to it.
+  const base = {
+    ownerId: 1,
+    companionIds: [2, 3, 4, 5],
+    ownerTargetId: null,
+    ownerInCombat: false,
+  };
+
+  it('ignores a hostile that is minding its own business', () => {
+    expect(isPartyEngagement({ id: 99, attackingId: null }, base)).toBe(false);
+  });
+
+  it('defends the owner', () => {
+    expect(isPartyEngagement({ id: 99, attackingId: 1 }, base)).toBe(true);
+  });
+
+  it('defends another companion', () => {
+    expect(isPartyEngagement({ id: 99, attackingId: 4 }, base)).toBe(true);
+  });
+
+  it('does not pull the owner’s target on a bare tab-target', () => {
+    // Merely CYCLING targets must not start a fight, or tab targeting becomes a
+    // pull button.
+    expect(isPartyEngagement({ id: 99, attackingId: null }, { ...base, ownerTargetId: 99 })).toBe(
+      false,
+    );
+  });
+
+  it('assists once the owner has actually committed', () => {
+    expect(
+      isPartyEngagement(
+        { id: 99, attackingId: null },
+        { ...base, ownerTargetId: 99, ownerInCombat: true },
+      ),
+    ).toBe(true);
+  });
+
+  it('still ignores an unrelated hostile while the owner fights something else', () => {
+    expect(
+      isPartyEngagement(
+        { id: 77, attackingId: null },
+        { ...base, ownerTargetId: 99, ownerInCombat: true },
+      ),
+    ).toBe(false);
+  });
+});
+
+describe('the template complements the owner', () => {
+  // THE BUG: the template was a fixed tank/healer/dps/dps regardless of who was
+  // hiring, so a tank who typed /hire got a SECOND tank and ran a five man with
+  // two shields and two damage dealers.
+  it('does not hire a tank for a tank', () => {
+    const template = companionTemplateFor('tank');
+    expect(template).not.toContain('tank');
+    expect(template).toEqual(['healer', 'dps', 'dps', 'dps']);
+    expect(suggestNextRole([], template)).toBe('healer');
+  });
+
+  it('does not hire a healer for a healer', () => {
+    const template = companionTemplateFor('healer');
+    expect(template).not.toContain('healer');
+    expect(suggestNextRole([], template)).toBe('tank');
+  });
+
+  it('keeps the standard group for a damage dealer', () => {
+    expect(companionTemplateFor('dps')).toEqual(DEFAULT_COMPANION_ROLES);
+    expect(suggestNextRole([], companionTemplateFor('dps'))).toBe('tank');
+  });
+
+  it('falls back to the standard group when the owner has no spec yet', () => {
+    expect(companionTemplateFor(null)).toEqual(DEFAULT_COMPANION_ROLES);
+  });
+
+  it('still fills a whole group of four for every owner role', () => {
+    for (const role of ['tank', 'healer', 'dps'] as const) {
+      expect(companionTemplateFor(role)).toHaveLength(MAX_COMPANIONS);
+    }
+  });
 });
 
 describe('role kits', () => {

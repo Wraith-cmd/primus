@@ -43,7 +43,10 @@ import {
 import {
   type CompanionRole,
   canRecruit,
+  companionTemplateFor,
   type EnemyView,
+  type EngagementContext,
+  isPartyEngagement,
   kitFor,
   MAX_COMPANIONS,
   type RecruitRefusal,
@@ -201,7 +204,12 @@ export function recruitCompanion(
   // canRecruit only allows the call through when it saw an entrance, so this is
   // narrowing, not an assumption.
   if (dungeonId === null) return false;
-  const picked = role ?? suggestNextRole(currentRoles) ?? 'dps';
+  // The owner is the fifth member, so the group is filled AROUND their role: a
+  // tank who typed /hire used to get a second tank. The role comes from the
+  // resolved talent spec, which is null until points are spent, and that falls
+  // back to the standard group.
+  const ownerRole = ctx.playerMods(r.meta).role;
+  const picked = role ?? suggestNextRole(currentRoles, companionTemplateFor(ownerRole)) ?? 'dps';
   const template = MOBS[COMPANION_TEMPLATE_BY_ROLE[picked]];
   if (!template) return false;
   const party: CompanionParty = existing ?? {
@@ -321,6 +329,7 @@ function enemyViews(
   self: Entity,
   party: CompanionParty,
   range: number,
+  engagement: EngagementContext,
 ): EnemyView[] {
   const tankId = tankEntityId(party);
   const out: EnemyView[] = [];
@@ -329,6 +338,11 @@ function enemyViews(
     if (!ctx.isHostileTo(self, e)) continue;
     const distance = dist2d(self.pos, e.pos);
     if (distance > range) continue;
+    // Assist, never pull: a hostile in range is not by itself a reason to swing
+    // at it. See `isPartyEngagement` for the rule.
+    if (!isPartyEngagement({ id: e.id, attackingId: e.aggroTargetId ?? null }, engagement)) {
+      continue;
+    }
     out.push({
       id: e.id,
       distance,
@@ -442,7 +456,12 @@ export function updateDungeonCompanion(ctx: SimContext, self: Entity): void {
     ownerTargetEntity && !ownerTargetEntity.dead && ctx.isHostileTo(self, ownerTargetEntity)
       ? ownerTargetEntity.id
       : null;
-  const enemies = enemyViews(ctx, self, party, kit.maxRange);
+  const enemies = enemyViews(ctx, self, party, kit.maxRange, {
+    ownerId: owner.id,
+    companionIds: party.members.map((m) => m.entityId),
+    ownerTargetId,
+    ownerInCombat: owner.inCombat,
+  });
   const targetId = resolveTarget(kit, enemies, {
     ownerTargetId,
     healerIds: healerIdsOf(party),

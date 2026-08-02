@@ -146,8 +146,72 @@ export function kitFor(role: CompanionRole): RoleKit {
 export const DUNGEON_PARTY_SIZE = 5;
 /** So the owner can recruit four. */
 export const MAX_COMPANIONS = DUNGEON_PARTY_SIZE - 1;
-/** The composition a five-man is filled toward, in fill order. */
+/** The composition a five-man is filled toward, in fill order. This is the
+ *  template for an owner who is a DAMAGE DEALER; see `companionTemplateFor`,
+ *  which is what callers should ask, since the owner is one of the five. */
 export const DEFAULT_COMPANION_ROLES: readonly CompanionRole[] = ['tank', 'healer', 'dps', 'dps'];
+
+/** The four roles to hire around an owner who already fills one of them.
+ *
+ *  The owner IS the fifth member, so hiring their own role again leaves the
+ *  group short somewhere else: a tank who hired the standard template ran with
+ *  two shields and only two damage dealers, which is the reported bug. A tank
+ *  therefore gets no tank and an extra damage dealer, a healer gets no healer,
+ *  and a damage dealer gets the standard group because it already complements
+ *  them.
+ *
+ *  `null` (no spec chosen yet, so no role to complement) also gets the standard
+ *  group: with nothing known about the owner, a self-sufficient group is the
+ *  safe answer. */
+export function companionTemplateFor(ownerRole: CompanionRole | null): readonly CompanionRole[] {
+  if (ownerRole === 'tank') return ['healer', 'dps', 'dps', 'dps'];
+  if (ownerRole === 'healer') return ['tank', 'dps', 'dps', 'dps'];
+  return DEFAULT_COMPANION_ROLES;
+}
+
+/** What the engagement rule needs to know about one hostile. */
+export interface EngagementFoe {
+  id: number;
+  /** Who it is currently attacking, or null when it is not fighting anyone. */
+  attackingId: number | null;
+}
+
+/** What the engagement rule needs to know about the party. */
+export interface EngagementContext {
+  ownerId: number;
+  companionIds: readonly number[];
+  /** The owner's current target, or null. */
+  ownerTargetId: number | null;
+  /** Whether the owner is actually in a fight, as opposed to merely looking at
+   *  something. */
+  ownerInCombat: boolean;
+}
+
+/**
+ * May the party act on this hostile at all?
+ *
+ * Companions ASSIST, they do not pull. The brain used to treat every hostile in
+ * range as a candidate, so a hired party walked into a dungeon and started
+ * fights nobody asked for. Two things earn a hostile a place on the candidate
+ * list, and nothing else does:
+ *
+ *   1. It is already attacking the owner or one of the companions. Defending is
+ *      never optional, and this is also what lets a tank peel an add off the
+ *      healer.
+ *   2. The owner has COMMITTED to it: it is their target AND they are in
+ *      combat. Requiring combat is deliberate. Targeting alone must not start a
+ *      fight, or cycling targets with Tab becomes a pull button, which is the
+ *      same complaint in a different costume.
+ *
+ * Pure and id-based so a Vitest drives every branch without a Sim.
+ */
+export function isPartyEngagement(foe: EngagementFoe, ctx: EngagementContext): boolean {
+  if (foe.attackingId !== null) {
+    if (foe.attackingId === ctx.ownerId) return true;
+    if (ctx.companionIds.includes(foe.attackingId)) return true;
+  }
+  return ctx.ownerInCombat && ctx.ownerTargetId === foe.id;
+}
 
 export interface PartyComposition {
   tank: number;

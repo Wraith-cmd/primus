@@ -315,11 +315,41 @@ describe('companion party: the role kits', () => {
     const near = spawnEnemy(sim, dps.pos.x + 3, dps.pos.z);
     const far = spawnEnemy(sim, dps.pos.x + 12, dps.pos.z);
     sim.player.targetId = far.id;
+    // The owner has actually committed to the pull. Assisting is gated on that
+    // now (see isPartyEngagement): a bare target must not start a fight.
+    sim.player.inCombat = true;
     const startX = dps.pos.x;
     updateDungeonCompanion(ctxOf(sim), dps);
     // It walks toward the owner's target, not the closer mob.
     expect(dps.pos.x).toBeGreaterThan(startX);
     expect(near.hp).toBe(near.maxHp);
+  });
+
+  it('a companion does not pull anything the owner has not engaged', () => {
+    // THE BUG: hired companions walked into a dungeon and started fights on
+    // their own, because every hostile in range was a candidate.
+    const sim = makeSim();
+    sim.setPlayerLevel(15);
+    const dps = hire(sim, 'dps');
+    const bystander = spawnEnemy(sim, dps.pos.x + 3, dps.pos.z);
+    sim.player.targetId = null;
+    sim.player.inCombat = false;
+    const startX = dps.pos.x;
+    for (let i = 0; i < 20; i++) updateDungeonCompanion(ctxOf(sim), dps);
+    expect(bystander.hp).toBe(bystander.maxHp);
+    expect(dps.pos.x).toBe(startX);
+  });
+
+  it('a companion still defends the owner when something attacks first', () => {
+    const sim = makeSim();
+    sim.setPlayerLevel(15);
+    const dps = hire(sim, 'dps');
+    const attacker = spawnEnemy(sim, dps.pos.x + 3, dps.pos.z);
+    // The mob picked the fight: defending is never optional. It spawns inside
+    // melee range, so the tell is damage rather than movement.
+    attacker.aggroTargetId = sim.player.id;
+    for (let i = 0; i < 20; i++) updateDungeonCompanion(ctxOf(sim), dps);
+    expect(attacker.hp).toBeLessThan(attacker.maxHp);
   });
 
   it('a companion with nothing to fight falls in behind the owner', () => {

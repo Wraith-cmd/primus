@@ -208,3 +208,47 @@ the larger half, and it was already on the roadmap as Phase 4.
 - New dungeons. Four existing ones at variable difficulty is the whole point of
   a run-based model. Author new content only after the loop is proven fun.
 - Anything that requires `ALLOW_DEV_COMMANDS` in normal play.
+
+## Run mode: the second entry point
+
+DECIDED (owner, 2026-08-01): run mode uses a PRESET MAX-LEVEL character, not the
+player's leveled one.
+
+The use case is a twenty-minute keystone on a work break. Requiring a leveled
+character first would defeat that entirely, and a preset also decouples keystone
+tuning from the leveling curve, so the two can be balanced independently.
+
+One game, two doors. Same sim, same classes, same dungeons, same companions.
+
+### What run mode does
+- A third option on the landing page beside Online and Offline: "Keystone Run".
+- Pick a class. Spawn at cap with a fixed, hand-tuned kit (no gear progression,
+  no loot decisions: the run is the content, not the shopping).
+- Four companions already hired, keystone already slotted, at the dungeon door.
+- Click to playing in about ten seconds. That number is the design target; if it
+  drifts much past it, the mode has failed at its one job.
+- Result screen on completion: time against par, key level, upgrade or deplete.
+
+### The save-slot wrinkle, do not skip this
+`src/game/offline_save.ts` is a SINGLE slot keyed on class plus name. Run mode
+must not write to it. Losing a leveled character to a break-mode session would be
+the worst bug this fork could ship.
+
+Namespace the slot (a mode discriminator in the key) before run mode writes
+anything at all. The envelope already carries a version field, so a mode field is
+a natural companion; bump OFFLINE_SAVE_VERSION if the shape changes.
+
+Whether a run-mode character persists between runs is open. Leaning yes, so a
+keystone can be carried and upgraded across sessions, which is the whole
+progression loop of the mode.
+
+### Later, not now
+Once the main game is deep enough to deserve it, let a real max-level character
+opt into keystones with its own gear. That is the traditional MMO payoff and it
+reuses everything built here. It is deliberately NOT first: the break-mode
+payoff is available immediately and costs far less.
+
+### Effort
+About 3 to 5 sessions ON TOP of the keystone layer. Most of the work (keystones,
+timer, scaling, affixes) is shared between both modes, so this is a cheap second
+door onto work already planned rather than a separate feature.

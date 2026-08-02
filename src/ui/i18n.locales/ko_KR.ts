@@ -252,6 +252,16 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'hudChrome.social.lastSeen': '마지막 접속: {when}',
   'hudChrome.social.lastSeenNever': '없음',
   'hudChrome.keybinds.discord': 'Discord',
+  'hudChrome.offlineSave.saved': '캐릭터를 저장했습니다.',
+  'hudChrome.offlineSave.failed': '캐릭터를 저장할 수 없습니다. 브라우저가 쓰기를 거부했습니다.',
+  'hudChrome.offlineSave.blocked':
+    '저장하지 않음: 다른 캐릭터가 오프라인 저장 슬롯을 사용 중입니다.',
+  'hudChrome.offlineSave.unavailable':
+    '저장하지 않음: 이 브라우저에는 오프라인 캐릭터를 저장할 공간이 없습니다.',
+  'auth.offlineSave.continueHint':
+    '저장됨: {name}, {level}레벨 {cls}. 월드 입장을 눌러 이어서 하세요.',
+  'auth.offlineSave.replaceWarning':
+    '저장된 캐릭터 {name}({level}레벨 {cls})을(를) 대체하며 되돌릴 수 없습니다. 월드 입장을 다시 눌러 확인하세요.',
   'hudChrome.spectate.banner': '{name} 관전 중',
   'hudChrome.readyCheck.prompt': '{name} 님이 준비 확인을 시작했습니다. 준비되셨습니까?',
   'hudChrome.readyCheck.ready': '준비 완료',
@@ -2339,13 +2349,13 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '곰으로 변신합니다. 방어도 +130%, 전투력이 크게 증가하고, 공격이 분노와 30% 더 많은 위협 수준을 생성합니다. 다시 시전하면 시전자 형태로 돌아갑니다.',
   'entities.abilities.mangle.name': '찢기',
   'entities.abilities.mangle.description':
-    '적을 찢어 무기 피해에 더해 $d 의 피해를 입히고, 분노 10 과 높은 위협 수준을 생성합니다. 곰 형태 전용.',
+    '적을 찢어 무기 피해에 더해 {damage} 의 피해를 입히고, 분노 10 과 높은 위협 수준을 생성합니다. 곰 형태 전용.',
   'entities.abilities.thrash.name': '강타의 폭풍',
   'entities.abilities.thrash.description':
-    '주위의 모든 적에게 $d 의 피해를 입히고 출혈시키며, 분노 6 을 생성합니다. 추가 위협 수준을 발생시킵니다. 곰 형태 전용.',
+    '주위의 모든 적에게 {damage} 의 피해를 입히고 출혈시키며, 분노 6 을 생성합니다. 추가 위협 수준을 발생시킵니다. 곰 형태 전용.',
   'entities.abilities.ironfur.name': '무쇠 가죽',
   'entities.abilities.ironfur.description':
-    '가죽을 단단하게 하여 방어도를 $b% 만큼 $t 초 동안 증가시킵니다. 최대 4 번까지 중첩되며, 각 적용은 고유한 지속시간을 유지합니다. 곰 형태 전용.',
+    '가죽을 단단하게 하여 방어도를 {buff}% 만큼 {duration} 초 동안 증가시킵니다. 최대 4 번까지 중첩되며, 각 적용은 고유한 지속시간을 유지합니다. 곰 형태 전용.',
   'entities.abilities.maul.name': '뼈 분쇄',
   'entities.abilities.maul.description':
     '근접 피해를 {damage}만큼 증가시키고 많은 위협 수준을 생성하는 난폭한 공격입니다. 다음 무기 공격 시 발동됩니다. 큰곰 변신 전용.',
@@ -8688,4 +8698,58 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
   'devCommand.itemUnknown': '해당 ID를 가진 아이템이 없습니다.',
   'devCommand.kitCurrentSpec': '현재 전문화',
   'hudChrome.enchanting.wornTag': '착용 중 ({slot})',
+  // 2026-08 thin-class kit completion (mage, priest, shaman, paladin, hunter).
+  'entities.abilities.fire_ward.name': '잉걸불 보호막',
+  'entities.abilities.fire_ward.description':
+    '잉걸불이 몸을 감싸 30초 동안 피해를 {damage} 만큼 흡수합니다.',
+  'entities.abilities.remove_lesser_curse.name': '주술 파쇄',
+  'entities.abilities.remove_lesser_curse.description':
+    '아군 대상에게서 해로운 마법 효과 하나를 걷어냅니다.',
+  'entities.abilities.mana_shield.name': '에테르 수호',
+  'entities.abilities.mana_shield.description':
+    '순수한 에테르가 몸을 감싸 60초 동안 피해를 {damage} 만큼 흡수합니다.',
+  'entities.abilities.resurrection.name': '귀환 의식',
+  'entities.abilities.resurrection.description':
+    '쓰러진 아군을 시신 자리에서 되살려 생명력과 마나를 60% 회복시킵니다. 전투 중에는 시전할 수 없습니다.',
+  'entities.abilities.inner_fire.name': '신앙의 불씨',
+  'entities.abilities.inner_fire.description':
+    '신성한 불꽃이 몸을 감싸 10분 동안 방어도를 {buff} 만큼 올립니다.',
+  'entities.abilities.holy_fire.name': '타오르는 진노',
+  'entities.abilities.holy_fire.description':
+    '대상을 신성한 불꽃으로 감싸 {damage} 의 피해를 입히고, 10초에 걸쳐 {overTime} 의 피해를 추가로 입힙니다.',
+  'entities.abilities.dispel_magic.name': '해방의 말씀',
+  'entities.abilities.dispel_magic.description':
+    '해방의 말씀을 읊습니다: 아군에게서 해로운 마법 효과 2개를, 또는 적에게서 이로운 마법 효과 2개를 걷어냅니다.',
+  'entities.abilities.devouring_plague.name': '쇠락의 역병',
+  'entities.abilities.devouring_plague.description':
+    '쇠락의 역병이 대상을 좀먹어 24초에 걸쳐 {damage} 의 암흑 피해를 입히고, 그만큼 시전자를 치유합니다.',
+  'entities.abilities.purge.name': '바람 씻김',
+  'entities.abilities.purge.description': '적에게서 이로운 마법 효과 하나를 씻어냅니다.',
+  'entities.abilities.ancestral_spirit.name': '선조의 부름',
+  'entities.abilities.ancestral_spirit.description':
+    '선조가 쓰러진 아군을 시신 자리로 불러들여 생명력과 마나를 60% 회복시킵니다. 전투 중에는 시전할 수 없습니다.',
+  'entities.abilities.windfury_weapon.name': '질풍 낙인 무기',
+  'entities.abilities.windfury_weapon.description':
+    '무기에 울부짖는 바람을 깃들입니다: 5분 동안 매 공격이 {damage} 의 자연 피해를 추가로 입힙니다.',
+  'entities.abilities.fire_nova.name': '화염 폭발',
+  'entities.abilities.fire_nova.description':
+    '주위에 화염이 폭발하여 근처의 모든 적에게 {damage} 의 화염 피해를 입힙니다.',
+  'entities.abilities.lesser_healing_wave.name': '빠른 물결',
+  'entities.abilities.lesser_healing_wave.description':
+    '빠르게 밀려드는 물결이 아군 대상의 생명력을 {damage} 만큼 회복시킵니다.',
+  'entities.abilities.redemption.name': '여명 의식',
+  'entities.abilities.redemption.description':
+    '쓰러진 아군을 시신 자리로 일으켜 생명력과 마나를 60% 회복시킵니다. 전투 중에는 시전할 수 없습니다.',
+  'entities.abilities.blessing_of_wisdom.name': '통찰의 맹세',
+  'entities.abilities.blessing_of_wisdom.description':
+    '파티를 축복하여 30분 동안 재생 주기마다 모든 파티원의 자원을 {buff} 만큼 회복시킵니다.',
+  'entities.abilities.seal_of_the_crusader.name': '열정의 낙인',
+  'entities.abilities.seal_of_the_crusader.description':
+    '30초 동안 열정이 차오릅니다: 근접 공격마다 {damage} 의 신성 피해를 추가로 입히고, 그 힘으로 이끄는 선고는 맹세의 낙인보다 훨씬 무겁습니다.',
+  'entities.abilities.hunters_mark.name': '사냥감 표식',
+  'entities.abilities.hunters_mark.description':
+    '대상을 사냥감으로 표시하여 2분 동안 대상이 받는 모든 피해를 5% 올립니다.',
+  'entities.abilities.immolation_trap.name': '그을림 덫',
+  'entities.abilities.immolation_trap.description':
+    '땅에 연기 오르는 덫을 놓아 12초 동안 2초마다 덫 안의 적에게 {damage} 의 화염 피해를 입힙니다.',
 };

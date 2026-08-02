@@ -62,7 +62,6 @@ import {
   isRootedOrChilled,
   isUnbreakableControlAura,
 } from './cc';
-import { damageTakenWithin } from './damage_history';
 import {
   ARCANE_SURGE_ID,
   aetherSurgeAddStack,
@@ -72,6 +71,7 @@ import {
   placeTemporalEcho,
   selectCascadeTargets,
 } from './chronomancy';
+import { damageTakenWithin } from './damage_history';
 import { extendOwnedDot } from './dot_mutation';
 import { consumeAuraKind, consumeNextAttackCrit } from './empower_next';
 import { runWeaponProcs } from './equip_procs';
@@ -2360,15 +2360,8 @@ export function runEffects(
       // ring (combat/damage_history.ts) in TICKS off the sim clock, never a wall
       // clock, and draws no rng.
       case 'recentDamageHeal': {
-        const recent = damageTakenWithin(
-          p,
-          ctx.tickCount,
-          Math.round(eff.windowSeconds / DT),
-        );
-        const total = Math.max(
-          Math.round(p.maxHp * eff.minPctMaxHp),
-          Math.round(recent * eff.pct),
-        );
+        const recent = damageTakenWithin(p, ctx.tickCount, Math.round(eff.windowSeconds / DT));
+        const total = Math.max(Math.round(p.maxHp * eff.minPctMaxHp), Math.round(recent * eff.pct));
         const ticks = Math.max(1, Math.round(eff.duration / eff.interval));
         ctx.applyAura(p, {
           id: ability.id,

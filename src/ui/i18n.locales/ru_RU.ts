@@ -249,6 +249,16 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'hudChrome.social.lastSeen': 'Последний вход: {when}',
   'hudChrome.social.lastSeenNever': 'никогда',
   'hudChrome.keybinds.discord': 'Discord',
+  'hudChrome.offlineSave.saved': 'Персонаж сохранён.',
+  'hudChrome.offlineSave.failed': 'Не удалось сохранить персонажа. Браузер отклонил запись.',
+  'hudChrome.offlineSave.blocked':
+    'Сохранение не выполнено: ячейку офлайн-сохранения занимает другой персонаж.',
+  'hudChrome.offlineSave.unavailable':
+    'Сохранение не выполнено: в этом браузере нет хранилища для офлайн-персонажа.',
+  'auth.offlineSave.continueHint':
+    'Здесь сохранён: {name}, {cls} {level} уровня. Нажмите «Войти в мир», чтобы продолжить.',
+  'auth.offlineSave.replaceWarning':
+    'Это заменит сохранённого персонажа {name}, {cls} {level} уровня, и отменить это будет нельзя. Нажмите «Войти в мир» ещё раз для подтверждения.',
   'hudChrome.spectate.banner': 'Наблюдение за {name}',
   'hudChrome.readyCheck.prompt': '{name} начал проверку готовности. Вы готовы?',
   'hudChrome.readyCheck.ready': 'Готов',
@@ -2374,13 +2384,13 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
     'Вы принимаете облик медведя: броня +130%, значительно повышенная сила атаки, ваши атаки накапливают ярость и создают на 30% больше угрозы. Примените снова, чтобы вернуться к облику заклинателя.',
   'entities.abilities.mangle.name': 'Терзание',
   'entities.abilities.mangle.description':
-    'Терзает врага, нанося урон оружия плюс $d, дает 10 ярости и много угрозы. Только в форме медведя.',
+    'Терзает врага, нанося урон оружия плюс {damage}, дает 10 ярости и много угрозы. Только в форме медведя.',
   'entities.abilities.thrash.name': 'Буря ударов',
   'entities.abilities.thrash.description':
-    'Бьет всех врагов рядом на $d урона и вызывает кровотечение, дает 6 ярости. Создает дополнительную угрозу. Только в форме медведя.',
+    'Бьет всех врагов рядом на {damage} урона и вызывает кровотечение, дает 6 ярости. Создает дополнительную угрозу. Только в форме медведя.',
   'entities.abilities.ironfur.name': 'Железная шкура',
   'entities.abilities.ironfur.description':
-    'Шкура твердеет, повышая броню на $b% на $t сек. Складывается до 4 раз, каждое применение со своей длительностью. Только в форме медведя.',
+    'Шкура твердеет, повышая броню на {buff}% на {duration} сек. Складывается до 4 раз, каждое применение со своей длительностью. Только в форме медведя.',
   'entities.abilities.maul.name': 'Костолом',
   'entities.abilities.maul.description':
     'Свирепая атака, увеличивающая урон в ближнем бою на {damage} и создающая много угрозы. Срабатывает при следующем взмахе. Только в облике бурого.',
@@ -8863,4 +8873,58 @@ export const ru_RU: Partial<Record<TranslationKey, string>> = {
   'devCommand.itemUnknown': 'Нет предмета с таким идентификатором.',
   'devCommand.kitCurrentSpec': 'Текущая специализация',
   'hudChrome.enchanting.wornTag': 'Надето ({slot})',
+  // 2026-08 thin-class kit completion (mage, priest, shaman, paladin, hunter).
+  'entities.abilities.fire_ward.name': 'Углевой оберег',
+  'entities.abilities.fire_ward.description':
+    'Окутывает вас углями, поглощая {damage} урона в течение 30 сек.',
+  'entities.abilities.remove_lesser_curse.name': 'Слом порчи',
+  'entities.abilities.remove_lesser_curse.description':
+    'Снимает один вредоносный магический эффект с союзной цели.',
+  'entities.abilities.mana_shield.name': 'Эфирный страж',
+  'entities.abilities.mana_shield.description':
+    'Стягивает вокруг вас чистый эфир, поглощая {damage} урона в течение 60 сек.',
+  'entities.abilities.resurrection.name': 'Обряд возврата',
+  'entities.abilities.resurrection.description':
+    'Призывает павшего союзника обратно к жизни у его тела с 60% здоровья и маны. Нельзя применить в бою.',
+  'entities.abilities.inner_fire.name': 'Пламя веры',
+  'entities.abilities.inner_fire.description':
+    'Окутывает вас священным пламенем, повышая броню на {buff} на 10 мин.',
+  'entities.abilities.holy_fire.name': 'Возжженный гнев',
+  'entities.abilities.holy_fire.description':
+    'Охватывает цель священным пламенем, нанося {damage} урона и еще {overTime} за 10 сек.',
+  'entities.abilities.dispel_magic.name': 'Слово освобождения',
+  'entities.abilities.dispel_magic.description':
+    'Произносит слово освобождения: снимает 2 вредоносных магических эффекта с союзника или 2 полезных с врага.',
+  'entities.abilities.devouring_plague.name': 'Иссушающая порча',
+  'entities.abilities.devouring_plague.description':
+    'Иссушающая порча терзает цель, нанося {damage} урона от темной магии за 24 сек и исцеляя вас на нанесенный урон.',
+  'entities.abilities.purge.name': 'Ветроочищение',
+  'entities.abilities.purge.description': 'Смывает с врага один полезный магический эффект.',
+  'entities.abilities.ancestral_spirit.name': 'Зов предков',
+  'entities.abilities.ancestral_spirit.description':
+    'Предки зовут павшего союзника обратно к его телу с 60% здоровья и маны. Нельзя применить в бою.',
+  'entities.abilities.windfury_weapon.name': 'Клеймо шквала',
+  'entities.abilities.windfury_weapon.description':
+    'Наделяет оружие воющим ветром: каждый удар наносит дополнительно {damage} урона от сил природы в течение 5 мин.',
+  'entities.abilities.fire_nova.name': 'Взрыв углей',
+  'entities.abilities.fire_nova.description':
+    'Вокруг вас вспыхивает пламя, опаляя всех врагов рядом на {damage} урона от огня.',
+  'entities.abilities.lesser_healing_wave.name': 'Быстрые воды',
+  'entities.abilities.lesser_healing_wave.description':
+    'Быстрый поток воды исцеляет союзную цель на {damage}.',
+  'entities.abilities.redemption.name': 'Обряд рассвета',
+  'entities.abilities.redemption.description':
+    'Поднимает павшего союзника к его телу с 60% здоровья и маны. Нельзя применить в бою.',
+  'entities.abilities.blessing_of_wisdom.name': 'Клятва прозрения',
+  'entities.abilities.blessing_of_wisdom.description':
+    'Благословляет отряд, восстанавливая всем его членам {buff} ресурса при каждом тике восстановления в течение 30 мин.',
+  'entities.abilities.seal_of_the_crusader.name': 'Клеймо рвения',
+  'entities.abilities.seal_of_the_crusader.description':
+    'Наполняет вас рвением на 30 сек: каждый удар в ближнем бою наносит дополнительно {damage} урона от светлой магии, а вызванный им Приговор бьет куда тяжелее, чем Клеймо клятвы.',
+  'entities.abilities.hunters_mark.name': 'Метка добычи',
+  'entities.abilities.hunters_mark.description':
+    'Отмечает цель как вашу добычу, повышая весь получаемый ею урон на 5% на 2 мин.',
+  'entities.abilities.immolation_trap.name': 'Тлеющая ловушка',
+  'entities.abilities.immolation_trap.description':
+    'Расставляет на земле тлеющую ловушку, обжигая находящихся в ней врагов на {damage} урона от огня каждые 2 сек в течение 12 сек.',
 };

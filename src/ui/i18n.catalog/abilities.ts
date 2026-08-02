@@ -1922,6 +1922,89 @@ const classAbilityNamesEn = {
         'Voidfeast',
         'Devours a magic effect (a beneficial one from an enemy, or a harmful one from an ally) and heals you for 6% of your maximum health. Only usable when there is an effect to devour.',
       ],
+      // 2026-08 thin-class kit completion: mage, priest, shaman, paladin, hunter.
+      ['fire_ward', 'Emberward', 'Wreathes you in embers, absorbing {damage} damage for 30 sec.'],
+      [
+        'remove_lesser_curse',
+        'Hexbreak',
+        'Unpicks one harmful magic effect from a friendly target.',
+      ],
+      [
+        'mana_shield',
+        'Aetherguard',
+        'Draws raw aether around you, absorbing {damage} damage for 60 sec.',
+      ],
+      [
+        'resurrection',
+        'Rite of Return',
+        'Calls a fallen ally back to life at their body with 60% health and mana. Cannot be cast in combat.',
+      ],
+      [
+        'inner_fire',
+        'Emberfaith',
+        'Wreathes you in holy flame, increasing your armor by {buff} for 10 min.',
+      ],
+      [
+        'holy_fire',
+        'Kindled Wrath',
+        'Engulfs the target in holy flame for {damage} damage plus {overTime} over 10 sec.',
+      ],
+      [
+        'dispel_magic',
+        'Unbinding Word',
+        'Speaks a word of unbinding: strips 2 harmful magic effects from a friendly target, or 2 beneficial ones from an enemy.',
+      ],
+      [
+        'devouring_plague',
+        'Wasting Blight',
+        'A wasting blight racks the target for {damage} Shadow damage over 24 sec, healing you for the damage it deals.',
+      ],
+      ['purge', 'Windscour', 'Scours one beneficial magic effect off an enemy.'],
+      [
+        'ancestral_spirit',
+        "Forebears' Call",
+        'The forebears call a fallen ally back to their body with 60% health and mana. Cannot be cast in combat.',
+      ],
+      [
+        'windfury_weapon',
+        'Galebrand Weapon',
+        'Imbues your weapon with howling wind: each swing deals {damage} additional Nature damage for 5 min.',
+      ],
+      [
+        'fire_nova',
+        'Emberburst',
+        'Erupts in flame around you, searing every nearby enemy for {damage} Fire damage.',
+      ],
+      [
+        'lesser_healing_wave',
+        'Quickening Waters',
+        'A swift surge of water that heals a friendly target for {damage}.',
+      ],
+      [
+        'redemption',
+        'Rite of Dawn',
+        'Lifts a fallen ally back to their body with 60% health and mana. Cannot be cast in combat.',
+      ],
+      [
+        'blessing_of_wisdom',
+        'Oath of Insight',
+        'Blesses the party, restoring {buff} resource to all party members on every regeneration tick for 30 min.',
+      ],
+      [
+        'seal_of_the_crusader',
+        'Zealbrand',
+        'Fills you with zeal for 30 sec: each melee swing deals {damage} additional Holy damage, and the Verdict it feeds strikes far harder than Oathbrand.',
+      ],
+      [
+        'hunters_mark',
+        'Quarry Mark',
+        'Marks the target as your quarry, increasing all damage it takes by 5% for 2 min.',
+      ],
+      [
+        'immolation_trap',
+        'Scorchsnare',
+        'Lays a smouldering snare on the ground, burning enemies in it for {damage} Fire damage every 2 sec for 12 sec.',
+      ],
     ]),
   },
 };

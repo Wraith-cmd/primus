@@ -320,10 +320,10 @@ export const zh_TW: EnTranslations = {
       "banner": "正在觀察 {name}"
     },
     "offlineSave": {
-      "saved": "Character saved.",
-      "failed": "Could not save your character. Your browser refused the write.",
-      "blocked": "Not saving: another character holds the offline save slot.",
-      "unavailable": "Not saving: this browser has no storage available for the offline character."
+      "saved": "角色已儲存。",
+      "failed": "無法儲存角色。瀏覽器拒絕了寫入。",
+      "blocked": "未儲存：另一個角色佔用著離線存檔欄位。",
+      "unavailable": "未儲存：此瀏覽器沒有可用於離線角色的儲存空間。"
     },
     "readyCheck": {
       "prompt": "{name} 發起了準備確認。你準備好了嗎？",
@@ -4440,8 +4440,8 @@ export const zh_TW: EnTranslations = {
     "enterWorld": "進入世界",
     "offlineCharacter": "單機角色",
     "offlineSave": {
-      "continueHint": "Saved here: {name}, level {level} {cls}. Enter World to continue.",
-      "replaceWarning": "This replaces your saved character {name}, level {level} {cls}, and it cannot be undone. Press Enter World again to confirm."
+      "continueHint": "此處已儲存：{name}，{level} 級 {cls}。點擊進入世界以繼續。",
+      "replaceWarning": "這將取代你儲存的角色 {name}（{level} 級 {cls}），且無法復原。再次點擊進入世界以確認。"
     },
     "create": "建立",
     "twoFactorLabel": "驗證碼",
@@ -6948,15 +6948,15 @@ export const zh_TW: EnTranslations = {
       },
       "mangle": {
         "name": "裂傷",
-        "description": "撕裂敵人，造成武器傷害外加 $d 點傷害，產生 10 點怒氣和大量仇恨。僅限熊形態。"
+        "description": "撕裂敵人，造成武器傷害外加 {damage} 點傷害，產生 10 點怒氣和大量仇恨。僅限熊形態。"
       },
       "thrash": {
         "name": "橫掃風暴",
-        "description": "橫掃周圍所有敵人，造成 $d 點傷害並使其流血，產生 6 點怒氣。額外提高仇恨。僅限熊形態。"
+        "description": "橫掃周圍所有敵人，造成 {damage} 點傷害並使其流血，產生 6 點怒氣。額外提高仇恨。僅限熊形態。"
       },
       "ironfur": {
         "name": "鐵皮",
-        "description": "硬化皮毛，護甲提高 $b%，持續 $t 秒。最多疊加 4 層，每層獨立計時。僅限熊形態。"
+        "description": "硬化皮毛，護甲提高 {buff}%，持續 {duration} 秒。最多疊加 4 層，每層獨立計時。僅限熊形態。"
       },
       "maul": {
         "name": "碎骨擊",
@@ -7557,6 +7557,78 @@ export const zh_TW: EnTranslations = {
       "voidfeast": {
         "name": "虛空盛宴",
         "description": "吞噬一個魔法效果（敵人的增益或盟友的減益），並恢復你最大生命值的6%。"
+      },
+      "fire_ward": {
+        "name": "餘燼護壁",
+        "description": "以餘燼環繞自身，吸收 {damage} 點傷害，持續 30 秒。"
+      },
+      "remove_lesser_curse": {
+        "name": "破咒",
+        "description": "解除友方目標身上的一個有害魔法效果。"
+      },
+      "mana_shield": {
+        "name": "以太護盾",
+        "description": "以太之力環繞自身，吸收 {damage} 點傷害，持續 60 秒。"
+      },
+      "resurrection": {
+        "name": "歸返儀式",
+        "description": "召喚倒下的盟友回到遺體處復生，恢復 60% 生命值與法力值。無法在戰鬥中施放。"
+      },
+      "inner_fire": {
+        "name": "信焰",
+        "description": "以聖焰環繞自身，護甲提高 {buff}，持續 10 分鐘。"
+      },
+      "holy_fire": {
+        "name": "燃熾之怒",
+        "description": "以聖焰包裹目標，造成 {damage} 點傷害，並在 10 秒內額外造成 {overTime} 點傷害。"
+      },
+      "dispel_magic": {
+        "name": "解縛聖言",
+        "description": "誦出解縛聖言：驅散友方目標身上 2 個有害魔法效果，或敵人身上 2 個有益魔法效果。"
+      },
+      "devouring_plague": {
+        "name": "枯萎瘟疫",
+        "description": "枯萎瘟疫侵蝕目標，在 24 秒內造成 {damage} 點暗影傷害，並將造成的傷害轉化為你的治療。"
+      },
+      "purge": {
+        "name": "滌風",
+        "description": "滌除敵人身上的一個有益魔法效果。"
+      },
+      "ancestral_spirit": {
+        "name": "先祖召喚",
+        "description": "先祖召喚倒下的盟友回到遺體處，恢復 60% 生命值與法力值。無法在戰鬥中施放。"
+      },
+      "windfury_weapon": {
+        "name": "疾風烙印武器",
+        "description": "以呼嘯之風附魔武器：每次揮擊額外造成 {damage} 點自然傷害，持續 5 分鐘。"
+      },
+      "fire_nova": {
+        "name": "烈焰爆發",
+        "description": "在你周圍爆發烈焰，灼燒附近所有敵人，造成 {damage} 點火焰傷害。"
+      },
+      "lesser_healing_wave": {
+        "name": "速湧之水",
+        "description": "迅捷的水流治療友方目標 {damage} 點生命值。"
+      },
+      "redemption": {
+        "name": "黎明儀式",
+        "description": "將倒下的盟友托舉回遺體處復生，恢復 60% 生命值與法力值。無法在戰鬥中施放。"
+      },
+      "blessing_of_wisdom": {
+        "name": "睿智誓約",
+        "description": "祝福隊伍，使所有隊友在每次回復結算時恢復 {buff} 點資源，持續 30 分鐘。"
+      },
+      "seal_of_the_crusader": {
+        "name": "熱忱烙印",
+        "description": "熱忱充盈你的身軀，持續 30 秒：每次近戰揮擊額外造成 {damage} 點神聖傷害，且由此引動的裁決遠比誓約烙印更為沉重。"
+      },
+      "hunters_mark": {
+        "name": "獵物印記",
+        "description": "將目標標記為你的獵物，使其受到的所有傷害提高 5%，持續 2 分鐘。"
+      },
+      "immolation_trap": {
+        "name": "灼燃陷阱",
+        "description": "在地面佈下陰燃的陷阱，每 2 秒對其中的敵人造成 {damage} 點火焰傷害，持續 12 秒。"
       },
       "bear_charge": {
         "name": "巨熊衝鋒",

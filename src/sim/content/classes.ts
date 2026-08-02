@@ -390,9 +390,11 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'frostbrand_weapon',
       // Kit completion 2026-08 (classic learn levels, all on existing effect
       // kinds): the enemy purge, the resurrection, the top weapon imbue, the
-      // self-centered fire nova, the fast heal, and Ancestral Strike, which
-      // docs/design/spell-ranks.md lists as a level-20 BASE ability but which
-      // until now was reachable only as the Enhancement signature.
+      // self-centered fire nova, and the fast heal. Ancestral Strike stays OUT
+      // of the base kit: docs/design/spell-ranks.md lists stormstrike@20 as a
+      // base ability, but the shipped design made it the Enhancement signature
+      // and tests/spec_signatures.test.ts pins that exclusivity, so the code
+      // wins over the doc (docs/CLAUDE.md re-verify rule).
       'purge',
       'ancestral_spirit',
       'windfury_weapon',
@@ -400,7 +402,6 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'fire_nova',
       'earthquake',
       'lesser_healing_wave',
-      'stormstrike',
     ],
     color: 0x4e8aea,
   },
@@ -4233,10 +4234,6 @@ export const ABILITIES: Record<string, AbilityDef> = {
   },
   // Shaman kit completion (classic learn levels): Purge 12, Ancestral Spirit 12,
   // Windfury Weapon 16 (the top imbue), Fire Nova 18, Lesser Healing Wave 20.
-  // Ancestral Strike itself was already defined but reachable only as the
-  // Enhancement signature; docs/design/spell-ranks.md lists it as a level-20
-  // BASE ability, so it now also sits in the base kit (the same base-plus-
-  // signature shape the mage's Pyrelance and Ice Lance already use).
   purge: {
     id: 'purge',
     name: 'Windscour',
@@ -4280,9 +4277,9 @@ export const ABILITIES: Record<string, AbilityDef> = {
     range: 0,
     school: 'nature',
     requiresTarget: false,
-    effects: [{ type: 'imbue', bonus: 12, duration: 300 }],
+    effects: [{ type: 'imbue', bonus: 16, duration: 300 }],
     ranks: [
-      { rank: 2, level: 20, cost: 45, effects: [{ type: 'imbue', bonus: 18, duration: 300 }] },
+      { rank: 2, level: 20, cost: 45, effects: [{ type: 'imbue', bonus: 22, duration: 300 }] },
     ],
     description:
       'Imbues your weapon with howling wind: each swing deals $d additional Nature damage for 5 min.',

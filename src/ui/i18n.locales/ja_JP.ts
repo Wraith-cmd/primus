@@ -250,6 +250,17 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'hudChrome.social.lastSeen': '最終ログイン: {when}',
   'hudChrome.social.lastSeenNever': 'なし',
   'hudChrome.keybinds.discord': 'Discord',
+  'hudChrome.offlineSave.saved': 'キャラクターを保存しました。',
+  'hudChrome.offlineSave.failed':
+    'キャラクターを保存できませんでした。ブラウザが書き込みを拒否しました。',
+  'hudChrome.offlineSave.blocked':
+    '保存していません: 別のキャラクターがオフライン保存枠を使用しています。',
+  'hudChrome.offlineSave.unavailable':
+    '保存していません: このブラウザにはオフラインキャラクター用のストレージがありません。',
+  'auth.offlineSave.continueHint':
+    '保存済み: {name}、レベル {level} の{cls}。「ワールドに入る」で続きから遊べます。',
+  'auth.offlineSave.replaceWarning':
+    '保存済みキャラクター {name}（レベル {level} の{cls}）を置き換えます。取り消せません。もう一度「ワールドに入る」を押して確定してください。',
   'hudChrome.spectate.banner': '{name}を観戦中',
   'hudChrome.readyCheck.prompt': '{name} が準備確認を開始しました。準備はいいですか？',
   'hudChrome.readyCheck.ready': '準備完了',
@@ -2350,13 +2361,13 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
     '熊に変身します。アーマー +130%、攻撃力が大きく増加し、攻撃が怒りを生成し、脅威生成が30%増加します。再度使用すると術者形態に戻ります。',
   'entities.abilities.mangle.name': '切り裂き',
   'entities.abilities.mangle.description':
-    '敵を切り裂き、武器ダメージに加えて $d のダメージを与え、レイジを 10 と高い脅威度を生成する。ブルーインフォーム専用。',
+    '敵を切り裂き、武器ダメージに加えて {damage} のダメージを与え、レイジを 10 と高い脅威度を生成する。ブルーインフォーム専用。',
   'entities.abilities.thrash.name': '乱撃の嵐',
   'entities.abilities.thrash.description':
-    '周囲の敵全てに $d のダメージを与えて出血させ、レイジを 6 生成する。追加の脅威度を発生させる。ブルーインフォーム専用。',
+    '周囲の敵全てに {damage} のダメージを与えて出血させ、レイジを 6 生成する。追加の脅威度を発生させる。ブルーインフォーム専用。',
   'entities.abilities.ironfur.name': '鉄皮',
   'entities.abilities.ironfur.description':
-    '皮膚を硬化させ、アーマーを $b% 上昇させる、$t 秒間。最大 4 回まで重複し、各適用が独自の持続時間を保つ。ブルーインフォーム専用。',
+    '皮膚を硬化させ、アーマーを {buff}% 上昇させる、{duration} 秒間。最大 4 回まで重複し、各適用が独自の持続時間を保つ。ブルーインフォーム専用。',
   'entities.abilities.maul.name': '骨砕き',
   'entities.abilities.maul.description':
     '近接ダメージを {damage} 増加させ、大量の脅威を発生させる猛攻です。次のスイングで発動します。ブルーインフォーム専用。',
@@ -8694,4 +8705,58 @@ export const ja_JP: Partial<Record<TranslationKey, string>> = {
   'devCommand.itemUnknown': 'そのIDのアイテムはありません。',
   'devCommand.kitCurrentSpec': '現在のスペック',
   'hudChrome.enchanting.wornTag': '装備中 ({slot})',
+  // 2026-08 thin-class kit completion (mage, priest, shaman, paladin, hunter).
+  'entities.abilities.fire_ward.name': '燠のウォード',
+  'entities.abilities.fire_ward.description':
+    '燠を身にまとい、30秒間 {damage} のダメージを吸収する。',
+  'entities.abilities.remove_lesser_curse.name': 'ヘクスブレイク',
+  'entities.abilities.remove_lesser_curse.description':
+    '味方の対象から有害な魔法効果を1つ解除する。',
+  'entities.abilities.mana_shield.name': 'エーテルガード',
+  'entities.abilities.mana_shield.description':
+    '生のエーテルを身にまとい、60秒間 {damage} のダメージを吸収する。',
+  'entities.abilities.resurrection.name': '帰還の儀',
+  'entities.abilities.resurrection.description':
+    '倒れた味方を亡骸の場所で蘇生させ、体力とマナを60%回復させる。戦闘中は使用できない。',
+  'entities.abilities.inner_fire.name': '信仰の燠火',
+  'entities.abilities.inner_fire.description':
+    '聖なる炎を身にまとい、10分間アーマーを {buff} 上昇させる。',
+  'entities.abilities.holy_fire.name': '燃え立つ怒り',
+  'entities.abilities.holy_fire.description':
+    '対象を聖なる炎で包み、{damage} のダメージを与え、さらに10秒かけて {overTime} のダメージを与える。',
+  'entities.abilities.dispel_magic.name': '解縛の言葉',
+  'entities.abilities.dispel_magic.description':
+    '解縛の言葉を唱える：味方から有害な魔法効果を2つ、または敵から有益な魔法効果を2つ取り除く。',
+  'entities.abilities.devouring_plague.name': '衰滅の疫病',
+  'entities.abilities.devouring_plague.description':
+    '衰滅の疫病が対象を蝕み、24秒かけて {damage} のシャドウダメージを与え、その分だけ自身を回復する。',
+  'entities.abilities.purge.name': '風の浄化',
+  'entities.abilities.purge.description': '敵から有益な魔法効果を1つ削ぎ落とす。',
+  'entities.abilities.ancestral_spirit.name': '祖霊の呼び声',
+  'entities.abilities.ancestral_spirit.description':
+    '祖霊が倒れた味方を亡骸の場所へ呼び戻し、体力とマナを60%回復させる。戦闘中は使用できない。',
+  'entities.abilities.windfury_weapon.name': '疾風の烙印武器',
+  'entities.abilities.windfury_weapon.description':
+    '武器に唸る風を宿す：5分間、攻撃ごとに {damage} の追加ネイチャーダメージを与える。',
+  'entities.abilities.fire_nova.name': '烈火の爆発',
+  'entities.abilities.fire_nova.description':
+    '自身の周囲で炎が爆発し、近くの敵すべてに {damage} のファイアダメージを与える。',
+  'entities.abilities.lesser_healing_wave.name': '疾走する水',
+  'entities.abilities.lesser_healing_wave.description':
+    '素早い水の奔流が味方の対象を {damage} 回復させる。',
+  'entities.abilities.redemption.name': '暁の儀',
+  'entities.abilities.redemption.description':
+    '倒れた味方を亡骸の場所へ引き上げ、体力とマナを60%回復させる。戦闘中は使用できない。',
+  'entities.abilities.blessing_of_wisdom.name': '英知の誓い',
+  'entities.abilities.blessing_of_wisdom.description':
+    'パーティを祝福し、30分間、回復判定のたびに全パーティメンバーのリソースを {buff} 回復させる。',
+  'entities.abilities.seal_of_the_crusader.name': 'ゼールブランド',
+  'entities.abilities.seal_of_the_crusader.description':
+    '30秒間、熱意に満たされる：近接攻撃ごとに {damage} の追加ホーリーダメージを与え、それが導くヴァーディクトは誓いの烙印よりはるかに重い。',
+  'entities.abilities.hunters_mark.name': '獲物の印',
+  'entities.abilities.hunters_mark.description':
+    '対象を獲物として刻み、2分間、対象が受けるすべてのダメージを5%上昇させる。',
+  'entities.abilities.immolation_trap.name': '燻りの罠',
+  'entities.abilities.immolation_trap.description':
+    '地面に燻る罠を仕掛け、12秒間、2秒ごとに罠の中の敵へ {damage} のファイアダメージを与える。',
 };

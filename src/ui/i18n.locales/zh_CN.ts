@@ -247,6 +247,13 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'hudChrome.social.lastSeen': '最后在线: {when}',
   'hudChrome.social.lastSeenNever': '从未',
   'hudChrome.keybinds.discord': 'Discord',
+  'hudChrome.offlineSave.saved': '角色已保存。',
+  'hudChrome.offlineSave.failed': '无法保存角色。浏览器拒绝了写入。',
+  'hudChrome.offlineSave.blocked': '未保存：另一个角色占用着离线存档位。',
+  'hudChrome.offlineSave.unavailable': '未保存：此浏览器没有可用于离线角色的存储空间。',
+  'auth.offlineSave.continueHint': '此处已保存：{name}，{level} 级 {cls}。点击进入世界以继续。',
+  'auth.offlineSave.replaceWarning':
+    '这将替换你保存的角色 {name}（{level} 级 {cls}），且无法撤销。再次点击进入世界以确认。',
   'hudChrome.spectate.banner': '正在观察 {name}',
   'hudChrome.readyCheck.prompt': '{name} 发起了准备确认。你准备好了吗？',
   'hudChrome.readyCheck.ready': '准备就绪',
@@ -2252,13 +2259,13 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
     '变形为熊：护甲 +130%，攻击强度大幅提高，你的攻击会产生怒气并额外产生 30% 威胁值。再次施放可返回施法者形态。',
   'entities.abilities.mangle.name': '裂伤',
   'entities.abilities.mangle.description':
-    '撕裂敌人，造成武器伤害外加 $d 点伤害，产生 10 点怒气和大量仇恨。仅限熊形态。',
+    '撕裂敌人，造成武器伤害外加 {damage} 点伤害，产生 10 点怒气和大量仇恨。仅限熊形态。',
   'entities.abilities.thrash.name': '横扫风暴',
   'entities.abilities.thrash.description':
-    '横扫周围所有敌人，造成 $d 点伤害并使其流血，产生 6 点怒气。额外提高仇恨。仅限熊形态。',
+    '横扫周围所有敌人，造成 {damage} 点伤害并使其流血，产生 6 点怒气。额外提高仇恨。仅限熊形态。',
   'entities.abilities.ironfur.name': '铁皮',
   'entities.abilities.ironfur.description':
-    '硬化皮毛，护甲提高 $b%，持续 $t 秒。最多叠加 4 层，每层独立计时。仅限熊形态。',
+    '硬化皮毛，护甲提高 {buff}%，持续 {duration} 秒。最多叠加 4 层，每层独立计时。仅限熊形态。',
   'entities.abilities.maul.name': '碎骨击',
   'entities.abilities.maul.description':
     '一次猛击攻击，使近战伤害提高 {damage}，并产生大量威胁值。在你的下一次挥击时触发。仅限巨熊形态。',
@@ -8293,4 +8300,55 @@ export const zh_CN: Partial<Record<TranslationKey, string>> = {
   'devCommand.itemUnknown': '没有该 ID 对应的物品。',
   'devCommand.kitCurrentSpec': '当前专精',
   'hudChrome.enchanting.wornTag': '已装备（{slot}）',
+  // 2026-08 thin-class kit completion (mage, priest, shaman, paladin, hunter).
+  'entities.abilities.fire_ward.name': '余烬护壁',
+  'entities.abilities.fire_ward.description': '以余烬环绕自身，吸收 {damage} 点伤害，持续 30 秒。',
+  'entities.abilities.remove_lesser_curse.name': '破咒',
+  'entities.abilities.remove_lesser_curse.description': '解除友方目标身上的一个有害魔法效果。',
+  'entities.abilities.mana_shield.name': '以太护盾',
+  'entities.abilities.mana_shield.description':
+    '以太之力环绕自身，吸收 {damage} 点伤害，持续 60 秒。',
+  'entities.abilities.resurrection.name': '归返仪式',
+  'entities.abilities.resurrection.description':
+    '召唤倒下的盟友回到遗体处复生，恢复 60% 生命值与法力值。无法在战斗中施放。',
+  'entities.abilities.inner_fire.name': '信焰',
+  'entities.abilities.inner_fire.description': '以圣焰环绕自身，护甲提高 {buff}，持续 10 分钟。',
+  'entities.abilities.holy_fire.name': '燃炽之怒',
+  'entities.abilities.holy_fire.description':
+    '以圣焰包裹目标，造成 {damage} 点伤害，并在 10 秒内额外造成 {overTime} 点伤害。',
+  'entities.abilities.dispel_magic.name': '解缚圣言',
+  'entities.abilities.dispel_magic.description':
+    '诵出解缚圣言：驱散友方目标身上 2 个有害魔法效果，或敌人身上 2 个有益魔法效果。',
+  'entities.abilities.devouring_plague.name': '枯萎瘟疫',
+  'entities.abilities.devouring_plague.description':
+    '枯萎瘟疫侵蚀目标，在 24 秒内造成 {damage} 点暗影伤害，并将造成的伤害转化为你的治疗。',
+  'entities.abilities.purge.name': '涤风',
+  'entities.abilities.purge.description': '涤除敌人身上的一个有益魔法效果。',
+  'entities.abilities.ancestral_spirit.name': '先祖召唤',
+  'entities.abilities.ancestral_spirit.description':
+    '先祖召唤倒下的盟友回到遗体处，恢复 60% 生命值与法力值。无法在战斗中施放。',
+  'entities.abilities.windfury_weapon.name': '疾风烙印武器',
+  'entities.abilities.windfury_weapon.description':
+    '以呼啸之风附魔武器：每次挥击额外造成 {damage} 点自然伤害，持续 5 分钟。',
+  'entities.abilities.fire_nova.name': '烈焰爆发',
+  'entities.abilities.fire_nova.description':
+    '在你周围爆发烈焰，灼烧附近所有敌人，造成 {damage} 点火焰伤害。',
+  'entities.abilities.lesser_healing_wave.name': '速涌之水',
+  'entities.abilities.lesser_healing_wave.description':
+    '迅捷的水流治疗友方目标 {damage} 点生命值。',
+  'entities.abilities.redemption.name': '黎明仪式',
+  'entities.abilities.redemption.description':
+    '将倒下的盟友托举回遗体处复生，恢复 60% 生命值与法力值。无法在战斗中施放。',
+  'entities.abilities.blessing_of_wisdom.name': '睿智誓约',
+  'entities.abilities.blessing_of_wisdom.description':
+    '祝福队伍，使所有队友在每次回复结算时恢复 {buff} 点资源，持续 30 分钟。',
+  'entities.abilities.seal_of_the_crusader.name': '热忱烙印',
+  'entities.abilities.seal_of_the_crusader.description':
+    '热忱充盈你的身躯，持续 30 秒：每次近战挥击额外造成 {damage} 点神圣伤害，且由此引动的裁决远比誓约烙印更为沉重。',
+  'entities.abilities.hunters_mark.name': '猎物印记',
+  'entities.abilities.hunters_mark.description':
+    '将目标标记为你的猎物，使其受到的所有伤害提高 5%，持续 2 分钟。',
+  'entities.abilities.immolation_trap.name': '灼燃陷阱',
+  'entities.abilities.immolation_trap.description':
+    '在地面布下阴燃的陷阱，每 2 秒对其中的敌人造成 {damage} 点火焰伤害，持续 12 秒。',
 };

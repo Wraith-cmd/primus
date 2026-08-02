@@ -1135,10 +1135,6 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
       {
         "id": "lesser_healing_wave",
         "name": "Quickening Waters"
-      },
-      {
-        "id": "stormstrike",
-        "name": "Ancestral Strike"
       }
     ],
     "model": "player_shaman",

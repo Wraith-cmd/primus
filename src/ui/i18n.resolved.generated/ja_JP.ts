@@ -320,10 +320,10 @@ export const ja_JP: EnTranslations = {
       "banner": "{name}を観戦中"
     },
     "offlineSave": {
-      "saved": "Character saved.",
-      "failed": "Could not save your character. Your browser refused the write.",
-      "blocked": "Not saving: another character holds the offline save slot.",
-      "unavailable": "Not saving: this browser has no storage available for the offline character."
+      "saved": "キャラクターを保存しました。",
+      "failed": "キャラクターを保存できませんでした。ブラウザが書き込みを拒否しました。",
+      "blocked": "保存していません: 別のキャラクターがオフライン保存枠を使用しています。",
+      "unavailable": "保存していません: このブラウザにはオフラインキャラクター用のストレージがありません。"
     },
     "readyCheck": {
       "prompt": "{name} が準備確認を開始しました。準備はいいですか？",
@@ -4440,8 +4440,8 @@ export const ja_JP: EnTranslations = {
     "enterWorld": "世界に入る",
     "offlineCharacter": "オフラインキャラクター",
     "offlineSave": {
-      "continueHint": "Saved here: {name}, level {level} {cls}. Enter World to continue.",
-      "replaceWarning": "This replaces your saved character {name}, level {level} {cls}, and it cannot be undone. Press Enter World again to confirm."
+      "continueHint": "保存済み: {name}、レベル {level} の{cls}。「ワールドに入る」で続きから遊べます。",
+      "replaceWarning": "保存済みキャラクター {name}（レベル {level} の{cls}）を置き換えます。取り消せません。もう一度「ワールドに入る」を押して確定してください。"
     },
     "create": "作成",
     "twoFactorLabel": "認証コード",
@@ -6948,15 +6948,15 @@ export const ja_JP: EnTranslations = {
       },
       "mangle": {
         "name": "切り裂き",
-        "description": "敵を切り裂き、武器ダメージに加えて $d のダメージを与え、レイジを 10 と高い脅威度を生成する。ブルーインフォーム専用。"
+        "description": "敵を切り裂き、武器ダメージに加えて {damage} のダメージを与え、レイジを 10 と高い脅威度を生成する。ブルーインフォーム専用。"
       },
       "thrash": {
         "name": "乱撃の嵐",
-        "description": "周囲の敵全てに $d のダメージを与えて出血させ、レイジを 6 生成する。追加の脅威度を発生させる。ブルーインフォーム専用。"
+        "description": "周囲の敵全てに {damage} のダメージを与えて出血させ、レイジを 6 生成する。追加の脅威度を発生させる。ブルーインフォーム専用。"
       },
       "ironfur": {
         "name": "鉄皮",
-        "description": "皮膚を硬化させ、アーマーを $b% 上昇させる、$t 秒間。最大 4 回まで重複し、各適用が独自の持続時間を保つ。ブルーインフォーム専用。"
+        "description": "皮膚を硬化させ、アーマーを {buff}% 上昇させる、{duration} 秒間。最大 4 回まで重複し、各適用が独自の持続時間を保つ。ブルーインフォーム専用。"
       },
       "maul": {
         "name": "骨砕き",
@@ -7557,6 +7557,78 @@ export const ja_JP: EnTranslations = {
       "voidfeast": {
         "name": "虚無の饗宴",
         "description": "魔法効果（敵の有益効果または味方の有害効果）を貪り、自分の最大体力の6%を回復する。"
+      },
+      "fire_ward": {
+        "name": "燠のウォード",
+        "description": "燠を身にまとい、30秒間 {damage} のダメージを吸収する。"
+      },
+      "remove_lesser_curse": {
+        "name": "ヘクスブレイク",
+        "description": "味方の対象から有害な魔法効果を1つ解除する。"
+      },
+      "mana_shield": {
+        "name": "エーテルガード",
+        "description": "生のエーテルを身にまとい、60秒間 {damage} のダメージを吸収する。"
+      },
+      "resurrection": {
+        "name": "帰還の儀",
+        "description": "倒れた味方を亡骸の場所で蘇生させ、体力とマナを60%回復させる。戦闘中は使用できない。"
+      },
+      "inner_fire": {
+        "name": "信仰の燠火",
+        "description": "聖なる炎を身にまとい、10分間アーマーを {buff} 上昇させる。"
+      },
+      "holy_fire": {
+        "name": "燃え立つ怒り",
+        "description": "対象を聖なる炎で包み、{damage} のダメージを与え、さらに10秒かけて {overTime} のダメージを与える。"
+      },
+      "dispel_magic": {
+        "name": "解縛の言葉",
+        "description": "解縛の言葉を唱える：味方から有害な魔法効果を2つ、または敵から有益な魔法効果を2つ取り除く。"
+      },
+      "devouring_plague": {
+        "name": "衰滅の疫病",
+        "description": "衰滅の疫病が対象を蝕み、24秒かけて {damage} のシャドウダメージを与え、その分だけ自身を回復する。"
+      },
+      "purge": {
+        "name": "風の浄化",
+        "description": "敵から有益な魔法効果を1つ削ぎ落とす。"
+      },
+      "ancestral_spirit": {
+        "name": "祖霊の呼び声",
+        "description": "祖霊が倒れた味方を亡骸の場所へ呼び戻し、体力とマナを60%回復させる。戦闘中は使用できない。"
+      },
+      "windfury_weapon": {
+        "name": "疾風の烙印武器",
+        "description": "武器に唸る風を宿す：5分間、攻撃ごとに {damage} の追加ネイチャーダメージを与える。"
+      },
+      "fire_nova": {
+        "name": "烈火の爆発",
+        "description": "自身の周囲で炎が爆発し、近くの敵すべてに {damage} のファイアダメージを与える。"
+      },
+      "lesser_healing_wave": {
+        "name": "疾走する水",
+        "description": "素早い水の奔流が味方の対象を {damage} 回復させる。"
+      },
+      "redemption": {
+        "name": "暁の儀",
+        "description": "倒れた味方を亡骸の場所へ引き上げ、体力とマナを60%回復させる。戦闘中は使用できない。"
+      },
+      "blessing_of_wisdom": {
+        "name": "英知の誓い",
+        "description": "パーティを祝福し、30分間、回復判定のたびに全パーティメンバーのリソースを {buff} 回復させる。"
+      },
+      "seal_of_the_crusader": {
+        "name": "ゼールブランド",
+        "description": "30秒間、熱意に満たされる：近接攻撃ごとに {damage} の追加ホーリーダメージを与え、それが導くヴァーディクトは誓いの烙印よりはるかに重い。"
+      },
+      "hunters_mark": {
+        "name": "獲物の印",
+        "description": "対象を獲物として刻み、2分間、対象が受けるすべてのダメージを5%上昇させる。"
+      },
+      "immolation_trap": {
+        "name": "燻りの罠",
+        "description": "地面に燻る罠を仕掛け、12秒間、2秒ごとに罠の中の敵へ {damage} のファイアダメージを与える。"
       },
       "bear_charge": {
         "name": "ブルーインラッシュ",

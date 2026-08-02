@@ -320,10 +320,10 @@ export const ko_KR: EnTranslations = {
       "banner": "{name} 관전 중"
     },
     "offlineSave": {
-      "saved": "Character saved.",
-      "failed": "Could not save your character. Your browser refused the write.",
-      "blocked": "Not saving: another character holds the offline save slot.",
-      "unavailable": "Not saving: this browser has no storage available for the offline character."
+      "saved": "캐릭터를 저장했습니다.",
+      "failed": "캐릭터를 저장할 수 없습니다. 브라우저가 쓰기를 거부했습니다.",
+      "blocked": "저장하지 않음: 다른 캐릭터가 오프라인 저장 슬롯을 사용 중입니다.",
+      "unavailable": "저장하지 않음: 이 브라우저에는 오프라인 캐릭터를 저장할 공간이 없습니다."
     },
     "readyCheck": {
       "prompt": "{name} 님이 준비 확인을 시작했습니다. 준비되셨습니까?",
@@ -4440,8 +4440,8 @@ export const ko_KR: EnTranslations = {
     "enterWorld": "세계 입장",
     "offlineCharacter": "오프라인 캐릭터",
     "offlineSave": {
-      "continueHint": "Saved here: {name}, level {level} {cls}. Enter World to continue.",
-      "replaceWarning": "This replaces your saved character {name}, level {level} {cls}, and it cannot be undone. Press Enter World again to confirm."
+      "continueHint": "저장됨: {name}, {level}레벨 {cls}. 월드 입장을 눌러 이어서 하세요.",
+      "replaceWarning": "저장된 캐릭터 {name}({level}레벨 {cls})을(를) 대체하며 되돌릴 수 없습니다. 월드 입장을 다시 눌러 확인하세요."
     },
     "create": "생성",
     "twoFactorLabel": "인증 코드",
@@ -6948,15 +6948,15 @@ export const ko_KR: EnTranslations = {
       },
       "mangle": {
         "name": "찢기",
-        "description": "적을 찢어 무기 피해에 더해 $d 의 피해를 입히고, 분노 10 과 높은 위협 수준을 생성합니다. 곰 형태 전용."
+        "description": "적을 찢어 무기 피해에 더해 {damage} 의 피해를 입히고, 분노 10 과 높은 위협 수준을 생성합니다. 곰 형태 전용."
       },
       "thrash": {
         "name": "강타의 폭풍",
-        "description": "주위의 모든 적에게 $d 의 피해를 입히고 출혈시키며, 분노 6 을 생성합니다. 추가 위협 수준을 발생시킵니다. 곰 형태 전용."
+        "description": "주위의 모든 적에게 {damage} 의 피해를 입히고 출혈시키며, 분노 6 을 생성합니다. 추가 위협 수준을 발생시킵니다. 곰 형태 전용."
       },
       "ironfur": {
         "name": "무쇠 가죽",
-        "description": "가죽을 단단하게 하여 방어도를 $b% 만큼 $t 초 동안 증가시킵니다. 최대 4 번까지 중첩되며, 각 적용은 고유한 지속시간을 유지합니다. 곰 형태 전용."
+        "description": "가죽을 단단하게 하여 방어도를 {buff}% 만큼 {duration} 초 동안 증가시킵니다. 최대 4 번까지 중첩되며, 각 적용은 고유한 지속시간을 유지합니다. 곰 형태 전용."
       },
       "maul": {
         "name": "뼈 분쇄",
@@ -7557,6 +7557,78 @@ export const ko_KR: EnTranslations = {
       "voidfeast": {
         "name": "공허의 포식",
         "description": "마법 효과 하나(적의 이로운 효과 또는 아군의 해로운 효과)를 삼키고 최대 생명력의 6%를 회복합니다."
+      },
+      "fire_ward": {
+        "name": "잉걸불 보호막",
+        "description": "잉걸불이 몸을 감싸 30초 동안 피해를 {damage} 만큼 흡수합니다."
+      },
+      "remove_lesser_curse": {
+        "name": "주술 파쇄",
+        "description": "아군 대상에게서 해로운 마법 효과 하나를 걷어냅니다."
+      },
+      "mana_shield": {
+        "name": "에테르 수호",
+        "description": "순수한 에테르가 몸을 감싸 60초 동안 피해를 {damage} 만큼 흡수합니다."
+      },
+      "resurrection": {
+        "name": "귀환 의식",
+        "description": "쓰러진 아군을 시신 자리에서 되살려 생명력과 마나를 60% 회복시킵니다. 전투 중에는 시전할 수 없습니다."
+      },
+      "inner_fire": {
+        "name": "신앙의 불씨",
+        "description": "신성한 불꽃이 몸을 감싸 10분 동안 방어도를 {buff} 만큼 올립니다."
+      },
+      "holy_fire": {
+        "name": "타오르는 진노",
+        "description": "대상을 신성한 불꽃으로 감싸 {damage} 의 피해를 입히고, 10초에 걸쳐 {overTime} 의 피해를 추가로 입힙니다."
+      },
+      "dispel_magic": {
+        "name": "해방의 말씀",
+        "description": "해방의 말씀을 읊습니다: 아군에게서 해로운 마법 효과 2개를, 또는 적에게서 이로운 마법 효과 2개를 걷어냅니다."
+      },
+      "devouring_plague": {
+        "name": "쇠락의 역병",
+        "description": "쇠락의 역병이 대상을 좀먹어 24초에 걸쳐 {damage} 의 암흑 피해를 입히고, 그만큼 시전자를 치유합니다."
+      },
+      "purge": {
+        "name": "바람 씻김",
+        "description": "적에게서 이로운 마법 효과 하나를 씻어냅니다."
+      },
+      "ancestral_spirit": {
+        "name": "선조의 부름",
+        "description": "선조가 쓰러진 아군을 시신 자리로 불러들여 생명력과 마나를 60% 회복시킵니다. 전투 중에는 시전할 수 없습니다."
+      },
+      "windfury_weapon": {
+        "name": "질풍 낙인 무기",
+        "description": "무기에 울부짖는 바람을 깃들입니다: 5분 동안 매 공격이 {damage} 의 자연 피해를 추가로 입힙니다."
+      },
+      "fire_nova": {
+        "name": "화염 폭발",
+        "description": "주위에 화염이 폭발하여 근처의 모든 적에게 {damage} 의 화염 피해를 입힙니다."
+      },
+      "lesser_healing_wave": {
+        "name": "빠른 물결",
+        "description": "빠르게 밀려드는 물결이 아군 대상의 생명력을 {damage} 만큼 회복시킵니다."
+      },
+      "redemption": {
+        "name": "여명 의식",
+        "description": "쓰러진 아군을 시신 자리로 일으켜 생명력과 마나를 60% 회복시킵니다. 전투 중에는 시전할 수 없습니다."
+      },
+      "blessing_of_wisdom": {
+        "name": "통찰의 맹세",
+        "description": "파티를 축복하여 30분 동안 재생 주기마다 모든 파티원의 자원을 {buff} 만큼 회복시킵니다."
+      },
+      "seal_of_the_crusader": {
+        "name": "열정의 낙인",
+        "description": "30초 동안 열정이 차오릅니다: 근접 공격마다 {damage} 의 신성 피해를 추가로 입히고, 그 힘으로 이끄는 선고는 맹세의 낙인보다 훨씬 무겁습니다."
+      },
+      "hunters_mark": {
+        "name": "사냥감 표식",
+        "description": "대상을 사냥감으로 표시하여 2분 동안 대상이 받는 모든 피해를 5% 올립니다."
+      },
+      "immolation_trap": {
+        "name": "그을림 덫",
+        "description": "땅에 연기 오르는 덫을 놓아 12초 동안 2초마다 덫 안의 적에게 {damage} 의 화염 피해를 입힙니다."
       },
       "bear_charge": {
         "name": "큰곰 돌진",

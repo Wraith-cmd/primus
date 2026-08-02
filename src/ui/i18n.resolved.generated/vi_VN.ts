@@ -7558,6 +7558,78 @@ export const vi_VN: EnTranslations = {
         "name": "Yến Tiệc Hư Không",
         "description": "Nuốt một hiệu ứng phép thuật (hiệu ứng có lợi từ kẻ địch hoặc có hại từ đồng minh) và hồi cho bạn 6% máu tối đa."
       },
+      "fire_ward": {
+        "name": "Emberward",
+        "description": "Wreathes you in embers, absorbing {damage} damage for 30 sec."
+      },
+      "remove_lesser_curse": {
+        "name": "Hexbreak",
+        "description": "Unpicks one harmful magic effect from a friendly target."
+      },
+      "mana_shield": {
+        "name": "Aetherguard",
+        "description": "Draws raw aether around you, absorbing {damage} damage for 60 sec."
+      },
+      "resurrection": {
+        "name": "Rite of Return",
+        "description": "Calls a fallen ally back to life at their body with 60% health and mana. Cannot be cast in combat."
+      },
+      "inner_fire": {
+        "name": "Emberfaith",
+        "description": "Wreathes you in holy flame, increasing your armor by {buff} for 10 min."
+      },
+      "holy_fire": {
+        "name": "Kindled Wrath",
+        "description": "Engulfs the target in holy flame for {damage} damage plus {overTime} over 10 sec."
+      },
+      "dispel_magic": {
+        "name": "Unbinding Word",
+        "description": "Speaks a word of unbinding: strips 2 harmful magic effects from a friendly target, or 2 beneficial ones from an enemy."
+      },
+      "devouring_plague": {
+        "name": "Wasting Blight",
+        "description": "A wasting blight racks the target for {damage} Shadow damage over 24 sec, healing you for the damage it deals."
+      },
+      "purge": {
+        "name": "Windscour",
+        "description": "Scours one beneficial magic effect off an enemy."
+      },
+      "ancestral_spirit": {
+        "name": "Forebears' Call",
+        "description": "The forebears call a fallen ally back to their body with 60% health and mana. Cannot be cast in combat."
+      },
+      "windfury_weapon": {
+        "name": "Galebrand Weapon",
+        "description": "Imbues your weapon with howling wind: each swing deals {damage} additional Nature damage for 5 min."
+      },
+      "fire_nova": {
+        "name": "Emberburst",
+        "description": "Erupts in flame around you, searing every nearby enemy for {damage} Fire damage."
+      },
+      "lesser_healing_wave": {
+        "name": "Quickening Waters",
+        "description": "A swift surge of water that heals a friendly target for {damage}."
+      },
+      "redemption": {
+        "name": "Rite of Dawn",
+        "description": "Lifts a fallen ally back to their body with 60% health and mana. Cannot be cast in combat."
+      },
+      "blessing_of_wisdom": {
+        "name": "Oath of Insight",
+        "description": "Blesses the party, restoring {buff} resource to all party members on every regeneration tick for 30 min."
+      },
+      "seal_of_the_crusader": {
+        "name": "Zealbrand",
+        "description": "Fills you with zeal for 30 sec: each melee swing deals {damage} additional Holy damage, and the Verdict it feeds strikes far harder than Oathbrand."
+      },
+      "hunters_mark": {
+        "name": "Quarry Mark",
+        "description": "Marks the target as your quarry, increasing all damage it takes by 5% for 2 min."
+      },
+      "immolation_trap": {
+        "name": "Scorchsnare",
+        "description": "Lays a smouldering snare on the ground, burning enemies in it for {damage} Fire damage every 2 sec for 12 sec."
+      },
       "bear_charge": {
         "name": "Cú Lao Bruin",
         "description": "Lao vào kẻ địch, tạo 9 nộ khí và làm choáng nó trong 1 giây. Tầm 8-25 thước. Chỉ dùng được ở Bruin Form."

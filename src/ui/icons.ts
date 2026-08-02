@@ -2934,6 +2934,30 @@ const ABILITY_RECIPES: Record<string, IconRecipe> = {
   frenzied_regeneration: r('nature', 'blood', ['heart', { p: 'paw', ...BR }], ['glow']),
   berserk: r('fury', 'blood', ['paw', { p: 'fist', ...BR }], ['glow']),
   tranquility: r('nature', 'silverWhite', ['heart', { p: 'leaf', ...BR }], ['sparkle']),
+  // ---- 2026-08 thin-class kit completion (mage / priest / shaman / paladin / hunter)
+  // mage
+  fire_ward: r('fire', 'ember', ['shield', { p: 'flame', ...BR }], ['glow']),
+  remove_lesser_curse: r('arcane', 'arcanePink', ['hand', { p: 'sigil_rune', ...BR }], ['sparkle']),
+  mana_shield: r('arcane', 'sky', ['shield', { p: 'gem', ...BR }], ['arcs']),
+  // priest
+  resurrection: r('holy', 'holyGold', ['wing', { p: 'heart', ...BR }], ['sparkle']),
+  inner_fire: r('holy', 'holyGold', ['flame', { p: 'cross', ...BR }], ['glow']),
+  holy_fire: r('holy', 'ember', ['cross', { p: 'flame', ...BR }], ['drips']),
+  dispel_magic: r('holy', 'silverWhite', ['hand', { p: 'cross', ...BR }], ['sparkle']),
+  devouring_plague: r('shadow', 'venom', ['skull', { p: 'droplet', ...BR }], ['drips']),
+  // shaman
+  purge: r('nature', 'sky', ['hand', { p: 'tendrils', ...BR }], ['arcs']),
+  ancestral_spirit: r('nature', 'silverWhite', ['wing', { p: 'moon', ...BR }], ['sparkle']),
+  windfury_weapon: r('storm', 'sky', ['axe', { p: 'lightning', ...BR }], ['motion']),
+  fire_nova: r('fire', 'ember', ['sunburst', { p: 'flame', ...BR }], ['crack']),
+  lesser_healing_wave: r('nature', 'sky', ['droplet', { p: 'sunburst', ...BR }], ['sparkle']),
+  // paladin
+  redemption: r('holy', 'holyGold', ['sunburst', { p: 'heart', ...BR }], ['sparkle']),
+  blessing_of_wisdom: r('holy', 'sky', ['hand', { p: 'gem', ...BR }], ['sparkle']),
+  seal_of_the_crusader: r('holy', 'holyGold', ['sword', { p: 'sunburst', ...BR }], ['glow']),
+  // hunter
+  hunters_mark: r('nature', 'leafGreen', ['crosshair', { p: 'eye', ...BR }], ['glow']),
+  immolation_trap: r('fire', 'ember', ['web', { p: 'flame', ...BR }], ['drips']),
 };
 
 const ITEM_RECIPES: Record<string, IconRecipe> = {

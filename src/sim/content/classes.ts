@@ -206,6 +206,11 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'temporal_acceleration',
       'perfect_moment',
       'fireball_form',
+      // Class-wide utility every spec keeps (the barriers above are spec-gated):
+      // a small early ward, the mage's only dispel, and the level-20 aether ward.
+      'fire_ward',
+      'remove_lesser_curse',
+      'mana_shield',
     ],
     color: 0x33c1f1,
   },
@@ -279,6 +284,11 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'retribution_aura',
       'rebuke',
       'sacred_bulwark',
+      // Kit completion: the paladin's resurrection, the mana blessing, and the
+      // second seal (judgement-weighted) that shares Oathbrand's imbue slot.
+      'redemption',
+      'blessing_of_wisdom',
+      'seal_of_the_crusader',
     ],
     color: 0xf58ca0,
   },
@@ -313,6 +323,9 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'rapid_fire',
       'volley',
       'counter_shot',
+      // Kit completion: the opener mark and the fire snare.
+      'hunters_mark',
+      'immolation_trap',
     ],
     color: 0xa6d84f,
   },
@@ -338,9 +351,17 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'power_word_shield',
       'renew',
       'mind_blast',
+      // Kit completion 2026-08 (classic learn levels, all on existing effect
+      // kinds): the resurrection, the self armor buff, the holy nuke-plus-burn,
+      // the dispel, and the leeching plague.
+      'resurrection',
+      'inner_fire',
       'heal',
       'mind_flay',
+      'holy_fire',
+      'dispel_magic',
       'flash_heal',
+      'devouring_plague',
     ],
     color: 0xc6d4f0,
   },
@@ -367,8 +388,19 @@ export const CLASSES: Record<PlayerClass, ClassDef> = {
       'flametongue_weapon',
       'frost_shock',
       'frostbrand_weapon',
+      // Kit completion 2026-08 (classic learn levels, all on existing effect
+      // kinds): the enemy purge, the resurrection, the top weapon imbue, the
+      // self-centered fire nova, the fast heal, and Ancestral Strike, which
+      // docs/design/spell-ranks.md lists as a level-20 BASE ability but which
+      // until now was reachable only as the Enhancement signature.
+      'purge',
+      'ancestral_spirit',
+      'windfury_weapon',
       'ghost_wolf',
+      'fire_nova',
       'earthquake',
+      'lesser_healing_wave',
+      'stormstrike',
     ],
     color: 0x4e8aea,
   },
@@ -2522,6 +2554,63 @@ export const ABILITIES: Record<string, AbilityDef> = {
     ],
     description: 'Shields you in ice, absorbing $d damage for 60 sec.',
   },
+  // Class-wide mage utility (the three spec barriers above are spec-gated, so a
+  // committed mage otherwise has no ward of its own until the spec pick, and no
+  // dispel at all). Classic learn levels: Fire Ward 8, Remove Lesser Curse 18,
+  // Mana Shield 20.
+  fire_ward: {
+    id: 'fire_ward',
+    name: 'Emberward',
+    class: 'mage',
+    learnLevel: 8,
+    cost: 30,
+    castTime: 0,
+    cooldown: 30,
+    range: 0,
+    school: 'fire',
+    requiresTarget: false,
+    effects: [{ type: 'absorb', amount: 60, duration: 30 }],
+    ranks: [
+      { rank: 2, level: 16, cost: 45, effects: [{ type: 'absorb', amount: 110, duration: 30 }] },
+    ],
+    description: 'Wreathes you in embers, absorbing $d damage for 30 sec.',
+  },
+  remove_lesser_curse: {
+    id: 'remove_lesser_curse',
+    name: 'Hexbreak',
+    class: 'mage',
+    learnLevel: 18,
+    cost: 30,
+    castTime: 0,
+    cooldown: 0,
+    range: 30,
+    school: 'arcane',
+    requiresTarget: true,
+    targetType: 'friendly',
+    effects: [{ type: 'dispel', count: 1 }],
+    description: 'Unpicks one harmful magic effect from a friendly target.',
+  },
+  mana_shield: {
+    id: 'mana_shield',
+    name: 'Aetherguard',
+    class: 'mage',
+    learnLevel: 20,
+    cost: 60,
+    castTime: 0,
+    cooldown: 20,
+    range: 0,
+    school: 'arcane',
+    requiresTarget: false,
+    effects: [
+      {
+        type: 'absorb',
+        amount: 220,
+        duration: 60,
+        spellPowerCoeff: MAGE_PERSONAL_BARRIER_SPELL_POWER_COEFF,
+      },
+    ],
+    description: 'Draws raw aether around you, absorbing $d damage for 60 sec.',
+  },
 
   // ====================== ROGUE ======================
   sinister_strike: {
@@ -3180,6 +3269,58 @@ export const ABILITIES: Record<string, AbilityDef> = {
     description:
       'Surrounds you with holy energy for 30 min, dealing 5 Holy damage to any enemy that strikes you in melee.',
   },
+  // Paladin kit completion (classic learn levels): Redemption 12, Blessing of
+  // Wisdom 14, Seal of the Crusader 16. The second seal shares Oathbrand's imbue
+  // slot: weaker per swing, far heavier when Verdict unleashes it.
+  redemption: {
+    id: 'redemption',
+    name: 'Rite of Dawn',
+    class: 'paladin',
+    learnLevel: 12,
+    cost: 60,
+    castTime: 7,
+    cooldown: 0,
+    range: 30,
+    school: 'holy',
+    requiresTarget: true,
+    targetType: 'friendly',
+    targetsDead: true,
+    requiresOutOfCombat: true,
+    effects: [{ type: 'resurrectAlly', hpFrac: 0.6 }],
+    description:
+      'Lifts a fallen ally back to their body with 60% health and mana. Cannot be cast in combat.',
+  },
+  blessing_of_wisdom: {
+    id: 'blessing_of_wisdom',
+    name: 'Oath of Insight',
+    class: 'paladin',
+    learnLevel: 14,
+    cost: 30,
+    castTime: 0,
+    cooldown: 0,
+    range: 30,
+    school: 'holy',
+    requiresTarget: true,
+    targetType: 'friendly',
+    effects: [{ type: 'buffTarget', kind: 'resource_sap', value: 6, duration: 1800, party: true }],
+    description:
+      'Blesses the party, restoring $b resource to all party members on every regeneration tick for 30 min.',
+  },
+  seal_of_the_crusader: {
+    id: 'seal_of_the_crusader',
+    name: 'Zealbrand',
+    class: 'paladin',
+    learnLevel: 16,
+    cost: 40,
+    castTime: 0,
+    cooldown: 0,
+    range: 0,
+    school: 'holy',
+    requiresTarget: false,
+    effects: [{ type: 'imbue', bonus: 3, duration: 30, judgeMin: 52, judgeMax: 70 }],
+    description:
+      'Fills you with zeal for 30 sec: each melee swing deals $d additional Holy damage, and the Verdict it feeds strikes far harder than Oathbrand.',
+  },
 
   // ====================== HUNTER ======================
   tame_beast: {
@@ -3451,6 +3592,41 @@ export const ABILITIES: Record<string, AbilityDef> = {
     effects: [{ type: 'selfBuff', kind: 'buff_haste', value: 1.4, duration: 15 }],
     description: 'Increases your attack speed by 40% for 15 sec.',
   },
+  // Hunter kit completion. Quarry Mark is the classic level-6 opener (the mark
+  // rides the shared `vulnerability` aura, so the quarry simply takes more
+  // damage rather than needing a ranged-attack-power-vs-target reader);
+  // Scorchsnare is the level-16 fire trap, a placed ground zone.
+  hunters_mark: {
+    id: 'hunters_mark',
+    name: 'Quarry Mark',
+    class: 'hunter',
+    learnLevel: 6,
+    cost: 20,
+    castTime: 0,
+    cooldown: 0,
+    range: 35,
+    school: 'nature',
+    requiresTarget: true,
+    effects: [{ type: 'applyDebuff', kind: 'vulnerability', value: 0.05, duration: 120 }],
+    description: 'Marks the target as your quarry, increasing all damage it takes by 5% for 2 min.',
+  },
+  immolation_trap: {
+    id: 'immolation_trap',
+    name: 'Scorchsnare',
+    class: 'hunter',
+    learnLevel: 16,
+    cost: 45,
+    castTime: 0,
+    cooldown: 30,
+    range: 20,
+    school: 'fire',
+    requiresTarget: false,
+    targetMode: 'position',
+    scalesWith: 'ranged',
+    effects: [{ type: 'groundAoE', min: 14, max: 18, radius: 5, duration: 12, interval: 2 }],
+    description:
+      'Lays a smouldering snare on the ground, burning enemies in it for $d Fire damage every 2 sec for 12 sec.',
+  },
 
   // ====================== PRIEST ======================
   smite: {
@@ -3660,6 +3836,97 @@ export const ABILITIES: Record<string, AbilityDef> = {
     targetType: 'friendly',
     effects: [{ type: 'heal', min: 174, max: 206 }],
     description: 'A fast prayer that heals a friendly target for $d.',
+  },
+  // Priest kit completion (classic learn levels): Resurrection 10, Inner Fire 12,
+  // Holy Fire and Dispel Magic 18, Devouring Plague 20. Every one reuses an
+  // existing effect kind, so no engine work rides along.
+  resurrection: {
+    id: 'resurrection',
+    name: 'Rite of Return',
+    class: 'priest',
+    learnLevel: 10,
+    cost: 60,
+    castTime: 7,
+    cooldown: 0,
+    range: 30,
+    school: 'holy',
+    requiresTarget: true,
+    targetType: 'friendly',
+    targetsDead: true,
+    requiresOutOfCombat: true,
+    effects: [{ type: 'resurrectAlly', hpFrac: 0.6 }],
+    description:
+      'Calls a fallen ally back to life at their body with 60% health and mana. Cannot be cast in combat.',
+  },
+  inner_fire: {
+    id: 'inner_fire',
+    name: 'Emberfaith',
+    class: 'priest',
+    learnLevel: 12,
+    cost: 40,
+    castTime: 0,
+    cooldown: 0,
+    range: 0,
+    school: 'holy',
+    requiresTarget: false,
+    effects: [{ type: 'selfBuff', kind: 'buff_armor', value: 120, duration: 600 }],
+    ranks: [
+      {
+        rank: 2,
+        level: 20,
+        cost: 60,
+        effects: [{ type: 'selfBuff', kind: 'buff_armor', value: 220, duration: 600 }],
+      },
+    ],
+    description: 'Wreathes you in holy flame, increasing your armor by $b for 10 min.',
+  },
+  holy_fire: {
+    id: 'holy_fire',
+    name: 'Kindled Wrath',
+    class: 'priest',
+    learnLevel: 18,
+    cost: 60,
+    castTime: 2,
+    cooldown: 10,
+    range: 30,
+    school: 'holy',
+    requiresTarget: true,
+    effects: [
+      { type: 'directDamage', min: 52, max: 66 },
+      { type: 'dot', total: 30, duration: 10, interval: 2 },
+    ],
+    description: 'Engulfs the target in holy flame for $d damage plus $o over 10 sec.',
+  },
+  dispel_magic: {
+    id: 'dispel_magic',
+    name: 'Unbinding Word',
+    class: 'priest',
+    learnLevel: 18,
+    cost: 40,
+    castTime: 0,
+    cooldown: 0,
+    range: 30,
+    school: 'holy',
+    requiresTarget: true,
+    targetType: 'any',
+    effects: [{ type: 'dispel', count: 2 }],
+    description:
+      'Speaks a word of unbinding: strips 2 harmful magic effects from a friendly target, or 2 beneficial ones from an enemy.',
+  },
+  devouring_plague: {
+    id: 'devouring_plague',
+    name: 'Wasting Blight',
+    class: 'priest',
+    learnLevel: 20,
+    cost: 65,
+    castTime: 0,
+    cooldown: 30,
+    range: 30,
+    school: 'shadow',
+    requiresTarget: true,
+    effects: [{ type: 'dot', total: 96, duration: 24, interval: 3, leechPct: 1 }],
+    description:
+      'A wasting blight racks the target for $d Shadow damage over 24 sec, healing you for the damage it deals.',
   },
 
   // ====================== SHAMAN ======================
@@ -3963,6 +4230,91 @@ export const ABILITIES: Record<string, AbilityDef> = {
     effects: [{ type: 'weaponStrike', bonus: 26 }],
     description:
       'Channels the storm through your weapon, instantly striking for weapon damage plus $d.',
+  },
+  // Shaman kit completion (classic learn levels): Purge 12, Ancestral Spirit 12,
+  // Windfury Weapon 16 (the top imbue), Fire Nova 18, Lesser Healing Wave 20.
+  // Ancestral Strike itself was already defined but reachable only as the
+  // Enhancement signature; docs/design/spell-ranks.md lists it as a level-20
+  // BASE ability, so it now also sits in the base kit (the same base-plus-
+  // signature shape the mage's Pyrelance and Ice Lance already use).
+  purge: {
+    id: 'purge',
+    name: 'Windscour',
+    class: 'shaman',
+    learnLevel: 12,
+    cost: 30,
+    castTime: 0,
+    cooldown: 0,
+    range: 30,
+    school: 'nature',
+    requiresTarget: true,
+    effects: [{ type: 'dispel', count: 1 }],
+    description: 'Scours one beneficial magic effect off an enemy.',
+  },
+  ancestral_spirit: {
+    id: 'ancestral_spirit',
+    name: "Forebears' Call",
+    class: 'shaman',
+    learnLevel: 12,
+    cost: 60,
+    castTime: 7,
+    cooldown: 0,
+    range: 30,
+    school: 'nature',
+    requiresTarget: true,
+    targetType: 'friendly',
+    targetsDead: true,
+    requiresOutOfCombat: true,
+    effects: [{ type: 'resurrectAlly', hpFrac: 0.6 }],
+    description:
+      'The forebears call a fallen ally back to their body with 60% health and mana. Cannot be cast in combat.',
+  },
+  windfury_weapon: {
+    id: 'windfury_weapon',
+    name: 'Galebrand Weapon',
+    class: 'shaman',
+    learnLevel: 16,
+    cost: 30,
+    castTime: 0,
+    cooldown: 0,
+    range: 0,
+    school: 'nature',
+    requiresTarget: false,
+    effects: [{ type: 'imbue', bonus: 12, duration: 300 }],
+    ranks: [
+      { rank: 2, level: 20, cost: 45, effects: [{ type: 'imbue', bonus: 18, duration: 300 }] },
+    ],
+    description:
+      'Imbues your weapon with howling wind: each swing deals $d additional Nature damage for 5 min.',
+  },
+  fire_nova: {
+    id: 'fire_nova',
+    name: 'Emberburst',
+    class: 'shaman',
+    learnLevel: 18,
+    cost: 55,
+    castTime: 0,
+    cooldown: 10,
+    range: 0,
+    school: 'fire',
+    requiresTarget: false,
+    effects: [{ type: 'aoeDamage', min: 34, max: 40, radius: 8 }],
+    description: 'Erupts in flame around you, searing every nearby enemy for $d Fire damage.',
+  },
+  lesser_healing_wave: {
+    id: 'lesser_healing_wave',
+    name: 'Quickening Waters',
+    class: 'shaman',
+    learnLevel: 20,
+    cost: 62,
+    castTime: 1.5,
+    cooldown: 0,
+    range: 30,
+    school: 'nature',
+    requiresTarget: true,
+    targetType: 'friendly',
+    effects: [{ type: 'heal', min: 125, max: 150 }],
+    description: 'A swift surge of water that heals a friendly target for $d.',
   },
 
   // ====================== WARLOCK ======================

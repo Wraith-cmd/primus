@@ -612,8 +612,11 @@ export function runEffects(
         break;
       }
       case 'resurrectAlly': {
-        // Temporal Reversal: rewind a dead group/raid member to life at their corpse
+        // Single-target resurrection (Temporal Reversal, and the priest / paladin /
+        // shaman rites): return a dead group/raid member to life at their corpse
         // (resolved upstream as a dead party/raid member), no resurrection sickness.
+        // The fx takes the CASTING ability's school, so a holy rite does not paint
+        // itself in the Chronomancer's arcane.
         const ally = target;
         if (!ally?.dead) break;
         offerResurrection(ctx, p, ally, eff.hpFrac);
@@ -621,7 +624,7 @@ export function runEffects(
           type: 'spellfx',
           sourceId: p.id,
           targetId: ally.id,
-          school: 'arcane',
+          school: ability.school,
           fx: 'temporalGlyph',
         });
         break;

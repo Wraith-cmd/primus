@@ -1,0 +1,92 @@
+# PRIMUS roadmap
+
+The single place to look. Updated as decisions land; every entry names where the
+evidence for it lives.
+
+## Done
+
+- **Phase 0** map, baseline, running
+- **Phase 1** web3 stripped, Steam and auto-updater removed, renamed to PRIMUS
+- **Phase 2** offline persistence, save on blur / hide / Escape-Escape, shift
+  mode (Shift+M mutes and caps to 30fps), Offline as the default world
+- **Phase 3** Guardian Druid: Mangle, Thrash, Ironfur, Frenzied Regeneration,
+  bear threat 1.3 to 4.0. Mutation-tested, not just covered
+- **Phase 4 (core)** companion AI: heal triage, ground avoidance, interrupts,
+  role kits, and a four-companion party recruited with `/hire` at dungeon
+  entrances
+- **Combat feel** GCD spell queueing. A press during the global cooldown used to
+  be silently discarded, which is most presses in real play
+
+## Decided
+
+- **Legion-era** Guardian kit, not WotLK
+- **Hard fork.** Take upstream as a snapshot, never merge again
+- **Run mode uses a PRESET max-level character**, not the leveled one, and needs
+  its own save slot (`PRIMUS_PHASE_4_5.md`)
+- **Dungeon entrances only** for recruiting companions
+- **No Blizzard assets, names, music, or extracted content.** Mechanics and
+  aesthetic direction are fair game and are where the feel actually lives
+- **Browser first**, Electron shell kept for handheld and long sessions
+
+## Next, in value order
+
+Effort in weekend sessions. Order reflects value per unit of effort, not
+narrative order.
+
+1. **Run mode harness** (3 to 5). Preset capped character, real kit, party
+   pre-hired, at a dungeon entrance. Doubles as the playtest harness: without it
+   the owner cannot evaluate dungeons, companions, or high-level abilities at
+   all. Unblocks everything below it.
+2. **Restore the animation clips** (1 to 2). `keepClips` in
+   `scripts/assets/specs/characters_v2.json` keeps 22 of the 133 to 161 CC0
+   clips the build already merges. The casting problem was a build filter, not
+   an art ceiling. See `docs/design/wow-fidelity-research.md`.
+3. **The rest of combat feel** (about 4). Screen shake on damage DEALT (today it
+   is gated to the Fiesta minigame, so ordinary combat has no impact response),
+   hit-stop (absent entirely), FOV punch wired to combat, queue highlight for
+   spells (the CSS and painter already exist for the melee queue).
+4. **Boss mechanics** (3 to 5). A keystone multiplier applied to a boss with one
+   telegraph just scales one telegraph. Author 3 to 5 real mechanics per boss
+   BEFORE the timer. Doubles as the acceptance test for companion AI.
+5. **Companion depth** (5 to 9). The cores exist and are wired; what remains is
+   making four of them feel like a party under pressure.
+6. **Keystones** (6 to 10). `PRIMUS_PHASE_4_5.md`. Timer, scaling, affix
+   rotation reusing the delve affix system, plus run mode's second door.
+7. **Class depth**. Mage has 8 base abilities against warrior's 39. Audit
+   against `docs/design/spell-ranks.md` rather than inventing content.
+8. **Art direction** (5 to 9, interleavable). Palette per zone, HUD chrome,
+   typography, per-zone ambience.
+9. **Music**. Procedural WebAudio plus the built-in `music_editor.html`. Tune
+   the generator toward restraint and space, or source CC0 orchestral. Never
+   Blizzard tracks.
+10. **More quests**. Last on purpose: 96 already exist, and quests are
+    consume-once, the worst value-per-session ratio available.
+11. **Friends server** (Phase 6, optional). Compose on Bumblebee plus Tailscale.
+
+## Open, waiting on the owner
+
+- Does the `/hire` party feel like a party, or like four bots? Shapes all of
+  keystones
+- The cast layer: `__primusCastKnobs.master = 0` against `1`, and a `dump()` of
+  anything worth keeping
+- ROG Ally check through the Electron shell. Needs the hardware
+
+## Known broken
+
+- Offline save reported not persisting in real play. Under investigation. It was
+  verified by INJECTING a save rather than by playing, reloading and checking,
+  which is exactly the test that would have caught it
+- Ability DESCRIPTION i18n does not resolve through the overlay key path
+  (`entities.abilities.<id>.description` is absent from the generated bundle,
+  including for existing abilities). Blocks the M16 guard on all new content
+- 2 `deploy_watchdog` failures: macOS ships no GNU `timeout`. Environmental
+- `malware_scan` false positive on the word "mnemonic" in `keybinds.ts`
+
+## Working agreements
+
+- One phase per session block; the owner playtests between phases
+- Never set `ALLOW_DEV_COMMANDS` in a shared world. `npm run dev` enables the
+  `/dev` set locally by design, which is the supported way to test at level
+- Prefer `npx vitest run tests/<file>` while iterating. The full suite is about
+  20,000 tests and saturates every core
+- To playtest without hot reload interference: `npm run build && npm run preview`

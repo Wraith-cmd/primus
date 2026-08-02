@@ -23,7 +23,19 @@ evidence for it lives.
 - **Hard fork.** Take upstream as a snapshot, never merge again
 - **Run mode uses a PRESET max-level character**, not the leveled one, and needs
   its own save slot (`PRIMUS_PHASE_4_5.md`)
-- **Dungeon entrances only** for recruiting companions
+- **Dungeon entrances only** for recruiting companions (run mode is the one
+  exception: `companionsAnywhere` lifts the door gate, since walking back to a
+  portal to re-hire is friction with no design value on a testing surface)
+- **Run mode auto-hires a FIXED party: tank, healer, dps, dps.** Questioned
+  during the 2026-08-02 playtest ("I'm a tank and it still gave me a tank"), so
+  writing down that this is the feature as built, not a regression:
+  `run_mode.ts` `hireParty` loops `DEFAULT_COMPANION_ROLES` passing an EXPLICIT
+  role, which deliberately bypasses the `suggestNextRole` fill-around-the-owner
+  logic that plain `/hire` uses, and the run-mode copy promises exactly that
+  ("Your party: tank, healer, damage, damage"). Consequence a tank owner feels:
+  a five-man with two tanks and one healer. **Open question for the owner:**
+  should run mode fill around the owner's role like `/hire` does, which would
+  mean rewording the mode description? Do not "fix" this without that answer.
 - **No Blizzard assets, names, music, or extracted content.** Mechanics and
   aesthetic direction are fair game and are where the feel actually lives
 - **Browser first**, Electron shell kept for handheld and long sessions
@@ -73,20 +85,18 @@ narrative order.
 
 ## Known broken
 
-- **Run mode auto-hires the companion party, and it pulls.** Reported live
-  2026-08-02. Entering Keystone Run spawns the four companions immediately
-  rather than on `/hire`, and they attack everything in sight. The assist-only
-  behavior fixed in `8f8327fa8` is either not applying on the run-mode path or
-  regressed there. Unprovoked companion aggro is one of the faults
-  `scripts/playtest_soak.mjs` already checks for, so reproduce with the soak
-  before changing behavior.
-- **Run mode ignores the owner's role when filling the party.** Reported live
-  2026-08-02: a tank owner got a tank companion. `recruitCompanion` fills around
-  `ctx.playerMods(r.meta).role`, which is null until talent points are spent;
-  run mode lands a preset max-level character at the door, so the resolved role
-  is likely absent at auto-hire time and `suggestNextRole` falls back to the
-  standard group. Same root cause as the auto-hire above: both are the run-mode
-  entry path, not `/hire` itself.
+- **Companions read as attacking everything in Keystone Run.** Reported live
+  2026-08-02, NOT yet reproduced. Code reading cleared the two obvious suspects:
+  the assist gate (`isPartyEngagement` in `companions/role_kit.ts`) is correct,
+  and `mob/locomotion.ts` dispatches the companion brain and early-returns
+  BEFORE `updatePet`, so the aggressive-pet path is not reachable. The leading
+  hypothesis is therefore not a broken gate but a consequence of
+  `companionsAnywhere`: run mode hires the party in the OPEN WORLD, wandering
+  mobs aggro the companions, and fighting back is then correct behavior that
+  reads as pulling. Reproduce before changing anything: a headless Vitest
+  driving the real Sim beats `scripts/playtest_soak.mjs` here (deterministic,
+  no browser). If the hypothesis holds this is a design question (should run
+  mode park the party until the owner zones in?), not a defect.
 - **Offline is SINGLE SLOT and switching characters destroys the old one.**
   There is no offline character select: online has one, offline has a single
   create screen. The save resumes only when class AND name match, so starting a

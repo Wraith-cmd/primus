@@ -323,6 +323,14 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    // Remote playtesting through a Cloudflare quick tunnel
+    // (`cloudflared tunnel --url http://localhost:5173`), which serves the dev
+    // server under a random *.trycloudflare.com name. Vite's DNS-rebinding guard
+    // rejects an unknown Host header, and a quick tunnel mints a NEW subdomain on
+    // every restart, so this is the domain suffix rather than one URL. Dev server
+    // only: `vite build` output never reads it, and the guard stays on for every
+    // other host.
+    allowedHosts: ['.trycloudflare.com'],
     proxy: {
       '/api': { target: apiProxyTarget, changeOrigin: true },
       '/admin/api': { target: apiProxyTarget, changeOrigin: true },

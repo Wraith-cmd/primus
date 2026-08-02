@@ -160,10 +160,11 @@ S4, S5, S6 are independent of each other once S1-S3 are merged.
   `leaveFrontier()` -> `this.cmd({ cmd: 'leave_frontier' })`; mirror
   `frontierInfo` in `applySnapshot` following the `s.arena` pattern (~2931).
 - `server/game.ts`: `dispatchMessage` cases `enter_frontier` / `leave_frontier`
-  (no geo-gate; the G window is global like arena queueing); self snapshot
-  gains `frontier` via the `maybe()` pattern; `identityFields` gains
-  `ft: e.frontierTeam` ONLY while the entity is in-band (spare the wire
-  elsewhere); `applyWire` decodes it onto the entity.
+  (no geo-gate; the G window is global like arena queueing); the self snapshot
+  gains `frontier` via the `maybe()` pattern in `selfWireJson` (~5697);
+  `identityFields` (~921) gains `ft: e.frontierTeam` ONLY while the entity is
+  in-band (spare the wire elsewhere); `applyWire` decodes it onto the entity,
+  mirroring the `gd` -> `e.guild` decode at `online.ts:2433`.
 - Tests: extend `tests/snapshots.test.ts` with the frontier self-state mirror
   (follow the `bareClient` pattern); new `tests/frontier_hostility.test.ts`:
   cross-team in-band hostile both directions, same-team not, cross-team
@@ -174,12 +175,16 @@ S4, S5, S6 are independent of each other once S1-S3 are merged.
 - Acceptance: `npx vitest run tests/frontier_hostility.test.ts tests/snapshots.test.ts && npx vitest run tests/parity`.
 
 ### S4. Death and respawn at team base
-- `releasePlayerSpirit` (`src/sim/spirit.ts:105`): after the delve branch (~:116),
-  add `if (isFrontierPos(r.e.pos.x)) { releaseSpiritInFrontier(ctx, ...); return; }`
-  modeled on `releaseSpiritInDelve` but: respawn at `FRONTIER_BASES[team]`
-  (full HP, standard reset), no run-fail semantics, keep the standard respawn
-  emit. Players with no team somehow in-band (teleport cheats in dev) fall
-  through to the overworld graveyard.
+- `releasePlayerSpirit` (`src/sim/spirit.ts:105`) destructures `const { meta, e: p } = r`
+  and routes by position. After the delve branch (~:116, `isDelvePos(p.pos.x)` ->
+  `releaseSpiritInDelve`), add
+  `if (isFrontierPos(p.pos.x)) { releaseSpiritInFrontier(ctx, meta.entityId); return; }`.
+  Put `releaseSpiritInFrontier(ctx, pid)` in the S2 frontier module
+  (`src/sim/frontier/`), modeled on `releaseSpiritInDelve` (`entity_roster.ts:260`),
+  and import it into `spirit.ts` the same way `releaseSpiritInDelve` is imported
+  (`spirit.ts:29`). It respawns at `FRONTIER_BASES[team]` (full HP, standard reset),
+  no run-fail semantics, keeping the standard respawn emit. Players with no team
+  somehow in-band (dev teleport cheats) fall through to the overworld graveyard.
 - Tests: `tests/frontier_respawn.test.ts`: die in-band -> respawn at own base,
   not the enemy base, not the overworld graveyard; auras cleared; equipped gear
   untouched.
@@ -212,10 +217,12 @@ S4, S5, S6 are independent of each other once S1-S3 are merged.
 - Follow the modular recipe (`src/ui/CLAUDE.md`, vendor template): new
   `src/ui/frontier_panel_view.ts` (pure view: derives labels/state from
   `FrontierInfo` + level; unit-tested) + `src/ui/frontier_panel.ts` (thin DOM
-  consumer). Compose the section into the modular arena window (pure view
-  `src/ui/arena_window_view.ts` `buildArenaView` ~137, consumer
-  `src/ui/arena_window.ts` `ArenaWindow` ~71) under the existing queue UI; do NOT
-  grow a new banner section, and do NOT reintroduce an inline `renderArenaWindow`.
+  consumer). The arena window is already modular, so compose the section THERE,
+  not in `hud.ts`: add a `frontierInfo()` (and player-level) accessor to
+  `ArenaWindowDeps` (`src/ui/arena_window.ts:63`), then in `ArenaWindow.render()`
+  (`arena_window.ts:156`, which builds its view model via `buildArenaView`) paint
+  the frontier section beneath the existing queue UI. Do NOT grow a banner section
+  in `hud.ts`, and do NOT reintroduce an inline `renderArenaWindow`.
 - Content: team crest + name (or "Unassigned"), honor balance, Enter button
   (disabled with reason below level 15 or offline-dead), Leave button with
   channel countdown when in-zone.
@@ -225,9 +232,11 @@ S4, S5, S6 are independent of each other once S1-S3 are merged.
   `hud.frontier.*` block. Then `npm run i18n:scan && npm run i18n:build`,
   commit the regenerated `i18n.resolved.generated/` slices (the status summary
   is gitignored, never committed), and run the completeness test (gotcha G4).
-- FCT + events: handle `honorGain` (gold `+N Honor` float on self, XP-case
-  template at `hud.ts:9016`, spawned via the `FctPainter` seam
-  `this.fctPainter.spawn(...)`), `frontierEntered`/`frontierLeft` as system lines.
+- FCT + events: add a `honorGain` case to `handleEvents` (`hud.ts:8810`) modeled on
+  the `xp` case (`hud.ts:9016`): add an `'honor'` variant to `fctSpawnShape`
+  (`src/ui/fct_event.ts`) and spawn a gold `+N Honor` float on self via
+  `this.fctPainter.spawn({ ...shape, text, target: sim.player }, now)`. Handle
+  `frontierEntered`/`frontierLeft` as system log lines.
 - Acceptance: `npx vitest run tests/frontier_panel_view.test.ts tests/i18n_completeness.test.ts tests/localization_fixes.test.ts`; manual: `npm run dev`, press G, enter, kill, see honor float (screenshot per the headless screenshot workflow).
 
 ### S8. Back banner + nameplate team tint
@@ -238,9 +247,12 @@ S4, S5, S6 are independent of each other once S1-S3 are merged.
   `src/render/team_banner.ts` the visual composes (repo norm: procedural
   geometry is fine). Tint azure `#2e6fd0` / crimson `#c03030`; driven by the
   wire `ft` field, attached only while present (S3 scopes it to in-band).
-- Nameplates: CSS-class pattern (like `np-threat`): `np-team-azure` /
-  `np-team-crimson` on enemy-team players in-band; style in `index.html`.
-  Do not fork `setNameplateStatic` color logic.
+- Nameplates: the `np-threat` CSS-class pattern now lives in `NameplatePainter`
+  (`src/render/nameplate_painter.ts:392`), not `renderer.ts`. Add
+  `np-team-azure` / `np-team-crimson` classes, toggled on enemy-team players
+  in-band, there; style them in `src/styles/hud.css` (HUD CSS lives under
+  `src/styles/`, not `index.html`; see `src/styles/CLAUDE.md`). Do not fork
+  `setNameplateStatic`'s color logic.
 - Acceptance: `npm run build` green; two-client manual check on the dev server
   (banners visible at distance, enemy nameplate tinted); screenshot committed
   under `docs/screenshots/` if it is README-worthy, else attached to the PR.

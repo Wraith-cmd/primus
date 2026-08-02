@@ -697,6 +697,15 @@
             </button>
           </div>
 
+          <!-- The third door: run mode. Deliberately its own CTA rather than a third
+               entry in the world dropdown, because it is not a world, it is a preset
+               session: pick a class, pick a dungeon, play. The picker it opens
+               (#run-select below) is a self-managed overlay, so it stays out of the
+               shell's panel machinery entirely. -->
+          <button type="button" class="btn-run-mode" id="btn-run-mode" data-i18n-aria="mode.runAria" aria-label="Keystone Run: enter a dungeon at the level cap with a companion party">
+            <span class="btn-run-mode-label" data-i18n="mode.runCta">Keystone Run</span>
+          </button>
+
           <!-- Hidden, non-focusable compatibility triggers. Stable hooks the automated
                tours / E2E scripts use to drive the online & offline flows directly. -->
           <button type="button" id="btn-online" class="play-compat-trigger" tabindex="-1" aria-hidden="true"></button>
@@ -1506,6 +1515,39 @@
       <div class="rotate-icon" aria-hidden="true">↻</div>
       <div class="rotate-title" data-i18n="mobilePreflight.rotateTitle">Rotate to Landscape</div>
       <div class="rotate-sub" data-i18n="mobilePreflight.rotateSub">Portrait mode is not supported. Rotate your device to landscape to continue.</div>
+    </div>
+  </div>
+
+  <!-- Run mode picker. A self-managed overlay (src/game/run_mode_landing.ts owns
+       its open/close), deliberately NOT part of the shell's #panel show/hide list:
+       run mode is a preset session rather than another world, and keeping it out
+       of that machinery is what lets it ship without touching main.ts's panel
+       plumbing. Absent on play.html, where the wiring resolves defensively. -->
+  <div id="run-select" class="run-select" role="dialog" aria-modal="true" aria-labelledby="run-select-title" hidden>
+    <div class="run-select-panel panel auth-panel">
+      <h2 class="auth-title" id="run-select-title" data-i18n="mode.runTitle">Keystone Run</h2>
+      <p class="run-select-desc" data-i18n="mode.runDesc">A twenty minute dungeon run, no leveling required. Pick a class and land at the door at the level cap, geared, with a tank, a healer and two damage dealers already hired.</p>
+      <div class="cs-section-header" data-i18n="auth.class">Class</div>
+      <div class="mini-class-row" id="run-class-row">
+        <button type="button" class="mini-class" data-class="warrior" data-i18n-aria="classes.warriorAria" data-i18n="classes.warrior" aria-label="Warrior class" aria-pressed="false">Warrior</button>
+        <button type="button" class="mini-class" data-class="paladin" data-i18n-aria="classes.paladinAria" data-i18n="classes.paladin" aria-label="Paladin class" aria-pressed="false">Paladin</button>
+        <button type="button" class="mini-class" data-class="hunter" data-i18n-aria="classes.hunterAria" data-i18n="classes.hunter" aria-label="Hunter class" aria-pressed="false">Hunter</button>
+        <button type="button" class="mini-class" data-class="rogue" data-i18n-aria="classes.rogueAria" data-i18n="classes.rogue" aria-label="Rogue class" aria-pressed="false">Rogue</button>
+        <button type="button" class="mini-class" data-class="priest" data-i18n-aria="classes.priestAria" data-i18n="classes.priest" aria-label="Priest class" aria-pressed="false">Priest</button>
+        <button type="button" class="mini-class" data-class="shaman" data-i18n-aria="classes.shamanAria" data-i18n="classes.shaman" aria-label="Shaman class" aria-pressed="false">Shaman</button>
+        <button type="button" class="mini-class" data-class="mage" data-i18n-aria="classes.mageAria" data-i18n="classes.mage" aria-label="Mage class" aria-pressed="false">Mage</button>
+        <button type="button" class="mini-class" data-class="warlock" data-i18n-aria="classes.warlockAria" data-i18n="classes.warlock" aria-label="Warlock class" aria-pressed="false">Warlock</button>
+        <button type="button" class="mini-class" data-class="druid" data-i18n-aria="classes.druidAria" data-i18n="classes.druid" aria-label="Druid class" aria-pressed="false">Druid</button>
+      </div>
+      <div class="cs-section-header" data-i18n="mode.runDungeon">Dungeon</div>
+      <!-- Filled at wire time from the sim's own dungeon table, so the picker can
+           never offer a door that does not exist. -->
+      <div class="mini-class-row" id="run-dungeon-row"></div>
+      <p class="run-select-party" data-i18n="mode.runParty">Your party: tank, healer, damage, damage.</p>
+      <div class="auth-actions">
+        <button type="button" class="btn btn-primary" id="btn-run-start" data-i18n="mode.runStart">Start Run</button>
+        <button type="button" class="btn btn-secondary" id="btn-run-back" data-i18n="auth.back">Back</button>
+      </div>
     </div>
   </div>
 

@@ -16,12 +16,42 @@ import type { CharacterState } from '../sim/sim';
 import type { PlayerClass } from '../sim/types';
 
 /** Bumped only when the ENVELOPE shape changes. Character content migrations are
- *  the sim's business (`migrateCharacterTalentsV2`), not this module's. */
+ *  the sim's business (`migrateCharacterTalentsV2`), not this module's.
+ *
+ *  NOT bumped by the `mode` discriminator below: `mode` is optional and absent
+ *  means `'offline'`, so every save written before run mode existed still parses.
+ *  A bump would have rejected them all and deleted the owner's leveled character
+ *  on the next load, which is the exact failure the discriminator exists to
+ *  prevent. */
 export const OFFLINE_SAVE_VERSION = 1;
 export const OFFLINE_SAVE_KEY = 'primus.offline.character';
 
+/** Which game mode a save belongs to.
+ *
+ *  There is one Storage and there are two modes that both persist a character.
+ *  `'offline'` is the owner's real, leveled character; `'run'` is a run-mode
+ *  preset that is rebuilt from the content tables every time and is therefore
+ *  disposable. They must never be able to reach each other's bytes, so the mode
+ *  is BOTH part of the storage key (`offlineSaveKey`) and a field inside the
+ *  envelope that `parseOfflineSave` re-checks. Either mechanism alone would be
+ *  enough; both together mean a mistake has to be made twice. */
+export type OfflineSaveMode = 'offline' | 'run';
+
+/** The default, and the mode an envelope with no `mode` field is read as. */
+export const DEFAULT_OFFLINE_SAVE_MODE: OfflineSaveMode = 'offline';
+
+/** The storage key for a mode. `'offline'` keeps the original bare key so the
+ *  owner's existing character is found exactly where it was written; every other
+ *  mode is suffixed, so no new mode can ever be added ON TOP of it. */
+export function offlineSaveKey(mode: OfflineSaveMode = DEFAULT_OFFLINE_SAVE_MODE): string {
+  return mode === DEFAULT_OFFLINE_SAVE_MODE ? OFFLINE_SAVE_KEY : `${OFFLINE_SAVE_KEY}.${mode}`;
+}
+
 export interface OfflineSave {
   version: number;
+  /** Absent in every save written before run mode existed, which is read as
+   *  `'offline'`. */
+  mode?: OfflineSaveMode;
   /** Wall-clock ms at write time. Display only: never fed back into the sim,
    *  which takes its clock from the tick counter. */
   savedAt: number;
@@ -33,6 +63,9 @@ export interface OfflineSave {
 }
 
 export interface OfflineSaveInput {
+  /** Defaults to `'offline'`, so an existing caller keeps writing exactly the
+   *  envelope it wrote before. */
+  mode?: OfflineSaveMode;
   playerClass: PlayerClass;
   playerName: string;
   skin: number;
@@ -47,6 +80,7 @@ export interface OfflineSaveInput {
 export function buildOfflineSave(input: OfflineSaveInput): OfflineSave {
   return {
     version: OFFLINE_SAVE_VERSION,
+    mode: input.mode ?? DEFAULT_OFFLINE_SAVE_MODE,
     savedAt: input.savedAt,
     playerClass: input.playerClass,
     playerName: input.playerName,
@@ -74,6 +108,7 @@ export function parseOfflineSave(raw: string | null): OfflineSave | null {
   if (!save.state || typeof save.state !== 'object') return null;
   return {
     version: save.version,
+    mode: save.mode === 'run' ? 'run' : DEFAULT_OFFLINE_SAVE_MODE,
     savedAt: typeof save.savedAt === 'number' ? save.savedAt : 0,
     playerClass: save.playerClass as PlayerClass,
     playerName: save.playerName,
@@ -86,25 +121,40 @@ export function parseOfflineSave(raw: string | null): OfflineSave | null {
 /** Write the save. Returns false when the write is refused (private browsing,
  *  quota) so a caller can warn once instead of assuming it stuck. */
 export function saveOffline(storage: Storage, input: OfflineSaveInput): boolean {
+  const mode = input.mode ?? DEFAULT_OFFLINE_SAVE_MODE;
   try {
-    storage.setItem(OFFLINE_SAVE_KEY, JSON.stringify(buildOfflineSave(input)));
+    storage.setItem(offlineSaveKey(mode), JSON.stringify(buildOfflineSave(input)));
     return true;
   } catch {
     return false;
   }
 }
 
-export function loadOffline(storage: Storage): OfflineSave | null {
+/** Read the save for one mode.
+ *
+ *  An envelope whose stored `mode` is not the one being asked for is refused
+ *  rather than returned. That can only happen if a key was written by the wrong
+ *  caller, and in that case "start a fresh character" is the safe answer and
+ *  handing a run-mode preset back as somebody's leveled character is not. */
+export function loadOffline(
+  storage: Storage,
+  mode: OfflineSaveMode = DEFAULT_OFFLINE_SAVE_MODE,
+): OfflineSave | null {
   try {
-    return parseOfflineSave(storage.getItem(OFFLINE_SAVE_KEY));
+    const save = parseOfflineSave(storage.getItem(offlineSaveKey(mode)));
+    if (!save) return null;
+    return (save.mode ?? DEFAULT_OFFLINE_SAVE_MODE) === mode ? save : null;
   } catch {
     return null;
   }
 }
 
-export function clearOffline(storage: Storage): void {
+export function clearOffline(
+  storage: Storage,
+  mode: OfflineSaveMode = DEFAULT_OFFLINE_SAVE_MODE,
+): void {
   try {
-    storage.removeItem(OFFLINE_SAVE_KEY);
+    storage.removeItem(offlineSaveKey(mode));
   } catch {
     // A storage that refuses removal is the same non-event as one that refuses
     // writes: the next load either finds a stale save or nothing at all, and both

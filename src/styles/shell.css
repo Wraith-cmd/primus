@@ -7680,4 +7680,74 @@
       min-width: 40px;
     }
   }
+
+  /* ---------- run mode: the Keystone Run CTA and its picker ---------- */
+  /* A third door beside Online and Offline. The CTA sits under the play console
+     as a quieter secondary action (the primary Play button keeps the gold), and
+     the picker is a self-managed modal overlay rather than a shell panel, so it
+     is centred over whatever is behind it and owns its own stacking context. */
+  .btn-run-mode {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    min-height: 44px;
+    padding: 10px 20px;
+    cursor: var(--cursor-point);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    background: rgba(0, 0, 0, 0.42);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition-speed);
+  }
+  .btn-run-mode:hover {
+    border-color: var(--color-gold);
+  }
+  .btn-run-mode:focus-visible {
+    outline: 3px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+
+  .run-select {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.72);
+    overflow-y: auto;
+  }
+  .run-select[hidden] {
+    display: none;
+  }
+  .run-select-panel {
+    max-width: 560px;
+    width: 100%;
+  }
+  .run-select-desc,
+  .run-select-party {
+    margin: 8px 0 14px;
+    color: var(--color-text-muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .run-select-party {
+    margin-bottom: 16px;
+  }
+  #run-dungeon-row .mini-class {
+    /* Dungeon names are longer than class names and there are only a handful of
+       them, so let each chip take the width its label needs. */
+    flex: 1 1 44%;
+  }
+  @media (max-width: 600px) {
+    .run-select-panel {
+      max-width: 100%;
+    }
+  }
 }

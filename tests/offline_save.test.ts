@@ -128,6 +128,106 @@ describe('offline save against a real Sim', () => {
     expect(restored?.name).toBe('Bruin');
   });
 
+  // The suite above proves the ENVELOPE. It stayed green while offline saving was
+  // broken in real play, because it never built a Sim the way `startOffline`
+  // builds one, and never drove the full play -> save -> reload -> resume loop.
+  // These cases do, against the real config the client passes.
+  describe('the startOffline loop, end to end', () => {
+    const CFG = {
+      seed: 20061, // main.ts WORLD_SEED
+      playerClass: 'warrior' as const,
+      playerName: 'Roland',
+      valeCupShowcase: true, // the client sets this; a fresh Sim must still serialize
+    };
+
+    it('serializes a Sim built exactly the way the client builds it', () => {
+      const live = new Sim({ ...CFG });
+      // A null here is the silent-no-op failure mode: `wireOfflinePersistence`
+      // returns early and nothing is ever written.
+      expect(live.serializeCharacter(live.playerId)).not.toBeNull();
+    });
+
+    it('round-trips through storage and resumes with playerId pointing at the restored character', () => {
+      const storage = fakeStorage();
+
+      // Session one: play, then autosave the way the blur/interval handler does.
+      const live = new Sim({ ...CFG });
+      live.setPlayerLevel(11);
+      live.player.pos.x = 40;
+      live.player.pos.z = 60;
+      for (let i = 0; i < 20; i++) live.tick();
+      const state = live.serializeCharacter(live.playerId);
+      expect(state).not.toBeNull();
+      expect(
+        saveOffline(storage, {
+          playerClass: CFG.playerClass,
+          playerName: CFG.playerName,
+          skin: 3,
+          seed: CFG.seed,
+          savedAt: 1,
+          state: state as CharacterState,
+        }),
+      ).toBe(true);
+
+      // Session two: the reload. `noPlayer` plus `addPlayer`, as startOffline does.
+      const loaded = loadOffline(storage);
+      expect(loaded).not.toBeNull();
+      const resumed = new Sim({ ...CFG, noPlayer: true });
+      const pid = resumed.addPlayer(loaded!.playerClass, loaded!.playerName, {
+        state: loaded!.state,
+      });
+
+      // The load-bearing wiring assertion: `playerId` is only assigned inside
+      // addPlayer, so if the constructor path were the only one that set it,
+      // every downstream call (setPlayerSkin, the HUD, the next save) would be
+      // pointed at nothing.
+      expect(resumed.playerId).toBe(pid);
+      expect(resumed.entities.get(resumed.playerId)).toBeDefined();
+      expect(resumed.player.level).toBe(11);
+      expect(Math.round(resumed.player.pos.x)).toBe(40);
+      expect(Math.round(resumed.player.pos.z)).toBe(60);
+
+      // And the resumed session can save again, so progress survives a SECOND
+      // reload rather than only the first.
+      resumed.setPlayerSkin(resumed.playerId, loaded!.skin);
+      const again = resumed.serializeCharacter(resumed.playerId);
+      expect(again).not.toBeNull();
+      expect(again?.level).toBe(11);
+      expect(again?.skin).toBe(3);
+      expect(
+        saveOffline(storage, {
+          playerClass: CFG.playerClass,
+          playerName: CFG.playerName,
+          skin: loaded!.skin,
+          seed: CFG.seed,
+          savedAt: 2,
+          state: again as CharacterState,
+        }),
+      ).toBe(true);
+      expect(loadOffline(storage)?.state.level).toBe(11);
+    });
+
+    it('produces a save that actually survives JSON.stringify from the live Sim', () => {
+      // saveOffline swallows a stringify throw and returns false, which is
+      // exactly how a save can fail with nothing on screen to show for it.
+      const live = new Sim({ ...CFG });
+      for (let i = 0; i < 20; i++) live.tick();
+      const state = live.serializeCharacter(live.playerId) as CharacterState;
+      expect(() =>
+        JSON.stringify(
+          buildOfflineSave({
+            playerClass: CFG.playerClass,
+            playerName: CFG.playerName,
+            skin: 0,
+            seed: CFG.seed,
+            savedAt: 1,
+            state,
+          }),
+        ),
+      ).not.toThrow();
+    });
+  });
+
   it('survives a JSON round trip without losing the character level', () => {
     sim.setPlayerLevel(12);
     const state = sim.serializeCharacter(sim.playerId) as CharacterState;

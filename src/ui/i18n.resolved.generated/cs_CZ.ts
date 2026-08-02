@@ -4395,6 +4395,13 @@ export const cs_CZ: EnTranslations = {
     "serverLabel": "Vyber si svět",
     "serverAria": "Vybrat svět: online nebo offline",
     "serverOfflineSub": "Okamžitý lokální svět",
+    "runCta": "Keystone Run",
+    "runAria": "Keystone Run: enter a dungeon at the level cap with a companion party",
+    "runTitle": "Keystone Run",
+    "runDesc": "A twenty minute dungeon run, no leveling required. Pick a class and land at the door at the level cap, geared, with a tank, a healer and two damage dealers already hired.",
+    "runDungeon": "Dungeon",
+    "runParty": "Your party: tank, healer, damage, damage.",
+    "runStart": "Start Run",
     "caLabel": "Adresa kontraktu $WOC",
     "caCopyAria": "Kopírovat adresu kontraktu",
     "caNote": "WOC je komunitní token. Ke hraní není potřeba. Připoj se na Discord a diskutuj o využití a ekonomickém modelu WOC."

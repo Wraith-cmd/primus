@@ -4395,6 +4395,13 @@ export const sv_SE: EnTranslations = {
     "serverLabel": "Välj din värld",
     "serverAria": "Välj värld: Online eller Offline",
     "serverOfflineSub": "Direkt lokal värld",
+    "runCta": "Keystone Run",
+    "runAria": "Keystone Run: enter a dungeon at the level cap with a companion party",
+    "runTitle": "Keystone Run",
+    "runDesc": "A twenty minute dungeon run, no leveling required. Pick a class and land at the door at the level cap, geared, with a tank, a healer and two damage dealers already hired.",
+    "runDungeon": "Dungeon",
+    "runParty": "Your party: tank, healer, damage, damage.",
+    "runStart": "Start Run",
     "caLabel": "$WOC Kontraktsadress",
     "caCopyAria": "Kopiera kontraktsadress",
     "caNote": "WOC är vår community-token. Den behövs inte för att spela. Gå med i Discord för att diskutera WOC:s nytta och svänghjul."

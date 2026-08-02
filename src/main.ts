@@ -90,6 +90,8 @@ import { loadOffline, type OfflineSave, saveOffline } from './game/offline_save'
 import { createPerfMonitor } from './game/perf';
 import { initPerfNudge } from './game/perf_nudge';
 import { startPerfReporter } from './game/perf_reporter';
+import { startRunMode } from './game/run_mode';
+import { wireRunModeLanding } from './game/run_mode_landing';
 import { adaptiveSelfAlphaLead } from './game/self_alpha_lead';
 import {
   type GameSettings,
@@ -3573,6 +3575,28 @@ async function startOffline(
   void startGame(sim, sim, null, `offline:${playerClass}:${liveName}`, true);
 }
 
+/**
+ * Run mode: the third door. A preset max-level character at a dungeon entrance
+ * with a party already hired, for a twenty minute session that needs no leveling.
+ *
+ * Deliberately thin. Everything that decides what a run IS (the preset, the
+ * spawn, the party, the run-only save slot) lives in `game/run_mode.ts`; this
+ * only owns what that module cannot reach, which is the loading screen and
+ * `startGame`. The keybind scope comes from the session so a run can never
+ * rebind the owner's leveled offline character's keys.
+ */
+async function startRun(playerClass: PlayerClass, dungeonId: string): Promise<void> {
+  if (!(await prepareWorldEntry())) return;
+  enterLoadingState(t('loading.world'));
+  const session = startRunMode({
+    playerClass,
+    dungeonId,
+    seed: WORLD_SEED,
+    storage: localStorageOrNull(),
+  });
+  void startGame(session.sim, session.sim, null, session.keybindScope, true);
+}
+
 // Offline autosave. Upstream threw the offline character away on unload; this
 // fork treats offline as the primary mode, so the character has to survive an
 // alt-tab, a reload, and a browser restart.
@@ -6858,6 +6882,29 @@ function wireStartScreens(): void {
         handleKeyboardActivation(e as KeyboardEvent, handleOfflineSelect),
       );
     }
+  }
+
+  // Run mode rides the same gate as offline: both stand up a local, unauthenticated
+  // Sim with no server authority, so a production build must expose neither. The
+  // CTA is hidden rather than merely unwired, since a visible button that does
+  // nothing is worse than no button. The picker owns its own overlay, so this is
+  // the whole integration.
+  const runModeBtn = $('#btn-run-mode');
+  if (!offlineAvailable) {
+    runModeBtn?.setAttribute('hidden', '');
+  } else {
+    wireRunModeLanding({
+      // The click that opens the picker is the user gesture the AudioContext
+      // needs, the same unlock point the offline flow uses.
+      onOpen: () => {
+        audio.init();
+        music.init();
+        sfx.init();
+      },
+      onStart: (cls, dungeonId) => {
+        void startRun(cls, dungeonId);
+      },
+    });
   }
 
   // --- Play console: realm dropdown + single Play CTA -----------------------

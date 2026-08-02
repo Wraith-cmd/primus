@@ -4395,6 +4395,13 @@ export const ru_RU: EnTranslations = {
     "serverLabel": "Выберите свой мир",
     "serverAria": "Выберите мир: В сети или Не в сети",
     "serverOfflineSub": "Мгновенный локальный мир",
+    "runCta": "Keystone Run",
+    "runAria": "Keystone Run: enter a dungeon at the level cap with a companion party",
+    "runTitle": "Keystone Run",
+    "runDesc": "A twenty minute dungeon run, no leveling required. Pick a class and land at the door at the level cap, geared, with a tank, a healer and two damage dealers already hired.",
+    "runDungeon": "Dungeon",
+    "runParty": "Your party: tank, healer, damage, damage.",
+    "runStart": "Start Run",
     "caLabel": "Адрес контракта $WOC",
     "caCopyAria": "Скопировать адрес контракта",
     "caNote": "WOC - токен нашего сообщества. Он не нужен для игры. Присоединяйтесь к Discord, чтобы обсудить применение и экосистему WOC."

@@ -22,7 +22,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "es_ES": [
     "auth.offlineSave.continueHint",
@@ -37,7 +44,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "fr_FR": [
     "auth.offlineSave.continueHint",
@@ -52,7 +66,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "fr_CA": [
     "auth.offlineSave.continueHint",
@@ -67,7 +88,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "en_CA": [],
   "it_IT": [
@@ -83,7 +111,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "de_DE": [
     "auth.offlineSave.continueHint",
@@ -98,7 +133,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "zh_CN": [
     "auth.offlineSave.continueHint",
@@ -106,7 +148,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.blocked",
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
-    "hudChrome.offlineSave.unavailable"
+    "hudChrome.offlineSave.unavailable",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "zh_TW": [
     "auth.offlineSave.continueHint",
@@ -114,7 +163,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.blocked",
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
-    "hudChrome.offlineSave.unavailable"
+    "hudChrome.offlineSave.unavailable",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "ko_KR": [
     "auth.offlineSave.continueHint",
@@ -122,7 +178,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.blocked",
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
-    "hudChrome.offlineSave.unavailable"
+    "hudChrome.offlineSave.unavailable",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "ja_JP": [
     "auth.offlineSave.continueHint",
@@ -130,7 +193,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.blocked",
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
-    "hudChrome.offlineSave.unavailable"
+    "hudChrome.offlineSave.unavailable",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "pt_BR": [
     "auth.offlineSave.continueHint",
@@ -145,7 +215,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "ru_RU": [
     "auth.offlineSave.continueHint",
@@ -153,7 +230,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.blocked",
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
-    "hudChrome.offlineSave.unavailable"
+    "hudChrome.offlineSave.unavailable",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "cs_CZ": [
     "auth.offlineSave.continueHint",
@@ -168,7 +252,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "nl_NL": [
     "auth.offlineSave.continueHint",
@@ -183,7 +274,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "pl_PL": [
     "auth.offlineSave.continueHint",
@@ -198,7 +296,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "id_ID": [
     "auth.offlineSave.continueHint",
@@ -213,7 +318,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "tr_TR": [
     "auth.offlineSave.continueHint",
@@ -228,7 +340,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "sv_SE": [
     "auth.offlineSave.continueHint",
@@ -243,7 +362,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "vi_VN": [
     "auth.offlineSave.continueHint",
@@ -258,7 +384,14 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ],
   "da_DK": [
     "auth.offlineSave.continueHint",
@@ -273,6 +406,13 @@ export const pending: Record<string, readonly string[]> = {
     "hudChrome.offlineSave.failed",
     "hudChrome.offlineSave.saved",
     "hudChrome.offlineSave.unavailable",
-    "hudChrome.options.shiftMode"
+    "hudChrome.options.shiftMode",
+    "mode.runAria",
+    "mode.runCta",
+    "mode.runDesc",
+    "mode.runDungeon",
+    "mode.runParty",
+    "mode.runStart",
+    "mode.runTitle"
   ]
 };

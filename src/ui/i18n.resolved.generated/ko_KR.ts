@@ -4395,6 +4395,13 @@ export const ko_KR: EnTranslations = {
     "serverLabel": "월드를 선택하세요",
     "serverAria": "월드 선택: 온라인 또는 오프라인",
     "serverOfflineSub": "즉시 시작하는 로컬 세상",
+    "runCta": "Keystone Run",
+    "runAria": "Keystone Run: enter a dungeon at the level cap with a companion party",
+    "runTitle": "Keystone Run",
+    "runDesc": "A twenty minute dungeon run, no leveling required. Pick a class and land at the door at the level cap, geared, with a tank, a healer and two damage dealers already hired.",
+    "runDungeon": "Dungeon",
+    "runParty": "Your party: tank, healer, damage, damage.",
+    "runStart": "Start Run",
     "caLabel": "$WOC 계약 주소",
     "caCopyAria": "계약 주소 복사",
     "caNote": "WOC는 커뮤니티 토큰입니다. 플레이에는 필요하지 않습니다. WOC의 활용과 선순환 구조에 관해 이야기하려면 Discord에 참여하세요."

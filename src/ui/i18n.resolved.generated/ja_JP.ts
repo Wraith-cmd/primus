@@ -4395,6 +4395,13 @@ export const ja_JP: EnTranslations = {
     "serverLabel": "ワールドを選択",
     "serverAria": "ワールドを選択：オンラインまたはオフライン",
     "serverOfflineSub": "即座にローカルの世界へ",
+    "runCta": "Keystone Run",
+    "runAria": "Keystone Run: enter a dungeon at the level cap with a companion party",
+    "runTitle": "Keystone Run",
+    "runDesc": "A twenty minute dungeon run, no leveling required. Pick a class and land at the door at the level cap, geared, with a tank, a healer and two damage dealers already hired.",
+    "runDungeon": "Dungeon",
+    "runParty": "Your party: tank, healer, damage, damage.",
+    "runStart": "Start Run",
     "caLabel": "$WOC コントラクトアドレス",
     "caCopyAria": "コントラクトアドレスをコピー",
     "caNote": "WOCはコミュニティトークンです。プレイには必要ありません。Discordに参加して、WOCのユーティリティとフライホイールについて語り合いましょう。"

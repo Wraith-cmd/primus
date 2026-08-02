@@ -4395,6 +4395,13 @@ export const zh_TW: EnTranslations = {
     "serverLabel": "選擇你的世界",
     "serverAria": "選擇世界：線上或離線",
     "serverOfflineSub": "即時本地世界",
+    "runCta": "Keystone Run",
+    "runAria": "Keystone Run: enter a dungeon at the level cap with a companion party",
+    "runTitle": "Keystone Run",
+    "runDesc": "A twenty minute dungeon run, no leveling required. Pick a class and land at the door at the level cap, geared, with a tank, a healer and two damage dealers already hired.",
+    "runDungeon": "Dungeon",
+    "runParty": "Your party: tank, healer, damage, damage.",
+    "runStart": "Start Run",
     "caLabel": "$WOC 合約地址",
     "caCopyAria": "複製合約地址",
     "caNote": "WOC 是我們的社群代幣，並非遊玩所需。加入 Discord 一起討論 WOC 的用途與飛輪效應。"

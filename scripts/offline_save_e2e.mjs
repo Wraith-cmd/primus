@@ -66,10 +66,19 @@ page.on('console', (m) => {
   if (m.type() === 'error') pageErrors.push(m.text());
 });
 
+// This harness runs against the same origin a human plays on, and it needs an
+// empty slot to start from. Wiping it outright would delete a real character,
+// which is precisely the bug this file exists to prevent, so the slot is taken
+// hostage rather than destroyed: snapshotted here and put back in the `finally`
+// no matter how the run ends.
+let borrowedSave = null;
+
 try {
   // ---------------------------------------------------------------------
   console.log('\n1. fresh character saves');
   await page.goto(GAME_URL, { waitUntil: 'domcontentloaded' });
+  borrowedSave = await page.evaluate((key) => localStorage.getItem(key), SAVE_KEY);
+  if (borrowedSave) console.log('  (existing character set aside, restored at exit)');
   await page.evaluate(() => localStorage.clear());
   await page.reload({ waitUntil: 'domcontentloaded' });
 
@@ -181,6 +190,23 @@ try {
   check('no page errors', realErrors.length === 0, realErrors.slice(0, 3).join(' | '));
   if (noise > 0) console.log(`  note ${noise} unrelated console error(s) ignored (api/assets)`);
 } finally {
+  // Give the slot back before anything else, including on a thrown failure.
+  if (borrowedSave) {
+    try {
+      await page.evaluate(
+        (key, raw) => {
+          localStorage.setItem(key, raw);
+        },
+        SAVE_KEY,
+        borrowedSave,
+      );
+      const back = await page.evaluate((key) => localStorage.getItem(key), SAVE_KEY);
+      console.log(back === borrowedSave ? '\n  character restored' : '\n  RESTORE FAILED');
+    } catch (e) {
+      // Loud on purpose: a silent failure here is somebody's character.
+      console.error(`\n  RESTORE FAILED, saved copy follows:\n${borrowedSave}`, e);
+    }
+  }
   await browser.close();
 }
 

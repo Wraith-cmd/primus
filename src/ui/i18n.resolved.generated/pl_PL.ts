@@ -4395,6 +4395,13 @@ export const pl_PL: EnTranslations = {
     "serverLabel": "Wybierz swój świat",
     "serverAria": "Wybierz świat: online lub offline",
     "serverOfflineSub": "Natychmiastowy lokalny świat",
+    "runCta": "Keystone Run",
+    "runAria": "Keystone Run: enter a dungeon at the level cap with a companion party",
+    "runTitle": "Keystone Run",
+    "runDesc": "A twenty minute dungeon run, no leveling required. Pick a class and land at the door at the level cap, geared, with a tank, a healer and two damage dealers already hired.",
+    "runDungeon": "Dungeon",
+    "runParty": "Your party: tank, healer, damage, damage.",
+    "runStart": "Start Run",
     "caLabel": "Adres kontraktu $WOC",
     "caCopyAria": "Skopiuj adres kontraktu",
     "caNote": "WOC to nasz token społecznościowy. Nie jest potrzebny do gry. Dołącz do Discorda, aby porozmawiać o użyteczności WOC i jego napędzie."

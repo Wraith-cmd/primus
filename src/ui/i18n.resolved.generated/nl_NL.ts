@@ -4395,6 +4395,13 @@ export const nl_NL: EnTranslations = {
     "serverLabel": "Kies je wereld",
     "serverAria": "Kies wereld: Online of Offline",
     "serverOfflineSub": "Directe lokale wereld",
+    "runCta": "Keystone Run",
+    "runAria": "Keystone Run: enter a dungeon at the level cap with a companion party",
+    "runTitle": "Keystone Run",
+    "runDesc": "A twenty minute dungeon run, no leveling required. Pick a class and land at the door at the level cap, geared, with a tank, a healer and two damage dealers already hired.",
+    "runDungeon": "Dungeon",
+    "runParty": "Your party: tank, healer, damage, damage.",
+    "runStart": "Start Run",
     "caLabel": "$WOC Contractadres",
     "caCopyAria": "Contractadres kopiëren",
     "caNote": "WOC is onze communitytoken. Het is niet nodig om te spelen. Word lid van Discord om de WOC-toepassing en het vliegwiel te bespreken."

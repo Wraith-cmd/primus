@@ -4395,6 +4395,13 @@ export const da_DK: EnTranslations = {
     "serverLabel": "Vælg din verden",
     "serverAria": "Vælg verden: Online eller Offline",
     "serverOfflineSub": "Øjeblikkelig lokal verden",
+    "runCta": "Keystone Run",
+    "runAria": "Keystone Run: enter a dungeon at the level cap with a companion party",
+    "runTitle": "Keystone Run",
+    "runDesc": "A twenty minute dungeon run, no leveling required. Pick a class and land at the door at the level cap, geared, with a tank, a healer and two damage dealers already hired.",
+    "runDungeon": "Dungeon",
+    "runParty": "Your party: tank, healer, damage, damage.",
+    "runStart": "Start Run",
     "caLabel": "$WOC Kontraktadresse",
     "caCopyAria": "Kopiér kontraktadresse",
     "caNote": "WOC er vores fællesskabstoken. Det er ikke nødvendigt for at spille. Tilslut dig Discord for at diskutere WOC-nytten og svinghjulet."

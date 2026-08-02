@@ -1,5 +1,12 @@
 # IP Pivot Refactor — session briefs
 
+> STATUS: COMPLETE (verified 2026-08-02). Every session below has shipped and merged to `main`:
+> the gate (G0), the locked NAME-MAP (G1), all six rename tracks (V1/V2/C1/C2/W1/W2), the text
+> de-brand (T1), and the finale (Z1). `tests/ip_scrub.test.ts` is green on `main` and a static
+> scan finds zero verbatim-WoW names in any player-visible field; the coined ids are swept. This
+> package is retained as a HISTORICAL RECORD of how the pivot was run, not a live worklist. See
+> `02-WORKING-MEMORY.md` for the reconciled per-session status board.
+
 Goal: strip every player-visible Blizzard / World of Warcraft IP name out of the game
 (spell/ability names, talent + spec names, Blizzard-original creatures, a few item and
 mob-mechanic names) and replace it with original vocabulary, **without changing any game

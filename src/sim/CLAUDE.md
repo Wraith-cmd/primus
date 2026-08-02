@@ -132,7 +132,11 @@ legality), `cooldown_persist.ts` (cooldown save/load), `tab_target.ts`/`assist.t
 `companions/reactions.ts` + `companions/party.ts`), `aura_classify.ts` (buff-vs-debuff, shared with the
 HUD), `resurrection.ts` (sickness rules shared by every death site), and the combat
 leaves `spell_resist.ts`/`ranged_shot.ts`/`aura_stacking.ts`/`aura_cancel.ts`/
-`exclusive_aura.ts`/`form_swing.ts`, `jail.ts` (moderation-jail cage layout, gate
+`exclusive_aura.ts`/`form_swing.ts`/`cast_queue.ts` (the single-slot spell-queue
+policy: when a press inside the tail of a cast OR of the GCD is remembered instead
+of refused, and when a queued press has gone stale; the window is authored in TICKS,
+never wall-clock, and `combat/casting_lifecycle.ts` is its only consumer),
+`jail.ts` (moderation-jail cage layout, gate
 teleport, visitor spot; the jail SYSTEM logic stays on `Sim`), and
 `professions/proficiency_display_heal.ts` (the one-time gathering-proficiency
 display-band heal applied at character load). A leaf is any `src/sim`

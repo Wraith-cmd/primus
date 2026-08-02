@@ -87,9 +87,15 @@ export const CHANNEL_PUSHBACK_FRACTION = 0.25; // classic-era: each hit shaves 2
 // Tolerance for "this per-tick timer is effectively complete" comparisons (casting,
 // channels, ground-AoE pulses). Shared across sim modules (sim.ts + entity_roster.ts).
 export const CAST_COMPLETE_EPS = 1e-9;
-// classic-era spell queue: a press during the tail of a cast queues instead of
-// erroring, and fires the instant the current cast completes.
-export const CAST_QUEUE_WINDOW_SEC = 0.4;
+// classic-era spell queue: a press during the tail of a cast OR of the global
+// cooldown queues instead of being refused, and fires the instant that cast or GCD
+// ends. Authored as a TICK COUNT, never as wall-clock milliseconds: the sim has no
+// clock of its own, so a real-time window would fork determinism across the three
+// hosts and drift with the render frame rate (see combat/cast_queue.ts). 8 ticks at
+// DT = 1/20 is exactly 0.4 sec, and the multiply is exact in binary floating point,
+// so the seconds form below still lands on a real tick boundary.
+export const CAST_QUEUE_WINDOW_TICKS = 8;
+export const CAST_QUEUE_WINDOW_SEC = CAST_QUEUE_WINDOW_TICKS * DT;
 export const FISHING_CAST_ID = 'fishing';
 export const FISHING_CAST_NAME = 'Fishing';
 // The constant castTotal/castRemaining of a fishing session (Professions 2.0,

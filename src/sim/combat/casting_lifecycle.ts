@@ -60,6 +60,7 @@ import {
   normAngle,
 } from '../types';
 import { drawWeapon } from '../weapon_stow';
+import { needsLivingTargetToQueue, queuedCastStillValid, shouldQueueOnGcd } from './cast_queue';
 import {
   hasUnbreakableMovementLock,
   isInStasis,
@@ -470,8 +471,24 @@ function fireQueuedCast(ctx: SimContext, p: Entity): void {
   const res = ctx.resolvedAbility(queued, p.id);
   if (res && !res.def.offGcd && p.gcdRemaining > 0) return;
   const aim = p.queuedCastAim;
+  // Re-validate the instant before firing: the press was made a few ticks ago and
+  // the world moved on. An unambiguously stale press (the caster died, or the
+  // target the press was aimed at is gone or dead) is dropped QUIETLY here, with no
+  // toast, since the player asked to hit something that was alive. Every other
+  // refusal falls through to castAbility's own gate set below and reports itself
+  // exactly as a live press would (see combat/cast_queue.ts for why the split).
+  const target = p.targetId !== null ? (ctx.entities.get(p.targetId) ?? null) : null;
+  const stillValid =
+    !!res &&
+    queuedCastStillValid({
+      casterDead: p.dead,
+      needsLivingTarget: needsLivingTargetToQueue(res.def),
+      targetMissing: !target,
+      targetDead: !!target?.dead,
+    });
   p.queuedCastAbility = null;
   p.queuedCastAim = null;
+  if (!stillValid) return;
   castAbility(ctx, queued, p.id, aim ?? undefined);
 }
 
@@ -634,7 +651,23 @@ export function castAbility(
   // (including this GCD check). fireQueuedCast holds the slot instead of calling
   // in when the GCD is still running, so this early return only fires for a
   // same-tick player press racing the GCD, not for a queued follow-up.
-  if (!ability.offGcd && p.gcdRemaining > 0 && !blinkThrough) return; // silent, classic spams this
+  if (!ability.offGcd && p.gcdRemaining > 0 && !blinkThrough) {
+    // Spell queue, GCD arm. The cast arm above only covers presses made during a
+    // CAST BAR; most presses in real play follow an INSTANT, where the only thing
+    // in the way is the global cooldown, and those were being dropped on the floor.
+    // A press inside the last CAST_QUEUE_WINDOW_TICKS of the GCD is remembered here
+    // and fired by updateCasting the instant the GCD clears. Outside the window the
+    // press is still dropped silently, exactly as before (classic spams this).
+    // A queued follow-up can never reach this line: fireQueuedCast holds the slot
+    // while gcdRemaining > 0 rather than calling in, so this cannot re-queue itself.
+    // offGcd is necessarily false inside this branch (its own guard proves it); the
+    // policy still takes the flag so the rule reads completely at one place.
+    if (shouldQueueOnGcd({ gcdRemaining: p.gcdRemaining, offGcd: false })) {
+      p.queuedCastAbility = abilityId;
+      p.queuedCastAim = aim ?? null;
+    }
+    return; // silent, classic spams this
+  }
   const togglingOff = isToggleBuff(ability) && p.auras.some((a) => a.id === ability.id);
   const sharedCooldown = isShamanShock(ability.id)
     ? SHAMAN_SHOCK_COOLDOWN_IDS.find((id) => p.cooldowns.has(id))

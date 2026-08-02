@@ -64,7 +64,8 @@ export const cs_CZ: EnTranslations = {
       "dungeon": "Dungeon",
       "difficulty": "Obtížnost",
       "name": "Jméno",
-      "spec": "Specializace"
+      "spec": "Specializace",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "Normální",
@@ -147,6 +148,10 @@ export const cs_CZ: EnTranslations = {
         "label": "Přidat sběračskou dovednost",
         "description": "Zvyš úroveň sběračského povolání."
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "Teleportovat",
         "description": "Přesuň se na přesné souřadnice světa."
@@ -178,6 +183,18 @@ export const cs_CZ: EnTranslations = {
       "lfgboard": {
         "label": "Naplnit tabuli nabídek",
         "description": "Vytvoř scénář s předem sestavenou nabídkou skupiny."
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

@@ -64,7 +64,8 @@ export const fr_FR: EnTranslations = {
       "dungeon": "Donjon",
       "difficulty": "Difficulté",
       "name": "Nom",
-      "spec": "Spécialisation"
+      "spec": "Spécialisation",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "Normal",
@@ -147,6 +148,10 @@ export const fr_FR: EnTranslations = {
         "label": "Augmenter la compétence de récolte",
         "description": "Augmente la compétence d’un métier de récolte."
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "Téléporter",
         "description": "Déplace le joueur vers des coordonnées exactes du monde."
@@ -178,6 +183,18 @@ export const fr_FR: EnTranslations = {
       "lfgboard": {
         "label": "Préparer le tableau des annonces",
         "description": "Crée un scénario d’annonce de groupe prédéfini."
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

@@ -64,7 +64,8 @@ export const zh_CN: EnTranslations = {
       "dungeon": "地下城",
       "difficulty": "难度",
       "name": "名称",
-      "spec": "专精"
+      "spec": "专精",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "普通",
@@ -147,6 +148,10 @@ export const zh_CN: EnTranslations = {
         "label": "授予采集技能",
         "description": "提高一项采集专业技能。"
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "传送",
         "description": "移动到精确的世界坐标。"
@@ -178,6 +183,18 @@ export const zh_CN: EnTranslations = {
       "lfgboard": {
         "label": "填充组队公告板",
         "description": "创建预组队公告场景。"
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

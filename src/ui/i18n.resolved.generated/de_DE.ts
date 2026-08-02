@@ -64,7 +64,8 @@ export const de_DE: EnTranslations = {
       "dungeon": "Dungeon",
       "difficulty": "Schwierigkeitsgrad",
       "name": "Name",
-      "spec": "Spezialisierung"
+      "spec": "Spezialisierung",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "Normal",
@@ -147,6 +148,10 @@ export const de_DE: EnTranslations = {
         "label": "Sammelfertigkeit erhöhen",
         "description": "Die Fertigkeit eines Sammelberufs erhöhen."
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "Teleportieren",
         "description": "Zu exakten Weltkoordinaten bewegen."
@@ -178,6 +183,18 @@ export const de_DE: EnTranslations = {
       "lfgboard": {
         "label": "Angebotstafel befüllen",
         "description": "Ein Szenario mit einer vorgefertigten Gruppensuche erstellen."
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

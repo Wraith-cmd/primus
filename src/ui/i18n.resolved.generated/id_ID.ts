@@ -64,7 +64,8 @@ export const id_ID: EnTranslations = {
       "dungeon": "Dungeon",
       "difficulty": "Tingkat kesulitan",
       "name": "Nama",
-      "spec": "Spesialisasi"
+      "spec": "Spesialisasi",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "Normal",
@@ -147,6 +148,10 @@ export const id_ID: EnTranslations = {
         "label": "Berikan keterampilan mengumpulkan",
         "description": "Tingkatkan profesi pengumpulan."
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "Teleportasi",
         "description": "Pindah ke koordinat dunia yang tepat."
@@ -178,6 +183,18 @@ export const id_ID: EnTranslations = {
       "lfgboard": {
         "label": "Isi papan daftar",
         "description": "Buat skenario daftar grup siap pakai."
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

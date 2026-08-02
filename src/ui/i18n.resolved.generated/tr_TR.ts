@@ -64,7 +64,8 @@ export const tr_TR: EnTranslations = {
       "dungeon": "Zindan",
       "difficulty": "Zorluk",
       "name": "Ad",
-      "spec": "Uzmanlık"
+      "spec": "Uzmanlık",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "Normal",
@@ -147,6 +148,10 @@ export const tr_TR: EnTranslations = {
         "label": "Toplama becerisi ver",
         "description": "Bir toplama mesleğini geliştir."
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "Işınlan",
         "description": "Kesin dünya koordinatlarına git."
@@ -178,6 +183,18 @@ export const tr_TR: EnTranslations = {
       "lfgboard": {
         "label": "İlan panosunu doldur",
         "description": "Hazır bir grup ilanı senaryosu oluştur."
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

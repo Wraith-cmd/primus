@@ -64,7 +64,8 @@ export const sv_SE: EnTranslations = {
       "dungeon": "Fängelsehåla",
       "difficulty": "Svårighetsgrad",
       "name": "Namn",
-      "spec": "Specialisering"
+      "spec": "Specialisering",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "Normal",
@@ -147,6 +148,10 @@ export const sv_SE: EnTranslations = {
         "label": "Ge insamlingsfärdighet",
         "description": "Höj färdigheten i ett insamlingsyrke."
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "Teleportera",
         "description": "Flytta till exakta världskoordinater."
@@ -178,6 +183,18 @@ export const sv_SE: EnTranslations = {
       "lfgboard": {
         "label": "Förbered annonstavlan",
         "description": "Skapa ett scenario med en färdig gruppannons."
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

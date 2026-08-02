@@ -64,7 +64,8 @@ export const vi_VN: EnTranslations = {
       "dungeon": "Hầm Ngục",
       "difficulty": "Độ Khó",
       "name": "Tên",
-      "spec": "Chuyên Môn"
+      "spec": "Chuyên Môn",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "Thường",
@@ -147,6 +148,10 @@ export const vi_VN: EnTranslations = {
         "label": "Tăng kỹ năng thu thập",
         "description": "Tăng cấp một nghề thu thập."
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "Dịch chuyển",
         "description": "Di chuyển đến tọa độ chính xác trong thế giới."
@@ -178,6 +183,18 @@ export const vi_VN: EnTranslations = {
       "lfgboard": {
         "label": "Tạo dữ liệu bảng đăng nhóm",
         "description": "Tạo kịch bản đăng nhóm lập sẵn."
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

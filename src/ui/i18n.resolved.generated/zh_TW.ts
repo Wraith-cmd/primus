@@ -64,7 +64,8 @@ export const zh_TW: EnTranslations = {
       "dungeon": "地城",
       "difficulty": "難度",
       "name": "名稱",
-      "spec": "專精"
+      "spec": "專精",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "普通",
@@ -147,6 +148,10 @@ export const zh_TW: EnTranslations = {
         "label": "授予採集技能",
         "description": "提高一項採集專業技能。"
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "傳送",
         "description": "移動到精確的世界座標。"
@@ -178,6 +183,18 @@ export const zh_TW: EnTranslations = {
       "lfgboard": {
         "label": "填入組隊公告板",
         "description": "建立預組隊公告情境。"
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

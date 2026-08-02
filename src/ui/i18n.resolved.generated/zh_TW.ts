@@ -319,6 +319,12 @@ export const zh_TW: EnTranslations = {
     "spectate": {
       "banner": "正在觀察 {name}"
     },
+    "offlineSave": {
+      "saved": "Character saved.",
+      "failed": "Could not save your character. Your browser refused the write.",
+      "blocked": "Not saving: another character holds the offline save slot.",
+      "unavailable": "Not saving: this browser has no storage available for the offline character."
+    },
     "readyCheck": {
       "prompt": "{name} 發起了準備確認。你準備好了嗎？",
       "ready": "準備就緒",
@@ -4426,6 +4432,10 @@ export const zh_TW: EnTranslations = {
     "characterNamePlaceholder": "輸入角色名稱",
     "enterWorld": "進入世界",
     "offlineCharacter": "單機角色",
+    "offlineSave": {
+      "continueHint": "Saved here: {name}, level {level} {cls}. Enter World to continue.",
+      "replaceWarning": "This replaces your saved character {name}, level {level} {cls}, and it cannot be undone. Press Enter World again to confirm."
+    },
     "create": "建立",
     "twoFactorLabel": "驗證碼",
     "twoFactorPlaceholder": "6 位數驗證碼或復原碼",

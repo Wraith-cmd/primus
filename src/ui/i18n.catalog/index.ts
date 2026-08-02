@@ -384,6 +384,11 @@ export const en = {
     characterNamePlaceholder: 'Character name',
     enterWorld: 'Enter World',
     offlineCharacter: 'Offline Character',
+    offlineSave: {
+      continueHint: 'Saved here: {name}, level {level} {cls}. Enter World to continue.',
+      replaceWarning:
+        'This replaces your saved character {name}, level {level} {cls}, and it cannot be undone. Press Enter World again to confirm.',
+    },
     create: 'Create',
     twoFactorLabel: 'Authentication code',
     twoFactorPlaceholder: '6-digit or recovery code',

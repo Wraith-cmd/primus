@@ -319,6 +319,12 @@ export const en_XA: EnTranslations = {
     "spectate": {
       "banner": "[Šþéçţáţíñĝ {name}]"
     },
+    "offlineSave": {
+      "saved": "[Çĥáŕáçţéŕ šáʋéð.]",
+      "failed": "[Çóúļð ñóţ šáʋé ýóúŕ çĥáŕáçţéŕ. Ýóúŕ ƀŕóŵšéŕ ŕéƒúšéð ţĥé ŵŕíţé.]",
+      "blocked": "[Ñóţ šáʋíñĝ: áñóţĥéŕ çĥáŕáçţéŕ ĥóļðš ţĥé óƒƒļíñé šáʋé šļóţ.]",
+      "unavailable": "[Ñóţ šáʋíñĝ: ţĥíš ƀŕóŵšéŕ ĥáš ñó šţóŕáĝé áʋáíļáƀļé ƒóŕ ţĥé óƒƒļíñé çĥáŕáçţéŕ.]"
+    },
     "readyCheck": {
       "prompt": "[{name} ĥáš šţáŕţéð á ŕéáðý çĥéçķ. Áŕé ýóú ŕéáðý?]",
       "ready": "[Ŕéáðý]",
@@ -4426,6 +4432,10 @@ export const en_XA: EnTranslations = {
     "characterNamePlaceholder": "[Çĥáŕáçţéŕ ñáɱé]",
     "enterWorld": "[Éñţéŕ Ŵóŕļð]",
     "offlineCharacter": "[Óƒƒļíñé Çĥáŕáçţéŕ]",
+    "offlineSave": {
+      "continueHint": "[Šáʋéð ĥéŕé: {name}, ļéʋéļ {level} {cls}. Éñţéŕ Ŵóŕļð ţó çóñţíñúé.]",
+      "replaceWarning": "[Ţĥíš ŕéþļáçéš ýóúŕ šáʋéð çĥáŕáçţéŕ {name}, ļéʋéļ {level} {cls}, áñð íţ çáññóţ ƀé úñðóñé. Þŕéšš Éñţéŕ Ŵóŕļð áĝáíñ ţó çóñƒíŕɱ.]"
+    },
     "create": "[Çŕéáţé]",
     "twoFactorLabel": "[Áúţĥéñţíçáţíóñ çóðé]",
     "twoFactorPlaceholder": "[6-ðíĝíţ óŕ ŕéçóʋéŕý çóðé]",

@@ -319,6 +319,12 @@ export const tr_TR: EnTranslations = {
     "spectate": {
       "banner": "{name} izleniyor"
     },
+    "offlineSave": {
+      "saved": "Character saved.",
+      "failed": "Could not save your character. Your browser refused the write.",
+      "blocked": "Not saving: another character holds the offline save slot.",
+      "unavailable": "Not saving: this browser has no storage available for the offline character."
+    },
     "readyCheck": {
       "prompt": "{name} bir hazır kontrolü başlattı. Hazır mısın?",
       "ready": "Hazır",
@@ -4426,6 +4432,10 @@ export const tr_TR: EnTranslations = {
     "characterNamePlaceholder": "Karakter adı",
     "enterWorld": "Dünyaya Gir",
     "offlineCharacter": "Çevrimdışı Karakter",
+    "offlineSave": {
+      "continueHint": "Saved here: {name}, level {level} {cls}. Enter World to continue.",
+      "replaceWarning": "This replaces your saved character {name}, level {level} {cls}, and it cannot be undone. Press Enter World again to confirm."
+    },
     "create": "Oluştur",
     "twoFactorLabel": "Kimlik doğrulama kodu",
     "twoFactorPlaceholder": "6 haneli ya da kurtarma kodu",

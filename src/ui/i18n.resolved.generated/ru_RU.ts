@@ -319,6 +319,12 @@ export const ru_RU: EnTranslations = {
     "spectate": {
       "banner": "Наблюдение за {name}"
     },
+    "offlineSave": {
+      "saved": "Character saved.",
+      "failed": "Could not save your character. Your browser refused the write.",
+      "blocked": "Not saving: another character holds the offline save slot.",
+      "unavailable": "Not saving: this browser has no storage available for the offline character."
+    },
     "readyCheck": {
       "prompt": "{name} начал проверку готовности. Вы готовы?",
       "ready": "Готов",
@@ -4426,6 +4432,10 @@ export const ru_RU: EnTranslations = {
     "characterNamePlaceholder": "Имя персонажа",
     "enterWorld": "Войти в мир",
     "offlineCharacter": "Персонаж вне сети",
+    "offlineSave": {
+      "continueHint": "Saved here: {name}, level {level} {cls}. Enter World to continue.",
+      "replaceWarning": "This replaces your saved character {name}, level {level} {cls}, and it cannot be undone. Press Enter World again to confirm."
+    },
     "create": "Создать",
     "twoFactorLabel": "Код аутентификации",
     "twoFactorPlaceholder": "6-значный код или код восстановления",

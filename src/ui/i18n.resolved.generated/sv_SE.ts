@@ -319,6 +319,12 @@ export const sv_SE: EnTranslations = {
     "spectate": {
       "banner": "Åskådar {name}"
     },
+    "offlineSave": {
+      "saved": "Character saved.",
+      "failed": "Could not save your character. Your browser refused the write.",
+      "blocked": "Not saving: another character holds the offline save slot.",
+      "unavailable": "Not saving: this browser has no storage available for the offline character."
+    },
     "readyCheck": {
       "prompt": "{name} har startat en beredskapskontroll. Är du redo?",
       "ready": "Redo",
@@ -4426,6 +4432,10 @@ export const sv_SE: EnTranslations = {
     "characterNamePlaceholder": "Karaktärsnamn",
     "enterWorld": "Träd in i världen",
     "offlineCharacter": "Frånkopplad karaktär",
+    "offlineSave": {
+      "continueHint": "Saved here: {name}, level {level} {cls}. Enter World to continue.",
+      "replaceWarning": "This replaces your saved character {name}, level {level} {cls}, and it cannot be undone. Press Enter World again to confirm."
+    },
     "create": "Skapa",
     "twoFactorLabel": "Autentiseringskod",
     "twoFactorPlaceholder": "6-siffrig eller återställningskod",

@@ -81,7 +81,12 @@ import { diagonalMovementVisualFacing } from './game/movement_visual';
 import { music } from './game/music';
 import { tryNearbyInteraction } from './game/nearby_interaction';
 import { isOfflineModeAvailable } from './game/offline_mode_gate';
-import { loadOffline, saveOffline } from './game/offline_save';
+import {
+  canCommitOfflineSave,
+  offlineSaveNotice,
+  resolveOfflineEntry,
+} from './game/offline_resume';
+import { loadOffline, type OfflineSave, saveOffline } from './game/offline_save';
 import { createPerfMonitor } from './game/perf';
 import { initPerfNudge } from './game/perf_nudge';
 import { startPerfReporter } from './game/perf_reporter';
@@ -1190,6 +1195,25 @@ async function startGame(
 
   // Offline only: expose the dev "2v2 Fiesta vs Bots" practice toggle to the HUD.
   if (offlineSim) hud.setFiestaPracticeHook(() => offlineSim.startFiestaPractice());
+  // Offline only: give the autosave a voice. A save the player cannot see is a
+  // save they cannot trust, and a save that silently fails is how a character
+  // gets lost. Success is a quiet system line in the chat log; anything else is
+  // an error toast as well, because it means the character is NOT being kept.
+  if (offlineSim) {
+    setOfflineSaveNoticeSink((kind) => {
+      if (kind === 'saved') {
+        hud.log(t('hudChrome.offlineSave.saved'), OFFLINE_SAVE_LOG_COLOR);
+        return;
+      }
+      const key =
+        kind === 'blocked'
+          ? 'hudChrome.offlineSave.blocked'
+          : kind === 'unavailable'
+            ? 'hudChrome.offlineSave.unavailable'
+            : 'hudChrome.offlineSave.failed';
+      hud.showError(t(key));
+    });
+  }
   // The Vale Cup practice-vs-bots button (the window calls world.vcupPracticeStart
   // through IWorld). Private instanced practice works online AND offline, so the
   // button is always available.
@@ -3446,40 +3470,51 @@ function sanitizeOfflineName(raw: string): string {
   return /^[A-Za-z][A-Za-z' -]{1,15}$/.test(stripped) ? stripped : 'Adventurer';
 }
 
+/** The offline character currently occupying the one save slot, if any. */
+function storedOfflineSave(): OfflineSave | null {
+  const storage = localStorageOrNull();
+  return storage ? loadOffline(storage) : null;
+}
+
 async function startOffline(
   playerClass: PlayerClass,
   name: string,
   skin = 0,
   world?: WorldContent,
   seedOverride?: number,
+  replaceConsented = false,
 ): Promise<void> {
   if (!(await prepareWorldEntry())) return;
   enterLoadingState(t('loading.world'));
   // Editor play-test: route terrain + props at the custom world too (the renderer
   // reaches it by module global), in addition to the Sim reading cfg.world.
   if (world) setActiveWorldContent(world);
-  // A saved offline character for this exact class + name is restored instead of
-  // rolled fresh. Class and name are the identity here (there is no account), so
-  // typing a different name deliberately starts a new character and leaves the
-  // old save alone. The editor play-test path (a custom `world` or a seed
-  // override) always starts clean: that world is not the saved one.
+  // A saved offline character for this class + name is restored instead of
+  // rolled fresh. Class and name are the identity here (there is no account),
+  // compared through `resolveOfflineEntry` so a case slip or a stray space
+  // resumes rather than starting over on top of the save. The editor play-test
+  // path (a custom `world` or a seed override) always starts clean: that world
+  // is not the saved one.
   const saveSlot = world || seedOverride !== undefined ? null : localStorageOrNull();
   const restored = saveSlot ? loadOffline(saveSlot) : null;
-  const resume =
-    restored && restored.playerClass === playerClass && restored.playerName === name
-      ? restored
-      : null;
+  const plan = resolveOfflineEntry(restored, playerClass, name);
+  const resume = plan.action === 'resume' ? plan.save : null;
+  // Resuming adopts the SAVED spelling of the name, so the slot identity stays
+  // canonical no matter how the player capitalized it at the entry screen, and
+  // the skin the character was last wearing rather than the picker default.
+  const liveName = resume ? resume.playerName : name;
+  const liveSkin = resume ? resume.skin : skin;
   const sim = new Sim({
     seed: seedOverride ?? WORLD_SEED,
     playerClass,
-    playerName: name,
+    playerName: liveName,
     devCommands: import.meta.env.DEV,
     valeCupShowcase: true, // idle Sowfield auto-runs a bot exhibition to watch/bet on
     world,
     noPlayer: resume !== null,
   });
-  if (resume) sim.addPlayer(playerClass, name, { state: resume.state });
-  sim.setPlayerSkin(sim.playerId, resume ? resume.skin : skin);
+  if (resume) sim.addPlayer(playerClass, liveName, { state: resume.state });
+  sim.setPlayerSkin(sim.playerId, liveSkin);
   // Dev convenience: ?mech drops an offline session straight into the Combat Mech
   // cosmetic body holding a spread of class-usable weapons, to eyeball the held
   // weapon model on the mech (swap them in the bag to see each one). DEV builds
@@ -3518,9 +3553,24 @@ async function startOffline(
     if (usable[0]) sim.equipItem(usable[0], sim.playerId);
   }
   // Offline characters persist locally (see wireOfflinePersistence), and the
-  // stable handle stays class + name: keybinds scope to that pair.
-  wireOfflinePersistence(sim, playerClass, name, skin, seedOverride ?? WORLD_SEED);
-  void startGame(sim, sim, null, `offline:${playerClass}:${name}`, true);
+  // stable handle stays class + name: keybinds scope to that pair. A session
+  // with no save slot (the editor play-test: a custom world or a seed override)
+  // is deliberately disposable and must never write, or play-testing a map would
+  // overwrite the real character with a throwaway one.
+  if (saveSlot) {
+    wireOfflinePersistence(sim, {
+      playerClass,
+      name: liveName,
+      skin: liveSkin,
+      seed: seedOverride ?? WORLD_SEED,
+      // Only a session that owns the slot (it resumed the stored character, or
+      // the slot was empty) may write to it unasked. Starting a different
+      // character needs the entry screen's explicit confirmation, or the save it
+      // would destroy stays put.
+      mayReplace: plan.action !== 'replace' || replaceConsented,
+    });
+  }
+  void startGame(sim, sim, null, `offline:${playerClass}:${liveName}`, true);
 }
 
 // Offline autosave. Upstream threw the offline character away on unload; this
@@ -3533,41 +3583,93 @@ async function startOffline(
 // blur, tab hide, pagehide, and a slow periodic tick as the backstop for a crash
 // or a force quit that fires no event at all.
 const OFFLINE_AUTOSAVE_MS = 30_000;
+// The chat log's informational blue (the same one the joinable-channels tip
+// uses), so a save confirmation reads as system chrome, not as loot or combat.
+const OFFLINE_SAVE_LOG_COLOR = '#7fd4ff';
 
-function wireOfflinePersistence(
-  sim: Sim,
-  playerClass: PlayerClass,
-  name: string,
-  skin: number,
-  seed: number,
-): void {
+// The HUD does not exist yet when the offline save is wired (startGame builds
+// it), so the save path publishes its outcome here and startGame subscribes once
+// the chat log and the toast line are alive. A notice raised before then is held
+// and flushed on subscribe, so the very first save of a session is never lost to
+// a race with the loading screen.
+type OfflineSaveNoticeKind = 'saved' | 'blocked' | 'failed' | 'unavailable';
+let offlineSaveNoticeSink: ((kind: OfflineSaveNoticeKind) => void) | null = null;
+let pendingOfflineSaveNotices: OfflineSaveNoticeKind[] = [];
+
+function reportOfflineSave(kind: OfflineSaveNoticeKind): void {
+  if (offlineSaveNoticeSink) offlineSaveNoticeSink(kind);
+  else if (pendingOfflineSaveNotices.length < 4) pendingOfflineSaveNotices.push(kind);
+}
+
+function setOfflineSaveNoticeSink(sink: ((kind: OfflineSaveNoticeKind) => void) | null): void {
+  offlineSaveNoticeSink = sink;
+  if (!sink) return;
+  const queued = pendingOfflineSaveNotices;
+  pendingOfflineSaveNotices = [];
+  for (const kind of queued) sink(kind);
+}
+
+interface OfflinePersistenceOpts {
+  playerClass: PlayerClass;
+  name: string;
+  skin: number;
+  seed: number;
+  /** False when a DIFFERENT character owns the slot and the player never agreed
+   *  to give it up: the session then plays on without persisting, loudly. */
+  mayReplace: boolean;
+}
+
+function wireOfflinePersistence(sim: Sim, opts: OfflinePersistenceOpts): void {
+  const { playerClass, name, skin, seed, mayReplace } = opts;
   const storage = localStorageOrNull();
-  if (!storage) return; // private browsing: play on, just without a save slot
+  if (!storage) {
+    // Private browsing or a storage-less shell: play on, but never let the
+    // player believe the character is being kept.
+    reportOfflineSave('unavailable');
+    return;
+  }
 
-  let warned = false;
-  const save = (): void => {
+  let announced = false;
+  let lastNotice: OfflineSaveNoticeKind | null = null;
+  const save = (explicit: boolean): void => {
     const state = sim.serializeCharacter(sim.playerId);
-    if (!state) return;
-    const ok = saveOffline(storage, {
-      playerClass,
-      playerName: name,
-      skin,
-      seed,
-      state,
-      savedAt: Date.now(),
-    });
-    if (!ok && !warned) {
-      warned = true;
-      console.warn('offline save refused by storage (quota or private mode)');
+    if (!state) {
+      // No serializable player means there is nothing to keep. It is not a
+      // storage failure, but it is still a save that did not happen.
+      console.warn('offline save skipped: no serializable character');
+      return;
     }
+    const blocked = !canCommitOfflineSave(loadOffline(storage), playerClass, name, mayReplace);
+    const ok =
+      !blocked &&
+      saveOffline(storage, {
+        playerClass,
+        playerName: name,
+        skin,
+        seed,
+        state,
+        savedAt: Date.now(),
+      });
+    const notice = offlineSaveNotice({ ok, blocked, explicit, announced });
+    if (ok) announced = true;
+    if (!notice) return;
+    if (notice !== 'saved') {
+      console.warn(`offline save not committed: ${notice}`);
+      // A standing failure repeats every 30 seconds; say it once per state
+      // change rather than every tick of the heartbeat.
+      if (notice === lastNotice && !explicit) return;
+    }
+    lastNotice = notice;
+    reportOfflineSave(notice);
   };
+  const autosave = (): void => save(false);
 
-  window.addEventListener('blur', save);
-  window.addEventListener('pagehide', save);
+  window.addEventListener('blur', autosave);
+  window.addEventListener('pagehide', autosave);
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') save();
+    if (document.visibilityState === 'hidden') autosave();
   });
-  window.setInterval(save, OFFLINE_AUTOSAVE_MS);
+  window.setInterval(autosave, OFFLINE_AUTOSAVE_MS);
 
   // Escape-Escape: the deliberate "save right now" gesture. The sim cannot pause
   // (it ticks), so the safe exit is a committed save rather than a freeze. The
@@ -3579,7 +3681,7 @@ function wireOfflinePersistence(
     'keydown',
     (e) => {
       if (e.code !== 'Escape' || e.repeat) return;
-      if (registerTap(escapes, Date.now())) save();
+      if (registerTap(escapes, Date.now())) save(true);
     },
     true,
   );
@@ -3709,11 +3811,12 @@ function selectedSkin(rowId: string, fallback: number): number {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
-/** Reset to the default skin and (re)render the offline picker for a class. */
-function refreshOfflineSkins(cls: PlayerClass): void {
-  offlineSkin = 0;
-  characterPreview?.setSkin(0);
-  renderSkinPicker('#offline-skin-row', cls, 0, (i) => {
+/** (Re)render the offline skin picker for a class, selecting `skin` (the default
+ *  0, or the appearance a resumed character was last wearing). */
+function refreshOfflineSkins(cls: PlayerClass, skin = 0): void {
+  offlineSkin = skin;
+  characterPreview?.setSkin(skin);
+  renderSkinPicker('#offline-skin-row', cls, skin, (i) => {
     offlineSkin = i;
     characterPreview?.setSkin(i);
   });
@@ -6575,6 +6678,9 @@ function wireStartScreens(): void {
   const btnStartOffline = $('#btn-start-offline') as HTMLButtonElement;
   const offlineNameInput = $('#char-name') as HTMLInputElement;
   const offlineError = $('#offline-error');
+  // "Continue <Name>, level N <Class>": the offline slot made visible, so the
+  // player can see their character is there before pressing Enter World.
+  const offlineSavedNote = $('#offline-saved-note');
   // Offline mode runs an unauthenticated local Sim with no server authority:
   // a dev/local-testing convenience only. Disabled in production builds,
   // unchanged (enabled) under `npm run dev`.
@@ -6633,6 +6739,13 @@ function wireStartScreens(): void {
     show('#login-panel');
   };
 
+  // Entering the world with a character the save slot does not hold would evict
+  // the stored one, so the first press only WARNS and the second commits. Reset
+  // whenever the pending identity changes, so a consent given for one name can
+  // never be spent on another.
+  let pendingOfflineReplace: string | null = null;
+  const offlineReplaceKey = (cls: PlayerClass, name: string): string => `${cls}:${name}`;
+
   const handleOfflineStart = (cls: PlayerClass) => {
     const rawName = offlineNameInput.value.trim();
     if (!rawName) {
@@ -6654,11 +6767,34 @@ function wireStartScreens(): void {
     offlineNameInput.classList.remove('user-invalid-fallback');
     offlineNameInput.removeAttribute('aria-invalid');
 
+    const name = sanitizeOfflineName(rawName);
+    // There is exactly one offline slot. If it holds someone else, say whose
+    // character is about to be lost and make the player press again to mean it.
+    const plan = resolveOfflineEntry(storedOfflineSave(), cls, name);
+    const consentKey = offlineReplaceKey(cls, name);
+    if (plan.action === 'replace' && pendingOfflineReplace !== consentKey) {
+      pendingOfflineReplace = consentKey;
+      offlineError.textContent = t('auth.offlineSave.replaceWarning', {
+        name: plan.saved.playerName,
+        level: formatNumber(plan.saved.level, { maximumFractionDigits: 0 }),
+        cls: tEntity({ kind: 'class', id: plan.saved.playerClass, field: 'name' }),
+      });
+      return;
+    }
+    const consented = plan.action === 'replace';
+    pendingOfflineReplace = null;
+
     audio.init();
     music.init();
     sfx.init();
-    const name = sanitizeOfflineName(rawName);
-    void startOffline(cls, name, selectedSkin('#offline-skin-row', offlineSkin));
+    void startOffline(
+      cls,
+      name,
+      selectedSkin('#offline-skin-row', offlineSkin),
+      undefined,
+      undefined,
+      consented,
+    );
   };
 
   const handleOfflineSelect = () => {
@@ -6667,21 +6803,41 @@ function wireStartScreens(): void {
     // since the dropdown option and trigger are also not wired below.
     if (!offlineAvailable) return;
     show('#offline-select');
+    pendingOfflineReplace = null;
 
-    // Select warrior by default and render details
-    const warriorCard = document.querySelector(
-      '#offline-select .mini-class[data-class="warrior"]',
+    // Continue is the default action when a character is stored. The panel used
+    // to open blank on warrior every time, which meant resuming depended on the
+    // player retyping their exact name from memory and any slip silently rolled
+    // a fresh character over the top of the saved one. Preselecting the stored
+    // identity makes the save VISIBLE and makes continuing the path of least
+    // resistance; the player can still overwrite the fields to roll someone new.
+    const saved = storedOfflineSave();
+    const startClass: PlayerClass = saved ? saved.playerClass : 'warrior';
+    if (saved) {
+      offlineNameInput.value = saved.playerName;
+      offlineError.textContent = '';
+      offlineSavedNote.textContent = t('auth.offlineSave.continueHint', {
+        name: saved.playerName,
+        level: formatNumber(saved.state?.level ?? 1, { maximumFractionDigits: 0 }),
+        cls: tEntity({ kind: 'class', id: saved.playerClass, field: 'name' }),
+      });
+    } else {
+      offlineSavedNote.textContent = '';
+    }
+
+    const startCard = document.querySelector(
+      `#offline-select .mini-class[data-class="${startClass}"]`,
     ) as HTMLElement | null;
-    if (warriorCard) {
+    if (startCard) {
       document.querySelectorAll('#offline-select .mini-class').forEach((c) => {
         c.classList.remove('sel');
         c.setAttribute('aria-pressed', 'false');
       });
-      warriorCard.classList.add('sel');
-      warriorCard.setAttribute('aria-pressed', 'true');
-      renderClassDetails('offline-class-details', 'warrior');
+      startCard.classList.add('sel');
+      startCard.setAttribute('aria-pressed', 'true');
+      renderClassDetails('offline-class-details', startClass);
       btnStartOffline.removeAttribute('disabled');
-      refreshOfflineSkins('warrior');
+      refreshOfflineSkins(startClass, saved ? saved.skin : 0);
     }
   };
 

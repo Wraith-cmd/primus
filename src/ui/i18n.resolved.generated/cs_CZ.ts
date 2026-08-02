@@ -319,6 +319,12 @@ export const cs_CZ: EnTranslations = {
     "spectate": {
       "banner": "Sleduješ {name}"
     },
+    "offlineSave": {
+      "saved": "Character saved.",
+      "failed": "Could not save your character. Your browser refused the write.",
+      "blocked": "Not saving: another character holds the offline save slot.",
+      "unavailable": "Not saving: this browser has no storage available for the offline character."
+    },
     "readyCheck": {
       "prompt": "Hráč {name} zahájil kontrolu připravenosti. Jsi připraven(a)?",
       "ready": "Připraven(a)",
@@ -4426,6 +4432,10 @@ export const cs_CZ: EnTranslations = {
     "characterNamePlaceholder": "Jméno postavy",
     "enterWorld": "Vstoupit do světa",
     "offlineCharacter": "Offline postava",
+    "offlineSave": {
+      "continueHint": "Saved here: {name}, level {level} {cls}. Enter World to continue.",
+      "replaceWarning": "This replaces your saved character {name}, level {level} {cls}, and it cannot be undone. Press Enter World again to confirm."
+    },
     "create": "Vytvořit",
     "twoFactorLabel": "Autentizační kód",
     "twoFactorPlaceholder": "6místný nebo obnovovací kód",

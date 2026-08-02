@@ -319,6 +319,12 @@ export const it_IT: EnTranslations = {
     "spectate": {
       "banner": "Stai osservando {name}"
     },
+    "offlineSave": {
+      "saved": "Character saved.",
+      "failed": "Could not save your character. Your browser refused the write.",
+      "blocked": "Not saving: another character holds the offline save slot.",
+      "unavailable": "Not saving: this browser has no storage available for the offline character."
+    },
     "readyCheck": {
       "prompt": "{name} ha avviato un controllo di prontezza. Sei pronto?",
       "ready": "Pronto",
@@ -4426,6 +4432,10 @@ export const it_IT: EnTranslations = {
     "characterNamePlaceholder": "Nome del personaggio",
     "enterWorld": "Entra nel mondo",
     "offlineCharacter": "Personaggio offline",
+    "offlineSave": {
+      "continueHint": "Saved here: {name}, level {level} {cls}. Enter World to continue.",
+      "replaceWarning": "This replaces your saved character {name}, level {level} {cls}, and it cannot be undone. Press Enter World again to confirm."
+    },
     "create": "Crea",
     "twoFactorLabel": "Codice di autenticazione",
     "twoFactorPlaceholder": "Codice a 6 cifre o codice di recupero",

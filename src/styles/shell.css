@@ -3887,6 +3887,31 @@
     display: block;
   }
 
+  /* The offline slot's "continue" line: informational, so it borrows the error
+     block's geometry but none of its alarm colours. Empty means no saved
+     character, and an empty box would read as a layout bug, so it collapses. */
+  .auth-note {
+    color: var(--color-text-muted, #cbb894);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    text-align: center;
+    padding: 10px 16px;
+    background: linear-gradient(180deg, rgba(28, 24, 16, 0.9) 0%, rgba(18, 15, 10, 0.95) 100%);
+    border: 1px solid var(--color-border, #6b5a3a);
+    border-radius: var(--radius-md);
+    display: none;
+    margin: var(--spacing-sm) auto 0;
+    width: 100%;
+    max-width: 340px;
+  }
+
+  .auth-note:not(:empty) {
+    display: block;
+  }
+
   .auth-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;

@@ -319,6 +319,12 @@ export const nl_NL: EnTranslations = {
     "spectate": {
       "banner": "Toeschouwer bij {name}"
     },
+    "offlineSave": {
+      "saved": "Character saved.",
+      "failed": "Could not save your character. Your browser refused the write.",
+      "blocked": "Not saving: another character holds the offline save slot.",
+      "unavailable": "Not saving: this browser has no storage available for the offline character."
+    },
     "readyCheck": {
       "prompt": "{name} heeft een gereedheidscontrole gestart. Ben je gereed?",
       "ready": "Gereed",
@@ -4426,6 +4432,10 @@ export const nl_NL: EnTranslations = {
     "characterNamePlaceholder": "Personagenaam",
     "enterWorld": "Wereld betreden",
     "offlineCharacter": "Offline personage",
+    "offlineSave": {
+      "continueHint": "Saved here: {name}, level {level} {cls}. Enter World to continue.",
+      "replaceWarning": "This replaces your saved character {name}, level {level} {cls}, and it cannot be undone. Press Enter World again to confirm."
+    },
     "create": "Aanmaken",
     "twoFactorLabel": "Authenticatiecode",
     "twoFactorPlaceholder": "6-cijferige of herstelcode",

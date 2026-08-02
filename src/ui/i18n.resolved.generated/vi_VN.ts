@@ -319,6 +319,12 @@ export const vi_VN: EnTranslations = {
     "spectate": {
       "banner": "Đang xem {name}"
     },
+    "offlineSave": {
+      "saved": "Character saved.",
+      "failed": "Could not save your character. Your browser refused the write.",
+      "blocked": "Not saving: another character holds the offline save slot.",
+      "unavailable": "Not saving: this browser has no storage available for the offline character."
+    },
     "readyCheck": {
       "prompt": "{name} đã bắt đầu kiểm tra sẵn sàng. Bạn đã sẵn sàng chưa?",
       "ready": "Sẵn Sàng",
@@ -4426,6 +4432,10 @@ export const vi_VN: EnTranslations = {
     "characterNamePlaceholder": "Tên nhân vật",
     "enterWorld": "Vào Thế Giới",
     "offlineCharacter": "Nhân Vật Ngoại Tuyến",
+    "offlineSave": {
+      "continueHint": "Saved here: {name}, level {level} {cls}. Enter World to continue.",
+      "replaceWarning": "This replaces your saved character {name}, level {level} {cls}, and it cannot be undone. Press Enter World again to confirm."
+    },
     "create": "Tạo",
     "twoFactorLabel": "Mã xác thực",
     "twoFactorPlaceholder": "Mã 6 chữ số hoặc mã khôi phục",

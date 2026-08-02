@@ -11,6 +11,15 @@ export const hudChromeStrings = {
   spectate: {
     banner: 'Spectating {name}',
   },
+  // Offline autosave feedback. A save the player cannot see is a save they
+  // cannot trust, so the first save of a session and every deliberate
+  // Escape-Escape save say so, and every way saving can fail says so louder.
+  offlineSave: {
+    saved: 'Character saved.',
+    failed: 'Could not save your character. Your browser refused the write.',
+    blocked: 'Not saving: another character holds the offline save slot.',
+    unavailable: 'Not saving: this browser has no storage available for the offline character.',
+  },
   // Raid/party ready-check prompt (the leader ran /ready). The buttons answer the
   // yes/no prompt; the outcome is announced in chat by the sim.
   readyCheck: {

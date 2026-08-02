@@ -1074,7 +1074,8 @@
               <div class="char-create">
                 <label for="char-name" class="auth-label" data-i18n="auth.characterName">Character Name</label>
                 <div class="char-input-group">
-                  <input id="char-name" maxlength="16" data-i18n-placeholder="auth.characterNamePlaceholder" placeholder="Character name" value="" aria-describedby="offline-error" autocomplete="off" />
+                  <input id="char-name" maxlength="16" data-i18n-placeholder="auth.characterNamePlaceholder" placeholder="Character name" value="" aria-describedby="offline-saved-note offline-error" autocomplete="off" />
+                  <div id="offline-saved-note" class="auth-note" aria-live="polite"></div>
                   <div id="offline-error" class="auth-error" aria-live="polite"></div>
                 </div>
                 <div class="mini-class-row">

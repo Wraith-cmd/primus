@@ -1,11 +1,14 @@
 # IP Pivot Refactor — session briefs
 
-> STATUS: COMPLETE (verified 2026-08-02). Every session below has shipped and merged to `main`:
-> the gate (G0), the locked NAME-MAP (G1), all six rename tracks (V1/V2/C1/C2/W1/W2), the text
-> de-brand (T1), and the finale (Z1). `tests/ip_scrub.test.ts` is green on `main` and a static
-> scan finds zero verbatim-WoW names in any player-visible field; the coined ids are swept. This
-> package is retained as a HISTORICAL RECORD of how the pivot was run, not a live worklist. See
-> `02-WORKING-MEMORY.md` for the reconciled per-session status board.
+> STATUS: CODE RENAME COMPLETE; RESIDUALS OPEN (verified 2026-08-02). The rename tracks
+> (V1/V2/C1/C2/W1/W2), the gate (G0), the map (G1), and the text de-brand (T1) shipped and merged
+> to `main`; `tests/ip_scrub.test.ts` is green there. That scanner covers the sim content `.name`
+> fields plus the resolved-English i18n table ONLY. Two player-visible surfaces the scanner does
+> NOT cover STILL ship denied names and remain open (the Z1 finale is not fully done): stale
+> non-English locale-overlay prose (e.g. `src/ui/i18n.locales/id_ID.ts` `guide.abilityHook.brain_freeze`
+> = "Frostbolt") and the MediaWiki seed `mediawiki/seed/pages.xml` (page names like "Heroic Strike
+> (Ability)", "Bristleback Hides"). See `02-WORKING-MEMORY.md` for the reconciled board and the
+> residual worklist.
 
 Goal: strip every player-visible Blizzard / World of Warcraft IP name out of the game
 (spell/ability names, talent + spec names, Blizzard-original creatures, a few item and

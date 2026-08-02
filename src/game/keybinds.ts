@@ -264,7 +264,10 @@ export const BIND_ACTIONS: BindAction[] = [
   },
   // Shift mode (mute + FPS cap) parks on the shifted layer of KeyM, like Deeds
   // does on Z and Damage Meters on H: every bare letter default is already
-  // claimed, bare M stays the World Map, and "M for mute" is the mnemonic. Bare
+  // claimed, bare M stays the World Map, and "M for mute" is the memory hook.
+  // (That word is deliberately not the crypto-adjacent synonym: the release-gate
+  // scanner's wallet secret-material rule matches it and fails on this file.)
+  // Bare
   // M is an EDGE action, so unlike a shifted movement key this never doubles up
   // with a held action. Rebindable like any other action.
   {

@@ -604,6 +604,18 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
       {
         "id": "sacred_bulwark",
         "name": "Sacred Bulwark"
+      },
+      {
+        "id": "redemption",
+        "name": "Rite of Dawn"
+      },
+      {
+        "id": "blessing_of_wisdom",
+        "name": "Oath of Insight"
+      },
+      {
+        "id": "seal_of_the_crusader",
+        "name": "Zealbrand"
       }
     ],
     "model": "player_paladin",
@@ -726,6 +738,14 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
       {
         "id": "counter_shot",
         "name": "Hushing Shot"
+      },
+      {
+        "id": "hunters_mark",
+        "name": "Quarry Mark"
+      },
+      {
+        "id": "immolation_trap",
+        "name": "Scorchsnare"
       }
     ],
     "model": "player_hunter",
@@ -961,6 +981,14 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "name": "Mindfracture"
       },
       {
+        "id": "resurrection",
+        "name": "Rite of Return"
+      },
+      {
+        "id": "inner_fire",
+        "name": "Emberfaith"
+      },
+      {
         "id": "heal",
         "name": "Solemn Prayer"
       },
@@ -969,8 +997,20 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "name": "Litany of Woe"
       },
       {
+        "id": "holy_fire",
+        "name": "Kindled Wrath"
+      },
+      {
+        "id": "dispel_magic",
+        "name": "Unbinding Word"
+      },
+      {
         "id": "flash_heal",
         "name": "Urgent Prayer"
+      },
+      {
+        "id": "devouring_plague",
+        "name": "Wasting Blight"
       }
     ],
     "model": "player_priest",
@@ -1069,12 +1109,36 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
         "name": "Rimebound Weapon"
       },
       {
+        "id": "purge",
+        "name": "Windscour"
+      },
+      {
+        "id": "ancestral_spirit",
+        "name": "Forebears' Call"
+      },
+      {
+        "id": "windfury_weapon",
+        "name": "Galebrand Weapon"
+      },
+      {
         "id": "ghost_wolf",
         "name": "Shadewolf"
       },
       {
+        "id": "fire_nova",
+        "name": "Emberburst"
+      },
+      {
         "id": "earthquake",
         "name": "Earthquake"
+      },
+      {
+        "id": "lesser_healing_wave",
+        "name": "Quickening Waters"
+      },
+      {
+        "id": "stormstrike",
+        "name": "Ancestral Strike"
       }
     ],
     "model": "player_shaman",
@@ -1319,6 +1383,18 @@ export const GUIDE_CLASSES: GuideClassInfo[] = [
       {
         "id": "fireball_form",
         "name": "Ember Form"
+      },
+      {
+        "id": "fire_ward",
+        "name": "Emberward"
+      },
+      {
+        "id": "remove_lesser_curse",
+        "name": "Hexbreak"
+      },
+      {
+        "id": "mana_shield",
+        "name": "Aetherguard"
       }
     ],
     "model": "player_mage",

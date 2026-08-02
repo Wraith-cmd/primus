@@ -73,6 +73,15 @@ narrative order.
 
 ## Known broken
 
+- **Offline is SINGLE SLOT and switching characters destroys the old one.**
+  There is no offline character select: online has one, offline has a single
+  create screen. The save resumes only when class AND name match, so starting a
+  mage when a druid is saved fails the resume, rolls a fresh level 1, and then
+  the autosave OVERWRITES the druid. Silently. He wants several tester
+  characters (a bear for tanking and companion work, a caster for spell and
+  animation work), so this blocks his actual workflow. Fix before he levels
+  anything he would miss: key the slot by class plus name (or add a real offline
+  character select), and never write over a save whose identity does not match.
 - Offline save reported not persisting in real play. Under investigation. It was
   verified by INJECTING a save rather than by playing, reloading and checking,
   which is exactly the test that would have caught it

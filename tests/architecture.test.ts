@@ -251,6 +251,7 @@ const UI_PURE_CORES = [
 // the same contract for the map editor's realtime terrain/water edits.
 const RENDER_PURE_CORES = [
   'src/render/arena_water_band_core.ts',
+  'src/render/palette_core.ts',
   'src/render/camera_boom_core.ts',
   'src/render/camera_director_core.ts',
   'src/render/camera_feel_core.ts',

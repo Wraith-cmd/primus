@@ -11,12 +11,20 @@
 // sees errors, absences, and state that contradicts a stated rule.
 //
 // Usage:  node scripts/playtest_soak.mjs [minutes]
-// Needs the game on :4173 (`npm run preview`) or :5173 (`npm run dev`).
+// Needs the game on :5173 (`npm run dev`). Override with GAME_URL=...
+//
+// IT MUST BE THE DEV SERVER, and this is not a preference. Run mode drives the
+// OFFLINE Sim, and `isOfflineModeAvailable` (src/game/offline_mode_gate.ts)
+// returns `import.meta.env.DEV`, so a PRODUCTION build ships no offline entry
+// point at all. Pointed at `npm run preview` on :4173 this soak cannot reach run
+// mode no matter how long it waits, and it reports the honest but deeply
+// misleading `boot:run-mode-never-booted`, i.e. it blames the game for the
+// harness looking in the wrong place. That was the default until 2026-08-02.
 
 import puppeteer from 'puppeteer-core';
 import { BROWSER_PATH } from './browser_path.mjs';
 
-const GAME_URL = process.env.GAME_URL || 'http://localhost:4173';
+const GAME_URL = process.env.GAME_URL || 'http://localhost:5173';
 const MINUTES = Number(process.argv[2] ?? 5);
 const DEADLINE = Date.now() + MINUTES * 60_000;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -67,6 +75,24 @@ try {
     .then(() => true)
     .catch(() => false);
   if (!booted) {
+    // Distinguish "the game is broken" from "the harness is looking at a build
+    // that cannot expose run mode at all". A production build gates offline mode
+    // off, so the run-mode entry point is simply absent there and waiting longer
+    // never helps. Reporting that as a game fault sent a previous session
+    // chasing a bug that did not exist.
+    const entryPresent = await page
+      .evaluate(() => !!document.querySelector('#btn-run-mode'))
+      .catch(() => false);
+    if (!entryPresent) {
+      report(
+        'harness:no-run-mode-entry',
+        'high',
+        `no run-mode entry point at ${GAME_URL}: this is almost certainly a PRODUCTION ` +
+          'build (npm run preview), where offline mode is gated off and run mode cannot ' +
+          'exist. Point the soak at the dev server (npm run dev, :5173) instead.',
+      );
+      throw new Error(`no run-mode entry at ${GAME_URL}, use the dev server`);
+    }
     report('boot:run-mode-never-booted', 'high', 'the run world never produced a player');
     throw new Error('run mode did not boot');
   }
@@ -177,7 +203,11 @@ try {
     if (lastPos && probe.pos.x === lastPos.x && probe.pos.z === lastPos.z && !probe.dead) {
       stuckFor++;
       if (stuckFor === 5) {
-        report('movement:stuck', 'medium', `position unchanged across 5 move attempts at ${JSON.stringify(probe.pos)}`);
+        report(
+          'movement:stuck',
+          'medium',
+          `position unchanged across 5 move attempts at ${JSON.stringify(probe.pos)}`,
+        );
       }
     } else {
       stuckFor = 0;

@@ -4,9 +4,27 @@ Written so a CLOUD session (claude.ai/code) can pick this up cold. The assistant
 own memory does NOT travel: it lives outside the repo, so anything that matters is
 written down here or in `ROADMAP.md`.
 
-Branch: `feature/cast-animations-and-phase1`, pushed to `origin`
-(`github.com/Wraith-cmd/primus`, public). `ROADMAP.md` stays the source of truth for
-what is next; this file is only the state of THIS session.
+**Branch: `main`.** `ROADMAP.md` stays the source of truth for what is next; this
+file is only the state of THIS session.
+
+## Read this first: the trunk was wrong, and it caused real damage
+
+Until 2026-08-02, `origin/main` was still `23819a304`, a July snapshot of UPSTREAM's
+main. None of the PRIMUS work had ever been merged into it, so `main` carried no
+`ROADMAP.md` and no handoff. Every fresh session, cloud agent, and PR defaulted to
+that branch and landed in a repo where PRIMUS did not exist.
+
+That is not hypothetical: a cloud session did exactly this, spent its run on
+upstream-flavored IP-refactor and Frontier docs, and produced work on a base 34
+commits behind. It was not malfunctioning; it was shown the wrong repo.
+
+`main` has since been fast-forwarded to the PRIMUS work and both cloud branches are
+merged into it. **Branch new work off `main`.** If you find yourself on a base with
+no `ROADMAP.md` at the repo root, stop: you are on the wrong branch.
+
+`feature/cast-animations-and-phase1` is fully merged and retired; its name had long
+since stopped describing its contents (save fixes, run mode, companions, class kits,
+party frames, and NOT cast animations, which are still blocked).
 
 ## What landed
 
@@ -47,11 +65,12 @@ The shape now:
   markup, or CSS. It takes a LIST and a role union wide enough for the delve
   companion's `scout`, so that case folds in without a rewrite.
 
-**There is parallel work in a git worktree** at
-`.claude/worktrees/agent-a2f879c459aa2103c` that solves the DELVE companion frame
-(singular, `IWorld.companionState`) on an unrelated base branch. It is unverified
-and now largely subsumed: the owner chose to build fresh and generalize. Folding
-the delve case onto `companionFrameRows` is the remaining piece.
+**The delve arm is still to fold in.** Parallel work solving the DELVE companion
+frame (singular, `IWorld.companionState`) was preserved as commit `336da757a` on the
+local branch `worktree-agent-a2f879c459aa2103c` before its worktree was retired. It
+is UNVERIFIED and built on the old base: read it as a reference for what the delve
+arm needs, do not merge it as-is. `companionFrameRows` already takes a list and a
+role union covering the delve `scout`, so folding it in should be small.
 
 Online mirrors `companionParty` from a `cparty` snapshot field, but **no realm
 sends it yet**. Offline (the primary mode for this fork) has the frames; online is

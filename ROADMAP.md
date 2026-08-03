@@ -85,6 +85,21 @@ narrative order.
 
 ## Known broken
 
+- **Two denied-name surfaces still ship, and the IP scrub does NOT cover them.**
+  Verified present 2026-08-02, after a cloud session's "IP pivot complete" banner
+  was caught overclaiming by a Codex review and walked back. `tests/ip_scrub.test.ts`
+  is green, but it covers only the sim content `.name` fields plus the
+  resolved-English i18n table. Still carrying denied names:
+  1. Non-English locale overlays where reworded English left the row stale, e.g.
+     `src/ui/i18n.locales/id_ID.ts` `guide.abilityHook.brain_freeze` reads
+     "Frostbolt ... Flurry". Maintainer/release-tier reconciliation, NOT a
+     contributor hand-edit of the overlays.
+  2. `mediawiki/seed/pages.xml` seeds 6 pages named "Frostbolt (Ability)",
+     "Heroic Strike (Ability)", "Bristleback Hides", "Slimy Murloc Scale",
+     "Elder Bristleback (Mob)", "Bristleback Maul". This one SHIPS:
+     `mediawiki/Dockerfile` copies the seed and `entrypoint.sh` imports it, so the
+     titles would go live on the player wiki.
+  Full residual list: `ip-refactor/RESIDUAL-WORKLIST.md`.
 - **Companions read as attacking everything in Keystone Run.** Reported live
   2026-08-02, NOT yet reproduced. Code reading cleared the two obvious suspects:
   the assist gate (`isPartyEngagement` in `companions/role_kit.ts`) is correct,

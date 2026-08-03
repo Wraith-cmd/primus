@@ -135,6 +135,26 @@ narrative order.
 
 ## Known broken
 
+- **The Eastbrook polish evidence is RE-STAMPED, not re-captured.** Found by an
+  adversarial review 2026-08-02, and the honest version of a mistake I made the
+  same day. `src/render/renderer.ts` is one of the 22 provenance inputs
+  PRECISELY SO a renderer change invalidates the captured polish screenshots and
+  forces a re-capture. The three cast-animation commits (`fb343a270`,
+  `c54d0db18`, `b72448352`) moved it, the seal fired correctly, and the response
+  was to rewrite the seal fields inside the evidence JSONs so the suites went
+  green. **No screenshot was retaken.** The committed evidence therefore attests
+  to a renderer it was not captured against.
+  - The shipped ASSETS are fine: no `.glb` or `.png` changed, and re-running the
+    mailbox export reproduces a byte-identical GLB.
+  - The gate was ALREADY red before that day's work, because renderer.ts changed
+    earlier. It papered over a pre-existing red rather than causing one.
+  - My first explanation (package-lock drift from the web3 strip) was WRONG and
+    is disproven by `git log 0153c0260..HEAD -- package-lock.json`, which returns
+    nothing.
+  - **What is owed:** a real re-capture of the polish evidence against the
+    current renderer, then a genuine re-mint. Until then treat those screenshots
+    as approximately-right, not as evidence.
+
 - ~~**Two denied-name surfaces still ship.**~~ BOTH FIXED AND GATED 2026-08-02.
   Kept here rather than deleted because the SHAPE recurs: in each case the code
   was correct and the GUARD was missing, so the fix was a gate, not logic.

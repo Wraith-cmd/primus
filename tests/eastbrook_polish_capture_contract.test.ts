@@ -359,12 +359,26 @@ describe('Eastbrook polish capture contract', () => {
       mode: 'composite-sha256',
       algorithm: 'sha256',
       baselineRevision: EASTBROOK_POLISH_BASELINE_REVISION,
-      // Re-minted 2026-08-02. The Eastbrook fingerprint inventories include
-      // package-lock.json, so stripping the web3 dependencies and renaming the
-      // package (c0a2ab658) moved this composite even though no pipeline input
-      // changed and every shipped GLB is byte-identical (proven: re-running the
-      // mailbox export produces no diff). Same class as the 0.30.0 version-sync
-      // re-mint in c1a7f42f1.
+      // Re-stamped 2026-08-02. READ THE CAVEAT BELOW BEFORE TRUSTING THIS.
+      //
+      // The first version of this comment blamed package-lock.json and the web3
+      // strip (c0a2ab658). That was WRONG and is disproven in one command:
+      // `git log 0153c0260..HEAD -- package-lock.json` returns zero commits, and
+      // 0153c0260 is the commit that set the previous pin, so the lockfile was
+      // already baked into it.
+      //
+      // The actual and only moved input is `src/render/renderer.ts`, across the
+      // three cast-animation commits (fb343a270, c54d0db18, b72448352).
+      // Substituting just the old renderer blob hash reproduces the old pin
+      // exactly, and no .glb or .png changed, so the shipped ASSETS are fine.
+      //
+      // CAVEAT, and the reason this is not a clean re-mint: renderer.ts is a
+      // provenance input precisely SO a renderer change invalidates the captured
+      // polish evidence and forces a re-CAPTURE. The seal fired correctly and the
+      // response was to re-stamp the seal inside the evidence files without
+      // re-capturing anything: no screenshot was retaken. The committed evidence
+      // therefore attests to a renderer it was not captured against. A real
+      // re-capture is owed; see ROADMAP.md "Known broken".
       fingerprint: 'ecf27cef041b1ede03ccfb0546d0f0355bf98f9e25bf8f39e731198488968b47',
       components: {
         captureContract: {

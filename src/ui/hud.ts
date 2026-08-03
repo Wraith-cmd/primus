@@ -12538,20 +12538,42 @@ export class Hud {
     return document.body.classList.contains('mobile-chat-open');
   }
 
+  /** Memo for `companionDisplayName`, keyed by what the label actually depends on
+   *  (template + role + language). Resolving it is 3 `t()` calls plus a `tEntity`,
+   *  and it is asked for TWICE per companion per frame (signature, then rows), so
+   *  uncached it is roughly 24 i18n lookups a frame forever to produce a string
+   *  that only changes on a language switch. The per-frame contract in
+   *  `src/ui/CLAUDE.md` requires eliding the expensive RESOLVE, not just the write. */
+  private companionNameMemo = new Map<string, string>();
+
+  /** Bound once, not rebuilt per frame: `updatePartyFrames` hands this to both the
+   *  signature and the row builder, and an arrow allocated at the call site would
+   *  be one more object of steady-state garbage per frame. */
+  private readonly companionNameOf = (companion: CompanionFrameSource): string =>
+    this.companionDisplayName(companion);
+
   /** A hired companion's localized frame label. The party is built from two mob
    *  templates, so the role is what tells three otherwise identically named rows
    *  apart. */
   private companionDisplayName(companion: CompanionFrameSource): string {
+    // The template id, not the entity id: two companions sharing a template share
+    // a label, which is the whole reason the role is in it.
+    const templateId = this.sim.entities.get(companion.entityId)?.templateId ?? '';
+    const key = `${getLanguage()}|${templateId}|${companion.role}`;
+    const memo = this.companionNameMemo.get(key);
+    if (memo !== undefined) return memo;
     const roleKey =
       companion.role === 'tank'
         ? 'hudChrome.finder.roleTank'
         : companion.role === 'healer'
           ? 'hudChrome.finder.roleHealer'
           : 'hudChrome.finder.roleDps';
-    return t('hudChrome.partyFrames.companionNamed', {
-      name: mobDisplayName(this.sim.entities.get(companion.entityId)?.templateId ?? ''),
+    const label = t('hudChrome.partyFrames.companionNamed', {
+      name: mobDisplayName(templateId),
       role: t(roleKey),
     });
+    this.companionNameMemo.set(key, label);
+    return label;
   }
 
   private updatePartyFrames(): void {
@@ -12562,23 +12584,10 @@ export class Hud {
     // them real party rows anyway: without one there is nothing to click, nothing to
     // hover for a mouseover heal, and no health to read when one falls.
     const companions = this.sim.companionParty?.members ?? [];
-    const nameOf = (c: CompanionFrameSource) => this.companionDisplayName(c);
-    const companionSig = companionFrameSignature(companions, nameOf, this.sim.player.pos);
-    const companionRows = companionFrameRows(companions, nameOf, this.sim.player.pos);
-    // Drop the frames below the target frame only when the measured target
-    // stack (frame + #tf-debuffs strip) actually overlaps their column: the
-    // painter keeps --party-below-target-bottom current (measuring only when
-    // its cheap key changes), and a null bottom (no target, no overlap, e.g. a
-    // dragged-away target frame) keeps the frames at their base anchor.
-    const targetShown = !!target && target.kind !== 'object';
-    const stackBottom = this.partyBelowTargetPainter.update(
-      targetShown,
-      (info?.members.length ?? 0) + companionRows.length,
-      this.isMobileLayout(),
-    );
-    this.partyFramesPainter.setBelowTarget(targetShown && stackBottom !== null);
-    // The party-frame display options, hoisted above the no-party branch because the
-    // companion rows are painted with them too.
+    const companionCount = companions.length;
+    // The party-frame display options, hoisted above BOTH branches because the
+    // companion rows are painted with them too, and because the companion
+    // signature has to encode them (see below).
     const settings = this.optionsHooks?.settings;
     const config = {
       showSelf: settings?.get('partyFrameShowSelf') ?? false,
@@ -12589,21 +12598,53 @@ export class Hud {
       healthText: Math.round(settings?.get('partyFrameHealthText') ?? 1) as 0 | 1 | 2 | 3,
       sort: Math.round(settings?.get('partyFrameSort') ?? 0) as 0 | 1 | 2,
     };
+    // The config tail matters: `sync()` RENDERS from it, so a signature that omits
+    // it leaves a solo-with-companions player able to change Frame Style, Health
+    // Text, Show Resource or Show Auras and see nothing happen until a companion's
+    // health or position happens to move. `partyFrameSignature` encodes the same
+    // tail for exactly this reason.
+    const configTail = `|${config.showResource ? 1 : 0}${config.showAbsorbs ? 1 : 0}${config.showAuras ? 1 : 0}:${config.presentation}:${config.healthText}:${config.sort}`;
+    const nameOf = this.companionNameOf;
+    const companionSig = companionCount
+      ? companionFrameSignature(companions, nameOf, this.sim.player.pos) + configTail
+      : '';
+    // The ROWS are built lazily, past the signature short-circuit: building them
+    // here would allocate an array plus one object per companion on every
+    // steady-state frame, the exact garbage the hoisted-signature comment below
+    // exists to avoid for the human members.
+    // Drop the frames below the target frame only when the measured target
+    // stack (frame + #tf-debuffs strip) actually overlaps their column: the
+    // painter keeps --party-below-target-bottom current (measuring only when
+    // its cheap key changes), and a null bottom (no target, no overlap, e.g. a
+    // dragged-away target frame) keeps the frames at their base anchor.
+    const targetShown = !!target && target.kind !== 'object';
+    const stackBottom = this.partyBelowTargetPainter.update(
+      targetShown,
+      (info?.members.length ?? 0) + companionCount,
+      this.isMobileLayout(),
+    );
+    this.partyFramesPainter.setBelowTarget(targetShown && stackBottom !== null);
     if (!info) {
       // No social party. A solo player with hired companions still gets their frames,
       // so the companions can be selected and healed; with neither, clear only on the
       // transition out (matching the inline `innerHTML !== ''` guard) so a persistently
       // frame-less HUD does no per-frame work.
       this.partyFramesPainter.setCollapse(
-        companionRows.length > 0,
+        companionCount > 0,
         this.isMobileLayout(),
         this.partyCollapsed,
         this.isMobileChatOpen(),
       );
       if (this.lastPartySig !== companionSig) {
         this.lastPartySig = companionSig;
-        if (companionRows.length > 0) this.partyFramesPainter.sync(companionRows, 0, false, config);
-        else this.partyFramesPainter.clear();
+        if (companionCount > 0) {
+          this.partyFramesPainter.sync(
+            companionFrameRows(companions, nameOf, this.sim.player.pos),
+            0,
+            false,
+            config,
+          );
+        } else this.partyFramesPainter.clear();
       }
       if (this.lootSettingsOpen) this.closeLootSettings();
       this.lastLootSettingsSig = '';
@@ -12662,7 +12703,14 @@ export class Hud {
     );
     // Companions paint after the human members: they are the tail of the group, and a
     // stable order keeps the pooled rows from reshuffling as one is hired or falls.
-    this.partyFramesPainter.sync(others.concat(companionRows), info.leader, info.raid, config);
+    this.partyFramesPainter.sync(
+      companionCount
+        ? others.concat(companionFrameRows(companions, nameOf, this.sim.player.pos))
+        : others,
+      info.leader,
+      info.raid,
+      config,
+    );
     // Re-dock the Loot Settings panel below the (just re-synced) party frames when their
     // size changes (row count / raid grouping). Gated so the layout measure runs on a real
     // geometry change, not every combat tick; positionLootSettingsPanel honors a manual drag.

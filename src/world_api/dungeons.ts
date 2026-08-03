@@ -35,8 +35,9 @@ export interface CompanionPartyInfo {
 
 export interface IWorldDungeons {
   // The hired companion party, or null when none is standing with the player. Drives
-  // the companion party frames; without it a hired companion cannot be clicked,
-  // healed, or resurrected.
+  // the companion party frames; without it a hired companion cannot be clicked or
+  // healed. NOT resurrected: a dead companion is reaped from the roster on the tick
+  // it dies, so there is never a corpse to select.
   companionParty: CompanionPartyInfo | null;
   enterDungeon(dungeonId: string): WorldInteractionOutcome;
   leaveDungeon(): WorldInteractionOutcome;

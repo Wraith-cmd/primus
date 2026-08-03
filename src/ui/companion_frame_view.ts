@@ -3,8 +3,12 @@
 // A hired companion is a MOB with an `ownerId`, never a member of the social party
 // system, so `IWorld.partyInfo` never contains one and the party frames built no row
 // for any of them. That is the reported bug: four companions hired, zero party frames
-// in the DOM, so a healer could not click, hover, or heal their own party, and a
-// fallen companion could not be resurrected because there was nothing to select.
+// in the DOM, so a healer could not click, hover, or heal their own party.
+//
+// NOT resurrection, despite the obvious analogy: `updateCompanionParties` reaps a
+// dead companion in the same tick it dies and `dropEntityFromRoster` deletes the
+// entity outright, so no corpse ever survives to be selected. The `dead` field
+// below is therefore defensive only, and in practice always 0.
 //
 // This core maps a companion onto the SAME PartyFrameMember shape the existing party
 // frames already paint, so a companion becomes a real party row with no new painter,

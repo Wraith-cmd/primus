@@ -85,10 +85,13 @@ Three reported live. Triage matters more than the list:
 2. **Auto-hire on run entry, and a tank owner got a tank.** NOT bugs. This is the
    feature as built, and the reasoning plus the open design question are recorded
    under Decided in `ROADMAP.md`. Do not change it without the owner's answer.
-3. **Companions read as attacking everything.** The only real open defect, and NOT
-   yet reproduced. See Known broken in `ROADMAP.md` for the cleared suspects and
-   the leading hypothesis. Reproduce with a headless Vitest against the real Sim
-   before touching behavior.
+3. **Companions read as attacking everything.** REPRODUCED AND DIAGNOSED later
+   the same day (`a3ad80494`, `tests/companion_run_mode_aggro.test.ts`). Not a
+   defect: the assist gate holds, and through a real tick a wandering hostile
+   aggros a COMPANION on proximity, the companions retaliate correctly, and the
+   owner is dragged into a fight they never started. Cause is WHERE run mode
+   hires (`companionsAnywhere` puts the party in the open world). The remaining
+   question is a design one and is in `ROADMAP.md`.
 
 ## Remote playtesting
 
@@ -108,9 +111,37 @@ Making a deployed build able to opt into offline mode would need the gate to tak
 build-time flag. That puts an unauthenticated mode on a public URL, so it is the
 owner's decision and has NOT been made.
 
-## Pre-existing red, do not attribute it to this work
+## The pre-existing red (now fixed)
 
-`tests/i18n_completeness.test.ts` fails on 35 `mode.run*` rows: the run-mode feature
-(`729d4ffad`, previous session) shipped wordy English keys without their five
-non-Latin fills, which the M16 rule requires. It was already red at
-`9f5693283~1`. Fixing it is 7 keys times 5 locales.
+FIXED the same day (`a155200f8`): the 7 `mode.run*` keys were filled across the
+five non-Latin locales and `tests/i18n_completeness.test.ts` is green. Left here
+as the record of why an always-on gate must not be allowed to sit red: while it
+was, it could not catch a NEW leak, which is exactly how the Flurry one hid.
+
+## End-of-session state, 2026-08-02
+
+The build is GREEN: `npm run gate` passes all 11 steps (19,733 unit + 65 browser
+tests, plus 22 DB integration tests once `npm run db:up` is running, which the
+gate now loads `TEST_DATABASE_URL` for). Everything is committed and pushed to
+`main`.
+
+**Verified by robot playtest, not just by unit test:** `scripts/playtest_soak.mjs`
+against the dev server reports 4 companions and 4 party frames with zero
+findings, so the companion-frames fix works in a real DOM, and companions do not
+pull unprovoked.
+
+**Seven reviewers audited the day's diff at the end of the session.** Their real
+findings are all either fixed or recorded in `ROADMAP.md` "Known broken". Three
+are worth knowing before you touch anything:
+
+1. The dev Command Center bricks on non-English production builds (from the
+   merged cloud commit). Highest severity open item.
+2. The Eastbrook polish evidence was RE-STAMPED, not re-captured. A real
+   re-capture is owed.
+3. `ClientWorld.companionParty` is dead wire; online `/hire` gets no frames.
+
+**Tooling installed this session** (none of it in the repo, so a fresh machine
+needs it again): Docker + Postgres on :5433, Blender, Playwright chromium,
+coreutils (`gtimeout`), cloudflared. `.env` is gitignored and holds only local
+dev values; recreate it from `.env.example` if absent, and the gate will tell you
+which mode it is in.

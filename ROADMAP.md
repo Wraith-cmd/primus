@@ -69,15 +69,23 @@ narrative order.
    clips at BUILD time (`anim.dispose()` in `scripts/assets/build_assets.mjs`),
    so the casting problem is a build filter, not an art ceiling.
    **Corrected 2026-08-02, this entry was wrong in two ways:**
-   - It said the build "already merges" the 133 to 161 clips. It does not:
-     `tmp/asset_src/` DOES NOT EXIST on this machine (gitignored, never
-     committed). There is nothing to merge, so the effort estimate assumed a
-     starting point that is not there. Download the CC0 KayKit packs from
-     kaylousberg.itch.io FIRST; that is the actual blocker.
+   - The MERGE IS IMPLEMENTED and configured (`characters_v2.json` `addClipsFrom`
+     names six `Rig_Medium_*.glb` libraries; `build_assets.mjs` runs
+     `mergeDocuments` and re-points every merged channel onto the character's
+     bones). Only the SOURCE FILES are missing, which is a different and much
+     smaller claim than the earlier "there is nothing to merge".
+   - `tmp/asset_src/kaykit/` now EXISTS: the CC0 GitHub packs (Adventures 1.0,
+     Skeletons 1.0) were cloned 2026-08-02. Still absent and still the blocker:
+     the `KayKit Character Animations` pack (the `Rig_Medium_*` libraries),
+     plus `KayKit Adventurers 2.0` (Druid, Ranger) and `Paladin`. Those three
+     are itch.io downloads; see `tmp/asset_src/kaykit/DROP_PACKS_HERE.txt`.
    - Widening `keepClips` is the WRONG fix even with the sources. All 8 player
-     GLBs carry a byte-identical 147 KiB of the same 22 clips, so 1.15 MiB of
-     the build is duplication and widening multiplies it by 8, against a
-     `models/chars` group already about 6 MiB over budget. The right shape is
+     GLBs carry byte-identical clip data (verified: 22 clips each, identical
+     hash over names, sampler arrays and channel targets). Corrected numbers,
+     the first version of this entry understated it by about half: 306.6 KiB of
+     meshopt-compressed animation per GLB, so roughly 2.1 MiB of the shipped
+     build is pure duplication, against a `models/chars` group already about
+     6 MiB over budget. The right shape is
      ONE shared `rig_medium_anims.glb` referenced through `VisualDef.animUrls`,
      the pattern the hunter's bow (`bow_anims.glb`) already uses.
    See `docs/design/wow-fidelity-research.md`.
@@ -146,6 +154,32 @@ narrative order.
 
 ## Known broken
 
+- **The dev Command Center bricks on a non-English PRODUCTION build (HIGH).**
+  Found 2026-08-02 reviewing `ebb02d52e`, the cloud-session commit merged into
+  main that day. It added 9 English-only `devCommand.*` keys, which land as
+  `pending` in all 19 non-en locales, and `t()` HARD-FAILS on a pending key when
+  `isReleaseBuild()`. So on a hosted dev realm with `ALLOW_DEV_COMMANDS=1`
+  serving a `vite build`, a non-English tester opens `/dev gui`, clicks
+  Scenarios or Progress, and `render()` throws mid-template: the markup is never
+  assigned, the tab looks dead, and because `this.category` already mutated
+  EVERY later render throws too. The window is bricked until reload.
+  Invisible at PR tier by construction, and the next `release/**` branch will
+  hard-fail on it. Fix: supply the 9 locale fills, or exempt `devCommand.*` from
+  the pending hard-fail in `t()` rather than only from the M16 leak guard.
+- **`ClientWorld.companionParty` is dead wire.** The decoder reads `s.cparty`
+  (`src/net/online.ts`) but NO server code emits it, so an online player who
+  `/hire`s gets zero party frames while offline players get them. Offline-only
+  is arguably fine (the server has no `recruitCompanion` handler at all), but
+  the seam contract says implement both worlds in the same change, so either
+  add the snapshot field or drop the decoder and say online is unsupported.
+- **Windfury makes Rockbiter R3 dead content (balance, owner's call).** After the
+  2026-08-02 kit change windfury R1 is +16 for 30 mana at level 16; rockbiter R3
+  is +14 for 45 at the same level. Strictly better and cheaper, so rockbiter R3
+  is obsolete the moment it is trainable. All four imbues feed the same flat
+  `imbueBonus`, so there is no compensating niche. The old +12 preserved a real
+  cheap-versus-strong tradeoff. `tests/class_kit_completion.test.ts` pins only
+  "stronger than rockbiter R3", so the pin cannot catch this.
+
 - **The Eastbrook polish evidence is RE-STAMPED, not re-captured.** Found by an
   adversarial review 2026-08-02, and the honest version of a mistake I made the
   same day. `src/render/renderer.ts` is one of the 22 provenance inputs
@@ -211,9 +245,6 @@ narrative order.
 - Offline save reported not persisting in real play. Under investigation. It was
   verified by INJECTING a save rather than by playing, reloading and checking,
   which is exactly the test that would have caught it
-- Ability DESCRIPTION i18n does not resolve through the overlay key path
-  (`entities.abilities.<id>.description` is absent from the generated bundle,
-  including for existing abilities). Blocks the M16 guard on all new content
 
 ## Working agreements
 
@@ -222,4 +253,10 @@ narrative order.
   `/dev` set locally by design, which is the supported way to test at level
 - Prefer `npx vitest run tests/<file>` while iterating. The full suite is about
   20,000 tests and saturates every core
-- To playtest without hot reload interference: `npm run build && npm run preview`
+- To playtest RUN MODE or anything offline, use `npm run dev` (:5173). Corrected
+  2026-08-02: the old advice here was `npm run build && npm run preview`, which
+  CANNOT WORK for those. `isOfflineModeAvailable` returns `import.meta.env.DEV`,
+  so a production build ships no offline entry point and run mode rides the
+  offline Sim. `scripts/playtest_soak.mjs` defaulted to the preview port for the
+  same reason and reported the game as broken. Preview is still right for testing
+  a production build itself (online mode, the marketing shell)

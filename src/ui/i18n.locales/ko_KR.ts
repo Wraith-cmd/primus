@@ -878,6 +878,13 @@ export const ko_KR: Partial<Record<TranslationKey, string>> = {
     '월드에 로그인합니다. 생성한 캐릭터는 서버에 저장되며 온라인에 있는 다른 모든 플레이어와 같은 세상을 공유합니다.',
   'mode.onlineAria': '온라인 플레이: 지속적으로 공유되는 월드에 로그인합니다',
   'mode.offlineTitle': '오프라인 플레이',
+  'mode.runStart': '공략 시작',
+  'mode.runParty': '당신의 파티: 방어 전담, 치유 전담, 공격 전담, 공격 전담.',
+  'mode.runDungeon': '던전',
+  'mode.runTitle': '쐐기돌 공략',
+  'mode.runDesc': '레벨을 올릴 필요 없는 20분짜리 던전 공략입니다. 직업만 고르면 최고 레벨에 장비를 갖춘 채 입구에 도착하며, 방어 전담 1명, 치유 전담 1명, 공격 전담 2명이 이미 고용되어 있습니다.',
+  'mode.runAria': '쐐기돌 공략: 최고 레벨로 동료 파티와 함께 던전에 입장합니다',
+  'mode.runCta': '쐐기돌 공략',
   'mode.offlineDesc':
     '브라우저에서 즉시 일인용 세상을 플레이합니다. 아무것도 저장되지 않아 빠른 전투나 연습에 적합합니다.',
   'mode.offlineAria': '오프라인 플레이: 즉각적인 로컬 싱글 플레이 세션을 시작합니다',

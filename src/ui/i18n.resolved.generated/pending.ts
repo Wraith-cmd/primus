@@ -428,14 +428,7 @@ export const pending: Record<string, readonly string[]> = {
     "devCommand.actions.vendor.description",
     "devCommand.actions.vendor.label",
     "devCommand.fields.craft",
-    "hudChrome.partyFrames.companionNamed",
-    "mode.runAria",
-    "mode.runCta",
-    "mode.runDesc",
-    "mode.runDungeon",
-    "mode.runParty",
-    "mode.runStart",
-    "mode.runTitle"
+    "hudChrome.partyFrames.companionNamed"
   ],
   "zh_TW": [
     "devCommand.actions.cascade.description",
@@ -447,14 +440,7 @@ export const pending: Record<string, readonly string[]> = {
     "devCommand.actions.vendor.description",
     "devCommand.actions.vendor.label",
     "devCommand.fields.craft",
-    "hudChrome.partyFrames.companionNamed",
-    "mode.runAria",
-    "mode.runCta",
-    "mode.runDesc",
-    "mode.runDungeon",
-    "mode.runParty",
-    "mode.runStart",
-    "mode.runTitle"
+    "hudChrome.partyFrames.companionNamed"
   ],
   "ko_KR": [
     "devCommand.actions.cascade.description",
@@ -466,14 +452,7 @@ export const pending: Record<string, readonly string[]> = {
     "devCommand.actions.vendor.description",
     "devCommand.actions.vendor.label",
     "devCommand.fields.craft",
-    "hudChrome.partyFrames.companionNamed",
-    "mode.runAria",
-    "mode.runCta",
-    "mode.runDesc",
-    "mode.runDungeon",
-    "mode.runParty",
-    "mode.runStart",
-    "mode.runTitle"
+    "hudChrome.partyFrames.companionNamed"
   ],
   "ja_JP": [
     "devCommand.actions.cascade.description",
@@ -485,14 +464,7 @@ export const pending: Record<string, readonly string[]> = {
     "devCommand.actions.vendor.description",
     "devCommand.actions.vendor.label",
     "devCommand.fields.craft",
-    "hudChrome.partyFrames.companionNamed",
-    "mode.runAria",
-    "mode.runCta",
-    "mode.runDesc",
-    "mode.runDungeon",
-    "mode.runParty",
-    "mode.runStart",
-    "mode.runTitle"
+    "hudChrome.partyFrames.companionNamed"
   ],
   "pt_BR": [
     "auth.offlineSave.continueHint",
@@ -572,14 +544,7 @@ export const pending: Record<string, readonly string[]> = {
     "devCommand.actions.vendor.description",
     "devCommand.actions.vendor.label",
     "devCommand.fields.craft",
-    "hudChrome.partyFrames.companionNamed",
-    "mode.runAria",
-    "mode.runCta",
-    "mode.runDesc",
-    "mode.runDungeon",
-    "mode.runParty",
-    "mode.runStart",
-    "mode.runTitle"
+    "hudChrome.partyFrames.companionNamed"
   ],
   "cs_CZ": [
     "auth.offlineSave.continueHint",

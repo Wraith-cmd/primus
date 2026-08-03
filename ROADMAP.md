@@ -193,6 +193,19 @@ narrative order.
   - **What is owed:** a real re-capture of the polish evidence against the
     current renderer, then a genuine re-mint. Until then treat those screenshots
     as approximately-right, not as evidence.
+  - **Attempted 2026-08-03 and BACKED OUT, read this before trying again.** The
+    pipeline itself works: `capture_ingame.mjs` drove the live client and
+    produced 23 records against the current renderer. The trap is the output
+    path. `OUT_DIR` does NOT control where the metadata lands: the run wrote
+    `docs/screenshots/eastbrook-vale-rebuild/metadata/after-desktop-ultra-town.json`,
+    which is the **rebuild-v1** evidence, and overwrote it with **polish-v2**
+    content (15 records became 23, and a `townContractId` appeared where the
+    rebuild file has none). Reverted with `git checkout --`; all 18 Eastbrook
+    suites green afterwards. Before retrying, READ the output-path logic in
+    `capture_ingame.mjs` and establish which invocation targets
+    `polish/metadata/` rather than `metadata/`. Do not guess at the flags: the
+    two contracts share a directory tree and clobbering one with the other is
+    silent.
 
 - ~~**Two denied-name surfaces still ship.**~~ BOTH FIXED AND GATED 2026-08-02.
   Kept here rather than deleted because the SHAPE recurs: in each case the code

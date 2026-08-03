@@ -36,8 +36,23 @@ evidence for it lives.
   a five-man with two tanks and one healer. **Open question for the owner:**
   should run mode fill around the owner's role like `/hire` does, which would
   mean rewording the mode description? Do not "fix" this without that answer.
-- **No Blizzard assets, names, music, or extracted content.** Mechanics and
-  aesthetic direction are fair game and are where the feel actually lives
+- **No Blizzard asset files, soundtrack audio, or extracted content.** Mechanics
+  and aesthetic direction are fair game and are where the feel actually lives.
+  A Spotify subscription licenses personal streaming, not embedding in software
+- **Naming discipline RELAXED 2026-08-02 (owner's call).** The de-IP rename is
+  no longer a worklist to hunt down. Concretely:
+  - New content keeps the established convention (internal id may be the WoW
+    name, display name is original: `wrath` -> "Wildbolt", `bear_form` ->
+    "Bruin Form"). It is cheap at authoring time and the codebase is already
+    consistent.
+  - Existing coined names are NOT reverted, and the `tests/ip_scrub.test.ts`
+    gates STAY. They prevent drift back, which costs nothing now that the work
+    is done; unwinding them would mean touching content, the i18n catalog, 18
+    locale overlays, the wiki seed, and the guide for no benefit.
+  - Residual-scrub items are dropped as a priority. `ip-refactor/` is history,
+    not a backlog.
+  - The wiki-seed FRESHNESS gate is unrelated to IP and stays regardless: it
+    caught a six-week-stale generated artifact, which was a build bug
 - **Browser first**, Electron shell kept for handheld and long sessions
 
 ## Next, in value order
@@ -85,21 +100,23 @@ narrative order.
 
 ## Known broken
 
-- **Two denied-name surfaces still ship, and the IP scrub does NOT cover them.**
-  Verified present 2026-08-02, after a cloud session's "IP pivot complete" banner
-  was caught overclaiming by a Codex review and walked back. `tests/ip_scrub.test.ts`
-  is green, but it covers only the sim content `.name` fields plus the
-  resolved-English i18n table. Still carrying denied names:
-  1. Non-English locale overlays where reworded English left the row stale, e.g.
-     `src/ui/i18n.locales/id_ID.ts` `guide.abilityHook.brain_freeze` reads
-     "Frostbolt ... Flurry". Maintainer/release-tier reconciliation, NOT a
-     contributor hand-edit of the overlays.
-  2. `mediawiki/seed/pages.xml` seeds 6 pages named "Frostbolt (Ability)",
-     "Heroic Strike (Ability)", "Bristleback Hides", "Slimy Murloc Scale",
-     "Elder Bristleback (Mob)", "Bristleback Maul". This one SHIPS:
-     `mediawiki/Dockerfile` copies the seed and `entrypoint.sh` imports it, so the
-     titles would go live on the player wiki.
-  Full residual list: `ip-refactor/RESIDUAL-WORKLIST.md`.
+- ~~**Two denied-name surfaces still ship.**~~ BOTH FIXED AND GATED 2026-08-02.
+  Kept here rather than deleted because the SHAPE recurs: in each case the code
+  was correct and the GUARD was missing, so the fix was a gate, not logic.
+  1. The `guide.abilityHook.brain_freeze` prose named the renamed `fc_flurry`
+     (Flurry -> Winterlash) in ENGLISH, and five overlays carried it through.
+     Two scanner gaps let it hide: a single-word denylist entry only matches a
+     whole field value (so a name inside a sentence is invisible), and guide
+     prose was never prose-scanned at all. Both now covered in
+     `tests/ip_scrub.test.ts`.
+  2. `mediawiki/seed/pages.xml` was a COMMITTED GENERATED artifact last built
+     2026-06-16, so it kept seeding pre-rename page titles onto a wiki that
+     ships. Fixed by `npm run wiki:seed` (never hand-edit it). It had no
+     freshness gate while `wiki:content` did, which is exactly why one rotted
+     and the other did not; it now has both a de-IP and a staleness gate. The
+     de-IP gate reports 106 denylisted titles against the pre-fix file, against
+     the 6 a hand-written grep found: gate with the armed denylist, never by eye.
+  Remaining residuals, if any, are tracked in `ip-refactor/RESIDUAL-WORKLIST.md`.
 - **Companions read as attacking everything in Keystone Run. DIAGNOSED, and it
   is not a defect.** Reproduced 2026-08-02 in `tests/companion_run_mode_aggro.test.ts`.
   The assist gate is intact: driven directly, companions leave an unengaged

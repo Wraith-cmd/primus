@@ -1324,9 +1324,11 @@ export class ClientWorld implements IWorld {
   // applyLockpickEvent. delveClears is a NON-IWorld mirror behind delveShopOffers. ---
   delveRun: DelveRunInfo | null = null;
   companionState: DelveCompanionInfo | null = null;
-  // The hired dungeon companions. Mirrored from the `cparty` snapshot field; a realm
-  // that does not send it leaves this null and the companion frames simply absent,
-  // which is the pre-existing online behavior rather than a regression.
+  // The hired dungeon companions, mirrored from the `cparty` snapshot field
+  // (`server/game.ts`, next to `dcompanion`). `/hire` is an ordinary chat verb
+  // rather than a dev command, so an online player really can raise a party and
+  // needs this to get party frames. Delta-omitted like its siblings: keep the prior
+  // value when the field is absent, and `null` means genuinely no party.
   companionParty: CompanionPartyInfo | null = null;
   // Lockpicking: rebuilt from the lockpick* events (there is no snapshot field).
   // Holds only the fog-windowed cells the server discloses.

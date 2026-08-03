@@ -5872,6 +5872,13 @@ export class GameServer {
     maybe('lrollg', this.sim.lootRollGroupStatus(anchorSession.pid));
     maybe('drun', this.sim.delveRunWire(anchorSession.pid));
     maybe('dcompanion', this.sim.delveCompanionWire(anchorSession.pid));
+    // The hired /hire companion party. `/hire` is an ordinary chat verb, not a dev
+    // command, so an online player can raise a party and the client needs it to
+    // build their party frames; without this field ClientWorld.companionParty stays
+    // null forever and online players get no frames while offline players do.
+    // Per-tick like its siblings: companion health moves from outside this session's
+    // own commands, and the payload is null for the overwhelming majority of players.
+    maybe('cparty', this.sim.companionPartyFor(anchorSession.pid));
     maybe('dmarks', this.sim.delveMarksFor(anchorSession.pid));
     maybe('dcomp', this.sim.companionUpgradesFor(anchorSession.pid));
     maybe('dclears', this.sim.delveClearsFor(anchorSession.pid));
@@ -6861,6 +6868,7 @@ export class GameServer {
   private resyncDelves(session: ClientSession): void {
     delete session.lastSent.drun;
     delete session.lastSent.dcompanion;
+    delete session.lastSent.cparty;
     delete session.lastSent.dmarks;
     delete session.lastSent.dcomp;
     delete session.lastSent.dclears;

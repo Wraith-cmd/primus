@@ -166,12 +166,6 @@ narrative order.
   Invisible at PR tier by construction, and the next `release/**` branch will
   hard-fail on it. Fix: supply the 9 locale fills, or exempt `devCommand.*` from
   the pending hard-fail in `t()` rather than only from the M16 leak guard.
-- **`ClientWorld.companionParty` is dead wire.** The decoder reads `s.cparty`
-  (`src/net/online.ts`) but NO server code emits it, so an online player who
-  `/hire`s gets zero party frames while offline players get them. Offline-only
-  is arguably fine (the server has no `recruitCompanion` handler at all), but
-  the seam contract says implement both worlds in the same change, so either
-  add the snapshot field or drop the decoder and say online is unsupported.
 - **Windfury makes Rockbiter R3 dead content (balance, owner's call).** After the
   2026-08-02 kit change windfury R1 is +16 for 30 mana at level 16; rockbiter R3
   is +14 for 45 at the same level. Strictly better and cheaper, so rockbiter R3

@@ -2987,6 +2987,7 @@ const ALL_DELTA_KEYS = [
   'cds',
   'corpse',
   'cosmetics',
+  'cparty',
   'cprof',
   'dclears',
   'dcomp',
@@ -3144,6 +3145,15 @@ function dirtyEveryDeltaField(): {
   // Poke the encoder's exact sources for the mutually-exclusive cases.
   const run = sim.delveRunForPlayer(lp) as any;
   run.companion = { companionId: 'companion_tessa', entityId: mp };
+  // `cparty`: a hired /hire party. Poked the same way as run.companion above,
+  // reusing the second player's entity as the member so companionPartyWire can
+  // resolve live hp/pos off a real entity rather than dropping it.
+  (sim as any).companionParties.set(lp, {
+    ownerId: lp,
+    dungeonId: 'hollow_crypt',
+    entered: false,
+    members: [{ entityId: mp, role: 'dps', level: 1 }],
+  });
   const party = (sim as any).partyOf(lp);
   (sim as any).targeting.partyMarkers.set(party.id, new Map([[mp, 3]]));
   const merchant = sim.entities.get(sim.market.merchantIds[0]);
@@ -3684,9 +3694,9 @@ describe('gather node cooldown wire round trip (ncd)', () => {
 });
 
 describe('delta-key contract pins (anti-drift)', () => {
-  it('ALL_DELTA_KEYS contains exactly 56 unique keys in sorted order', () => {
-    expect(ALL_DELTA_KEYS).toHaveLength(56);
-    expect(new Set(ALL_DELTA_KEYS).size).toBe(56);
+  it('ALL_DELTA_KEYS contains exactly 57 unique keys in sorted order', () => {
+    expect(ALL_DELTA_KEYS).toHaveLength(57);
+    expect(new Set(ALL_DELTA_KEYS).size).toBe(57);
     expect([...ALL_DELTA_KEYS]).toEqual([...ALL_DELTA_KEYS].sort());
   });
 
@@ -3705,7 +3715,7 @@ describe('delta-key contract pins (anti-drift)', () => {
     expect(scraped.has('lockouts')).toBe(true); // the multi-line call IS captured
     expect(scraped.has('vcupb')).toBe(true); // the maybeRaw calls ARE captured by the widened regex
     expect(scraped.has('dfb')).toBe(true); // incl. the multi-line maybeRaw('dfb', ...) form
-    expect(scraped.size).toBe(56);
+    expect(scraped.size).toBe(57);
     expect([...scraped].sort()).toEqual([...ALL_DELTA_KEYS].sort());
   });
 

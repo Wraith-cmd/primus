@@ -347,12 +347,42 @@ export function t(key: TranslationKey, values?: InterpolationValues): string {
     }
   }
   if (typeof current !== 'string') return onUntrackedKey(key);
-  if (PENDING_TOTAL > 0 && PENDING_SETS[currentLanguage]?.has(key) && isReleaseBuild()) {
+  if (
+    PENDING_TOTAL > 0 &&
+    PENDING_SETS[currentLanguage]?.has(key) &&
+    isReleaseBuild() &&
+    !isEnglishOnlyNamespace(key)
+  ) {
     throw new Error(
       `i18n: key "${key}" is untranslated (pending) for locale "${currentLanguage}" on a release build; English must never ship to a translated player`,
     );
   }
   return interpolate(current, values);
+}
+
+/**
+ * Namespaces that ship ENGLISH ON PURPOSE and must never hard-fail a release build.
+ *
+ * The pending hard-fail above exists so English can never reach a translated
+ * PLAYER. `devCommand.*` is not player text: it is the `/dev` cheat GUI, reachable
+ * only where `ALLOW_DEV_COMMANDS` is set, and the catalog already treats it as
+ * contributor-owned English (the same predicate gates the M16 leak check in
+ * `tests/i18n_completeness.test.ts`).
+ *
+ * Without this exemption the surface BRICKS rather than degrading: a non-English
+ * tester on a hosted dev realm serving a production bundle opens `/dev gui`, clicks
+ * a tab whose actions use a pending key, and `t()` throws mid-template so the markup
+ * is never assigned. The category has already been mutated, so every later render
+ * throws too and the window is dead until reload. Showing English on a cheat panel
+ * is strictly better than that.
+ *
+ * Keep this in lockstep with the completeness guard: both import THIS function, so
+ * the two cannot drift the way the guard's own comment did (it still claimed the
+ * command center was Vite-dev-only long after `hud.ts` began gating on
+ * `devCommandsEnabled || devCommandsAdvertised`).
+ */
+export function isEnglishOnlyNamespace(key: string): boolean {
+  return key.startsWith('devCommand.');
 }
 
 function translationValue(key: string, lang: SupportedLanguage): string | null {

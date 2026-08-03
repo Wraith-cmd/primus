@@ -13,6 +13,7 @@ import {
   fr_FR,
   hasTranslation,
   id_ID,
+  isEnglishOnlyNamespace,
   it_IT,
   ja_JP,
   ko_KR,
@@ -174,11 +175,19 @@ describe('i18n whole-catalog completeness', () => {
       'auth.emailPlaceholder', // "you@example.com" - RFC 2606 example address, kept verbatim
     ]);
     const wordy = (v: string) => /[a-z]{4,}/.test(v.replace(/\{[^}]*\}/g, ''));
-    // The command center is enabled only in Vite development builds and cannot reach
-    // a player-facing production surface. Keep its contributor-owned catalog
-    // English-only, like other developer tooling, while release localization remains
-    // strict for every namespace that ships to players.
-    const isDevelopmentOnly = (key: string) => key.startsWith('devCommand.');
+    // English-only by policy. NOTE the comment this replaced was STALE and its
+    // staleness caused a real defect: it claimed the command center "is enabled only
+    // in Vite development builds and cannot reach a player-facing production
+    // surface", but `hud.ts` gates on `devCommandsEnabled || devCommandsAdvertised`,
+    // so it DOES reach a hosted dev realm serving a production bundle. Someone read
+    // that comment, trusted it, added nine English-only keys, and shipped a surface
+    // that threw on every non-English client.
+    //
+    // The accurate reason to keep it English-only: it is the `/dev` cheat GUI, gated
+    // behind ALLOW_DEV_COMMANDS, operator tooling rather than player text.
+    // Deliberately the SAME predicate the runtime uses, imported rather than
+    // re-declared, so this guard and the release hard-fail can never disagree again.
+    const isDevelopmentOnly = isEnglishOnlyNamespace;
     const nonLatin: SupportedLanguage[] = ['zh_CN', 'zh_TW', 'ja_JP', 'ko_KR', 'ru_RU'];
     const leaks: string[] = [];
     for (const lang of nonLatin) {

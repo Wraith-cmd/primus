@@ -3000,7 +3000,7 @@ export const tr_TR: EnTranslations = {
       "ice_lance": "Don tetiklemeleri harcamaya yarayan anlık bir kıymık; donmuş hedefe çok daha sert vurur.",
       "flurry": "Hedefi soğutan ve bir sonraki don vuruşlarının donmuşmuş gibi isabet etmesini sağlayan üç hızlı ok.",
       "fingers_of_frost": "Buz okların zaman zaman bir Ice Lance'e hedef donmuş gibi vurma gücü verir.",
-      "brain_freeze": "Donma oklarınız bazen bir sonraki Flurry'yi anında yapar ve bekleme süresini atlar.",
+      "brain_freeze": "Donma oklarınız bazen bir sonraki Winterlash'i anında yapar ve bekleme süresini atlar.",
       "shatter": "Büyülerin donmuş hedeflere karşı çok daha sık kritik vurur.",
       "frozen_orb": "Düşmanları soğutan ve buz sarkıtlarını savuşturan, sürünün içinde yavaş bir küre yuvarlar.",
       "blizzard": "Tüm bir grubu yıpratmak ve yavaşlatmak için alanı buzla kaplar.",

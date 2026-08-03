@@ -118,6 +118,14 @@ const PROSE_SCAN: { entry: string; re: RegExp }[] = [
   // reworded to 'searing shadow'. Guards ability/talent description prose +
   // encounter/delve dialogue against its reintroduction.
   { entry: 'Shadow Flame (prose)', re: /\bshadow ?flame\b/i },
+  // 2026-08-02: a SINGLE-WORD denylist entry is matched only against a whole
+  // field value (scanNameValue), so that generic words (Charge, Cleave, Taunt)
+  // do not fire on ordinary prose. The cost: a single-word denied name buried
+  // in a sentence is invisible. That is how `guide.abilityHook.brain_freeze`
+  // shipped English reading "the next Flurry" long after fc_flurry was renamed
+  // to Winterlash. Case-SENSITIVE on purpose: the capitalized proper noun is
+  // the ability, while lowercase "a flurry of blows" is legitimate English.
+  { entry: 'Flurry (prose)', re: /\bFlurry\b/ },
 ];
 
 // Flags that ARM a NAME-MAP row for the scanner. `generic-keep?` rows are
@@ -455,6 +463,20 @@ function collectViolations(): Violation[] {
   // The resolved English i18n table, so a stale or hand-drifted resolved
   // layer is caught independently of the sim source.
   scanResolvedTable(en, 'i18n.en', false, out);
+
+  // The /wiki guide's ability-hook prose. scanResolvedTable name-scans every
+  // string, but only PROSE-scans entity text/completion/greeting/label, so the
+  // guide's one-line mechanic blurbs were never prose-scanned. They describe
+  // abilities by name, which is exactly where a renamed ability lingers.
+  const guideProse = (node: unknown, prefix: string): void => {
+    if (node === null || typeof node !== 'object') return;
+    for (const [key, value] of Object.entries(node as Record<string, unknown>)) {
+      const p = `${prefix}.${key}`;
+      if (typeof value === 'string') scanProseValue(p, prefix, value, out);
+      else if (typeof value === 'object') guideProse(value, p);
+    }
+  };
+  guideProse((en as Record<string, unknown>).guide, 'i18n.en.guide');
 
   return out;
 }

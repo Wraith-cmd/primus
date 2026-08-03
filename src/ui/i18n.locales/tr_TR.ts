@@ -8454,7 +8454,7 @@ export const tr_TR: Partial<Record<TranslationKey, string>> = {
   'gatherEvent.moonlitBloom': '{finder} ay ışığının aydınlattığı bir çiçek keşfetti!',
   'gatherEvent.pristineVein': '{finder} bozulmamış bir damara çarptı!',
   'guide.abilityHook.brain_freeze':
-    "Donma oklarınız bazen bir sonraki Flurry'yi anında yapar ve bekleme süresini atlar.",
+    "Donma oklarınız bazen bir sonraki Winterlash'i anında yapar ve bekleme süresini atlar.",
   'guide.abilityHook.frozen_orb':
     'Düşmanları soğutan ve buz sarkıtlarını savuşturan, sürünün içinde yavaş bir küre yuvarlar.',
   'heroicShop.buyConfirmAccept': 'Satın almak',

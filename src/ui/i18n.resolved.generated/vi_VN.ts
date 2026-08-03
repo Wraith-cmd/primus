@@ -3000,7 +3000,7 @@ export const vi_VN: EnTranslations = {
       "ice_lance": "Một mảnh lập tức để tiêu hao hiệu ứng băng, đánh mạnh hơn nhiều với mục tiêu đang đóng băng.",
       "flurry": "Ba mũi tên nhanh làm lạnh mục tiêu để các cú đánh băng tiếp theo của bạn đánh như thể nó đang đóng băng.",
       "fingers_of_frost": "Đôi khi các mũi tên băng của bạn tăng cường Ice Lance để đánh như thể mục tiêu đang đóng băng.",
-      "brain_freeze": "Các tia sương giá của bạn đôi khi tạo ra Flurry tiếp theo ngay lập tức và bỏ qua thời gian hồi chiêu của nó.",
+      "brain_freeze": "Các tia sương giá của bạn đôi khi tạo ra Winterlash tiếp theo ngay lập tức và bỏ qua thời gian hồi chiêu của nó.",
       "shatter": "Phép của bạn có tỷ lệ chí mạng cao hơn nhiều với mục tiêu đang đóng băng.",
       "frozen_orb": "Lăn một quả cầu chậm xuyên qua bầy đàn khiến kẻ địch ớn lạnh và tích tụ Băng Băng.",
       "blizzard": "Phủ băng lên một khu vực để làm hao mòn và làm chậm cả bầy.",

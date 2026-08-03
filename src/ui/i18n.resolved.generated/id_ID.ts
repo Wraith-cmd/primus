@@ -3000,7 +3000,7 @@ export const id_ID: EnTranslations = {
       "ice_lance": "Serpihan seketika untuk menghabiskan proc beku, menyerang jauh lebih keras pada target yang membeku.",
       "flurry": "Tiga baut cepat yang mendinginkan target agar pukulan beku berikutmu mendarat seolah target membeku.",
       "fingers_of_frost": "Baut bekumu terkadang memberdayakan Ice Lance agar menyerang seolah target membeku.",
-      "brain_freeze": "Frostbolt Anda terkadang membuat Flurry berikutnya menjadi instan dan melewatkan cooldownnya.",
+      "brain_freeze": "Panah es Anda terkadang membuat Winterlash berikutnya menjadi instan dan melewatkan cooldownnya.",
       "shatter": "Mantramu jauh lebih sering kritis terhadap target yang membeku.",
       "frozen_orb": "Meluncurkan bola lambat ke dalam kawanan yang membuat musuh kedinginan dan membekukan es.",
       "blizzard": "Membungkus area dengan es untuk mengikis dan memperlambat seluruh gerombolan.",

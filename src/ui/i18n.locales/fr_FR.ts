@@ -8779,7 +8779,7 @@ export const fr_FR: Partial<Record<TranslationKey, string>> = {
   'gatherEvent.moonlitBloom': '{finder} a découvert une floraison au clair de lune !',
   'gatherEvent.pristineVein': '{finder} a touché une veine vierge !',
   'guide.abilityHook.brain_freeze':
-    'Vos éclairs de givre créent parfois le prochain instant Flurry et sautent son temps de recharge.',
+    'Vos éclairs de givre rendent parfois le prochain Winterlash instantané et ignorent son temps de recharge.',
   'guide.abilityHook.frozen_orb':
     'Lance un orbe lent à travers le pack qui refroidit les ennemis et met des glaçons en banque.',
   'heroicShop.buyConfirmAccept': 'Acheter',

@@ -8620,7 +8620,7 @@ export const id_ID: Partial<Record<TranslationKey, string>> = {
   'gatherEvent.moonlitBloom': '{finder} menemukan mekarnya cahaya bulan!',
   'gatherEvent.pristineVein': '{finder} memberikan kesan yang murni!',
   'guide.abilityHook.brain_freeze':
-    'Frostbolt Anda terkadang membuat Flurry berikutnya menjadi instan dan melewatkan cooldownnya.',
+    'Panah es Anda terkadang membuat Winterlash berikutnya menjadi instan dan melewatkan cooldownnya.',
   'guide.abilityHook.frozen_orb':
     'Meluncurkan bola lambat ke dalam kawanan yang membuat musuh kedinginan dan membekukan es.',
   'heroicShop.buyConfirmAccept': 'Membeli',

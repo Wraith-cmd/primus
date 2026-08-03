@@ -3000,7 +3000,7 @@ export const en: EnTranslations = {
       "ice_lance": "An instant shard for spending frost procs, it hits far harder on a frozen target.",
       "flurry": "Three quick bolts that chill the target so your next frost hits land as if it were frozen.",
       "fingers_of_frost": "Your frost bolts sometimes empower an Ice Lance to strike as if the target were frozen.",
-      "brain_freeze": "Your frost bolts sometimes make the next Flurry instant and skip its cooldown.",
+      "brain_freeze": "Your frost bolts sometimes make the next Winterlash instant and skip its cooldown.",
       "shatter": "Your spells crit far more often against frozen targets.",
       "frozen_orb": "Rolls a slow orb through the pack that chills enemies and banks Icicles.",
       "blizzard": "Blankets an area in ice to wear down and slow a whole pack.",

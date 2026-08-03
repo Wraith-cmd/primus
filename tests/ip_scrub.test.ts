@@ -566,6 +566,82 @@ describe('ip_scrub - verbatim-WoW denylist scanner (G0)', () => {
     expect(JSON.stringify(a)).toBe(JSON.stringify(b));
   });
 
+  /** Page titles from the committed seed, XML-unescaped. `build_seed.mjs`
+   *  escapes the five XML entities, so an apostrophe ships as `&apos;` and a
+   *  raw compare against a content `.name` ("Fogbinder's Duffel") would read as
+   *  a miss on every possessive in the game. */
+  const seedTitles = (): string[] => {
+    const xml = readFileSync(path.join(root, 'mediawiki/seed/pages.xml'), 'utf8');
+    const unescapeXml = (s: string): string =>
+      s
+        .replace(/&apos;/g, "'")
+        .replace(/&quot;/g, '"')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&');
+    return [...xml.matchAll(/<title>([^<]*)<\/title>/g)].map((m) => unescapeXml(m[1]));
+  };
+
+  // The MediaWiki player-wiki seed (mediawiki/seed/pages.xml). A GENERATED
+  // artifact built from src/sim/data by scripts/mediawiki/build_seed.mjs, but
+  // COMMITTED, so it is a snapshot that goes stale the moment content changes
+  // and nobody re-runs `npm run wiki:seed`. That is exactly what happened: the
+  // seed was last built 2026-06-16, the IP pivot renamed sim content in July,
+  // and the committed seed kept seeding pages titled "Frostbolt (Ability)",
+  // "Heroic Strike (Ability)", "Slimy Murloc Scale" and more. It SHIPS
+  // (mediawiki/Dockerfile copies it, entrypoint.sh imports it), so those titles
+  // would have gone live on the player wiki.
+  //
+  // The scanner covered sim content and the resolved English table, neither of
+  // which is this file, so nothing caught it. These two cases close that hole:
+  // the first is the de-IP gate over the seed, the second is the staleness gate
+  // that would have caught it even before the rename made it an IP problem.
+  it('the player-wiki seed contains no denylisted WoW page title', () => {
+    const titles = seedTitles();
+    expect(titles.length, 'seed parsed to zero titles (the scan would be vacuous)').toBeGreaterThan(
+      0,
+    );
+    const out: Violation[] = [];
+    for (const title of titles) {
+      // NOT a spec field: `isSpecField` arms the talent-tree entries (Combat
+      // (tree), ...), and the seed's generic systems page "Combat" is the
+      // English word, not the rogue tree. Titles are ordinary display names.
+      scanNameValue('mediawiki.seed.title', title, title, false, out);
+    }
+    const summary = [...new Set(out.map((v) => `${v.denylistEntry} -> "${v.value}"`))].join('\n  ');
+    expect(
+      out,
+      `${out.length} denylisted title(s) in the committed player-wiki seed. ` +
+        `The seed is GENERATED: fix with \`npm run wiki:seed\`, never by hand-editing ` +
+        `pages.xml.\n  ${summary}`,
+    ).toEqual([]);
+  });
+
+  it('the player-wiki seed is not stale against current content', () => {
+    const titles = new Set(seedTitles());
+    // build_seed.mjs titles abilities/mobs with a kind suffix and items bare,
+    // disambiguating a collision by appending " (N)". Match on the BASE title so
+    // a legitimate duplicate name does not read as a miss.
+    const hasTitle = (base: string): boolean =>
+      titles.has(base) || [...titles].some((t) => t.startsWith(`${base} (`));
+    const missing: string[] = [];
+    for (const a of Object.values(ABILITIES)) {
+      if (!hasTitle(`${a.name} (Ability)`)) missing.push(`ability: ${a.name}`);
+    }
+    for (const m of Object.values(MOBS)) {
+      if (!hasTitle(`${m.name} (Mob)`)) missing.push(`mob: ${m.name}`);
+    }
+    for (const i of Object.values(ITEMS)) {
+      if (!hasTitle(i.name)) missing.push(`item: ${i.name}`);
+    }
+    expect(
+      missing.slice(0, 20),
+      `${missing.length} content record(s) have no page in the committed player-wiki seed, ` +
+        `so it is stale against src/sim/data. Regenerate with \`npm run wiki:seed\` and commit ` +
+        `the result (the generator is deterministic: a second run is byte-identical).`,
+    ).toEqual([]);
+  });
+
   // THE GATE. RED today by design: this failing list is the rename worklist
   // (seeded in ip-refactor/02-WORKING-MEMORY.md). The V/C/W/T tracks turn it
   // green by applying the LOCKED NAME-MAP; Z1 requires zero residual.

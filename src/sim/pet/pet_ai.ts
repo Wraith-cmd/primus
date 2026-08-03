@@ -97,8 +97,8 @@ export function updatePet(ctx: SimContext, pet: Entity): void {
   if (!target) pet.petManualTauntPending = false;
 
   if (target) {
-    // ranged demon (imp) holds its distance and hurls bolts; melee pets close
-    // in, taunt to hold threat (voidwalker tank), and swing
+    // ranged demon (emberkin) holds its distance and hurls bolts; melee pets close
+    // in, taunt to hold threat (gloomshade tank), and swing
     const ranged = MOBS[pet.templateId]?.petRanged;
     const template = MOBS[pet.templateId];
     if (!ranged && template?.petRole === 'ranged_dps' && template.petSpell) {

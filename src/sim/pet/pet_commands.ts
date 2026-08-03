@@ -158,7 +158,7 @@ export function serializePet(ctx: SimContext, ownerPid: number): PetState | null
   };
 }
 
-/** A summoned warlock demon (imp/voidwalker/succubus/felhunter/doomguard/infernal,
+/** A summoned warlock demon (emberkin/gloomshade/duskborn/spellhound/warfiend/...,
  * anything in the 'demon' MOBS family) is NOT persisted across logout: classic
  * warlocks re-summon their demon (paying its cost and the 180s summon cooldown) on
  * login rather than getting it back for free, which would let a relog launder the

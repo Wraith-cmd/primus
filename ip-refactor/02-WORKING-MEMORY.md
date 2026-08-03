@@ -1,6 +1,7 @@
 # 02 — Shared working memory (live integration log)
 
-> Fresh log, seeded at START (nothing renamed yet). Forward-looking only; NOT the source of
+> Log seeded at START; retro-updated 2026-08-02 to record COMPLETION (see the banner below).
+> Forward-looking only; NOT the source of
 > truth. **The authoritative current contract is the code + the gates:** the LOCKED `NAME-MAP.md`
 > (every old -> new string), `tests/ip_scrub.test.ts` (the verbatim-name scanner + its worklist),
 > `tests/parity` (behavior unchanged), `tests/i18n_resolved_equivalence.test.ts` (the SHA gate).
@@ -11,18 +12,45 @@
 > what those hold.
 
 ## Status board (execution order: gate -> map -> tracks -> finale)
+
+> CODE RENAME COMPLETE; RESIDUALS OPEN (verified 2026-08-02). The six rename tracks
+> (V1/V2/C1/C2/W1/W2), the gate (G0), the map (G1), and the text de-brand (T1) shipped and merged
+> to `main` via the IP-pivot merge and the later rename-wave (druid Galeheart / Nature's Fury; the
+> professions-coin renames; `de-IP the non-English locale overlays missed by the ip-pivot`,
+> #1417). `main`'s `tests/ip_scrub.test.ts` is live and green, and the coined ids are swept
+> (warlock pets emberkin/gloomshade/...; `murloc`/`kobold` MobFamily ids gone).
+>
+> SCOPE OF THE "clean" claim: the scanner (and the 2026-08-02 static re-scan) cover the SIM
+> CONTENT `.name` fields plus the resolved-English i18n table (`i18n.resolved.generated/en`) ONLY;
+> over that surface, zero verbatim-WoW names remain. They do NOT cover two other player-visible
+> surfaces, which STILL SHIP denied names and are OPEN follow-ups (Z1 is NOT fully done):
+>   1. Non-English locale overlays where reworded English left the locale row stale (the README's
+>      reword-staleness trap): e.g. `src/ui/i18n.locales/id_ID.ts` `guide.abilityHook.brain_freeze`
+>      still reads "Frostbolt". #1417 caught overlay entries but missed guide-hook prose. This is
+>      the maintainer/release-tier reconciliation, NOT a contributor hand-edit of the overlays.
+>   2. The MediaWiki player-wiki seed `mediawiki/seed/pages.xml` still seeds pages named
+>      "Frostbolt (Ability)", "Heroic Strike (Ability)", "Bristleback Hides", "Slimy Murloc
+>      Scale", etc. It is a static seed, not regenerated from the renamed content.
+>
+> So the CODE tracks below are genuinely `merged`, but the program is NOT fully closed. Per-slice
+> rows were never flipped at merge time; code-track statuses are reconciled to `merged` from tree
+> verification (exact per-slice SHAs not reconstructed). The stale `feature/ip-pivot` branch (now
+> far behind `main`) is superseded. Treat this doc as a live record with the two residuals above
+> still open, not a closed history. The full follow-up (repro, scope, acceptance) is tracked in
+> `RESIDUAL-WORKLIST.md` (repo Issues are disabled, so that doc is the tracker).
+
 | ID | Title | Track | Mode | Status | Branch @ commit |
 |----|-------|-------|------|--------|-----------------|
-| G0 | De-IP gate + verbatim-name scanner | Spine | plain | done-on-track (2026-07-02; scanner RED by design: 142 baseline violations; all behavior gates green) | feature/ip-pivot @ G0 commit |
-| G1 | Generate + lock the NAME-MAP | Spine | ULTRACODE | done-on-track (2026-07-02; 588 map rows, 603 names adversarially screened, 2 skeptic refutations fixed; scanner arms the full map: 812 RED baseline; old-column 100% hit-verified; AWAITING OPERATOR LOCK) | feature/ip-pivot @ G1 commit |
-| V1 | Ability / spell rename | Vocab | plain | not-started | — |
-| V2 | Talent + spec/tree rename | Vocab | plain | not-started | — |
-| C1 | Creatures + coined family-id sweep | Creatures | ULTRACODE | not-started | — |
-| C2 | Warlock demon-pet re-theme + pet-id sweep | Creatures | ULTRACODE | not-started | — |
-| W1 | Item / set / augment rename | World | plain | not-started | — |
-| W2 | Mob mechanic / aura name rename | World | plain | not-started | — |
-| T1 | De-brand comments / docs / realm copy | Text | plain | done-on-track (track/ip-text @ dc407244, 2026-07-02, Fable 5 session) | track/ip-text |
-| Z1 | Integrate + regen + scanner-zero + release-fill handoff | Finale | plain | not-started | — |
+| G0 | De-IP gate + verbatim-name scanner | Spine | plain | merged (on `main`; `tests/ip_scrub.test.ts` live and green) | main |
+| G1 | Generate + lock the NAME-MAP | Spine | ULTRACODE | merged (NAME-MAP LOCKED 2026-07-02; scanner arms it) | main |
+| V1 | Ability / spell rename | Vocab | plain | merged (on `main`; static scan: 0 verbatim ability names) | main |
+| V2 | Talent + spec/tree rename | Vocab | plain | merged (on `main`; incl. later locale title fills) | main |
+| C1 | Creatures + coined family-id sweep | Creatures | ULTRACODE | merged (on `main`; `murloc`/`kobold` MobFamily ids gone) | main |
+| C2 | Warlock demon-pet re-theme + pet-id sweep | Creatures | ULTRACODE | merged (on `main`; ids emberkin/gloomshade/duskborn/spellhound/warfiend/pyre_colossus/wraithborn) | main |
+| W1 | Item / set / augment rename | World | plain | merged (on `main`; incl. later professions-coin rename wave) | main |
+| W2 | Mob mechanic / aura name rename | World | plain | merged (on `main`; `sim_i18n` matchers updated) | main |
+| T1 | De-brand comments / docs / realm copy | Text | plain | merged (on `main`; residual dev-comment demon names cleaned 2026-08-02) | main |
+| Z1 | Integrate + regen + scanner-zero + release-fill handoff | Finale | plain | PARTIAL: English scanner green on `main`; OPEN residuals the scanner does not cover: `src/ui/i18n.locales/id_ID.ts` guide-hook prose ("Frostbolt") + `mediawiki/seed/pages.xml` denied page names | main |
 
 Status values: `not-started` -> `in-progress (<who>)` -> `done-on-track (<branch> @ <sha>)` ->
 `merged (<integration-sha>)`.

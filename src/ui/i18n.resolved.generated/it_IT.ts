@@ -64,7 +64,8 @@ export const it_IT: EnTranslations = {
       "dungeon": "Dungeon",
       "difficulty": "Difficoltà",
       "name": "Nome",
-      "spec": "Specializzazione"
+      "spec": "Specializzazione",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "Normale",
@@ -147,6 +148,10 @@ export const it_IT: EnTranslations = {
         "label": "Aumenta abilità di raccolta",
         "description": "Aumenta l’abilità in un mestiere di raccolta."
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "Teletrasporta",
         "description": "Sposta il giocatore a coordinate esatte del mondo."
@@ -178,6 +183,18 @@ export const it_IT: EnTranslations = {
       "lfgboard": {
         "label": "Prepara bacheca dei gruppi",
         "description": "Crea uno scenario di annuncio per un gruppo organizzato."
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

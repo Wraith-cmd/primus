@@ -64,7 +64,8 @@ export const ko_KR: EnTranslations = {
       "dungeon": "던전",
       "difficulty": "난이도",
       "name": "이름",
-      "spec": "전문화"
+      "spec": "전문화",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "일반",
@@ -147,6 +148,10 @@ export const ko_KR: EnTranslations = {
         "label": "채집 기술 부여",
         "description": "채집 전문 기술을 올립니다."
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "순간이동",
         "description": "정확한 세계 좌표로 이동합니다."
@@ -178,6 +183,18 @@ export const ko_KR: EnTranslations = {
       "lfgboard": {
         "label": "모집 게시판 채우기",
         "description": "사전 구성 파티 모집 시나리오를 만듭니다."
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

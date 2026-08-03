@@ -64,7 +64,8 @@ export const pl_PL: EnTranslations = {
       "dungeon": "Loch",
       "difficulty": "Poziom trudności",
       "name": "Nazwa",
-      "spec": "Specjalizacja"
+      "spec": "Specjalizacja",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "Normalny",
@@ -147,6 +148,10 @@ export const pl_PL: EnTranslations = {
         "label": "Dodaj umiejętność zbierania",
         "description": "Zwiększ poziom profesji zbierackiej."
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "Teleportuj",
         "description": "Przenieś się do dokładnych współrzędnych świata."
@@ -178,6 +183,18 @@ export const pl_PL: EnTranslations = {
       "lfgboard": {
         "label": "Wypełnij tablicę ogłoszeń",
         "description": "Utwórz scenariusz gotowego ogłoszenia grupy."
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

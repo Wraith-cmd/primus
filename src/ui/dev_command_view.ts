@@ -200,6 +200,19 @@ export const DEV_COMMAND_ACTIONS: readonly DevCommandAction[] = [
     },
   },
   {
+    id: 'mobilestation',
+    category: 'progress',
+    labelKey: 'devCommand.actions.mobilestation.label',
+    descriptionKey: 'devCommand.actions.mobilestation.description',
+    // The field offers every craft; the server places through the real
+    // specialization gate and rejects a craft this character is not
+    // specialized in, exactly as the /dev mobilestation chat command does.
+    command: (values) => {
+      const craft = token(values, 'craft');
+      return craft ? `/dev mobilestation ${craft}` : null;
+    },
+  },
+  {
     id: 'teleport',
     category: 'travel',
     labelKey: 'devCommand.actions.teleport.label',
@@ -265,6 +278,27 @@ export const DEV_COMMAND_ACTIONS: readonly DevCommandAction[] = [
     labelKey: 'devCommand.actions.lfgboard.label',
     descriptionKey: 'devCommand.actions.lfgboard.description',
     command: fixed('/dev lfg board'),
+  },
+  {
+    id: 'vendor',
+    category: 'scenarios',
+    labelKey: 'devCommand.actions.vendor.label',
+    descriptionKey: 'devCommand.actions.vendor.description',
+    command: fixed('/dev vendor'),
+  },
+  {
+    id: 'cascade',
+    category: 'scenarios',
+    labelKey: 'devCommand.actions.cascade.label',
+    descriptionKey: 'devCommand.actions.cascade.description',
+    command: fixed('/dev cascade'),
+  },
+  {
+    id: 'sandbox',
+    category: 'scenarios',
+    labelKey: 'devCommand.actions.sandbox.label',
+    descriptionKey: 'devCommand.actions.sandbox.description',
+    command: fixed('/dev sandbox'),
   },
 ];
 

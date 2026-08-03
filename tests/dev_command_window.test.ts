@@ -56,4 +56,38 @@ describe('developer command window', () => {
     expect(document.activeElement).toBe(fresh);
     expect(document.querySelector('[data-dev-action="spawn"]')).not.toBeNull();
   });
+
+  it('routes the mobile station cheat from its craft picker through world chat', () => {
+    const { chat, window } = makeWindow();
+    window.toggle();
+    document.querySelector<HTMLButtonElement>('[data-dev-category="progress"]')?.click();
+
+    const craftSelect = document.querySelector<HTMLSelectElement>(
+      '[data-dev-action="mobilestation"] [data-dev-field="craft"]',
+    );
+    expect(craftSelect).not.toBeNull();
+    // The picker offers real craft ids, not a free-text field the server would drop.
+    expect(craftSelect?.querySelector('option[value="engineering"]')).not.toBeNull();
+    if (craftSelect) craftSelect.value = 'engineering';
+
+    document.querySelector<HTMLButtonElement>('[data-dev-run="mobilestation"]')?.click();
+    expect(chat).toHaveBeenCalledWith('/dev mobilestation engineering');
+  });
+
+  it('runs the one-button scenario cheats with no fields', () => {
+    const { chat, window } = makeWindow();
+    window.toggle();
+    document.querySelector<HTMLButtonElement>('[data-dev-category="scenarios"]')?.click();
+
+    for (const [action, command] of [
+      ['vendor', '/dev vendor'],
+      ['cascade', '/dev cascade'],
+      ['sandbox', '/dev sandbox'],
+    ] as const) {
+      const card = document.querySelector(`[data-dev-action="${action}"]`);
+      expect(card?.querySelector('.dev-command-fields')).toBeNull();
+      document.querySelector<HTMLButtonElement>(`[data-dev-run="${action}"]`)?.click();
+      expect(chat).toHaveBeenCalledWith(command);
+    }
+  });
 });

@@ -64,7 +64,8 @@ export const nl_NL: EnTranslations = {
       "dungeon": "Kerker",
       "difficulty": "Moeilijkheidsgraad",
       "name": "Naam",
-      "spec": "Spec"
+      "spec": "Spec",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "Normaal",
@@ -147,6 +148,10 @@ export const nl_NL: EnTranslations = {
         "label": "Verzamelvaardigheid verhogen",
         "description": "Verhoog de vaardigheid van een verzamelberoep."
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "Teleporteren",
         "description": "Ga naar exacte coördinaten in de wereld."
@@ -178,6 +183,18 @@ export const nl_NL: EnTranslations = {
       "lfgboard": {
         "label": "Advertentiebord vullen",
         "description": "Maak een scenario met een vooraf samengestelde groepsadvertentie."
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

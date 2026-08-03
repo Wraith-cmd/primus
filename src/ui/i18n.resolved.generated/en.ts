@@ -64,7 +64,8 @@ export const en: EnTranslations = {
       "dungeon": "Dungeon",
       "difficulty": "Difficulty",
       "name": "Name",
-      "spec": "Spec"
+      "spec": "Spec",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "Normal",
@@ -147,6 +148,10 @@ export const en: EnTranslations = {
         "label": "Grant gathering skill",
         "description": "Increase a gathering profession."
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "Teleport",
         "description": "Move to exact world coordinates."
@@ -178,6 +183,18 @@ export const en: EnTranslations = {
       "lfgboard": {
         "label": "Seed listing board",
         "description": "Create a premade listing scenario."
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

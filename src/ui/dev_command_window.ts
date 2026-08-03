@@ -1,5 +1,5 @@
 import { DEV_KIT_ROLES } from '../sim/content/dev_kit_roles';
-import { GATHERING_PROFESSIONS } from '../sim/content/professions';
+import { CRAFT_RING, GATHERING_PROFESSIONS } from '../sim/content/professions';
 import { DUNGEONS, ITEMS, MOBS, QUESTS } from '../sim/data';
 import { ALL_CLASSES, MAX_LEVEL } from '../sim/types';
 import type { IWorld } from '../world_api';
@@ -161,6 +161,15 @@ function actionFields(actionId: string): string {
           t(`hudChrome.gathering.${profession.id}` as TranslationKey),
         ),
       )}${textField('devCommand.fields.amount', 'gatherAmount', '10', 'number')}`;
+    case 'mobilestation':
+      // Every craft on the ring; the server places through the real
+      // specialization gate and rejects one this character is not
+      // specialized in (same as the /dev mobilestation chat command).
+      return selectField(
+        'devCommand.fields.craft',
+        'craft',
+        optionsHtml(CRAFT_RING, (craft) => t(`hudChrome.craftName.${craft.id}` as TranslationKey)),
+      );
     case 'teleport':
       return `${textField('devCommand.fields.x', 'x', '0', 'number')}${textField('devCommand.fields.z', 'z', '0', 'number')}`;
     case 'dungeon':

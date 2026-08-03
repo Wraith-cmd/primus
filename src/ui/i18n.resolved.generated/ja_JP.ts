@@ -64,7 +64,8 @@ export const ja_JP: EnTranslations = {
       "dungeon": "ダンジョン",
       "difficulty": "難易度",
       "name": "名前",
-      "spec": "スペック"
+      "spec": "スペック",
+      "craft": "Craft"
     },
     "difficulty": {
       "normal": "ノーマル",
@@ -147,6 +148,10 @@ export const ja_JP: EnTranslations = {
         "label": "採集スキルを付与",
         "description": "採集専門職のスキルを上げます。"
       },
+      "mobilestation": {
+        "label": "Place mobile station",
+        "description": "Set up a field crafting station for a specialized craft."
+      },
       "teleport": {
         "label": "テレポート",
         "description": "正確なワールド座標へ移動します。"
@@ -178,6 +183,18 @@ export const ja_JP: EnTranslations = {
       "lfgboard": {
         "label": "募集掲示板を準備",
         "description": "事前編成の募集掲示シナリオを作成します。"
+      },
+      "vendor": {
+        "label": "Spawn test vendor",
+        "description": "Spawn the Test Quartermaster for free epic gear."
+      },
+      "cascade": {
+        "label": "Cascade playtest",
+        "description": "Seed the Temporal Cascade dummy and raid allies."
+      },
+      "sandbox": {
+        "label": "Practice sandbox",
+        "description": "Seed a training dummy and threat-free raid allies."
       }
     }
   },

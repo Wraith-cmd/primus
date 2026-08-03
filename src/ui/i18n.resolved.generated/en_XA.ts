@@ -64,7 +64,8 @@ export const en_XA: EnTranslations = {
       "dungeon": "[Ðúñĝéóñ]",
       "difficulty": "[Ðíƒƒíçúļţý]",
       "name": "[Ñáɱé]",
-      "spec": "[Šþéç]"
+      "spec": "[Šþéç]",
+      "craft": "[Çŕáƒţ]"
     },
     "difficulty": {
       "normal": "[Ñóŕɱáļ]",
@@ -147,6 +148,10 @@ export const en_XA: EnTranslations = {
         "label": "[Ĝŕáñţ ĝáţĥéŕíñĝ šķíļļ]",
         "description": "[Íñçŕéášé á ĝáţĥéŕíñĝ þŕóƒéššíóñ.]"
       },
+      "mobilestation": {
+        "label": "[Þļáçé ɱóƀíļé šţáţíóñ]",
+        "description": "[Šéţ úþ á ƒíéļð çŕáƒţíñĝ šţáţíóñ ƒóŕ á šþéçíáļížéð çŕáƒţ.]"
+      },
       "teleport": {
         "label": "[Ţéļéþóŕţ]",
         "description": "[Ɱóʋé ţó éẋáçţ ŵóŕļð çóóŕðíñáţéš.]"
@@ -178,6 +183,18 @@ export const en_XA: EnTranslations = {
       "lfgboard": {
         "label": "[Šééð ļíšţíñĝ ƀóáŕð]",
         "description": "[Çŕéáţé á þŕéɱáðé ļíšţíñĝ šçéñáŕíó.]"
+      },
+      "vendor": {
+        "label": "[Šþáŵñ ţéšţ ʋéñðóŕ]",
+        "description": "[Šþáŵñ ţĥé Ţéšţ Ɋúáŕţéŕɱášţéŕ ƒóŕ ƒŕéé éþíç ĝéáŕ.]"
+      },
+      "cascade": {
+        "label": "[Çášçáðé þļáýţéšţ]",
+        "description": "[Šééð ţĥé Ţéɱþóŕáļ Çášçáðé ðúɱɱý áñð ŕáíð áļļíéš.]"
+      },
+      "sandbox": {
+        "label": "[Þŕáçţíçé šáñðƀóẋ]",
+        "description": "[Šééð á ţŕáíñíñĝ ðúɱɱý áñð ţĥŕéáţ-ƒŕéé ŕáíð áļļíéš.]"
       }
     }
   },

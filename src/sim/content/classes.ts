@@ -4271,7 +4271,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     name: 'Galebrand Weapon',
     class: 'shaman',
     learnLevel: 16,
-    cost: 30,
+    cost: 55,
     castTime: 0,
     cooldown: 0,
     range: 0,
@@ -4279,7 +4279,7 @@ export const ABILITIES: Record<string, AbilityDef> = {
     requiresTarget: false,
     effects: [{ type: 'imbue', bonus: 16, duration: 300 }],
     ranks: [
-      { rank: 2, level: 20, cost: 45, effects: [{ type: 'imbue', bonus: 22, duration: 300 }] },
+      { rank: 2, level: 20, cost: 75, effects: [{ type: 'imbue', bonus: 22, duration: 300 }] },
     ],
     description:
       'Imbues your weapon with howling wind: each swing deals $d additional Nature damage for 5 min.',

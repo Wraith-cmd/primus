@@ -239,6 +239,30 @@ describe('shaman kit completion', () => {
     if (rockbiter?.type === 'imbue') expect(imbue?.value).toBeGreaterThan(rockbiter.bonus);
   });
 
+  // Being the strongest is intended. Being strongest AND cheapest at the same learn
+  // level is not: it made Stonebound R3 dead content the moment it became trainable,
+  // because all four imbues feed the same flat imbueBonus and there is no
+  // compensating niche. The assertion above only pinned "stronger", which is exactly
+  // how that shipped, so pin the TRADEOFF too: the premium imbue must cost more than
+  // the workhorse it competes with, or there is no choice to make.
+  it('Galebrand costs more than the Stonebound rank it competes with', () => {
+    const rockbiterR3 = ABILITIES.rockbiter_weapon.ranks?.at(-1);
+    const galebrandR2 = ABILITIES.windfury_weapon.ranks?.at(-1);
+    expect(rockbiterR3).toBeDefined();
+    expect(galebrandR2).toBeDefined();
+    // Base ranks: both reachable at the same level, so price is the whole decision.
+    expect(ABILITIES.windfury_weapon.cost).toBeGreaterThan(rockbiterR3?.cost ?? 0);
+    // And the top rank stays the expensive one.
+    expect(galebrandR2?.cost ?? 0).toBeGreaterThan(rockbiterR3?.cost ?? 0);
+    // Mana EFFICIENCY should favour the cheap workhorse, which is what makes it a
+    // real choice rather than a strictly worse button.
+    const rbEff = (rockbiterR3?.effects[0] as { bonus: number }).bonus / (rockbiterR3?.cost ?? 1);
+    const wfEff =
+      (ABILITIES.windfury_weapon.effects[0] as { bonus: number }).bonus /
+      ABILITIES.windfury_weapon.cost;
+    expect(rbEff).toBeGreaterThan(wfEff);
+  });
+
   it('Quickening Waters is the shaman fast heal', () => {
     const sim = ready('shaman', 20);
     const def = ABILITIES.lesser_healing_wave;

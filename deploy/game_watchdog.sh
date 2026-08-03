@@ -103,10 +103,18 @@ if command -v timeout >/dev/null 2>&1; then
   # wrapper would wait forever, re-creating the park-on-the-flock hang the
   # bound exists to close.
   bounded() { timeout -k 5 "$@"; }
+elif command -v gtimeout >/dev/null 2>&1; then
+  # macOS with Homebrew coreutils: the SAME GNU binary, installed under a `g`
+  # prefix because the commands collide with the BSD ones. Production is
+  # unaffected (Ubuntu has plain `timeout` and takes the branch above); this
+  # exists so a developer box exercises the BOUNDED path rather than silently
+  # testing the degraded one, which is what left tests/deploy_watchdog.test.ts
+  # red on macOS.
+  bounded() { gtimeout -k 5 "$@"; }
 else
   # coreutils timeout ships on every provisioned host (deploy/user-data.sh boxes
-  # are Ubuntu). Where it is genuinely absent (a macOS dry run), degrade to the
-  # old unbounded behavior rather than refusing to act.
+  # are Ubuntu). Where it is genuinely absent, degrade to the old unbounded
+  # behavior rather than refusing to act.
   bounded() { shift; "$@"; }
 fi
 

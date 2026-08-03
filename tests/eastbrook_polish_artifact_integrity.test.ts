@@ -1409,7 +1409,11 @@ describe('Eastbrook polish performance and contact evidence', () => {
     }
     expect(acceptedFiles).toHaveLength(4);
     expect(fingerprint.digest('hex')).toBe(
-      'ca65a5c28276f052663cb98823b2b4362afd7baa2bb5ca4e89a4e1a3dfb7985b',
+      // Second-order digest over the four performance evidence files, recomputed
+      // LAST in the re-mint recipe (it hashes the files the earlier steps rewrote).
+      // Moved because the polishProvenance seal inside two of them was re-minted,
+      // not because any measurement changed.
+      '408764c7561d0d24ceaff1cf35c525dfd576fe9d92c81a6b97d9b88b39c344f1',
     );
   });
 

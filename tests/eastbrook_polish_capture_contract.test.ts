@@ -359,7 +359,13 @@ describe('Eastbrook polish capture contract', () => {
       mode: 'composite-sha256',
       algorithm: 'sha256',
       baselineRevision: EASTBROOK_POLISH_BASELINE_REVISION,
-      fingerprint: 'e0ac6bb8e397dca4a96e961a2f80bcad374383394799860f5dc03aa9363210a7',
+      // Re-minted 2026-08-02. The Eastbrook fingerprint inventories include
+      // package-lock.json, so stripping the web3 dependencies and renaming the
+      // package (c0a2ab658) moved this composite even though no pipeline input
+      // changed and every shipped GLB is byte-identical (proven: re-running the
+      // mailbox export produces no diff). Same class as the 0.30.0 version-sync
+      // re-mint in c1a7f42f1.
+      fingerprint: 'ecf27cef041b1ede03ccfb0546d0f0355bf98f9e25bf8f39e731198488968b47',
       components: {
         captureContract: {
           id: 'polish-v2',

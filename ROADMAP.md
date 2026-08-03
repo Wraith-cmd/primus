@@ -100,18 +100,22 @@ narrative order.
      `mediawiki/Dockerfile` copies the seed and `entrypoint.sh` imports it, so the
      titles would go live on the player wiki.
   Full residual list: `ip-refactor/RESIDUAL-WORKLIST.md`.
-- **Companions read as attacking everything in Keystone Run.** Reported live
-  2026-08-02, NOT yet reproduced. Code reading cleared the two obvious suspects:
-  the assist gate (`isPartyEngagement` in `companions/role_kit.ts`) is correct,
-  and `mob/locomotion.ts` dispatches the companion brain and early-returns
-  BEFORE `updatePet`, so the aggressive-pet path is not reachable. The leading
-  hypothesis is therefore not a broken gate but a consequence of
-  `companionsAnywhere`: run mode hires the party in the OPEN WORLD, wandering
-  mobs aggro the companions, and fighting back is then correct behavior that
-  reads as pulling. Reproduce before changing anything: a headless Vitest
-  driving the real Sim beats `scripts/playtest_soak.mjs` here (deterministic,
-  no browser). If the hypothesis holds this is a design question (should run
-  mode park the party until the owner zones in?), not a defect.
+- **Companions read as attacking everything in Keystone Run. DIAGNOSED, and it
+  is not a defect.** Reproduced 2026-08-02 in `tests/companion_run_mode_aggro.test.ts`.
+  The assist gate is intact: driven directly, companions leave an unengaged
+  bystander alone, and do not spread from a fight they are legitimately in.
+  Through a REAL tick the cause shows itself inverted: a wandering hostile
+  nobody engaged aggros a COMPANION on proximity (`aggroTargetId` lands on the
+  tank, not the owner), the companions retaliate correctly, and the owner is
+  dragged into a fight they never started. Indistinguishable, from the player's
+  seat, from the companions having pulled.
+  The real cause is WHERE run mode hires: `companionsAnywhere` puts the party in
+  the OPEN WORLD rather than at a door or inside the instance, so it is standing
+  in mob aggro range from the moment it spawns.
+  **Open design question for the owner, do not "fix" without an answer:** should
+  run mode hold the party until the owner zones in (`CompanionParty.entered`
+  already tracks exactly that), spawn it inside the instance, or leave it and
+  accept the open-world skirmish as flavor?
 - **Offline is SINGLE SLOT and switching characters destroys the old one.**
   There is no offline character select: online has one, offline has a single
   create screen. The save resumes only when class AND name match, so starting a

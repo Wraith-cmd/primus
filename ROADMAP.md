@@ -88,6 +88,28 @@ narrative order.
 4. **Boss mechanics** (3 to 5). A keystone multiplier applied to a boss with one
    telegraph just scales one telegraph. Author 3 to 5 real mechanics per boss
    BEFORE the timer. Doubles as the acceptance test for companion AI.
+4b. **Dungeon SHAPE: multi-boss and branching paths** (unestimated, likely 6+).
+   Raised by the owner 2026-08-02 playing Keystone: "super short, one boss,
+   simple mechanics". Distinct from item 4, which is boss DEPTH; this is dungeon
+   STRUCTURE, and it was not on the roadmap at all.
+   - **Multi-boss is mostly already supported.** 6 records carry `boss: true`
+     and named mid-bosses already exist (Morthen, Sexton Marrow, Vael the
+     Mistcaller, CC- and snare-immune). Adding one is a declarative record in
+     `src/sim/content/` plus spawn entries. This is the cheap half.
+   - **Branching paths are the real work.** A dungeon's shape comes from
+     `interior: 'crypt' | 'sanctum'` in `src/sim/dungeon_layout.ts`, which is
+     plain numbers describing ONE straight corridor (`DUNGEON_WALL_X`,
+     `DUNGEON_END_WALL_HW`). Every dungeon shares two layouts, which is exactly
+     why they read as identical and short. A branch means authoring a new layout
+     shape, and that file is the SINGLE source for both render geometry and
+     `colliders.ts`, so it must also stay pathfinding-sane for companions.
+   - **No authoring tool today.** `src/editor/` is an OVERWORLD editor (terrain,
+     props, spawns via `MapDoc`); it does not author dungeon interiors. Upstream
+     `feature/dungeon-layout-editor` does have one ("dock the dungeon panel",
+     "dungeon overlays"), but it sits in a 1309-file / 295k-insertion branch that
+     also merged Rifts, Scorching Wastes and a newer editor, so harvesting it
+     fights the hard-fork rule. Decide deliberately: hand-author layouts, or
+     invest in extending the existing editor.
 5. **Companion depth** (5 to 9). The cores exist and are wired; what remains is
    making four of them feel like a party under pressure.
 6. **Keystones** (6 to 10). `PRIMUS_PHASE_4_5.md`. Timer, scaling, affix

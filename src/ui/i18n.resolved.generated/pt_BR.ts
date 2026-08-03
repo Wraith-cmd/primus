@@ -3000,7 +3000,7 @@ export const pt_BR: EnTranslations = {
       "ice_lance": "Um fragmento instantâneo para gastar procs de gelo, acerta muito mais forte em um alvo congelado.",
       "flurry": "Três projéteis rápidos que resfriam o alvo para que seus próximos acertos de gelo o atinjam como se estivesse congelado.",
       "fingers_of_frost": "Seus projéteis de gelo às vezes capacitam uma Ice Lance a atingir como se o alvo estivesse congelado.",
-      "brain_freeze": "Seus raios de gelo às vezes tornam o próximo Winterlash instantâneo e pulam o tempo de espera.",
+      "brain_freeze": "Seus raios de gelo às vezes tornam o próximo Açoite Invernal instantâneo e ignoram seu tempo de recarga.",
       "shatter": "Seus feitiços acertam criticamente com muito mais frequência contra alvos congelados.",
       "frozen_orb": "Rola um orbe lento pelo pacote que esfria os inimigos e acumula pingentes de gelo.",
       "blizzard": "Cobre uma área de gelo para desgastar e desacelerar um grupo inteiro de inimigos.",

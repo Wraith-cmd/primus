@@ -64,11 +64,20 @@ describe('world palette', () => {
     // Two large flat surfaces sharing a luminance vanish into each other once
     // colour is stripped: the "road disappears into the wall" failure.
     //
-    // Scoped to BASE surfaces on purpose. `brass` is trim, `ember` is emissive
-    // and never a base surface, `arcane` is reserved for spell effects: none of
-    // them ever covers a wall-sized area adjacent to another of them, so holding
-    // them to a separation floor would constrain the accents for no gain. That
-    // scoping is the palette's own rule, not a convenience to make this pass.
+    // BE HONEST ABOUT THIS SCOPING: it is load-bearing for greenness, not merely
+    // tidy. Over all 12 families two gaps fall under the floor (arcane/clay at
+    // 0.0147 and ember/earth at 0.0046), so an unscoped check FAILS on the
+    // shipped palette. An earlier version of this comment claimed the scoping was
+    // "not a convenience to make this pass", which was false.
+    //
+    // It is still the right scope, for a reason that predates the assertion:
+    // `palette_core.ts` already declares `ember` emissive-only and never a base
+    // surface, and `arcane` reserved for spell effects. Neither ever covers a
+    // wall-sized area adjoining another of them, so a separation floor between
+    // them constrains the accents to protect against something that cannot
+    // happen. `brass` is DELIBERATELY included despite being trim: every gap
+    // still clears with it in (tightest 0.0176), so excluding it would drop
+    // coverage for free.
     const BASE: PaletteFamily[] = [
       'stone',
       'bark',
@@ -79,6 +88,7 @@ describe('world palette', () => {
       'water',
       'iron',
       'bone',
+      'brass',
     ];
     const sorted = BASE.map((f) => ({ f, l: relativeLuminance(PALETTE[f].mid) })).sort(
       (a, b) => a.l - b.l,

@@ -92,17 +92,28 @@ narrative order.
    Raised by the owner 2026-08-02 playing Keystone: "super short, one boss,
    simple mechanics". Distinct from item 4, which is boss DEPTH; this is dungeon
    STRUCTURE, and it was not on the roadmap at all.
-   - **Multi-boss is mostly already supported.** 6 records carry `boss: true`
-     and named mid-bosses already exist (Morthen, Sexton Marrow, Vael the
-     Mistcaller, CC- and snare-immune). Adding one is a declarative record in
+   - **Multi-boss is mostly already supported.** Corrected 2026-08-02 after an
+     audit caught the first version of this bullet being wrong on every number:
+     **13** records carry `boss: true` (not 6), and the named mid-bosses are
+     `sexton_marrow`, `knight_commander_olen`, `korgath_the_bound` and
+     `grand_necromancer_velkhar` (CC- and snare-immune, flagged by comment
+     rather than by `boss: true`). Morthen and Vael the Mistcaller are NOT
+     mid-bosses: both are `finalBossId` in
+     `src/sim/content/dungeon_difficulty.ts`, as are Ysolei, Korzul and
+     Nythraxis. So every dungeon does already have a final boss plus, in four
+     cases, a named mid-boss. Adding another is a declarative record in
      `src/sim/content/` plus spawn entries. This is the cheap half.
-   - **Branching paths are the real work.** A dungeon's shape comes from
-     `interior: 'crypt' | 'sanctum'` in `src/sim/dungeon_layout.ts`, which is
-     plain numbers describing ONE straight corridor (`DUNGEON_WALL_X`,
-     `DUNGEON_END_WALL_HW`). Every dungeon shares two layouts, which is exactly
-     why they read as identical and short. A branch means authoring a new layout
-     shape, and that file is the SINGLE source for both render geometry and
-     `colliders.ts`, so it must also stay pathfinding-sane for companions.
+   - **Branching paths are the real work.** Corrected: the `interior` union is
+     `'crypt' | 'sanctum' | 'temple' | 'nythraxis'` and it is declared in
+     `src/sim/types.ts`, NOT in `dungeon_layout.ts`, which exports six named
+     layouts (`CRYPT_LAYOUT`, `SANCTUM_LAYOUT`, `NYTHRAXIS_LAYOUT`,
+     `TEMPLE_LAYOUT`, `ARENA_LAYOUT`, `DROWNED_COURT_LAYOUT`). So "every dungeon
+     shares two layouts" was false. What IS true and is the actual problem: each
+     layout is plain numbers describing one corridor (`DUNGEON_WALL_X`,
+     `DUNGEON_END_WALL_HW`), so having six of them buys variety of dressing, not
+     of SHAPE. A branch means authoring a genuinely new topology, and that file
+     is the SINGLE source for both render geometry and `colliders.ts`, so it must
+     also stay pathfinding-sane for companions.
    - **No authoring tool today.** `src/editor/` is an OVERWORLD editor (terrain,
      props, spawns via `MapDoc`); it does not author dungeon interiors. Upstream
      `feature/dungeon-layout-editor` does have one ("dock the dungeon panel",
@@ -203,8 +214,6 @@ narrative order.
 - Ability DESCRIPTION i18n does not resolve through the overlay key path
   (`entities.abilities.<id>.description` is absent from the generated bundle,
   including for existing abilities). Blocks the M16 guard on all new content
-- 2 `deploy_watchdog` failures: macOS ships no GNU `timeout`. Environmental
-- `malware_scan` false positive on the word "mnemonic" in `keybinds.ts`
 
 ## Working agreements
 

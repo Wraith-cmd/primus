@@ -49,11 +49,23 @@ if (missingAudioTools.length > 0) {
 // identically to "everything passed" and is exactly the blind spot this file's
 // header warns about for exit codes.
 //
-// Deliberately dependency-free (the repo keeps its dep set tiny) and
-// deliberately NON-overriding: a value already in the environment always wins,
-// so CI (which sets no .env and may inject its own vars) is unaffected, and an
-// operator can override any single var for one run without editing the file.
-// .env is gitignored; its absence is the normal case and is not an error.
+// ALLOWLISTED, and that is the load-bearing part. The first version of this
+// loader injected EVERY key in .env into every step, which is a real weakening
+// vector: 22 test files do `process.env.DATABASE_URL ??= 'postgres://test/test'`
+// and five of them do NOT mock pg, so injecting a developer's real DSN silently
+// pointed them at a live database locally while CI kept the stub. Green locally
+// and green in CI stopped being the same assertion. Worse, the repo has
+// env-controlled behavior switches (ALLOW_DEV_COMMANDS, REQUIRE_WEB_LOGIN,
+// NATIVE_ATTESTATION_REQUIRED, ...) that a gitignored file no reviewer sees
+// could then flip. Only the one variable this feature is for crosses the line.
+//
+// Also dependency-free (the repo keeps its dep set tiny) and NON-overriding: a
+// value already in the environment wins, so CI is unaffected and an operator can
+// override it for one run. .env is gitignored; its absence is the normal case.
+// The ONLY keys a local .env may contribute. Adding one is a deliberate decision
+// about what a green gate is allowed to depend on, not a convenience.
+const DOTENV_ALLOWLIST = new Set(['TEST_DATABASE_URL']);
+
 function loadDotEnv() {
   const picked = [];
   let text;
@@ -67,8 +79,14 @@ function loadDotEnv() {
     if (line === '' || line.startsWith('#')) continue;
     const eq = line.indexOf('=');
     if (eq <= 0) continue;
-    const key = line.slice(0, eq).trim();
-    if (key in process.env) continue; // the ambient environment wins
+    // `export FOO=bar` is common in hand-written .env files and would otherwise
+    // define a variable literally named "export FOO" while FOO stayed unset.
+    const key = line
+      .slice(0, eq)
+      .trim()
+      .replace(/^export\s+/, '');
+    if (!DOTENV_ALLOWLIST.has(key)) continue;
+    if (Object.hasOwn(process.env, key)) continue; // ambient wins
     let value = line.slice(eq + 1).trim();
     if (
       (value.startsWith('"') && value.endsWith('"')) ||
@@ -83,7 +101,10 @@ function loadDotEnv() {
 }
 
 const dotEnvKeys = loadDotEnv();
-if (dotEnvKeys.includes('TEST_DATABASE_URL')) {
+// Keyed on a NON-EMPTY value, not merely the key being present: `TEST_DATABASE_URL=`
+// in .env would otherwise print "will RUN" while the suites skipped, which is the
+// exact silent-skip confusion this message exists to remove.
+if (dotEnvKeys.includes('TEST_DATABASE_URL') && process.env.TEST_DATABASE_URL) {
   console.log('[gate] .env: TEST_DATABASE_URL set, the DB integration suites will RUN');
 } else if (!process.env.TEST_DATABASE_URL) {
   // Say so out loud: a silent skip is indistinguishable from a pass.

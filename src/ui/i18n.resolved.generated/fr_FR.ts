@@ -3000,7 +3000,7 @@ export const fr_FR: EnTranslations = {
       "ice_lance": "Un éclat instantané pour dépenser vos déclencheurs de givre, il frappe bien plus fort sur une cible gelée.",
       "flurry": "Trois traits rapides qui refroidissent la cible pour que vos prochains coups de givre frappent comme si elle était gelée.",
       "fingers_of_frost": "Vos traits de givre permettent parfois à un Ice Lance de frapper comme si la cible était gelée.",
-      "brain_freeze": "Vos éclairs de givre rendent parfois le prochain Winterlash instantané et ignorent son temps de recharge.",
+      "brain_freeze": "Vos éclairs de givre rendent parfois le prochain Fouet de l'hiver instantané et ignorent son temps de recharge.",
       "shatter": "Vos sorts obtiennent des critiques bien plus souvent contre les cibles gelées.",
       "frozen_orb": "Lance un orbe lent à travers le pack qui refroidit les ennemis et met des glaçons en banque.",
       "blizzard": "Recouvre une zone de glace pour user et ralentir tout un groupe d'ennemis.",

@@ -8572,7 +8572,7 @@ export const vi_VN: Partial<Record<TranslationKey, string>> = {
   'gatherEvent.moonlitBloom': '{finder} phát hiện ra hoa nở dưới ánh trăng!',
   'gatherEvent.pristineVein': '{finder} đánh vào mạch máu nguyên sơ!',
   'guide.abilityHook.brain_freeze':
-    'Các tia sương giá của bạn đôi khi tạo ra Winterlash tiếp theo ngay lập tức và bỏ qua thời gian hồi chiêu của nó.',
+    'Các tia sương giá của bạn đôi khi khiến Roi Mùa Đông kế tiếp trở thành phép tức thì và bỏ qua thời gian hồi chiêu.',
   'guide.abilityHook.frozen_orb':
     'Lăn một quả cầu chậm xuyên qua bầy đàn khiến kẻ địch ớn lạnh và tích tụ Băng Băng.',
   'heroicShop.buyConfirmAccept': 'Mua',

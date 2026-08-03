@@ -8520,7 +8520,7 @@ export const pt_BR: Partial<Record<TranslationKey, string>> = {
   'gatherEvent.moonlitBloom': '{finder} descobriu uma flor ao luar!',
   'gatherEvent.pristineVein': '{finder} atingiu uma veia imaculada!',
   'guide.abilityHook.brain_freeze':
-    'Seus raios de gelo às vezes tornam o próximo Winterlash instantâneo e pulam o tempo de espera.',
+    'Seus raios de gelo às vezes tornam o próximo Açoite Invernal instantâneo e ignoram seu tempo de recarga.',
   'guide.abilityHook.frozen_orb':
     'Rola um orbe lento pelo pacote que esfria os inimigos e acumula pingentes de gelo.',
   'heroicShop.buyConfirmAccept': 'Comprar',

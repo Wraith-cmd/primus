@@ -64,10 +64,23 @@ narrative order.
    pre-hired, at a dungeon entrance. Doubles as the playtest harness: without it
    the owner cannot evaluate dungeons, companions, or high-level abilities at
    all. Unblocks everything below it.
-2. **Restore the animation clips** (1 to 2). `keepClips` in
-   `scripts/assets/specs/characters_v2.json` keeps 22 of the 133 to 161 CC0
-   clips the build already merges. The casting problem was a build filter, not
-   an art ceiling. See `docs/design/wow-fidelity-research.md`.
+2. **Restore the animation clips** (1 to 2 ONCE UNBLOCKED; see below).
+   `keepClips` in `scripts/assets/specs/characters_v2.json` drops all but 22
+   clips at BUILD time (`anim.dispose()` in `scripts/assets/build_assets.mjs`),
+   so the casting problem is a build filter, not an art ceiling.
+   **Corrected 2026-08-02, this entry was wrong in two ways:**
+   - It said the build "already merges" the 133 to 161 clips. It does not:
+     `tmp/asset_src/` DOES NOT EXIST on this machine (gitignored, never
+     committed). There is nothing to merge, so the effort estimate assumed a
+     starting point that is not there. Download the CC0 KayKit packs from
+     kaylousberg.itch.io FIRST; that is the actual blocker.
+   - Widening `keepClips` is the WRONG fix even with the sources. All 8 player
+     GLBs carry a byte-identical 147 KiB of the same 22 clips, so 1.15 MiB of
+     the build is duplication and widening multiplies it by 8, against a
+     `models/chars` group already about 6 MiB over budget. The right shape is
+     ONE shared `rig_medium_anims.glb` referenced through `VisualDef.animUrls`,
+     the pattern the hunter's bow (`bow_anims.glb`) already uses.
+   See `docs/design/wow-fidelity-research.md`.
 3. **The rest of combat feel** (about 4). Screen shake on damage DEALT (today it
    is gated to the Fiesta minigame, so ordinary combat has no impact response),
    hit-stop (absent entirely), FOV punch wired to combat, queue highlight for

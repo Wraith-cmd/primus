@@ -110,6 +110,28 @@ order, because each unblocks the next:
 4. **Class depth.** Currently uneven (mage has 8 base abilities against
    warrior's 39), and it is the least blocking.
 
+## Research status (2026-08-03)
+
+The session's research budget was exhausted mid-flight. Landed and saved:
+
+| File | Covers |
+|---|---|
+| `research-ai-companions.md` | **The most important one.** One human plus four AI, and what to do about it |
+| `research-combat-feel.md` | Hit-stop, audio layering, impact frames, with implementable numbers |
+| `research-dungeon-topology.md` | Layout shapes per expansion, and why M+ made branching load-bearing |
+| `research-class-design.md` | Ability budgets, resources, the seven no-new-button depth levers |
+| `research-druid-and-artifacts.md` | The artifact-weapon model in full; Balance history. PARTIAL |
+
+**NOT gathered, and worth a fresh session:**
+- Mythic+ keystone mechanics in depth (scaling multipliers, affix design, timer
+  budgets). The AI-companion research supplies a better keystone AXIS
+  (automation subtraction) but not the numbers.
+- Loot and reward systems.
+- Boss encounter design and trash pacing specifics.
+- Encounter telegraphing and readability.
+- **Guardian druid moment-to-moment feel, Feral, Restoration, and form-swapping
+  as a system.** The owner asked for a hard druid focus and only half landed.
+
 ## Open questions, not yet asked
 
 - How many dungeons, and do the existing ones get rebuilt or supplemented?

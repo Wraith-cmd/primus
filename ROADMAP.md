@@ -220,15 +220,26 @@ narrative order.
   run mode hold the party until the owner zones in (`CompanionParty.entered`
   already tracks exactly that), spawn it inside the instance, or leave it and
   accept the open-world skirmish as flavor?
-- **Offline is SINGLE SLOT and switching characters destroys the old one.**
-  There is no offline character select: online has one, offline has a single
-  create screen. The save resumes only when class AND name match, so starting a
-  mage when a druid is saved fails the resume, rolls a fresh level 1, and then
-  the autosave OVERWRITES the druid. Silently. He wants several tester
-  characters (a bear for tanking and companion work, a caster for spell and
-  animation work), so this blocks his actual workflow. Fix before he levels
-  anything he would miss: key the slot by class plus name (or add a real offline
-  character select), and never write over a save whose identity does not match.
+- **Offline character ROSTER: done 2026-08-03, one caveat left.** The old entry
+  said "single slot, and switching characters destroys the old one". Verified
+  before changing anything: the DESTRUCTIVE half was already fixed (a different
+  character produces a `replace` plan and `canCommitOfflineSave` refuses the
+  write without explicit consent, `offline_resume.ts`, 29 tests). Only the
+  single-slot half was real, which is what actually blocked keeping a bear for
+  tanking work and a caster for spell work.
+  Now: `primus.offline.character.char.<class>.<name>` per character, the legacy
+  bare key still written on every save so it means "most recently played" and
+  every pre-roster reader keeps working, and `main.ts` looks a character up BY
+  IDENTITY rather than taking whoever played last. `listOfflineCharacters` adopts
+  a legacy save that has no key of its own, and nothing deletes the legacy bytes
+  as part of adopting them, so a half-finished migration duplicates a row at
+  worst and can never lose a character.
+  **Caveat, the polish that is NOT done:** the entry screen still preselects only
+  the most recently played character. Switching to another saved one works (type
+  the name, pick the class, it resumes instead of offering to replace) but you
+  have to remember the name. A real character-select list reading
+  `listOfflineCharacters` is the follow-up; the storage and the delete verb are
+  already there for it.
 - Offline save reported not persisting in real play. Under investigation. It was
   verified by INJECTING a save rather than by playing, reloading and checking,
   which is exactly the test that would have caught it

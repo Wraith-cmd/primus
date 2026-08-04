@@ -123,7 +123,19 @@ export function parseOfflineSave(raw: string | null): OfflineSave | null {
 export function saveOffline(storage: Storage, input: OfflineSaveInput): boolean {
   const mode = input.mode ?? DEFAULT_OFFLINE_SAVE_MODE;
   try {
-    storage.setItem(offlineSaveKey(mode), JSON.stringify(buildOfflineSave(input)));
+    const payload = JSON.stringify(buildOfflineSave(input));
+    // The mode slot first: for `'offline'` this is the legacy bare key, which now
+    // means "most recently played" and is what every pre-roster reader still
+    // resolves. Writing it FIRST means a quota failure on the second write leaves
+    // the character saved exactly where the old code would have put it, which is
+    // the failure mode that loses nothing.
+    storage.setItem(offlineSaveKey(mode), payload);
+    // Then the per-character key, so several offline characters coexist. Run mode
+    // is deliberately excluded: it is one disposable preset slot by design and
+    // must never appear in the owner's roster.
+    if (mode === DEFAULT_OFFLINE_SAVE_MODE) {
+      storage.setItem(offlineCharacterKey(input.playerClass, input.playerName), payload);
+    }
     return true;
   } catch {
     return false;
@@ -159,5 +171,148 @@ export function clearOffline(
     // A storage that refuses removal is the same non-event as one that refuses
     // writes: the next load either finds a stale save or nothing at all, and both
     // are survivable.
+  }
+}
+
+// ---------------------------------------------------------------------------
+// The character ROSTER (several offline characters, not one slot)
+// ---------------------------------------------------------------------------
+//
+// The original design had exactly ONE offline slot, so keeping a tank and a
+// caster meant destroying one to play the other. `offline_resume.ts` made that
+// non-destructive (a different character needs explicit consent before it can
+// evict the stored one), but non-destructive is not the same as possible.
+//
+// The layout is ADDITIVE on purpose, because the slot being migrated holds a real
+// leveled character:
+//   - `primus.offline.character`                       the legacy slot, still
+//     written on every save, so it now means "most recently played" and every
+//     existing reader (`loadOffline`) keeps working byte-for-byte as before.
+//   - `primus.offline.character.char.<class>.<name>`   one key per character.
+//   - `primus.offline.character.run`                   run mode, untouched.
+//
+// Nothing DELETES the legacy key as part of adopting it. A legacy save with no
+// per-character twin is surfaced in the roster by reading it, so the worst case
+// of a half-finished migration is a duplicate listing, never a lost character.
+
+/** The per-character key prefix, nested under the legacy key so one namespace
+ *  owns every offline artifact and a future mode cannot collide with it. */
+const CHARACTER_KEY_PREFIX = `${OFFLINE_SAVE_KEY}.char.`;
+
+/** Fold a name to its identity form. MUST match `normalizeOfflineName` in
+ *  `offline_resume.ts`: if the two disagree, a player resumes a character the
+ *  roster lists under a different key, which reads as duplicate characters. */
+function identityName(name: string): string {
+  return name.trim().toLowerCase();
+}
+
+/** The storage key for one character. Class is part of the key because the
+ *  resume policy treats class plus name as the identity: two druids named
+ *  differently are different characters, and so are a druid and a mage who share
+ *  a name. */
+export function offlineCharacterKey(playerClass: string, playerName: string): string {
+  return `${CHARACTER_KEY_PREFIX}${playerClass}.${identityName(playerName)}`;
+}
+
+/** One row of the character-select roster. */
+export interface OfflineCharacterEntry {
+  playerClass: PlayerClass;
+  playerName: string;
+  level: number;
+  savedAt: number;
+  skin: number;
+}
+
+function entryOf(save: OfflineSave): OfflineCharacterEntry {
+  const level = (save.state as { level?: unknown } | null)?.level;
+  return {
+    playerClass: save.playerClass,
+    playerName: save.playerName,
+    level: typeof level === 'number' && Number.isFinite(level) ? level : 1,
+    savedAt: save.savedAt,
+    skin: save.skin,
+  };
+}
+
+/** Every saved offline character, most recently played first.
+ *
+ *  Reads the per-character keys, then ADOPTS the legacy slot if it holds a
+ *  character with no key of its own (the owner's pre-roster save). A corrupt or
+ *  foreign-mode entry is skipped rather than thrown on: a character select that
+ *  crashes is worse than one that is missing a row. */
+export function listOfflineCharacters(storage: Storage): OfflineCharacterEntry[] {
+  const byIdentity = new Map<string, OfflineSave>();
+  try {
+    for (let i = 0; i < storage.length; i++) {
+      const key = storage.key(i);
+      if (!key || !key.startsWith(CHARACTER_KEY_PREFIX)) continue;
+      const save = parseOfflineSave(storage.getItem(key));
+      // Only offline-mode envelopes: a run-mode preset must never show up as one
+      // of the owner's characters.
+      if (!save || (save.mode ?? DEFAULT_OFFLINE_SAVE_MODE) !== DEFAULT_OFFLINE_SAVE_MODE) continue;
+      byIdentity.set(offlineCharacterKey(save.playerClass, save.playerName), save);
+    }
+    const legacy = parseOfflineSave(storage.getItem(OFFLINE_SAVE_KEY));
+    if (legacy && (legacy.mode ?? DEFAULT_OFFLINE_SAVE_MODE) === DEFAULT_OFFLINE_SAVE_MODE) {
+      const key = offlineCharacterKey(legacy.playerClass, legacy.playerName);
+      // The per-character key wins: it is written on every save, so when both
+      // exist the dedicated one is at least as fresh.
+      if (!byIdentity.has(key)) byIdentity.set(key, legacy);
+    }
+  } catch {
+    return [];
+  }
+  return [...byIdentity.values()].map(entryOf).sort((a, b) => b.savedAt - a.savedAt);
+}
+
+/** Load one character by identity, falling back to the legacy slot when it holds
+ *  exactly that character and has not been re-saved since the roster landed. */
+export function loadOfflineCharacter(
+  storage: Storage,
+  playerClass: PlayerClass,
+  playerName: string,
+): OfflineSave | null {
+  try {
+    const direct = parseOfflineSave(storage.getItem(offlineCharacterKey(playerClass, playerName)));
+    if (direct && (direct.mode ?? DEFAULT_OFFLINE_SAVE_MODE) === DEFAULT_OFFLINE_SAVE_MODE) {
+      return direct;
+    }
+    const legacy = parseOfflineSave(storage.getItem(OFFLINE_SAVE_KEY));
+    if (
+      legacy &&
+      (legacy.mode ?? DEFAULT_OFFLINE_SAVE_MODE) === DEFAULT_OFFLINE_SAVE_MODE &&
+      legacy.playerClass === playerClass &&
+      identityName(legacy.playerName) === identityName(playerName)
+    ) {
+      return legacy;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/** Remove one character from the roster.
+ *
+ *  Also clears the legacy slot when it holds the SAME character, otherwise a
+ *  deleted character would reappear on the next listing (the adoption path above
+ *  would find it again). Never touches another character's key. */
+export function deleteOfflineCharacter(
+  storage: Storage,
+  playerClass: PlayerClass,
+  playerName: string,
+): void {
+  try {
+    storage.removeItem(offlineCharacterKey(playerClass, playerName));
+    const legacy = parseOfflineSave(storage.getItem(OFFLINE_SAVE_KEY));
+    if (
+      legacy &&
+      legacy.playerClass === playerClass &&
+      identityName(legacy.playerName) === identityName(playerName)
+    ) {
+      storage.removeItem(OFFLINE_SAVE_KEY);
+    }
+  } catch {
+    // Same non-event as a refused write: the next listing shows a stale row.
   }
 }

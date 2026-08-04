@@ -86,7 +86,12 @@ import {
   offlineSaveNotice,
   resolveOfflineEntry,
 } from './game/offline_resume';
-import { loadOffline, type OfflineSave, saveOffline } from './game/offline_save';
+import {
+  loadOffline,
+  loadOfflineCharacter,
+  type OfflineSave,
+  saveOffline,
+} from './game/offline_save';
 import { createPerfMonitor } from './game/perf';
 import { initPerfNudge } from './game/perf_nudge';
 import { startPerfReporter } from './game/perf_reporter';
@@ -3472,10 +3477,18 @@ function sanitizeOfflineName(raw: string): string {
   return /^[A-Za-z][A-Za-z' -]{1,15}$/.test(stripped) ? stripped : 'Adventurer';
 }
 
-/** The offline character currently occupying the one save slot, if any. */
+/** The most recently played offline character, if any. Still the legacy slot:
+ *  used where "who played last" is the question (the entry screen's default). */
 function storedOfflineSave(): OfflineSave | null {
   const storage = localStorageOrNull();
   return storage ? loadOffline(storage) : null;
+}
+
+/** The stored save for ONE character identity, if any. This is the question
+ *  almost every caller actually has now that several characters can coexist. */
+function storedOfflineCharacter(playerClass: PlayerClass, name: string): OfflineSave | null {
+  const storage = localStorageOrNull();
+  return storage ? loadOfflineCharacter(storage, playerClass, name) : null;
 }
 
 async function startOffline(
@@ -3498,7 +3511,12 @@ async function startOffline(
   // path (a custom `world` or a seed override) always starts clean: that world
   // is not the saved one.
   const saveSlot = world || seedOverride !== undefined ? null : localStorageOrNull();
-  const restored = saveSlot ? loadOffline(saveSlot) : null;
+  // BY IDENTITY, not "whatever played last". With a roster of several characters
+  // `loadOffline` returns the most recently played one, so asking for the tank
+  // right after playing the caster would resolve to a `replace` plan and offer to
+  // destroy the very character being asked for. Falls back to the legacy slot
+  // inside `loadOfflineCharacter` when this character predates the roster.
+  const restored = saveSlot ? loadOfflineCharacter(saveSlot, playerClass, name) : null;
   const plan = resolveOfflineEntry(restored, playerClass, name);
   const resume = plan.action === 'resume' ? plan.save : null;
   // Resuming adopts the SAVED spelling of the name, so the slot identity stays
@@ -3663,7 +3681,15 @@ function wireOfflinePersistence(sim: Sim, opts: OfflinePersistenceOpts): void {
       console.warn('offline save skipped: no serializable character');
       return;
     }
-    const blocked = !canCommitOfflineSave(loadOffline(storage), playerClass, name, mayReplace);
+    // Also by identity: the guard exists to stop one character evicting ANOTHER,
+    // and with a roster each character owns its own key, so the only thing it
+    // must compare against is this character's own stored save.
+    const blocked = !canCommitOfflineSave(
+      loadOfflineCharacter(storage, playerClass, name),
+      playerClass,
+      name,
+      mayReplace,
+    );
     const ok =
       !blocked &&
       saveOffline(storage, {
@@ -6794,7 +6820,7 @@ function wireStartScreens(): void {
     const name = sanitizeOfflineName(rawName);
     // There is exactly one offline slot. If it holds someone else, say whose
     // character is about to be lost and make the player press again to mean it.
-    const plan = resolveOfflineEntry(storedOfflineSave(), cls, name);
+    const plan = resolveOfflineEntry(storedOfflineCharacter(cls, name), cls, name);
     const consentKey = offlineReplaceKey(cls, name);
     if (plan.action === 'replace' && pendingOfflineReplace !== consentKey) {
       pendingOfflineReplace = consentKey;

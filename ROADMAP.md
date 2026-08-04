@@ -55,6 +55,24 @@ evidence for it lives.
     caught a six-week-stale generated artifact, which was a build bug
 - **Browser first**, Electron shell kept for handheld and long sessions
 
+## Season 2: dungeons, keystone, loot, classes (IN DESIGN)
+
+Started 2026-08-03. The owner's decisions are captured in
+`docs/design/season-2-decisions.md` and are DECIDED, not proposals: read that
+before proposing anything in this area. Deep research across WoW dungeon design,
+Mythic+, druid, loot, AI companion parties, combat feel, class identity and
+encounter telegraphing is landing into `docs/design/` alongside it.
+
+The governing constraint, which is the whole reason this cannot be a straight
+port of WoW: PRIMUS is ONE human plus FOUR AI companions, and every WoW design
+being borrowed assumes five humans.
+
+Four independent systems, to be specced and built in this order:
+1. Dungeon structure (contains the layout-format work, the largest single item)
+2. Keystone mode (timer, scaling, affixes, key downgrade)
+3. Loot and the growing class weapon
+4. Class depth
+
 ## Next, in value order
 
 Effort in weekend sessions. Order reflects value per unit of effort, not

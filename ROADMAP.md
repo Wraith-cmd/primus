@@ -154,26 +154,6 @@ narrative order.
 
 ## Known broken
 
-- **The dev Command Center bricks on a non-English PRODUCTION build (HIGH).**
-  Found 2026-08-02 reviewing `ebb02d52e`, the cloud-session commit merged into
-  main that day. It added 9 English-only `devCommand.*` keys, which land as
-  `pending` in all 19 non-en locales, and `t()` HARD-FAILS on a pending key when
-  `isReleaseBuild()`. So on a hosted dev realm with `ALLOW_DEV_COMMANDS=1`
-  serving a `vite build`, a non-English tester opens `/dev gui`, clicks
-  Scenarios or Progress, and `render()` throws mid-template: the markup is never
-  assigned, the tab looks dead, and because `this.category` already mutated
-  EVERY later render throws too. The window is bricked until reload.
-  Invisible at PR tier by construction, and the next `release/**` branch will
-  hard-fail on it. Fix: supply the 9 locale fills, or exempt `devCommand.*` from
-  the pending hard-fail in `t()` rather than only from the M16 leak guard.
-- **Windfury makes Rockbiter R3 dead content (balance, owner's call).** After the
-  2026-08-02 kit change windfury R1 is +16 for 30 mana at level 16; rockbiter R3
-  is +14 for 45 at the same level. Strictly better and cheaper, so rockbiter R3
-  is obsolete the moment it is trainable. All four imbues feed the same flat
-  `imbueBonus`, so there is no compensating niche. The old +12 preserved a real
-  cheap-versus-strong tradeoff. `tests/class_kit_completion.test.ts` pins only
-  "stronger than rockbiter R3", so the pin cannot catch this.
-
 - **The Eastbrook polish evidence is RE-STAMPED, not re-captured.** Found by an
   adversarial review 2026-08-02, and the honest version of a mistake I made the
   same day. `src/render/renderer.ts` is one of the 22 provenance inputs
